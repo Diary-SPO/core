@@ -18,7 +18,7 @@ const ScheduleGroup: FC<IScheduleGroup> = ({ lessonsState }) => {
         <CardScroll size={isDesktopOrLaptop ? 'm' : 'l'}>
           {lessonsState?.length! > 0
             && lessonsState?.map((lesson) => (
-              <Suspense fallback={<div>Загрузочка</div>}>
+              <Suspense key={lesson.date as unknown as string} fallback={<div>Загрузочка</div>}>
                 <LessonCard lesson={lesson} />
               </Suspense>
             ))}

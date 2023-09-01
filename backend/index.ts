@@ -16,17 +16,22 @@ app.get('/', (req, res) => {
 });
 
 app.get('/lessons', async (req, res) => {
-  const response = await fetch('https://poo.tomedu.ru/services/students/302/lessons/2023-08-28/2023-09-10', {
+  const currentDate = new Date();
+  const startDate = currentDate.toISOString().substring(0, 10);
+  const endDate = new Date(currentDate.getTime() + 10 * 24 * 60 * 60 * 1000).toISOString().substring(0, 10);
+  
+  const response = await fetch(`https://poo.tomedu.ru/services/students/302/lessons/${startDate}/${endDate}`, {
     method: 'get',
     headers: {
       'Content-Type': 'application/json;charset=UTF-8',
       Cookie: req.headers.secret as string
     }
   });
+  
   const data = await response.json();
-
   res.json(data);
 });
+
 
 app.post('/login', async (req, res) => {
   const response = await fetch('https://poo.tomedu.ru/services/security/login', {

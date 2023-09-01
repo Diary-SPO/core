@@ -1,12 +1,20 @@
 import { FC } from 'react';
 import {
-  Card, Group, Header, Placeholder, SimpleCell,
+  Card, Group, Header, Placeholder, SimpleCell, Subhead,
 } from '@vkontakte/vkui';
 import { Day } from '../../../shared/lessons';
 import { formatLessonDate } from '../utils/formatLessonDate';
 
 interface ILessonCard {
   lesson: Day
+}
+
+enum Grade {
+  Five = 5,
+  Four = 4,
+  Three = 3,
+  Two = 2,
+  One = 1,
 }
 
 const LessonCard: FC<ILessonCard> = ({ lesson }) => (
@@ -17,7 +25,7 @@ const LessonCard: FC<ILessonCard> = ({ lesson }) => (
     >
       {lesson.lessons && lesson.lessons.length > 0 ? (
         lesson.lessons.map(({
-          name, endTime, startTime, timetable,
+          name, endTime, startTime, timetable, gradebook
         }) => (
           name && (
             <SimpleCell
@@ -32,6 +40,7 @@ const LessonCard: FC<ILessonCard> = ({ lesson }) => (
                     {' '}
                     {timetable?.teacher.middleName}
                   </div>
+                  <Subhead>{gradebook?.tasks[0]?.mark && `Оценка: ${Grade[gradebook?.tasks[0].mark] || 'Неверная оценка'}`}</Subhead>
                 </>
               )}
             >
