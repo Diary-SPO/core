@@ -25,22 +25,38 @@ const LessonCard: FC<ILessonCard> = ({ lesson }) => (
     >
       {lesson.lessons && lesson.lessons.length > 0 ? (
         lesson.lessons.map(({
-          name, endTime, startTime, timetable, gradebook
+          name, endTime, startTime, timetable, gradebook,
         }) => (
           name && (
             <SimpleCell
               key={startTime as unknown as string}
               subtitle={!name || (
                 <>
-                  <div>{`${startTime} — ${endTime}, каб. ${timetable?.classroom.name}`}</div>
                   <div>
-                    {timetable?.teacher.lastName}
-                    {' '}
-                    {timetable?.teacher.firstName}
-                    {' '}
-                    {timetable?.teacher.middleName}
+                    {`${startTime.toLocaleString()} — ${endTime.toLocaleString()}, каб. ${timetable?.classroom.name}`}
                   </div>
-                  <Subhead>{gradebook?.tasks[0]?.mark && `Оценка: ${Grade[gradebook?.tasks[0].mark] || 'Неверная оценка'}`}</Subhead>
+                  <div>
+                    {timetable.teacher?.lastName}
+                    {' '}
+                    {timetable.teacher?.firstName}
+                    {' '}
+                    {timetable.teacher?.middleName}
+                  </div>
+                  {gradebook?.tasks[0]?.mark && (
+                  <Subhead style={{
+                    borderRadius: 5,
+                    backgroundColor: 'var(--vkui--color_background_positive--active)',
+                    width: 20,
+                    height: 20,
+                    paddingTop: 1,
+                    marginTop: 8,
+                    textAlign: 'center',
+                    color: 'white',
+                  }}
+                  >
+                    {`${Grade[gradebook?.tasks[0].mark] || 'Неверная оценка'}`}
+                  </Subhead>
+                  )}
                 </>
               )}
             >

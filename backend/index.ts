@@ -15,8 +15,6 @@ app.get('/', (req: Request, res: Response) => {
 });
 
 app.get('/lessons', async (req: Request, res: Response) => {
-  
-  // Ваш код для обработки маршрута /lessons
   const currentDate = new Date();
   const startDate = currentDate.toISOString().substring(0, 10);
   const endDate = new Date(currentDate.getTime() + 10 * 24 * 60 * 60 * 1000).toISOString().substring(0, 10);
