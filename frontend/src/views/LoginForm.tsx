@@ -87,7 +87,7 @@ const LoginForm: FC<{ id: string }> = ({ id }) => {
           <FormLayout>
             <FormItem
               htmlFor='userLogin'
-              top='E-mail'
+              top='Логин'
               status={login ? 'valid' : 'error'}
               bottom={login ? 'Логин введён' : 'Пожалуйста, введите логин'}
               bottomId='login-type'
@@ -101,7 +101,6 @@ const LoginForm: FC<{ id: string }> = ({ id }) => {
                 onChange={onChange}
               />
             </FormItem>
-
             <FormItem top='Пароль' htmlFor='pass'>
               <Input name='password' id='pass' type='password' placeholder='Введите пароль' onChange={onChange} />
             </FormItem>

@@ -7,7 +7,7 @@ import {
   useAdaptivityConditionalRender,
   usePlatform,
 } from '@vkontakte/vkui';
-import { useCallback, useState } from 'react';
+import {useCallback, useEffect, useState} from 'react';
 import { useActiveVkuiLocation, useRouteNavigator } from '@vkontakte/vk-mini-apps-router';
 import bridge from '@vkontakte/vk-bridge';
 
@@ -25,6 +25,13 @@ const App = () => {
   const { viewWidth } = useAdaptivityConditionalRender();
   const { view: activeView = VIEW_SCHEDULE } = useActiveVkuiLocation();
   const routeNavigator = useRouteNavigator();
+
+  useEffect(() => {
+    getCookie().then(data => console.log(data)).catch(e => console.log(e))
+    if(getCookie()) {
+      routeNavigator.push(`/${VIEW_SCHEDULE}`);
+    }
+  }, []);
 
   const onStoryChange = async (currentView: Pages) => {
     if (!getCookie()) {
