@@ -1,26 +1,28 @@
-import express from 'express';
+import express, { Request, Response } from 'express';
 import cors from 'cors';
+import 'dotenv/config';
 
-import 'dotenv/config'
-
+const apiUrl = process.env.SERVER_URL;
 const app = express();
 const port = process.env.PORT || 3000;
 
 app.use(cors({
   origin: '*'
-}))
+}));
 
-app.get('/', (req, res) => {
+app.get('/', (req: Request, res: Response) => {
   res.send('Express + TypeScript Server');
 });
 
-app.get('/lessons', async (req, res) => {
+app.get('/lessons', async (req: Request, res: Response) => {
+  
+  // Ваш код для обработки маршрута /lessons
   const currentDate = new Date();
   const startDate = currentDate.toISOString().substring(0, 10);
   const endDate = new Date(currentDate.getTime() + 10 * 24 * 60 * 60 * 1000).toISOString().substring(0, 10);
   
   try {
-    const response = await fetch(`https://poo.tomedu.ru/services/students/302/lessons/${startDate}/${endDate}`, {
+    const response = await fetch(`${apiUrl}/students/302/lessons/${startDate}/${endDate}`, {
       method: 'get',
       headers: {
         'Content-Type': 'application/json;charset=UTF-8',
@@ -35,10 +37,9 @@ app.get('/lessons', async (req, res) => {
   }
 });
 
-
-app.post('/login', async (req, res) => {
+app.post('/login', async (req: Request, res: Response) => {
   try {
-    const response = await fetch('https://poo.tomedu.ru/services/security/login', {
+    const response = await fetch(`${apiUrl}/security/login`, {
       method: 'post',
       body: JSON.stringify({
         login: req.headers.login,
@@ -49,16 +50,20 @@ app.post('/login', async (req, res) => {
         'Content-Type': 'application/json;charset=UTF-8'
       }
     });
+    
     const data = await response.json();
-    const cookie = response.headers.getSetCookie().join()
-    console.log(cookie)
-    // @ts-ignore
-    res.json({data, cookie});
+    
+    const setCookieHeader = response.headers.get('Set-Cookie');
+    
+    console.log(setCookieHeader);
+    
+    res.json({ data, cookie: setCookieHeader });
   } catch (e) {
-    console.log(e)
+    console.log(e);
+    res.status(500).json({ error: 'Internal Server Error' });
   }
-})
+});
 
 app.listen(port, () => {
-  console.log(`[server]: Server is running at http://localhost:${port}`);
+  console.log(`Server is running at http://localhost:${port}`);
 });
