@@ -29,7 +29,7 @@ interface AuthData {
 const LoginForm: FC<{ id: string }> = ({ id }) => {
   const { panel: activePanel, panelsHistory } = useActiveVkuiLocation();
   const routeNavigator = useRouteNavigator();
-
+  
   const [login, setLogin] = useState('');
   const [password, setPassword] = useState('');
 
@@ -59,7 +59,6 @@ const LoginForm: FC<{ id: string }> = ({ id }) => {
       throw new Error('Failed to fetch login');
     }
     const data = await response.json() as AuthData;
-
     bridge.send('VKWebAppStorageSet', {
       key: 'cookie',
       value: data.cookie,

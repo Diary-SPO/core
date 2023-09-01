@@ -41,7 +41,7 @@ app.post('/login', async (req, res) => {
     }
   });
   const data = await response.json();
-  const cookie = response.headers.getSetCookie()
+  const cookie = response.headers.getSetCookie().join()
   console.log(cookie)
   // @ts-ignore
   res.json({data, cookie});

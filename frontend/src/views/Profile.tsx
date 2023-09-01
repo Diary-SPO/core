@@ -1,4 +1,4 @@
-import { FC, useEffect, useState } from 'react';
+import {FC, Suspense, useEffect, useState} from 'react';
 import {
   Card,
   CardScroll,
@@ -39,44 +39,48 @@ const Profile: FC<{ id: string }> = ({ id }) => {
       <Panel nav={id}>
         <PanelHeaderWithBack title='Расписание' />
         <Group header={<Header mode='secondary'>Расписание занятий</Header>}>
-          <CardScroll size={isDesktopOrLaptop ? 'm' : 'l'}>
-            {lessonsState?.length! > 0 && lessonsState?.map(({ date, lessons }: Day) => (
-              <Card key={date as unknown as string}>
-                <Group
-                  style={{ height: '100%', marginTop: '4px' }}
-                  header={<Header mode='secondary'>{formatLessonDate(date)}</Header>}
-                >
-                  {lessons
-                  && lessons?.length > 0
-                    ? lessons?.map(({
-                      name, endTime, startTime, timetable,
-                    }) => (
-                      <SimpleCell
-                        key={startTime as unknown as string}
-                        subtitle={!name
-                          || (
-                          <>
-                            <div>
-                              {`${startTime} — ${endTime}, каб. ${timetable?.classroom.name}`}
-                            </div>
-                            <div>
-                              {timetable?.teacher.lastName}
-                              {' '}
-                              {timetable?.teacher.firstName}
-                              {' '}
-                              {timetable?.teacher.middleName}
-                            </div>
-                          </>
-                          )}
-                      >
-                        {name || 'Можно спать'}
-                      </SimpleCell>
-                    ))
-                    : <Placeholder>Пар нет</Placeholder>}
-                </Group>
-              </Card>
-            ))}
-          </CardScroll>
+          <Suspense fallback={<div>Загрузочка</div>}>
+           <CardScroll size={isDesktopOrLaptop ? 'm' : 'l'}>
+             {lessonsState?.length! > 0 && lessonsState?.map(({ date, lessons }: Day) => (
+               <Suspense fallback={<div>Загрузочка</div>}>
+                 <Card key={date as unknown as string}>
+                   <Group
+                     style={{ height: '100%', marginTop: '4px' }}
+                     header={<Header mode='secondary'>{formatLessonDate(date)}</Header>}
+                   >
+                     {lessons
+                     && lessons?.length > 0
+                       ? lessons?.map(({
+                                         name, endTime, startTime, timetable,
+                                       }) => (
+                         <SimpleCell
+                           key={startTime as unknown as string}
+                           subtitle={!name
+                             || (
+                               <>
+                                 <div>
+                                   {`${startTime} — ${endTime}, каб. ${timetable?.classroom.name}`}
+                                 </div>
+                                 <div>
+                                   {timetable?.teacher.lastName}
+                                   {' '}
+                                   {timetable?.teacher.firstName}
+                                   {' '}
+                                   {timetable?.teacher.middleName}
+                                 </div>
+                               </>
+                             )}
+                         >
+                           {name || 'Можно спать'}
+                         </SimpleCell>
+                       ))
+                       : <Placeholder>Пар нет</Placeholder>}
+                   </Group>
+                 </Card>
+               </Suspense>
+             ))}
+           </CardScroll>
+         </Suspense>
         </Group>
       </Panel>
     </View>

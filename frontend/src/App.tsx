@@ -25,15 +25,14 @@ const App = () => {
   const { view: activeView = VIEW_SCHEDULE } = useActiveVkuiLocation();
   const routeNavigator = useRouteNavigator();
 
-  // const cookie =
-
+  
   useEffect(() => {
     bridge.send('VKWebAppStorageGet', {
       keys: ['cookie'],
     })
         .then((data) => {
           if (!data.keys[0].value) {
-            routeNavigator.push(`/${VIEW_SCHEDULE}`);
+            routeNavigator.push(`/`);
           }
         })
         .catch((error) => {
