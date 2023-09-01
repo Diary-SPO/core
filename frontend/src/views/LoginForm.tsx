@@ -59,7 +59,7 @@ const LoginForm: FC<{ id: string }> = ({ id }) => {
       throw new Error('Failed to fetch login');
     }
     const data = await response.json() as AuthData;
-    console.log(data.cookie);
+
     bridge.send('VKWebAppStorageSet', {
       key: 'cookie',
       value: data.cookie,

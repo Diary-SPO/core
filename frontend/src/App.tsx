@@ -16,7 +16,6 @@ import Suspense from './components/Suspense';
 import { Pages } from './types';
 import Sidebar from './components/Sidebar';
 import Epic from './components/Epic';
-import { getCookie } from './methods/getCookie';
 
 const App = () => {
   const platform = usePlatform();
@@ -26,19 +25,36 @@ const App = () => {
   const { view: activeView = VIEW_SCHEDULE } = useActiveVkuiLocation();
   const routeNavigator = useRouteNavigator();
 
+  // const cookie =
+
   useEffect(() => {
-    getCookie().then(data => console.log(data)).catch(e => console.log(e))
-    if(getCookie()) {
-      routeNavigator.push(`/${VIEW_SCHEDULE}`);
-    }
-  }, []);
+    bridge.send('VKWebAppStorageGet', {
+      keys: ['cookie'],
+    })
+        .then((data) => {
+          if (!data.keys[0].value) {
+            routeNavigator.push(`/${VIEW_SCHEDULE}`);
+          }
+        })
+        .catch((error) => {
+          return error
+        });
+  }, [window.location]);
 
   const onStoryChange = async (currentView: Pages) => {
-    if (!getCookie()) {
-      await routeNavigator.push('/');
-    } else {
-      await routeNavigator.push(`/${currentView}`);
-    }
+    bridge.send('VKWebAppStorageGet', {
+      keys: ['cookie'],
+    })
+        .then((data) => {
+          if (!data.keys[0].value) {
+            routeNavigator.push(`/${VIEW_SCHEDULE}`);
+          } else {
+            routeNavigator.push(`/${currentView}`);
+          }
+        })
+        .catch((error) => {
+          return error
+        });
   };
 
   const [appearance, setAppearance] = useState<'light' | 'dark'>('light');

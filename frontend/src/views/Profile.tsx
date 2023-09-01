@@ -40,8 +40,7 @@ const Profile: FC<{ id: string }> = ({ id }) => {
         <PanelHeaderWithBack title='Расписание' />
         <Group header={<Header mode='secondary'>Расписание занятий</Header>}>
           <CardScroll size={isDesktopOrLaptop ? 'm' : 'l'}>
-            {lessonsState?.map(({ date, lessons }: Day) => (
-
+            {lessonsState?.length! > 0 && lessonsState?.map(({ date, lessons }: Day) => (
               <Card key={date as unknown as string}>
                 <Group
                   style={{ height: '100%', marginTop: '4px' }}
