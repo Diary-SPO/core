@@ -1,16 +1,17 @@
-import {lazy} from "react";
+import { lazy } from 'react';
 import ReactDOM from 'react-dom/client';
 import { AdaptivityProvider } from '@vkontakte/vkui';
 import { RouterProvider } from '@vkontakte/vk-mini-apps-router';
 import bridge from '@vkontakte/vk-bridge';
 
-const App = lazy(() => import('./App'));
+import Suspense from './components/Suspense';
 
 import { router } from './routes';
 
 import '@vkontakte/vkui/dist/cssm/styles/themes.css';
 import './index.css';
-import Suspense from "./components/Suspense.tsx";
+
+const App = lazy(() => import('./App'));
 
 bridge.send('VKWebAppInit');
 

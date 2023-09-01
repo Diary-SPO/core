@@ -1,18 +1,19 @@
+import bridge from '@vkontakte/vk-bridge';
+
 import { Day } from '../../../shared/lessons';
-import bridge from "@vkontakte/vk-bridge";
 
 export const getLessons = async (): Promise<Day[]> => {
   const cookie = await bridge.send('VKWebAppStorageGet', {
     keys: ['cookie'],
   })
-      .then((data) => {
-        if (data.keys) {
-          return data.keys[0].value
-        }
-      })
-      .catch((error) => {
-        return error
-      });
+    .then((data) => {
+      if (data.keys) {
+        return data.keys[0].value;
+      }
+
+      return false;
+    })
+    .catch((error) => console.error(error));
 
   const response = await fetch(`${import.meta.env.VITE_SERVER_URL}/lessons`, {
     method: 'GET',

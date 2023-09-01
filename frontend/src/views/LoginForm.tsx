@@ -1,12 +1,13 @@
-import { useState, FC } from 'react';
+import { useState, FC, ChangeEvent } from 'react';
 import {
-  Button, Checkbox, FormItem, FormLayout, Input, Link, Group, Panel, View,
+  Button, FormItem, FormLayout, Input, Group, Panel, View,
 } from '@vkontakte/vkui';
 import { useActiveVkuiLocation, useRouteNavigator } from '@vkontakte/vk-mini-apps-router';
 import Hashes from 'jshashes';
 
 import bridge from '@vkontakte/vk-bridge';
 import PanelHeaderWithBack from '../components/PanelHeaderWithBack';
+import { VIEW_SCHEDULE } from '../routes';
 
 interface AuthData {
   cookie: string
@@ -29,13 +30,23 @@ interface AuthData {
 const LoginForm: FC<{ id: string }> = ({ id }) => {
   const { panel: activePanel, panelsHistory } = useActiveVkuiLocation();
   const routeNavigator = useRouteNavigator();
-  
-  const [login, setLogin] = useState('');
-  const [password, setPassword] = useState('');
 
-  const onChange = (e) => {
+  bridge.send('VKWebAppStorageGet', {
+    keys: ['cookie'],
+  })
+    .then((data) => {
+      if (data.keys) {
+        routeNavigator.replace(`/${VIEW_SCHEDULE}`);
+      }
+    })
+    .catch((error) => console.error(error));
+
+  const [login, setLogin] = useState<string>('');
+  const [password, setPassword] = useState<string>('');
+
+  const onChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.currentTarget;
-    console.log(name);
+
     const setStateAction = {
       login: setLogin,
       password: setPassword,
@@ -58,10 +69,10 @@ const LoginForm: FC<{ id: string }> = ({ id }) => {
     if (!response.ok) {
       throw new Error('Failed to fetch login');
     }
-    const data = await response.json() as AuthData;
+    const dataResp = await response.json() as AuthData;
     bridge.send('VKWebAppStorageSet', {
       key: 'cookie',
-      value: data.cookie,
+      value: dataResp.cookie,
     })
       .then((data) => {
         if (data.result) {
@@ -69,7 +80,7 @@ const LoginForm: FC<{ id: string }> = ({ id }) => {
         }
       })
       .catch((error) => {
-        console.log(error);
+        console.error(error);
       });
   };
 
@@ -103,11 +114,6 @@ const LoginForm: FC<{ id: string }> = ({ id }) => {
             <FormItem top='Пароль' htmlFor='pass'>
               <Input name='password' id='pass' type='password' placeholder='Введите пароль' onChange={onChange} />
             </FormItem>
-            <Checkbox>
-              Согласен со всем
-              {' '}
-              <Link>этим</Link>
-            </Checkbox>
             <FormItem>
               <Button size='l' stretched onClick={() => handleLogin()}>
                 Войти
