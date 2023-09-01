@@ -1,5 +1,4 @@
 import express from 'express';
-import * as https from 'https';
 import cors from 'cors';
 
 import 'dotenv/config'
@@ -20,36 +19,44 @@ app.get('/lessons', async (req, res) => {
   const startDate = currentDate.toISOString().substring(0, 10);
   const endDate = new Date(currentDate.getTime() + 10 * 24 * 60 * 60 * 1000).toISOString().substring(0, 10);
   
-  const response = await fetch(`https://poo.tomedu.ru/services/students/302/lessons/${startDate}/${endDate}`, {
-    method: 'get',
-    headers: {
-      'Content-Type': 'application/json;charset=UTF-8',
-      Cookie: req.headers.secret as string
-    }
-  });
-  
-  const data = await response.json();
-  res.json(data);
+  try {
+    const response = await fetch(`https://poo.tomedu.ru/services/students/302/lessons/${startDate}/${endDate}`, {
+      method: 'get',
+      headers: {
+        'Content-Type': 'application/json;charset=UTF-8',
+        Cookie: req.headers.secret as string
+      }
+    });
+    
+    const data = await response.json();
+    res.json(data);
+  } catch (e) {
+    console.error(e)
+  }
 });
 
 
 app.post('/login', async (req, res) => {
-  const response = await fetch('https://poo.tomedu.ru/services/security/login', {
-    method: 'post',
-    body: JSON.stringify({
-      login: req.headers.login,
-      password: req.headers.password,
-      isRemember: true,
-    }),
-    headers: {
-      'Content-Type': 'application/json;charset=UTF-8'
-    }
-  });
-  const data = await response.json();
-  const cookie = response.headers.getSetCookie().join()
-  console.log(cookie)
-  // @ts-ignore
-  res.json({data, cookie});
+  try {
+    const response = await fetch('https://poo.tomedu.ru/services/security/login', {
+      method: 'post',
+      body: JSON.stringify({
+        login: req.headers.login,
+        password: req.headers.password,
+        isRemember: true,
+      }),
+      headers: {
+        'Content-Type': 'application/json;charset=UTF-8'
+      }
+    });
+    const data = await response.json();
+    const cookie = response.headers.getSetCookie().join()
+    console.log(cookie)
+    // @ts-ignore
+    res.json({data, cookie});
+  } catch (e) {
+    console.log(e)
+  }
 })
 
 app.listen(port, () => {
