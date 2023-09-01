@@ -7,5 +7,5 @@ const Settings = lazy(() => import('./Settings'));
 const LoginForm = lazy(() => import('./LoginForm'));
 
 export {
-  Contacts, Projects, Profile, Settings, LoginForm
+  Contacts, Projects, Profile, Settings, LoginForm,
 };

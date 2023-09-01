@@ -9,15 +9,15 @@ export const PAGE_SETTINGS = '/settings';
 export const VIEW_SCHEDULE = 'schedule';
 export const VIEW_CONTACTS = 'contacts';
 export const VIEW_PROJECTS = 'projects';
-export const VIEW_SETTINGS = 'settings'
+export const VIEW_SETTINGS = 'settings';
 
-// export const VIEW_SETTINGS = 'settings';
+export const MAIN_SETTINGS = 'login';
 
 const routes: RouteWithoutRoot[] = [
   {
     path: PAGE_MAIN,
-    panel: VIEW_SCHEDULE,
-    view: VIEW_SCHEDULE,
+    panel: MAIN_SETTINGS,
+    view: MAIN_SETTINGS,
   },
   {
     path: PAGE_SCHEDULE,

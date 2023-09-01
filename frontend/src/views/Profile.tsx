@@ -7,12 +7,10 @@ import {
 import { useActiveVkuiLocation, useRouteNavigator } from '@vkontakte/vk-mini-apps-router';
 
 import { useMediaQuery } from 'react-responsive';
-import Hashes from 'jshashes';
 import PanelHeaderWithBack from '../components/PanelHeaderWithBack';
 import { Day } from '../../../shared/lessons';
 import { getLessons } from '../methods/getLessons';
 import { formatLessonDate } from '../utils/formatLessonDate';
-import LoginForm from './LoginForm.tsx';
 
 const Profile: FC<{ id: string }> = ({ id }) => {
   const { panel: activePanel, panelsHistory } = useActiveVkuiLocation();
@@ -29,9 +27,6 @@ const Profile: FC<{ id: string }> = ({ id }) => {
     gettedLessons();
   }, []);
 
-  const hashes = new Hashes.SHA256();
-  const password = hashes.b64('asdfz3sfdg');
-  console.log(password);
   const isDesktopOrLaptop = useMediaQuery({ maxWidth: 1224 });
 
   return (
@@ -83,7 +78,6 @@ const Profile: FC<{ id: string }> = ({ id }) => {
               </Card>
             ))}
           </CardScroll>
-          <LoginForm />
         </Group>
       </Panel>
     </View>

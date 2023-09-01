@@ -23,9 +23,6 @@ app.get('/lessons', async (req, res) => {
     },
   }, externalRes => {
     let data: Buffer[] = [];
-    const headerDate = externalRes.headers && externalRes.headers.date ? externalRes.headers.date : 'no response date';
-    console.log('Status Code:', externalRes.statusCode);
-    console.log('Date in Response header:', headerDate);
     
     externalRes.on('data', chunk => {
       data.push(chunk);
@@ -42,6 +39,24 @@ app.get('/lessons', async (req, res) => {
     res.status(500).send('Error occurred');
   });
 });
+
+app.post('/login', async (req, res) => {
+  const response = await fetch('https://poo.tomedu.ru/services/security/login', {
+    method: 'post',
+    body: JSON.stringify({
+      login: req.headers.login,
+      password: req.headers.password,
+      isRemember: true,
+    }),
+    headers: {
+      'Content-Type': 'application/json;charset=UTF-8'
+    }
+  });
+  const data = await response.json();
+  const cookie = response.headers.getSetCookie().join()
+
+  res.json({data, cookie});
+})
 
 app.listen(port, () => {
   console.log(`[server]: Server is running at http://localhost:${port}`);
