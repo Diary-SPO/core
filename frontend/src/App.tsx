@@ -7,7 +7,7 @@ import {
   useAdaptivityConditionalRender,
   usePlatform,
 } from '@vkontakte/vkui';
-import {useCallback, useEffect, useState} from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useActiveVkuiLocation, useRouteNavigator } from '@vkontakte/vk-mini-apps-router';
 import bridge from '@vkontakte/vk-bridge';
 
@@ -25,35 +25,30 @@ const App = () => {
   const { view: activeView = VIEW_SCHEDULE } = useActiveVkuiLocation();
   const routeNavigator = useRouteNavigator();
 
-  
   useEffect(() => {
     bridge.send('VKWebAppStorageGet', {
       keys: ['cookie'],
     })
-        .then((data) => {
-          if (!data.keys[0].value) {
-            routeNavigator.push(`/`);
-          }
-        })
-        .catch((error) => {
-          return error
-        });
+      .then((data) => {
+        if (!data.keys[0].value) {
+          routeNavigator.replace('/');
+        }
+      })
+      .catch((error) => error);
   }, [window.location]);
 
   const onStoryChange = async (currentView: Pages) => {
-    bridge.send('VKWebAppStorageGet', {
+    await bridge.send('VKWebAppStorageGet', {
       keys: ['cookie'],
     })
-        .then((data) => {
-          if (!data.keys[0].value) {
-            routeNavigator.push(`/${VIEW_SCHEDULE}`);
-          } else {
-            routeNavigator.push(`/${currentView}`);
-          }
-        })
-        .catch((error) => {
-          return error
-        });
+      .then((data) => {
+        if (!data.keys[0].value) {
+          routeNavigator.push(`/${VIEW_SCHEDULE}`);
+        } else {
+          routeNavigator.push(`/${currentView}`);
+        }
+      })
+      .catch((error) => error);
   };
 
   const [appearance, setAppearance] = useState<'light' | 'dark'>('light');
