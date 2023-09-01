@@ -1,11 +1,30 @@
-import {useState, FC, FormEvent} from 'react';
+import { useState, FC } from 'react';
 import {
   Button, Checkbox, FormItem, FormLayout, Input, Link, Group, Panel, View,
 } from '@vkontakte/vkui';
 import { useActiveVkuiLocation, useRouteNavigator } from '@vkontakte/vk-mini-apps-router';
 import Hashes from 'jshashes';
 
+import bridge from '@vkontakte/vk-bridge';
 import PanelHeaderWithBack from '../components/PanelHeaderWithBack';
+
+interface AuthData {
+  cookie: string
+  data: {
+    installName: string
+    localNetwork: boolean
+    tenantName: string
+    tenants: {
+      SPO_23: {
+        firstName: string
+        isTrusted: boolean
+        lastName: string
+        middleName: string
+        // TODO: Типизировать это потом
+      }
+    }
+  }
+}
 
 const LoginForm: FC<{ id: string }> = ({ id }) => {
   const { panel: activePanel, panelsHistory } = useActiveVkuiLocation();
@@ -26,7 +45,6 @@ const LoginForm: FC<{ id: string }> = ({ id }) => {
   };
 
   const handleLogin = async () => {
-    console.log(password);
     const passwordHashed = (new Hashes.SHA256()).b64(password);
     const response = await fetch(`${import.meta.env.VITE_SERVER_URL}/login`, {
       method: 'POST',
@@ -40,6 +58,20 @@ const LoginForm: FC<{ id: string }> = ({ id }) => {
     if (!response.ok) {
       throw new Error('Failed to fetch login');
     }
+    const data = await response.json() as AuthData;
+    console.log(data.cookie);
+    bridge.send('VKWebAppStorageSet', {
+      key: 'cookie',
+      value: data.cookie,
+    })
+      .then((data) => {
+        if (data.result) {
+          console.log('куки сохранены');
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   };
 
   return (

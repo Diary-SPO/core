@@ -24,10 +24,9 @@ const Contacts: FC<{ id: string }> = ({ id }) => {
           <Placeholder
             icon={<Icon28MailOutline width={56} height={56} />}
           >
-
             Страница ещё не готова, но личка в
             {' '}
-            <Link href='vk' target='_blank'>ВК</Link>
+            <Link href='https://vk.com/scffs' target='_blank'>ВК</Link>
             {' '}
             всегда окрыта
           </Placeholder>

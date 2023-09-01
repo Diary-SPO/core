@@ -8,14 +8,15 @@ import {
   usePlatform,
 } from '@vkontakte/vkui';
 import { useCallback, useState } from 'react';
-
 import { useActiveVkuiLocation, useRouteNavigator } from '@vkontakte/vk-mini-apps-router';
+import bridge from '@vkontakte/vk-bridge';
 
 import { VIEW_SCHEDULE } from './routes';
 import Suspense from './components/Suspense';
 import { Pages } from './types';
 import Sidebar from './components/Sidebar';
 import Epic from './components/Epic';
+import { getCookie } from './methods/getCookie';
 
 const App = () => {
   const platform = usePlatform();
@@ -26,7 +27,11 @@ const App = () => {
   const routeNavigator = useRouteNavigator();
 
   const onStoryChange = async (currentView: Pages) => {
-    await routeNavigator.push(`/${currentView}`);
+    if (!getCookie()) {
+      await routeNavigator.push('/');
+    } else {
+      await routeNavigator.push(`/${currentView}`);
+    }
   };
 
   const [appearance, setAppearance] = useState<'light' | 'dark'>('light');
@@ -36,6 +41,18 @@ const App = () => {
     setAppearance(newAppearance);
     localStorage.setItem('theme', newAppearance);
   }, [appearance]);
+
+  bridge.send('VKWebAppStorageGet', {
+    keys: ['cookie'],
+  })
+    .then(async (data) => {
+      if (!data.keys[0].value) {
+        await routeNavigator.push('/');
+      }
+    })
+    .catch((error) => {
+      console.log(error);
+    });
 
   return (
     <ConfigProvider appearance={appearance}>
