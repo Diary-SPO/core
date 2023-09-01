@@ -17,6 +17,7 @@
     "@vkontakte/vk-bridge": "^2.11.0",
     "@vkontakte/vk-mini-apps-router": "^1.1.1",
     "@vkontakte/vkui": "^5.7.2",
+    "jshashes": "^1.0.8",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-responsive": "^9.0.2"

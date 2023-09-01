@@ -7,9 +7,12 @@ import {
 import { useActiveVkuiLocation, useRouteNavigator } from '@vkontakte/vk-mini-apps-router';
 
 import { useMediaQuery } from 'react-responsive';
+import Hashes from 'jshashes';
 import PanelHeaderWithBack from '../components/PanelHeaderWithBack';
 import { Day } from '../../../shared/lessons';
 import { getLessons } from '../methods/getLessons';
+import { formatLessonDate } from '../utils/formatLessonDate';
+import LoginForm from './LoginForm.tsx';
 
 const Profile: FC<{ id: string }> = ({ id }) => {
   const { panel: activePanel, panelsHistory } = useActiveVkuiLocation();
@@ -26,12 +29,9 @@ const Profile: FC<{ id: string }> = ({ id }) => {
     gettedLessons();
   }, []);
 
-  const formatLessonDate = (dateString: Date | string) => {
-    const options = { year: 'numeric', month: 'long', day: 'numeric' };
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
-    return new Date(dateString).toLocaleDateString(undefined, options);
-  };
+  const hashes = new Hashes.SHA256();
+  const password = hashes.b64('asdfz3sfdg');
+  console.log(password);
   const isDesktopOrLaptop = useMediaQuery({ maxWidth: 1224 });
 
   return (
@@ -63,7 +63,7 @@ const Profile: FC<{ id: string }> = ({ id }) => {
                           || (
                           <>
                             <div>
-                              {startTime} - {endTime}, {timetable?.classroom.name}
+                              {`${startTime} — ${endTime}, каб. ${timetable?.classroom.name}`}
                             </div>
                             <div>
                               {timetable?.teacher.lastName}
@@ -83,6 +83,7 @@ const Profile: FC<{ id: string }> = ({ id }) => {
               </Card>
             ))}
           </CardScroll>
+          <LoginForm />
         </Group>
       </Panel>
     </View>

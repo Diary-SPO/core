@@ -9,7 +9,9 @@ export const PAGE_SETTINGS = '/settings';
 export const VIEW_SCHEDULE = 'schedule';
 export const VIEW_CONTACTS = 'contacts';
 export const VIEW_PROJECTS = 'projects';
-export const VIEW_SETTINGS = 'settings';
+export const VIEW_SETTINGS = 'settings'
+
+// export const VIEW_SETTINGS = 'settings';
 
 const routes: RouteWithoutRoot[] = [
   {
