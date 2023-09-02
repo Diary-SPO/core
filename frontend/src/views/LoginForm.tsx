@@ -6,7 +6,7 @@ import { useActiveVkuiLocation, useRouteNavigator } from '@vkontakte/vk-mini-app
 import Hashes from 'jshashes';
 import bridge from '@vkontakte/vk-bridge';
 
-import {AuthData} from "../../../shared";
+import { AuthData } from '../../../shared';
 import { VIEW_SCHEDULE } from '../routes';
 
 import PanelHeaderWithBack from '../components/PanelHeaderWithBack';
