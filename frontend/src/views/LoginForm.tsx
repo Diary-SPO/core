@@ -21,6 +21,10 @@ interface AuthData {
         isTrusted: boolean
         lastName: string
         middleName: string
+        studentRole: {
+          id: number
+          studentGroupId: number
+        }
         // TODO: Типизировать это потом
       }
     }
@@ -70,6 +74,7 @@ const LoginForm: FC<{ id: string }> = ({ id }) => {
       throw new Error('Failed to fetch login');
     }
     const dataResp = await response.json() as AuthData;
+
     bridge.send('VKWebAppStorageSet', {
       key: 'cookie',
       value: dataResp.cookie,
@@ -77,6 +82,19 @@ const LoginForm: FC<{ id: string }> = ({ id }) => {
       .then((data) => {
         if (data.result) {
           console.log('куки сохранены');
+        }
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+
+    bridge.send('VKWebAppStorageSet', {
+      key: 'id',
+      value: String(dataResp.data.tenants.SPO_23.studentRole.id),
+    })
+      .then((data) => {
+        if (data.result) {
+          console.log('id saved');
         }
       })
       .catch((error) => {

@@ -16,6 +16,18 @@ export const getLessons = async (startDate?: Date, endDate?: Date): Promise<Day[
     })
     .catch((error) => console.error(error));
 
+  const id = await bridge.send('VKWebAppStorageGet', {
+    keys: ['id'],
+  })
+    .then((data) => {
+      if (data.keys) {
+        return data.keys[0].value;
+      }
+
+      return false;
+    })
+    .catch((error) => console.error(error));
+
   if (!startDate) {
     startDate = new Date();
   }
@@ -28,7 +40,7 @@ export const getLessons = async (startDate?: Date, endDate?: Date): Promise<Day[
   const formattedStartDate = formatDateForRequest(startDate);
   const formattedEndDate = formatDateForRequest(endDate);
 
-  const response = await fetch(`${import.meta.env.VITE_SERVER_URL}/lessons/${formattedStartDate}/${formattedEndDate}`, {
+  const response = await fetch(`${import.meta.env.VITE_SERVER_URL}/lessons/${id}/${formattedStartDate}/${formattedEndDate}`, {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json;charset=UTF-8',

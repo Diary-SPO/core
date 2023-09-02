@@ -23,7 +23,7 @@ app.get('/', (req: Request, res: Response) => {
   res.send('Hello')
 })
 
-app.get('/lessons/:startDate/:endDate', async (req: Request, res: Response) => {
+app.get('/lessons/:id/:startDate/:endDate', async (req: Request, res: Response) => {
   const secret = req.headers.secret
 
   if (!secret || typeof secret !== 'string') {
@@ -31,8 +31,12 @@ app.get('/lessons/:startDate/:endDate', async (req: Request, res: Response) => {
     return
   }
 
-  const { startDate, endDate } = req.params
+  const { startDate, endDate, id } = req.params
   let formattedStartDate, formattedEndDate
+
+  if (!id) {
+    res.json('Something is wrong').status(500)
+  }
 
   if (startDate && endDate) {
     formattedStartDate = startDate.toString()
@@ -55,7 +59,7 @@ app.get('/lessons/:startDate/:endDate', async (req: Request, res: Response) => {
   }
 
   try {
-    const response = await fetch(`${apiUrl}/students/302/lessons/${formattedStartDate}/${formattedEndDate}`, {
+    const response = await fetch(`${apiUrl}/students/${id}/lessons/${formattedStartDate}/${formattedEndDate}`, {
       method: 'get',
       headers: {
         'Content-Type': 'application/json;charset=UTF-8',
