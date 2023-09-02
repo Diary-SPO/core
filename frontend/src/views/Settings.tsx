@@ -1,12 +1,13 @@
-import {FC, ReactNode, useEffect, useState} from 'react';
+import {
+  FC, ReactNode, useEffect, useState,
+} from 'react';
 import {
   Cell, CellButton, Group, Header, Panel, Snackbar, Subhead, View,
 } from '@vkontakte/vkui';
 import { useActiveVkuiLocation, useRouteNavigator } from '@vkontakte/vk-mini-apps-router';
-import {Icon28ClearDataOutline, Icon28CheckCircleFillGreen} from '@vkontakte/icons';
+import { Icon28ClearDataOutline, Icon24CheckCircleFillGreen } from '@vkontakte/icons';
 import bridge from '@vkontakte/vk-bridge';
 import PanelHeaderWithBack from '../components/PanelHeaderWithBack';
-
 
 const formatKeyText = (key: string) => {
   if (key.startsWith('orientation')) {
@@ -77,22 +78,21 @@ const Settings: FC<ISettings> = ({ id }) => {
     }).then((data) => {
       if (data.result) {
         console.info(data.result);
-        
+
         if (!snackbar) {
           setSnackbar(
             <Snackbar
-              onClose={() => setSnackbar(null)}
-              before={<Icon28CheckCircleFillGreen fill='var(--vkui--color_background_accent)' />}
-              subtitle={`Вы вышли`}
+              onClose={() => location.reload()}
+              before={<Icon24CheckCircleFillGreen fill='var(--vkui--color_background_accent)' />}
+              subtitle='Страница скоро обновится'
             >
-              Успех
+              Вы вышли
             </Snackbar>,
           );
         }
       }
     });
   };
-  console.log('Sett')
 
   return (
     <View

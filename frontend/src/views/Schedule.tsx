@@ -154,7 +154,7 @@ const Schedule: FC<{ id: string }> = ({ id }) => {
 
     localStorage.setItem('savedLessons', JSON.stringify(data));
   };
-  console.log('Sch')
+
   return (
     <View
       id={id}
