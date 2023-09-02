@@ -35,8 +35,7 @@ const Profile: FC<{ id: string }> = ({ id }) => {
         
         localStorage.setItem('savedLessons', JSON.stringify(data));
         localStorage.setItem('lastRequestTime', currentTime.toString());
-        
-        // setDataFromCache(false);
+     
         setSnackbar(null);
       } else {
         setIsLoading(false);
@@ -46,18 +45,17 @@ const Profile: FC<{ id: string }> = ({ id }) => {
             layout='vertical'
             onClose={() => setSnackbar(null)}
             before={<Icon28InfoCircle fill='var(--vkui--color_background_accent)' />}
-            // subtitle='Данные взяты из кеша'
-            title='Данные взяты из кеша'
             action='Загрузить новые'
             onActionClick={() => handleReloadData()}
-          />
+          >
+            Данные взяты из кеша
+          </Snackbar>
         );
       }
     };
     
     if (savedLessons) {
       setLessons(JSON.parse(savedLessons));
-      // setDataFromCache(true);
     }
     
     if (!snackbar && isLoading) {
@@ -161,7 +159,6 @@ const Profile: FC<{ id: string }> = ({ id }) => {
     const data = await getLessons(startDate, newEndDate);
     setLessons(data);
     setIsLoading(false);
-    // setDataFromCache(false);
     
     localStorage.setItem('savedLessons', JSON.stringify(data));
   };

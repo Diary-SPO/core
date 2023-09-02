@@ -24,44 +24,52 @@ app.get('/', (req: Request, res: Response) => {
 })
 
 app.get('/lessons/:startDate/:endDate', async (req: Request, res: Response) => {
-  const secret = req.headers.secret;
-  
+  const secret = req.headers.secret
+
   if (!secret || typeof secret !== 'string') {
-    res.json('Something is wrong').status(500);
-    return;
+    res.json('Something is wrong').status(500)
+    return
   }
-  
-  const { startDate, endDate } = req.params;
-  let formattedStartDate, formattedEndDate;
-  
+
+  const { startDate, endDate } = req.params
+  let formattedStartDate, formattedEndDate
+
   if (startDate && endDate) {
-    formattedStartDate = startDate.toString();
-    formattedEndDate = endDate.toString();
+    formattedStartDate = startDate.toString()
+    formattedEndDate = endDate.toString()
+
+    const startTimestamp = new Date(startDate).getTime()
+    const endTimestamp = new Date(endDate).getTime()
+    const differenceInDays = (endTimestamp - startTimestamp) / (1000 * 3600 * 24)
+
+    if (differenceInDays > 14) {
+      const newEndDate = new Date(startTimestamp + 14 * 24 * 60 * 60 * 1000)
+      formattedEndDate = newEndDate.toISOString().substring(0, 10)
+    }
   } else {
-    const currentDate = new Date();
-    formattedStartDate = currentDate.toISOString().substring(0, 10);
-    
-    const endDate = new Date(currentDate.getTime() + 14 * 24 * 60 * 60 * 1000);
-    formattedEndDate = endDate.toISOString().substring(0, 10);
+    const currentDate = new Date()
+    formattedStartDate = currentDate.toISOString().substring(0, 10)
+
+    const endDate = new Date(currentDate.getTime() + 14 * 24 * 60 * 60 * 1000)
+    formattedEndDate = endDate.toISOString().substring(0, 10)
   }
-  
+
   try {
     const response = await fetch(`${apiUrl}/students/302/lessons/${formattedStartDate}/${formattedEndDate}`, {
       method: 'get',
       headers: {
         'Content-Type': 'application/json;charset=UTF-8',
-        Cookie: secret as string,
-      },
-    });
-    
-    const data = await response.json();
-    res.json(data);
-  } catch (e) {
-    console.error(e);
-    res.status(500).json('Internal server error');
-  }
-});
+        Cookie: secret
+      }
+    })
 
+    const data = await response.json()
+    res.json(data)
+  } catch (e) {
+    console.error(e)
+    res.status(500).json('Internal server error')
+  }
+})
 
 app.post('/login', async (req: Request, res: Response) => {
   const login = req.headers.login
