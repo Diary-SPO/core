@@ -7,7 +7,7 @@ import Hashes from 'jshashes';
 
 import bridge from '@vkontakte/vk-bridge';
 import PanelHeaderWithBack from '../components/PanelHeaderWithBack';
-import { VIEW_SCHEDULE } from '../routes';
+import {VIEW_SCHEDULE} from "../routes";
 
 interface AuthData {
   cookie: string
@@ -34,16 +34,6 @@ interface AuthData {
 const LoginForm: FC<{ id: string }> = ({ id }) => {
   const { panel: activePanel, panelsHistory } = useActiveVkuiLocation();
   const routeNavigator = useRouteNavigator();
-
-  bridge.send('VKWebAppStorageGet', {
-    keys: ['cookie'],
-  })
-    .then((data) => {
-      if (data.keys[0].value) {
-        routeNavigator.replace(`/${VIEW_SCHEDULE}`);
-      }
-    })
-    .catch((error) => console.error(error));
 
   const [login, setLogin] = useState<string>('');
   const [password, setPassword] = useState<string>('');
@@ -75,31 +65,37 @@ const LoginForm: FC<{ id: string }> = ({ id }) => {
     }
     const dataResp = await response.json() as AuthData;
 
-    bridge.send('VKWebAppStorageSet', {
-      key: 'cookie',
-      value: dataResp.cookie,
-    })
-      .then((data) => {
-        if (data.result) {
-          console.log('куки сохранены');
-        }
+    try {
+      await bridge.send('VKWebAppStorageSet', {
+        key: 'cookie',
+        value: dataResp.cookie,
       })
-      .catch((error) => {
-        console.error(error);
-      });
+          .then((data) => {
+            if (data.result) {
+              console.log('куки сохранены');
+            }
+          })
+          .catch((error) => {
+            console.error(error);
+          });
 
-    bridge.send('VKWebAppStorageSet', {
-      key: 'id',
-      value: String(dataResp.data.tenants.SPO_23.studentRole.id),
-    })
-      .then((data) => {
-        if (data.result) {
-          console.log('id saved');
-        }
+      await bridge.send('VKWebAppStorageSet', {
+        key: 'id',
+        value: String(dataResp.data.tenants.SPO_23.studentRole.id),
       })
-      .catch((error) => {
-        console.error(error);
-      });
+          .then((data) => {
+            if (data.result) {
+              console.log('id saved');
+            }
+          })
+          .catch((error) => {
+            console.error(error);
+          });
+
+      await routeNavigator.replace(`/${VIEW_SCHEDULE}`);
+    } catch (e) {
+      console.error(e)
+    }
   };
 
   return (

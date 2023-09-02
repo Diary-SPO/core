@@ -71,19 +71,19 @@ const Settings: FC<ISettings> = ({ id, toggleAppearance }) => {
     setCacheData([]);
   };
 
-  const logOut = () => {
-    bridge.send('VKWebAppStorageSet', {
-      key: 'cookie',
-      value: '',
-    })
-        .then((data) => {
-          if (data.result) {
-            console.log('куки сохранены');
-          }
-        })
-        .catch((error) => {
-          console.error(error);
-        });
+  const logOut = async () => {
+    try {
+      const data = await bridge.send('VKWebAppStorageSet', {
+        key: 'cookie',
+        value: '',
+      });
+      if (data.result) {
+        location.reload();
+        console.log('куки очищены');
+      }
+    } catch (error) {
+      console.error(error);
+    }
   }
 
   return (
@@ -105,7 +105,7 @@ const Settings: FC<ISettings> = ({ id, toggleAppearance }) => {
           </CellButton>
           <CellButton
               before={<Icon28ClearDataOutline />}
-              onClick={logOut}
+              onClick={() => logOut()}
           >
             Выйти
           </CellButton>

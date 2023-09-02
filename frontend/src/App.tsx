@@ -38,17 +38,21 @@ const App = () => {
   }, [window.location]);
 
   const onStoryChange = async (currentView: Pages) => {
-    await bridge.send('VKWebAppStorageGet', {
-      keys: ['cookie'],
-    })
-      .then((data) => {
-        if (!data.keys[0].value) {
-          routeNavigator.replace('/');
-        } else {
-          routeNavigator.replace(`/${currentView}`);
-        }
+    try {
+      await bridge.send('VKWebAppStorageGet', {
+        keys: ['cookie'],
       })
-      .catch((error) => error);
+          .then((data) => {
+            if (!data.keys[0].value) {
+              routeNavigator.replace('/');
+            } else {
+              routeNavigator.replace(`/${currentView}`);
+            }
+          })
+          .catch((error) => error);
+    } catch (e) {
+      console.error(e);
+    }
   };
 
   const [appearance, setAppearance] = useState<'light' | 'dark'>('light');
