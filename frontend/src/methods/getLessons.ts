@@ -1,8 +1,9 @@
 import bridge from '@vkontakte/vk-bridge';
 
 import { Day } from '../../../shared/lessons';
+import formatDateForRequest from '../utils/formatDateForRequest';
 
-export const getLessons = async (): Promise<Day[]> => {
+export const getLessons = async (startDate?: Date, endDate?: Date): Promise<Day[]> => {
   const cookie = await bridge.send('VKWebAppStorageGet', {
     keys: ['cookie'],
   })
@@ -15,7 +16,19 @@ export const getLessons = async (): Promise<Day[]> => {
     })
     .catch((error) => console.error(error));
 
-  const response = await fetch(`${import.meta.env.VITE_SERVER_URL}/lessons`, {
+  if (!startDate) {
+    startDate = new Date();
+  }
+
+  if (!endDate) {
+    endDate = new Date();
+    endDate.setDate(endDate.getDate() + 14);
+  }
+
+  const formattedStartDate = formatDateForRequest(startDate);
+  const formattedEndDate = formatDateForRequest(endDate);
+
+  const response = await fetch(`${import.meta.env.VITE_SERVER_URL}/lessons/${formattedStartDate}/${formattedEndDate}`, {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json;charset=UTF-8',

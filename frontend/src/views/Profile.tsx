@@ -1,12 +1,13 @@
 import { FC, useEffect, useState } from 'react';
 import { Panel, Snackbar, View } from '@vkontakte/vkui';
 import { useActiveVkuiLocation, useRouteNavigator } from '@vkontakte/vk-mini-apps-router';
-import { Icon28ErrorCircleOutline } from '@vkontakte/icons';
+import { Icon28InfoCircle } from '@vkontakte/icons';
 import PanelHeaderWithBack from '../components/PanelHeaderWithBack';
 import { Day } from '../../../shared/lessons';
 import { getLessons } from '../methods/getLessons';
 import ScheduleGroup from '../components/ScheduleGroup';
 import CalendarRange from '../components/CalendarRange';
+import formatDateForRequest from "../utils/formatDateForRequest.ts";
 
 const Profile: FC<{ id: string }> = ({ id }) => {
   const { panel: activePanel, panelsHistory } = useActiveVkuiLocation();
@@ -15,13 +16,63 @@ const Profile: FC<{ id: string }> = ({ id }) => {
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(new Date());
   const [snackbar, setSnackbar] = useState(null);
-
+  const [isLoading, setIsLoading] = useState(false);
+  
   useEffect(() => {
+    const savedLessons = localStorage.getItem('savedLessons');
+    const getLastRequestTime = localStorage.getItem('lastRequestTime');
+    const currentTime = Date.now();
+    const lastRequestTime = getLastRequestTime ? parseInt(getLastRequestTime, 10) : 0;
+    const timeSinceLastRequest = currentTime - lastRequestTime;
+    
     const gettedLessons = async () => {
-      const data = await getLessons();
-      setLessons(data);
+      setIsLoading(true);
+      
+      if (!savedLessons || timeSinceLastRequest > 30000) {
+        const data = await getLessons();
+        setLessons(data);
+        setIsLoading(false);
+        
+        localStorage.setItem('savedLessons', JSON.stringify(data));
+        localStorage.setItem('lastRequestTime', currentTime.toString());
+        
+        // setDataFromCache(false);
+        setSnackbar(null);
+      } else {
+        setIsLoading(false);
+        setSnackbar(
+          // @ts-ignore
+          <Snackbar
+            layout='vertical'
+            onClose={() => setSnackbar(null)}
+            before={<Icon28InfoCircle fill='var(--vkui--color_background_accent)' />}
+            // subtitle='Данные взяты из кеша'
+            title='Данные взяты из кеша'
+            action='Загрузить новые'
+            onActionClick={() => handleReloadData()}
+          />
+        );
+      }
     };
-
+    
+    if (savedLessons) {
+      setLessons(JSON.parse(savedLessons));
+      // setDataFromCache(true);
+    }
+    
+    if (!snackbar && isLoading) {
+      setSnackbar(
+        // @ts-ignore
+        <Snackbar
+          onClose={() => setSnackbar(null)}
+          before={<Icon28InfoCircle fill="var(--vkui--color_background_accent)" />}
+          subtitle="Скоро расписание появится на экране"
+        >
+          Загрузка
+        </Snackbar>
+      );
+    }
+    
     gettedLessons();
   }, []);
   
@@ -41,26 +92,38 @@ const Profile: FC<{ id: string }> = ({ id }) => {
     sendToServerIfValid(startDate, newEndDate);
   };
   
-  
-  const sendToServerIfValid = (start: Date, end: Date) => {
+  const sendToServerIfValid = async (start: Date, end: Date) => {
     if (start <= end) {
       const differenceInDays = (end.getTime() - start.getTime()) / (1000 * 3600 * 24);
       if (differenceInDays <= 14) {
-        sendToServer(start, end);
+        const data = await getLessons(start, end);
+        setLessons(data);
+        
+        localStorage.setItem('savedLessons', JSON.stringify(data));
       } else {
         console.error('Ошибка: Разница между датами больше 14-и дней');
+        
+        const newEndDate = new Date(start);
+        newEndDate.setDate(newEndDate.getDate() + 14);
+        setEndDate(newEndDate);
         
         if (!snackbar) {
           setSnackbar(
             // @ts-ignore
             <Snackbar
               onClose={() => setSnackbar(null)}
-              before={<Icon28ErrorCircleOutline fill='var(--vkui--color_icon_negative)' />}
+              before={<Icon28InfoCircle fill={'var(--vkui--color_background_accent)'} />}
+              subtitle={`Конечная дата будет изменена ${formatDateForRequest(newEndDate)}`}
             >
               Разница между датами больше 14-и дней
             </Snackbar>,
           );
         }
+        
+        const data = await getLessons(start, newEndDate);
+        setLessons(data);
+        
+        localStorage.setItem('savedLessons', JSON.stringify(data));
       }
     } else {
       console.info('Ошибка: Начальная дата больше конечной');
@@ -70,7 +133,7 @@ const Profile: FC<{ id: string }> = ({ id }) => {
           // @ts-ignore
           <Snackbar
             onClose={() => setSnackbar(null)}
-            before={<Icon28ErrorCircleOutline fill='var(--vkui--color_icon_negative)' />}
+            before={<Icon28InfoCircle fill='var(--vkui--color_background_accent)'/>}
             subtitle='Конечная дата установлена на 5 дней больше начальной'
           >
             Начальная дата больше конечной
@@ -81,15 +144,28 @@ const Profile: FC<{ id: string }> = ({ id }) => {
         newEndDate.setDate(newEndDate.getDate() + 5);
         setEndDate(newEndDate);
         
-        sendToServer(start, newEndDate);
+        const data = await getLessons(start, newEndDate);
+        setLessons(data);
+        
+        localStorage.setItem('savedLessons', JSON.stringify(data));
       }
     }
   };
   
-  const sendToServer = (start: Date, end: Date) => {
-    console.log('Отправка данных на сервер:', start, end);
+  const handleReloadData = async () => {
+    setSnackbar(null);
+    
+    setIsLoading(true);
+    const newEndDate = new Date(endDate);
+    newEndDate.setDate(newEndDate.getDate() + 10);
+    const data = await getLessons(startDate, newEndDate);
+    setLessons(data);
+    setIsLoading(false);
+    // setDataFromCache(false);
+    
+    localStorage.setItem('savedLessons', JSON.stringify(data));
   };
-
+  
   return (
     <View
       id={id}
@@ -99,21 +175,17 @@ const Profile: FC<{ id: string }> = ({ id }) => {
     >
       <Panel nav={id}>
         <PanelHeaderWithBack title='Расписание' />
-
         <CalendarRange
           label='Выбор начальной даты:'
           value={startDate}
           onDateChange={handleStartDateChange}
         />
-
         <CalendarRange
           label='Выбор конечной даты:'
           value={endDate}
           onDateChange={handleEndDateChange}
         />
-
         <ScheduleGroup lessonsState={lessonsState} />
-
         {snackbar}
       </Panel>
     </View>
