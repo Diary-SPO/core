@@ -39,3 +39,25 @@ export interface Day {
   date: Date;
   lessons: Lesson[] | null
 }
+
+export interface AuthData {
+  cookie: string
+  data: {
+    installName: string
+    localNetwork: boolean
+    tenantName: string
+    tenants: {
+      SPO_23: {
+        firstName: string
+        isTrusted: boolean
+        lastName: string
+        middleName: string
+        studentRole: {
+          id: number
+          studentGroupId: number
+        }
+        // TODO: Типизировать это потом
+      }
+    }
+  }
+}

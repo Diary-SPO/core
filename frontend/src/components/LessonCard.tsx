@@ -2,7 +2,7 @@ import { FC } from 'react';
 import {
   Card, Group, Header, Placeholder, SimpleCell, Subhead,
 } from '@vkontakte/vkui';
-import { Day } from '../../../shared/lessons';
+import { Day } from '../../../shared';
 import { formatLessonDate } from '../utils/formatLessonDate';
 
 interface ILessonCard {

@@ -8,6 +8,7 @@ import {
   Icon28SettingsOutline,
   Icon28BookSpreadOutline,
 } from '@vkontakte/icons';
+
 import {
   VIEW_CONTACTS, VIEW_SCHEDULE, VIEW_PROJECTS, VIEW_SETTINGS,
 } from '../routes';

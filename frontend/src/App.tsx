@@ -12,8 +12,9 @@ import { useActiveVkuiLocation, useRouteNavigator } from '@vkontakte/vk-mini-app
 import bridge from '@vkontakte/vk-bridge';
 
 import { VIEW_SCHEDULE } from './routes';
-import Suspense from './components/Suspense';
 import { Pages } from './types';
+
+import Suspense from './components/Suspense';
 import Sidebar from './components/Sidebar';
 import Epic from './components/Epic';
 

@@ -6,11 +6,13 @@ import {
 } from '@vkontakte/vkui';
 import { useActiveVkuiLocation, useRouteNavigator } from '@vkontakte/vk-mini-apps-router';
 import { Icon28InfoCircle } from '@vkontakte/icons';
-import PanelHeaderWithBack from '../components/PanelHeaderWithBack';
-import { Day } from '../../../shared/lessons';
+
+import { Day } from '../../../shared';
 import { getLessons } from '../methods/getLessons';
-import CalendarRange from '../components/CalendarRange';
 import formatDateForRequest from '../utils/formatDateForRequest';
+
+import PanelHeaderWithBack from '../components/PanelHeaderWithBack';
+import CalendarRange from '../components/CalendarRange';
 import Suspense from '../components/Suspense';
 
 const ScheduleGroup = lazy(() => import('../components/ScheduleGroup'));
@@ -92,7 +94,7 @@ const Schedule: FC<{ id: string }> = ({ id }) => {
 
         localStorage.setItem('savedLessons', JSON.stringify(data));
       } else {
-        console.error('Ошибка: Разница между датами больше 14-и дней');
+        console.info('Ошибка: Разница между датами больше 14-и дней');
 
         const newEndDate = new Date(start);
         newEndDate.setDate(newEndDate.getDate() + 14);
@@ -104,7 +106,7 @@ const Schedule: FC<{ id: string }> = ({ id }) => {
             <Snackbar
               onClose={() => setSnackbar(null)}
               before={<Icon28InfoCircle fill='var(--vkui--color_background_accent)' />}
-              subtitle={`Конечная дата будет изменена ${formatDateForRequest(newEndDate)}`}
+              subtitle={`Конечная дата будет автоматически изменена ${formatDateForRequest(newEndDate)}`}
             >
               Разница между датами больше 14-и дней
             </Snackbar>,
@@ -125,7 +127,7 @@ const Schedule: FC<{ id: string }> = ({ id }) => {
           <Snackbar
             onClose={() => setSnackbar(null)}
             before={<Icon28InfoCircle fill='var(--vkui--color_background_accent)' />}
-            subtitle='Конечная дата установлена на 5 дней больше начальной'
+            subtitle='Конечная дата будет автоматически установлена на 5 дней больше начальной'
           >
             Начальная дата больше конечной
           </Snackbar>,

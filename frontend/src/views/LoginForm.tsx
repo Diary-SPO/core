@@ -4,32 +4,12 @@ import {
 } from '@vkontakte/vkui';
 import { useActiveVkuiLocation, useRouteNavigator } from '@vkontakte/vk-mini-apps-router';
 import Hashes from 'jshashes';
-
 import bridge from '@vkontakte/vk-bridge';
-import PanelHeaderWithBack from '../components/PanelHeaderWithBack';
+
+import {AuthData} from "../../../shared";
 import { VIEW_SCHEDULE } from '../routes';
 
-interface AuthData {
-  cookie: string
-  data: {
-    installName: string
-    localNetwork: boolean
-    tenantName: string
-    tenants: {
-      SPO_23: {
-        firstName: string
-        isTrusted: boolean
-        lastName: string
-        middleName: string
-        studentRole: {
-          id: number
-          studentGroupId: number
-        }
-        // TODO: Типизировать это потом
-      }
-    }
-  }
-}
+import PanelHeaderWithBack from '../components/PanelHeaderWithBack';
 
 const LoginForm: FC<{ id: string }> = ({ id }) => {
   const { panel: activePanel, panelsHistory } = useActiveVkuiLocation();

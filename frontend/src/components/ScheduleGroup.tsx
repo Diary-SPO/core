@@ -2,7 +2,7 @@ import { FC, Suspense } from 'react';
 import { useMediaQuery } from 'react-responsive';
 import { CardScroll, Group, Header } from '@vkontakte/vkui';
 
-import { Day } from '../../../shared/lessons';
+import { Day } from '../../../shared';
 import LessonCard from './LessonCard';
 
 interface IScheduleGroup {

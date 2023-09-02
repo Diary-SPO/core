@@ -6,6 +6,7 @@ import {
   VIEW_CONTACTS, VIEW_SCHEDULE, VIEW_PROJECTS, VIEW_SETTINGS, MAIN_SETTINGS,
 } from '../routes';
 import { Pages } from '../types';
+
 import Tabbar from './Tabbar';
 import Suspense from './Suspense';
 import {

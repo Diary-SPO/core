@@ -1,6 +1,6 @@
 import bridge from '@vkontakte/vk-bridge';
 
-import { Day } from '../../../shared/lessons';
+import { Day } from '../../../shared';
 import formatDateForRequest from '../utils/formatDateForRequest';
 
 export const getLessons = async (startDate?: Date, endDate?: Date): Promise<Day[]> => {
