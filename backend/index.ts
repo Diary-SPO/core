@@ -97,6 +97,7 @@ app.post('/login', async (req: Request, res: Response) => {
     })
 
     const data = await response.json()
+    console.log(data)
 
     const setCookieHeader = response.headers.get('Set-Cookie')
 
