@@ -43,7 +43,7 @@ const App = () => {
     })
       .then((data) => {
         if (!data.keys[0].value) {
-          routeNavigator.replace(`/`);
+          routeNavigator.replace('/');
         } else {
           routeNavigator.replace(`/${currentView}`);
         }
