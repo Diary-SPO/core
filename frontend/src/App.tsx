@@ -7,7 +7,7 @@ import {
   useAdaptivityConditionalRender,
   usePlatform,
 } from '@vkontakte/vkui';
-import { useEffect } from 'react';
+import { lazy, useEffect } from 'react';
 import { useActiveVkuiLocation, useRouteNavigator } from '@vkontakte/vk-mini-apps-router';
 import bridge from '@vkontakte/vk-bridge';
 
@@ -15,8 +15,9 @@ import { VIEW_SCHEDULE } from './routes';
 import { Pages } from './types';
 
 import Suspense from './components/Suspense';
-import Sidebar from './components/Sidebar';
-import Epic from './components/Epic';
+
+const Sidebar = lazy(() => import('./components/Sidebar'));
+const Epic = lazy(() => import('./components/Epic'));
 
 const App = () => {
   const platform = usePlatform();
@@ -69,9 +70,12 @@ const App = () => {
             </Suspense>
           </SplitCol>
         )}
-        <SplitCol width='100%' maxWidth='700px' stretchedOnMobile autoSpaced>
-          <Epic onStoryChange={onStoryChange} />
-        </SplitCol>
+        <Suspense id='Epic'>
+          <SplitCol width='100%' maxWidth='700px' stretchedOnMobile autoSpaced>
+
+            <Epic onStoryChange={onStoryChange} />
+          </SplitCol>
+        </Suspense>
       </SplitLayout>
     </AppRoot>
   );

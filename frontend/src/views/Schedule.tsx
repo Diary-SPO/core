@@ -12,9 +12,9 @@ import { getLessons } from '../methods/getLessons';
 import formatDateForRequest from '../utils/formatDateForRequest';
 
 import PanelHeaderWithBack from '../components/PanelHeaderWithBack';
-import CalendarRange from '../components/CalendarRange';
 import Suspense from '../components/Suspense';
 
+const CalendarRange = lazy(() => import('../components/CalendarRange'));
 const ScheduleGroup = lazy(() => import('../components/ScheduleGroup'));
 
 const Schedule: FC<{ id: string }> = ({ id }) => {
@@ -164,16 +164,18 @@ const Schedule: FC<{ id: string }> = ({ id }) => {
     >
       <Panel nav={id}>
         <PanelHeaderWithBack title='Расписание' />
-        <CalendarRange
-          label='Выбор начальной даты:'
-          value={startDate}
-          onDateChange={handleStartDateChange}
-        />
-        <CalendarRange
-          label='Выбор конечной даты:'
-          value={endDate}
-          onDateChange={handleEndDateChange}
-        />
+        <Suspense id='Calendar' mode='panel'>
+          <CalendarRange
+            label='Выбор начальной даты:'
+            value={startDate}
+            onDateChange={handleStartDateChange}
+          />
+          <CalendarRange
+            label='Выбор конечной даты:'
+            value={endDate}
+            onDateChange={handleEndDateChange}
+          />
+        </Suspense>
         {isLoading ? <PanelSpinner size='medium' /> : (
           <Suspense id='ScheduleGroup' mode='screen'>
             <ScheduleGroup lessonsState={lessonsState} />
