@@ -90,6 +90,7 @@ const LoginForm: FC<{ id: string }> = ({ id }) => {
         <Group>
           <FormLayout>
             <FormItem
+              required
               htmlFor='userLogin'
               top='Логин'
               status={login ? 'valid' : 'error'}
@@ -97,6 +98,7 @@ const LoginForm: FC<{ id: string }> = ({ id }) => {
               bottomId='login-type'
             >
               <Input
+                required
                 aria-labelledby='login-type'
                 id='userLogin'
                 type='text'
