@@ -5,9 +5,8 @@ import {
 import { useActiveVkuiLocation, useRouteNavigator } from '@vkontakte/vk-mini-apps-router';
 import { Icon28ClearDataOutline } from '@vkontakte/icons';
 
+import bridge from '@vkontakte/vk-bridge';
 import PanelHeaderWithBack from '../components/PanelHeaderWithBack';
-import ToggleTheme from '../components/ToggleTheme';
-import bridge from "@vkontakte/vk-bridge";
 
 const formatKeyText = (key: string) => {
   if (key.startsWith('orientation')) {
@@ -22,10 +21,9 @@ const formatKeyText = (key: string) => {
 
 interface ISettings {
   id: string,
-  toggleAppearance: () => void
 }
 
-const Settings: FC<ISettings> = ({ id, toggleAppearance }) => {
+const Settings: FC<ISettings> = ({ id }) => {
   const { panel: activePanel, panelsHistory } = useActiveVkuiLocation();
   const routeNavigator = useRouteNavigator();
 
@@ -84,7 +82,7 @@ const Settings: FC<ISettings> = ({ id, toggleAppearance }) => {
     } catch (error) {
       console.error(error);
     }
-  }
+  };
 
   return (
     <View
@@ -96,7 +94,6 @@ const Settings: FC<ISettings> = ({ id, toggleAppearance }) => {
       <Panel nav={id}>
         <PanelHeaderWithBack title='Настройки' />
         <Group header={<Header mode='secondary'>Внешний вид</Header>}>
-          <ToggleTheme toggleAppearance={toggleAppearance} />
           <CellButton
             before={<Icon28ClearDataOutline />}
             onClick={clearCache}
@@ -104,8 +101,8 @@ const Settings: FC<ISettings> = ({ id, toggleAppearance }) => {
             Очистить кеш
           </CellButton>
           <CellButton
-              before={<Icon28ClearDataOutline />}
-              onClick={() => logOut()}
+            before={<Icon28ClearDataOutline />}
+            onClick={() => logOut()}
           >
             Выйти
           </CellButton>

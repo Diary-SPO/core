@@ -1,5 +1,5 @@
 import {
-  AppRoot, ConfigProvider,
+  AppRoot,
   PanelHeader,
   Platform,
   SplitCol,
@@ -7,7 +7,7 @@ import {
   useAdaptivityConditionalRender,
   usePlatform,
 } from '@vkontakte/vkui';
-import { useCallback, useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { useActiveVkuiLocation, useRouteNavigator } from '@vkontakte/vk-mini-apps-router';
 import bridge from '@vkontakte/vk-bridge';
 
@@ -44,26 +44,18 @@ const App = () => {
       await bridge.send('VKWebAppStorageGet', {
         keys: ['cookie'],
       })
-          .then((data) => {
-            if (!data.keys[0].value) {
-              routeNavigator.replace('/');
-            } else {
-              routeNavigator.replace(`/${currentView}`);
-            }
-          })
-          .catch((error) => error);
+        .then((data) => {
+          if (!data.keys[0].value) {
+            routeNavigator.replace('/');
+          } else {
+            routeNavigator.replace(`/${currentView}`);
+          }
+        })
+        .catch((error) => error);
     } catch (e) {
       console.error(e);
     }
   };
-
-  const [appearance, setAppearance] = useState<'light' | 'dark'>('light');
-
-  const toggleAppearance = useCallback(() => {
-    const newAppearance = appearance === 'light' ? 'dark' : 'light';
-    setAppearance(newAppearance);
-    localStorage.setItem('theme', newAppearance);
-  }, [appearance]);
 
   bridge.send('VKWebAppStorageGet', {
     keys: ['cookie'],
@@ -78,23 +70,21 @@ const App = () => {
     });
 
   return (
-    <ConfigProvider appearance={appearance}>
-      <AppRoot>
-        <SplitLayout header={<PanelHeader separator={false} />} style={{ justifyContent: 'center' }}>
-          {viewWidth.tabletPlus && (
+    <AppRoot>
+      <SplitLayout header={<PanelHeader separator={false} />} style={{ justifyContent: 'center' }}>
+        {viewWidth.tabletPlus && (
           <SplitCol className={viewWidth.tabletPlus.className} fixed width={280} maxWidth={280}>
             {isVKCOM && <PanelHeader /> }
             <Suspense id='sidebar'>
               <Sidebar activeView={activeView as Pages} onStoryChange={onStoryChange} />
             </Suspense>
           </SplitCol>
-          )}
-          <SplitCol width='100%' maxWidth='700px' stretchedOnMobile autoSpaced>
-            <Epic onStoryChange={onStoryChange} toggleAppearance={toggleAppearance} />
-          </SplitCol>
-        </SplitLayout>
-      </AppRoot>
-    </ConfigProvider>
+        )}
+        <SplitCol width='100%' maxWidth='700px' stretchedOnMobile autoSpaced>
+          <Epic onStoryChange={onStoryChange} />
+        </SplitCol>
+      </SplitLayout>
+    </AppRoot>
   );
 };
 

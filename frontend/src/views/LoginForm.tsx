@@ -7,7 +7,7 @@ import Hashes from 'jshashes';
 
 import bridge from '@vkontakte/vk-bridge';
 import PanelHeaderWithBack from '../components/PanelHeaderWithBack';
-import {VIEW_SCHEDULE} from "../routes";
+import { VIEW_SCHEDULE } from '../routes';
 
 interface AuthData {
   cookie: string
@@ -70,31 +70,31 @@ const LoginForm: FC<{ id: string }> = ({ id }) => {
         key: 'cookie',
         value: dataResp.cookie,
       })
-          .then((data) => {
-            if (data.result) {
-              console.log('куки сохранены');
-            }
-          })
-          .catch((error) => {
-            console.error(error);
-          });
+        .then((data) => {
+          if (data.result) {
+            console.log('куки сохранены');
+          }
+        })
+        .catch((error) => {
+          console.error(error);
+        });
 
       await bridge.send('VKWebAppStorageSet', {
         key: 'id',
         value: String(dataResp.data.tenants.SPO_23.studentRole.id),
       })
-          .then((data) => {
-            if (data.result) {
-              console.log('id saved');
-            }
-          })
-          .catch((error) => {
-            console.error(error);
-          });
+        .then((data) => {
+          if (data.result) {
+            console.log('id saved');
+          }
+        })
+        .catch((error) => {
+          console.error(error);
+        });
 
       await routeNavigator.replace(`/${VIEW_SCHEDULE}`);
     } catch (e) {
-      console.error(e)
+      console.error(e);
     }
   };
 

@@ -14,10 +14,9 @@ import {
 
 interface IEpic {
   onStoryChange: (current: Pages) => void
-  toggleAppearance: () => void
 }
 
-const Epic: FC<IEpic> = ({ onStoryChange, toggleAppearance }) => {
+const Epic: FC<IEpic> = ({ onStoryChange }) => {
   const {
     view: activeView = 'profile' as Pages,
   } = useActiveVkuiLocation();
@@ -41,7 +40,7 @@ const Epic: FC<IEpic> = ({ onStoryChange, toggleAppearance }) => {
         <Contacts id={VIEW_CONTACTS} />
       </Suspense>
       <Suspense id={VIEW_SETTINGS} mode='screen'>
-        <Settings id={VIEW_SETTINGS} toggleAppearance={toggleAppearance} />
+        <Settings id={VIEW_SETTINGS} />
       </Suspense>
       <Suspense id={MAIN_SETTINGS} mode='screen'>
         <LoginForm id={MAIN_SETTINGS} />

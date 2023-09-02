@@ -1,6 +1,6 @@
 import { lazy } from 'react';
 import ReactDOM from 'react-dom/client';
-import { AdaptivityProvider } from '@vkontakte/vkui';
+import { AdaptivityProvider, ConfigProvider } from '@vkontakte/vkui';
 import { RouterProvider } from '@vkontakte/vk-mini-apps-router';
 import bridge from '@vkontakte/vk-bridge';
 
@@ -18,9 +18,11 @@ bridge.send('VKWebAppInit');
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <AdaptivityProvider>
     <RouterProvider router={router} notFound={<div>404</div>}>
-      <Suspense id='app'>
-        <App />
-      </Suspense>
+      <ConfigProvider>
+        <Suspense id='app'>
+          <App />
+        </Suspense>
+      </ConfigProvider>
     </RouterProvider>
   </AdaptivityProvider>,
 );
