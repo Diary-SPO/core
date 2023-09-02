@@ -15,7 +15,7 @@ import Suspense from '../components/Suspense';
 
 const ScheduleGroup = lazy(() => import('../components/ScheduleGroup'));
 
-const Profile: FC<{ id: string }> = ({ id }) => {
+const Schedule: FC<{ id: string }> = ({ id }) => {
   const { panel: activePanel, panelsHistory } = useActiveVkuiLocation();
   const routeNavigator = useRouteNavigator();
   const [lessonsState, setLessons] = useState<Day[] | null>();
@@ -195,4 +195,4 @@ const Profile: FC<{ id: string }> = ({ id }) => {
   );
 };
 
-export default Profile;
+export default Schedule;

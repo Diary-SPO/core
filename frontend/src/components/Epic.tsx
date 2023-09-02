@@ -9,7 +9,7 @@ import { Pages } from '../types';
 import Tabbar from './Tabbar';
 import Suspense from './Suspense';
 import {
-  Contacts, LoginForm, Profile, Projects, Settings,
+  Contacts, LoginForm, Schedule, Projects, Settings,
 } from '../views';
 
 interface IEpic {
@@ -32,7 +32,7 @@ const Epic: FC<IEpic> = ({ onStoryChange, toggleAppearance }) => {
       }
     >
       <Suspense id={VIEW_SCHEDULE} mode='screen'>
-        <Profile id={VIEW_SCHEDULE} />
+        <Schedule id={VIEW_SCHEDULE} />
       </Suspense>
       <Suspense id={VIEW_PROJECTS} mode='screen'>
         <Projects id={VIEW_PROJECTS} />

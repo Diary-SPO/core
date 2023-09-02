@@ -7,6 +7,7 @@ import { Icon28ClearDataOutline } from '@vkontakte/icons';
 
 import PanelHeaderWithBack from '../components/PanelHeaderWithBack';
 import ToggleTheme from '../components/ToggleTheme';
+import bridge from "@vkontakte/vk-bridge";
 
 const formatKeyText = (key: string) => {
   if (key.startsWith('orientation')) {
@@ -70,6 +71,21 @@ const Settings: FC<ISettings> = ({ id, toggleAppearance }) => {
     setCacheData([]);
   };
 
+  const logOut = () => {
+    bridge.send('VKWebAppStorageSet', {
+      key: 'cookie',
+      value: '',
+    })
+        .then((data) => {
+          if (data.result) {
+            console.log('куки сохранены');
+          }
+        })
+        .catch((error) => {
+          console.error(error);
+        });
+  }
+
   return (
     <View
       id={id}
@@ -86,6 +102,12 @@ const Settings: FC<ISettings> = ({ id, toggleAppearance }) => {
             onClick={clearCache}
           >
             Очистить кеш
+          </CellButton>
+          <CellButton
+              before={<Icon28ClearDataOutline />}
+              onClick={logOut}
+          >
+            Выйти
           </CellButton>
         </Group>
         <Group
