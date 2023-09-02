@@ -32,6 +32,8 @@ const App = () => {
       .then((data) => {
         if (!data.keys[0].value) {
           routeNavigator.replace('/');
+        } else {
+          routeNavigator.replace(`/${VIEW_SCHEDULE}`);
         }
       })
       .catch((error) => error);
