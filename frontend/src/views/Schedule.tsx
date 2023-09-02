@@ -1,5 +1,5 @@
 import {
-  FC, lazy, useEffect, useState,
+  FC, lazy, ReactNode, useEffect, useState,
 } from 'react';
 import {
   Panel, PanelSpinner, Snackbar, View,
@@ -23,7 +23,7 @@ const Schedule: FC<{ id: string }> = ({ id }) => {
   const [lessonsState, setLessons] = useState<Day[] | null>();
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(new Date());
-  const [snackbar, setSnackbar] = useState(null);
+  const [snackbar, setSnackbar] = useState<null | ReactNode>(null);
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
@@ -48,7 +48,6 @@ const Schedule: FC<{ id: string }> = ({ id }) => {
       } else {
         setIsLoading(false);
         setSnackbar(
-          // @ts-ignore
           <Snackbar
             layout='vertical'
             onClose={() => setSnackbar(null)}
@@ -102,7 +101,6 @@ const Schedule: FC<{ id: string }> = ({ id }) => {
 
         if (!snackbar) {
           setSnackbar(
-            // @ts-ignore
             <Snackbar
               onClose={() => setSnackbar(null)}
               before={<Icon28InfoCircle fill='var(--vkui--color_background_accent)' />}
@@ -123,7 +121,6 @@ const Schedule: FC<{ id: string }> = ({ id }) => {
 
       if (!snackbar) {
         setSnackbar(
-          // @ts-ignore
           <Snackbar
             onClose={() => setSnackbar(null)}
             before={<Icon28InfoCircle fill='var(--vkui--color_background_accent)' />}
@@ -157,7 +154,7 @@ const Schedule: FC<{ id: string }> = ({ id }) => {
 
     localStorage.setItem('savedLessons', JSON.stringify(data));
   };
-
+  console.log('Sch')
   return (
     <View
       id={id}

@@ -1,12 +1,12 @@
-import { FC, useEffect, useState } from 'react';
+import {FC, ReactNode, useEffect, useState} from 'react';
 import {
-  Cell, CellButton, Group, Header, Panel, Subhead, View,
+  Cell, CellButton, Group, Header, Panel, Snackbar, Subhead, View,
 } from '@vkontakte/vkui';
 import { useActiveVkuiLocation, useRouteNavigator } from '@vkontakte/vk-mini-apps-router';
-import { Icon28ClearDataOutline } from '@vkontakte/icons';
-
+import {Icon28ClearDataOutline, Icon28CheckCircleFillGreen} from '@vkontakte/icons';
 import bridge from '@vkontakte/vk-bridge';
 import PanelHeaderWithBack from '../components/PanelHeaderWithBack';
+
 
 const formatKeyText = (key: string) => {
   if (key.startsWith('orientation')) {
@@ -28,6 +28,7 @@ const Settings: FC<ISettings> = ({ id }) => {
   const routeNavigator = useRouteNavigator();
 
   const [cacheData, setCacheData] = useState<{ key: string; value: string }[]>([]);
+  const [snackbar, setSnackbar] = useState<null | ReactNode>(null);
 
   useEffect(() => {
     const allKeys = Object.keys(localStorage);
@@ -69,20 +70,29 @@ const Settings: FC<ISettings> = ({ id }) => {
     setCacheData([]);
   };
 
-  const logOut = async () => {
-    try {
-      const data = await bridge.send('VKWebAppStorageSet', {
-        key: 'cookie',
-        value: '',
-      });
+  const logOut = () => {
+    bridge.send('VKWebAppStorageSet', {
+      key: 'cookie',
+      value: '',
+    }).then((data) => {
       if (data.result) {
-        location.reload();
-        console.log('куки очищены');
+        console.info(data.result);
+        
+        if (!snackbar) {
+          setSnackbar(
+            <Snackbar
+              onClose={() => setSnackbar(null)}
+              before={<Icon28CheckCircleFillGreen fill='var(--vkui--color_background_accent)' />}
+              subtitle={`Вы вышли`}
+            >
+              Успех
+            </Snackbar>,
+          );
+        }
       }
-    } catch (error) {
-      console.error(error);
-    }
+    });
   };
+  console.log('Sett')
 
   return (
     <View
@@ -102,7 +112,7 @@ const Settings: FC<ISettings> = ({ id }) => {
           </CellButton>
           <CellButton
             before={<Icon28ClearDataOutline />}
-            onClick={() => logOut()}
+            onClick={logOut}
           >
             Выйти
           </CellButton>
@@ -117,6 +127,7 @@ const Settings: FC<ISettings> = ({ id }) => {
             </Cell>
           ))}
         </Group>
+        {snackbar}
       </Panel>
     </View>
   );

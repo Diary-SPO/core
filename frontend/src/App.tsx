@@ -39,7 +39,7 @@ const App = () => {
       })
       .catch((error) => error);
   }, [window.location]);
-
+  
   const onStoryChange = async (currentView: Pages) => {
     try {
       await bridge.send('VKWebAppStorageGet', {
@@ -57,19 +57,7 @@ const App = () => {
       console.error(e);
     }
   };
-
-  bridge.send('VKWebAppStorageGet', {
-    keys: ['cookie'],
-  })
-    .then(async (data) => {
-      if (!data.keys[0].value) {
-        await routeNavigator.replace('/');
-      }
-    })
-    .catch((error) => {
-      console.log(error);
-    });
-
+  
   return (
     <AppRoot>
       <SplitLayout header={<PanelHeader separator={false} />} style={{ justifyContent: 'center' }}>

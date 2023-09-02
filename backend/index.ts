@@ -71,7 +71,7 @@ app.get('/lessons/:id/:startDate/:endDate', async (req: Request, res: Response) 
     res.json(data)
   } catch (e) {
     console.error('/lessons/:id/:startDate/:endDate', e)
-    res.status(500).json('Internal server error')
+    res.status(500).json(`Internal server error: ${e}`)
   }
 })
 
@@ -103,7 +103,7 @@ app.post('/login', async (req: Request, res: Response) => {
     res.json({ data, cookie: setCookieHeader })
   } catch (e) {
     console.log('/login', e)
-    res.status(500).json({ error: 'Internal Server Error' })
+    res.status(500).json(`Internal server error: ${e}`)
   }
 })
 

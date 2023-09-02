@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import {FC, useEffect, useState} from 'react';
 import { useActiveVkuiLocation } from '@vkontakte/vk-mini-apps-router';
 import { useAdaptivityConditionalRender } from '@vkontakte/vkui';
 import { Epic as VKUIEpic } from '@vkontakte/vkui/dist/components/Epic/Epic';
@@ -12,6 +12,7 @@ import Suspense from './Suspense';
 import {
   Contacts, LoginForm, Schedule, Projects, Settings,
 } from '../views';
+import bridge from "@vkontakte/vk-bridge";
 
 interface IEpic {
   onStoryChange: (current: Pages) => void
@@ -22,13 +23,28 @@ const Epic: FC<IEpic> = ({ onStoryChange }) => {
     view: activeView = 'profile' as Pages,
   } = useActiveVkuiLocation();
   const { viewWidth } = useAdaptivityConditionalRender();
-
+  const [isLogged, setIsLogged] = useState<boolean>(false);
+  
+  useEffect(() => {
+    bridge.send('VKWebAppStorageGet', {
+      keys: ['cookie'],
+    })
+      .then(async (data) => {
+        if (data.keys[0].value) {
+          setIsLogged(true);
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }, []);
+  
   return (
     <VKUIEpic
       activeStory={activeView}
       tabbar={
         viewWidth.tabletMinus
-        && <Tabbar onStoryChange={onStoryChange} activeView={activeView as Pages} />
+        && isLogged && <Tabbar onStoryChange={onStoryChange} activeView={activeView as Pages} />
       }
     >
       <Suspense id={VIEW_SCHEDULE} mode='screen'>
