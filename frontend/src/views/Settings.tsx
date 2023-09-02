@@ -1,11 +1,11 @@
 import {
-  FC, ReactNode, useEffect, useState,
+  FC, useEffect, useState,
 } from 'react';
 import {
-  Cell, CellButton, Group, Header, Panel, Snackbar, Subhead, View,
+  Cell, CellButton, Group, Header, Panel, Subhead, View,
 } from '@vkontakte/vkui';
 import { useActiveVkuiLocation, useRouteNavigator } from '@vkontakte/vk-mini-apps-router';
-import { Icon28ClearDataOutline, Icon24CheckCircleFillGreen } from '@vkontakte/icons';
+import { Icon28ClearDataOutline } from '@vkontakte/icons';
 import bridge from '@vkontakte/vk-bridge';
 
 import { Storage } from '../types';
@@ -22,7 +22,6 @@ const Settings: FC<ISettings> = ({ id }) => {
 
   const [cacheData, setCacheData] = useState<Storage[]>([]);
   const [vkCacheData, setVkCacheData] = useState<Storage[]>([]);
-  const [snackbar, setSnackbar] = useState<null | ReactNode>(null);
 
   useEffect(() => {
     const allKeys = Object.keys(localStorage);
@@ -69,27 +68,17 @@ const Settings: FC<ISettings> = ({ id }) => {
     setCacheData([]);
   };
 
-  const logOut = () => {
-    bridge.send('VKWebAppStorageSet', {
+  const logOut = async () => {
+    await bridge.send('VKWebAppStorageSet', {
       key: 'cookie',
       value: '',
     }).then((data) => {
       if (data.result) {
-        if (!snackbar) {
-          setSnackbar(
-            <Snackbar
-              duration={2}
-              onClose={() => location.reload()}
-              before={<Icon24CheckCircleFillGreen fill='var(--vkui--color_background_accent)' />}
-              subtitle='Страница скоро обновится'
-            >
-              Вы вышли
-            </Snackbar>,
-          );
-        }
+        location.reload();
       }
     });
   };
+
   return (
     <View
       id={id}
@@ -133,7 +122,6 @@ const Settings: FC<ISettings> = ({ id }) => {
             </Cell>
           ))}
         </Group>
-        {snackbar}
       </Panel>
     </View>
   );

@@ -25,49 +25,51 @@ const Schedule: FC<{ id: string }> = ({ id }) => {
   const [endDate, setEndDate] = useState(new Date());
   const [snackbar, setSnackbar] = useState<null | ReactNode>(null);
   const [isLoading, setIsLoading] = useState(false);
-  
+
   useEffect(() => {
     const savedLessons = localStorage.getItem('savedLessons');
     const getLastRequestTime = localStorage.getItem('lastRequestTime');
     const currentTime = Date.now();
     const lastRequestTime = getLastRequestTime ? parseInt(getLastRequestTime, 10) : 0;
     const timeSinceLastRequest = currentTime - lastRequestTime;
-    
+
     const gettedLessons = async () => {
       setIsLoading(true);
-      
+
       if (!savedLessons || timeSinceLastRequest > 30000) {
         const data = await getLessons();
         setLessons(data);
         setIsLoading(false);
-        
+
         localStorage.setItem('savedLessons', JSON.stringify(data));
         localStorage.setItem('lastRequestTime', currentTime.toString());
-        
+
         setSnackbar(null);
       } else {
         setIsLoading(false);
-        setSnackbar(
-          <Snackbar
-            layout='vertical'
-            onClose={() => setSnackbar(null)}
-            before={<Icon28InfoCircle fill='var(--vkui--color_background_accent)' />}
-            action='Загрузить новые'
-            onActionClick={() => handleReloadData()}
-          >
-            Данные взяты из кеша
-          </Snackbar>,
-        );
+        if (!snackbar) {
+          setSnackbar(
+            <Snackbar
+              layout='vertical'
+              onClose={() => setSnackbar(null)}
+              before={<Icon28InfoCircle fill='var(--vkui--color_background_accent)' />}
+              action='Загрузить новые'
+              onActionClick={() => handleReloadData()}
+            >
+              Данные взяты из кеша
+            </Snackbar>,
+          );
+        }
       }
     };
-    
+
     if (savedLessons) {
       setLessons(JSON.parse(savedLessons));
     }
-    
+
     gettedLessons();
   }, []);
-  
+
   const handleStartDateChange = (newStartDate: Date) => {
     if (newStartDate.getTime() === startDate.getTime()) {
       return;
@@ -75,7 +77,7 @@ const Schedule: FC<{ id: string }> = ({ id }) => {
     setStartDate(newStartDate);
     sendToServerIfValid(newStartDate, endDate);
   };
-  
+
   const handleEndDateChange = (newEndDate: Date) => {
     if (newEndDate.getTime() === endDate.getTime()) {
       return;
@@ -83,22 +85,22 @@ const Schedule: FC<{ id: string }> = ({ id }) => {
     setEndDate(newEndDate);
     sendToServerIfValid(startDate, newEndDate);
   };
-  
+
   const sendToServerIfValid = async (start: Date, end: Date) => {
     if (start <= end) {
       const differenceInDays = (end.getTime() - start.getTime()) / (1000 * 3600 * 24);
       if (differenceInDays <= 14) {
         const data = await getLessons(start, end);
         setLessons(data);
-        
+
         localStorage.setItem('savedLessons', JSON.stringify(data));
       } else {
         console.info('Разница между датами больше 14-и дней');
-        
+
         const newEndDate = new Date(start);
         newEndDate.setDate(newEndDate.getDate() + 7);
         setEndDate(newEndDate);
-        
+
         if (!snackbar) {
           setSnackbar(
             <Snackbar
@@ -110,15 +112,15 @@ const Schedule: FC<{ id: string }> = ({ id }) => {
             </Snackbar>,
           );
         }
-        
+
         const data = await getLessons(start, newEndDate);
         setLessons(data);
-        
+
         localStorage.setItem('savedLessons', JSON.stringify(data));
       }
     } else {
       console.info('Начальная дата больше конечной');
-      
+
       if (!snackbar) {
         setSnackbar(
           <Snackbar
@@ -129,32 +131,32 @@ const Schedule: FC<{ id: string }> = ({ id }) => {
             Начальная дата больше конечной
           </Snackbar>,
         );
-        
+
         const newEndDate = new Date(start);
         newEndDate.setDate(newEndDate.getDate() + 5);
         setEndDate(newEndDate);
-        
+
         const data = await getLessons(start, newEndDate);
         setLessons(data);
-        
+
         localStorage.setItem('savedLessons', JSON.stringify(data));
       }
     }
   };
-  
+
   const handleReloadData = async () => {
     setSnackbar(null);
-    
+
     setIsLoading(true);
     const newEndDate = new Date(endDate);
     newEndDate.setDate(newEndDate.getDate() + 7);
     const data = await getLessons(startDate, newEndDate);
     setLessons(data);
     setIsLoading(false);
-    
+
     localStorage.setItem('savedLessons', JSON.stringify(data));
   };
-  
+
   return (
     <View
       id={id}

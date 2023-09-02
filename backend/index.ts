@@ -80,7 +80,7 @@ app.post('/login', async (req: Request, res: Response) => {
   const password = req.headers.password
 
   if (!login || !password || typeof login !== 'string' || typeof password !== 'string') {
-    res.json('Something is wrong').status(500)
+    return res.status(400).json('Invalid login or password')
   }
 
   try {
@@ -96,15 +96,23 @@ app.post('/login', async (req: Request, res: Response) => {
       }
     })
 
+    if (response.status === 401) {
+      return res.status(401).json('Invalid login or password')
+    }
+
+    // if (response.status === 200) {
+    //   return res.status(200).json('OK')
+    // }
+
     const data = await response.json()
-    console.log(data)
+    console.log('data', data)
 
     const setCookieHeader = response.headers.get('Set-Cookie')
 
-    res.json({ data, cookie: setCookieHeader })
+    return res.json({ data, cookie: setCookieHeader }).status(200)
   } catch (e) {
-    console.log('/login', e)
-    res.status(500).json(`Internal server error: ${e}`)
+    console.error('/login', e)
+    return res.status(500).json(`Internal server error: ${e}`)
   }
 })
 
