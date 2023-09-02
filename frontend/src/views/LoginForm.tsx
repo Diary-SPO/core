@@ -35,7 +35,7 @@ const LoginForm: FC<{ id: string }> = ({ id }) => {
     keys: ['cookie'],
   })
     .then((data) => {
-      if (data.keys) {
+      if (data.keys[0].value) {
         routeNavigator.replace(`/${VIEW_SCHEDULE}`);
       }
     })

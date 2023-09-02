@@ -43,9 +43,9 @@ const App = () => {
     })
       .then((data) => {
         if (!data.keys[0].value) {
-          routeNavigator.push(`/${VIEW_SCHEDULE}`);
+          routeNavigator.replace(`/`);
         } else {
-          routeNavigator.push(`/${currentView}`);
+          routeNavigator.replace(`/${currentView}`);
         }
       })
       .catch((error) => error);
@@ -64,7 +64,7 @@ const App = () => {
   })
     .then(async (data) => {
       if (!data.keys[0].value) {
-        await routeNavigator.push('/');
+        await routeNavigator.replace('/');
       }
     })
     .catch((error) => {
