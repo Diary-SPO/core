@@ -64,7 +64,7 @@ const CalendarRange: FC<CalendarRangeProps> = React.forwardRef(
     return (
       <FormLayout>
         <Div>
-          <div style={{ display: 'flex', justifyContent: 'space-between'}}>
+          <div style={{ display: 'flex', justifyContent: 'space-between' }}>
             {label}
             {' '}
             <Button getRootRef={buttonRef} onClick={handleButtonClick}>
