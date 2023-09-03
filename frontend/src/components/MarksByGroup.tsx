@@ -61,29 +61,32 @@ const MarksByGroup = () => {
 
   return (
     <Group mode='plain' header={<Header mode='secondary'>Оценки по дисциплинам</Header>}>
-      {Object.keys(subjectMarksMap).map((subjectName, i) => (
-        <CardGrid key={i} size='l'>
-          <Card mode='shadow'>
-            <Div>
-              <Title level='3'>{subjectName}</Title>
-            </Div>
-            <HorizontalScroll>
-              <div style={{ display: 'flex', gap: 10, marginLeft: 10 }}>
-                {subjectMarksMap[subjectName].map(({ marks }, i) => (
-                  <Mark key={i} mark={Grade[marks]} size='s' />
-                ))}
-              </div>
-            </HorizontalScroll>
-            <MiniInfoCell
-              before={<Icon20StatisticsOutline />}
-              after={marksForSubject && Grade[marksForSubject.daysWithMarksForSubject[i].averageMark] || '-1'}
-              style={{ marginTop: 5 }}
-            >
-              Средний балл
-            </MiniInfoCell>
-          </Card>
-        </CardGrid>
-      ))}
+      {Object.keys(subjectMarksMap).map((subjectName, i) => {
+        return (
+          <CardGrid key={i} size='l'>
+            <Card mode='shadow'>
+              <Div>
+                <Title level='3'>{subjectName}</Title>
+              </Div>
+              <HorizontalScroll>
+                <div style={{ display: 'flex', gap: 10, marginLeft: 10 }}>
+                  {subjectMarksMap[subjectName].map(({ marks }, i) => (
+                    // @ts-ignore
+                    <Mark key={i} mark={Grade[marks]} size='s' />
+                  ))}
+                </div>
+              </HorizontalScroll>
+              <MiniInfoCell
+                before={<Icon20StatisticsOutline />}
+                after={marksForSubject && Grade[marksForSubject.daysWithMarksForSubject[i].averageMark]}
+                style={{ marginTop: 5 }}
+              >
+                Средний балл
+              </MiniInfoCell>
+            </Card>
+          </CardGrid>
+        )
+      })}
       {snackbar}
       {isLoading && (
       <Div>

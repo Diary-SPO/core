@@ -2,7 +2,7 @@ import { IMark } from '../../../shared';
 
 import { getCookie } from './getCookie';
 import { getUserId } from './getUserId';
-
+// TODO: возможно придётся удалить
 export const getMarks = async (): Promise<IMark> => {
   const cookie = await getCookie();
   const id = await getUserId();

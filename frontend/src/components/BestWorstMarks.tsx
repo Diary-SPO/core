@@ -23,6 +23,7 @@ const cellStyle: CSSProperties = {
   overflowWrap: 'break-word',
 };
 
+// TODO: Возможно этот компонент больше не нужен
 const BestWorstMarks = () => {
   const [marks, setMarks] = useState<IMark | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);

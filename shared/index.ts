@@ -1,4 +1,4 @@
-export type TextMarks = 'Five' | 'Four' | 'Three' | 'Two' | 'One';
+export type TextMarks = 'Five' | 'Four' | 'Three' | 'Two' | 'One' | '';
 
 interface Task {
   attachments:[]
