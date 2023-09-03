@@ -2,10 +2,12 @@ import {
   FC, lazy, ReactNode, useEffect, useState,
 } from 'react';
 import {
-  Panel, PanelSpinner, Snackbar, View,
+  Button,
+  ButtonGroup, Link,
+  Panel, PanelSpinner, Placeholder, Snackbar, View,
 } from '@vkontakte/vkui';
 import { useActiveVkuiLocation, useRouteNavigator } from '@vkontakte/vk-mini-apps-router';
-import { Icon28InfoCircle } from '@vkontakte/icons';
+import { Icon28ErrorCircleOutline, Icon28InfoCircle } from '@vkontakte/icons';
 
 import { Day } from '../../../shared';
 import { getLessons } from '../methods/getLessons';
@@ -24,7 +26,18 @@ const Schedule: FC<{ id: string }> = ({ id }) => {
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(new Date());
   const [snackbar, setSnackbar] = useState<null | ReactNode>(null);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isError, setIsError] = useState<boolean>(false);
+
+  const ErrorSnackbar = !snackbar && (
+    <Snackbar
+      onClose={() => setSnackbar(null)}
+      layout='vertical'
+      before={<Icon28ErrorCircleOutline fill='var(--vkui--color_icon_negative)' />}
+    >
+      Ошибка при попытке получить расписание
+    </Snackbar>
+  );
 
   useEffect(() => {
     const savedLessons = localStorage.getItem('savedLessons');
@@ -35,31 +48,38 @@ const Schedule: FC<{ id: string }> = ({ id }) => {
 
     const gettedLessons = async () => {
       setIsLoading(true);
+      setIsError(false);
+      try {
+        if (!savedLessons || timeSinceLastRequest > 30000) {
+          const data = await getLessons();
+          setLessons(data);
+          setIsLoading(false);
 
-      if (!savedLessons || timeSinceLastRequest > 30000) {
-        const data = await getLessons();
-        setLessons(data);
-        setIsLoading(false);
+          localStorage.setItem('savedLessons', JSON.stringify(data));
+          localStorage.setItem('lastRequestTime', currentTime.toString());
 
-        localStorage.setItem('savedLessons', JSON.stringify(data));
-        localStorage.setItem('lastRequestTime', currentTime.toString());
-
-        setSnackbar(null);
-      } else {
-        setIsLoading(false);
-        if (!snackbar) {
-          setSnackbar(
-            <Snackbar
-              layout='vertical'
-              onClose={() => setSnackbar(null)}
-              before={<Icon28InfoCircle fill='var(--vkui--color_background_accent)' />}
-              action='Загрузить новые'
-              onActionClick={() => handleReloadData()}
-            >
-              Данные взяты из кеша
-            </Snackbar>,
-          );
+          setSnackbar(null);
+        } else {
+          setIsLoading(false);
+          if (!snackbar) {
+            setSnackbar(
+              <Snackbar
+                layout='vertical'
+                onClose={() => setSnackbar(null)}
+                before={<Icon28InfoCircle fill='var(--vkui--color_background_accent)' />}
+                action='Загрузить новые'
+                onActionClick={() => handleReloadData()}
+              >
+                Данные взяты из кеша
+              </Snackbar>,
+            );
+          }
         }
+      } catch (error) {
+        setIsLoading(false);
+        setIsError(true);
+        setSnackbar(ErrorSnackbar);
+        console.error(error);
       }
     };
 
@@ -146,15 +166,23 @@ const Schedule: FC<{ id: string }> = ({ id }) => {
 
   const handleReloadData = async () => {
     setSnackbar(null);
-
+    setIsError(false);
     setIsLoading(true);
     const newEndDate = new Date(endDate);
     newEndDate.setDate(newEndDate.getDate() + 7);
-    const data = await getLessons(startDate, newEndDate);
-    setLessons(data);
-    setIsLoading(false);
 
-    localStorage.setItem('savedLessons', JSON.stringify(data));
+    try {
+      const data = await getLessons(startDate, newEndDate);
+      setLessons(data);
+      setIsLoading(false);
+
+      localStorage.setItem('savedLessons', JSON.stringify(data));
+    } catch (error) {
+      setIsLoading(false);
+      setIsError(true);
+      setSnackbar(ErrorSnackbar);
+      console.error(error);
+    }
   };
 
   return (
@@ -183,6 +211,20 @@ const Schedule: FC<{ id: string }> = ({ id }) => {
             <ScheduleGroup lessonsState={lessonsState} />
           </Suspense>
         )}
+        {isError
+          && (
+          <Placeholder
+            header='Ошибка при загрузке'
+            action={(
+              <ButtonGroup mode='vertical' align='center'>
+                <Button size='s' onClick={handleReloadData}>Попробовать снова</Button>
+                <Link href='https://vk.me/dnevnik_spo' target='_blank'>
+                  Сообщить о проблеме
+                </Link>
+              </ButtonGroup>
+            )}
+          />
+          )}
         {isLoading && (
           <Snackbar
             onClose={() => setSnackbar(null)}

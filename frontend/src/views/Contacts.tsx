@@ -24,11 +24,9 @@ const Contacts: FC<{ id: string }> = ({ id }) => {
           <Placeholder
             icon={<Icon28MailOutline width={56} height={56} />}
           >
-            Страница ещё не готова, но личка в
+            Страница ещё не готова, но вы можете написать в
             {' '}
-            <Link href='https://vk.com/scffs' target='_blank'>ВК</Link>
-            {' '}
-            всегда окрыта
+            <Link href='https://vk.me/dnevnik_spo' target='_blank'>группу ВК</Link>
           </Placeholder>
         </Group>
       </Panel>

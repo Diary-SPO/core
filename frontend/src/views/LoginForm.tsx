@@ -24,6 +24,17 @@ const LoginForm: FC<{ id: string }> = ({ id }) => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [popout, setPopout] = useState<ReactNode | null>(null);
   const clearPopout = () => setPopout(null);
+
+  const ErrorSnackbar = (
+    <Snackbar
+      onClose={() => setPopout(null)}
+      before={<Icon28ErrorCircleOutline fill='var(--vkui--color_icon_negative)' />}
+      subtitle='Попробуйте заного или сообщите об ошибке'
+    >
+      Ошибка при попытке авторизации
+    </Snackbar>
+  );
+
   const setErrorScreenSpinner = () => {
     setPopout(<ScreenSpinner state='loading' />);
 
@@ -75,21 +86,14 @@ const LoginForm: FC<{ id: string }> = ({ id }) => {
       throw new Error('401');
     } else if (!response.ok) {
       setIsLoading(false);
+      setPopout(ErrorSnackbar);
       setErrorScreenSpinner();
       throw new Error(`Failed to fetch login / status: ${response.status} / statusText: ${response.statusText}`);
     }
 
     const dataResp = await response.json() as AuthData;
-    if (!Array.isArray(dataResp)) {
-      setPopout(
-        <Snackbar
-          onClose={() => setPopout(null)}
-          before={<Icon28ErrorCircleOutline fill='var(--vkui--color_icon_negative)' />}
-          subtitle='Попробуйте заного или сообщите об ошибке'
-        >
-          Ошибка при попытке авторизации
-        </Snackbar>,
-      );
+    if (typeof dataResp.cookie !== 'string') {
+      setPopout(ErrorSnackbar);
     }
 
     try {
