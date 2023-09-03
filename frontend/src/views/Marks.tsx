@@ -4,7 +4,8 @@ import { useActiveVkuiLocation, useRouteNavigator } from '@vkontakte/vk-mini-app
 
 import PanelHeaderWithBack from '../components/PanelHeaderWithBack';
 
-const BestWorstMarks = lazy(() => import('../components/BestWorstMarks'));
+// TODO: Возможно этот компонент больше не нужен
+// const BestWorstMarks = lazy(() => import('../components/BestWorstMarks'));
 const MarksByGroup = lazy(() => import('../components/MarksByGroup'));
 
 const Marks: FC<{ id: string }> = ({ id }) => {
@@ -21,7 +22,7 @@ const Marks: FC<{ id: string }> = ({ id }) => {
       <Panel nav={id}>
         <PanelHeaderWithBack title='Оценки' />
         <Suspense>
-          <BestWorstMarks />
+          {/*<BestWorstMarks />*/}
           <MarksByGroup />
         </Suspense>
       </Panel>
