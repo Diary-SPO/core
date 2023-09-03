@@ -1,10 +1,11 @@
-import {FC, lazy, Suspense} from 'react';
+import { FC, lazy, Suspense } from 'react';
 import { Panel, View } from '@vkontakte/vkui';
 import { useActiveVkuiLocation, useRouteNavigator } from '@vkontakte/vk-mini-apps-router';
 
 import PanelHeaderWithBack from '../components/PanelHeaderWithBack';
+
 const BestWorstMarks = lazy(() => import('../components/BestWorstMarks'));
-const MarksByGroup = lazy(() => import('../components/MarksByGroup')) ;
+const MarksByGroup = lazy(() => import('../components/MarksByGroup'));
 
 const Marks: FC<{ id: string }> = ({ id }) => {
   const { panel: activePanel, panelsHistory } = useActiveVkuiLocation();

@@ -1,4 +1,4 @@
-export type Pages = 'schedule' | 'contacts' | 'projects' | 'settings';
+export type Pages = 'schedule' | 'contacts' | 'marks' | 'settings';
 
 export interface Storage {
   key: string;

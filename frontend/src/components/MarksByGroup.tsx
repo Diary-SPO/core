@@ -1,8 +1,10 @@
-import { memo, useEffect, useState } from 'react';
 import {
-  Card, CardGrid, Div, Group, Header, HorizontalScroll, MiniInfoCell, Spinner, Title,
+  memo, ReactNode, useEffect, useState,
+} from 'react';
+import {
+  Card, CardGrid, Div, Group, Header, HorizontalScroll, MiniInfoCell, Snackbar, Spinner, Title,
 } from '@vkontakte/vkui';
-import { Icon20StatisticsOutline } from '@vkontakte/icons';
+import { Icon20StatisticsOutline, Icon28ErrorCircleOutline } from '@vkontakte/icons';
 
 import { Grade } from '../types';
 import { PerformanceCurrent, TextMarks } from '../../../shared';
@@ -13,6 +15,17 @@ import { getPerformance } from '../methods/getPerfomance';
 const MarksByGroup = () => {
   const [marksForSubject, setMarksForSubject] = useState<PerformanceCurrent | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [snackbar, setSnackbar] = useState<ReactNode | null>(null);
+
+  const ErrorSnackbar = (
+    <Snackbar
+      onClose={() => setSnackbar(null)}
+      before={<Icon28ErrorCircleOutline fill='var(--vkui--color_icon_negative)' />}
+      subtitle='Попробуйте заного или сообщите об ошибке'
+    >
+      Ошибка при попытке загрузить оценки
+    </Snackbar>
+  );
 
   useEffect(() => {
     setIsLoading(true);
@@ -23,6 +36,7 @@ const MarksByGroup = () => {
         setMarksForSubject(marks);
       } catch (error) {
         setIsLoading(false);
+        setSnackbar(ErrorSnackbar);
         console.error('Ошибка при получении оценок:', error);
       }
     };
@@ -70,9 +84,12 @@ const MarksByGroup = () => {
           </Card>
         </CardGrid>
       ))}
-      {isLoading &&  <Div>
+      {snackbar}
+      {isLoading && (
+      <Div>
         <Spinner />
-      </Div>}
+      </Div>
+      )}
     </Group>
   );
 };

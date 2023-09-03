@@ -39,6 +39,27 @@ const Schedule: FC<{ id: string }> = ({ id }) => {
     </Snackbar>
   );
 
+  const handleReloadData = async () => {
+    setSnackbar(null);
+    setIsError(false);
+    setIsLoading(true);
+    const newEndDate = new Date(endDate);
+    newEndDate.setDate(newEndDate.getDate() + 7);
+
+    try {
+      const data = await getLessons(startDate, newEndDate);
+      setLessons(data);
+      setIsLoading(false);
+
+      localStorage.setItem('savedLessons', JSON.stringify(data));
+    } catch (error) {
+      setIsLoading(false);
+      setIsError(true);
+      setSnackbar(ErrorSnackbar);
+      console.error(error);
+    }
+  };
+
   useEffect(() => {
     const savedLessons = localStorage.getItem('savedLessons');
     const getLastRequestTime = localStorage.getItem('lastRequestTime');
@@ -162,27 +183,6 @@ const Schedule: FC<{ id: string }> = ({ id }) => {
     }
     setEndDate(newEndDate);
     sendToServerIfValid(startDate, newEndDate);
-  };
-
-  const handleReloadData = async () => {
-    setSnackbar(null);
-    setIsError(false);
-    setIsLoading(true);
-    const newEndDate = new Date(endDate);
-    newEndDate.setDate(newEndDate.getDate() + 7);
-
-    try {
-      const data = await getLessons(startDate, newEndDate);
-      setLessons(data);
-      setIsLoading(false);
-
-      localStorage.setItem('savedLessons', JSON.stringify(data));
-    } catch (error) {
-      setIsLoading(false);
-      setIsError(true);
-      setSnackbar(ErrorSnackbar);
-      console.error(error);
-    }
   };
 
   return (

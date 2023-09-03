@@ -14,7 +14,7 @@ import { MAIN_SETTINGS, VIEW_SCHEDULE } from './routes';
 import { Pages } from './types';
 
 import Suspense from './components/Suspense';
-import { getCookie } from './methods/getCookie';
+import { getCookie } from './methods';
 
 const Sidebar = lazy(() => import('./components/Sidebar'));
 const Epic = lazy(() => import('./components/Epic'));

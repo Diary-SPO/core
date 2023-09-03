@@ -70,9 +70,11 @@ const BestWorstMarks = () => {
               </HorizontalCell>
             );
           })}
-          {isLoading &&  <Div>
+          {isLoading && (
+          <Div>
             <Spinner />
-          </Div>}
+          </Div>
+          )}
         </div>
       </HorizontalScroll>
     </Group>
