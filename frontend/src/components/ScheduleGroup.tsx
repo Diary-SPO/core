@@ -2,6 +2,7 @@ import { FC, Suspense } from 'react';
 import { CardScroll, Group, Header } from '@vkontakte/vkui';
 
 import { Day } from '../../../shared';
+
 import LessonCard from './LessonCard';
 
 interface IScheduleGroup {

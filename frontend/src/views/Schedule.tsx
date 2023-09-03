@@ -47,17 +47,19 @@ const Schedule: FC<{ id: string }> = ({ id }) => {
         setSnackbar(null);
       } else {
         setIsLoading(false);
-        setSnackbar(
-          <Snackbar
-            layout='vertical'
-            onClose={() => setSnackbar(null)}
-            before={<Icon28InfoCircle fill='var(--vkui--color_background_accent)' />}
-            action='Загрузить новые'
-            onActionClick={() => handleReloadData()}
-          >
-            Данные взяты из кеша
-          </Snackbar>,
-        );
+        if (!snackbar) {
+          setSnackbar(
+            <Snackbar
+              layout='vertical'
+              onClose={() => setSnackbar(null)}
+              before={<Icon28InfoCircle fill='var(--vkui--color_background_accent)' />}
+              action='Загрузить новые'
+              onActionClick={() => handleReloadData()}
+            >
+              Данные взяты из кеша
+            </Snackbar>,
+          );
+        }
       }
     };
 
@@ -93,10 +95,10 @@ const Schedule: FC<{ id: string }> = ({ id }) => {
 
         localStorage.setItem('savedLessons', JSON.stringify(data));
       } else {
-        console.info('Ошибка: Разница между датами больше 14-и дней');
+        console.info('Разница между датами больше 14-и дней');
 
         const newEndDate = new Date(start);
-        newEndDate.setDate(newEndDate.getDate() + 14);
+        newEndDate.setDate(newEndDate.getDate() + 7);
         setEndDate(newEndDate);
 
         if (!snackbar) {
@@ -117,7 +119,7 @@ const Schedule: FC<{ id: string }> = ({ id }) => {
         localStorage.setItem('savedLessons', JSON.stringify(data));
       }
     } else {
-      console.info('Ошибка: Начальная дата больше конечной');
+      console.info('Начальная дата больше конечной');
 
       if (!snackbar) {
         setSnackbar(
@@ -147,7 +149,7 @@ const Schedule: FC<{ id: string }> = ({ id }) => {
 
     setIsLoading(true);
     const newEndDate = new Date(endDate);
-    newEndDate.setDate(newEndDate.getDate() + 10);
+    newEndDate.setDate(newEndDate.getDate() + 7);
     const data = await getLessons(startDate, newEndDate);
     setLessons(data);
     setIsLoading(false);
@@ -182,13 +184,13 @@ const Schedule: FC<{ id: string }> = ({ id }) => {
           </Suspense>
         )}
         {isLoading && (
-        <Snackbar
-          onClose={() => setSnackbar(null)}
-          before={<Icon28InfoCircle fill='var(--vkui--color_background_accent)' />}
-          subtitle='Скоро расписание появится на экране'
-        >
-          Загрузка
-        </Snackbar>
+          <Snackbar
+            onClose={() => setSnackbar(null)}
+            before={<Icon28InfoCircle fill='var(--vkui--color_background_accent)' />}
+            subtitle='Скоро расписание появится на экране'
+          >
+            Загрузка
+          </Snackbar>
         )}
         {snackbar}
       </Panel>

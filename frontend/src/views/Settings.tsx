@@ -1,24 +1,16 @@
 import {
-  FC, ReactNode, useEffect, useState,
+  FC, useEffect, useState,
 } from 'react';
 import {
-  Cell, CellButton, Group, Header, Panel, Snackbar, Subhead, View,
+  Cell, CellButton, Group, Header, Panel, Subhead, View,
 } from '@vkontakte/vkui';
 import { useActiveVkuiLocation, useRouteNavigator } from '@vkontakte/vk-mini-apps-router';
-import { Icon28ClearDataOutline, Icon24CheckCircleFillGreen } from '@vkontakte/icons';
+import { Icon28ClearDataOutline } from '@vkontakte/icons';
 import bridge from '@vkontakte/vk-bridge';
-import PanelHeaderWithBack from '../components/PanelHeaderWithBack';
 
-const formatKeyText = (key: string) => {
-  if (key.startsWith('orientation')) {
-    const orientationType = key.replace('orientation', '').toLowerCase();
-    return `Ориентация ${orientationType}`;
-  }
-  if (key === 'theme') {
-    return 'Тема';
-  }
-  return key;
-};
+import { Storage } from '../types';
+
+import PanelHeaderWithBack from '../components/PanelHeaderWithBack';
 
 interface ISettings {
   id: string,
@@ -28,8 +20,8 @@ const Settings: FC<ISettings> = ({ id }) => {
   const { panel: activePanel, panelsHistory } = useActiveVkuiLocation();
   const routeNavigator = useRouteNavigator();
 
-  const [cacheData, setCacheData] = useState<{ key: string; value: string }[]>([]);
-  const [snackbar, setSnackbar] = useState<null | ReactNode>(null);
+  const [cacheData, setCacheData] = useState<Storage[]>([]);
+  const [vkCacheData, setVkCacheData] = useState<Storage[]>([]);
 
   useEffect(() => {
     const allKeys = Object.keys(localStorage);
@@ -39,31 +31,36 @@ const Settings: FC<ISettings> = ({ id }) => {
   }, []);
 
   useEffect(() => {
-    const handleStorageChange = (event: StorageEvent) => {
-      if (event.key) {
-        setCacheData((prevCacheData) => prevCacheData.map((item) => ({
-          key: item.key,
-          value: item.key === event.key ? event.newValue || 'false' : item.value,
-        })));
-      }
-    };
-
-    const handleThemeChange = () => {
-      const allKeys = Object.keys(localStorage);
-      const getCache = allKeys.map((key) => ({
-        key,
-        value: localStorage.getItem(key) || 'false',
-      }));
-      setCacheData(getCache);
-    };
-
-    window.addEventListener('storage', handleStorageChange);
-    window.addEventListener('themeChanged', handleThemeChange);
-
-    return () => {
-      window.removeEventListener('storage', handleStorageChange);
-      window.removeEventListener('themeChanged', handleThemeChange);
-    };
+    bridge
+      .send('VKWebAppStorageGetKeys', {
+        count: 20,
+        offset: 0,
+      })
+      .then((data) => {
+        if (data.keys) {
+          bridge
+            .send('VKWebAppStorageGet', {
+              keys: data.keys,
+            })
+            .then((data) => {
+              if (data.keys) {
+                const updatedVkCacheData = data.keys.map((item) => {
+                  if (item.key === 'cookie') {
+                    return { ...item, value: 'secret' };
+                  }
+                  return item;
+                });
+                setVkCacheData(updatedVkCacheData);
+              }
+            })
+            .catch((error) => {
+              console.error(error);
+            });
+        }
+      })
+      .catch((error) => {
+        console.error(error);
+      });
   }, []);
 
   const clearCache = () => {
@@ -71,25 +68,13 @@ const Settings: FC<ISettings> = ({ id }) => {
     setCacheData([]);
   };
 
-  const logOut = () => {
-    bridge.send('VKWebAppStorageSet', {
+  const logOut = async () => {
+    await bridge.send('VKWebAppStorageSet', {
       key: 'cookie',
       value: '',
     }).then((data) => {
       if (data.result) {
-        console.info(data.result);
-
-        if (!snackbar) {
-          setSnackbar(
-            <Snackbar
-              onClose={() => location.reload()}
-              before={<Icon24CheckCircleFillGreen fill='var(--vkui--color_background_accent)' />}
-              subtitle='Страница скоро обновится'
-            >
-              Вы вышли
-            </Snackbar>,
-          );
-        }
+        location.reload();
       }
     });
   };
@@ -123,11 +108,20 @@ const Settings: FC<ISettings> = ({ id }) => {
         >
           {cacheData.map((item) => (
             <Cell key={item.key} indicator={item.value}>
-              {formatKeyText(item.key)}
+              {item.key}
             </Cell>
           ))}
         </Group>
-        {snackbar}
+        <Group
+          header={(
+            <Header mode='secondary'>VK Storage</Header>)}
+        >
+          {vkCacheData.map((item) => (
+            <Cell key={item.key} indicator={item.value}>
+              {item.key}
+            </Cell>
+          ))}
+        </Group>
       </Panel>
     </View>
   );

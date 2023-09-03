@@ -1,6 +1,8 @@
-import { useState, FC, ChangeEvent } from 'react';
 import {
-  Button, FormItem, FormLayout, Input, Group, Panel, View,
+  useState, FC, ChangeEvent, ReactNode,
+} from 'react';
+import {
+  Button, FormItem, FormLayout, Input, Group, Panel, View, FormStatus, ScreenSpinner, Snackbar,
 } from '@vkontakte/vkui';
 import { useActiveVkuiLocation, useRouteNavigator } from '@vkontakte/vk-mini-apps-router';
 import Hashes from 'jshashes';
@@ -10,6 +12,7 @@ import { AuthData } from '../../../shared';
 import { VIEW_SCHEDULE } from '../routes';
 
 import PanelHeaderWithBack from '../components/PanelHeaderWithBack';
+import {Icon28ErrorCircleOutline} from "@vkontakte/icons";
 
 const LoginForm: FC<{ id: string }> = ({ id }) => {
   const { panel: activePanel, panelsHistory } = useActiveVkuiLocation();
@@ -17,6 +20,19 @@ const LoginForm: FC<{ id: string }> = ({ id }) => {
 
   const [login, setLogin] = useState<string>('');
   const [password, setPassword] = useState<string>('');
+  const [isDataInvalid, setIsDataInvalid] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [popout, setPopout] = useState<ReactNode | null>(null);
+  const clearPopout = () => setPopout(null);
+  const setErrorScreenSpinner = () => {
+    setPopout(<ScreenSpinner state='loading' />);
+
+    setTimeout(() => {
+      setPopout(<ScreenSpinner state='error'>Произошла ошибка</ScreenSpinner>);
+
+      setTimeout(clearPopout, 300);
+    }, 1);
+  };
 
   const onChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.currentTarget;
@@ -25,12 +41,23 @@ const LoginForm: FC<{ id: string }> = ({ id }) => {
       login: setLogin,
       password: setPassword,
     }[name];
-
+    setIsDataInvalid(false);
     setStateAction && setStateAction(value);
   };
 
+  const loginPattern = /^[a-zA-Z0-9-]+$/;
+
   const handleLogin = async () => {
+    if (!loginPattern.test(login)) {
+      setIsDataInvalid(true);
+      return;
+    }
+    
     const passwordHashed = (new Hashes.SHA256()).b64(password);
+    
+    setIsLoading(true);
+    setPopout(<ScreenSpinner state='loading' />);
+    
     const response = await fetch(`${import.meta.env.VITE_SERVER_URL}/login`, {
       method: 'POST',
       headers: {
@@ -40,11 +67,31 @@ const LoginForm: FC<{ id: string }> = ({ id }) => {
       },
     });
 
-    if (!response.ok) {
-      throw new Error('Failed to fetch login');
+    if (response.status === 401) {
+      console.log('401')
+      setIsLoading(false);
+      setErrorScreenSpinner();
+      setIsDataInvalid(true);
+      throw new Error('401');
+    } else if (!response.ok) {
+      setIsLoading(false);
+      setErrorScreenSpinner();
+      throw new Error(`Failed to fetch login / status: ${response.status} / statusText: ${response.statusText}`);
     }
+    
     const dataResp = await response.json() as AuthData;
-
+    if (!Array.isArray(dataResp)) {
+      setPopout(
+        <Snackbar
+          onClose={() => setPopout(null)}
+          before={<Icon28ErrorCircleOutline fill="var(--vkui--color_icon_negative)" />}
+          subtitle={`Попробуйте заного или сообщите об ошибке`}
+        >
+          Ошибка при попытке авторизации
+        </Snackbar>
+      )
+    }
+    
     try {
       await bridge.send('VKWebAppStorageSet', {
         key: 'cookie',
@@ -52,7 +99,7 @@ const LoginForm: FC<{ id: string }> = ({ id }) => {
       })
         .then((data) => {
           if (data.result) {
-            console.log('куки сохранены');
+            return data;
           }
         })
         .catch((error) => {
@@ -72,8 +119,10 @@ const LoginForm: FC<{ id: string }> = ({ id }) => {
           console.error(error);
         });
 
+      setIsLoading(false);
       await routeNavigator.replace(`/${VIEW_SCHEDULE}`);
     } catch (e) {
+      setIsLoading(false);
       console.error(e);
     }
   };
@@ -88,13 +137,18 @@ const LoginForm: FC<{ id: string }> = ({ id }) => {
       <Panel nav={id}>
         <PanelHeaderWithBack title='Авторизация' />
         <Group>
+          {isDataInvalid && (
+          <FormStatus header='Некорректный данные' mode='error'>
+            Проверьте правильность логина и пароля
+          </FormStatus>
+          )}
           <FormLayout>
             <FormItem
               required
               htmlFor='userLogin'
               top='Логин'
-              status={login ? 'valid' : 'error'}
-              bottom={login ? 'Логин введён' : 'Пожалуйста, введите логин'}
+              status={login === '' ? 'default' : (loginPattern.test(login) ? 'valid' : 'error')}
+              bottom={login === '' ? '' : (loginPattern.test(login) ? 'Логин введён' : 'Введите корректный логин')}
               bottomId='login-type'
             >
               <Input
@@ -103,19 +157,32 @@ const LoginForm: FC<{ id: string }> = ({ id }) => {
                 id='userLogin'
                 type='text'
                 name='login'
+                placeholder='Введите логин'
                 value={login}
                 onChange={onChange}
               />
             </FormItem>
-            <FormItem top='Пароль' htmlFor='pass'>
-              <Input name='password' id='pass' type='password' placeholder='Введите пароль' onChange={onChange} />
+            <FormItem
+              top='Пароль'
+              htmlFor='pass'
+              status={password === '' ? 'default' : (password ? 'valid' : 'error')}
+              bottom={password === '' ? '' : (password ? 'Пароль введён' : 'Введите корректный пароль')}
+            >
+              <Input
+                name='password'
+                id='pass'
+                type='password'
+                placeholder='Введите пароль'
+                onChange={onChange}
+              />
             </FormItem>
             <FormItem>
-              <Button size='l' stretched onClick={() => handleLogin()}>
-                Войти
+              <Button size='l' stretched onClick={() => handleLogin()} disabled={!password || !login || !loginPattern.test(login) || isLoading}>
+                {isLoading ? 'Вход...' : 'Войти'}
               </Button>
             </FormItem>
           </FormLayout>
+          {popout}
         </Group>
       </Panel>
     </View>

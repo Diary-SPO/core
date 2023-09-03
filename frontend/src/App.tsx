@@ -11,7 +11,7 @@ import { lazy, useEffect } from 'react';
 import { useActiveVkuiLocation, useRouteNavigator } from '@vkontakte/vk-mini-apps-router';
 import bridge from '@vkontakte/vk-bridge';
 
-import { VIEW_SCHEDULE } from './routes';
+import { MAIN_SETTINGS, VIEW_SCHEDULE } from './routes';
 import { Pages } from './types';
 
 import Suspense from './components/Suspense';
@@ -34,7 +34,7 @@ const App = () => {
       .then((data) => {
         if (!data.keys[0].value) {
           routeNavigator.replace('/');
-        } else {
+        } else if (data.keys[0].value && activeView === MAIN_SETTINGS) {
           routeNavigator.replace(`/${VIEW_SCHEDULE}`);
         }
       })
@@ -72,7 +72,6 @@ const App = () => {
         )}
         <Suspense id='Epic'>
           <SplitCol width='100%' maxWidth='700px' stretchedOnMobile autoSpaced>
-
             <Epic onStoryChange={onStoryChange} />
           </SplitCol>
         </Suspense>

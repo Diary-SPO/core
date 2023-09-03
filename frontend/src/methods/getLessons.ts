@@ -34,7 +34,7 @@ export const getLessons = async (startDate?: Date, endDate?: Date): Promise<Day[
 
   if (!endDate) {
     endDate = new Date();
-    endDate.setDate(endDate.getDate() + 14);
+    endDate.setDate(endDate.getDate() + 7);
   }
 
   const formattedStartDate = formatDateForRequest(startDate);
