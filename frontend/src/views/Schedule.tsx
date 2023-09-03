@@ -89,7 +89,65 @@ const Schedule: FC<{ id: string }> = ({ id }) => {
 
     gettedLessons();
   }, []);
-
+  
+  const sendToServerIfValid = async (start: Date, end: Date) => {
+    if (start <= end) {
+      const differenceInDays = (end.getTime() - start.getTime()) / (1000 * 3600 * 24);
+      if (differenceInDays <= 14) {
+        const data = await getLessons(start, end);
+        setLessons(data);
+        
+        localStorage.setItem('savedLessons', JSON.stringify(data));
+      } else {
+        console.info('Разница между датами больше 14-и дней');
+        
+        const newEndDate = new Date(start);
+        newEndDate.setDate(newEndDate.getDate() + 7);
+        setEndDate(newEndDate);
+        
+        if (!snackbar) {
+          setSnackbar(
+            <Snackbar
+              onClose={() => setSnackbar(null)}
+              before={<Icon28InfoCircle fill='var(--vkui--color_background_accent)' />}
+              subtitle={`Конечная дата будет автоматически изменена ${formatDateForRequest(newEndDate)}`}
+            >
+              Разница между датами больше 14-и дней
+            </Snackbar>,
+          );
+        }
+        
+        const data = await getLessons(start, newEndDate);
+        setLessons(data);
+        
+        localStorage.setItem('savedLessons', JSON.stringify(data));
+      }
+    } else {
+      console.info('Начальная дата больше конечной');
+      
+      if (!snackbar) {
+        setSnackbar(
+          <Snackbar
+            onClose={() => setSnackbar(null)}
+            before={<Icon28InfoCircle fill='var(--vkui--color_background_accent)' />}
+            subtitle='Конечная дата будет автоматически установлена на 5 дней больше начальной'
+          >
+            Начальная дата больше конечной
+          </Snackbar>,
+        );
+        
+        const newEndDate = new Date(start);
+        newEndDate.setDate(newEndDate.getDate() + 5);
+        setEndDate(newEndDate);
+        
+        const data = await getLessons(start, newEndDate);
+        setLessons(data);
+        
+        localStorage.setItem('savedLessons', JSON.stringify(data));
+      }
+    }
+  };
+  
   const handleStartDateChange = (newStartDate: Date) => {
     if (newStartDate.getTime() === startDate.getTime()) {
       return;
@@ -104,64 +162,6 @@ const Schedule: FC<{ id: string }> = ({ id }) => {
     }
     setEndDate(newEndDate);
     sendToServerIfValid(startDate, newEndDate);
-  };
-
-  const sendToServerIfValid = async (start: Date, end: Date) => {
-    if (start <= end) {
-      const differenceInDays = (end.getTime() - start.getTime()) / (1000 * 3600 * 24);
-      if (differenceInDays <= 14) {
-        const data = await getLessons(start, end);
-        setLessons(data);
-
-        localStorage.setItem('savedLessons', JSON.stringify(data));
-      } else {
-        console.info('Разница между датами больше 14-и дней');
-
-        const newEndDate = new Date(start);
-        newEndDate.setDate(newEndDate.getDate() + 7);
-        setEndDate(newEndDate);
-
-        if (!snackbar) {
-          setSnackbar(
-            <Snackbar
-              onClose={() => setSnackbar(null)}
-              before={<Icon28InfoCircle fill='var(--vkui--color_background_accent)' />}
-              subtitle={`Конечная дата будет автоматически изменена ${formatDateForRequest(newEndDate)}`}
-            >
-              Разница между датами больше 14-и дней
-            </Snackbar>,
-          );
-        }
-
-        const data = await getLessons(start, newEndDate);
-        setLessons(data);
-
-        localStorage.setItem('savedLessons', JSON.stringify(data));
-      }
-    } else {
-      console.info('Начальная дата больше конечной');
-
-      if (!snackbar) {
-        setSnackbar(
-          <Snackbar
-            onClose={() => setSnackbar(null)}
-            before={<Icon28InfoCircle fill='var(--vkui--color_background_accent)' />}
-            subtitle='Конечная дата будет автоматически установлена на 5 дней больше начальной'
-          >
-            Начальная дата больше конечной
-          </Snackbar>,
-        );
-
-        const newEndDate = new Date(start);
-        newEndDate.setDate(newEndDate.getDate() + 5);
-        setEndDate(newEndDate);
-
-        const data = await getLessons(start, newEndDate);
-        setLessons(data);
-
-        localStorage.setItem('savedLessons', JSON.stringify(data));
-      }
-    }
   };
 
   const handleReloadData = async () => {
