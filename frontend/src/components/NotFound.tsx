@@ -1,6 +1,6 @@
 import { CSSProperties } from 'react';
 import {
-  AppearanceProvider, AppRoot, Button, Div,
+  AppRoot, Button, ConfigProvider, Div,
 } from '@vkontakte/vkui';
 import { useRouteNavigator } from '@vkontakte/vk-mini-apps-router';
 
@@ -28,22 +28,22 @@ const NotFound = () => {
   const routeNavigator = useRouteNavigator();
 
   return (
-    <AppearanceProvider appearance='dark'>
-      <AppRoot>
-        <Div style={notFoundStyle}>
-          <h1 style={text}>404</h1>
-          <Button
-            onClick={() => routeNavigator.replace('/')}
-            size='l'
-            mode='outline'
-            appearance='accent-invariable'
-            style={{ padding: 10 }}
-          >
-            <span style={{ fontSize: '1.5em' }}>На главную</span>
-          </Button>
-        </Div>
-      </AppRoot>
-    </AppearanceProvider>
+    <AppRoot>
+     <ConfigProvider>
+       <Div style={notFoundStyle}>
+         <h1 style={text}>404</h1>
+         <Button
+           onClick={() => routeNavigator.replace('/')}
+           size='l'
+           mode='outline'
+           appearance='accent-invariable'
+           style={{ padding: 10 }}
+         >
+           <span style={{ fontSize: '1.5em' }}>На главную</span>
+         </Button>
+       </Div>
+     </ConfigProvider>
+    </AppRoot>
   );
 };
 
