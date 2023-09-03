@@ -30,7 +30,7 @@ router.post('/', async (req: Request, res: Response) => {
     const cookieString = Array.isArray(setCookieHeader) ? setCookieHeader.join('; ') : setCookieHeader
 
     console.log(`CODE: ${response.status}`, response.data)
-    return res.json({ data, cookie: cookieString }).status(response.status)
+    return res.status(response.status).json({ data, cookie: cookieString })
   } catch (error) {
     if (error instanceof AxiosError) {
       const axiosError = error as AxiosError

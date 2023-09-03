@@ -11,6 +11,7 @@ import {
   LocaleProvider,
   unstable_Popper as Popper,
 } from '@vkontakte/vkui';
+import PropTypes from 'prop-types';
 
 interface CalendarRangeProps {
   label: string;
@@ -99,5 +100,11 @@ const CalendarRange: FC<CalendarRangeProps> = React.forwardRef(
     );
   },
 );
+
+CalendarRange.propTypes = {
+  label: PropTypes.string.isRequired,
+  onDateChange: PropTypes.func,
+  value: PropTypes.instanceOf(Date),
+};
 
 export default CalendarRange;

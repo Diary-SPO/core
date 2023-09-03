@@ -1,8 +1,10 @@
+import {TextMarks} from "../frontend/src/types";
+
 interface Task {
   attachments:[]
   id: number
   isRequired: boolean
-  mark: 'Five' | 'Four' | 'Three' | 'Two' | 'One'
+  mark: TextMarks
   topic: string
   type: 'Lesson'
 }
@@ -60,4 +62,25 @@ export interface AuthData {
       }
     }
   }
+}
+
+export type TMarks = 1 | 2 | 3 | 4 | 5;
+
+export interface IMark {
+  subjects: {
+    id: number
+    mark: TMarks
+    name: string
+  }[]
+}
+
+export interface MarksForSubject {
+  subjectName: string,
+  averageMark: 'Five' | 'Four' | 'Three' | 'Two' | 'One',
+  daysWithMarks: [
+    {
+      day: Date,
+      markValues: string[]
+    }
+  ]
 }

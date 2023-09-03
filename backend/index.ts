@@ -4,7 +4,7 @@ import rateLimit from 'express-rate-limit'
 import 'dotenv/config'
 
 import {
-  helloRoute, lessonsRoute, loginRoute
+  dashboard, helloRoute, lessonsRoute, loginRoute
 } from './src/routes'
 
 const app = express()
@@ -23,6 +23,7 @@ app.use(limiter)
 app.use('/', helloRoute)
 app.use('/lessons', lessonsRoute)
 app.use('/login', loginRoute)
+app.use('/dashboard', dashboard)
 
 app.listen(port, () => {
   console.log(`Server is running at http://localhost:${port}`)

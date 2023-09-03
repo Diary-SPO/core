@@ -29,20 +29,20 @@ const NotFound = () => {
 
   return (
     <AppRoot>
-     <ConfigProvider>
-       <Div style={notFoundStyle}>
-         <h1 style={text}>404</h1>
-         <Button
-           onClick={() => routeNavigator.replace('/')}
-           size='l'
-           mode='outline'
-           appearance='accent-invariable'
-           style={{ padding: 10 }}
-         >
-           <span style={{ fontSize: '1.5em' }}>На главную</span>
-         </Button>
-       </Div>
-     </ConfigProvider>
+      <ConfigProvider>
+        <Div style={notFoundStyle}>
+          <h1 style={text}>404</h1>
+          <Button
+            onClick={() => routeNavigator.replace('/')}
+            size='l'
+            mode='outline'
+            appearance='accent-invariable'
+            style={{ padding: 10 }}
+          >
+            <span style={{ fontSize: '1.5em' }}>На главную</span>
+          </Button>
+        </Div>
+      </ConfigProvider>
     </AppRoot>
   );
 };
