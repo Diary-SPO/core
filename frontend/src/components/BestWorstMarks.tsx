@@ -2,9 +2,11 @@ import { CSSProperties, useEffect, useState } from 'react';
 import {
   Div, Group, Header, HorizontalCell, HorizontalScroll, Spinner,
 } from '@vkontakte/vkui';
-import Mark from './Mark.tsx';
+
 import { IMark } from '../../../shared';
 import { getMarks } from '../methods';
+
+import Mark from './Mark';
 
 const infoStyle: CSSProperties = {
   display: 'flex',
@@ -68,11 +70,9 @@ const BestWorstMarks = () => {
               </HorizontalCell>
             );
           })}
-          {isLoading && (
-            <Div>
-              <Spinner />
-            </Div>
-          )}
+          {isLoading &&  <Div>
+            <Spinner />
+          </Div>}
         </div>
       </HorizontalScroll>
     </Group>

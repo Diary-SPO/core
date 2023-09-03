@@ -10,10 +10,6 @@ interface IMark {
 }
 
 const getBackgroundColor = (score: TMarks) => {
-  if (typeof score !== 'number') {
-    console.error('invalid score');
-    return '#000000';
-  }
   if (score >= 4) {
     return 'linear-gradient(135deg,#50c750,#32b332)';
   } if (score === 3) {

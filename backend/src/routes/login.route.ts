@@ -1,7 +1,8 @@
 import express, { type Request, type Response } from 'express'
-import { AxiosError } from 'axios'
+import { AxiosError, type AxiosResponse } from 'axios'
 
 import axiosInstance from '../axiosWrapper'
+import { type AuthData } from '../../../shared'
 
 const router = express.Router()
 
@@ -14,7 +15,7 @@ router.post('/', async (req: Request, res: Response) => {
   }
 
   try {
-    const response = await axiosInstance.post('/security/login', {
+    const response: AxiosResponse<AuthData> = await axiosInstance.post('/security/login', {
       login,
       password,
       isRemember: true
@@ -44,7 +45,7 @@ router.post('/', async (req: Request, res: Response) => {
       }
     } else {
       console.error('/login', error)
-      return res.status(500).json(`Internal server error: ${error}`)
+      return res.status(500).json(`Internal server error: ${error as string}`)
     }
   }
 })

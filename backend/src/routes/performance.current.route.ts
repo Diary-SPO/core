@@ -1,6 +1,8 @@
 import express, { type Request, type Response } from 'express'
 
 import axiosInstance from '../axiosWrapper'
+import { type AxiosResponse } from 'axios'
+import { type PerformanceCurrent } from '../../../shared'
 
 const router = express.Router()
 
@@ -18,8 +20,7 @@ router.get('/:id', async (req: Request, res: Response) => {
       return res.status(500).json('Something is wrong')
     }
 
-    // TODO: Указать тип
-    const response = await axiosInstance.get(`/students/${id}/dashboard`, {
+    const response: AxiosResponse<PerformanceCurrent> = await axiosInstance.get(`/reports/current/performance/${id}`, {
       headers: {
         'Content-Type': 'application/json;charset=UTF-8',
         Cookie: secret
@@ -29,7 +30,7 @@ router.get('/:id', async (req: Request, res: Response) => {
     const data = response.data
     res.status(200).json(data)
   } catch (e) {
-    console.error('/students/id/dashboard', e)
+    console.error('/reports/current/performance/id', e)
     res.status(500).json(`Internal server error: ${e as string}`)
   }
 })

@@ -1,6 +1,9 @@
 import express, { type Request, type Response } from 'express'
+import { type AxiosResponse } from 'axios'
 
 import axiosInstance from '../axiosWrapper'
+
+import { type IMark } from '../../../shared'
 
 const router = express.Router()
 
@@ -39,7 +42,7 @@ router.get('/:id/:startDate/:endDate', async (req: Request, res: Response) => {
       formattedEndDate = endDate.toISOString().substring(0, 10)
     }
 
-    const response = await axiosInstance.get(`/students/${id}/lessons/${formattedStartDate}/${formattedEndDate}`, {
+    const response: AxiosResponse<IMark> = await axiosInstance.get(`/students/${id}/lessons/${formattedStartDate}/${formattedEndDate}`, {
       headers: {
         'Content-Type': 'application/json;charset=UTF-8',
         Cookie: secret
@@ -50,7 +53,7 @@ router.get('/:id/:startDate/:endDate', async (req: Request, res: Response) => {
     res.json(data)
   } catch (e) {
     console.error('/lessons/:id/:startDate/:endDate', e)
-    res.status(500).json(`Internal server error: ${e}`)
+    res.status(500).json(`Internal server error: ${e as string}`)
   }
 })
 

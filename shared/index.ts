@@ -1,4 +1,4 @@
-import {TextMarks} from "../frontend/src/types";
+export type TextMarks = 'Five' | 'Four' | 'Three' | 'Two' | 'One';
 
 interface Task {
   attachments:[]
@@ -42,6 +42,16 @@ export interface Day {
   lessons: Lesson[] | null
 }
 
+export type TMarks = 1 | 2 | 3 | 4 | 5;
+
+export interface IMark {
+  subjects: {
+    id: number
+    mark: TMarks
+    name: string
+  }[]
+}
+
 export interface AuthData {
   cookie: string
   data: {
@@ -64,23 +74,25 @@ export interface AuthData {
   }
 }
 
-export type TMarks = 1 | 2 | 3 | 4 | 5;
-
-export interface IMark {
-  subjects: {
-    id: number
-    mark: TMarks
-    name: string
-  }[]
-}
-
-export interface MarksForSubject {
-  subjectName: string,
-  averageMark: 'Five' | 'Four' | 'Three' | 'Two' | 'One',
-  daysWithMarks: [
+export interface PerformanceCurrent {
+  daysWithMarksForSubject: [{
+    subjectName: string;
+    daysWithMarks: [
+      {
+        day: Date;
+        markValues: TextMarks[];
+      }
+    ];
+    averageMark: TMarks;
+  }],
+  monthsWithDays: [
     {
-      day: Date,
-      markValues: string[]
+      month: {
+        num: number,
+        name: string
+      },
+      daysWithLessons: [Date]
     }
-  ]
+  ],
 }
+

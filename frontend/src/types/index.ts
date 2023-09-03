@@ -12,5 +12,3 @@ export enum Grade {
   Two = 2,
   One = 1,
 }
-
-export type TextMarks = 'Five' | 'Four' | 'Three' | 'Two' | 'One';
