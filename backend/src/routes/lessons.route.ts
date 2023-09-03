@@ -1,7 +1,7 @@
 import express, { type Request, type Response } from 'express'
-import axios, { AxiosError } from 'axios'
 
-const apiUrl = process.env.SERVER_URL
+import axiosInstance from '../axiosWrapper'
+
 const router = express.Router()
 
 router.get('/:id/:startDate/:endDate', async (req: Request, res: Response) => {
@@ -39,7 +39,7 @@ router.get('/:id/:startDate/:endDate', async (req: Request, res: Response) => {
       formattedEndDate = endDate.toISOString().substring(0, 10)
     }
 
-    const response = await axios.get(`${apiUrl}/students/${id}/lessons/${formattedStartDate}/${formattedEndDate}`, {
+    const response = await axiosInstance.get(`/students/${id}/lessons/${formattedStartDate}/${formattedEndDate}`, {
       headers: {
         'Content-Type': 'application/json;charset=UTF-8',
         Cookie: secret

@@ -1,7 +1,8 @@
 import express, { type Request, type Response } from 'express'
-import axios, { AxiosError } from 'axios'
+import { AxiosError } from 'axios'
 
-const apiUrl = process.env.SERVER_URL
+import axiosInstance from '../axiosWrapper'
+
 const router = express.Router()
 
 router.post('/', async (req: Request, res: Response) => {
@@ -13,7 +14,7 @@ router.post('/', async (req: Request, res: Response) => {
   }
 
   try {
-    const response = await axios.post(`${apiUrl}/security/login`, {
+    const response = await axiosInstance.post('/security/login', {
       login,
       password,
       isRemember: true
@@ -27,7 +28,7 @@ router.post('/', async (req: Request, res: Response) => {
 
     const setCookieHeader = response.headers['set-cookie']
     const cookieString = Array.isArray(setCookieHeader) ? setCookieHeader.join('; ') : setCookieHeader
-    
+
     console.log(`CODE: ${response.status}`, response.data)
     return res.json({ data, cookie: cookieString }).status(response.status)
   } catch (error) {
