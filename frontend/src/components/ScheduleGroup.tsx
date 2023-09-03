@@ -8,21 +8,19 @@ interface IScheduleGroup {
   lessonsState?: Day[] | null
 }
 
-const ScheduleGroup: FC<IScheduleGroup> = ({ lessonsState }) => {
-  return (
-    <Group header={<Header mode='secondary'>Расписание занятий</Header>}>
-      <Suspense fallback={<div>Загрузочка</div>}>
-        <CardScroll size='l'>
-          {lessonsState?.length! > 0
+const ScheduleGroup: FC<IScheduleGroup> = ({ lessonsState }) => (
+  <Group header={<Header mode='secondary'>Расписание занятий</Header>}>
+    <Suspense fallback={<div>Загрузочка</div>}>
+      <CardScroll size='l'>
+        {lessonsState?.length! > 0
             && lessonsState?.map((lesson) => (
               <Suspense key={lesson.date as unknown as string} fallback={<div>Загрузочка</div>}>
                 <LessonCard lesson={lesson} />
               </Suspense>
             ))}
-        </CardScroll>
-      </Suspense>
-    </Group>
-  );
-};
+      </CardScroll>
+    </Suspense>
+  </Group>
+);
 
 export default ScheduleGroup;
