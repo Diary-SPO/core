@@ -2,7 +2,7 @@ import {
   useState, FC, ChangeEvent, ReactNode,
 } from 'react';
 import {
-  Button, FormItem, FormLayout, Input, Group, Panel, View, FormStatus, ScreenSpinner,
+  Button, FormItem, FormLayout, Input, Group, Panel, View, FormStatus, ScreenSpinner, Snackbar,
 } from '@vkontakte/vkui';
 import { useActiveVkuiLocation, useRouteNavigator } from '@vkontakte/vk-mini-apps-router';
 import Hashes from 'jshashes';
@@ -12,6 +12,7 @@ import { AuthData } from '../../../shared';
 import { VIEW_SCHEDULE } from '../routes';
 
 import PanelHeaderWithBack from '../components/PanelHeaderWithBack';
+import {Icon28ErrorCircleOutline} from "@vkontakte/icons";
 
 const LoginForm: FC<{ id: string }> = ({ id }) => {
   const { panel: activePanel, panelsHistory } = useActiveVkuiLocation();
@@ -51,9 +52,12 @@ const LoginForm: FC<{ id: string }> = ({ id }) => {
       setIsDataInvalid(true);
       return;
     }
+    
     const passwordHashed = (new Hashes.SHA256()).b64(password);
+    
     setIsLoading(true);
     setPopout(<ScreenSpinner state='loading' />);
+    
     const response = await fetch(`${import.meta.env.VITE_SERVER_URL}/login`, {
       method: 'POST',
       headers: {
@@ -64,18 +68,30 @@ const LoginForm: FC<{ id: string }> = ({ id }) => {
     });
 
     if (response.status === 401) {
+      console.log('401')
       setIsLoading(false);
       setErrorScreenSpinner();
       setIsDataInvalid(true);
-    }
-
-    if (!response.ok) {
+      throw new Error('401');
+    } else if (!response.ok) {
       setIsLoading(false);
       setErrorScreenSpinner();
-      throw new Error('Failed to fetch login');
+      throw new Error(`Failed to fetch login / status: ${response.status} / statusText: ${response.statusText}`);
     }
+    
     const dataResp = await response.json() as AuthData;
-
+    if (!Array.isArray(dataResp)) {
+      setPopout(
+        <Snackbar
+          onClose={() => setPopout(null)}
+          before={<Icon28ErrorCircleOutline fill="var(--vkui--color_icon_negative)" />}
+          subtitle={`Попробуйте заного или сообщите об ошибке`}
+        >
+          Ошибка при попытке авторизации
+        </Snackbar>
+      )
+    }
+    
     try {
       await bridge.send('VKWebAppStorageSet', {
         key: 'cookie',
@@ -83,7 +99,7 @@ const LoginForm: FC<{ id: string }> = ({ id }) => {
       })
         .then((data) => {
           if (data.result) {
-            console.log('куки сохранены');
+            return data;
           }
         })
         .catch((error) => {
