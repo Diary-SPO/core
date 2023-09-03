@@ -7,12 +7,12 @@ import {
 import { useActiveVkuiLocation, useRouteNavigator } from '@vkontakte/vk-mini-apps-router';
 import Hashes from 'jshashes';
 import bridge from '@vkontakte/vk-bridge';
+import { Icon28ErrorCircleOutline } from '@vkontakte/icons';
 
 import { AuthData } from '../../../shared';
 import { VIEW_SCHEDULE } from '../routes';
 
 import PanelHeaderWithBack from '../components/PanelHeaderWithBack';
-import {Icon28ErrorCircleOutline} from "@vkontakte/icons";
 
 const LoginForm: FC<{ id: string }> = ({ id }) => {
   const { panel: activePanel, panelsHistory } = useActiveVkuiLocation();
@@ -52,12 +52,12 @@ const LoginForm: FC<{ id: string }> = ({ id }) => {
       setIsDataInvalid(true);
       return;
     }
-    
+
     const passwordHashed = (new Hashes.SHA256()).b64(password);
-    
+
     setIsLoading(true);
     setPopout(<ScreenSpinner state='loading' />);
-    
+
     const response = await fetch(`${import.meta.env.VITE_SERVER_URL}/login`, {
       method: 'POST',
       headers: {
@@ -68,7 +68,7 @@ const LoginForm: FC<{ id: string }> = ({ id }) => {
     });
 
     if (response.status === 401) {
-      console.log('401')
+      console.log('401');
       setIsLoading(false);
       setErrorScreenSpinner();
       setIsDataInvalid(true);
@@ -78,20 +78,20 @@ const LoginForm: FC<{ id: string }> = ({ id }) => {
       setErrorScreenSpinner();
       throw new Error(`Failed to fetch login / status: ${response.status} / statusText: ${response.statusText}`);
     }
-    
+
     const dataResp = await response.json() as AuthData;
     if (!Array.isArray(dataResp)) {
       setPopout(
         <Snackbar
           onClose={() => setPopout(null)}
-          before={<Icon28ErrorCircleOutline fill="var(--vkui--color_icon_negative)" />}
-          subtitle={`Попробуйте заного или сообщите об ошибке`}
+          before={<Icon28ErrorCircleOutline fill='var(--vkui--color_icon_negative)' />}
+          subtitle='Попробуйте заного или сообщите об ошибке'
         >
           Ошибка при попытке авторизации
-        </Snackbar>
-      )
+        </Snackbar>,
+      );
     }
-    
+
     try {
       await bridge.send('VKWebAppStorageSet', {
         key: 'cookie',
