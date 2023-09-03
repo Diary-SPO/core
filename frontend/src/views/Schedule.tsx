@@ -10,7 +10,7 @@ import { useActiveVkuiLocation, useRouteNavigator } from '@vkontakte/vk-mini-app
 import { Icon28ErrorCircleOutline, Icon28InfoCircle } from '@vkontakte/icons';
 
 import { Day } from '../../../shared';
-import { getLessons } from '../methods/getLessons';
+import { getLessons } from '../methods';
 import formatDateForRequest from '../utils/formatDateForRequest';
 
 import PanelHeaderWithBack from '../components/PanelHeaderWithBack';
@@ -38,6 +38,27 @@ const Schedule: FC<{ id: string }> = ({ id }) => {
       Ошибка при попытке получить расписание
     </Snackbar>
   );
+
+  const handleReloadData = async () => {
+    setSnackbar(null);
+    setIsError(false);
+    setIsLoading(true);
+    const newEndDate = new Date(endDate);
+    newEndDate.setDate(newEndDate.getDate() + 7);
+
+    try {
+      const data = await getLessons(startDate, newEndDate);
+      setLessons(data);
+      setIsLoading(false);
+
+      localStorage.setItem('savedLessons', JSON.stringify(data));
+    } catch (error) {
+      setIsLoading(false);
+      setIsError(true);
+      setSnackbar(ErrorSnackbar);
+      console.error(error);
+    }
+  };
 
   useEffect(() => {
     const savedLessons = localStorage.getItem('savedLessons');
@@ -89,22 +110,22 @@ const Schedule: FC<{ id: string }> = ({ id }) => {
 
     gettedLessons();
   }, []);
-  
+
   const sendToServerIfValid = async (start: Date, end: Date) => {
     if (start <= end) {
       const differenceInDays = (end.getTime() - start.getTime()) / (1000 * 3600 * 24);
       if (differenceInDays <= 14) {
         const data = await getLessons(start, end);
         setLessons(data);
-        
+
         localStorage.setItem('savedLessons', JSON.stringify(data));
       } else {
         console.info('Разница между датами больше 14-и дней');
-        
+
         const newEndDate = new Date(start);
         newEndDate.setDate(newEndDate.getDate() + 7);
         setEndDate(newEndDate);
-        
+
         if (!snackbar) {
           setSnackbar(
             <Snackbar
@@ -116,15 +137,15 @@ const Schedule: FC<{ id: string }> = ({ id }) => {
             </Snackbar>,
           );
         }
-        
+
         const data = await getLessons(start, newEndDate);
         setLessons(data);
-        
+
         localStorage.setItem('savedLessons', JSON.stringify(data));
       }
     } else {
       console.info('Начальная дата больше конечной');
-      
+
       if (!snackbar) {
         setSnackbar(
           <Snackbar
@@ -135,19 +156,19 @@ const Schedule: FC<{ id: string }> = ({ id }) => {
             Начальная дата больше конечной
           </Snackbar>,
         );
-        
+
         const newEndDate = new Date(start);
         newEndDate.setDate(newEndDate.getDate() + 5);
         setEndDate(newEndDate);
-        
+
         const data = await getLessons(start, newEndDate);
         setLessons(data);
-        
+
         localStorage.setItem('savedLessons', JSON.stringify(data));
       }
     }
   };
-  
+
   const handleStartDateChange = (newStartDate: Date) => {
     if (newStartDate.getTime() === startDate.getTime()) {
       return;
@@ -162,27 +183,6 @@ const Schedule: FC<{ id: string }> = ({ id }) => {
     }
     setEndDate(newEndDate);
     sendToServerIfValid(startDate, newEndDate);
-  };
-
-  const handleReloadData = async () => {
-    setSnackbar(null);
-    setIsError(false);
-    setIsLoading(true);
-    const newEndDate = new Date(endDate);
-    newEndDate.setDate(newEndDate.getDate() + 7);
-
-    try {
-      const data = await getLessons(startDate, newEndDate);
-      setLessons(data);
-      setIsLoading(false);
-
-      localStorage.setItem('savedLessons', JSON.stringify(data));
-    } catch (error) {
-      setIsLoading(false);
-      setIsError(true);
-      setSnackbar(ErrorSnackbar);
-      console.error(error);
-    }
   };
 
   return (

@@ -1,7 +1,8 @@
 import express, { type Request, type Response } from 'express'
-import { AxiosError } from 'axios'
+import { AxiosError, type AxiosResponse } from 'axios'
 
 import axiosInstance from '../axiosWrapper'
+import { type AuthData } from '../../../shared'
 
 const router = express.Router()
 
@@ -14,7 +15,7 @@ router.post('/', async (req: Request, res: Response) => {
   }
 
   try {
-    const response = await axiosInstance.post('/security/login', {
+    const response: AxiosResponse<AuthData> = await axiosInstance.post('/security/login', {
       login,
       password,
       isRemember: true
@@ -30,7 +31,7 @@ router.post('/', async (req: Request, res: Response) => {
     const cookieString = Array.isArray(setCookieHeader) ? setCookieHeader.join('; ') : setCookieHeader
 
     console.log(`CODE: ${response.status}`, response.data)
-    return res.json({ data, cookie: cookieString }).status(response.status)
+    return res.status(response.status).json({ data, cookie: cookieString })
   } catch (error) {
     if (error instanceof AxiosError) {
       const axiosError = error as AxiosError
@@ -44,7 +45,7 @@ router.post('/', async (req: Request, res: Response) => {
       }
     } else {
       console.error('/login', error)
-      return res.status(500).json(`Internal server error: ${error}`)
+      return res.status(500).json(`Internal server error: ${error as string}`)
     }
   }
 })

@@ -9,7 +9,7 @@ import {
 } from '@vkontakte/icons';
 
 import {
-  VIEW_CONTACTS, VIEW_SCHEDULE, VIEW_PROJECTS, VIEW_SETTINGS,
+  VIEW_CONTACTS, VIEW_SCHEDULE, VIEW_MARKS, VIEW_SETTINGS,
 } from '../routes';
 import { Pages } from '../types';
 
@@ -33,9 +33,9 @@ const Tabbar: FC<ITabbar> = ({ onStoryChange, activeView }) => {
           <Icon28BookSpreadOutline />
         </TabbarItem>
         <TabbarItem
-          onClick={() => onStoryChange(VIEW_PROJECTS)}
-          selected={activeView === VIEW_PROJECTS}
-          data-story={VIEW_PROJECTS}
+          onClick={() => onStoryChange(VIEW_MARKS)}
+          selected={activeView === VIEW_MARKS}
+          data-story={VIEW_MARKS}
           text='Оценки'
         >
           <Icon28GraphOutline />

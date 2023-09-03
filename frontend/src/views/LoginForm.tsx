@@ -7,7 +7,7 @@ import {
 import { useActiveVkuiLocation, useRouteNavigator } from '@vkontakte/vk-mini-apps-router';
 import Hashes from 'jshashes';
 import bridge from '@vkontakte/vk-bridge';
-import { Icon28ErrorCircleOutline } from '@vkontakte/icons';
+import { Icon28ErrorCircleOutline, Icon28DoorArrowLeftOutline } from '@vkontakte/icons';
 
 import { AuthData } from '../../../shared';
 import { VIEW_SCHEDULE } from '../routes';
@@ -92,7 +92,7 @@ const LoginForm: FC<{ id: string }> = ({ id }) => {
     }
 
     const dataResp = await response.json() as AuthData;
-    if (typeof dataResp.cookie !== 'string') {
+    if (!String(dataResp.cookie)) {
       setPopout(ErrorSnackbar);
     }
 
@@ -181,7 +181,13 @@ const LoginForm: FC<{ id: string }> = ({ id }) => {
               />
             </FormItem>
             <FormItem>
-              <Button size='l' stretched onClick={() => handleLogin()} disabled={!password || !login || !loginPattern.test(login) || isLoading}>
+              <Button
+                size='l'
+                stretched
+                onClick={() => handleLogin()}
+                disabled={!password || !login || !loginPattern.test(login) || isLoading}
+                before={<Icon28DoorArrowLeftOutline />}
+              >
                 {isLoading ? 'Вход...' : 'Войти'}
               </Button>
             </FormItem>

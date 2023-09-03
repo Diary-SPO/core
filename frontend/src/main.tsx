@@ -7,7 +7,6 @@ import Suspense from './components/Suspense.tsx';
 
 const AppWrapper = lazy(() => import('./AppWrapper'));
 
-
 const domNode = document.getElementById('root')!;
 const root = createRoot(domNode);
 

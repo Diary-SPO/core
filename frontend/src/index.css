@@ -1,3 +1,6 @@
 *:not(svg), *::before, *::after {
     box-sizing: border-box;
 }
+._HorizontalCell__content_1q642_21 {
+    word-break: unset !important;
+}

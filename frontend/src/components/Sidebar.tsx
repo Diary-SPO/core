@@ -10,7 +10,7 @@ import {
 } from '@vkontakte/icons';
 
 import {
-  VIEW_CONTACTS, VIEW_SCHEDULE, VIEW_PROJECTS, VIEW_SETTINGS,
+  VIEW_CONTACTS, VIEW_SCHEDULE, VIEW_MARKS, VIEW_SETTINGS,
 } from '../routes';
 import { Pages } from '../types';
 
@@ -36,10 +36,10 @@ const Sidebar: FC<ISidebarProps> = ({ activeView, onStoryChange }) => (
         Расписание
       </Cell>
       <Cell
-        disabled={activeView === VIEW_PROJECTS}
-        data-story={VIEW_PROJECTS}
-        onClick={() => onStoryChange(VIEW_PROJECTS)}
-        style={activeView === VIEW_PROJECTS ? activeStoryStyles : undefined}
+        disabled={activeView === VIEW_MARKS}
+        data-story={VIEW_MARKS}
+        onClick={() => onStoryChange(VIEW_MARKS)}
+        style={activeView === VIEW_MARKS ? activeStoryStyles : undefined}
         before={<Icon28GraphOutline />}
       >
         Оценки

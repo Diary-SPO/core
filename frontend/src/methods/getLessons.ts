@@ -1,32 +1,12 @@
-import bridge from '@vkontakte/vk-bridge';
-
 import { Day } from '../../../shared';
 import formatDateForRequest from '../utils/formatDateForRequest';
 
+import { getUserId } from './getUserId';
+import { getCookie } from './getCookie';
+
 export const getLessons = async (startDate?: Date, endDate?: Date): Promise<Day[]> => {
-  const cookie = await bridge.send('VKWebAppStorageGet', {
-    keys: ['cookie'],
-  })
-    .then((data) => {
-      if (data.keys) {
-        return data.keys[0].value;
-      }
-
-      return false;
-    })
-    .catch((error) => console.error(error));
-
-  const id = await bridge.send('VKWebAppStorageGet', {
-    keys: ['id'],
-  })
-    .then((data) => {
-      if (data.keys) {
-        return data.keys[0].value;
-      }
-
-      return false;
-    })
-    .catch((error) => console.error(error));
+  const cookie = await getCookie();
+  const id = await getUserId();
 
   if (!startDate) {
     startDate = new Date();

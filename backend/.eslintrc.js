@@ -22,5 +22,7 @@ module.exports = {
         "sourceType": "module"
     },
     "rules": {
+        '@typescript-eslint/strict-boolean-expressions': 'off',
+        '@typescript-eslint/no-misused-promises': 'off',
     }
 }

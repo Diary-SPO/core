@@ -9,12 +9,12 @@ import {
 } from '@vkontakte/vkui';
 import { lazy, useEffect } from 'react';
 import { useActiveVkuiLocation, useRouteNavigator } from '@vkontakte/vk-mini-apps-router';
-import bridge from '@vkontakte/vk-bridge';
 
 import { MAIN_SETTINGS, VIEW_SCHEDULE } from './routes';
 import { Pages } from './types';
 
 import Suspense from './components/Suspense';
+import { getCookie } from './methods';
 
 const Sidebar = lazy(() => import('./components/Sidebar'));
 const Epic = lazy(() => import('./components/Epic'));
@@ -28,32 +28,23 @@ const App = () => {
   const routeNavigator = useRouteNavigator();
 
   useEffect(() => {
-    bridge.send('VKWebAppStorageGet', {
-      keys: ['cookie'],
-    })
-      .then((data) => {
-        if (!data.keys[0].value) {
-          routeNavigator.replace('/');
-        } else if (data.keys[0].value && activeView === MAIN_SETTINGS) {
-          routeNavigator.replace(`/${VIEW_SCHEDULE}`);
-        }
-      })
-      .catch((error) => error);
+    getCookie().then((cookieValue) => {
+      if (!cookieValue) {
+        routeNavigator.replace('/');
+      } else if (cookieValue && activeView === MAIN_SETTINGS) {
+        routeNavigator.replace(`/${VIEW_SCHEDULE}`);
+      }
+    });
   }, [window.location]);
 
   const onStoryChange = async (currentView: Pages) => {
     try {
-      await bridge.send('VKWebAppStorageGet', {
-        keys: ['cookie'],
-      })
-        .then((data) => {
-          if (!data.keys[0].value) {
-            routeNavigator.replace('/');
-          } else {
-            routeNavigator.push(`/${currentView}`);
-          }
-        })
-        .catch((error) => error);
+      const cookieValue = await getCookie();
+      if (!cookieValue) {
+        routeNavigator.replace('/');
+      } else {
+        routeNavigator.push(`/${currentView}`);
+      }
     } catch (e) {
       console.error(e);
     }

@@ -1,21 +1,22 @@
 import { lazy } from 'react';
-import {AdaptivityProvider, ConfigProvider} from '@vkontakte/vkui';
+import { AdaptivityProvider, ConfigProvider } from '@vkontakte/vkui';
 import { RouterProvider } from '@vkontakte/vk-mini-apps-router';
 
+import bridge from '@vkontakte/vk-bridge';
 import NotFound from './components/NotFound';
 import Suspense from './components/Suspense';
 
 import { router } from './routes';
-import bridge from "@vkontakte/vk-bridge";
 
 const App = lazy(() => import('./App'));
 
 bridge.send('VKWebAppInit');
 
-const NotFoundCorrect =
+const NotFoundCorrect = (
   <ConfigProvider>
     <NotFound />
-  </ConfigProvider>;
+  </ConfigProvider>
+);
 
 const AppWrapper = () => (
   <AdaptivityProvider>

@@ -2,19 +2,13 @@ import { FC } from 'react';
 import {
   Card, Group, Header, Placeholder, SimpleCell, Subhead,
 } from '@vkontakte/vkui';
+
 import { Day } from '../../../shared';
 import { formatLessonDate } from '../utils/formatLessonDate';
+import { Grade } from '../types';
 
 interface ILessonCard {
   lesson: Day
-}
-
-enum Grade {
-  Five = 5,
-  Four = 4,
-  Three = 3,
-  Two = 2,
-  One = 1,
 }
 
 const LessonCard: FC<ILessonCard> = ({ lesson }) => (

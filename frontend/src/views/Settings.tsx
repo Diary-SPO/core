@@ -5,7 +5,7 @@ import {
   Cell, CellButton, Group, Header, Panel, Subhead, View,
 } from '@vkontakte/vkui';
 import { useActiveVkuiLocation, useRouteNavigator } from '@vkontakte/vk-mini-apps-router';
-import { Icon28ClearDataOutline } from '@vkontakte/icons';
+import { Icon28ClearDataOutline, Icon28DoorArrowRightOutline } from '@vkontakte/icons';
 import bridge from '@vkontakte/vk-bridge';
 
 import { Storage } from '../types';
@@ -88,7 +88,7 @@ const Settings: FC<ISettings> = ({ id }) => {
     >
       <Panel nav={id}>
         <PanelHeaderWithBack title='Настройки' />
-        <Group header={<Header mode='secondary'>Внешний вид</Header>}>
+        <Group header={<Header mode='secondary'>Действия</Header>}>
           <CellButton
             before={<Icon28ClearDataOutline />}
             onClick={clearCache}
@@ -96,7 +96,7 @@ const Settings: FC<ISettings> = ({ id }) => {
             Очистить кеш
           </CellButton>
           <CellButton
-            before={<Icon28ClearDataOutline />}
+            before={<Icon28DoorArrowRightOutline />}
             onClick={logOut}
           >
             Выйти
