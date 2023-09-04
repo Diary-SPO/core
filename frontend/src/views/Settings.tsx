@@ -1,12 +1,13 @@
 import {
-  FC, useEffect, useState,
+  FC, ReactNode, useEffect, useState,
 } from 'react';
 import {
-  Cell, CellButton, Group, Header, Panel, Subhead, View,
+  Cell, CellButton, Group, Header, Panel, Snackbar, Subhead, usePlatform, View,
 } from '@vkontakte/vkui';
 import { useActiveVkuiLocation, useRouteNavigator } from '@vkontakte/vk-mini-apps-router';
-import { Icon28ClearDataOutline, Icon28DoorArrowRightOutline } from '@vkontakte/icons';
+import { Icon28ClearDataOutline, Icon28DoorArrowRightOutline, Icon28ErrorCircleOutline } from '@vkontakte/icons';
 
+import bridge from '@vkontakte/vk-bridge';
 import { Storage } from '../types';
 
 import PanelHeaderWithBack from '../components/PanelHeaderWithBack';
@@ -22,6 +23,17 @@ const Settings: FC<ISettings> = ({ id }) => {
 
   const [cacheData, setCacheData] = useState<Storage[]>([]);
   const [vkCacheData, setVkCacheData] = useState<Storage[]>([]);
+  const [snackbar, setSnackbar] = useState<ReactNode | null>(null);
+
+  const UnsuppoertedSnackbar = (
+    <Snackbar
+      onClose={() => setSnackbar(null)}
+      before={<Icon28ErrorCircleOutline fill='var(--vkui--color_icon_negative)' />}
+      subtitle='Если вы считаете это ошибкой, то сообщите нам'
+    >
+      Метод не подедрживается на вашем устройстве
+    </Snackbar>
+  );
 
   useEffect(() => {
     const allKeys = Object.keys(localStorage);
@@ -61,6 +73,35 @@ const Settings: FC<ISettings> = ({ id }) => {
       }
     });
   };
+  const platform = usePlatform();
+  const isAndroid = platform === 'android';
+
+  const addToHomeScreen = () => {
+    bridge.send('VKWebAppAddToHomeScreen')
+      .then((data) => {
+        if (data.result) {
+          console.log(data);
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+
+    bridge.send('VKWebAppAddToHomeScreenInfo')
+      .then((data) => {
+        console.log(data);
+        if (data.is_added_to_home_screen) {
+          console.log(data);
+        } else if (!data.is_feature_supported) {
+          setSnackbar(UnsuppoertedSnackbar);
+        }
+      })
+      .catch((error) => {
+        // Ошибка
+        console.log(error);
+      });
+  };
+
   return (
     <View
       id={id}
@@ -83,6 +124,14 @@ const Settings: FC<ISettings> = ({ id }) => {
           >
             Выйти
           </CellButton>
+          {isAndroid && (
+          <CellButton
+            before={<Icon28DoorArrowRightOutline />}
+            onClick={addToHomeScreen}
+          >
+            Добавить на экран
+          </CellButton>
+          )}
         </Group>
         <Group
           header={(
@@ -104,6 +153,7 @@ const Settings: FC<ISettings> = ({ id }) => {
             </Cell>
           ))}
         </Group>
+        {snackbar}
       </Panel>
     </View>
   );
