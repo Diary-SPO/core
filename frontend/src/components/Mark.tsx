@@ -1,15 +1,16 @@
 import { CSSProperties, FC } from 'react';
 
-import { TMarks } from '../../../shared';
+import { TMark } from '../../../shared';
 
 type Sizes = 'l' | 's';
 
 interface IMark {
-  mark: TMarks;
+  mark: TMark;
   size?: Sizes;
+  useMargin?: boolean;
 }
 
-const getBackgroundColor = (score: TMarks) => {
+const getBackgroundColor = (score: TMark) => {
   if (score >= 4) {
     return 'linear-gradient(135deg,#50c750,#32b332)';
   } if (score === 3) {
@@ -18,7 +19,7 @@ const getBackgroundColor = (score: TMarks) => {
   return '#DA0A35';
 };
 
-const Mark: FC<IMark> = ({ mark, size = 'l' }) => {
+const Mark: FC<IMark> = ({ mark, size = 'l', useMargin = true }) => {
   const getSize = (size: Sizes) => {
     if (size === 's') {
       return '1rem';
@@ -34,6 +35,8 @@ const Mark: FC<IMark> = ({ mark, size = 'l' }) => {
     fontSize: getSize(size),
     borderRadius: size === 'l' ? '10px' : '5px',
     color: 'white',
+    marginLeft: useMargin ? 10 : undefined,
+    display: 'inline-block',
   };
   return (
     <div style={styles}>

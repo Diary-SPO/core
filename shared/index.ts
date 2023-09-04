@@ -102,23 +102,30 @@ interface UserData {
         id: number
         studentGroupId: number
       },
-      "settings": {
-        "organization": Organization
+      settings: {
+        organization: Organization
       },
     }
   }
 }
 
-export type TextMarks = 'Five' | 'Four' | 'Three' | 'Two' | 'One' | '';
-export type TMarks = 1 | 2 | 3 | 4 | 5;
+export type TextMark = 'Five' | 'Four' | 'Three' | 'Two' | 'One' | '';
+export type TMark = 1 | 2 | 3 | 4 | 5;
+export type TLesson = 'Lecture' | 'PracticalWork' | 'PracticalTraining';
 
-interface Task {
-  attachments:[]
+export enum LessonType {
+  'Lecture' = 'Лекция',
+  'PracticalWork' = 'Практ. работа',
+  'PracticalTraining' = 'Практ. занятие'
+}
+
+export interface Task {
+  attachments: []
   id: number
   isRequired: boolean
-  mark: TextMarks
+  mark: TextMark
   topic: string
-  type: 'Lesson'
+  type: 'Lesson' | 'PracticalWork'
 }
 
 interface Teacher {
@@ -144,10 +151,11 @@ export interface Lesson {
   timetable: Timetable
   gradebook?: {
     id: number
-    lessonType: 'Lecture'
-    tasks: Task[]
-    themes: []
-  }
+    lessonType: TLesson
+    tasks?: Task[]
+    themes?: []
+  },
+  themes: string[]
 }
 
 export interface Day {
@@ -158,7 +166,7 @@ export interface Day {
 export interface IMark {
   subjects: {
     id: number
-    mark: TMarks
+    mark: TMark
     name: string
   }[]
 }
@@ -174,10 +182,10 @@ export interface PerformanceCurrent {
     daysWithMarks: [
       {
         day: Date;
-        markValues: TextMarks[];
+        markValues: TextMark[];
       }
     ];
-    averageMark: TMarks;
+    averageMark: TMark;
   }],
   monthsWithDays: [
     {

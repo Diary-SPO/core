@@ -1,12 +1,12 @@
 import {
-  FC, ReactNode, useEffect, useState,
+  FC, useEffect, useState,
 } from 'react';
 import {
-  Cell, CellButton, Group, Header, Panel, Snackbar, Subhead, usePlatform, View,
+  Cell, CellButton, Group, Header, Panel, Subhead, View,
 } from '@vkontakte/vkui';
 import { useActiveVkuiLocation, useRouteNavigator } from '@vkontakte/vk-mini-apps-router';
 import {
-  Icon28ClearDataOutline, Icon28DoorArrowRightOutline, Icon28ErrorCircleOutline, Icon28HomeArrowDownOutline
+  Icon28ClearDataOutline, Icon28DoorArrowRightOutline, Icon28HomeArrowDownOutline,
 } from '@vkontakte/icons';
 import bridge from '@vkontakte/vk-bridge';
 
@@ -25,17 +25,7 @@ const Settings: FC<ISettings> = ({ id }) => {
 
   const [cacheData, setCacheData] = useState<Storage[]>([]);
   const [vkCacheData, setVkCacheData] = useState<Storage[]>([]);
-  const [snackbar, setSnackbar] = useState<ReactNode | null>(null);
-
-  const UnsuppoertedSnackbar = (
-    <Snackbar
-      onClose={() => setSnackbar(null)}
-      before={<Icon28ErrorCircleOutline fill='var(--vkui--color_icon_negative)' />}
-      subtitle='Если вы считаете это ошибкой, то сообщите нам'
-    >
-      Метод не подедрживается на вашем устройстве
-    </Snackbar>
-  );
+  const [isHomeScreenSupported, setIsHomeScreenSupported] = useState<boolean | null>(null);
 
   useEffect(() => {
     const allKeys = Object.keys(localStorage);
@@ -75,8 +65,6 @@ const Settings: FC<ISettings> = ({ id }) => {
       }
     });
   };
-  const platform = usePlatform();
-  const isAndroid = platform === 'android';
 
   const addToHomeScreen = () => {
     bridge.send('VKWebAppAddToHomeScreen')
@@ -90,16 +78,16 @@ const Settings: FC<ISettings> = ({ id }) => {
       });
 
     bridge.send('VKWebAppAddToHomeScreenInfo')
-      .then((data) => {
-        console.log(data);
-        if (data.is_added_to_home_screen) {
-          console.log(data);
-        } else if (!data.is_feature_supported) {
-          setSnackbar(UnsuppoertedSnackbar);
+      .then(({ is_added_to_home_screen, is_feature_supported }) => {
+        if (is_feature_supported) {
+          console.log('supported');
+          setIsHomeScreenSupported(true);
+        }
+        if (is_added_to_home_screen) {
+          console.log(is_added_to_home_screen);
         }
       })
       .catch((error) => {
-        // Ошибка
         console.log(error);
       });
   };
@@ -126,7 +114,7 @@ const Settings: FC<ISettings> = ({ id }) => {
           >
             Выйти
           </CellButton>
-          {isAndroid && (
+          {isHomeScreenSupported && (
           <CellButton
             before={<Icon28HomeArrowDownOutline />}
             onClick={addToHomeScreen}
@@ -155,7 +143,6 @@ const Settings: FC<ISettings> = ({ id }) => {
             </Cell>
           ))}
         </Group>
-        {snackbar}
       </Panel>
     </View>
   );

@@ -4,13 +4,15 @@ import {
 import {
   Card, CardGrid, Div, Group, Header, HorizontalScroll, MiniInfoCell, Snackbar, Spinner, Title,
 } from '@vkontakte/vkui';
-import { Icon20StatisticsOutline, Icon28ErrorCircleOutline } from '@vkontakte/icons';
+import { Icon20StatisticsOutline, Icon28ErrorCircleOutline, Icon20IncognitoOutline } from '@vkontakte/icons';
 
-import { PerformanceCurrent, TextMarks } from '../../../shared';
+import { PerformanceCurrent, TextMark, TMark } from '../../../shared';
 import { getPerformance } from '../methods';
 import { Grade } from '../types';
 
 import Mark from './Mark';
+import calculateAverageMark from '../utils/calculateAverageMark';
+import setDefaultMarkIfEmpty from '../utils/setDefaultMarkIfEmpty';
 
 const MarksByGroup = () => {
   const [marksForSubject, setMarksForSubject] = useState<PerformanceCurrent | null>(null);
@@ -44,13 +46,13 @@ const MarksByGroup = () => {
     fetchMarks();
   }, []);
 
-  const subjectMarksMap: Record<string, { date: string; marks: TextMarks[] }[]> = {};
-  // TODO: Возможно эта функция не нужна
+  const subjectMarksMap: Record<string, { date: string; marks: TextMark[] }[]> = {};
   marksForSubject?.daysWithMarksForSubject?.map((subject) => {
     const { subjectName, daysWithMarks } = subject;
     if (!subjectMarksMap[subjectName]) {
       subjectMarksMap[subjectName] = [];
     }
+
     daysWithMarks.forEach((dayWithMark) => {
       subjectMarksMap[subjectName].push({
         date: new Date(dayWithMark.day).toLocaleDateString(),
@@ -68,31 +70,46 @@ const MarksByGroup = () => {
               <Title level='3'>{subjectName}</Title>
             </Div>
             <HorizontalScroll>
-              <div style={{ display: 'flex', gap: 10, marginLeft: 10 }}>
+              <div style={{ display: 'flex' }}>
                 {subjectMarksMap[subjectName].map(({ marks }, i) => (
-                    marks.length > 0 && marks?.map((mark) => (
-                        // FIXME
-                        // @ts-ignore
-                        <Mark key={i} mark={Grade[mark]} size='s' />
-                    ))
+                  <div key={i} style={{ display: 'flex' }}>
+                    {marks.length > 0 ? (
+                      marks?.map((mark, j) => (
+                        <Mark key={j} mark={Grade[mark] as TMark} size='s' />
+                      ))
+                    ) : (
+                      <Mark mark={Grade[setDefaultMarkIfEmpty([])] as TMark} size='s' />
+                    )}
+                  </div>
                 ))}
               </div>
             </HorizontalScroll>
-            <MiniInfoCell
-              before={<Icon20StatisticsOutline />}
-              after={marksForSubject && Grade[marksForSubject.daysWithMarksForSubject[i].averageMark]}
-              style={{ marginTop: 5 }}
-            >
-              Средний балл
-            </MiniInfoCell>
+            {marksForSubject && marksForSubject.daysWithMarksForSubject[i].averageMark ? (
+              <MiniInfoCell
+                textWrap='full'
+                before={<Icon20StatisticsOutline />}
+                style={{ marginTop: 5 }}
+                after={calculateAverageMark(
+                  marksForSubject.daysWithMarksForSubject[i].daysWithMarks.reduce(
+                    (allMarks, day) => [...allMarks, ...day.markValues],
+                    [] as TextMark[],
+                  ),
+                )}
+              >
+                Средний балл:
+              </MiniInfoCell>
+            ) : (
+              <MiniInfoCell before={<Icon20IncognitoOutline />}>Нет оценок</MiniInfoCell>
+            )}
           </Card>
         </CardGrid>
       ))}
+
       {snackbar}
       {isLoading && (
-      <Div>
-        <Spinner />
-      </Div>
+        <Div>
+          <Spinner />
+        </Div>
       )}
     </Group>
   );

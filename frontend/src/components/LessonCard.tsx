@@ -1,68 +1,85 @@
 import { FC } from 'react';
 import {
-  Card, Group, Header, Placeholder, SimpleCell, Subhead,
+  Card, Group, Header, Placeholder, SimpleCell,
 } from '@vkontakte/vkui';
 
-import { Day } from '../../../shared';
+import {
+  Day, LessonType, Task, TextMark, TMark,
+} from '../../../shared';
 import { formatLessonDate } from '../utils/formatLessonDate';
 import { Grade } from '../types';
+import Mark from './Mark.tsx';
 
 interface ILessonCard {
-  lesson: Day
+  lesson: Day;
 }
+const truncateText = (text: string, maxLength: number, removeIfLess: boolean = true): string => {
+  if (removeIfLess && text.length < maxLength) {
+    return '';
+  }
 
-const LessonCard: FC<ILessonCard> = ({ lesson }) => (
-  <Card key={lesson.date as unknown as string}>
-    <Group
-      style={{ height: '100%', marginTop: '4px' }}
-      header={<Header mode='secondary'>{formatLessonDate(lesson.date)}</Header>}
-    >
-      {lesson.lessons && lesson.lessons.length > 0 ? (
-        lesson.lessons.map(({
-          name, endTime, startTime, timetable, gradebook,
-        }) => (
-          name && (
-            <SimpleCell
-              key={startTime as unknown as string}
-              subtitle={!name || (
-                <>
-                  <div>
-                    {`${startTime.toLocaleString()} — ${endTime.toLocaleString()}, каб. ${timetable?.classroom.name}`}
-                  </div>
-                  <div>
-                    {timetable.teacher?.lastName}
-                    {' '}
-                    {timetable.teacher?.firstName}
-                    {' '}
-                    {timetable.teacher?.middleName}
-                  </div>
-                  {gradebook?.tasks[0]?.mark && (
-                  <Subhead style={{
-                    borderRadius: 5,
-                    backgroundColor: 'var(--vkui--color_background_positive--active)',
-                    width: 20,
-                    height: 20,
-                    paddingTop: 1,
-                    marginTop: 8,
-                    textAlign: 'center',
-                    color: 'white',
-                  }}
-                  >
-                    {`${Grade[gradebook?.tasks[0].mark] || 'Неверная оценка'}`}
-                  </Subhead>
-                  )}
-                </>
-              )}
-            >
-              {name}
-            </SimpleCell>
-          )
-        ))
-      ) : (
-        <Placeholder>Пар нет</Placeholder>
-      )}
-    </Group>
-  </Card>
-);
+  if (text.length > maxLength) {
+    return `${text.substring(0, maxLength)}...`;
+  }
+  return text;
+};
+const LessonCard: FC<ILessonCard> = ({ lesson }) => {
+  const setDefaultMark = (task: Task): TextMark => {
+    if (task.isRequired && !task.mark) {
+      return '';
+    }
+    return task.mark || '';
+  };
+
+  return (
+    <Card key={lesson.date as unknown as string}>
+      <Group
+        header={<Header mode='secondary'>{formatLessonDate(lesson.date)}</Header>}
+      >
+        {lesson.lessons && lesson.lessons.length > 0 ? (
+          lesson.lessons.map(({
+            name, endTime, startTime, timetable, gradebook,
+          }) => (
+            name && (
+              <SimpleCell
+                key={startTime as unknown as string}
+                subtitle={!name || (
+                  <>
+                  {gradebook?.lessonType  &&
+                    <div style={{margin: '5px 0', display: "inline-block", color: 'var(--vkui--color_background_accent_themed)', padding: '3px 5px', borderRadius: '5px', border: '1px solid var(--vkui--color_background_accent_themed)' }}>
+                      {LessonType[gradebook?.lessonType]}
+                    </div>}
+                    <div>
+                      {`${startTime.toLocaleString()} — ${endTime.toLocaleString()}, каб. ${timetable?.classroom.name}`}
+                    </div>
+                    <div style={{ marginBottom: 5, display: 'flex', justifyContent: "space-between", alignItems: "center" }}>
+                      <div>
+                        {timetable.teacher?.lastName}
+                        {' '}
+                        {timetable.teacher?.firstName}
+                        {' '}
+                        {timetable.teacher?.middleName}
+                      </div>
+                      <div>
+                        {gradebook?.tasks?.map((task, index) => (
+                          <Mark useMargin={false} mark={Grade[setDefaultMark(task)] as TMark} size='s' key={index} />
+                        ))}
+                      </div>
+                    </div>
+                    
+                  </>
+                )}
+              >
+                {truncateText(name, 30, false)}
+              </SimpleCell>
+            )
+          ))
+        ) : (
+          <Placeholder>Пар нет</Placeholder>
+        )}
+      </Group>
+    </Card>
+  );
+};
 
 export default LessonCard;

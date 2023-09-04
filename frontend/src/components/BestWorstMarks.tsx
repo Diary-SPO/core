@@ -59,20 +59,22 @@ const BestWorstMarks = () => {
         style={infoStyle}
       >
         <div style={cells}>
-          {marks?.subjects?.length! > 0 && marks?.subjects?.map(({ mark, name, id }) => {
-            const matchResult = name.match(/^[^.]+(\.\S+)?/);
-            const headerText = matchResult ? matchResult[0] : '';
+          {marks?.subjects?.length !== undefined
+            && marks.subjects.length > 0
+            && marks.subjects.map(({ mark, name, id }) => {
+              const matchResult = name?.match(/^[^.]+(\.\S+)?/);
+              const headerText = matchResult ? matchResult[0] : '';
 
-            return (
-              <HorizontalCell
-                key={id}
-                header={truncateString(headerText, 26)}
-                style={cellStyle}
-              >
-                <Mark mark={mark} />
-              </HorizontalCell>
-            );
-          })}
+              return (
+                <HorizontalCell
+                  key={id}
+                  header={truncateString(headerText, 26)}
+                  style={cellStyle}
+                >
+                  <Mark mark={mark} />
+                </HorizontalCell>
+              );
+            })}
           {isLoading && (
           <Div>
             <Spinner />
