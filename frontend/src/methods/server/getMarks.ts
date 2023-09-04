@@ -1,7 +1,8 @@
-import { IMark } from '../../../shared';
+import { IMark } from '../../../../shared';
 
-import { getCookie } from './getCookie';
-import { getUserId } from './getUserId';
+import { getCookie } from '../bridge/getCookie';
+import { getUserId } from '../bridge/getUserId';
+
 // TODO: возможно придётся удалить
 export const getMarks = async (): Promise<IMark> => {
   const cookie = await getCookie();

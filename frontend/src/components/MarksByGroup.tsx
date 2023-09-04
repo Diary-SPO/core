@@ -6,11 +6,11 @@ import {
 } from '@vkontakte/vkui';
 import { Icon20StatisticsOutline, Icon28ErrorCircleOutline } from '@vkontakte/icons';
 
-import { Grade } from '../types';
 import { PerformanceCurrent, TextMarks } from '../../../shared';
+import { getPerformance } from '../methods';
+import { Grade } from '../types';
 
 import Mark from './Mark';
-import { getPerformance } from '../methods/getPerfomance';
 
 const MarksByGroup = () => {
   const [marksForSubject, setMarksForSubject] = useState<PerformanceCurrent | null>(null);

@@ -1,8 +1,8 @@
-import { Day } from '../../../shared';
-import formatDateForRequest from '../utils/formatDateForRequest';
+import { Day } from '../../../../shared';
+import formatDateForRequest from '../../utils/formatDateForRequest';
 
-import { getUserId } from './getUserId';
-import { getCookie } from './getCookie';
+import { getUserId } from '../bridge/getUserId';
+import { getCookie } from '../bridge/getCookie';
 
 export const getLessons = async (startDate?: Date, endDate?: Date): Promise<Day[]> => {
   const cookie = await getCookie();

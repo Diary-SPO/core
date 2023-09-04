@@ -19,7 +19,7 @@ module.exports = {
   rules: {
     quotes: ['error', 'single'],
     semi: [1, 'always'],
-    'max-len': ['warn', { code: 120 }],
+    'max-len': ['warn', { code: 125 }],
   },
   overrides: [
     {
@@ -41,6 +41,7 @@ module.exports = {
         'react/require-default-props': 'off',
         'react/jsx-fragments': 'off',
         'no-console': 'off',
+        'no-nested-ternary': 'off',
         'jsx-quotes': [2, 'prefer-single'],
         'react/function-component-definition': [2, {
           namedComponents: 'arrow-function',

@@ -5,13 +5,7 @@ export const preventCrossSiteScripting = (req: Request, res: Response, next: Nex
   next()
 }
 
-export const checkData = (req: Request, res: Response, next: NextFunction): Response => {
-  const secret = req.headers.secret
-
-  if (!secret || typeof secret !== 'string') {
-    return res.status(400).json('Something is bad #1')
-  }
-
+export const checkId = (req: Request, res: Response, next: NextFunction): any => {
   const { id } = req.params
 
   if (!id) {
@@ -19,5 +13,14 @@ export const checkData = (req: Request, res: Response, next: NextFunction): Resp
   }
 
   next()
-  return res.status(200).json('OK')
+}
+
+export const checkCookie = (req: Request, res: Response, next: NextFunction): any => {
+  const secret = req.headers.secret
+
+  if (!secret || typeof secret !== 'string') {
+    return res.status(400).json('Something is bad #1')
+  }
+
+  next()
 }

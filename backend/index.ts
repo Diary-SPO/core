@@ -3,17 +3,16 @@ import cors from 'cors'
 import rateLimit from 'express-rate-limit'
 import 'dotenv/config'
 
-import { checkData, preventCrossSiteScripting } from './src/middleware'
+import { preventCrossSiteScripting } from './src/middleware'
 
 import {
-  dashboard, helloRoute, lessonsRoute, loginRoute, performanceCurrent
+  dashboard, helloRoute, lessonsRoute, loginRoute, performanceCurrent, getCsrfToken
 } from './src/routes'
 import helmet from 'helmet'
 
 const app = express()
 const port = process.env.PORT ?? 3000
 
-app.use(checkData)
 app.use(preventCrossSiteScripting)
 app.use(helmet())
 
@@ -32,6 +31,7 @@ app.use('/lessons', lessonsRoute)
 app.use('/login', loginRoute)
 app.use('/dashboard', dashboard)
 app.use('/performance.current', performanceCurrent)
+app.use('/secret', getCsrfToken)
 
 app.listen(port, () => {
   console.log(`Server is running at http://localhost:${port}`)

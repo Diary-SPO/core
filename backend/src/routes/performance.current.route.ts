@@ -3,10 +3,11 @@ import express, { type Request, type Response } from 'express'
 import axiosInstance from '../axiosWrapper'
 import { type AxiosResponse } from 'axios'
 import { type PerformanceCurrent } from '../../../shared'
+import { checkCookie, checkId } from '../middleware'
 
 const router = express.Router()
 
-router.get('/:id', async (req: Request, res: Response) => {
+router.get('/:id', [checkId, checkCookie], async (req: Request, res: Response) => {
   try {
     const secret = req.headers.secret
     const { id } = req.params

@@ -3,7 +3,8 @@ import { createRoot } from 'react-dom/client';
 
 import '@vkontakte/vkui/dist/cssm/styles/themes.css';
 import './index.css';
-import Suspense from './components/Suspense.tsx';
+
+import Suspense from './components/Suspense';
 
 const AppWrapper = lazy(() => import('./AppWrapper'));
 

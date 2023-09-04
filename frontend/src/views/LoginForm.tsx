@@ -6,14 +6,13 @@ import {
 } from '@vkontakte/vkui';
 import { useActiveVkuiLocation, useRouteNavigator } from '@vkontakte/vk-mini-apps-router';
 import Hashes from 'jshashes';
-import bridge from '@vkontakte/vk-bridge';
 import { Icon28ErrorCircleOutline, Icon28DoorArrowLeftOutline } from '@vkontakte/icons';
 
 import { AuthData } from '../../../shared';
 import { VIEW_SCHEDULE } from '../routes';
 
 import PanelHeaderWithBack from '../components/PanelHeaderWithBack';
-import { getCookie } from '../methods';
+import { appStorageSet, getCookie } from '../methods';
 
 const LoginForm: FC<{ id: string }> = ({ id }) => {
   const { panel: activePanel, panelsHistory } = useActiveVkuiLocation();
@@ -24,6 +23,7 @@ const LoginForm: FC<{ id: string }> = ({ id }) => {
   const [isDataInvalid, setIsDataInvalid] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [popout, setPopout] = useState<ReactNode | null>(null);
+
   const clearPopout = () => setPopout(null);
 
   const NoCookies = (
@@ -122,31 +122,8 @@ const LoginForm: FC<{ id: string }> = ({ id }) => {
     }
 
     try {
-      await bridge.send('VKWebAppStorageSet', {
-        key: 'cookie',
-        value: dataResp.cookie,
-      })
-        .then((data) => {
-          if (data.result) {
-            return data;
-          }
-        })
-        .catch((error) => {
-          console.error(error);
-        });
-
-      await bridge.send('VKWebAppStorageSet', {
-        key: 'id',
-        value: String(dataResp.data.tenants.SPO_23.studentRole.id),
-      })
-        .then((data) => {
-          if (data.result) {
-            console.log('id saved');
-          }
-        })
-        .catch((error) => {
-          console.error(error);
-        });
+      await appStorageSet('cookie', dataResp.cookie);
+      await appStorageSet('id', String(dataResp.data.tenants.SPO_23.studentRole.id));
 
       setIsLoading(false);
       await routeNavigator.replace(`/${VIEW_SCHEDULE}`);
@@ -155,6 +132,13 @@ const LoginForm: FC<{ id: string }> = ({ id }) => {
       console.error(e);
     }
   };
+
+  const isLoginEmpty = login === '';
+  const isPasswordEmpty = password === '';
+  const isPasswordValid = password && !isPasswordEmpty;
+
+  const loginTopText = isLoginEmpty ? 'Логин' : (loginPattern.test(login) ? 'Логин введён' : 'Введите корректный логин');
+  const passwordTopText = password === '' ? 'Пароль' : (isPasswordValid ? 'Пароль введён' : 'Введите корректный пароль');
 
   return (
     <View
@@ -176,8 +160,8 @@ const LoginForm: FC<{ id: string }> = ({ id }) => {
               required
               htmlFor='userLogin'
               top='Логин'
-              status={login === '' ? 'default' : (loginPattern.test(login) ? 'valid' : 'error')}
-              bottom={login === '' ? '' : (loginPattern.test(login) ? 'Логин введён' : 'Введите корректный логин')}
+              status={isLoginEmpty ? 'default' : (loginPattern.test(login) ? 'valid' : 'error')}
+              bottom={isLoginEmpty || loginTopText}
               bottomId='login-type'
             >
               <Input
@@ -194,8 +178,8 @@ const LoginForm: FC<{ id: string }> = ({ id }) => {
             <FormItem
               top='Пароль'
               htmlFor='pass'
-              status={password === '' ? 'default' : (password ? 'valid' : 'error')}
-              bottom={password === '' ? '' : (password ? 'Пароль введён' : 'Введите корректный пароль')}
+              status={isPasswordEmpty ? 'default' : (isPasswordValid ? 'valid' : 'error')}
+              bottom={isPasswordEmpty || passwordTopText}
             >
               <Input
                 name='password'

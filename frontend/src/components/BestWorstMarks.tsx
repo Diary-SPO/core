@@ -50,8 +50,10 @@ const BestWorstMarks = () => {
     gettedMarks();
   }, []);
 
+  const GroupHeader = <Header mode='tertiary'>Предметы с лучшим средним баллом</Header>;
+
   return (
-    <Group header={<Header mode='tertiary'>Предметы с лучшим средним баллом</Header>} description={marks === null ? 'Оценок нет, но вы держитесь' : ''}>
+    <Group header={GroupHeader} description={marks === null ? 'Оценок нет, но вы держитесь' : ''}>
       <HorizontalScroll
         showArrows
         style={infoStyle}

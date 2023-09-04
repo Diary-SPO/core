@@ -4,10 +4,11 @@ import { type AxiosResponse } from 'axios'
 import axiosInstance from '../axiosWrapper'
 
 import { type IMark } from '../../../shared'
+import { checkCookie } from '../middleware'
 
 const router = express.Router()
 
-router.get('/:id/:startDate/:endDate', async (req: Request, res: Response) => {
+router.get('/:id/:startDate/:endDate', checkCookie, async (req: Request, res: Response) => {
   try {
     const secret = req.headers.secret
     const { startDate, endDate, id } = req.params

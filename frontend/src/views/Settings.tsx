@@ -6,11 +6,11 @@ import {
 } from '@vkontakte/vkui';
 import { useActiveVkuiLocation, useRouteNavigator } from '@vkontakte/vk-mini-apps-router';
 import { Icon28ClearDataOutline, Icon28DoorArrowRightOutline } from '@vkontakte/icons';
-import bridge from '@vkontakte/vk-bridge';
 
 import { Storage } from '../types';
 
 import PanelHeaderWithBack from '../components/PanelHeaderWithBack';
+import { appStorageSet, getVkStorageData, getVkStorageKeys } from '../methods';
 
 interface ISettings {
   id: string,
@@ -31,36 +31,21 @@ const Settings: FC<ISettings> = ({ id }) => {
   }, []);
 
   useEffect(() => {
-    bridge
-      .send('VKWebAppStorageGetKeys', {
-        count: 20,
-        offset: 0,
-      })
-      .then((data) => {
-        if (data.keys) {
-          bridge
-            .send('VKWebAppStorageGet', {
-              keys: data.keys,
-            })
-            .then((data) => {
-              if (data.keys) {
-                const updatedVkCacheData = data.keys.map((item) => {
-                  if (item.key === 'cookie') {
-                    return { ...item, value: 'secret' };
-                  }
-                  return item;
-                });
-                setVkCacheData(updatedVkCacheData);
-              }
-            })
-            .catch((error) => {
-              console.error(error);
-            });
+    const fetchData = async () => {
+      const keys = await getVkStorageKeys();
+      const data = await getVkStorageData(keys);
+
+      const updatedVkCacheData = data.keys.map((item) => {
+        if (item.key === 'cookie') {
+          return { ...item, value: 'secret' };
         }
-      })
-      .catch((error) => {
-        console.error(error);
+        return item;
       });
+
+      setVkCacheData(updatedVkCacheData);
+    };
+
+    fetchData();
   }, []);
 
   const clearCache = () => {
@@ -69,16 +54,13 @@ const Settings: FC<ISettings> = ({ id }) => {
   };
 
   const logOut = async () => {
-    await bridge.send('VKWebAppStorageSet', {
-      key: 'cookie',
-      value: '',
-    }).then((data) => {
-      if (data.result) {
+    await appStorageSet('cookie', '').then((result) => {
+      console.log(result);
+      if (result) {
         location.reload();
       }
     });
   };
-
   return (
     <View
       id={id}

@@ -1,7 +1,6 @@
-import { PerformanceCurrent } from '../../../shared';
-
-import { getCookie } from './getCookie';
-import { getUserId } from './getUserId';
+import { PerformanceCurrent } from '../../../../shared';
+import { getCookie } from '../bridge/getCookie';
+import { getUserId } from '../bridge/getUserId';
 
 export const getPerformance = async (): Promise<PerformanceCurrent> => {
   const cookie = await getCookie();
