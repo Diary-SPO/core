@@ -1,6 +1,5 @@
 import express, { type Request, type Response } from 'express'
 import { AxiosError, type AxiosResponse } from 'axios'
-
 import axiosInstance from '../axiosWrapper'
 import { type AuthData } from '../../../shared'
 

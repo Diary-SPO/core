@@ -8,11 +8,11 @@ import { useActiveVkuiLocation, useRouteNavigator } from '@vkontakte/vk-mini-app
 import Hashes from 'jshashes';
 import { Icon28ErrorCircleOutline, Icon28DoorArrowLeftOutline } from '@vkontakte/icons';
 
+import { appStorageSet, getCookie } from '../methods';
 import { AuthData } from '../../../shared';
 import { VIEW_SCHEDULE } from '../routes';
 
 import PanelHeaderWithBack from '../components/PanelHeaderWithBack';
-import { appStorageSet, getCookie } from '../methods';
 
 const LoginForm: FC<{ id: string }> = ({ id }) => {
   const { panel: activePanel, panelsHistory } = useActiveVkuiLocation();
