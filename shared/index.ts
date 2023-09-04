@@ -110,6 +110,7 @@ interface UserData {
 }
 
 export type TextMarks = 'Five' | 'Four' | 'Three' | 'Two' | 'One' | '';
+export type TMarks = 1 | 2 | 3 | 4 | 5;
 
 interface Task {
   attachments:[]
@@ -148,12 +149,11 @@ export interface Lesson {
     themes: []
   }
 }
+
 export interface Day {
   date: Date;
   lessons: Lesson[] | null
 }
-
-export type TMarks = 1 | 2 | 3 | 4 | 5;
 
 export interface IMark {
   subjects: {

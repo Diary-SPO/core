@@ -22,7 +22,7 @@ const Marks: FC<{ id: string }> = ({ id }) => {
       <Panel nav={id}>
         <PanelHeaderWithBack title='Оценки' />
         <Suspense>
-          {/*<BestWorstMarks />*/}
+          {/* <BestWorstMarks /> */}
           <MarksByGroup />
         </Suspense>
       </Panel>

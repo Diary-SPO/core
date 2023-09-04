@@ -7,7 +7,7 @@ import {
   useAdaptivityConditionalRender,
   usePlatform,
 } from '@vkontakte/vkui';
-import {lazy, useEffect, useState} from 'react';
+import { lazy, useEffect, useState } from 'react';
 import { useActiveVkuiLocation, useRouteNavigator } from '@vkontakte/vk-mini-apps-router';
 
 import { MAIN_SETTINGS, VIEW_SCHEDULE } from './routes';
@@ -23,13 +23,13 @@ const App = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const platform = usePlatform();
   const isVKCOM = platform !== Platform.VKCOM;
-  
+
   const { viewWidth } = useAdaptivityConditionalRender();
   const { view: activeView = MAIN_SETTINGS } = useActiveVkuiLocation();
   const routeNavigator = useRouteNavigator();
-  
+
   useEffect(() => {
-    setIsLoading(true)
+    setIsLoading(true);
     getCookie().then((cookieValue) => {
       if (!cookieValue) {
         routeNavigator.replace('/');
@@ -39,7 +39,7 @@ const App = () => {
         setIsLoading(false);
       }
     });
-    setIsLoading(false)
+    setIsLoading(false);
   }, [window.location]);
 
   const onStoryChange = async (currentView: Pages) => {
