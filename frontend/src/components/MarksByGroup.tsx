@@ -44,7 +44,7 @@ const MarksByGroup = () => {
     fetchMarks();
   }, []);
 
-  const subjectMarksMap: Record<string, { date: string; marks: TextMarks }[]> = {};
+  const subjectMarksMap: Record<string, { date: string; marks: TextMarks[] }[]> = {};
   // TODO: Возможно эта функция не нужна
   marksForSubject?.daysWithMarksForSubject?.map((subject) => {
     const { subjectName, daysWithMarks } = subject;
@@ -54,7 +54,7 @@ const MarksByGroup = () => {
     daysWithMarks.forEach((dayWithMark) => {
       subjectMarksMap[subjectName].push({
         date: new Date(dayWithMark.day).toLocaleDateString(),
-        marks: dayWithMark.markValues.join(', ') as TextMarks,
+        marks: dayWithMark.markValues,
       });
     });
   });
@@ -70,8 +70,11 @@ const MarksByGroup = () => {
             <HorizontalScroll>
               <div style={{ display: 'flex', gap: 10, marginLeft: 10 }}>
                 {subjectMarksMap[subjectName].map(({ marks }, i) => (
-                  // @ts-ignore
-                  <Mark key={i} mark={Grade[marks]} size='s' />
+                    marks.length > 0 && marks?.map((mark) => (
+                        // FIXME
+                        // @ts-ignore
+                        <Mark key={i} mark={Grade[mark]} size='s' />
+                    ))
                 ))}
               </div>
             </HorizontalScroll>

@@ -20,7 +20,7 @@ app.use(cors({ origin: '*' }))
 
 const limiter = rateLimit({
   windowMs: 60 * 1000,
-  max: 80,
+  max: 40,
   message: 'Превышено ограничение запросов в минуту'
 })
 
