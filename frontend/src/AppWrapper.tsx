@@ -1,5 +1,5 @@
 import { lazy } from 'react';
-import { AdaptivityProvider, ConfigProvider } from '@vkontakte/vkui';
+import {AdaptivityProvider, ConfigProvider, usePlatform} from '@vkontakte/vkui';
 import { RouterProvider } from '@vkontakte/vk-mini-apps-router';
 
 import bridge from '@vkontakte/vk-bridge';
@@ -18,16 +18,20 @@ const NotFoundCorrect = (
   </ConfigProvider>
 );
 
-const AppWrapper = () => (
-  <AdaptivityProvider>
-    <RouterProvider router={router} notFound={NotFoundCorrect}>
-      <Suspense id='app' mode='screen'>
-        <ConfigProvider>
-          <App />
-        </ConfigProvider>
-      </Suspense>
-    </RouterProvider>
-  </AdaptivityProvider>
-);
+const AppWrapper = () => {
+    const platform = usePlatform()
+
+    return (
+        <AdaptivityProvider>
+            <RouterProvider router={router} notFound={NotFoundCorrect}>
+                <Suspense id='app' mode='screen'>
+                    <ConfigProvider platform={platform}>
+                        <App />
+                    </ConfigProvider>
+                </Suspense>
+            </RouterProvider>
+        </AdaptivityProvider>
+    );
+}
 
 export default AppWrapper;
