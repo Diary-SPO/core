@@ -9,16 +9,7 @@ const router = express.Router()
 router.get('/:id', async (req: Request, res: Response) => {
   try {
     const secret = req.headers.secret
-
-    if (!secret || typeof secret !== 'string') {
-      return res.status(500).json('Something is wrong')
-    }
-
     const { id } = req.params
-
-    if (!id) {
-      return res.status(500).json('Something is wrong')
-    }
 
     const response: AxiosResponse<PerformanceCurrent> = await axiosInstance.get(`/reports/current/performance/${id}`, {
       headers: {

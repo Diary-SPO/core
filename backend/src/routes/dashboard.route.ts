@@ -7,16 +7,7 @@ const router = express.Router()
 router.get('/:id', async (req: Request, res: Response) => {
   try {
     const secret = req.headers.secret
-
-    if (!secret || typeof secret !== 'string') {
-      return res.status(500).json('Something is wrong')
-    }
-
     const { id } = req.params
-
-    if (!id) {
-      return res.status(500).json('Something is wrong')
-    }
 
     // TODO: Указать тип
     const response = await axiosInstance.get(`/students/${id}/dashboard`, {

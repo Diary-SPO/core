@@ -10,17 +10,10 @@ const router = express.Router()
 router.get('/:id/:startDate/:endDate', async (req: Request, res: Response) => {
   try {
     const secret = req.headers.secret
-
-    if (!secret || typeof secret !== 'string') {
-      return res.status(500).json('Something is wrong')
-    }
-
     const { startDate, endDate, id } = req.params
-    let formattedStartDate, formattedEndDate
 
-    if (!id) {
-      return res.status(500).json('Something is wrong')
-    }
+    let formattedStartDate
+    let formattedEndDate
 
     if (startDate && endDate) {
       formattedStartDate = startDate.toString()

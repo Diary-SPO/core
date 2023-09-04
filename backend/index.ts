@@ -3,12 +3,19 @@ import cors from 'cors'
 import rateLimit from 'express-rate-limit'
 import 'dotenv/config'
 
+import { checkData, preventCrossSiteScripting } from './src/middleware'
+
 import {
   dashboard, helloRoute, lessonsRoute, loginRoute, performanceCurrent
 } from './src/routes'
+import helmet from 'helmet'
 
 const app = express()
 const port = process.env.PORT ?? 3000
+
+app.use(checkData)
+app.use(preventCrossSiteScripting)
+app.use(helmet())
 
 app.use(cors({ origin: '*' }))
 
