@@ -10,10 +10,10 @@ import bridge from '@vkontakte/vk-bridge';
 import { Icon28ErrorCircleOutline, Icon28DoorArrowLeftOutline } from '@vkontakte/icons';
 
 import { AuthData } from '../../../shared';
-import {VIEW_SCHEDULE} from '../routes';
+import { VIEW_SCHEDULE } from '../routes';
 
 import PanelHeaderWithBack from '../components/PanelHeaderWithBack';
-import {getCookie} from "../methods";
+import { getCookie } from '../methods';
 
 const LoginForm: FC<{ id: string }> = ({ id }) => {
   const { panel: activePanel, panelsHistory } = useActiveVkuiLocation();
@@ -25,7 +25,7 @@ const LoginForm: FC<{ id: string }> = ({ id }) => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [popout, setPopout] = useState<ReactNode | null>(null);
   const clearPopout = () => setPopout(null);
-  
+
   const NoCookies = (
     <Snackbar
       onClose={() => setPopout(null)}
@@ -35,21 +35,21 @@ const LoginForm: FC<{ id: string }> = ({ id }) => {
       О вас нет данных, ты кто такой?
     </Snackbar>
   );
-  
+
   useEffect(() => {
-    setIsLoading(true)
+    setIsLoading(true);
     getCookie().then((cookieValue) => {
       if (!cookieValue) {
         routeNavigator.replace('/');
         setIsLoading(false);
-        setPopout(NoCookies)
+        setPopout(NoCookies);
       } else {
         routeNavigator.replace(`/${VIEW_SCHEDULE}`);
         setIsLoading(false);
       }
     });
   }, []);
-  
+
   const ErrorSnackbar = (
     <Snackbar
       onClose={() => setPopout(null)}
