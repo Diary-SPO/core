@@ -111,12 +111,21 @@ interface UserData {
 
 export type TextMark = 'Five' | 'Four' | 'Three' | 'Two' | 'One' | '';
 export type TMark = 1 | 2 | 3 | 4 | 5;
-export type TLesson = 'Lecture' | 'PracticalWork' | 'PracticalTraining';
+export type TLesson = 'Lecture' | 'PracticalWork' | 'PracticalTraining' | '';
+export type LessonTypes = 'Lesson' | 'PracticalWork' | '';
 
-export enum LessonType {
+export enum LessonWorkType {
   'Lecture' = 'Лекция',
   'PracticalWork' = 'Практ. работа',
-  'PracticalTraining' = 'Практ. занятие'
+  'PracticalTraining' = 'Практ. занятие',
+  '' = 'не задан'
+}
+
+export enum LessonType {
+  'Lesson' = 'ответ на уроке',
+  'PracticalWork' = 'временно',
+  '' = 'не указано'
+  // TODO: Типизировать
 }
 
 export interface Task {
@@ -125,7 +134,7 @@ export interface Task {
   isRequired: boolean
   mark: TextMark
   topic: string
-  type: 'Lesson' | 'PracticalWork'
+  type: LessonTypes
 }
 
 interface Teacher {
@@ -135,27 +144,28 @@ interface Teacher {
   middleName: string
 }
 
-interface Timetable {
+export interface Timetable {
   classroom: {
     building: string
     id: number
     name: string
   },
-  teacher?: Teacher
+  teacher: Teacher
+}
+
+export interface Gradebook {
+  id: number
+  lessonType: TLesson
+  tasks?: Task[]
+  themes?: string[]
 }
 
 export interface Lesson {
-  endTime: Date
-  startTime: Date
+  endTime: Date | string
+  startTime: Date | string
   name: string | null
   timetable: Timetable
-  gradebook?: {
-    id: number
-    lessonType: TLesson
-    tasks?: Task[]
-    themes?: []
-  },
-  themes: string[]
+  gradebook?: Gradebook,
 }
 
 export interface Day {

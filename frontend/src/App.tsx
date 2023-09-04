@@ -15,6 +15,7 @@ import { getCookie } from './methods';
 import { Pages } from './types';
 
 import Suspense from './components/Suspense';
+import ModalRoot from './components/ModalRoot';
 
 const Sidebar = lazy(() => import('./components/Sidebar'));
 const Epic = lazy(() => import('./components/Epic'));
@@ -27,6 +28,8 @@ const App = () => {
   const { viewWidth } = useAdaptivityConditionalRender();
   const { view: activeView = MAIN_SETTINGS } = useActiveVkuiLocation();
   const routeNavigator = useRouteNavigator();
+
+  const modals = <ModalRoot />;
 
   useEffect(() => {
     setIsLoading(true);
@@ -58,7 +61,7 @@ const App = () => {
   return (
     <AppRoot>
       {isLoading && <PanelSpinner />}
-      <SplitLayout header={<PanelHeader separator={false} />} style={{ justifyContent: 'center' }}>
+      <SplitLayout modal={modals} header={<PanelHeader separator={false} />} style={{ justifyContent: 'center' }}>
         {viewWidth.tabletPlus && (
           <SplitCol className={viewWidth.tabletPlus.className} fixed width={280} maxWidth={280}>
             {isVKCOM && <PanelHeader /> }
