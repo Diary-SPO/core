@@ -11,7 +11,7 @@ interface IScheduleGroup {
 
 const ScheduleGroup: FC<IScheduleGroup> = ({ lessonsState }) => (
   <Group header={<Header mode='secondary'>Расписание занятий</Header>}>
-    <CardScroll size='l'>
+    <CardScroll size={false}>
       {lessonsState?.length && lessonsState?.length > 0 && lessonsState?.map((lesson) => (
         <LessonCard key={lesson.date as unknown as string} lesson={lesson} />
       ))}
