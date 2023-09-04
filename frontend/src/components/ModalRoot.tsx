@@ -1,10 +1,7 @@
 import { useEffect, useState } from 'react';
 import {
   Div,
-  Group, Header,
-  ModalPage,
-  ModalPageHeader,
-  ModalRoot as VKUIModalRoot,
+  Group, Header, ModalCard, ModalPage, ModalPageHeader, ModalRoot as VKUIModalRoot,
 } from '@vkontakte/vkui';
 import { useActiveVkuiLocation, useRouteNavigator, useSearchParams } from '@vkontakte/vk-mini-apps-router';
 
@@ -122,7 +119,7 @@ const ModalRoot = () => {
 
   return (
     <VKUIModalRoot activeModal={activeModal} onClose={() => routeNavigator.hideModal()}>
-      <ModalPage id={MODAL_PAGE_LESSON}>
+      <ModalPage id={MODAL_PAGE_LESSON} size={500} dynamicContentHeight>
         <ModalPageHeader>Подробнее о паре</ModalPageHeader>
         <Group header={<Header mode='tertiary'>Основная информация</Header>}>
           <Div>{lessonData.name}</Div>
