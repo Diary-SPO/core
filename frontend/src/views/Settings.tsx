@@ -5,9 +5,11 @@ import {
   Cell, CellButton, Group, Header, Panel, Snackbar, Subhead, usePlatform, View,
 } from '@vkontakte/vkui';
 import { useActiveVkuiLocation, useRouteNavigator } from '@vkontakte/vk-mini-apps-router';
-import { Icon28ClearDataOutline, Icon28DoorArrowRightOutline, Icon28ErrorCircleOutline } from '@vkontakte/icons';
-
+import {
+  Icon28ClearDataOutline, Icon28DoorArrowRightOutline, Icon28ErrorCircleOutline, Icon28HomeArrowDownOutline
+} from '@vkontakte/icons';
 import bridge from '@vkontakte/vk-bridge';
+
 import { Storage } from '../types';
 
 import PanelHeaderWithBack from '../components/PanelHeaderWithBack';
@@ -126,7 +128,7 @@ const Settings: FC<ISettings> = ({ id }) => {
           </CellButton>
           {isAndroid && (
           <CellButton
-            before={<Icon28DoorArrowRightOutline />}
+            before={<Icon28HomeArrowDownOutline />}
             onClick={addToHomeScreen}
           >
             Добавить на экран
