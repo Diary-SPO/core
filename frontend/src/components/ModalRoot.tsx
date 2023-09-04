@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import {
   Div,
-  Group, Header, ModalCard, ModalPage, ModalPageHeader, ModalRoot as VKUIModalRoot,
+  Group, Header, ModalPage, ModalPageHeader, ModalRoot as VKUIModalRoot,
 } from '@vkontakte/vkui';
 import { useActiveVkuiLocation, useRouteNavigator, useSearchParams } from '@vkontakte/vk-mini-apps-router';
 
