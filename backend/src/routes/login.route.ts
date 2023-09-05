@@ -1,14 +1,13 @@
 import express, { type Request, type Response } from 'express'
 import { AxiosError, type AxiosResponse } from 'axios'
 import axiosInstance from '../axiosWrapper'
-import { type AuthData } from '../../../shared'
+import { AuthData } from '../../../shared'
 
 const router = express.Router()
 
 router.post('/', async (req: Request, res: Response) => {
-  const login = req.headers.login
-  const password = req.headers.password
-
+  const { login, password } = req.body;
+  console.log(login)
   if (!login || !password || typeof login !== 'string' || typeof password !== 'string') {
     return res.status(400).json('Invalid login or password')
   }

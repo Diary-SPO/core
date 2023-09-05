@@ -81,7 +81,7 @@ const LoginForm: FC<{ id: string }> = ({ id }) => {
     setStateAction && setStateAction(value);
   };
 
-  const loginPattern = /^[a-zA-Z0-9-]+$/;
+  const loginPattern = /^[a-zA-Z0-9а-яА-ЯёЁ-]+$/;
 
   const handleLogin = async () => {
     if (!loginPattern.test(login)) {
@@ -93,14 +93,19 @@ const LoginForm: FC<{ id: string }> = ({ id }) => {
 
     setIsLoading(true);
     setPopout(<ScreenSpinner state='loading' />);
-
+    console.log(JSON.stringify({
+      login: login,
+      password: passwordHashed,
+    }))
     const response = await fetch(`${import.meta.env.VITE_SERVER_URL}/login`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json;charset=UTF-8',
-        login,
-        password: passwordHashed,
       },
+      body: JSON.stringify({
+        login: login,
+        password: passwordHashed,
+      }),
     });
 
     if (response.status === 401) {

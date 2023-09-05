@@ -17,6 +17,7 @@ const port = process.env.PORT ?? 3000
 app.use(preventCrossSiteScripting)
 app.use(helmet())
 app.use(cors({ origin: '*' }))
+app.use(express.json());
 
 const limiter = rateLimit({
   windowMs: 60 * 1000,
