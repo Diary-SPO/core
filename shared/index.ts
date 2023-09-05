@@ -146,6 +146,7 @@ export enum LessonWorkType {
   'Lecture' = 'Лекция',
   'PracticalWork' = 'Практ. работа',
   'PracticalTraining' = 'Практ. занятие',
+  'Seminar' = 'Семинар',
   '' = 'не задан'
 }
 

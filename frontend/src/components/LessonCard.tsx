@@ -110,12 +110,14 @@ const LessonCard: FC<ILessonCard> = ({ lesson }) => {
                       </div>
                       <div>
                         {gradebook?.tasks?.map((task, index) => (
-                          <Mark
-                            useMargin={false}
-                            mark={Grade[setDefaultMark(task)]}
-                            size='s'
-                            key={index}
-                          />
+                          (task.isRequired || (Grade[setDefaultMark(task)] !== 'Д')) && (
+                            <Mark
+                              useMargin={false}
+                              mark={Grade[setDefaultMark(task)]}
+                              size='s'
+                              key={index}
+                            />
+                          )
                         ))}
                       </div>
                     </div>

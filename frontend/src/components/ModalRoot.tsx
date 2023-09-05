@@ -152,19 +152,21 @@ const ModalRoot = () => {
           </Div>
         </Group>
         {lessonData.gradebook?.tasks?.length && lessonData.gradebook?.tasks.length > 0 ? lessonData.gradebook?.tasks.map((tasks, index) => (
-          <Group
-             // Тут валидный ts-ignore т.к. из-за условия lessonData.gradebook?.tasks?.length &&... у нас 100% есть какая-то запись в массиве
-             // @ts-ignore
-            key={lessonData?.gradebook?.tasks[index]?.id}
-            header={<Header mode='tertiary' aside={<Mark mark={Grade[setDefaultMark(tasks)]} size='s' />}>Оценка за пару</Header>}
-          >
-            <Div>
-              Тип оценки:
-              {' '}
-              {LessonType[tasks.type]}
-            </Div>
-          </Group>
-        )) : ''}
+          (tasks.isRequired || (Grade[setDefaultMark(tasks)] !== 'Д')) && (
+            <Group
+              // Тут валидный ts-ignore т.к. из-за условия lessonData.gradebook?.tasks?.length &&... у нас 100% есть какая-то запись в массиве
+              // @ts-ignore
+              key={lessonData?.gradebook?.tasks[index]?.id}
+              header={<Header mode='tertiary' aside={<Mark mark={Grade[setDefaultMark(tasks)]} size='s' />}>Оценка за пару</Header>}
+            >
+              <Div>
+                Тип оценки:
+                {' '}
+                {LessonType[tasks.type]}
+              </Div>
+            </Group>
+          )
+        )) : null}
       </ModalPage>
     </VKUIModalRoot>
   );
