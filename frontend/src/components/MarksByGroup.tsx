@@ -61,7 +61,7 @@ const MarksByGroup = () => {
     if (!subjectMarksMap[subjectName]) {
       subjectMarksMap[subjectName] = [];
     }
-    // console.log('daysWithMarks', daysWithMarks)
+
     daysWithMarks.forEach((dayWithMark) => {
       subjectMarksMap[subjectName].push({
         date: new Date(dayWithMark.day).toLocaleDateString(),

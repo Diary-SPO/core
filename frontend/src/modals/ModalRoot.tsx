@@ -1,16 +1,16 @@
 import { useEffect, useState } from 'react';
 import {
-  Div,
-  Group, Header, ModalPage, ModalPageHeader, ModalRoot as VKUIModalRoot,
+  Group, Header, InfoRow, ModalPage, ModalPageHeader, ModalRoot as VKUIModalRoot, SimpleCell,
 } from '@vkontakte/vkui';
 import { useActiveVkuiLocation, useRouteNavigator } from '@vkontakte/vk-mini-apps-router';
 
 import {
-  Grade, Lesson, LessonType, LessonWorkType, TLesson,
+  Grade, Lesson, LessonType, LessonWorkType, TLesson, TMark,
 } from '../../../shared';
+
 import setDefaultMark from '../utils/setDefaultMark';
-import Mark from '../components/Mark.tsx';
-import { useModal } from './ModalContext.tsx';
+import Mark from '../components/Mark';
+import { useModal } from './ModalContext';
 
 export const MODAL_PAGE_LESSON = 'lesson';
 
@@ -72,6 +72,7 @@ const ModalRoot = () => {
       setLessonData({
         name: lessonName,
         gradebook: {
+          absenceType: gradebook?.absenceType,
           id: gradebook?.id || 0,
           lessonType: gradebook?.lessonType || '',
           tasks: tasksArray,
@@ -101,54 +102,63 @@ const ModalRoot = () => {
       <ModalPage id={MODAL_PAGE_LESSON} size={500} dynamicContentHeight>
         <ModalPageHeader>Подробнее о паре</ModalPageHeader>
         <Group header={<Header mode='tertiary'>Основная информация</Header>}>
-          <Div>{lessonData.name}</Div>
-          <Div>
-            Тип занятия:
-            {' '}
-            {LessonWorkType[lessonData.gradebook?.lessonType as TLesson]}
-          </Div>
-          <Div>
-            Тема:
-            {' '}
-            {lessonData.gradebook?.themes || 'не задана'}
-          </Div>
+          <SimpleCell>
+            <InfoRow header='Предмет'>
+              {lessonData.name}
+            </InfoRow>
+          </SimpleCell>
+          <SimpleCell>
+            <InfoRow header='Тип занятия'>
+              {LessonWorkType[lessonData.gradebook?.lessonType as TLesson]}
+            </InfoRow>
+          </SimpleCell>
+          <SimpleCell>
+            <InfoRow header='Тема'>
+              {lessonData.gradebook?.themes || 'Не указана'}
+            </InfoRow>
+          </SimpleCell>
+          <SimpleCell>
+            <InfoRow header='Преподаватель'>
+              {lessonData?.timetable?.teacher.lastName}
+              {' '}
+              {lessonData.timetable.teacher.firstName}
+              {' '}
+              {lessonData.timetable.teacher.middleName}
+            </InfoRow>
+          </SimpleCell>
         </Group>
-        <Group header={<Header mode='tertiary'>Куда бежать</Header>}>
-          <Div>
-            Аудитория:
-            {' '}
-            {lessonData.timetable.classroom.name}
-          </Div>
-          <Div>
-            Время:
-            {' '}
-            {lessonData.startTime.toLocaleString()}
-            {' '}
-            -
-            {lessonData.endTime.toLocaleString()}
-          </Div>
+        <Group header={<Header mode='tertiary'>Место и время</Header>}>
+          <SimpleCell>
+            <InfoRow header='Аудитория'>
+              {lessonData.timetable.classroom.name}
+            </InfoRow>
+          </SimpleCell>
+          <SimpleCell>
+            <InfoRow header='Время'>
+              {lessonData.startTime.toLocaleString()}
+              {' '}
+              -
+              {' '}
+              {lessonData.endTime.toLocaleString()}
+            </InfoRow>
+          </SimpleCell>
         </Group>
-        <Group header={<Header mode='tertiary'>Кто ведёт</Header>}>
-          <Div>
-            {`${lessonData?.timetable?.teacher.lastName} ${lessonData.timetable.teacher.firstName} ${lessonData.timetable.teacher.middleName}`}
-          </Div>
-        </Group>
-        {lessonData.gradebook?.tasks?.length && lessonData.gradebook?.tasks.length > 0 ? lessonData.gradebook?.tasks.map((tasks, index) => (
-          (tasks.isRequired || (Grade[setDefaultMark(tasks)] !== 'Д')) && (
-            <Group
-              // Тут валидный ts-ignore т.к. из-за условия lessonData.gradebook?.tasks?.length &&... у нас 100% есть какая-то запись в массиве
-              // @ts-ignore
-              key={lessonData?.gradebook?.tasks[index]?.id}
-              header={<Header mode='tertiary' aside={<Mark mark={Grade[setDefaultMark(tasks)]} size='s' />}>Оценка за пару</Header>}
-            >
-              <Div>
-                Тип оценки:
-                {' '}
-                {LessonType[tasks.type]}
-              </Div>
-            </Group>
-          )
-        )) : null}
+        {((lessonData.gradebook?.absenceType && lessonData.gradebook.absenceType === 'IsAbsent') || (lessonData.gradebook?.tasks?.length && lessonData.gradebook.tasks.length > 0)) && (
+          <Group header={<Header mode='tertiary'>Успеваемость</Header>}>
+            {lessonData.gradebook?.tasks?.map((tasks) => (
+              (tasks.isRequired || (Grade[setDefaultMark(tasks)] !== 'Д')) && (
+                <SimpleCell key={lessonData.lessonId} after={<Mark mark={Grade[setDefaultMark(tasks)]} size='s' />}>
+                  {LessonType[tasks.type]}
+                </SimpleCell>
+              )
+            ))}
+            {lessonData.gradebook?.absenceType === 'IsAbsent' && (
+              <SimpleCell after={<Mark mark={'Н' as TMark} size='s' />}>
+                Опоздание
+              </SimpleCell>
+            )}
+          </Group>
+        )}
       </ModalPage>
     </VKUIModalRoot>
   );

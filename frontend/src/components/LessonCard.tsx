@@ -9,7 +9,6 @@ import {
 } from '../../../shared';
 import setDefaultMark from '../utils/setDefaultMark';
 import { formatLessonDate } from '../utils/formatLessonDate';
-import truncateText from '../utils/truncateText';
 
 import { MODAL_PAGE_LESSON } from '../modals/ModalRoot';
 
@@ -126,7 +125,7 @@ const LessonCard: FC<ILessonCard> = ({ lesson }) => {
                   </div>
                 )}
               >
-                {truncateText(name, 30, false)}
+                {name}
               </SimpleCell>
             )
           ))

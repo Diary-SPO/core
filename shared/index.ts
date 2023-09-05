@@ -110,19 +110,19 @@ interface UserData {
 }
 
 export enum LessonType {
-  'Lesson' = 'ответ на уроке',
-  'Control' = 'контрольная работа',
-  'Independent' = 'самостоятельная работа',
-  'Laboratory' = 'лабораторная работа',
-  'Slice' = 'срезовая работа',
-  'Home' = 'домашнее задание',
-  'Review' = 'реферат',
-  'Test' = 'тест',
-  'Report' = 'доклад',
-  'Colloquium' = 'коллоквиум',
-  'SportStandarts' = 'сдача спортивных нармативов',
-  'PracticeWork' = 'практическая работа',
-  '' = 'не указано'
+  'Lesson' = 'Ответ на занятии',
+  'Control' = 'Контрольная работа',
+  'Independent' = 'Самостоятельная работа',
+  'Laboratory' = 'Лабораторная работа',
+  'Slice' = 'Срезовая работа',
+  'Home' = 'Домашнее задание',
+  'Test' = 'Тест',
+  'Review' = 'Реферат',
+  'Report' = 'Доклад',
+  'Colloquium' = 'Коллоквиум',
+  'SportStandarts' = 'Сдача спортивных нармативов',
+  'PracticeWork' = 'Практическая работа',
+  '' = 'Не указано'
 }
 
 export enum Grade {
@@ -142,7 +142,7 @@ export enum LessonWorkType {
   'PracticalWork' = 'Практ. работа',
   'PracticalTraining' = 'Практ. занятие',
   'Seminar' = 'Семинар',
-  '' = 'не задан'
+  '' = 'Не указан'
 }
 
 type GradeKeys = keyof typeof Grade;
@@ -188,6 +188,7 @@ export interface Gradebook {
 }
 
 export interface Lesson {
+  lessonId?: string
   endTime: string
   startTime: string
   name: string | null
