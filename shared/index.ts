@@ -109,23 +109,44 @@ interface UserData {
   }
 }
 
-export type TextMark = 'Five' | 'Four' | 'Three' | 'Two' | 'One' | '';
-export type TMark = 1 | 2 | 3 | 4 | 5;
+export enum LessonType {
+  'Lesson' = 'ответ на уроке',
+  'Control' = 'контрольная работа',
+  'Independent' = 'самостоятельная работа',
+  'Laboratory' = 'лабораторная работа',
+  'Slice' = 'срезовая работа',
+  'Home' = 'домашнее задание',
+  'Review' = 'реферат',
+  'Test' = 'тест',
+  'Report' = 'доклад',
+  'Colloquium' = 'коллоквиум',
+  'SportStandarts' = 'сдача спортивных нармативов',
+  'PracticeWork' = 'практическая работа',
+  '' = 'не указано'
+}
+
+export enum Grade {
+  Five = 5,
+  Four = 4,
+  Three = 3,
+  Two = 2,
+  One = 1,
+  // Оценка пустая = долг, двойку не ставим!
+  '' = 'Д',
+}
+
+type GradeKeys = keyof typeof Grade;
+
+export type TextMark = GradeKeys;
+export type TMark = typeof Grade[GradeKeys];
 export type TLesson = 'Lecture' | 'PracticalWork' | 'PracticalTraining' | '';
-export type LessonTypes = 'Lesson' | 'PracticalWork' | '';
+export type LessonTypes = keyof typeof LessonType;
 
 export enum LessonWorkType {
   'Lecture' = 'Лекция',
   'PracticalWork' = 'Практ. работа',
   'PracticalTraining' = 'Практ. занятие',
   '' = 'не задан'
-}
-
-export enum LessonType {
-  'Lesson' = 'ответ на уроке',
-  'PracticalWork' = 'временно',
-  '' = 'не указано'
-  // TODO: Типизировать
 }
 
 export interface Task {

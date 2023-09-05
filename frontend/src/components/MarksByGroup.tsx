@@ -6,9 +6,8 @@ import {
 } from '@vkontakte/vkui';
 import { Icon20StatisticsOutline, Icon28ErrorCircleOutline, Icon20IncognitoOutline } from '@vkontakte/icons';
 
-import { PerformanceCurrent, TextMark, TMark } from '../../../shared';
+import { Grade, PerformanceCurrent, TextMark } from '../../../shared';
 import { getPerformance } from '../methods';
-import { Grade } from '../types';
 
 import Mark from './Mark';
 import calculateAverageMark from '../utils/calculateAverageMark';
@@ -75,10 +74,10 @@ const MarksByGroup = () => {
                   <div key={i} style={{ display: 'flex' }}>
                     {marks.length > 0 ? (
                       marks?.map((mark, j) => (
-                        <Mark key={j} mark={Grade[mark] as TMark} size='s' />
+                        <Mark key={j} mark={Grade[mark]} size='s' />
                       ))
                     ) : (
-                      <Mark mark={Grade[setDefaultMarkIfEmpty([])] as unknown as TMark} size='s' />
+                      <Mark mark={Grade[setDefaultMarkIfEmpty([])]} size='s' />
                     )}
                   </div>
                 ))}
@@ -104,7 +103,6 @@ const MarksByGroup = () => {
           </Card>
         </CardGrid>
       ))}
-
       {snackbar}
       {isLoading && (
         <Div>

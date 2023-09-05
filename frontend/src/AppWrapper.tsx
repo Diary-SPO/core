@@ -1,8 +1,8 @@
 import { lazy } from 'react';
 import { AdaptivityProvider, ConfigProvider, usePlatform } from '@vkontakte/vkui';
 import { RouterProvider } from '@vkontakte/vk-mini-apps-router';
-
 import bridge from '@vkontakte/vk-bridge';
+
 import NotFound from './components/NotFound';
 import Suspense from './components/Suspense';
 

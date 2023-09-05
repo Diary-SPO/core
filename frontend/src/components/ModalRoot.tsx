@@ -6,9 +6,8 @@ import {
 import { useActiveVkuiLocation, useRouteNavigator, useSearchParams } from '@vkontakte/vk-mini-apps-router';
 
 import {
-  Lesson, LessonType, LessonWorkType, Task, TLesson, TMark,
+  Grade, Lesson, LessonType, LessonWorkType, Task, TLesson,
 } from '../../../shared';
-import { Grade } from '../types';
 import setDefaultMark from '../utils/setDefaultMark';
 
 import Mark from './Mark';
@@ -53,7 +52,7 @@ const ModalRoot = () => {
     if (lessonId) {
       const timetableParam = params.get('timetable');
       const gradebookParam = params.get('gradebook');
-      const tasksParam = params.get('tasks'); // Получить строку с данными
+      const tasksParam = params.get('tasks');
 
       if (tasksParam) {
         try {
@@ -157,7 +156,7 @@ const ModalRoot = () => {
              // Тут валидный ts-ignore т.к. из-за условия lessonData.gradebook?.tasks?.length &&... у нас 100% есть какая-то запись в массиве
              // @ts-ignore
             key={lessonData?.gradebook?.tasks[index]?.id}
-            header={<Header mode='tertiary' aside={<Mark mark={Grade[setDefaultMark(tasks)] as unknown as TMark} size='s' />}>Оценка за пару</Header>}
+            header={<Header mode='tertiary' aside={<Mark mark={Grade[setDefaultMark(tasks)]} size='s' />}>Оценка за пару</Header>}
           >
             <Div>
               Тип оценки:

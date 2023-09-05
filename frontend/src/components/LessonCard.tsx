@@ -5,17 +5,16 @@ import {
 import { useRouteNavigator, useSearchParams } from '@vkontakte/vk-mini-apps-router';
 
 import {
-  Day, Gradebook, LessonWorkType, Timetable, TMark,
+  Day, Grade, Gradebook, LessonWorkType, Timetable,
 } from '../../../shared';
-
 import setDefaultMark from '../utils/setDefaultMark';
 import { formatLessonDate } from '../utils/formatLessonDate';
-import { Grade } from '../types';
+import truncateText from '../utils/truncateText';
 
 import { MODAL_PAGE_LESSON } from './ModalRoot';
 
+import TimeRemaining from './TimeRemaining';
 import Mark from './Mark';
-import TimeRemaining from "./TimeRemaining";
 
 interface ILessonCard {
   lesson: Day;
@@ -24,7 +23,7 @@ interface ILessonCard {
 const LessonCard: FC<ILessonCard> = ({ lesson }) => {
   const routeNavigator = useRouteNavigator();
   const [params, setParams] = useSearchParams();
-  
+
   const handleLessonClick = (name: string, endTime: string, startTime: string, timetable: Timetable, gradebook: Gradebook | undefined) => {
     const lessonDate = new Date(lesson.date);
     const lessonId = lessonDate.toISOString();
@@ -35,42 +34,39 @@ const LessonCard: FC<ILessonCard> = ({ lesson }) => {
     params.set('gradebook', JSON.stringify(gradebook));
     params.set('tasks', JSON.stringify(gradebook?.tasks));
     params.set('lessonId', lessonId);
-    
+
     setParams(params);
-    
+
     routeNavigator.showModal(MODAL_PAGE_LESSON);
   };
-  
+
   const currentDate = new Date();
   const formattedLessonDate = formatLessonDate(lesson.date);
-  
-  // @ts-ignore
-  const lessonYear = lesson.date.substring(0, 4);
-  // @ts-ignore
-  const lessonMonth = lesson.date.substring(5, 7);
-  // @ts-ignore
-  const lessonDay = lesson.date.substring(8, 10);
-  
+  const lessonDate = new Date(lesson.date);
+  const lessonYear = lessonDate.getFullYear().toString();
+  const lessonMonth = (lessonDate.getMonth() + 1).toString().padStart(2, '0');
+  const lessonDay = lessonDate.getDate().toString().padStart(2, '0');
+
   const currentYear = currentDate.getFullYear().toString();
   const currentMonth = (currentDate.getMonth() + 1).toString().padStart(2, '0');
   const currentDay = currentDate.getDate().toString().padStart(2, '0');
-  
+
   const dayEnded = currentYear === lessonYear && currentMonth === lessonMonth && currentDay > lessonDay;
-  
+
   return (
     <Card key={lesson.date as unknown as string}>
       <Group
-        header={
+        header={(
           <Header mode='secondary'>
             {formattedLessonDate}
             {dayEnded ? ' День завершен' : ''}
           </Header>
-        }
+        )}
       >
         {lesson.lessons && lesson.lessons.length > 0 ? (
           lesson.lessons.map(({
-                                name, endTime, startTime, timetable, gradebook,
-                              }) => (
+            name, endTime, startTime, timetable, gradebook,
+          }) => (
             name && (
               <SimpleCell
                 onClick={() => handleLessonClick(name, endTime, startTime, timetable, gradebook)}
@@ -106,15 +102,17 @@ const LessonCard: FC<ILessonCard> = ({ lesson }) => {
                       <div>
                         {timetable.teacher?.lastName}
                         {' '}
-                        {timetable.teacher?.firstName}
+                        {timetable.teacher?.firstName[0]}
+                        .
                         {' '}
-                        {timetable.teacher?.middleName}
+                        {timetable.teacher?.middleName[0]}
+                        .
                       </div>
-                      <div style={{ marginBottom: 5 }}>
+                      <div>
                         {gradebook?.tasks?.map((task, index) => (
                           <Mark
                             useMargin={false}
-                            mark={Grade[setDefaultMark(task)] as unknown as TMark}
+                            mark={Grade[setDefaultMark(task)]}
                             size='s'
                             key={index}
                           />
@@ -137,14 +135,3 @@ const LessonCard: FC<ILessonCard> = ({ lesson }) => {
 };
 
 export default LessonCard;
-
-const truncateText = (text: string, maxLength: number, removeIfLess: boolean = true): string => {
-  if (removeIfLess && text.length < maxLength) {
-    return '';
-  }
-  
-  if (text.length > maxLength) {
-    return `${text.substring(0, maxLength)}...`;
-  }
-  return text;
-};
