@@ -42,7 +42,7 @@ const Sidebar: FC<ISidebarProps> = ({ activeView, onStoryChange }) => (
         style={activeView === VIEW_MARKS ? activeStoryStyles : undefined}
         before={<Icon28GraphOutline />}
       >
-        Оценки
+        Успеваемость
       </Cell>
       <Cell
         disabled={activeView === VIEW_CONTACTS}

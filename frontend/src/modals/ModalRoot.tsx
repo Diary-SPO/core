@@ -41,7 +41,6 @@ const cleanData: Lesson = {
 
 const ModalRoot = () => {
   const { modalData } = useModal();
-  console.log(modalData);
 
   const routeNavigator = useRouteNavigator();
   const { modal: activeModal } = useActiveVkuiLocation();
@@ -102,7 +101,7 @@ const ModalRoot = () => {
       <ModalPage id={MODAL_PAGE_LESSON} size={500} dynamicContentHeight>
         <ModalPageHeader>Подробнее о паре</ModalPageHeader>
         <Group header={<Header mode='tertiary'>Основная информация</Header>}>
-          <SimpleCell>
+          <SimpleCell multiline>
             <InfoRow header='Предмет'>
               {lessonData.name}
             </InfoRow>
@@ -112,7 +111,7 @@ const ModalRoot = () => {
               {LessonWorkType[lessonData.gradebook?.lessonType as TLesson]}
             </InfoRow>
           </SimpleCell>
-          <SimpleCell>
+          <SimpleCell multiline>
             <InfoRow header='Тема'>
               {lessonData.gradebook?.themes || 'Не указана'}
             </InfoRow>
@@ -145,9 +144,9 @@ const ModalRoot = () => {
         </Group>
         {((lessonData.gradebook?.absenceType && lessonData.gradebook.absenceType === 'IsAbsent') || (lessonData.gradebook?.tasks?.length && lessonData.gradebook.tasks.length > 0)) ? (
           <Group header={<Header mode='tertiary'>Успеваемость</Header>}>
-            {lessonData.gradebook?.tasks?.map((tasks) => (
+            {lessonData.gradebook?.tasks?.map((tasks, index) => (
               (tasks.isRequired || (Grade[setDefaultMark(tasks)] !== 'Д')) && (
-                <SimpleCell key={lessonData.lessonId} after={<Mark mark={Grade[setDefaultMark(tasks)]} size='s' />}>
+                <SimpleCell key={index} after={<Mark mark={Grade[setDefaultMark(tasks)]} size='s' />}>
                   {LessonType[tasks.type]}
                 </SimpleCell>
               )
