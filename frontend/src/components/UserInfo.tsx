@@ -3,9 +3,9 @@ import {
   Avatar, Gradient, Group, Header, SimpleCell, Title, Text, Div, Spinner,
 } from '@vkontakte/vkui';
 import { Icon28SchoolOutline } from '@vkontakte/icons';
-import bridge from "@vkontakte/vk-bridge";
+import bridge from '@vkontakte/vk-bridge';
 
-import { getVkStorageData, getVkStorageKeys } from "../methods";
+import { getVkStorageData, getVkStorageKeys } from '../methods';
 
 const styles: CSSProperties = {
   margin: 0,
@@ -33,30 +33,29 @@ const UserInfo = () => {
   });
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [userAva, setUserAva] = useState<string | undefined>();
-  
+
   useEffect(() => {
-    
     const getUserInfo = async () => {
       setIsLoading(true);
-      
+
       const keys = await getVkStorageKeys();
       const data = await getVkStorageData(keys);
-      
+
       await bridge.send('VKWebAppGetUserInfo')
         .then((data) => {
           if (data.id) {
-            setUserAva(data.photo_100)
+            setUserAva(data.photo_100);
           }
         })
         .catch((error) => {
           console.log(error);
         });
-      
+
       const extractedData: Partial<UserData> = data.keys.reduce((acc, item) => {
         acc[item.key] = item.value;
         return acc;
       }, {} as UserData);
-      
+
       setUserData({
         firstName: extractedData.firstName || '',
         lastName: extractedData.lastName || '',
@@ -69,16 +68,18 @@ const UserInfo = () => {
 
       setIsLoading(false);
     };
-    
+
     getUserInfo();
   }, []);
-  
+
   if (isLoading) {
-    return <Div>
-      <Spinner />
-    </Div>
+    return (
+      <Div>
+        <Spinner />
+      </Div>
+    );
   }
-  
+
   return (
     <div>
       <Group>
@@ -93,7 +94,9 @@ const UserInfo = () => {
               color: 'var(--vkui--color_text_secondary)',
             }}
           >
-            Студент ({userData.group})
+            Студент (
+            {userData.group}
+            )
           </Text>
         </Gradient>
         <Group mode='plain'>
@@ -105,6 +108,6 @@ const UserInfo = () => {
       </Group>
     </div>
   );
-}
+};
 
 export default UserInfo;
