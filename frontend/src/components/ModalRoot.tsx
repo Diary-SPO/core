@@ -115,8 +115,6 @@ const ModalRoot = () => {
     }
   }, [params, lessonId]);
 
-  console.log('lessonData', lessonData);
-
   return (
     <VKUIModalRoot activeModal={activeModal} onClose={() => routeNavigator.hideModal()}>
       <ModalPage id={MODAL_PAGE_LESSON} size={500} dynamicContentHeight>
@@ -159,7 +157,7 @@ const ModalRoot = () => {
              // Тут валидный ts-ignore т.к. из-за условия lessonData.gradebook?.tasks?.length &&... у нас 100% есть какая-то запись в массиве
              // @ts-ignore
             key={lessonData?.gradebook?.tasks[index]?.id}
-            header={<Header mode='tertiary' aside={<Mark mark={Grade[setDefaultMark(tasks)] as TMark} size='s' />}>Оценка за пару</Header>}
+            header={<Header mode='tertiary' aside={<Mark mark={Grade[setDefaultMark(tasks)] as unknown as TMark} size='s' />}>Оценка за пару</Header>}
           >
             <Div>
               Тип оценки:

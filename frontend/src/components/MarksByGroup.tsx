@@ -6,7 +6,7 @@ import {
 } from '@vkontakte/vkui';
 import { Icon20StatisticsOutline, Icon28ErrorCircleOutline, Icon20IncognitoOutline } from '@vkontakte/icons';
 
-import { PerformanceCurrent, TextMark, TMark } from '../../../shared';
+import { PerformanceCurrent, TextMark, TMark } from 'dnevnik/shared/shared';
 import { getPerformance } from '../methods';
 import { Grade } from '../types';
 

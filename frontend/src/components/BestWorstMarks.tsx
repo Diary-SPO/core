@@ -3,7 +3,7 @@ import {
   Div, Group, Header, HorizontalCell, HorizontalScroll, Spinner,
 } from '@vkontakte/vkui';
 
-import { IMark } from '../../../shared';
+import {IMark} from '../../../shared';
 import { getMarks } from '../methods';
 
 import Mark from './Mark';

@@ -1,4 +1,4 @@
-import { Task, TextMark } from '../../../shared';
+import { Task, TextMark } from 'dnevnik/shared/shared';
 
 const setDefaultMark = (task: Task): TextMark => {
   if (task.isRequired && !task.mark) {

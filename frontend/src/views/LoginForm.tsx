@@ -8,8 +8,8 @@ import { useActiveVkuiLocation, useRouteNavigator } from '@vkontakte/vk-mini-app
 import Hashes from 'jshashes';
 import { Icon28ErrorCircleOutline, Icon28DoorArrowLeftOutline } from '@vkontakte/icons';
 
+import { AuthData } from 'dnevnik/shared/shared';
 import { appStorageSet, getCookie } from '../methods';
-import { AuthData } from '../../../shared';
 import { VIEW_SCHEDULE } from '../routes';
 
 import PanelHeaderWithBack from '../components/PanelHeaderWithBack';
@@ -94,16 +94,16 @@ const LoginForm: FC<{ id: string }> = ({ id }) => {
     setIsLoading(true);
     setPopout(<ScreenSpinner state='loading' />);
     console.log(JSON.stringify({
-      login: login,
+      login,
       password: passwordHashed,
-    }))
+    }));
     const response = await fetch(`${import.meta.env.VITE_SERVER_URL}/login`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json;charset=UTF-8',
       },
       body: JSON.stringify({
-        login: login,
+        login,
         password: passwordHashed,
       }),
     });

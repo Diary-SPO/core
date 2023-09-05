@@ -161,8 +161,8 @@ export interface Gradebook {
 }
 
 export interface Lesson {
-  endTime: Date | string
-  startTime: Date | string
+  endTime: string
+  startTime: string
   name: string | null
   timetable: Timetable
   gradebook?: Gradebook,

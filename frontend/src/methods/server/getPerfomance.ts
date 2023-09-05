@@ -1,4 +1,4 @@
-import { PerformanceCurrent } from '../../../../shared';
+import { PerformanceCurrent } from 'dnevnik/shared/shared';
 import { getCookie } from '../bridge/getCookie';
 import { getUserId } from '../bridge/getUserId';
 
