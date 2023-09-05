@@ -15,6 +15,7 @@ import { MODAL_PAGE_LESSON } from './ModalRoot';
 
 import TimeRemaining from './TimeRemaining';
 import Mark from './Mark';
+import SubtitleWithBorder from "./SubtitleWithBorder.tsx";
 
 interface ILessonCard {
   lesson: Day;
@@ -59,7 +60,7 @@ const LessonCard: FC<ILessonCard> = ({ lesson }) => {
         header={(
           <Header mode='secondary'>
             {formattedLessonDate}
-            {dayEnded ? ' День завершен' : ''}
+            {dayEnded ? ' День завершён' : ''}
           </Header>
         )}
       >
@@ -73,24 +74,18 @@ const LessonCard: FC<ILessonCard> = ({ lesson }) => {
                 key={startTime as unknown as string}
                 subtitle={!name || (
                   <div>
-                    {gradebook?.lessonType && (
-                      <div
-                        style={{
-                          margin: '0 5px 5px 0',
-                          display: 'inline-block',
-                          color: 'var(--vkui--color_background_accent_themed)',
-                          padding: '3px 5px',
-                          borderRadius: '5px',
-                          border: '1px solid var(--vkui--color_background_accent_themed)',
-                        }}
-                      >
-                        {LessonWorkType[gradebook?.lessonType]}
-                      </div>
-                    )}
-                    <TimeRemaining lessonDate={lesson.date} startTime={startTime} endTime={endTime} />
-                    <div>
-                      {`${startTime} — ${endTime}, каб. ${timetable?.classroom.name}`}
+                    <div style={{ display: "flex" }}>
+                      {gradebook?.lessonType && (
+                        <SubtitleWithBorder>
+                          {LessonWorkType[gradebook?.lessonType]}
+                        </SubtitleWithBorder>
+                      )}
+                      {gradebook?.absenceType && <SubtitleWithBorder color='red'>Н</SubtitleWithBorder>}
                     </div>
+                    <div>
+                    {`${startTime} — ${endTime}, каб. ${timetable?.classroom.name}`}
+                  </div>
+                    <TimeRemaining lessonDate={lesson.date} startTime={startTime} endTime={endTime} />
                     <div
                       style={{
                         marginBottom: 5,
@@ -112,7 +107,7 @@ const LessonCard: FC<ILessonCard> = ({ lesson }) => {
                         {gradebook?.tasks?.map((task, index) => (
                           (task.isRequired || (Grade[setDefaultMark(task)] !== 'Д')) && (
                             <Mark
-                              useMargin={false}
+                              useMargin={true}
                               mark={Grade[setDefaultMark(task)]}
                               size='s'
                               key={index}

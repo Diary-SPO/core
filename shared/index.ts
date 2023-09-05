@@ -133,14 +133,8 @@ export enum Grade {
   One = 1,
   // Оценка пустая = долг, двойку не ставим!
   '' = 'Д',
+  'Н' = 'Н'
 }
-
-type GradeKeys = keyof typeof Grade;
-
-export type TextMark = GradeKeys;
-export type TMark = typeof Grade[GradeKeys];
-export type TLesson = 'Lecture' | 'PracticalWork' | 'PracticalTraining' | '';
-export type LessonTypes = keyof typeof LessonType;
 
 export enum LessonWorkType {
   'Lecture' = 'Лекция',
@@ -149,6 +143,14 @@ export enum LessonWorkType {
   'Seminar' = 'Семинар',
   '' = 'не задан'
 }
+
+type GradeKeys = keyof typeof Grade;
+
+export type TextMark = GradeKeys;
+export type TMark = typeof Grade[GradeKeys];
+export type TLesson = keyof typeof LessonWorkType;
+export type LessonTypes = keyof typeof LessonType;
+
 
 export interface Task {
   attachments: []
@@ -180,6 +182,8 @@ export interface Gradebook {
   lessonType: TLesson
   tasks?: Task[]
   themes?: string[]
+  // TODO: возможно есть другие значения
+  absenceType?: 'IsAbsent'
 }
 
 export interface Lesson {
