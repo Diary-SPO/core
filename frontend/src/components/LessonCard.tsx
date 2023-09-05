@@ -62,6 +62,8 @@ const LessonCard: FC<ILessonCard> = ({ lesson }) => {
   return (
     <Card key={lesson.date as unknown as string}>
       <Group
+        /* Без этого Group не растягивается и немного уезжает на планшетах */
+        style={{ height: '100%', marginTop: '4px' }}
         header={(
           <Header mode='secondary'>
             {formattedLessonDate}

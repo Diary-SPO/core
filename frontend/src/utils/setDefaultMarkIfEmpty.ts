@@ -1,9 +1,10 @@
-import { TextMark } from '../../../shared';
+import { AbsenceType, TextMark } from '../../../shared';
 
-const setDefaultMarkIfEmpty = (marks: TextMark[]): TextMark => {
+const setDefaultMarkIfEmpty = (marks: TextMark[], absenceType?: AbsenceType): TextMark => {
   if (marks.length === 0) {
-    return '';
+    return absenceType === 'IsAbsent' ? 'Н' : 'Д';
   }
+
   return marks[0];
 };
 

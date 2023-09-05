@@ -133,7 +133,8 @@ export enum Grade {
   One = 1,
   // Оценка пустая = долг, двойку не ставим!
   '' = 'Д',
-  'Н' = 'Н'
+  'Н' = 'Н',
+  'Д' = 'Д',
 }
 
 export enum LessonWorkType {
@@ -150,7 +151,7 @@ export type TextMark = GradeKeys;
 export type TMark = typeof Grade[GradeKeys];
 export type TLesson = keyof typeof LessonWorkType;
 export type LessonTypes = keyof typeof LessonType;
-
+export type AbsenceType = 'IsAbsent'
 
 export interface Task {
   attachments: []
@@ -183,7 +184,7 @@ export interface Gradebook {
   tasks?: Task[]
   themes?: string[]
   // TODO: возможно есть другие значения
-  absenceType?: 'IsAbsent'
+  absenceType?: AbsenceType
 }
 
 export interface Lesson {
@@ -218,6 +219,7 @@ export interface PerformanceCurrent {
     daysWithMarks: [
       {
         day: Date;
+        absenceType?: AbsenceType;
         markValues: TextMark[];
       }
     ];

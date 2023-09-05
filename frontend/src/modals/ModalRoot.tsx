@@ -9,8 +9,8 @@ import {
   Grade, Lesson, LessonType, LessonWorkType, TLesson,
 } from '../../../shared';
 import setDefaultMark from '../utils/setDefaultMark';
-import Mark from "../components/Mark.tsx";
-import { useModal } from "./ModalContext.tsx";
+import Mark from '../components/Mark.tsx';
+import { useModal } from './ModalContext.tsx';
 
 export const MODAL_PAGE_LESSON = 'lesson';
 
@@ -42,33 +42,33 @@ const cleanData: Lesson = {
 const ModalRoot = () => {
   const { modalData } = useModal();
   console.log(modalData);
-  
+
   const routeNavigator = useRouteNavigator();
   const { modal: activeModal } = useActiveVkuiLocation();
 
   const [lessonData, setLessonData] = useState<Lesson>(cleanData);
-  
+
   useEffect(() => {
     if (modalData) {
       const {
         name, endTime, startTime, timetable, gradebook, tasks: tasksArray,
       } = modalData;
-      
+
       let lessonName = name || '';
-      
+
       if (lessonName.includes('/')) {
         const parts = lessonName.split('/');
-        
+
         if (parts.length >= 2) {
           lessonName = parts[0];
           const additionalInfo = parts.slice(1).join('/');
-          
+
           if (additionalInfo.trim()) {
             lessonName += ` (${additionalInfo})`;
           }
         }
       }
-      
+
       setLessonData({
         name: lessonName,
         gradebook: {
@@ -95,7 +95,7 @@ const ModalRoot = () => {
       });
     }
   }, [modalData]);
-  
+
   return (
     <VKUIModalRoot activeModal={activeModal} onClose={() => routeNavigator.hideModal()}>
       <ModalPage id={MODAL_PAGE_LESSON} size={500} dynamicContentHeight>
