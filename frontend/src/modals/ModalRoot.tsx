@@ -3,14 +3,14 @@ import {
   Div,
   Group, Header, ModalPage, ModalPageHeader, ModalRoot as VKUIModalRoot,
 } from '@vkontakte/vkui';
-import { useActiveVkuiLocation, useRouteNavigator, useSearchParams } from '@vkontakte/vk-mini-apps-router';
+import { useActiveVkuiLocation, useRouteNavigator } from '@vkontakte/vk-mini-apps-router';
 
 import {
-  Grade, Lesson, LessonType, LessonWorkType, Task, TLesson,
+  Grade, Lesson, LessonType, LessonWorkType, TLesson,
 } from '../../../shared';
 import setDefaultMark from '../utils/setDefaultMark';
-
-import Mark from './Mark';
+import Mark from "../components/Mark.tsx";
+import { useModal } from "./ModalContext.tsx";
 
 export const MODAL_PAGE_LESSON = 'lesson';
 
@@ -40,80 +40,62 @@ const cleanData: Lesson = {
 };
 
 const ModalRoot = () => {
+  const { modalData } = useModal();
+  console.log(modalData);
+  
   const routeNavigator = useRouteNavigator();
   const { modal: activeModal } = useActiveVkuiLocation();
-  const [params] = useSearchParams();
+
   const [lessonData, setLessonData] = useState<Lesson>(cleanData);
-  let tasksArray: Task[] = [];
-
-  const lessonId = params.get('lessonId');
-
+  
   useEffect(() => {
-    if (lessonId) {
-      const timetableParam = params.get('timetable');
-      const gradebookParam = params.get('gradebook');
-      const tasksParam = params.get('tasks');
-
-      if (tasksParam) {
-        try {
-          tasksArray = JSON.parse(tasksParam);
-        } catch (error) {
-          console.error('Ошибка при парсинге строки tasksParam:', error);
-        }
-      }
-
-      let parsedTimetable;
-      let parsedGradebook;
-
-      try {
-        parsedTimetable = timetableParam ? JSON.parse(timetableParam) : undefined;
-        parsedGradebook = gradebookParam !== undefined && gradebookParam ? JSON.parse(gradebookParam) : undefined;
-      } catch (err) {
-        console.log(err);
-      }
-
-      let lessonName = params.get('name') || '';
-
+    if (modalData) {
+      const {
+        name, endTime, startTime, timetable, gradebook, tasks: tasksArray,
+      } = modalData;
+      
+      let lessonName = name || '';
+      
       if (lessonName.includes('/')) {
         const parts = lessonName.split('/');
-
+        
         if (parts.length >= 2) {
           lessonName = parts[0];
           const additionalInfo = parts.slice(1).join('/');
-
+          
           if (additionalInfo.trim()) {
             lessonName += ` (${additionalInfo})`;
           }
         }
       }
-
+      
       setLessonData({
         name: lessonName,
         gradebook: {
-          id: parsedGradebook?.id || 0,
-          lessonType: parsedGradebook?.lessonType || '',
+          id: gradebook?.id || 0,
+          lessonType: gradebook?.lessonType || '',
           tasks: tasksArray,
-          themes: parsedGradebook?.themes,
+          themes: gradebook?.themes,
         },
         timetable: {
           classroom: {
             id: 0,
             building: '',
-            name: parsedTimetable?.classroom?.name || '',
+            name: timetable?.classroom?.name || '',
           },
           teacher: {
-            id: parsedTimetable.teacher?.id || 0,
-            lastName: parsedTimetable?.teacher?.lastName || '',
-            firstName: parsedTimetable?.teacher?.firstName || '',
-            middleName: parsedTimetable?.teacher?.middleName || '',
+            id: timetable.teacher?.id || 0,
+            lastName: timetable?.teacher?.lastName || '',
+            firstName: timetable?.teacher?.firstName || '',
+            middleName: timetable?.teacher?.middleName || '',
           },
         },
-        startTime: params.get('startTime') || 'Что-то не так с датой',
-        endTime: params.get('endTime') || 'Что-то не так с датой',
+        startTime: startTime || 'Что-то не так с датой',
+        endTime: endTime || 'Что-то не так с датой',
       });
     }
-  }, [params, lessonId]);
-
+  }, [modalData]);
+  
   return (
     <VKUIModalRoot activeModal={activeModal} onClose={() => routeNavigator.hideModal()}>
       <ModalPage id={MODAL_PAGE_LESSON} size={500} dynamicContentHeight>

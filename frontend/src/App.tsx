@@ -15,7 +15,7 @@ import { getCookie } from './methods';
 import { Pages } from './types';
 
 import Suspense from './components/Suspense';
-import ModalRoot from './components/ModalRoot';
+import ModalRoot from './modals/ModalRoot';
 
 const Sidebar = lazy(() => import('./components/Sidebar'));
 const Epic = lazy(() => import('./components/Epic'));

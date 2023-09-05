@@ -2,7 +2,7 @@ import { FC } from 'react';
 import {
   Card, Group, Header, Placeholder, SimpleCell,
 } from '@vkontakte/vkui';
-import { useRouteNavigator, useSearchParams } from '@vkontakte/vk-mini-apps-router';
+import { useRouteNavigator } from '@vkontakte/vk-mini-apps-router';
 
 import {
   Day, Grade, Gradebook, LessonWorkType, Timetable,
@@ -11,11 +11,12 @@ import setDefaultMark from '../utils/setDefaultMark';
 import { formatLessonDate } from '../utils/formatLessonDate';
 import truncateText from '../utils/truncateText';
 
-import { MODAL_PAGE_LESSON } from './ModalRoot';
+import { MODAL_PAGE_LESSON } from '../modals/ModalRoot';
 
 import SubtitleWithBorder from './SubtitleWithBorder';
 import TimeRemaining from './TimeRemaining';
 import Mark from './Mark';
+import { useModal } from '../modals/ModalContext';
 
 interface ILessonCard {
   lesson: Day;
@@ -23,22 +24,26 @@ interface ILessonCard {
 
 const LessonCard: FC<ILessonCard> = ({ lesson }) => {
   const routeNavigator = useRouteNavigator();
-  const [params, setParams] = useSearchParams();
+
+  const { openModal } = useModal();
 
   const handleLessonClick = (name: string, endTime: string, startTime: string, timetable: Timetable, gradebook: Gradebook | undefined) => {
+    routeNavigator.showModal(MODAL_PAGE_LESSON);
+
     const lessonDate = new Date(lesson.date);
     const lessonId = lessonDate.toISOString();
-    params.set('name', name);
-    params.set('endTime', endTime);
-    params.set('startTime', startTime);
-    params.set('timetable', JSON.stringify(timetable));
-    params.set('gradebook', JSON.stringify(gradebook));
-    params.set('tasks', JSON.stringify(gradebook?.tasks));
-    params.set('lessonId', lessonId);
 
-    setParams(params);
+    const modalData = {
+      name,
+      endTime,
+      startTime,
+      timetable,
+      gradebook,
+      tasks: gradebook?.tasks,
+      lessonId,
+    };
 
-    routeNavigator.showModal(MODAL_PAGE_LESSON);
+    openModal(modalData);
   };
 
   const currentDate = new Date();

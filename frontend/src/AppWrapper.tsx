@@ -7,6 +7,7 @@ import NotFound from './components/NotFound';
 import Suspense from './components/Suspense';
 
 import { router } from './routes';
+import { ModalProvider } from './modals/ModalContext.tsx';
 
 const App = lazy(() => import('./App'));
 
@@ -26,7 +27,9 @@ const AppWrapper = () => {
       <RouterProvider router={router} notFound={NotFoundCorrect}>
         <Suspense id='app' mode='screen'>
           <ConfigProvider platform={platform}>
-            <App />
+            <ModalProvider>
+              <App />
+            </ModalProvider>
           </ConfigProvider>
         </Suspense>
       </RouterProvider>
