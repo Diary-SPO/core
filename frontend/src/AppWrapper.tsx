@@ -3,11 +3,12 @@ import { AdaptivityProvider, ConfigProvider, usePlatform } from '@vkontakte/vkui
 import { RouterProvider } from '@vkontakte/vk-mini-apps-router';
 import bridge from '@vkontakte/vk-bridge';
 
+import { ModalProvider } from './modals/ModalContext';
+
 import NotFound from './components/NotFound';
 import Suspense from './components/Suspense';
 
 import { router } from './routes';
-import { ModalProvider } from './modals/ModalContext.tsx';
 
 const App = lazy(() => import('./App'));
 

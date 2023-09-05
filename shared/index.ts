@@ -110,19 +110,19 @@ interface UserData {
 }
 
 export enum LessonType {
-  'Lesson' = 'ответ на уроке',
-  'Control' = 'контрольная работа',
-  'Independent' = 'самостоятельная работа',
-  'Laboratory' = 'лабораторная работа',
-  'Slice' = 'срезовая работа',
-  'Home' = 'домашнее задание',
-  'Review' = 'реферат',
-  'Test' = 'тест',
-  'Report' = 'доклад',
-  'Colloquium' = 'коллоквиум',
-  'SportStandarts' = 'сдача спортивных нармативов',
-  'PracticeWork' = 'практическая работа',
-  '' = 'не указано'
+  'Lesson' = 'Ответ на занятии',
+  'Control' = 'Контрольная работа',
+  'Independent' = 'Самостоятельная работа',
+  'Laboratory' = 'Лабораторная работа',
+  'Slice' = 'Срезовая работа',
+  'Home' = 'Домашнее задание',
+  'Test' = 'Тест',
+  'Review' = 'Реферат',
+  'Report' = 'Доклад',
+  'Colloquium' = 'Коллоквиум',
+  'SportStandarts' = 'Сдача спортивных нармативов',
+  'PracticeWork' = 'Практическая работа',
+  '' = 'Не указано'
 }
 
 export enum Grade {
@@ -133,7 +133,8 @@ export enum Grade {
   One = 1,
   // Оценка пустая = долг, двойку не ставим!
   '' = 'Д',
-  'Н' = 'Н'
+  'Н' = 'Н',
+  'Д' = 'Д',
 }
 
 export enum LessonWorkType {
@@ -141,7 +142,7 @@ export enum LessonWorkType {
   'PracticalWork' = 'Практ. работа',
   'PracticalTraining' = 'Практ. занятие',
   'Seminar' = 'Семинар',
-  '' = 'не задан'
+  '' = 'Не указан'
 }
 
 type GradeKeys = keyof typeof Grade;
@@ -150,7 +151,7 @@ export type TextMark = GradeKeys;
 export type TMark = typeof Grade[GradeKeys];
 export type TLesson = keyof typeof LessonWorkType;
 export type LessonTypes = keyof typeof LessonType;
-
+export type AbsenceType = 'IsAbsent'
 
 export interface Task {
   attachments: []
@@ -183,10 +184,11 @@ export interface Gradebook {
   tasks?: Task[]
   themes?: string[]
   // TODO: возможно есть другие значения
-  absenceType?: 'IsAbsent'
+  absenceType?: AbsenceType
 }
 
 export interface Lesson {
+  lessonId?: string
   endTime: string
   startTime: string
   name: string | null
@@ -218,6 +220,7 @@ export interface PerformanceCurrent {
     daysWithMarks: [
       {
         day: Date;
+        absenceType?: AbsenceType;
         markValues: TextMark[];
       }
     ];

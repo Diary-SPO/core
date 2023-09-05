@@ -2,16 +2,26 @@ import {
   memo, ReactNode, useEffect, useState,
 } from 'react';
 import {
-  Card, CardGrid, Div, Group, Header, HorizontalScroll, MiniInfoCell, Snackbar, Spinner, Title,
+  Card,
+  CardGrid,
+  Div,
+  Group,
+  Header,
+  HorizontalScroll,
+  MiniInfoCell,
+  Snackbar,
+  Spinner,
+  Title,
 } from '@vkontakte/vkui';
 import { Icon20StatisticsOutline, Icon28ErrorCircleOutline, Icon20IncognitoOutline } from '@vkontakte/icons';
 
-import { Grade, PerformanceCurrent, TextMark } from '../../../shared';
+import {
+  AbsenceType, Grade, PerformanceCurrent, TextMark, TMark,
+} from '../../../shared';
 import { getPerformance } from '../methods';
 
 import Mark from './Mark';
 import calculateAverageMark from '../utils/calculateAverageMark';
-import setDefaultMarkIfEmpty from '../utils/setDefaultMarkIfEmpty';
 
 const MarksByGroup = () => {
   const [marksForSubject, setMarksForSubject] = useState<PerformanceCurrent | null>(null);
@@ -45,7 +55,7 @@ const MarksByGroup = () => {
     fetchMarks();
   }, []);
 
-  const subjectMarksMap: Record<string, { date: string; marks: TextMark[] }[]> = {};
+  const subjectMarksMap: Record<string, { date: string; marks: TextMark[], absenceType?: AbsenceType }[]> = {};
   marksForSubject?.daysWithMarksForSubject?.map((subject) => {
     const { subjectName, daysWithMarks } = subject;
     if (!subjectMarksMap[subjectName]) {
@@ -56,6 +66,7 @@ const MarksByGroup = () => {
       subjectMarksMap[subjectName].push({
         date: new Date(dayWithMark.day).toLocaleDateString(),
         marks: dayWithMark.markValues,
+        absenceType: dayWithMark.absenceType,
       });
     });
   });
@@ -72,13 +83,10 @@ const MarksByGroup = () => {
               <div style={{ display: 'flex' }}>
                 {subjectMarksMap[subjectName].map(({ marks }, i) => (
                   <div key={i} style={{ display: 'flex' }}>
-                    {marks.length > 0 ? (
-                      marks?.map((mark, j) => (
-                        <Mark key={j} mark={Grade[mark]} size='s' />
-                      ))
-                    ) : (
-                      <Mark mark={Grade[setDefaultMarkIfEmpty([])]} size='s' />
-                    )}
+                    {(marks.length > 0 ? marks?.map((mark, j) => (
+                      <Mark key={j} mark={Grade[subjectMarksMap[subjectName][i].absenceType === 'IsAbsent' ? 'Н' : mark]} size='s' />
+                    )) : subjectMarksMap[subjectName]?.map((mark, j) => <Mark key={j} size='s' mark={mark.absenceType === 'IsAbsent' ? 'Н' as TMark : 'Д' as TMark} />)
+                      )}
                   </div>
                 ))}
               </div>

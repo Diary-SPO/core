@@ -9,7 +9,6 @@ import {
 } from '../../../shared';
 import setDefaultMark from '../utils/setDefaultMark';
 import { formatLessonDate } from '../utils/formatLessonDate';
-import truncateText from '../utils/truncateText';
 
 import { MODAL_PAGE_LESSON } from '../modals/ModalRoot';
 
@@ -62,6 +61,8 @@ const LessonCard: FC<ILessonCard> = ({ lesson }) => {
   return (
     <Card key={lesson.date as unknown as string}>
       <Group
+        /* Без этого Group не растягивается и немного уезжает на планшетах */
+        style={{ height: '100%', marginTop: '4px' }}
         header={(
           <Header mode='secondary'>
             {formattedLessonDate}
@@ -124,7 +125,7 @@ const LessonCard: FC<ILessonCard> = ({ lesson }) => {
                   </div>
                 )}
               >
-                {truncateText(name, 30, false)}
+                {name}
               </SimpleCell>
             )
           ))

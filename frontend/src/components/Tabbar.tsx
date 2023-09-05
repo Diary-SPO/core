@@ -36,7 +36,7 @@ const Tabbar: FC<ITabbar> = ({ onStoryChange, activeView }) => {
           onClick={() => onStoryChange(VIEW_MARKS)}
           selected={activeView === VIEW_MARKS}
           data-story={VIEW_MARKS}
-          text='Оценки'
+          text='Успеваемость'
         >
           <Icon28GraphOutline />
         </TabbarItem>

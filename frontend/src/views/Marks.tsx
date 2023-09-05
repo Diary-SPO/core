@@ -7,6 +7,7 @@ import PanelHeaderWithBack from '../components/PanelHeaderWithBack';
 // TODO: Возможно этот компонент больше не нужен
 // const BestWorstMarks = lazy(() => import('../components/BestWorstMarks'));
 const MarksByGroup = lazy(() => import('../components/MarksByGroup'));
+const UserInfo = lazy(() => import('../components/UserInfo'));
 
 const Marks: FC<{ id: string }> = ({ id }) => {
   const { panel: activePanel, panelsHistory } = useActiveVkuiLocation();
@@ -20,9 +21,12 @@ const Marks: FC<{ id: string }> = ({ id }) => {
       onSwipeBack={() => routeNavigator.back()}
     >
       <Panel nav={id}>
-        <PanelHeaderWithBack title='Оценки' />
+        <PanelHeaderWithBack title='Успеваемость' />
         <Suspense>
           {/* <BestWorstMarks /> */}
+          <Suspense>
+            <UserInfo />
+          </Suspense>
           <MarksByGroup />
         </Suspense>
       </Panel>
