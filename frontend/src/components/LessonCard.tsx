@@ -13,9 +13,9 @@ import truncateText from '../utils/truncateText';
 
 import { MODAL_PAGE_LESSON } from './ModalRoot';
 
+import SubtitleWithBorder from './SubtitleWithBorder';
 import TimeRemaining from './TimeRemaining';
 import Mark from './Mark';
-import SubtitleWithBorder from "./SubtitleWithBorder.tsx";
 
 interface ILessonCard {
   lesson: Day;
@@ -74,7 +74,7 @@ const LessonCard: FC<ILessonCard> = ({ lesson }) => {
                 key={startTime as unknown as string}
                 subtitle={!name || (
                   <div>
-                    <div style={{ display: "flex" }}>
+                    <div style={{ display: 'flex' }}>
                       {gradebook?.lessonType && (
                         <SubtitleWithBorder>
                           {LessonWorkType[gradebook?.lessonType]}
@@ -83,8 +83,8 @@ const LessonCard: FC<ILessonCard> = ({ lesson }) => {
                       {gradebook?.absenceType && <SubtitleWithBorder color='red'>Н</SubtitleWithBorder>}
                     </div>
                     <div>
-                    {`${startTime} — ${endTime}, каб. ${timetable?.classroom.name}`}
-                  </div>
+                      {`${startTime} — ${endTime}, каб. ${timetable?.classroom.name}`}
+                    </div>
                     <TimeRemaining lessonDate={lesson.date} startTime={startTime} endTime={endTime} />
                     <div
                       style={{
@@ -107,7 +107,7 @@ const LessonCard: FC<ILessonCard> = ({ lesson }) => {
                         {gradebook?.tasks?.map((task, index) => (
                           (task.isRequired || (Grade[setDefaultMark(task)] !== 'Д')) && (
                             <Mark
-                              useMargin={true}
+                              useMargin
                               mark={Grade[setDefaultMark(task)]}
                               size='s'
                               key={index}

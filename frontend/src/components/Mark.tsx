@@ -20,7 +20,6 @@ const getBackgroundColor = (score: TMark) => {
 };
 
 const Mark: FC<IMark> = ({ mark, size = 'l', useMargin = true }) => {
-  console.log(mark)
   const getSize = (size: Sizes) => {
     if (size === 's') {
       return '1rem';

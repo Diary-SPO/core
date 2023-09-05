@@ -31,13 +31,13 @@ const SubtitleWithBorder: FC<ISubtitleWithBorder> = ({ children, color = 'defaul
         };
     }
   };
-  
+
   return (
     <div
       style={{
         margin: '0 5px 5px 0',
         display: 'inline-block',
-        ...getColorStyles(), // Применяем стили в зависимости от выбранного цвета
+        ...getColorStyles(),
         padding: '3px 5px',
       }}
     >
