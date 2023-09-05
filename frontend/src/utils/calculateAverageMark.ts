@@ -1,4 +1,4 @@
-import { TextMark, TMark } from 'dnevnik/shared/shared';
+import { TextMark, TMark } from '../../../shared';
 import { Grade } from '../types';
 
 const calculateAverageMark = (marks: TextMark[]): number | null => {

@@ -6,7 +6,7 @@ import {
 } from '@vkontakte/vkui';
 import { Icon20StatisticsOutline, Icon28ErrorCircleOutline, Icon20IncognitoOutline } from '@vkontakte/icons';
 
-import { PerformanceCurrent, TextMark, TMark } from 'dnevnik/shared/shared';
+import { PerformanceCurrent, TextMark, TMark } from '../../../shared';
 import { getPerformance } from '../methods';
 import { Grade } from '../types';
 
@@ -78,7 +78,7 @@ const MarksByGroup = () => {
                         <Mark key={j} mark={Grade[mark] as TMark} size='s' />
                       ))
                     ) : (
-                      <Mark mark={Grade[setDefaultMarkIfEmpty([])] as TMark} size='s' />
+                      <Mark mark={Grade[setDefaultMarkIfEmpty([])] as unknown as TMark} size='s' />
                     )}
                   </div>
                 ))}

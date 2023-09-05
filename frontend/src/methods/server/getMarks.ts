@@ -1,4 +1,4 @@
-import { IMark } from 'dnevnik/shared/shared';
+import { IMark } from '../../../../shared';
 
 import { getCookie } from '../bridge/getCookie';
 import { getUserId } from '../bridge/getUserId';

@@ -1,4 +1,4 @@
-import { TextMark } from 'dnevnik/shared/shared';
+import { TextMark } from '../../../shared';
 
 const setDefaultMarkIfEmpty = (marks: TextMark[]): TextMark => {
   if (marks.length === 0) {

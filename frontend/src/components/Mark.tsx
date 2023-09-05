@@ -1,6 +1,6 @@
 import { CSSProperties, FC } from 'react';
 
-import { TMark } from 'dnevnik/shared/shared';
+import { TMark } from '../../../shared';
 
 type Sizes = 'l' | 's';
 
