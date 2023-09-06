@@ -1,8 +1,9 @@
 import express from 'express'
+import cors from "cors";
 
 const router = express.Router()
 
-router.get('/', (req, res) => {
+router.get('/', cors(), (req, res) => {
   res.send('Hello')
 })
 

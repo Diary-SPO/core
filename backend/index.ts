@@ -31,7 +31,8 @@ app.use(limiter);
 
 app.use(cors({
   origin: 'https://stage-app51740302-e41bb921fdf2.pages.vk-apps.com',
-  'methods': "GET,HEAD,PUT,PATCH,POST,DELETE",
+  methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+  optionsSuccessStatus: 200,
 }));
 
 app.use('/', helloRoute);

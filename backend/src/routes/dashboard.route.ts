@@ -2,10 +2,11 @@ import express, { type Request, type Response } from 'express'
 
 import axiosInstance from '../axiosWrapper'
 import { checkCookie, checkId } from '../middleware'
+import cors from "cors";
 
 const router = express.Router()
 
-router.post('/:id', [checkId, checkCookie], async (req: Request, res: Response) => {
+router.post('/:id', cors(), [checkId, checkCookie], async (req: Request, res: Response) => {
   try {
     const secret = req.headers.secret
     const { id } = req.params
