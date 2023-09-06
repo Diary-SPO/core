@@ -1,12 +1,12 @@
 import express, { type Request, type Response } from 'express'
 import { AxiosError, type AxiosResponse } from 'axios'
+
 import axiosInstance from '../axiosWrapper'
 import { type AuthData } from '../../../shared'
-import cors from "cors";
 
 const router = express.Router()
 
-router.post('/', cors(), async (req: Request, res: Response) => {
+router.post('/', async (req: Request, res: Response) => {
   const { login, password } = req.body
   console.log('login', login)
   if (!login || !password || typeof login !== 'string' || typeof password !== 'string') {

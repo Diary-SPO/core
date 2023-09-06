@@ -5,11 +5,10 @@ import axiosInstance from '../axiosWrapper'
 
 import { type IMark } from '../../../shared'
 import { checkCookie } from '../middleware'
-import cors from "cors";
 
 const router = express.Router()
 
-router.get('/:id/:startDate/:endDate', cors(), checkCookie, async (req: Request, res: Response) => {
+router.get('/:id/:startDate/:endDate', checkCookie, async (req: Request, res: Response) => {
   try {
     const secret = req.headers.secret
     const { startDate, endDate, id } = req.params
@@ -45,7 +44,7 @@ router.get('/:id/:startDate/:endDate', cors(), checkCookie, async (req: Request,
     })
 
     const data = response.data
-    res.json(data)
+    res.status(200).json(data);
   } catch (e) {
     console.error('/lessons/:id/:startDate/:endDate', e)
     res.status(500).json(`Internal server error: ${e as string}`)
