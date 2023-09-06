@@ -30,7 +30,7 @@ export const checkCookie = (
   next: NextFunction
 ): any => {
   const secret = req.headers.secret as string | undefined;
-  console.log(secret)
+
   if (!secret || typeof secret !== 'string' || secret !== '') {
     return res.status(400).json('Something is bad #1');
   }
@@ -44,7 +44,7 @@ const createCorsOptions = (req: Request): CorsOptions => {
   return {
     origin: (origin, callback) => {
       
-      const referer = req.get('Referer');
+      const referer = req.get('referer');
       console.log(origin, 'origin')
       console.log(referer, 'referer')
       if (origin && (allowedOriginPattern.test(origin) || origin === 'https://localhost:5173')) {

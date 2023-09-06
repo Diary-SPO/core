@@ -13,7 +13,7 @@ export const getMarks = async (): Promise<IMark> => {
     headers: {
       'Content-Type': 'application/json;charset=UTF-8',
       secret: cookie as string,
-      origin: origin
+      // origin: origin
     },
   });
 
