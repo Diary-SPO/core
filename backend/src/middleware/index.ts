@@ -45,7 +45,8 @@ const createCorsOptions = (req: Request): CorsOptions => {
     origin: (origin, callback) => {
       
       const referer = req.get('Referer');
-      
+      console.log(origin, 'origin')
+      console.log(referer, 'referer')
       if (origin && (allowedOriginPattern.test(origin) || origin === 'https://localhost:5173')) {
         callback(null, true);
       } else if (referer && allowedOriginPattern.test(referer)) {
