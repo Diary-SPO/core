@@ -4,7 +4,7 @@ import { appStorageSet } from './bridge/appStorageSet';
 import { getCookie } from './bridge/getCookie';
 import { getUserId } from './bridge/getUserId';
 
-import { getPerformance } from './server/getPerfomance';
+import { getPerformance } from './server/getPerformance.ts';
 import { getLessons } from './server/getLessons';
 import { getMarks } from './server/getMarks';
 

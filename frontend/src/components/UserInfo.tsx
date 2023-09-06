@@ -1,11 +1,14 @@
-import { CSSProperties, useEffect, useState } from 'react';
 import {
-  Avatar, Gradient, Group, Header, SimpleCell, Title, Text, Div, Spinner,
+  CSSProperties, ReactNode, useEffect, useState,
+} from 'react';
+import {
+  Avatar, Gradient, Group, Header, SimpleCell, Title, Text, Div, Spinner, Snackbar,
 } from '@vkontakte/vkui';
-import { Icon28SchoolOutline } from '@vkontakte/icons';
+import { Icon28SchoolOutline, Icon32PrometeyCircleFillRed } from '@vkontakte/icons';
+
 import bridge from '@vkontakte/vk-bridge';
 
-import { getVkStorageData, getVkStorageKeys } from '../methods';
+import { appStorageSet, getVkStorageData, getVkStorageKeys } from '../methods';
 
 const styles: CSSProperties = {
   margin: 0,
@@ -31,8 +34,31 @@ const UserInfo = () => {
     city: '',
     group: '',
   });
+
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [userAva, setUserAva] = useState<string | undefined>();
+  const [snackbar, setSnackbar] = useState<ReactNode | null>(null);
+
+  const autoLogOut = async () => {
+    await appStorageSet('cookie', '');
+    location.reload();
+    setSnackbar(null);
+  };
+
+  const openInvalidData = () => {
+    if (snackbar) return;
+    setSnackbar(
+      <Snackbar
+        onClose={autoLogOut}
+        before={
+          <Icon32PrometeyCircleFillRed fill='#fff' width={32} height={32} />
+       }
+        subtitle='Через 10 секунд произойдет автоматический выход из аккаунта, поэтому ищите листок с паролем'
+      >
+        Данные устарели
+      </Snackbar>,
+    );
+  };
 
   useEffect(() => {
     const getUserInfo = async () => {
@@ -40,7 +66,6 @@ const UserInfo = () => {
 
       const keys = await getVkStorageKeys();
       const data = await getVkStorageData(keys);
-
       await bridge.send('VKWebAppGetUserInfo')
         .then((data) => {
           if (data.id) {
@@ -52,6 +77,10 @@ const UserInfo = () => {
         });
 
       const extractedData: Partial<UserData> = data.keys.reduce((acc, item) => {
+        if (item.key === 'firstName' && item.value === '') {
+          openInvalidData();
+        }
+
         acc[item.key] = item.value;
         return acc;
       }, {} as UserData);
@@ -81,32 +110,35 @@ const UserInfo = () => {
   }
 
   return (
-    <div>
-      <Group>
-        <Gradient mode='tint' style={styles}>
-          <Avatar size={96} src={userAva} />
-          <Title style={{ marginBottom: 8, marginTop: 20 }} level='2' weight='2'>
-            {`${userData.lastName} ${userData.firstName} ${userData.middleName}`}
-          </Title>
-          <Text
-            style={{
-              marginBottom: 24,
-              color: 'var(--vkui--color_text_secondary)',
-            }}
-          >
-            Студент (
-            {userData.group}
-            )
-          </Text>
-        </Gradient>
-        <Group mode='plain'>
-          <Header>Учебное заведение</Header>
-          <SimpleCell before={<Icon28SchoolOutline />} subtitle={userData.city}>
-            {userData.org}
-          </SimpleCell>
-        </Group>
+    <Group>
+      <Gradient mode='tint' style={styles}>
+        <Avatar size={96} src={userAva} />
+        <Title style={{ marginBottom: 8, marginTop: 20 }} level='2' weight='2'>
+          {userData.lastName}
+          {' '}
+          {userData.firstName}
+          {' '}
+          {userData.middleName}
+        </Title>
+        <Text
+          style={{
+            marginBottom: 24,
+            color: 'var(--vkui--color_text_secondary)',
+          }}
+        >
+          Студент (
+          {userData.group}
+          )
+        </Text>
+      </Gradient>
+      <Group mode='plain'>
+        <Header>Учебное заведение</Header>
+        <SimpleCell before={<Icon28SchoolOutline />} subtitle={userData.city}>
+          {userData.org}
+        </SimpleCell>
       </Group>
-    </div>
+      {snackbar}
+    </Group>
   );
 };
 
