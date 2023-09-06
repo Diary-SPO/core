@@ -32,7 +32,9 @@ export default defineConfig({
       },
     },
   },
-  base: 'index-b2.html',
+  // Указывать только для dev сборки.
+  // Либо index'у вернуть его исходное имя, а переименовывать только при деплое
+  // base: 'index-b2.html',
   server: {
     https: true,
   }
