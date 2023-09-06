@@ -20,7 +20,7 @@ router.post('/', async (req: Request, res: Response) => {
       isRemember: true
     }, {
       headers: {
-        'Content-Type': 'application/json;charset=UTF-8',
+        'Content-Type': 'application/json;charset=UTF-8'
       }
     })
 

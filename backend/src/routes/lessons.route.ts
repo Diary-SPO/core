@@ -50,7 +50,7 @@ router.get('/:id/:startDate/:endDate', checkCookie, async (req: Request, res: Re
     })
 
     const data = response.data
-    res.status(200).json(data);
+    res.status(200).json(data)
   } catch (e) {
     console.error('/lessons/:id/:startDate/:endDate', e)
     res.status(500).json(`Internal server error: ${e as string}`)
