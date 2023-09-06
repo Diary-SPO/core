@@ -34,6 +34,16 @@ app.use(cors({
   optionsSuccessStatus: 204,
 }));
 
+app.use((req, res, next) => {
+  const refererHeader = req.get('Referer');
+  const originHeader = req.get('Origin');
+  
+  console.log('Referer:', refererHeader);
+  console.log('Origin:', originHeader);
+  
+  next();
+});
+
 app.use('/', helloRoute);
 app.use('/lessons', lessonsRoute);
 app.use('/login', loginRoute);
