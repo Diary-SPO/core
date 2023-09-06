@@ -80,7 +80,6 @@ const Settings: FC<ISettings> = ({ id }) => {
     bridge.send('VKWebAppAddToHomeScreenInfo')
       .then(({ is_added_to_home_screen, is_feature_supported }) => {
         if (is_feature_supported) {
-          console.log('supported');
           setIsHomeScreenSupported(true);
         }
         if (is_added_to_home_screen) {

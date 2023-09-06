@@ -8,7 +8,6 @@ export const appStorageSet = async (key: string, value: string) => {
     });
 
     if (data.result) {
-      console.log(data);
       return data;
     }
   } catch (error) {

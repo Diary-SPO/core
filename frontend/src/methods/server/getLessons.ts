@@ -16,10 +16,10 @@ export const getLessons = async (startDate?: Date, endDate?: Date): Promise<Day[
     endDate = new Date();
     endDate.setDate(endDate.getDate() + 7);
   }
-  console.log('origin', origin)
+
   const formattedStartDate = formatDateForRequest(startDate);
   const formattedEndDate = formatDateForRequest(endDate);
-  console.log(cookie)
+
   const response = await fetch(`${import.meta.env.VITE_SERVER_URL}/lessons/${id}/${formattedStartDate}/${formattedEndDate}`, {
     method: 'GET',
     headers: {
