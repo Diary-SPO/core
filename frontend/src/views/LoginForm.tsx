@@ -97,6 +97,7 @@ const LoginForm: FC<{ id: string }> = ({ id }) => {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json;charset=UTF-8',
+        origin: origin,
       },
       body: JSON.stringify({
         login,

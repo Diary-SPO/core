@@ -30,7 +30,7 @@ export const checkCookie = (
   next: NextFunction
 ): any => {
   const secret = req.headers.secret as string | undefined;
-  
+  console.log(secret)
   if (!secret || typeof secret !== 'string' || secret !== '') {
     return res.status(400).json('Something is bad #1');
   }
