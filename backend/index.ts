@@ -22,7 +22,7 @@ app.use(express.json())
 
 const limiter = rateLimit({
   windowMs: FIFTEEN_MINS_IN_MS,
-  max: 50,
+  max: 70,
   statusCode: 200,
   message: 'ОК'
 })
