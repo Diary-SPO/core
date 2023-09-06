@@ -24,7 +24,7 @@ const limiter = rateLimit({
   windowMs: FIFTEEN_MINS_IN_MS,
   max: 70,
   statusCode: 200,
-  message: 'ОК'
+  message: 'CORS'
 })
 
 app.use(cors({

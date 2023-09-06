@@ -3,7 +3,7 @@ import { Tabbar as VKUITabbar, TabbarItem, useAdaptivityConditionalRender } from
 
 import {
   Icon28BookSpreadOutline,
-  Icon28MailOutline,
+  Icon28HelpOutline,
   Icon28GraphOutline,
   Icon28SettingsOutline,
 } from '@vkontakte/icons';
@@ -44,9 +44,9 @@ const Tabbar: FC<ITabbar> = ({ onStoryChange, activeView }) => {
           onClick={() => onStoryChange(VIEW_CONTACTS)}
           selected={activeView === VIEW_CONTACTS}
           data-story={VIEW_CONTACTS}
-          text='Контакты'
+          text='Помощь'
         >
-          <Icon28MailOutline />
+          <Icon28HelpOutline />
         </TabbarItem>
         <TabbarItem
           onClick={() => onStoryChange(VIEW_SETTINGS)}

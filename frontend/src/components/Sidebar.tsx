@@ -3,10 +3,10 @@ import {
   Cell, Group, Panel,
 } from '@vkontakte/vkui';
 import {
-  Icon28MailOutline,
   Icon28GraphOutline,
   Icon28SettingsOutline,
   Icon28BookSpreadOutline,
+  Icon28HelpOutline,
 } from '@vkontakte/icons';
 
 import {
@@ -49,9 +49,9 @@ const Sidebar: FC<ISidebarProps> = ({ activeView, onStoryChange }) => (
         data-story={VIEW_CONTACTS}
         onClick={() => onStoryChange(VIEW_CONTACTS)}
         style={activeView === VIEW_CONTACTS ? activeStoryStyles : undefined}
-        before={<Icon28MailOutline />}
+        before={<Icon28HelpOutline />}
       >
-        Контакты
+        Помощь
       </Cell>
       <Cell
         disabled={activeView === VIEW_SETTINGS}

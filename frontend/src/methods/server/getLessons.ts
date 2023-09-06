@@ -3,8 +3,8 @@ import formatDateForRequest from '../../utils/formatDateForRequest';
 
 import { getUserId } from '../bridge/getUserId';
 import { getCookie } from '../bridge/getCookie';
-
-export const getLessons = async (startDate?: Date, endDate?: Date): Promise<Day[]> => {
+// TODO: добавить обработку CORS
+export const getLessons = async (startDate?: Date, endDate?: Date): Promise<Day[] | string> => {
   const cookie = await getCookie();
   const id = await getUserId();
 
@@ -31,6 +31,11 @@ export const getLessons = async (startDate?: Date, endDate?: Date): Promise<Day[
 
   if (!response.ok) {
     throw new Error('Failed to fetch lessons');
+  }
+  
+  if (response.statusText === 'CORS') {
+    console.log(response.statusText)
+    return 'cors';
   }
 
   const data = await response.json() as Day[];

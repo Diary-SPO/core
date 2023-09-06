@@ -81,7 +81,7 @@ const LessonCard: FC<ILessonCard> = ({ lesson }) => {
                 subtitle={!name || (
                   <div>
                     <div style={{ display: 'flex', alignItems: 'center' }}>
-                      <div style={{ display: 'flex', marginRight: 3 }}>
+                      <div style={{ display: 'flex', margin: '5px 5px 5px 0px' }}>
                         {gradebook?.lessonType && (
                           <SubtitleWithBorder>
                             {LessonWorkType[gradebook?.lessonType]}

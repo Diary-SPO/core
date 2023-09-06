@@ -3,11 +3,16 @@ import {
 } from 'react';
 import {
   Button,
-  ButtonGroup, Group, Header, Link,
+  ButtonGroup, Group, Header, IconButton, Link,
   Panel, PanelSpinner, Placeholder, Snackbar, View,
 } from '@vkontakte/vkui';
 import { useActiveVkuiLocation, useRouteNavigator } from '@vkontakte/vk-mini-apps-router';
-import { Icon28ErrorCircleOutline, Icon28InfoCircle } from '@vkontakte/icons';
+import {
+  Icon28ErrorCircleOutline,
+  Icon28InfoCircle,
+  Icon16ArrowRightOutline,
+  Icon16ArrowLeftOutline
+} from '@vkontakte/icons';
 
 import { Day } from '../../../shared';
 import { getLessons } from '../methods';
@@ -64,6 +69,13 @@ const Schedule: FC<{ id: string }> = ({ id }) => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isError, setIsError] = useState<boolean>(false);
   
+  const updateDatesFromData = (data) => {
+    const firstLessonDate = data && data.length > 0 ? new Date(data[0].date) : startDate;
+    const lastLessonDate = data && data.length > 0 ? new Date(data[data.length - 1].date) : endDate;
+    setStartDate(startOfWeek(firstLessonDate));
+    setEndDate(endOfWeek(lastLessonDate));
+  };
+  
   const handleReloadData = async () => {
     setSnackbar(null);
     setIsError(false);
@@ -73,8 +85,25 @@ const Schedule: FC<{ id: string }> = ({ id }) => {
     
     try {
       const data = await getLessons(startDate, newEndDate);
+      console.log(data)
+      if (typeof data === 'string') {
+        setSnackbar(
+          <Snackbar
+            layout='vertical'
+            onClose={() => setSnackbar(null)}
+            before={<Icon28InfoCircle fill='var(--vkui--color_background_accent)' />}
+            action='Вы временно заблокированы. Если вы считаете, что это ошибка, то сообщите нам'
+            onActionClick={() => handleReloadData()}
+          >
+            Слишком частые запросы
+          </Snackbar>
+        );
+        return;
+      }
       setLessons(data);
       setIsLoading(false);
+      
+      updateDatesFromData(data);
       
       localStorage.setItem('savedLessons', JSON.stringify(data));
     } catch (error) {
@@ -98,6 +127,21 @@ const Schedule: FC<{ id: string }> = ({ id }) => {
       try {
         if (!savedLessons || timeSinceLastRequest > 30000) {
           const data = await getLessons(startDate, endDate);
+          console.log(data)
+          if (typeof data === 'string') {
+            setSnackbar(
+              <Snackbar
+                layout='vertical'
+                onClose={() => setSnackbar(null)}
+                before={<Icon28InfoCircle fill='var(--vkui--color_background_accent)' />}
+                action='Вы временно заблокированы. Если вы считаете, что это ошибка, то сообщите нам'
+                onActionClick={() => handleReloadData()}
+              >
+                Слишком частые запросы
+              </Snackbar>
+            );
+            return;
+          }
           setLessons(data);
           setIsLoading(false);
           
@@ -105,6 +149,8 @@ const Schedule: FC<{ id: string }> = ({ id }) => {
           localStorage.setItem('lastRequestTime', currentTime.toString());
           
           setSnackbar(null);
+          
+          updateDatesFromData(data);
         } else {
           setIsLoading(false);
           if (!snackbar) {
@@ -121,16 +167,38 @@ const Schedule: FC<{ id: string }> = ({ id }) => {
     
     if (savedLessons) {
       setLessons(JSON.parse(savedLessons));
+      const firstLessonDate = JSON.parse(savedLessons)[0] ? new Date(JSON.parse(savedLessons)[0].date) : startDate;
+      const lastLessonDate = JSON.parse(savedLessons)[JSON.parse(savedLessons).length - 1]
+        ? new Date(JSON.parse(savedLessons)[JSON.parse(savedLessons).length - 1].date)
+        : endDate;
+      setStartDate(startOfWeek(firstLessonDate));
+      setEndDate(endOfWeek(lastLessonDate));
     }
     
     gettedLessons();
-  }, [startDate, endDate]);
+  }, []);
   
   const sendToServerIfValid = async (start: Date, end: Date) => {
     if (start <= end) {
       const differenceInDays = (end.getTime() - start.getTime()) / (1000 * 3600 * 24);
       if (differenceInDays <= 14) {
         const data = await getLessons(start, end);
+        console.log(data)
+        if (typeof data === 'string') {
+          setSnackbar(
+            <Snackbar
+              layout='vertical'
+              onClose={() => setSnackbar(null)}
+              before={<Icon28InfoCircle fill='var(--vkui--color_background_accent)' />}
+              action='Вы временно заблокированы. Если вы считаете, что это ошибка, то сообщите нам'
+              onActionClick={() => handleReloadData()}
+            >
+              Слишком частые запросы
+            </Snackbar>
+          );
+          return;
+        }
+        
         setLessons(data);
         
         localStorage.setItem('savedLessons', JSON.stringify(data));
@@ -156,6 +224,20 @@ const Schedule: FC<{ id: string }> = ({ id }) => {
         }
         
         const data = await getLessons(start, newEndDate);
+        if (typeof data === 'string') {
+          setSnackbar(
+            <Snackbar
+              layout='vertical'
+              onClose={() => setSnackbar(null)}
+              before={<Icon28InfoCircle fill='var(--vkui--color_background_accent)'/>}
+              action='Вы временно заблокированы. Если вы считаете, что это ошибка, то сообщите нам'
+              onActionClick={() => handleReloadData()}
+            >
+              Слишком частые запросы
+            </Snackbar>
+          );
+          return;
+        }
         setLessons(data);
         
         localStorage.setItem('savedLessons', JSON.stringify(data));
@@ -171,6 +253,20 @@ const Schedule: FC<{ id: string }> = ({ id }) => {
         setEndDate(newEndDate);
         
         const data = await getLessons(start, newEndDate);
+        if (typeof data === 'string') {
+          setSnackbar(
+            <Snackbar
+              layout='vertical'
+              onClose={() => setSnackbar(null)}
+              before={<Icon28InfoCircle fill='var(--vkui--color_background_accent)' />}
+              action='Вы временно заблокированы. Если вы считаете, что это ошибка, то сообщите нам'
+              onActionClick={() => handleReloadData()}
+            >
+              Слишком частые запросы
+            </Snackbar>
+          );
+          return;
+        }
         setLessons(data);
         
         localStorage.setItem('savedLessons', JSON.stringify(data));
@@ -193,6 +289,41 @@ const Schedule: FC<{ id: string }> = ({ id }) => {
     setEndDate(newEndDate);
     sendToServerIfValid(startDate, newEndDate);
   };
+  
+  const [lastClickTime, setLastClickTime] = useState<number | null>(null);
+  
+  const debouncedChangeWeek = (direction: 'prev' | 'next') => {
+    if (lastClickTime && Date.now() - lastClickTime <= 500) {
+      setTimeout(() => {
+        debouncedChangeWeek(direction);
+      }, 800);
+    } else {
+      setLastClickTime(Date.now());
+      const newStartDate = new Date(startDate);
+      const newEndDate = new Date(endDate);
+      if (direction === 'prev') {
+        newStartDate.setDate(newStartDate.getDate() - 7);
+        newEndDate.setDate(newEndDate.getDate() - 7);
+      } else if (direction === 'next') {
+        newStartDate.setDate(newStartDate.getDate() + 7);
+        newEndDate.setDate(newEndDate.getDate() + 7);
+      }
+      setStartDate(newStartDate);
+      setEndDate(newEndDate);
+      sendToServerIfValid(newStartDate, newEndDate);
+    }
+  };
+  
+  const Buttons = (
+    <ButtonGroup>
+      <IconButton aria-label='Prev' onClick={() => debouncedChangeWeek('prev')}>
+        <Icon16ArrowLeftOutline />
+      </IconButton>
+      <IconButton aria-label='Next' onClick={() => debouncedChangeWeek('next')}>
+        <Icon16ArrowRightOutline />
+      </IconButton>
+    </ButtonGroup>
+  )
   
   const weekString = `${startDate.getDate()} ${startDate.toLocaleString('default', { month: 'long' }).slice(0, 4)} - ${endDate.getDate()} ${endDate.toLocaleString('default', { month: 'long' }).slice(0, 4)}`;
   return (
@@ -218,7 +349,15 @@ const Schedule: FC<{ id: string }> = ({ id }) => {
         </Suspense>
         {isLoading ? <PanelSpinner size='medium' /> : (
           <Suspense id='ScheduleGroup' mode='screen'>
-            <Group header={<Header mode='secondary'>Расписание занятий на период {weekString}</Header>}>
+            <Group
+              header={
+                <Header aside={Buttons}
+                mode='secondary'
+              >
+                Период {weekString}
+              </Header>
+            }
+            >
               <ScheduleGroup lessonsState={lessonsState} />
             </Group>
           </Suspense>
