@@ -13,7 +13,12 @@ import {
   Spinner,
   Title,
 } from '@vkontakte/vkui';
-import { Icon20StatisticsOutline, Icon28ErrorCircleOutline, Icon20IncognitoOutline } from '@vkontakte/icons';
+import {
+  Icon20StatisticsOutline,
+  Icon28ErrorCircleOutline,
+  Icon20IncognitoOutline,
+  Icon28InfoCircle,
+} from '@vkontakte/icons';
 
 import {
   AbsenceType, Grade, PerformanceCurrent, TextMark, TMark,
@@ -23,10 +28,42 @@ import { getPerformance } from '../methods';
 import Mark from './Mark';
 import calculateAverageMark from '../utils/calculateAverageMark';
 
+const THIRD_SEC = 30 * 1000;
+
 const MarksByGroup = () => {
   const [marksForSubject, setMarksForSubject] = useState<PerformanceCurrent | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [snackbar, setSnackbar] = useState<ReactNode | null>(null);
+
+  const fetchMarks = async (isHandle?: boolean) => {
+    setIsLoading(true);
+    const thirtySeconds = THIRD_SEC;
+
+    try {
+      const lastFetchTime = localStorage.getItem('lastFetchTime');
+
+      if (!lastFetchTime || Date.now() - Number(lastFetchTime) >= thirtySeconds || isHandle) {
+        const marks = await getPerformance();
+
+        localStorage.setItem('marks', JSON.stringify(marks));
+        localStorage.setItem('lastFetchTime', String(Date.now()));
+
+        setMarksForSubject(marks);
+      } else {
+        setSnackbar(CacheSnackbar);
+        const cachedMarks = localStorage.getItem('marks');
+        if (cachedMarks) {
+          setMarksForSubject(JSON.parse(cachedMarks));
+        }
+      }
+
+      setIsLoading(false);
+    } catch (error) {
+      setIsLoading(false);
+      setSnackbar(ErrorSnackbar);
+      console.error('Ошибка при получении оценок:', error);
+    }
+  };
 
   const ErrorSnackbar = (
     <Snackbar
@@ -38,20 +75,18 @@ const MarksByGroup = () => {
     </Snackbar>
   );
 
-  useEffect(() => {
-    setIsLoading(true);
-    const fetchMarks = async () => {
-      try {
-        const marks = await getPerformance();
-        setIsLoading(false);
-        setMarksForSubject(marks);
-      } catch (error) {
-        setIsLoading(false);
-        setSnackbar(ErrorSnackbar);
-        console.error('Ошибка при получении оценок:', error);
-      }
-    };
+  const CacheSnackbar = (
+    <Snackbar
+      onClose={() => setSnackbar(null)}
+      before={<Icon28InfoCircle fill='var(--vkui--color_background_accent)' />}
+      action='Загрузить новые'
+      onActionClick={() => fetchMarks(true)}
+    >
+      Оценки взяты из кеша
+    </Snackbar>
+  );
 
+  useEffect(() => {
     fetchMarks();
   }, []);
 
