@@ -24,6 +24,7 @@ export default defineConfig({
       safari10: false,
     },
     rollupOptions: {
+      input: 'index-b2.html',
       output: {
         manualChunks: {
           react: ['react', 'react-dom'],
@@ -31,6 +32,7 @@ export default defineConfig({
       },
     },
   },
+  base: 'index-b2.html',
   server: {
     https: true,
   }
