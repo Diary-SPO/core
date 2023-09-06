@@ -27,7 +27,7 @@ const limiter = rateLimit({
   message: 'ОК',
 });
 
-const hosts = ['127.0.0.1', 'https://prod-app51743817'];
+const hosts = ['localhost', 'https://prod-app51743817'];
 
 app.use(limiter);
 
@@ -37,7 +37,7 @@ app.use(cors({
 }));
 
 app.use((req, res, next) => {
-  const resHost = req.get('Origin') || null;
+  const resHost = req.get('Origin') || req.get('Host') || null;
   console.log(resHost);
   let   isCORS = true;
   if(resHost != null)
