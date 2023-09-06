@@ -27,6 +27,8 @@ const limiter = rateLimit({
   message: 'ОК',
 });
 
+const hosts = ['127.0.0.1', 'https://prod-app51743817'];
+
 app.use(limiter);
 
 app.use(cors({
@@ -35,13 +37,17 @@ app.use(cors({
 }));
 
 app.use((req, res, next) => {
-  const refererHeader = req.get('Referer');
-  const originHeader = req.get('Origin');
-  
-  console.log('Referer:', refererHeader);
-  console.log('Origin:', originHeader);
-  
-  next();
+  const resHost = req.get('Origin') || null;
+  console.log(resHost);
+  let   isCORS = true;
+  if(resHost != null)
+  hosts.forEach(host => {
+    if (resHost.indexOf(host) >= 0) {
+      isCORS = false;
+    }
+  });
+  if (!isCORS) next();
+  else         res.status(200).send('CORS');
 });
 
 app.use('/', helloRoute);
