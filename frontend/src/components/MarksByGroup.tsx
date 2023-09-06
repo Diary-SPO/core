@@ -1,6 +1,4 @@
-import {
-  memo, ReactNode, useEffect, useState,
-} from 'react';
+import {memo, ReactNode, useEffect, useState,} from 'react';
 import {
   Card,
   CardGrid,
@@ -14,16 +12,14 @@ import {
   Title,
 } from '@vkontakte/vkui';
 import {
+  Icon20IncognitoOutline,
   Icon20StatisticsOutline,
   Icon28ErrorCircleOutline,
-  Icon20IncognitoOutline,
   Icon28InfoCircle,
 } from '@vkontakte/icons';
 
-import {
-  AbsenceType, Grade, PerformanceCurrent, TextMark, TMark,
-} from '../../../shared';
-import { getPerformance } from '../methods';
+import {AbsenceType, Grade, PerformanceCurrent, TextMark, TMark,} from '../../../shared';
+import {getPerformance} from '../methods';
 
 import Mark from './Mark';
 import calculateAverageMark from '../utils/calculateAverageMark';
@@ -37,12 +33,10 @@ const MarksByGroup = () => {
 
   const fetchMarks = async (isHandle?: boolean) => {
     setIsLoading(true);
-    const thirtySeconds = THIRD_SEC;
-
     try {
       const lastFetchTime = localStorage.getItem('lastFetchTime');
 
-      if (!lastFetchTime || Date.now() - Number(lastFetchTime) >= thirtySeconds || isHandle) {
+      if (!lastFetchTime || Date.now() - Number(lastFetchTime) >= THIRD_SEC || isHandle) {
         const marks = await getPerformance();
 
         localStorage.setItem('marks', JSON.stringify(marks));

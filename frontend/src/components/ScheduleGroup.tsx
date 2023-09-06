@@ -1,5 +1,7 @@
 import { FC } from 'react';
-import { CardScroll, Group, Header } from '@vkontakte/vkui';
+// TODO: Сделать переключатель для расписания
+// @ts-ignore
+import {CardGrid, CardScroll} from '@vkontakte/vkui';
 
 import { Day } from '../../../shared';
 
@@ -10,13 +12,11 @@ interface IScheduleGroup {
 }
 
 const ScheduleGroup: FC<IScheduleGroup> = ({ lessonsState }) => (
-  <Group header={<Header mode='secondary'>Расписание занятий</Header>}>
-    <CardScroll size='l'>
-      {lessonsState?.length && lessonsState?.length > 0 && lessonsState?.map((lesson) => (
-        <LessonCard key={lesson.date as unknown as string} lesson={lesson} />
-      ))}
-    </CardScroll>
-  </Group>
+  <CardGrid size='l' spaced>
+    {lessonsState?.length && lessonsState?.length > 0 && lessonsState?.map((lesson) => (
+      <LessonCard key={lesson.date as unknown as string} lesson={lesson} />
+    ))}
+  </CardGrid>
 );
 
 export default ScheduleGroup;

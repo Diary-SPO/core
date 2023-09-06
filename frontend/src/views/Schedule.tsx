@@ -3,7 +3,7 @@ import {
 } from 'react';
 import {
   Button,
-  ButtonGroup, Link,
+  ButtonGroup, Group, Header, Link,
   Panel, PanelSpinner, Placeholder, Snackbar, View,
 } from '@vkontakte/vkui';
 import { useActiveVkuiLocation, useRouteNavigator } from '@vkontakte/vk-mini-apps-router';
@@ -11,24 +11,39 @@ import { Icon28ErrorCircleOutline, Icon28InfoCircle } from '@vkontakte/icons';
 
 import { Day } from '../../../shared';
 import { getLessons } from '../methods';
-import formatDateForRequest from '../utils/formatDateForRequest';
 
 import PanelHeaderWithBack from '../components/PanelHeaderWithBack';
 import Suspense from '../components/Suspense';
+import { endOfWeek, startOfWeek } from '@vkontakte/vkui/dist/lib/date';
 
 const CalendarRange = lazy(() => import('../components/CalendarRange'));
 const ScheduleGroup = lazy(() => import('../components/ScheduleGroup'));
 
 const Schedule: FC<{ id: string }> = ({ id }) => {
-  const { panel: activePanel, panelsHistory } = useActiveVkuiLocation();
-  const routeNavigator = useRouteNavigator();
-  const [lessonsState, setLessons] = useState<Day[] | null>();
-  const [startDate, setStartDate] = useState(new Date());
-  const [endDate, setEndDate] = useState(new Date());
   const [snackbar, setSnackbar] = useState<null | ReactNode>(null);
-  const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [isError, setIsError] = useState<boolean>(false);
-
+  
+  const DataFromCache = (
+    <Snackbar
+      layout='vertical'
+      onClose={() => setSnackbar(null)}
+      before={<Icon28InfoCircle fill='var(--vkui--color_background_accent)' />}
+      action='Загрузить новые'
+      onActionClick={() => handleReloadData()}
+    >
+      Данные взяты из кеша
+    </Snackbar>
+  );
+  
+  const StartBiggerThenEnd = (
+    <Snackbar
+      onClose={() => setSnackbar(null)}
+      before={<Icon28InfoCircle fill='var(--vkui--color_background_accent)' />}
+      subtitle='Конечная дата будет автоматически установлена на 5 дней больше начальной'
+    >
+      Начальная дата больше конечной
+    </Snackbar>
+  )
+  
   const ErrorSnackbar = !snackbar && (
     <Snackbar
       onClose={() => setSnackbar(null)}
@@ -38,19 +53,29 @@ const Schedule: FC<{ id: string }> = ({ id }) => {
       Ошибка при попытке получить расписание
     </Snackbar>
   );
-
+  
+  const currentDate = new Date();
+  
+  const { panel: activePanel, panelsHistory } = useActiveVkuiLocation();
+  const routeNavigator = useRouteNavigator();
+  const [lessonsState, setLessons] = useState<Day[] | null>();
+  const [startDate, setStartDate] = useState<Date>(startOfWeek(currentDate));
+  const [endDate, setEndDate] = useState<Date>(endOfWeek(currentDate));
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isError, setIsError] = useState<boolean>(false);
+  
   const handleReloadData = async () => {
     setSnackbar(null);
     setIsError(false);
     setIsLoading(true);
     const newEndDate = new Date(endDate);
     newEndDate.setDate(newEndDate.getDate() + 7);
-
+    
     try {
       const data = await getLessons(startDate, newEndDate);
       setLessons(data);
       setIsLoading(false);
-
+      
       localStorage.setItem('savedLessons', JSON.stringify(data));
     } catch (error) {
       setIsLoading(false);
@@ -59,41 +84,31 @@ const Schedule: FC<{ id: string }> = ({ id }) => {
       console.error(error);
     }
   };
-
+  
   useEffect(() => {
     const savedLessons = localStorage.getItem('savedLessons');
     const getLastRequestTime = localStorage.getItem('lastRequestTime');
     const currentTime = Date.now();
     const lastRequestTime = getLastRequestTime ? parseInt(getLastRequestTime, 10) : 0;
     const timeSinceLastRequest = currentTime - lastRequestTime;
-
+    
     const gettedLessons = async () => {
       setIsLoading(true);
       setIsError(false);
       try {
         if (!savedLessons || timeSinceLastRequest > 30000) {
-          const data = await getLessons();
+          const data = await getLessons(startDate, endDate);
           setLessons(data);
           setIsLoading(false);
-
+          
           localStorage.setItem('savedLessons', JSON.stringify(data));
           localStorage.setItem('lastRequestTime', currentTime.toString());
-
+          
           setSnackbar(null);
         } else {
           setIsLoading(false);
           if (!snackbar) {
-            setSnackbar(
-              <Snackbar
-                layout='vertical'
-                onClose={() => setSnackbar(null)}
-                before={<Icon28InfoCircle fill='var(--vkui--color_background_accent)' />}
-                action='Загрузить новые'
-                onActionClick={() => handleReloadData()}
-              >
-                Данные взяты из кеша
-              </Snackbar>,
-            );
+            setSnackbar(DataFromCache);
           }
         }
       } catch (error) {
@@ -103,72 +118,66 @@ const Schedule: FC<{ id: string }> = ({ id }) => {
         console.error(error);
       }
     };
-
+    
     if (savedLessons) {
       setLessons(JSON.parse(savedLessons));
     }
-
+    
     gettedLessons();
-  }, []);
-
+  }, [startDate, endDate]);
+  
   const sendToServerIfValid = async (start: Date, end: Date) => {
     if (start <= end) {
       const differenceInDays = (end.getTime() - start.getTime()) / (1000 * 3600 * 24);
       if (differenceInDays <= 14) {
         const data = await getLessons(start, end);
         setLessons(data);
-
+        
         localStorage.setItem('savedLessons', JSON.stringify(data));
       } else {
         console.info('Разница между датами больше 14-и дней');
-
+        
         const newEndDate = new Date(start);
-        newEndDate.setDate(newEndDate.getDate() + 7);
+        newEndDate.setDate(newEndDate.getDate() + 14);
         setEndDate(newEndDate);
-
+        
+        const BigDifference = (
+          <Snackbar
+            onClose={() => setSnackbar(null)}
+            before={<Icon28InfoCircle fill='var(--vkui--color_background_accent)' />}
+            subtitle={`Конечная дата будет автоматически изменена на ${newEndDate.toLocaleString()}`}
+          >
+            Разница между датами больше 14-и дней
+          </Snackbar>
+        );
+        
         if (!snackbar) {
-          setSnackbar(
-            <Snackbar
-              onClose={() => setSnackbar(null)}
-              before={<Icon28InfoCircle fill='var(--vkui--color_background_accent)' />}
-              subtitle={`Конечная дата будет автоматически изменена ${formatDateForRequest(newEndDate)}`}
-            >
-              Разница между датами больше 14-и дней
-            </Snackbar>,
-          );
+          setSnackbar(BigDifference);
         }
-
+        
         const data = await getLessons(start, newEndDate);
         setLessons(data);
-
+        
         localStorage.setItem('savedLessons', JSON.stringify(data));
       }
     } else {
       console.info('Начальная дата больше конечной');
-
+      
       if (!snackbar) {
-        setSnackbar(
-          <Snackbar
-            onClose={() => setSnackbar(null)}
-            before={<Icon28InfoCircle fill='var(--vkui--color_background_accent)' />}
-            subtitle='Конечная дата будет автоматически установлена на 5 дней больше начальной'
-          >
-            Начальная дата больше конечной
-          </Snackbar>,
-        );
-
+        setSnackbar(StartBiggerThenEnd);
+        
         const newEndDate = new Date(start);
         newEndDate.setDate(newEndDate.getDate() + 5);
         setEndDate(newEndDate);
-
+        
         const data = await getLessons(start, newEndDate);
         setLessons(data);
-
+        
         localStorage.setItem('savedLessons', JSON.stringify(data));
       }
     }
   };
-
+  
   const handleStartDateChange = (newStartDate: Date) => {
     if (newStartDate.getTime() === startDate.getTime()) {
       return;
@@ -176,7 +185,7 @@ const Schedule: FC<{ id: string }> = ({ id }) => {
     setStartDate(newStartDate);
     sendToServerIfValid(newStartDate, endDate);
   };
-
+  
   const handleEndDateChange = (newEndDate: Date) => {
     if (newEndDate.getTime() === endDate.getTime()) {
       return;
@@ -184,7 +193,8 @@ const Schedule: FC<{ id: string }> = ({ id }) => {
     setEndDate(newEndDate);
     sendToServerIfValid(startDate, newEndDate);
   };
-
+  
+  const weekString = `${startDate.getDate()} ${startDate.toLocaleString('default', { month: 'long' }).slice(0, 4)} - ${endDate.getDate()} ${endDate.toLocaleString('default', { month: 'long' }).slice(0, 4)}`;
   return (
     <View
       id={id}
@@ -208,22 +218,24 @@ const Schedule: FC<{ id: string }> = ({ id }) => {
         </Suspense>
         {isLoading ? <PanelSpinner size='medium' /> : (
           <Suspense id='ScheduleGroup' mode='screen'>
-            <ScheduleGroup lessonsState={lessonsState} />
+            <Group header={<Header mode='secondary'>Расписание занятий на период {weekString}</Header>}>
+              <ScheduleGroup lessonsState={lessonsState} />
+            </Group>
           </Suspense>
         )}
         {isError
           && (
-          <Placeholder
-            header='Ошибка при загрузке'
-            action={(
-              <ButtonGroup mode='vertical' align='center'>
-                <Button size='s' onClick={handleReloadData}>Попробовать снова</Button>
-                <Link href='https://vk.me/dnevnik_spo' target='_blank'>
-                  Сообщить о проблеме
-                </Link>
-              </ButtonGroup>
-            )}
-          />
+            <Placeholder
+              header='Ошибка при загрузке'
+              action={(
+                <ButtonGroup mode='vertical' align='center'>
+                  <Button size='s' onClick={handleReloadData}>Попробовать снова</Button>
+                  <Link href='https://vk.me/dnevnik_spo' target='_blank'>
+                    Сообщить о проблеме
+                  </Link>
+                </ButtonGroup>
+              )}
+            />
           )}
         {isLoading && (
           <Snackbar
