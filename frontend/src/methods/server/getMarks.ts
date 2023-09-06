@@ -9,11 +9,10 @@ export const getMarks = async (): Promise<IMark> => {
   const id = await getUserId();
 
   const response = await fetch(`${import.meta.env.VITE_SERVER_URL}/dashboard/${id}`, {
-    method: 'GET',
+    method: 'POST',
     headers: {
       'Content-Type': 'application/json;charset=UTF-8',
       secret: cookie as string,
-      // origin: origin
     },
   });
 

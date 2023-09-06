@@ -7,7 +7,7 @@ const router = express.Router()
 
 router.post('/', async (req: Request, res: Response) => {
   const { login, password } = req.body
-  console.log(login)
+  console.log('login', login)
   if (!login || !password || typeof login !== 'string' || typeof password !== 'string') {
     return res.status(400).json('Invalid login or password')
   }
@@ -20,7 +20,6 @@ router.post('/', async (req: Request, res: Response) => {
     }, {
       headers: {
         'Content-Type': 'application/json;charset=UTF-8',
-        // origin: origin
       }
     })
 

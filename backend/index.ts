@@ -1,9 +1,10 @@
 import express from 'express';
 import rateLimit from 'express-rate-limit';
+import helmet from 'helmet';
+import cors from 'cors';
 import 'dotenv/config';
 
-import { corsMiddleware, preventCrossSiteScripting } from './src/middleware';
-import helmet from 'helmet';
+import { preventCrossSiteScripting } from './src/middleware';
 
 import {
   dashboard, helloRoute, lessonsRoute, loginRoute, performanceCurrent
@@ -28,7 +29,9 @@ const limiter = rateLimit({
 
 app.use(limiter);
 
-app.use(corsMiddleware);
+app.use(cors({
+  origin: 'https://stage-app51740302-19b73c109043.pages.vk-apps.com'
+}));
 
 app.use('/', helloRoute);
 app.use('/lessons', lessonsRoute);
