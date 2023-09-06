@@ -24,6 +24,7 @@ export default defineConfig({
       safari10: false,
     },
     rollupOptions: {
+      input: 'index-b2.1.html',
       output: {
         manualChunks: {
           react: ['react', 'react-dom'],
@@ -31,6 +32,9 @@ export default defineConfig({
       },
     },
   },
+  // Указывать только для dev сборки.
+  // Либо index'у вернуть его исходное имя, а переименовывать только при деплое
+  // base: 'index-b2.1.html',
   server: {
     https: true,
   }

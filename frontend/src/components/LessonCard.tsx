@@ -80,18 +80,20 @@ const LessonCard: FC<ILessonCard> = ({ lesson }) => {
                 key={startTime as unknown as string}
                 subtitle={!name || (
                   <div>
-                    <div style={{ display: 'flex' }}>
-                      {gradebook?.lessonType && (
-                        <SubtitleWithBorder>
-                          {LessonWorkType[gradebook?.lessonType]}
-                        </SubtitleWithBorder>
-                      )}
-                      {gradebook?.absenceType && <SubtitleWithBorder color='red'>Н</SubtitleWithBorder>}
+                    <div style={{ display: 'flex', alignItems: 'center' }}>
+                      <div style={{ display: 'flex', marginRight: 3 }}>
+                        {gradebook?.lessonType && (
+                          <SubtitleWithBorder>
+                            {LessonWorkType[gradebook?.lessonType]}
+                          </SubtitleWithBorder>
+                        )}
+                        {gradebook?.absenceType && <SubtitleWithBorder color='red'>Н</SubtitleWithBorder>}
+                      </div>
+                      <TimeRemaining lessonDate={lesson.date} startTime={startTime} endTime={endTime} />
                     </div>
                     <div>
                       {`${startTime} — ${endTime}, каб. ${timetable?.classroom.name}`}
                     </div>
-                    <TimeRemaining lessonDate={lesson.date} startTime={startTime} endTime={endTime} />
                     <div
                       style={{
                         marginBottom: 5,

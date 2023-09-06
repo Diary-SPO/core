@@ -42,15 +42,15 @@ const TimeRemaining: React.FC<ITimeRemainingProps> = ({ lessonDate, startTime, e
     return null;
   }
 
-  const isRed = timeRemainingText.includes('мин') && parseInt(timeRemainingText) < 15;
+  const isRed = parseInt(timeRemainingText) < 30;
 
   const styles = {
     margin: '5px 0',
     display: 'inline-block',
     padding: '3px 5px',
     borderRadius: '5px',
-    border: isRed ? '1px solid var(--vkui--color_background_accent_themed)' : '1px solid #FFF1AD',
-    color: isRed ? 'var(--vkui--color_background_accent_themed)' : '#FFF1AD',
+    border: isRed ? '1px solid var(--vkui--color_background_negative)' : '1px solid var(--vkui--color_accent_violet)',
+    color: isRed ? 'var(--vkui--color_background_negative)' : 'var(--vkui--color_accent_violet)',
   };
 
   return (
