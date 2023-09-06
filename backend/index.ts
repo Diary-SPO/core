@@ -37,15 +37,21 @@ app.use(cors({
 }));
 
 app.use((req, res, next) => {
+  res.set({
+    'Access-Control-Allow-Origin': 'https://prod-app51743817-951dbcc22b92.pages-ac.vk-apps.com',
+    'Access-Control-Allow-Methods': 'GET, POST',
+    'Access-Control-Allow-Headers': 'X-Requested-With'
+  })
   const resHost = req.get('Origin') || req.get('Host') || null;
   console.log(resHost);
   let   isCORS = true;
   if(resHost != null)
-  hosts.forEach(host => {
-    if (resHost.indexOf(host) >= 0) {
+  for(let i = 0; i < hosts.length; i++) {
+    if (resHost.indexOf(hosts[i]) >= 0) {
       isCORS = false;
+      break;
     }
-  });
+  }
   if (!isCORS) next();
   else         res.status(200).send('CORS');
 });
