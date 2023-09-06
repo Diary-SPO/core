@@ -15,7 +15,8 @@ export default defineConfig({
     minify: 'terser',
     terserOptions: {
       compress: {
-        drop_console: true,
+        // Временно
+        // drop_console: true,
         dead_code: true,
       },
       toplevel: false,
@@ -34,7 +35,7 @@ export default defineConfig({
   },
   // Указывать только для dev сборки.
   // Либо index'у вернуть его исходное имя, а переименовывать только при деплое
-  // base: 'index-b3.1.html',
+  base: 'index-b3.1.html',
   server: {
     https: true,
   }
