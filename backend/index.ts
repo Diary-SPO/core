@@ -30,7 +30,10 @@ const limiter = rateLimit({
 app.use(limiter);
 
 app.use(cors({
-  origin: 'https://stage-app51740302-19b73c109043.pages.vk-apps.com'
+  origin: [
+    '/https:\\/\\/stage-app51740302-.+\\.pages\\.vk-apps\\.com',
+    'https://localhost:5173'
+  ],
 }));
 
 app.use('/', helloRoute);
