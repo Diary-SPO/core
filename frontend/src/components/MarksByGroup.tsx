@@ -1,4 +1,6 @@
-import {memo, ReactNode, useEffect, useState,} from 'react';
+import {
+  memo, ReactNode, useEffect, useState,
+} from 'react';
 import {
   Card,
   CardGrid,
@@ -18,8 +20,10 @@ import {
   Icon28InfoCircle,
 } from '@vkontakte/icons';
 
-import {AbsenceType, Grade, PerformanceCurrent, TextMark, TMark,} from '../../../shared';
-import {getPerformance} from '../methods';
+import {
+  AbsenceType, Grade, PerformanceCurrent, TextMark, TMark,
+} from '../../../shared';
+import { getPerformance } from '../methods';
 
 import Mark from './Mark';
 import calculateAverageMark from '../utils/calculateAverageMark';

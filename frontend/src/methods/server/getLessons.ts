@@ -25,7 +25,7 @@ export const getLessons = async (startDate?: Date, endDate?: Date): Promise<Day[
     headers: {
       'Content-Type': 'application/json;charset=UTF-8',
       secret: cookie as string,
-      origin: origin
+      origin,
     },
   });
 
@@ -33,12 +33,13 @@ export const getLessons = async (startDate?: Date, endDate?: Date): Promise<Day[
     throw new Error('Failed to fetch lessons');
   }
   
-  if (response.statusText === 'CORS') {
-    console.log(response.statusText)
+  const data = await response.json() as Day[];
+  
+  if (response.statusText === 'LIMIT' || (response.ok && !Array.isArray(data))) {
+    console.log(response.statusText);
     return 'cors';
   }
-
-  const data = await response.json() as Day[];
+  
   if (!Array.isArray(data)) {
     throw new Error('Invalid data format');
   }

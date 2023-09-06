@@ -5,7 +5,7 @@ export const getUserId = async () => {
     const data = await bridge.send('VKWebAppStorageGet', {
       keys: ['id'],
     });
-    
+
     if (data.keys) {
       return data.keys[0].value;
     }
