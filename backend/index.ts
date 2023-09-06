@@ -33,7 +33,7 @@ app.use(cors({
 }))
 
 app.use(limiter)
-app.use(corsMiddleware)
+// app.use(corsMiddleware)
 
 app.use('/', helloRoute)
 app.use('/lessons', lessonsRoute)
