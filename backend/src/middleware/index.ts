@@ -38,18 +38,26 @@ export const checkCookie = (
   next();
 };
 
-const corsOptions: CorsOptions = {
-  origin: (origin, callback) => {
-    const allowedOriginPattern = /^https:\/\/[a-z0-9-]+\.pages\.vk-apps\.com$/;
-    
-    console.info('origin', origin)
-    
-    if (allowedOriginPattern.test(origin as string) || origin === 'https://localhost:5173') {
-      callback(null, true);
-    } else {
-      callback('CORS' as unknown as Error, false);
-    }
-  },
+const allowedOriginPattern = /^https:\/\/[a-z0-9-]+\.pages\.vk-apps\.com$/;
+
+const createCorsOptions = (req: Request): CorsOptions => {
+  return {
+    origin: (origin, callback) => {
+      
+      const referer = req.get('Referer');
+      
+      if (origin && (allowedOriginPattern.test(origin) || origin === 'https://localhost:5173')) {
+        callback(null, true);
+      } else if (referer && allowedOriginPattern.test(referer)) {
+        callback(null, true);
+      } else {
+        callback('CORS' as unknown as Error, false);
+      }
+    },
+  };
 };
 
-export const corsMiddleware = cors(corsOptions);
+export const corsMiddleware = (req: Request, res: Response, next: NextFunction) => {
+  const options = createCorsOptions(req);
+  cors(options)(req, res, next);
+};
