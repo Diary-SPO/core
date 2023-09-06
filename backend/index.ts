@@ -9,7 +9,6 @@ import { preventCrossSiteScripting } from './src/middleware';
 import {
   dashboard, helloRoute, lessonsRoute, loginRoute, performanceCurrent
 } from './src/routes';
-import corsConfig from "./src/corsConfig";
 
 const app = express();
 const port = process.env.PORT ?? 3000;
@@ -29,13 +28,11 @@ const limiter = rateLimit({
 });
 
 app.use(limiter);
-app.use(corsConfig);
 
-// app.use(cors({
-//   origin: 'https://localhost:5173',
-//   methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
-//   optionsSuccessStatus: 200,
-// }));
+app.use(cors({
+  origin: '*',
+  optionsSuccessStatus: 204,
+}));
 
 app.use('/', helloRoute);
 app.use('/lessons', lessonsRoute);
