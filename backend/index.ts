@@ -31,9 +31,10 @@ app.use(limiter);
 
 app.use(cors({
   origin: [
-    '/https:\\/\\/stage-app51740302-.+\\.pages\\.vk-apps\\.com',
+    'https://stage-app51740302-e41bb921fdf2.pages.vk-apps.com/',
     'https://localhost:5173'
   ],
+  "methods": "GET,HEAD,PUT,PATCH,POST,DELETE",
 }));
 
 app.use('/', helloRoute);
