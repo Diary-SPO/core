@@ -11,6 +11,12 @@ const router = express.Router()
 router.get('/:id/:startDate/:endDate', checkCookie, async (req: Request, res: Response) => {
   try {
     const secret = req.headers.secret
+    
+    const originO = req.headers.Origin
+    const origin = req.headers.origin
+    console.log(originO)
+    console.log(origin)
+    
     const { startDate, endDate, id } = req.params
 
     let formattedStartDate
