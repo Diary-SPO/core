@@ -142,7 +142,9 @@ const ModalRoot = () => {
             </InfoRow>
           </SimpleCell>
         </Group>
-        {((lessonData.gradebook?.absenceType && lessonData.gradebook.absenceType === 'IsAbsent') || (lessonData.gradebook?.tasks?.length && lessonData.gradebook.tasks.length > 0)) ? (
+        {((lessonData.gradebook?.absenceType && lessonData.gradebook.absenceType === 'IsAbsent') ||
+          (lessonData.gradebook?.tasks?.length && lessonData.gradebook.tasks.length > 0))
+          ? (
           <Group header={<Header mode='tertiary'>Успеваемость</Header>}>
             {lessonData.gradebook?.tasks?.map((tasks, index) => (
               (tasks.isRequired || (Grade[setDefaultMark(tasks)] !== 'Д')) && (

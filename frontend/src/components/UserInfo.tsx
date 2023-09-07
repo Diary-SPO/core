@@ -79,9 +79,9 @@ const UserInfo = () => {
       const extractedData: Partial<UserData> = data.keys.reduce((acc, item) => {
         // FIXME: при пустом имени не сработало
         if (
-          item.key === 'firstName' && item.value === ' '
-          || item.key === 'lastName' && item.value === ''
-          || item.key === 'group' && item.value === ''
+          (item.key === 'firstName' && item.value === ' ')
+          || (item.key === 'lastName' && item.value === '')
+          || (item.key === 'group' && item.value === '')
         ) {
           openInvalidData();
         }

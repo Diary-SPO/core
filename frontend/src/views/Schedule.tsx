@@ -38,7 +38,7 @@ const Schedule: FC<{ id: string }> = ({ id }) => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isError, setIsError] = useState<boolean>(false);
 
-  const updateDatesFromData = (data: any) => {
+  const updateDatesFromData = (data: Day[]) => {
     const firstLessonDate = data && data.length > 0 ? new Date(data[0].date) : startDate;
     const lastLessonDate = data && data.length > 0 ? new Date(data[data.length - 1].date) : endDate;
     setStartDate(startOfWeek(firstLessonDate));
@@ -60,9 +60,8 @@ const Schedule: FC<{ id: string }> = ({ id }) => {
       }
 
       setLessons(data as Day[]);
+      updateDatesFromData(data as Day[]);
       setIsLoading(false);
-
-      updateDatesFromData(data);
 
       localStorage.setItem('savedLessons', JSON.stringify(data));
     } catch (error) {
@@ -101,7 +100,7 @@ const Schedule: FC<{ id: string }> = ({ id }) => {
           localStorage.setItem('savedLessons', JSON.stringify(data));
           localStorage.setItem('lastRequestTime', currentTime.toString());
 
-          updateDatesFromData(data);
+          updateDatesFromData(data as Day[]);
         } else {
           setIsLoading(false);
           showSnackbar({
@@ -248,7 +247,15 @@ const Schedule: FC<{ id: string }> = ({ id }) => {
     </ButtonGroup>
   );
 
-  const weekString = `${startDate.getDate()} ${startDate.toLocaleString('default', { month: 'long' }).slice(0, 4)} - ${endDate.getDate()} ${endDate.toLocaleString('default', { month: 'long' }).slice(0, 4)}`;
+  const weekString = `
+  ${startDate.getDate()}
+  ${startDate.toLocaleString('default', { month: 'long' })
+    .slice(0, 4)}
+    -
+    ${endDate.getDate()}
+    ${endDate.toLocaleString('default', { month: 'long' })
+    .slice(0, 4)}`;
+
   return (
     <View
       id={id}

@@ -19,7 +19,7 @@ module.exports = {
   rules: {
     quotes: ['error', 'single'],
     semi: [1, 'always'],
-    'max-len': ['warn', { code: 125 }],
+    'max-len': ['warn', { code: 150 }],
   },
   overrides: [
     {
@@ -47,6 +47,7 @@ module.exports = {
         // Т.к. наши массивы статичны и юзер не может как-либо менять порядок / удалять элементы,
         // мы можем использовать индекс как key
         'react/no-array-index-key': 'off',
+        '@typescript-eslint/no-unsafe-member-access': 'off',
         'no-nested-ternary': 'off',
         'jsx-quotes': [2, 'prefer-single'],
         'react/function-component-definition': [2, {
