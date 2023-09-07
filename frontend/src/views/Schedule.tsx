@@ -20,14 +20,14 @@ import PanelHeaderWithBack from '../components/UI/PanelHeaderWithBack';
 import Suspense from '../components/UI/Suspense';
 
 import { useSnackbar, useRateLimitExceeded } from '../hooks';
-import ExplanationTooltip from "../components/UI/ExplanationTooltip.tsx";
+import ExplanationTooltip from '../components/UI/ExplanationTooltip.tsx';
 
 const CalendarRange = lazy(() => import('../components/CalendarRange'));
 const ScheduleGroup = lazy(() => import('../components/ScheduleGroup'));
 
 const Schedule: FC<{ id: string }> = ({ id }) => {
   const currentDate = new Date();
-  
+
   const [rateSnackbar, handleRateLimitExceeded] = useRateLimitExceeded();
   const [snackbar, showSnackbar] = useSnackbar();
   const [isCurrent, setIsCurrent] = useState<boolean>(() => {
@@ -316,7 +316,7 @@ const Schedule: FC<{ id: string }> = ({ id }) => {
       setLessons(data as Day[]);
       setStartDate(startWeek);
       setEndDate(endWeek);
-      
+
       localStorage.setItem('isCurrent', JSON.stringify(true));
       setIsCurrent(true);
     } catch (e) {
@@ -337,7 +337,6 @@ const Schedule: FC<{ id: string }> = ({ id }) => {
       <IconButton aria-label='Prev' onClick={() => handleButtonClick('prev')}>
         <Icon16ArrowLeftOutline />
       </IconButton>
-     
       <Button size='s' mode='secondary' onClick={getCurrentWeek} disabled={isCurrent}>
         <ExplanationTooltip tooltipContent='Вернёт вас на текущую неделю' text='Домой' />
       </Button>

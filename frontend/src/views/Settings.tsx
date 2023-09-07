@@ -12,7 +12,7 @@ import bridge from '@vkontakte/vk-bridge';
 
 import { Storage } from '../types';
 import {
-  appStorageSet, getVkStorageData, getVkStorageKeys
+  appStorageSet, getVkStorageData, getVkStorageKeys,
 } from '../methods';
 
 import PanelHeaderWithBack from '../components/UI/PanelHeaderWithBack';

@@ -15,7 +15,7 @@ const ExplanationTooltip: FC<TooltipTextProps> = ({ text, tooltipContent }) => {
       {tooltipContent}
     </Subhead>
   );
-  
+
   return (
     <Text>
       {text}
