@@ -20,9 +20,10 @@ import PanelHeaderWithBack from '../components/UI/PanelHeaderWithBack';
 import Suspense from '../components/UI/Suspense';
 
 import { useSnackbar, useRateLimitExceeded } from '../hooks';
-import ExplanationTooltip from '../components/UI/ExplanationTooltip.tsx';
 
-const CalendarRange = lazy(() => import('../components/CalendarRange'));
+import ExplanationTooltip from '../components/UI/ExplanationTooltip';
+
+const CalendarRange = lazy(() => import('../components/UI/CalendarRange'));
 const ScheduleGroup = lazy(() => import('../components/ScheduleGroup'));
 
 const Schedule: FC<{ id: string }> = ({ id }) => {

@@ -38,7 +38,7 @@ const UserInfo = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [userAva, setUserAva] = useState<string | undefined>();
   const [snackbar, setSnackbar] = useState<ReactNode | null>(null);
-
+  
   const autoLogOut = async () => {
     await appStorageSet('cookie', '');
     location.reload();
@@ -46,7 +46,6 @@ const UserInfo = () => {
   };
 
   const openInvalidData = () => {
-    if (snackbar) return;
     setSnackbar(
       <Snackbar
         onClose={autoLogOut}
@@ -66,6 +65,7 @@ const UserInfo = () => {
 
       const keys = await getVkStorageKeys();
       const data = await getVkStorageData(keys);
+
       await bridge.send('VKWebAppGetUserInfo')
         .then((data) => {
           if (data.id) {
