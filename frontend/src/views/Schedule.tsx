@@ -3,7 +3,7 @@ import {
 } from 'react';
 import {
   Button,
-  ButtonGroup, Group, Header, IconButton, Link,
+  ButtonGroup, FixedLayout, Group, Header, IconButton, Link,
   Panel, PanelSpinner, Placeholder, View,
 } from '@vkontakte/vkui';
 import { useActiveVkuiLocation, useRouteNavigator } from '@vkontakte/vk-mini-apps-router';
@@ -379,12 +379,14 @@ const Schedule: FC<{ id: string }> = ({ id }) => {
         <Suspense id='ScheduleGroup' mode='screen'>
           <Group
             header={(
-              <Header
-                aside={Buttons}
-                mode='secondary'
-              >
-                {weekString}
-              </Header>
+              <FixedLayout vertical='top' filled>
+                <Header
+                  aside={Buttons}
+                  mode='secondary'
+                >
+                  {weekString}
+                </Header>
+              </FixedLayout>
             )}
           >
             {isLoading ? <PanelSpinner size='regular' /> : (
