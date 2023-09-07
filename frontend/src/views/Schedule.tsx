@@ -251,6 +251,7 @@ const Schedule: FC<{ id: string }> = ({ id }) => {
 
     const newTimeoutId = setTimeout(() => {
       debouncedChangeWeek(direction);
+      setClickCount(0);
     }, 1000);
 
     setTimeoutId(newTimeoutId);
@@ -268,7 +269,7 @@ const Schedule: FC<{ id: string }> = ({ id }) => {
   );
 
   const weekString = `
-  ${startDate.getDate()}
+  ${startDate.getDate() + 1}
   ${startDate.toLocaleString('default', { month: 'long' })
     .slice(0, 4)}
     -
