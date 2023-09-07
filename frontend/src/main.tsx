@@ -4,7 +4,7 @@ import { createRoot } from 'react-dom/client';
 import '@vkontakte/vkui/dist/cssm/styles/themes.css';
 import './index.css';
 
-import Suspense from './components/Suspense';
+import Suspense from './components/UI/Suspense';
 
 const AppWrapper = lazy(() => import('./AppWrapper'));
 

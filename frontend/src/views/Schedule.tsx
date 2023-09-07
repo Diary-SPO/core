@@ -8,28 +8,38 @@ import {
 } from '@vkontakte/vkui';
 import { useActiveVkuiLocation, useRouteNavigator } from '@vkontakte/vk-mini-apps-router';
 import {
-  Icon28InfoCircle,
   Icon16ArrowRightOutline,
   Icon16ArrowLeftOutline,
 } from '@vkontakte/icons';
 
-import { endOfWeek, startOfWeek } from '@vkontakte/vkui/dist/lib/date';
-import { debounce } from '@vkontakte/vkui/dist/lib/utils';
+import { addDays, endOfWeek, startOfWeek } from '@vkontakte/vkui/dist/lib/date';
 import { Day } from '../../../shared';
 import { getLessons } from '../methods';
 
-import PanelHeaderWithBack from '../components/PanelHeaderWithBack';
-import Suspense from '../components/Suspense';
+import PanelHeaderWithBack from '../components/UI/PanelHeaderWithBack';
+import Suspense from '../components/UI/Suspense';
 
 import { useSnackbar, useRateLimitExceeded } from '../hooks';
+import ExplanationTooltip from '../components/UI/ExplanationTooltip.tsx';
 
 const CalendarRange = lazy(() => import('../components/CalendarRange'));
 const ScheduleGroup = lazy(() => import('../components/ScheduleGroup'));
 
 const Schedule: FC<{ id: string }> = ({ id }) => {
+  const currentDate = new Date();
+
   const [rateSnackbar, handleRateLimitExceeded] = useRateLimitExceeded();
   const [snackbar, showSnackbar] = useSnackbar();
-  const currentDate = new Date();
+  const [isCurrent, setIsCurrent] = useState<boolean>(() => {
+    const storedIsCurrent = localStorage.getItem('isCurrent');
+    return storedIsCurrent ? JSON.parse(storedIsCurrent) : true;
+  });
+
+  const getError = () => showSnackbar({
+    title: 'Ошибка при попытке получить расписание',
+    action: 'Повторить',
+    onActionClick: handleReloadData,
+  });
 
   const { panel: activePanel, panelsHistory } = useActiveVkuiLocation();
   const routeNavigator = useRouteNavigator();
@@ -51,6 +61,8 @@ const Schedule: FC<{ id: string }> = ({ id }) => {
   const handleReloadData = async () => {
     setIsLoading(true);
     setIsError(false);
+    localStorage.setItem('isCurrent', JSON.stringify(true));
+    setIsCurrent(true);
     const newEndDate = new Date(endDate);
     newEndDate.setDate(newEndDate.getDate() + 7);
 
@@ -59,16 +71,15 @@ const Schedule: FC<{ id: string }> = ({ id }) => {
 
       if (data === 429) {
         handleRateLimitExceeded();
+        setIsLoading(false);
         return;
       }
 
       setLessons(data as Day[]);
       updateDatesFromData(data as Day[]);
-      setIsLoading(false);
 
       localStorage.setItem('savedLessons', JSON.stringify(data));
     } catch (error) {
-      setIsLoading(false);
       setIsError(true);
       showSnackbar({
         title: 'Ошибка при попытке получить расписание',
@@ -97,34 +108,30 @@ const Schedule: FC<{ id: string }> = ({ id }) => {
 
           if (data === 429) {
             handleRateLimitExceeded();
+            setIsLoading(false);
             return;
           }
+
           setLessons(data as Day[]);
-          setIsLoading(false);
 
           localStorage.setItem('savedLessons', JSON.stringify(data));
           localStorage.setItem('lastRequestTime', currentTime.toString());
 
           updateDatesFromData(data as Day[]);
         } else {
-          setIsLoading(false);
           showSnackbar({
             layout: 'vertical',
-            icon: <Icon28InfoCircle fill='var(--vkui--color_background_accent)' />,
             action: 'Загрузить новые',
             onActionClick: handleReloadData,
             title: 'Данные взяты из кеша',
           });
         }
       } catch (error) {
-        setIsLoading(false);
         setIsError(true);
-        showSnackbar({
-          title: 'Ошибка при попытке получить расписание',
-          action: 'Повторить',
-          onActionClick: handleReloadData,
-        });
+        getError();
         console.error(error);
+      } finally {
+        setIsLoading(false);
       }
     };
 
@@ -142,12 +149,14 @@ const Schedule: FC<{ id: string }> = ({ id }) => {
   }, []);
   const sendToServerIfValid = async (start: Date, end: Date) => {
     setIsLoading(true);
+    setIsCurrent(false);
     if (start <= end) {
       const differenceInDays = (end.getTime() - start.getTime()) / (1000 * 3600 * 24);
       if (differenceInDays <= 14) {
         const data = await getLessons(start, end);
         if (data === 429) {
           handleRateLimitExceeded();
+          setIsLoading(false);
           return;
         }
 
@@ -159,17 +168,34 @@ const Schedule: FC<{ id: string }> = ({ id }) => {
 
         const newEndDate = new Date(start);
         newEndDate.setDate(newEndDate.getDate() + 14);
-        setEndDate(newEndDate);
 
-        showSnackbar({
-          icon: <Icon28InfoCircle fill='var(--vkui--color_background_accent)' />,
-          title: 'Разница между датами больше 14-и дней',
-          subtitle: `Конечная дата будет автоматически изменена на ${newEndDate.toLocaleString()}, вы также можете поменять начальную дату`,
-        });
+        if (newEndDate > end) {
+          const newStartDate = new Date(newEndDate);
+          newStartDate.setDate(newStartDate.getDate() - 14);
+          setStartDate(newStartDate);
+          setEndDate(newEndDate);
+
+          if (!snackbar) {
+            showSnackbar({
+              title: 'Разница между датами больше 14-и дней',
+              subtitle: `Начальная дата будет автоматически изменена на ${newStartDate.toLocaleString()}`,
+            });
+          }
+        } else {
+          setEndDate(newEndDate);
+        }
+
+        if (!snackbar) {
+          showSnackbar({
+            title: 'Разница между датами больше 14-и дней',
+            subtitle: `Конечная дата будет автоматически изменена на ${newEndDate.toLocaleString()}`,
+          });
+        }
 
         const data = await getLessons(start, newEndDate);
         if (data === 429) {
           handleRateLimitExceeded();
+          setIsLoading(false);
           return;
         }
         setLessons(data as Day[]);
@@ -181,7 +207,6 @@ const Schedule: FC<{ id: string }> = ({ id }) => {
 
       if (!snackbar) {
         showSnackbar({
-          icon: <Icon28InfoCircle fill='var(--vkui--color_background_accent)' />,
           subtitle: 'Конечная дата будет автоматически установлена на 5 дней больше начальной',
           title: 'Начальная дата больше конечной',
         });
@@ -193,6 +218,7 @@ const Schedule: FC<{ id: string }> = ({ id }) => {
         const data = await getLessons(start, newEndDate);
         if (data === 429) {
           handleRateLimitExceeded();
+          setIsLoading(false);
           return;
         }
         setLessons(data as Day[]);
@@ -219,10 +245,11 @@ const Schedule: FC<{ id: string }> = ({ id }) => {
     sendToServerIfValid(startDate, newEndDate);
   };
 
-  const debouncedChangeWeek = debounce((direction: 'prev' | 'next') => {
+  const debouncedChangeWeek = (direction: 'prev' | 'next') => {
+    localStorage.setItem('isCurrent', JSON.stringify(false));
+    setIsCurrent(false);
     const newStartDate = new Date(startDate);
     const newEndDate = new Date(endDate);
-
     if (clickCount > 0) {
       const weekDifference = clickCount * 7;
       newStartDate.setDate(newStartDate.getDate() + weekDifference);
@@ -240,11 +267,10 @@ const Schedule: FC<{ id: string }> = ({ id }) => {
     setEndDate(newEndDate);
 
     sendToServerIfValid(newStartDate, newEndDate);
-  }, 1);
+  };
 
   const handleButtonClick = (direction: 'prev' | 'next') => {
     setClickCount((prevCount) => prevCount + 1);
-
     if (timeoutId) {
       clearTimeout(timeoutId);
     }
@@ -252,16 +278,68 @@ const Schedule: FC<{ id: string }> = ({ id }) => {
     const newTimeoutId = setTimeout(() => {
       debouncedChangeWeek(direction);
       setClickCount(0);
-    }, 1000);
+    }, 500);
 
     setTimeoutId(newTimeoutId);
   };
 
+  const getCurrentWeek = async () => {
+    const startWeek = startOfWeek(currentDate);
+    const startOfCurrWeek = startOfWeek(startDate);
+    const endWeek = addDays(endOfWeek(currentDate), 7);
+
+    const startWeekStr = startWeek.toLocaleString('default', {
+      month: 'short',
+      day: 'numeric',
+      year: 'numeric',
+    });
+
+    const startOfCurrWeekStr = startOfCurrWeek.toLocaleString('default', {
+      month: 'short',
+      day: 'numeric',
+      year: 'numeric',
+    });
+
+    if (startWeekStr === startOfCurrWeekStr) {
+      showSnackbar({
+        title: 'Вы уже на текущей неделе',
+      });
+      localStorage.setItem('isCurrent', JSON.stringify(true));
+      setIsCurrent(true);
+      return;
+    }
+
+    setIsLoading(true);
+    try {
+      const data = await getLessons(startWeek, endWeek);
+
+      setLessons(data as Day[]);
+      setStartDate(startWeek);
+      setEndDate(endWeek);
+
+      localStorage.setItem('isCurrent', JSON.stringify(true));
+      setIsCurrent(true);
+    } catch (e) {
+      console.error(e);
+      getError();
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   const Buttons = (
-    <ButtonGroup style={{ position: 'relative', top: 20, color: 'var(--vkui--color_stroke_accent_themed)'}}>
+    <ButtonGroup
+      style={{
+        alignItems: 'center', position: 'relative', top: 20, color: 'var(--vkui--color_stroke_accent_themed)',
+      }}
+      gap='s'
+    >
       <IconButton aria-label='Prev' onClick={() => handleButtonClick('prev')}>
         <Icon16ArrowLeftOutline />
       </IconButton>
+      <Button size='s' mode='secondary' onClick={getCurrentWeek} disabled={isCurrent}>
+        <ExplanationTooltip tooltipContent='Вернёт вас на текущую неделю' text='Домой' />
+      </Button>
       <IconButton aria-label='Next' onClick={() => handleButtonClick('next')}>
         <Icon16ArrowRightOutline />
       </IconButton>
@@ -271,11 +349,11 @@ const Schedule: FC<{ id: string }> = ({ id }) => {
   const weekString = `
   ${startDate.getDate() + 1}
   ${startDate.toLocaleString('default', { month: 'long' })
-    .slice(0, 4)}
+    .slice(0, 3)}
     -
     ${endDate.getDate()}
     ${endDate.toLocaleString('default', { month: 'long' })
-    .slice(0, 4)}`;
+    .slice(0, 3)}`;
 
   return (
     <View
@@ -309,7 +387,7 @@ const Schedule: FC<{ id: string }> = ({ id }) => {
               </Header>
             )}
           >
-            {isLoading ? <PanelSpinner size='medium' /> : (
+            {isLoading ? <PanelSpinner size='regular' /> : (
               <ScheduleGroup lessonsState={lessonsState} />
             )}
           </Group>

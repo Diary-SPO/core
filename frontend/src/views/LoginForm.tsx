@@ -14,7 +14,7 @@ import { VIEW_SCHEDULE } from '../routes';
 
 import { useSnackbar } from '../hooks';
 
-import PanelHeaderWithBack from '../components/PanelHeaderWithBack';
+import PanelHeaderWithBack from '../components/UI/PanelHeaderWithBack';
 
 const LoginForm: FC<{ id: string }> = ({ id }) => {
   const { panel: activePanel, panelsHistory } = useActiveVkuiLocation();

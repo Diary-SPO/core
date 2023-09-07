@@ -1,4 +1,4 @@
-import {CSSProperties, FC} from 'react';
+import { CSSProperties, FC } from 'react';
 import {
   Card, Footnote, Group, Header, Placeholder, SimpleCell,
 } from '@vkontakte/vkui';
@@ -7,8 +7,9 @@ import { useRouteNavigator } from '@vkontakte/vk-mini-apps-router';
 import {
   Day, Grade, Gradebook, LessonWorkType, Timetable,
 } from '../../../shared';
-import setDefaultMark from '../utils/setDefaultMark';
 import { formatLessonDate, getDayOfWeek } from '../utils/formatLessonDate';
+import setDefaultMark from '../utils/setDefaultMark';
+import { isToday } from '../utils/isToday';
 
 import { MODAL_PAGE_LESSON } from '../modals/ModalRoot';
 
@@ -16,8 +17,7 @@ import { useModal } from '../modals/ModalContext';
 
 import SubtitleWithBorder from './SubtitleWithBorder';
 import TimeRemaining from './TimeRemaining';
-import Mark from './Mark';
-import {isToday} from "../utils/isToday.ts";
+import Mark from './UI/Mark';
 
 interface ILessonCard {
   lesson: Day;
@@ -64,24 +64,24 @@ const LessonCard: FC<ILessonCard> = ({ lesson }) => {
   const lessonDay = lessonDate.getDate().toString().padStart(2, '0');
   const lessonDayOfWeek = getDayOfWeek(lessonDate);
   const isLessonToday = isToday(lessonDate);
-  
+
   const currentYear = currentDate.getFullYear().toString();
   const currentMonth = (currentDate.getMonth() + 1).toString().padStart(2, '0');
   const currentDay = currentDate.getDate().toString().padStart(2, '0');
 
   const dayEnded = currentYear === lessonYear && currentMonth === lessonMonth && currentDay > lessonDay;
-  
-  const displayDay = dayEnded ? ' День завершён' : isLessonToday ? 'Сегодня' : ''
+
+  const displayDay = dayEnded ? ' День завершён' : isLessonToday ? 'Сегодня' : '';
   const displayEndDayStyles = dayEnded && 'var(--vkui--color_icon_negative)';
   const displayCurrDayStyles = isLessonToday && 'var(--vkui--color_background_accent)';
-  
+
   const displayDayStyles: CSSProperties = {
     color: displayEndDayStyles || displayCurrDayStyles || undefined,
     padding: '3px 5px',
     borderRadius: '5px',
-    border: `1px solid ${displayEndDayStyles || displayCurrDayStyles}`
-  }
-  
+    border: `1px solid ${displayEndDayStyles || displayCurrDayStyles}`,
+  };
+
   return (
     <Card key={lesson.date as unknown as string} style={{ height: '100%' }}>
       <Group

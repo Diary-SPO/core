@@ -1,10 +1,10 @@
 import { FC } from 'react';
 import {
-  Group, Header, Panel, View,
+  Card, Div, Group, Header, Panel, View,
 } from '@vkontakte/vkui';
 import { useActiveVkuiLocation, useRouteNavigator } from '@vkontakte/vk-mini-apps-router';
 
-import PanelHeaderWithBack from '../components/PanelHeaderWithBack';
+import PanelHeaderWithBack from '../components/UI/PanelHeaderWithBack';
 import HelpAccordion from '../components/HelpAccordion';
 
 import { helpData } from '../components/data';
@@ -22,11 +22,15 @@ const Contacts: FC<{ id: string }> = ({ id }) => {
     >
       <Panel nav={id}>
         <PanelHeaderWithBack title='Помощь' />
-        <Group header={<Header mode='secondary'>FAQ</Header>}>
-          {helpData.map(({ detail, title, id }) => (
-            <HelpAccordion key={id} id={id} detail={detail} title={title} />
-          ))}
-        </Group>
+        <Div>
+          <Group header={<Header mode='tertiary'>FAQ</Header>}>
+            <Card mode='shadow'>
+              {helpData.map(({ detail, title, id }) => (
+                <HelpAccordion key={id} id={id} detail={detail} title={title} />
+              ))}
+            </Card>
+          </Group>
+        </Div>
       </Panel>
     </View>
   );
