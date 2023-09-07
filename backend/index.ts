@@ -15,14 +15,14 @@ const port = process.env.PORT ?? 3000
 
 app.use(preventCrossSiteScripting)
 app.use(helmet())
-// 900000
-const FIFTEEN_MINS_IN_MS = 9000
+
+const FIFTEEN_MINS_IN_MS = 900000
 
 app.use(express.json())
 
 const limiter = rateLimit({
   windowMs: FIFTEEN_MINS_IN_MS,
-  max: 20,
+  max: 60,
   statusCode: 429,
   skipFailedRequests: true,
   message: 'LIMIT'
