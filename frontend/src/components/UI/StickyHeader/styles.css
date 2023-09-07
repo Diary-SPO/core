@@ -1,0 +1,9 @@
+.sticky {
+    background-color: var(--vkui--color_background_content);
+    padding-bottom: 20px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 99999;
+}

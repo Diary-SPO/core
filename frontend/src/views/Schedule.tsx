@@ -2,9 +2,7 @@ import {
   FC, lazy, useEffect, useState,
 } from 'react';
 import {
-  Button,
-  ButtonGroup, FixedLayout, Group, Header, IconButton, Link,
-  Panel, PanelSpinner, Placeholder, View,
+  Button, ButtonGroup, Group, Header, IconButton, Link, Panel, PanelSpinner, Placeholder, View,
 } from '@vkontakte/vkui';
 import { useActiveVkuiLocation, useRouteNavigator } from '@vkontakte/vk-mini-apps-router';
 import {
@@ -22,6 +20,7 @@ import Suspense from '../components/UI/Suspense';
 import { useSnackbar, useRateLimitExceeded } from '../hooks';
 
 import ExplanationTooltip from '../components/UI/ExplanationTooltip';
+import StickyHeader from '../components/UI/StickyHeader';
 
 const CalendarRange = lazy(() => import('../components/UI/CalendarRange'));
 const ScheduleGroup = lazy(() => import('../components/ScheduleGroup'));
@@ -380,14 +379,14 @@ const Schedule: FC<{ id: string }> = ({ id }) => {
         <Suspense id='ScheduleGroup' mode='screen'>
           <Group
             header={(
-              <FixedLayout vertical='top' filled>
+              <StickyHeader>
                 <Header
                   aside={Buttons}
                   mode='secondary'
                 >
                   {weekString}
                 </Header>
-              </FixedLayout>
+              </StickyHeader>
             )}
           >
             {isLoading ? <PanelSpinner size='regular' /> : (
