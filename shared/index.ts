@@ -194,6 +194,7 @@ export interface Lesson {
   name: string | null
   timetable: Timetable
   gradebook?: Gradebook,
+  tasks?: Task[],
 }
 
 export interface Day {

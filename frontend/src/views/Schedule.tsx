@@ -1,14 +1,13 @@
 import {
-  FC, lazy, ReactNode, useEffect, useState,
+  FC, lazy, useEffect, useState,
 } from 'react';
 import {
   Button,
   ButtonGroup, Group, Header, IconButton, Link,
-  Panel, PanelSpinner, Placeholder, Snackbar, View,
+  Panel, PanelSpinner, Placeholder, View,
 } from '@vkontakte/vkui';
 import { useActiveVkuiLocation, useRouteNavigator } from '@vkontakte/vk-mini-apps-router';
 import {
-  Icon28ErrorCircleOutline,
   Icon28InfoCircle,
   Icon16ArrowRightOutline,
   Icon16ArrowLeftOutline,
@@ -20,45 +19,15 @@ import { getLessons } from '../methods';
 
 import PanelHeaderWithBack from '../components/PanelHeaderWithBack';
 import Suspense from '../components/Suspense';
+import useRateLimitExceeded from '../hooks/useRateLimitExceeded.tsx';
+import useSnackbar from '../hooks/useSnackbar.tsx';
 
 const CalendarRange = lazy(() => import('../components/CalendarRange'));
 const ScheduleGroup = lazy(() => import('../components/ScheduleGroup'));
 
 const Schedule: FC<{ id: string }> = ({ id }) => {
-  const [snackbar, setSnackbar] = useState<null | ReactNode>(null);
-
-  const DataFromCache = (
-    <Snackbar
-      layout='vertical'
-      onClose={() => setSnackbar(null)}
-      before={<Icon28InfoCircle fill='var(--vkui--color_background_accent)' />}
-      action='Загрузить новые'
-      onActionClick={() => handleReloadData()}
-    >
-      Данные взяты из кеша
-    </Snackbar>
-  );
-
-  const StartBiggerThenEnd = (
-    <Snackbar
-      onClose={() => setSnackbar(null)}
-      before={<Icon28InfoCircle fill='var(--vkui--color_background_accent)' />}
-      subtitle='Конечная дата будет автоматически установлена на 5 дней больше начальной'
-    >
-      Начальная дата больше конечной
-    </Snackbar>
-  );
-
-  const ErrorSnackbar = !snackbar && (
-    <Snackbar
-      onClose={() => setSnackbar(null)}
-      layout='vertical'
-      before={<Icon28ErrorCircleOutline fill='var(--vkui--color_icon_negative)' />}
-    >
-      Ошибка при попытке получить расписание
-    </Snackbar>
-  );
-
+  const [rateSnackbar, handleRateLimitExceeded] = useRateLimitExceeded();
+  const [snackbar, showSnackbar] = useSnackbar();
   const currentDate = new Date();
 
   const { panel: activePanel, panelsHistory } = useActiveVkuiLocation();
@@ -68,8 +37,8 @@ const Schedule: FC<{ id: string }> = ({ id }) => {
   const [endDate, setEndDate] = useState<Date>(endOfWeek(currentDate));
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isError, setIsError] = useState<boolean>(false);
-  // @ts-ignore
-  const updateDatesFromData = (data) => {
+
+  const updateDatesFromData = (data: any) => {
     const firstLessonDate = data && data.length > 0 ? new Date(data[0].date) : startDate;
     const lastLessonDate = data && data.length > 0 ? new Date(data[data.length - 1].date) : endDate;
     setStartDate(startOfWeek(firstLessonDate));
@@ -77,7 +46,6 @@ const Schedule: FC<{ id: string }> = ({ id }) => {
   };
 
   const handleReloadData = async () => {
-    setSnackbar(null);
     setIsError(false);
     setIsLoading(true);
     const newEndDate = new Date(endDate);
@@ -85,22 +53,13 @@ const Schedule: FC<{ id: string }> = ({ id }) => {
 
     try {
       const data = await getLessons(startDate, newEndDate);
-      console.log(data);
-      if (typeof data === 'string') {
-        setSnackbar(
-          <Snackbar
-            layout='vertical'
-            onClose={() => setSnackbar(null)}
-            before={<Icon28InfoCircle fill='var(--vkui--color_background_accent)' />}
-            action='Вы временно заблокированы. Если вы считаете, что это ошибка, то сообщите нам'
-            onActionClick={() => handleReloadData()}
-          >
-            Слишком частые запросы
-          </Snackbar>,
-        );
+
+      if (data === 429) {
+        handleRateLimitExceeded();
         return;
       }
-      setLessons(data);
+
+      setLessons(data as Day[]);
       setIsLoading(false);
 
       updateDatesFromData(data);
@@ -109,7 +68,11 @@ const Schedule: FC<{ id: string }> = ({ id }) => {
     } catch (error) {
       setIsLoading(false);
       setIsError(true);
-      setSnackbar(ErrorSnackbar);
+      showSnackbar({
+        title: 'Ошибка при попытке получить расписание',
+        action: 'Повторить',
+        onActionClick: handleReloadData,
+      });
       console.error(error);
     }
   };
@@ -127,40 +90,36 @@ const Schedule: FC<{ id: string }> = ({ id }) => {
       try {
         if (!savedLessons || timeSinceLastRequest > 30000) {
           const data = await getLessons(startDate, endDate);
-          console.log(data);
-          if (typeof data === 'string') {
-            setSnackbar(
-              <Snackbar
-                layout='vertical'
-                onClose={() => setSnackbar(null)}
-                before={<Icon28InfoCircle fill='var(--vkui--color_background_accent)' />}
-                action='Вы временно заблокированы. Если вы считаете, что это ошибка, то сообщите нам'
-                onActionClick={() => handleReloadData()}
-              >
-                Слишком частые запросы
-              </Snackbar>,
-            );
+
+          if (data === 429) {
+            handleRateLimitExceeded();
             return;
           }
-          setLessons(data);
+          setLessons(data as Day[]);
           setIsLoading(false);
 
           localStorage.setItem('savedLessons', JSON.stringify(data));
           localStorage.setItem('lastRequestTime', currentTime.toString());
 
-          setSnackbar(null);
-
           updateDatesFromData(data);
         } else {
           setIsLoading(false);
-          if (!snackbar) {
-            setSnackbar(DataFromCache);
-          }
+          showSnackbar({
+            layout: 'vertical',
+            icon: <Icon28InfoCircle fill='var(--vkui--color_background_accent)' />,
+            action: 'Загрузить новые',
+            onActionClick: handleReloadData,
+            title: 'Данные взяты из кеша',
+          });
         }
       } catch (error) {
         setIsLoading(false);
         setIsError(true);
-        setSnackbar(ErrorSnackbar);
+        showSnackbar({
+          title: 'Ошибка при попытке получить расписание',
+          action: 'Повторить',
+          onActionClick: handleReloadData,
+        });
         console.error(error);
       }
     };
@@ -177,29 +136,17 @@ const Schedule: FC<{ id: string }> = ({ id }) => {
 
     gettedLessons();
   }, []);
-
   const sendToServerIfValid = async (start: Date, end: Date) => {
     if (start <= end) {
       const differenceInDays = (end.getTime() - start.getTime()) / (1000 * 3600 * 24);
       if (differenceInDays <= 14) {
         const data = await getLessons(start, end);
-        console.log(data);
-        if (typeof data === 'string') {
-          setSnackbar(
-            <Snackbar
-              layout='vertical'
-              onClose={() => setSnackbar(null)}
-              before={<Icon28InfoCircle fill='var(--vkui--color_background_accent)' />}
-              action='Вы временно заблокированы. Если вы считаете, что это ошибка, то сообщите нам'
-              onActionClick={() => handleReloadData()}
-            >
-              Слишком частые запросы
-            </Snackbar>,
-          );
+        if (data === 429) {
+          handleRateLimitExceeded();
           return;
         }
 
-        setLessons(data);
+        setLessons(data as Day[]);
 
         localStorage.setItem('savedLessons', JSON.stringify(data));
       } else {
@@ -209,36 +156,18 @@ const Schedule: FC<{ id: string }> = ({ id }) => {
         newEndDate.setDate(newEndDate.getDate() + 14);
         setEndDate(newEndDate);
 
-        const BigDifference = (
-          <Snackbar
-            onClose={() => setSnackbar(null)}
-            before={<Icon28InfoCircle fill='var(--vkui--color_background_accent)' />}
-            subtitle={`Конечная дата будет автоматически изменена на ${newEndDate.toLocaleString()}`}
-          >
-            Разница между датами больше 14-и дней
-          </Snackbar>
-        );
-
-        if (!snackbar) {
-          setSnackbar(BigDifference);
-        }
+        showSnackbar({
+          icon: <Icon28InfoCircle fill='var(--vkui--color_background_accent)' />,
+          title: 'Разница между датами больше 14-и дней',
+          subtitle: `Конечная дата будет автоматически изменена на ${newEndDate.toLocaleString()}, вы также можете поменять начальную дату`,
+        });
 
         const data = await getLessons(start, newEndDate);
-        if (typeof data === 'string') {
-          setSnackbar(
-            <Snackbar
-              layout='vertical'
-              onClose={() => setSnackbar(null)}
-              before={<Icon28InfoCircle fill='var(--vkui--color_background_accent)' />}
-              action='Вы временно заблокированы. Если вы считаете, что это ошибка, то сообщите нам'
-              onActionClick={() => handleReloadData()}
-            >
-              Слишком частые запросы
-            </Snackbar>,
-          );
+        if (data === 429) {
+          handleRateLimitExceeded();
           return;
         }
-        setLessons(data);
+        setLessons(data as Day[]);
 
         localStorage.setItem('savedLessons', JSON.stringify(data));
       }
@@ -246,28 +175,22 @@ const Schedule: FC<{ id: string }> = ({ id }) => {
       console.info('Начальная дата больше конечной');
 
       if (!snackbar) {
-        setSnackbar(StartBiggerThenEnd);
+        showSnackbar({
+          icon: <Icon28InfoCircle fill='var(--vkui--color_background_accent)' />,
+          subtitle: 'Конечная дата будет автоматически установлена на 5 дней больше начальной',
+          title: 'Начальная дата больше конечной',
+        });
 
         const newEndDate = new Date(start);
         newEndDate.setDate(newEndDate.getDate() + 5);
         setEndDate(newEndDate);
 
         const data = await getLessons(start, newEndDate);
-        if (typeof data === 'string') {
-          setSnackbar(
-            <Snackbar
-              layout='vertical'
-              onClose={() => setSnackbar(null)}
-              before={<Icon28InfoCircle fill='var(--vkui--color_background_accent)' />}
-              action='Вы временно заблокированы. Если вы считаете, что это ошибка, то сообщите нам'
-              onActionClick={() => handleReloadData()}
-            >
-              Слишком частые запросы
-            </Snackbar>,
-          );
+        if (data === 429) {
+          handleRateLimitExceeded();
           return;
         }
-        setLessons(data);
+        setLessons(data as Day[]);
 
         localStorage.setItem('savedLessons', JSON.stringify(data));
       }
@@ -379,16 +302,8 @@ const Schedule: FC<{ id: string }> = ({ id }) => {
               )}
             />
           )}
-        {isLoading && (
-          <Snackbar
-            onClose={() => setSnackbar(null)}
-            before={<Icon28InfoCircle fill='var(--vkui--color_background_accent)' />}
-            subtitle='Скоро расписание появится на экране'
-          >
-            Загрузка
-          </Snackbar>
-        )}
         {snackbar}
+        {rateSnackbar}
       </Panel>
     </View>
   );
