@@ -142,24 +142,24 @@ const ModalRoot = () => {
             </InfoRow>
           </SimpleCell>
         </Group>
-        {((lessonData.gradebook?.absenceType && lessonData.gradebook.absenceType === 'IsAbsent') ||
-          (lessonData.gradebook?.tasks?.length && lessonData.gradebook.tasks.length > 0))
+        {((lessonData.gradebook?.absenceType && lessonData.gradebook.absenceType === 'IsAbsent')
+          || (lessonData.gradebook?.tasks?.length && lessonData.gradebook.tasks.length > 0))
           ? (
-          <Group header={<Header mode='tertiary'>Успеваемость</Header>}>
-            {lessonData.gradebook?.tasks?.map((tasks, index) => (
-              (tasks.isRequired || (Grade[setDefaultMark(tasks)] !== 'Д')) && (
+            <Group header={<Header mode='tertiary'>Успеваемость</Header>}>
+              {lessonData.gradebook?.tasks?.map((tasks, index) => (
+                (tasks.isRequired || (Grade[setDefaultMark(tasks)] !== 'Д')) && (
                 <SimpleCell key={index} after={<Mark mark={Grade[setDefaultMark(tasks)]} size='s' />}>
                   {LessonType[tasks.type]}
                 </SimpleCell>
-              )
-            ))}
-            {lessonData.gradebook?.absenceType === 'IsAbsent' && (
+                )
+              ))}
+              {lessonData.gradebook?.absenceType === 'IsAbsent' && (
               <SimpleCell after={<Mark mark={'Н' as TMark} size='s' />}>
                 Опоздание
               </SimpleCell>
-            )}
-          </Group>
-        ) : null}
+              )}
+            </Group>
+          ) : null}
       </ModalPage>
     </VKUIModalRoot>
   );
