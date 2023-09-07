@@ -17,7 +17,7 @@ import { useModal } from '../modals/ModalContext';
 
 import SubtitleWithBorder from './SubtitleWithBorder';
 import TimeRemaining from './TimeRemaining';
-import Mark from './Mark';
+import Mark from './UI/Mark';
 
 interface ILessonCard {
   lesson: Day;

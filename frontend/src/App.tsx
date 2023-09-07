@@ -14,11 +14,11 @@ import { MAIN_SETTINGS, VIEW_SCHEDULE } from './routes';
 import { getCookie } from './methods';
 import { Pages } from './types';
 
-import Suspense from './components/Suspense';
-import ModalRoot from './modals/ModalRoot';
+import Suspense from './components/UI/Suspense';
 
-const Sidebar = lazy(() => import('./components/Sidebar'));
-const Epic = lazy(() => import('./components/Epic'));
+const ModalRoot = lazy(() => import('./modals/ModalRoot'));
+const Sidebar = lazy(() => import('./components/UI/Sidebar'));
+const Epic = lazy(() => import('./components/UI/Epic'));
 
 const App = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);

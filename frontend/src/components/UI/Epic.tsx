@@ -4,14 +4,14 @@ import { useAdaptivityConditionalRender } from '@vkontakte/vkui';
 import { Epic as VKUIEpic } from '@vkontakte/vkui/dist/components/Epic/Epic';
 import {
   VIEW_CONTACTS, VIEW_SCHEDULE, VIEW_MARKS, VIEW_SETTINGS, MAIN_SETTINGS,
-} from '../routes';
-import { Pages } from '../types';
+} from '../../routes';
+import { Pages } from '../../types';
 
 import Tabbar from './Tabbar';
 import Suspense from './Suspense';
 import {
   Contacts, LoginForm, Schedule, Marks, Settings,
-} from '../views';
+} from '../../views';
 
 interface IEpic {
   onStoryChange: (current: Pages) => void

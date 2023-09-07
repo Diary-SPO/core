@@ -5,8 +5,8 @@ import bridge from '@vkontakte/vk-bridge';
 
 import { ModalProvider } from './modals/ModalContext';
 
-import NotFound from './components/NotFound';
-import Suspense from './components/Suspense';
+import NotFound from './components/UI/NotFound';
+import Suspense from './components/UI/Suspense';
 
 import { router } from './routes';
 

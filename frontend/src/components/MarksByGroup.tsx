@@ -24,7 +24,7 @@ import {
 } from '../../../shared';
 import { getPerformance } from '../methods';
 
-import Mark from './Mark';
+import Mark from './UI/Mark';
 import calculateAverageMark from '../utils/calculateAverageMark';
 import { useSnackbar } from '../hooks';
 

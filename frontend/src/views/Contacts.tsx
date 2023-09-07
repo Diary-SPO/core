@@ -4,7 +4,7 @@ import {
 } from '@vkontakte/vkui';
 import { useActiveVkuiLocation, useRouteNavigator } from '@vkontakte/vk-mini-apps-router';
 
-import PanelHeaderWithBack from '../components/PanelHeaderWithBack';
+import PanelHeaderWithBack from '../components/UI/PanelHeaderWithBack';
 import HelpAccordion from '../components/HelpAccordion';
 
 import { helpData } from '../components/data';

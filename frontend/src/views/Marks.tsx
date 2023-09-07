@@ -2,7 +2,7 @@ import { FC, lazy, Suspense } from 'react';
 import { Panel, View } from '@vkontakte/vkui';
 import { useActiveVkuiLocation, useRouteNavigator } from '@vkontakte/vk-mini-apps-router';
 
-import PanelHeaderWithBack from '../components/PanelHeaderWithBack';
+import PanelHeaderWithBack from '../components/UI/PanelHeaderWithBack';
 
 const MarksByGroup = lazy(() => import('../components/MarksByGroup'));
 const UserInfo = lazy(() => import('../components/UserInfo'));

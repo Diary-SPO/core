@@ -16,20 +16,24 @@ import { addDays, endOfWeek, startOfWeek } from '@vkontakte/vkui/dist/lib/date';
 import { Day } from '../../../shared';
 import { getLessons } from '../methods';
 
-import PanelHeaderWithBack from '../components/PanelHeaderWithBack';
-import Suspense from '../components/Suspense';
+import PanelHeaderWithBack from '../components/UI/PanelHeaderWithBack';
+import Suspense from '../components/UI/Suspense';
 
 import { useSnackbar, useRateLimitExceeded } from '../hooks';
+import ExplanationTooltip from "../components/UI/ExplanationTooltip.tsx";
 
 const CalendarRange = lazy(() => import('../components/CalendarRange'));
 const ScheduleGroup = lazy(() => import('../components/ScheduleGroup'));
 
 const Schedule: FC<{ id: string }> = ({ id }) => {
   const currentDate = new Date();
-
+  
   const [rateSnackbar, handleRateLimitExceeded] = useRateLimitExceeded();
   const [snackbar, showSnackbar] = useSnackbar();
-  const [isCurrent, setIsCurrent] = useState<boolean>(false);
+  const [isCurrent, setIsCurrent] = useState<boolean>(() => {
+    const storedIsCurrent = localStorage.getItem('isCurrent');
+    return storedIsCurrent ? JSON.parse(storedIsCurrent) : true;
+  });
 
   const getError = () => showSnackbar({
     title: 'Ошибка при попытке получить расписание',
@@ -57,6 +61,8 @@ const Schedule: FC<{ id: string }> = ({ id }) => {
   const handleReloadData = async () => {
     setIsLoading(true);
     setIsError(false);
+    localStorage.setItem('isCurrent', JSON.stringify(true));
+    setIsCurrent(true);
     const newEndDate = new Date(endDate);
     newEndDate.setDate(newEndDate.getDate() + 7);
 
@@ -240,6 +246,8 @@ const Schedule: FC<{ id: string }> = ({ id }) => {
   };
 
   const debouncedChangeWeek = (direction: 'prev' | 'next') => {
+    localStorage.setItem('isCurrent', JSON.stringify(false));
+    setIsCurrent(false);
     const newStartDate = new Date(startDate);
     const newEndDate = new Date(endDate);
     if (clickCount > 0) {
@@ -263,7 +271,6 @@ const Schedule: FC<{ id: string }> = ({ id }) => {
 
   const handleButtonClick = (direction: 'prev' | 'next') => {
     setClickCount((prevCount) => prevCount + 1);
-
     if (timeoutId) {
       clearTimeout(timeoutId);
     }
@@ -297,6 +304,7 @@ const Schedule: FC<{ id: string }> = ({ id }) => {
       showSnackbar({
         title: 'Вы уже на текущей неделе',
       });
+      localStorage.setItem('isCurrent', JSON.stringify(true));
       setIsCurrent(true);
       return;
     }
@@ -308,6 +316,9 @@ const Schedule: FC<{ id: string }> = ({ id }) => {
       setLessons(data as Day[]);
       setStartDate(startWeek);
       setEndDate(endWeek);
+      
+      localStorage.setItem('isCurrent', JSON.stringify(true));
+      setIsCurrent(true);
     } catch (e) {
       console.error(e);
       getError();
@@ -326,8 +337,9 @@ const Schedule: FC<{ id: string }> = ({ id }) => {
       <IconButton aria-label='Prev' onClick={() => handleButtonClick('prev')}>
         <Icon16ArrowLeftOutline />
       </IconButton>
+     
       <Button size='s' mode='secondary' onClick={getCurrentWeek} disabled={isCurrent}>
-        Тек. неделя
+        <ExplanationTooltip tooltipContent='Вернёт вас на текущую неделю' text='Домой' />
       </Button>
       <IconButton aria-label='Next' onClick={() => handleButtonClick('next')}>
         <Icon16ArrowRightOutline />

@@ -10,8 +10,8 @@ import {
 
 import {
   VIEW_CONTACTS, VIEW_SCHEDULE, VIEW_MARKS, VIEW_SETTINGS,
-} from '../routes';
-import { Pages } from '../types';
+} from '../../routes';
+import { Pages } from '../../types';
 
 interface ITabbar {
   onStoryChange: (current: Pages) => void;

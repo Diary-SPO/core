@@ -7,9 +7,10 @@ import { useActiveVkuiLocation, useRouteNavigator } from '@vkontakte/vk-mini-app
 import {
   Grade, Lesson, LessonType, LessonWorkType, TLesson, TMark,
 } from '../../../shared';
-
 import setDefaultMark from '../utils/setDefaultMark';
-import Mark from '../components/Mark';
+
+import Mark from '../components/UI/Mark';
+
 import { useModal } from './ModalContext';
 
 export const MODAL_PAGE_LESSON = 'lesson';
