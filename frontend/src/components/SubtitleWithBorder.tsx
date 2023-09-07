@@ -1,11 +1,12 @@
-import { FC, ReactNode } from 'react';
+import { CSSProperties, FC, ReactNode } from 'react';
 
 interface ISubtitleWithBorder {
   children: ReactNode | string;
   color?: 'red' | 'green' | 'default';
+  style?: CSSProperties;
 }
 
-const SubtitleWithBorder: FC<ISubtitleWithBorder> = ({ children, color = 'default' }) => {
+const SubtitleWithBorder: FC<ISubtitleWithBorder> = ({ children, color = 'default', style }) => {
   const getColorStyles = () => {
     switch (color) {
       case 'red':
@@ -39,6 +40,7 @@ const SubtitleWithBorder: FC<ISubtitleWithBorder> = ({ children, color = 'defaul
         display: 'inline-block',
         ...getColorStyles(),
         padding: '3px 5px',
+        ...style,
       }}
     >
       {children}

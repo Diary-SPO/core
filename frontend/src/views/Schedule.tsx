@@ -14,6 +14,7 @@ import {
 } from '@vkontakte/icons';
 
 import { endOfWeek, startOfWeek } from '@vkontakte/vkui/dist/lib/date';
+import { debounce } from '@vkontakte/vkui/dist/lib/utils';
 import { Day } from '../../../shared';
 import { getLessons } from '../methods';
 
@@ -37,6 +38,8 @@ const Schedule: FC<{ id: string }> = ({ id }) => {
   const [endDate, setEndDate] = useState<Date>(endOfWeek(currentDate));
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isError, setIsError] = useState<boolean>(false);
+  const [clickCount, setClickCount] = useState<number>(0);
+  const [timeoutId, setTimeoutId] = useState<NodeJS.Timeout | null>(null);
 
   const updateDatesFromData = (data: Day[]) => {
     const firstLessonDate = data && data.length > 0 ? new Date(data[0].date) : startDate;
@@ -46,8 +49,8 @@ const Schedule: FC<{ id: string }> = ({ id }) => {
   };
 
   const handleReloadData = async () => {
-    setIsError(false);
     setIsLoading(true);
+    setIsError(false);
     const newEndDate = new Date(endDate);
     newEndDate.setDate(newEndDate.getDate() + 7);
 
@@ -73,6 +76,8 @@ const Schedule: FC<{ id: string }> = ({ id }) => {
         onActionClick: handleReloadData,
       });
       console.error(error);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -136,6 +141,7 @@ const Schedule: FC<{ id: string }> = ({ id }) => {
     gettedLessons();
   }, []);
   const sendToServerIfValid = async (start: Date, end: Date) => {
+    setIsLoading(true);
     if (start <= end) {
       const differenceInDays = (end.getTime() - start.getTime()) / (1000 * 3600 * 24);
       if (differenceInDays <= 14) {
@@ -194,6 +200,7 @@ const Schedule: FC<{ id: string }> = ({ id }) => {
         localStorage.setItem('savedLessons', JSON.stringify(data));
       }
     }
+    setIsLoading(false);
   };
 
   const handleStartDateChange = (newStartDate: Date) => {
@@ -212,36 +219,49 @@ const Schedule: FC<{ id: string }> = ({ id }) => {
     sendToServerIfValid(startDate, newEndDate);
   };
 
-  const [lastClickTime, setLastClickTime] = useState<number | null>(null);
+  const debouncedChangeWeek = debounce((direction: 'prev' | 'next') => {
+    const newStartDate = new Date(startDate);
+    const newEndDate = new Date(endDate);
 
-  const debouncedChangeWeek = (direction: 'prev' | 'next') => {
-    if (lastClickTime && Date.now() - lastClickTime <= 500) {
-      setTimeout(() => {
-        debouncedChangeWeek(direction);
-      }, 800);
-    } else {
-      setLastClickTime(Date.now());
-      const newStartDate = new Date(startDate);
-      const newEndDate = new Date(endDate);
-      if (direction === 'prev') {
-        newStartDate.setDate(newStartDate.getDate() - 7);
-        newEndDate.setDate(newEndDate.getDate() - 7);
-      } else if (direction === 'next') {
-        newStartDate.setDate(newStartDate.getDate() + 7);
-        newEndDate.setDate(newEndDate.getDate() + 7);
-      }
-      setStartDate(newStartDate);
-      setEndDate(newEndDate);
-      sendToServerIfValid(newStartDate, newEndDate);
+    if (clickCount > 0) {
+      const weekDifference = clickCount * 7;
+      newStartDate.setDate(newStartDate.getDate() + weekDifference);
+      newEndDate.setDate(newEndDate.getDate() + weekDifference);
+      setClickCount(0);
+    } else if (direction === 'prev') {
+      newStartDate.setDate(newStartDate.getDate() - 7);
+      newEndDate.setDate(newEndDate.getDate() - 7);
+    } else if (direction === 'next') {
+      newStartDate.setDate(newStartDate.getDate() + 7);
+      newEndDate.setDate(newEndDate.getDate() + 7);
     }
+
+    setStartDate(newStartDate);
+    setEndDate(newEndDate);
+
+    sendToServerIfValid(newStartDate, newEndDate);
+  }, 1);
+
+  const handleButtonClick = (direction: 'prev' | 'next') => {
+    setClickCount((prevCount) => prevCount + 1);
+
+    if (timeoutId) {
+      clearTimeout(timeoutId);
+    }
+
+    const newTimeoutId = setTimeout(() => {
+      debouncedChangeWeek(direction);
+    }, 1000);
+
+    setTimeoutId(newTimeoutId);
   };
 
   const Buttons = (
-    <ButtonGroup>
-      <IconButton aria-label='Prev' onClick={() => debouncedChangeWeek('prev')}>
+    <ButtonGroup style={{ position: 'relative', top: 20, color: 'var(--vkui--color_stroke_accent_themed)'}}>
+      <IconButton aria-label='Prev' onClick={() => handleButtonClick('prev')}>
         <Icon16ArrowLeftOutline />
       </IconButton>
-      <IconButton aria-label='Next' onClick={() => debouncedChangeWeek('next')}>
+      <IconButton aria-label='Next' onClick={() => handleButtonClick('next')}>
         <Icon16ArrowRightOutline />
       </IconButton>
     </ButtonGroup>
@@ -277,24 +297,22 @@ const Schedule: FC<{ id: string }> = ({ id }) => {
             onDateChange={handleEndDateChange}
           />
         </Suspense>
-        {isLoading ? <PanelSpinner size='medium' /> : (
-          <Suspense id='ScheduleGroup' mode='screen'>
-            <Group
-              header={(
-                <Header
-                  aside={Buttons}
-                  mode='secondary'
-                >
-                  Период
-                  {' '}
-                  {weekString}
-                </Header>
-              )}
-            >
+        <Suspense id='ScheduleGroup' mode='screen'>
+          <Group
+            header={(
+              <Header
+                aside={Buttons}
+                mode='secondary'
+              >
+                {weekString}
+              </Header>
+            )}
+          >
+            {isLoading ? <PanelSpinner size='medium' /> : (
               <ScheduleGroup lessonsState={lessonsState} />
-            </Group>
-          </Suspense>
-        )}
+            )}
+          </Group>
+        </Suspense>
         {isError
           && (
             <Placeholder
