@@ -1,5 +1,5 @@
 import {
-  memo, ReactNode, useEffect, useState,
+  memo, useEffect, useState,
 } from 'react';
 import {
   Card,
@@ -9,7 +9,6 @@ import {
   Header,
   HorizontalScroll,
   MiniInfoCell,
-  Snackbar,
   Spinner,
   Title,
 } from '@vkontakte/vkui';
@@ -27,13 +26,14 @@ import { getPerformance } from '../methods';
 
 import Mark from './Mark';
 import calculateAverageMark from '../utils/calculateAverageMark';
+import { useSnackbar } from '../hooks';
 
 const THIRD_SEC = 30 * 1000;
 
 const MarksByGroup = () => {
   const [marksForSubject, setMarksForSubject] = useState<PerformanceCurrent | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [snackbar, setSnackbar] = useState<ReactNode | null>(null);
+  const [snackbar, showSnackbar] = useSnackbar();
 
   const fetchMarks = async (isHandle?: boolean) => {
     setIsLoading(true);
@@ -48,7 +48,12 @@ const MarksByGroup = () => {
 
         setMarksForSubject(marks);
       } else {
-        setSnackbar(CacheSnackbar);
+        showSnackbar({
+          title: 'Оценки взяты из кеша',
+          onActionClick: () => fetchMarks(true),
+          action: 'Загрузить новые',
+          icon: <Icon28InfoCircle fill='var(--vkui--color_background_accent)' />,
+        });
         const cachedMarks = localStorage.getItem('marks');
         if (cachedMarks) {
           setMarksForSubject(JSON.parse(cachedMarks));
@@ -58,31 +63,15 @@ const MarksByGroup = () => {
       setIsLoading(false);
     } catch (error) {
       setIsLoading(false);
-      setSnackbar(ErrorSnackbar);
+      showSnackbar({
+        icon: <Icon28ErrorCircleOutline fill='var(--vkui--color_icon_negative)' />,
+        title: 'Ошибка при попытке загрузить оценки',
+        action: 'Попробовать снова',
+        onActionClick: () => fetchMarks(true),
+      });
       console.error('Ошибка при получении оценок:', error);
     }
   };
-
-  const ErrorSnackbar = (
-    <Snackbar
-      onClose={() => setSnackbar(null)}
-      before={<Icon28ErrorCircleOutline fill='var(--vkui--color_icon_negative)' />}
-      subtitle='Попробуйте заного или сообщите об ошибке'
-    >
-      Ошибка при попытке загрузить оценки
-    </Snackbar>
-  );
-
-  const CacheSnackbar = (
-    <Snackbar
-      onClose={() => setSnackbar(null)}
-      before={<Icon28InfoCircle fill='var(--vkui--color_background_accent)' />}
-      action='Загрузить новые'
-      onActionClick={() => fetchMarks(true)}
-    >
-      Оценки взяты из кеша
-    </Snackbar>
-  );
 
   useEffect(() => {
     fetchMarks();
@@ -118,6 +107,7 @@ const MarksByGroup = () => {
                   <div key={i} style={{ display: 'flex' }}>
                     {(marks.length > 0 ? marks?.map((mark, j) => (
                       <Mark key={j} mark={Grade[subjectMarksMap[subjectName][i].absenceType === 'IsAbsent' ? 'Н' : mark]} size='s' />
+                      // FIXME: Тут встречается баг, что ставится Д, когда нет долга и студент был на паре
                     )) : subjectMarksMap[subjectName]?.map((mark, j) => <Mark key={j} size='s' mark={mark.absenceType === 'IsAbsent' ? 'Н' as TMark : 'Д' as TMark} />)
                       )}
                   </div>

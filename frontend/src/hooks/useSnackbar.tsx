@@ -1,11 +1,23 @@
-import React, { useState, ReactNode } from 'react';
+import React, { useState, ReactNode, useCallback } from 'react';
 import { Snackbar, SnackbarProps } from '@vkontakte/vkui';
 import { Icon28ErrorCircleOutline } from '@vkontakte/icons';
+
+interface SnackbarData {
+  layout?: SnackbarProps['layout'];
+  icon?: ReactNode;
+  action?: string;
+  onActionClick?: () => void;
+  onClose?: () => void;
+  duration?: number;
+  style?: React.CSSProperties;
+  title: string;
+  subtitle?: string;
+}
 
 const useSnackbar = (): [ReactNode | null, (snackbarData: SnackbarData) => void] => {
   const [snackbar, setSnackbar] = useState<ReactNode | null>(null);
 
-  const showSnackbar = (snackbarData: SnackbarData) => {
+  const showSnackbar = useCallback((snackbarData: SnackbarData) => {
     setSnackbar(
       <Snackbar
         layout={snackbarData.layout || 'vertical'}
@@ -20,21 +32,9 @@ const useSnackbar = (): [ReactNode | null, (snackbarData: SnackbarData) => void]
         {snackbarData.title}
       </Snackbar>,
     );
-  };
+  }, []);
 
   return [snackbar, showSnackbar];
 };
-
-interface SnackbarData {
-  layout?: SnackbarProps['layout'];
-  icon?: ReactNode;
-  action?: string;
-  onActionClick?: () => void;
-  onClose?: () => void;
-  duration?: number;
-  style?: React.CSSProperties;
-  title: string;
-  subtitle?: string;
-}
 
 export default useSnackbar;

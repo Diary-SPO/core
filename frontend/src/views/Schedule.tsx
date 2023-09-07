@@ -19,8 +19,8 @@ import { getLessons } from '../methods';
 
 import PanelHeaderWithBack from '../components/PanelHeaderWithBack';
 import Suspense from '../components/Suspense';
-import useRateLimitExceeded from '../hooks/useRateLimitExceeded.tsx';
-import useSnackbar from '../hooks/useSnackbar.tsx';
+
+import { useSnackbar, useRateLimitExceeded } from '../hooks';
 
 const CalendarRange = lazy(() => import('../components/CalendarRange'));
 const ScheduleGroup = lazy(() => import('../components/ScheduleGroup'));

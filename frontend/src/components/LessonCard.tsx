@@ -12,10 +12,11 @@ import { formatLessonDate } from '../utils/formatLessonDate';
 
 import { MODAL_PAGE_LESSON } from '../modals/ModalRoot';
 
+import { useModal } from '../modals/ModalContext';
+
 import SubtitleWithBorder from './SubtitleWithBorder';
 import TimeRemaining from './TimeRemaining';
 import Mark from './Mark';
-import { useModal } from '../modals/ModalContext';
 
 interface ILessonCard {
   lesson: Day;
@@ -26,7 +27,13 @@ const LessonCard: FC<ILessonCard> = ({ lesson }) => {
 
   const { openModal } = useModal();
 
-  const handleLessonClick = (name: string, endTime: string, startTime: string, timetable: Timetable, gradebook: Gradebook | undefined) => {
+  const handleLessonClick = (
+    name: string,
+    endTime: string,
+    startTime: string,
+    timetable: Timetable,
+    gradebook: Gradebook | undefined,
+  ) => {
     routeNavigator.showModal(MODAL_PAGE_LESSON);
 
     const lessonDate = new Date(lesson.date);
