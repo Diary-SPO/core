@@ -5,11 +5,11 @@ import bridge from '@vkontakte/vk-bridge';
 
 import { ModalProvider } from './modals/ModalContext';
 
-import NotFound from './components/UI/NotFound';
-import Suspense from './components/UI/Suspense';
-
 import { router } from './routes';
 
+import Suspense from './components/UI/Suspense';
+
+const NotFound = lazy(() => import('./components/UI/NotFound'));
 const App = lazy(() => import('./App'));
 
 bridge.send('VKWebAppInit');
