@@ -2,7 +2,7 @@ import {
   useState, FC, ChangeEvent, ReactNode, useEffect,
 } from 'react';
 import {
-  Button, FormItem, FormLayout, Input, Group, Panel, View, FormStatus, ScreenSpinner, Snackbar,
+  Button, FormItem, FormLayout, Input, Group, Panel, View, FormStatus, ScreenSpinner,
 } from '@vkontakte/vkui';
 import { useActiveVkuiLocation, useRouteNavigator } from '@vkontakte/vk-mini-apps-router';
 import Hashes from 'jshashes';
@@ -11,6 +11,8 @@ import { Icon28ErrorCircleOutline, Icon28DoorArrowLeftOutline } from '@vkontakte
 import { AuthData } from '../../../shared';
 import { appStorageSet, getCookie } from '../methods';
 import { VIEW_SCHEDULE } from '../routes';
+
+import { useSnackbar } from '../hooks';
 
 import PanelHeaderWithBack from '../components/PanelHeaderWithBack';
 
@@ -22,19 +24,16 @@ const LoginForm: FC<{ id: string }> = ({ id }) => {
   const [password, setPassword] = useState<string>('');
   const [isDataInvalid, setIsDataInvalid] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [popout, setPopout] = useState<ReactNode | null>(null);
+  const [_, setPopout] = useState<ReactNode | null>(null);
+  const [snackbar, showSnackbar] = useSnackbar();
+
+  const createErrorSnackbar = () => showSnackbar({
+    icon: <Icon28ErrorCircleOutline fill='var(--vkui--color_icon_negative)' />,
+    subtitle: 'Попробуйте заного или сообщите об ошибке',
+    title: 'Ошибка при попытке авторизации',
+  });
 
   const clearPopout = () => setPopout(null);
-
-  const NoCookies = (
-    <Snackbar
-      onClose={() => setPopout(null)}
-      before={<Icon28ErrorCircleOutline fill='var(--vkui--color_icon_negative)' />}
-      subtitle='Заполни форму и войди в дневник'
-    >
-      О вас нет данных, ты кто такой?
-    </Snackbar>
-  );
 
   useEffect(() => {
     setIsLoading(true);
@@ -42,23 +41,17 @@ const LoginForm: FC<{ id: string }> = ({ id }) => {
       if (!cookieValue) {
         routeNavigator.replace('/');
         setIsLoading(false);
-        setPopout(NoCookies);
+        showSnackbar({
+          icon: <Icon28ErrorCircleOutline fill='var(--vkui--color_icon_negative)' />,
+          subtitle: 'Заполни форму и войди в дневник',
+          title: 'О вас нет данных, ты кто такой?',
+        });
       } else {
         routeNavigator.replace(`/${VIEW_SCHEDULE}`);
         setIsLoading(false);
       }
     });
   }, []);
-
-  const ErrorSnackbar = (
-    <Snackbar
-      onClose={() => setPopout(null)}
-      before={<Icon28ErrorCircleOutline fill='var(--vkui--color_icon_negative)' />}
-      subtitle='Попробуйте заного или сообщите об ошибке'
-    >
-      Ошибка при попытке авторизации
-    </Snackbar>
-  );
 
   const setErrorScreenSpinner = () => {
     setPopout(<ScreenSpinner state='loading' />);
@@ -112,14 +105,14 @@ const LoginForm: FC<{ id: string }> = ({ id }) => {
       throw new Error('401');
     } else if (!response.ok) {
       setIsLoading(false);
-      setPopout(ErrorSnackbar);
+      createErrorSnackbar();
       setErrorScreenSpinner();
       throw new Error(`Failed to fetch login / status: ${response.status} / statusText: ${response.statusText}`);
     }
 
     const dataResp = await response.json() as AuthData;
     if (!String(dataResp.cookie)) {
-      setPopout(ErrorSnackbar);
+      createErrorSnackbar();
     }
 
     try {
@@ -210,7 +203,7 @@ const LoginForm: FC<{ id: string }> = ({ id }) => {
               </Button>
             </FormItem>
           </FormLayout>
-          {popout}
+          {snackbar}
         </Group>
       </Panel>
     </View>

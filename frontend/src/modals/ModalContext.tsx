@@ -1,25 +1,17 @@
 import React, {
   createContext, useContext, useState, ReactNode,
 } from 'react';
-import { Gradebook, Task, Timetable } from '../../../shared';
+import { Lesson } from '../../../shared';
 
-interface ModalData {
-  name: string;
-  endTime: string;
-  startTime: string;
-  timetable: Timetable;
-  gradebook?: Gradebook | undefined;
-  tasks?: Task[] | undefined;
-  lessonId: string;
-}
-
-const ModalContext = createContext<{ modalData: ModalData | null; openModal:(data: { name: string; lessonId: string; startTime: string; endTime: string; gradebook: Gradebook | undefined; tasks: Task[] | undefined; timetable: Timetable }) => void } | undefined>(
-  undefined);
+const ModalContext = createContext<{
+  modalData: Lesson | null;
+  openModal:(data: Lesson) => void } | undefined>(
+    undefined);
 
 export const ModalProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
-  const [modalData, setModalData] = useState<ModalData | null>(null);
+  const [modalData, setModalData] = useState<Lesson | null>(null);
 
-  const openModal = (data: ModalData) => {
+  const openModal = (data: Lesson) => {
     setModalData(data);
   };
 

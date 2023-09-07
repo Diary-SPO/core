@@ -3,8 +3,8 @@ import formatDateForRequest from '../../utils/formatDateForRequest';
 
 import { getUserId } from '../bridge/getUserId';
 import { getCookie } from '../bridge/getCookie';
-// TODO: добавить обработку CORS
-export const getLessons = async (startDate?: Date, endDate?: Date): Promise<Day[] | string> => {
+
+export const getLessons = async (startDate?: Date, endDate?: Date): Promise<Day[] | number> => {
   const cookie = await getCookie();
   const id = await getUserId();
 
@@ -29,17 +29,17 @@ export const getLessons = async (startDate?: Date, endDate?: Date): Promise<Day[
     },
   });
 
+  if (response.status === 429) {
+    console.log(response.status);
+    return response.status;
+  }
+
   if (!response.ok) {
     throw new Error('Failed to fetch lessons');
   }
-  
+
   const data = await response.json() as Day[];
-  
-  if (response.statusText === 'LIMIT' || (response.ok && !Array.isArray(data))) {
-    console.log(response.statusText);
-    return 'cors';
-  }
-  
+
   if (!Array.isArray(data)) {
     throw new Error('Invalid data format');
   }

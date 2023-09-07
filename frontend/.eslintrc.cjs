@@ -19,7 +19,7 @@ module.exports = {
   rules: {
     quotes: ['error', 'single'],
     semi: [1, 'always'],
-    'max-len': ['warn', { code: 125 }],
+    'max-len': ['warn', { code: 150 }],
   },
   overrides: [
     {
@@ -41,6 +41,13 @@ module.exports = {
         'react/require-default-props': 'off',
         'react/jsx-fragments': 'off',
         'no-console': 'off',
+        'import/no-extraneous-dependencies': 'off',
+        // @see https://stackoverflow.com/questions/46735483/error-do-not-use-array-index-in-keys
+        // Обычно так делать нельзя, но в рамках нашего проекта - можно
+        // Т.к. наши массивы статичны и юзер не может как-либо менять порядок / удалять элементы,
+        // мы можем использовать индекс как key
+        'react/no-array-index-key': 'off',
+        '@typescript-eslint/no-unsafe-member-access': 'off',
         'no-nested-ternary': 'off',
         'jsx-quotes': [2, 'prefer-single'],
         'react/function-component-definition': [2, {

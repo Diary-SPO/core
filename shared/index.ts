@@ -134,6 +134,7 @@ export enum Grade {
   // Оценка пустая = долг, двойку не ставим!
   '' = 'Д',
   'Н' = 'Н',
+  // Кастыль :))
   'Д' = 'Д',
 }
 
@@ -194,6 +195,7 @@ export interface Lesson {
   name: string | null
   timetable: Timetable
   gradebook?: Gradebook,
+  tasks?: Task[],
 }
 
 export interface Day {
