@@ -64,9 +64,8 @@ const UserInfo = () => {
       setIsLoading(true);
 
       const keys = await getVkStorageKeys();
-      console.log(keys)
       const data = await getVkStorageData(keys);
-      console.log(data)
+
       await bridge.send('VKWebAppGetUserInfo')
         .then((data) => {
           if (data.id) {
