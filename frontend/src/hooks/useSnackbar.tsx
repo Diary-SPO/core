@@ -1,6 +1,6 @@
 import React, { useState, ReactNode, useCallback } from 'react';
 import { Snackbar, SnackbarProps } from '@vkontakte/vkui';
-import { Icon28ErrorCircleOutline } from '@vkontakte/icons';
+import { Icon28InfoCircleOutline } from '@vkontakte/icons';
 
 interface SnackbarData {
   layout?: SnackbarProps['layout'];
@@ -22,7 +22,7 @@ const useSnackbar = (): [ReactNode | null, (snackbarData: SnackbarData) => void]
       <Snackbar
         layout={snackbarData.layout || 'vertical'}
         onClose={() => setSnackbar(null)}
-        before={snackbarData.icon || <Icon28ErrorCircleOutline fill='var(--vkui--color_icon_negative)' />}
+        before={snackbarData.icon || <Icon28InfoCircleOutline fill='var(--vkui--color_background_accent)' />}
         action={snackbarData.action}
         onActionClick={snackbarData.onActionClick}
         duration={snackbarData.duration}
