@@ -304,8 +304,6 @@ const Schedule: FC<{ id: string }> = ({ id }) => {
                 aside={Buttons}
                 mode='secondary'
               >
-                Период
-                {' '}
                 {weekString}
               </Header>
             )}
