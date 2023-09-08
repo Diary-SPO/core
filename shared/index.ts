@@ -1,6 +1,6 @@
 // Эти данные приходят с бэка сетевого города, типизация актуальна на момент 04.09.23
 // В некоторых местах типизация может быть не полной
-interface Organization {
+export interface Organization {
   // Example: 'spo'
   'organizationType': string,
   'name': string,

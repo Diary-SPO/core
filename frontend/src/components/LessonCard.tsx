@@ -26,7 +26,7 @@ interface ILessonCard {
 const LessonCard: FC<ILessonCard> = ({ lesson }) => {
   const routeNavigator = useRouteNavigator();
 
-  const { openModal } = useModal();
+  const { openLessonModal } = useModal();
 
   const handleLessonClick = (
     name: string,
@@ -50,7 +50,7 @@ const LessonCard: FC<ILessonCard> = ({ lesson }) => {
       lessonId,
     };
 
-    openModal(modalData);
+    openLessonModal(modalData);
   };
 
   const currentDate = new Date();

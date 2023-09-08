@@ -1,22 +1,33 @@
 import React, {
   createContext, useContext, useState, ReactNode,
 } from 'react';
-import { Lesson } from '../../../shared';
+import { Lesson, Organization } from '../../../shared';
 
 const ModalContext = createContext<{
-  modalData: Lesson | null;
-  openModal:(data: Lesson) => void } | undefined>(
-    undefined);
+  lessonModalData: Lesson | null;
+  collegeModalData: Organization | null;
+  openLessonModal:(data: Lesson) => void;
+  openCollegeModal: (data: Organization) => void;
+} | undefined>(undefined);
 
 export const ModalProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
-  const [modalData, setModalData] = useState<Lesson | null>(null);
+  const [lessonModalData, setLessonModalData] = useState<Lesson | null>(null);
+  const [collegeModalData, setCollegeModalData] = useState<Organization | null>(null);
 
-  const openModal = (data: Lesson) => {
-    setModalData(data);
+  const openLessonModal = (data: Lesson) => {
+    setLessonModalData(data);
+  };
+
+  const openCollegeModal = (data: Organization) => {
+    console.log('college');
+    setCollegeModalData(data);
   };
 
   return (
-    <ModalContext.Provider value={{ modalData, openModal }}>
+    <ModalContext.Provider value={{
+      lessonModalData, collegeModalData, openLessonModal, openCollegeModal,
+    }}
+    >
       {children}
     </ModalContext.Provider>
   );

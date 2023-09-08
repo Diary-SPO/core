@@ -20,15 +20,15 @@ interface ILessonModal {
 }
 
 const LessonModal: FC<ILessonModal> = ({ id }) => {
-  const { modalData } = useModal();
+  const { lessonModalData } = useModal();
 
   const [lessonData, setLessonData] = useState<Lesson>(cleanData);
 
   useEffect(() => {
-    if (modalData) {
+    if (lessonModalData) {
       const {
         name, endTime, startTime, timetable, gradebook, tasks: tasksArray,
-      } = modalData;
+      } = lessonModalData;
 
       let lessonName = name || '';
 
@@ -71,7 +71,7 @@ const LessonModal: FC<ILessonModal> = ({ id }) => {
         endTime: endTime || 'Что-то не так с датой',
       });
     }
-  }, [modalData]);
+  }, [lessonModalData]);
 
   return (
     <ModalPage id={id} size={500} dynamicContentHeight>

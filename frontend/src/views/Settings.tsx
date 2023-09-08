@@ -12,14 +12,38 @@ import bridge from '@vkontakte/vk-bridge';
 
 import { Storage } from '../types';
 import {
-  appStorageSet, getVkStorageData, getVkStorageKeys,
+  appStorageSet, getCookie, getVkStorageData, getVkStorageKeys,
 } from '../methods';
 
 import PanelHeaderWithBack from '../components/UI/PanelHeaderWithBack';
+import { Organization } from '../../../shared';
 
 interface ISettings {
   id: string,
 }
+
+export const getCollegeInfoFromServer = async (): Promise<Organization | number> => {
+  const cookie = await getCookie();
+
+  const response = await fetch(`${import.meta.env.VITE_SERVER_URL}/organization`, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json;charset=UTF-8',
+      secret: cookie as string,
+    },
+  });
+
+  if (response.status === 429) {
+    console.log(response.status);
+    return response.status;
+  }
+
+  if (!response.ok) {
+    throw new Error('Failed to fetch college data');
+  }
+
+  return await response.json() as Organization;
+};
 
 const Settings: FC<ISettings> = ({ id }) => {
   const { panel: activePanel, panelsHistory } = useActiveVkuiLocation();
@@ -67,7 +91,7 @@ const Settings: FC<ISettings> = ({ id }) => {
       }
     });
   };
-  
+
   useEffect(() => {
     const checkIsFeatureSupported = async () => {
       bridge.send('VKWebAppAddToHomeScreenInfo')
@@ -82,8 +106,8 @@ const Settings: FC<ISettings> = ({ id }) => {
         .catch((error) => {
           console.log(error);
         });
-    }
-    
+    };
+
     checkIsFeatureSupported();
   }, []);
 

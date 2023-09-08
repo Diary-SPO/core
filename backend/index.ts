@@ -7,7 +7,7 @@ import 'dotenv/config'
 import { corsMiddleware, preventCrossSiteScripting } from './src/middleware'
 
 import {
-  dashboard, helloRoute, lessonsRoute, loginRoute, performanceCurrent
+  dashboard, helloRoute, lessonsRoute, loginRoute, organization, performanceCurrent
 } from './src/routes'
 
 const app = express()
@@ -36,11 +36,12 @@ app.use(cors({
 app.use(limiter)
 // app.use(corsMiddleware)
 
-app.use('/', helloRoute)
-app.use('/lessons', lessonsRoute)
-app.use('/login', loginRoute)
-app.use('/dashboard', dashboard)
 app.use('/performance.current', performanceCurrent)
+app.use('/organization', organization)
+app.use('/lessons', lessonsRoute)
+app.use('/dashboard', dashboard)
+app.use('/login', loginRoute)
+app.use('/', helloRoute)
 
 app.listen(port, () => {
   console.log(`Server is running at http://localhost:${port}`)
