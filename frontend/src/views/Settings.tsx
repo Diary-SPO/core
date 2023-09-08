@@ -27,7 +27,7 @@ const Settings: FC<ISettings> = ({ id }) => {
 
   const [cacheData, setCacheData] = useState<Storage[]>([]);
   const [vkCacheData, setVkCacheData] = useState<Storage[]>([]);
-  const [isHomeScreenSupported, setIsHomeScreenSupported] = useState<boolean | null>(null);
+  const [isHomeScreenSupported, setIsHomeScreenSupported] = useState<boolean>(false);
 
   useEffect(() => {
     const allKeys = Object.keys(localStorage);
@@ -67,25 +67,31 @@ const Settings: FC<ISettings> = ({ id }) => {
       }
     });
   };
+  
+  useEffect(() => {
+    const checkIsFeatureSupported = async () => {
+      bridge.send('VKWebAppAddToHomeScreenInfo')
+        .then(({ is_added_to_home_screen, is_feature_supported }) => {
+          if (is_feature_supported) {
+            setIsHomeScreenSupported(true);
+          }
+          if (is_added_to_home_screen) {
+            console.log(is_added_to_home_screen);
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    }
+    
+    checkIsFeatureSupported();
+  }, []);
 
   const addToHomeScreen = () => {
     bridge.send('VKWebAppAddToHomeScreen')
       .then((data) => {
         if (data.result) {
           console.log(data);
-        }
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-
-    bridge.send('VKWebAppAddToHomeScreenInfo')
-      .then(({ is_added_to_home_screen, is_feature_supported }) => {
-        if (is_feature_supported) {
-          setIsHomeScreenSupported(true);
-        }
-        if (is_added_to_home_screen) {
-          console.log(is_added_to_home_screen);
         }
       })
       .catch((error) => {
@@ -129,7 +135,7 @@ const Settings: FC<ISettings> = ({ id }) => {
             <Header mode='secondary' aside={<Subhead>Хранится в LocalStorage</Subhead>}>Кеш</Header>)}
         >
           {cacheData.map((item) => (
-            <Cell key={item.key} indicator={item.value}>
+            <Cell key={item.key} indicator={item.value.slice(0, 30)}>
               {item.key}
             </Cell>
           ))}
@@ -139,7 +145,7 @@ const Settings: FC<ISettings> = ({ id }) => {
             <Header mode='secondary'>VK Storage</Header>)}
         >
           {vkCacheData.map((item) => (
-            <Cell key={item.key} indicator={item.value}>
+            <Cell key={item.key} indicator={item.value.slice(0, 30)}>
               {item.key}
             </Cell>
           ))}
