@@ -13,8 +13,8 @@ import {
 } from '@vkontakte/icons';
 
 import { addDays, endOfWeek, startOfWeek } from '@vkontakte/vkui/dist/lib/date';
-import { Day } from '../../../shared';
-import { getLessons } from '../methods';
+import { Day, PerformanceCurrent } from '../../../shared';
+import { getLessons, getPerformance } from '../methods';
 
 import PanelHeaderWithBack from '../components/UI/PanelHeaderWithBack';
 import Suspense from '../components/UI/Suspense';
@@ -22,11 +22,27 @@ import Suspense from '../components/UI/Suspense';
 import { useSnackbar, useRateLimitExceeded } from '../hooks';
 
 import ExplanationTooltip from '../components/UI/ExplanationTooltip';
+import MarksByDay from '../components/UI/MarksByDay';
 
 const CalendarRange = lazy(() => import('../components/UI/CalendarRange'));
 const ScheduleGroup = lazy(() => import('../components/ScheduleGroup'));
 
 const Schedule: FC<{ id: string }> = ({ id }) => {
+  const [marksData, setMarksData] = useState<PerformanceCurrent | null>(null); // State to hold marks data
+
+  const fetchMarksData = async () => {
+    try {
+      const marks = await getPerformance();
+      setMarksData(marks);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  useEffect(() => {
+    fetchMarksData();
+  }, []);
+
   const currentDate = new Date();
 
   const [rateSnackbar, handleRateLimitExceeded] = useRateLimitExceeded();
@@ -365,18 +381,24 @@ const Schedule: FC<{ id: string }> = ({ id }) => {
     >
       <Panel nav={id}>
         <PanelHeaderWithBack title='Расписание' />
-        <Suspense id='Calendar' mode='panel'>
-          <CalendarRange
-            label='Выбор начальной даты:'
-            value={startDate}
-            onDateChange={handleStartDateChange}
-          />
-          <CalendarRange
-            label='Выбор конечной даты:'
-            value={endDate}
-            onDateChange={handleEndDateChange}
-          />
-        </Suspense>
+        <MarksByDay performanceData={marksData} />
+        <Group
+          header={<Header mode='secondary'>Выбор даты</Header>}
+          description='Разница между датами не может быть больше 14-и дней'
+        >
+          <Suspense id='Calendar' mode='panel'>
+            <CalendarRange
+              label={<ExplanationTooltip text='Начальная' tooltipContent='Не может быть больше конечной' />}
+              value={startDate}
+              onDateChange={handleStartDateChange}
+            />
+            <CalendarRange
+              label={<ExplanationTooltip text='Конечная' tooltipContent='Не может быть меньше конечной' />}
+              value={endDate}
+              onDateChange={handleEndDateChange}
+            />
+          </Suspense>
+        </Group>
         <Suspense id='ScheduleGroup' mode='screen'>
           <Group
             header={(

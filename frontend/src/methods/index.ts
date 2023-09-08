@@ -6,8 +6,8 @@ import { getUserId } from './bridge/getUserId';
 
 import { getPerformance } from './server/getPerformance.ts';
 import { getLessons } from './server/getLessons';
-import { getMarks } from './server/getMarks';
+// import { getMarks } from './server/getMarks';
 
 export {
-  getCookie, getMarks, getUserId, getLessons, appStorageSet, getPerformance, getVkStorageData, getVkStorageKeys,
+  getCookie, getUserId, getLessons, appStorageSet, getPerformance, getVkStorageData, getVkStorageKeys,
 };

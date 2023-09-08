@@ -23,10 +23,10 @@ import {
   AbsenceType, Grade, PerformanceCurrent, TextMark, TMark,
 } from '../../../shared';
 import { getPerformance } from '../methods';
-
-import Mark from './UI/Mark';
 import calculateAverageMark from '../utils/calculateAverageMark';
 import { useSnackbar } from '../hooks';
+
+import Mark from './UI/Mark';
 
 const THIRD_SEC = 30 * 1000;
 
@@ -84,7 +84,7 @@ const MarksByGroup = () => {
       subjectMarksMap[subjectName] = [];
     }
 
-    daysWithMarks.forEach((dayWithMark) => {
+    daysWithMarks?.forEach((dayWithMark) => {
       subjectMarksMap[subjectName].push({
         date: new Date(dayWithMark.day).toLocaleDateString(),
         marks: dayWithMark.markValues,
@@ -120,7 +120,7 @@ const MarksByGroup = () => {
                 before={<Icon20StatisticsOutline />}
                 style={{ marginTop: 5 }}
                 after={calculateAverageMark(
-                  marksForSubject.daysWithMarksForSubject[i].daysWithMarks.reduce(
+                  marksForSubject?.daysWithMarksForSubject[i]?.daysWithMarks.reduce(
                     (allMarks, day) => [...allMarks, ...day.markValues],
                     [] as TextMark[],
                   ),

@@ -219,7 +219,7 @@ export interface AuthData {
 export interface PerformanceCurrent {
   daysWithMarksForSubject: [{
     subjectName: string;
-    daysWithMarks: [
+    daysWithMarks?: [
       {
         day: Date;
         absenceType?: AbsenceType;
