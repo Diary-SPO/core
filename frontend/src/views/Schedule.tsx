@@ -38,29 +38,6 @@ const Schedule: FC<{ id: string }> = ({ id }) => {
     return storedIsCurrent ? JSON.parse(storedIsCurrent) : true;
   });
 
-  const getError = () => showSnackbar({
-    title: 'Ошибка при попытке получить расписание',
-    action: 'Повторить',
-    onActionClick: handleReloadData,
-  });
-
-  const { panel: activePanel, panelsHistory } = useActiveVkuiLocation();
-  const routeNavigator = useRouteNavigator();
-  const [lessonsState, setLessons] = useState<Day[] | null>();
-  const [startDate, setStartDate] = useState<Date>(startOfWeek(currentDate));
-  const [endDate, setEndDate] = useState<Date>(endOfWeek(currentDate));
-  const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [isError, setIsError] = useState<boolean>(false);
-  const [clickCount, setClickCount] = useState<number>(0);
-  const [timeoutId, setTimeoutId] = useState<NodeJS.Timeout | null>(null);
-
-  const updateDatesFromData = (data: Day[]) => {
-    const firstLessonDate = data && data.length > 0 ? new Date(data[0].date) : startDate;
-    const lastLessonDate = data && data.length > 0 ? new Date(data[data.length - 1].date) : endDate;
-    setStartDate(startOfWeek(firstLessonDate));
-    setEndDate(endOfWeek(lastLessonDate));
-  };
-
   const handleReloadData = async () => {
     setIsLoading(true);
     setIsMarksLoading(true);
@@ -104,6 +81,29 @@ const Schedule: FC<{ id: string }> = ({ id }) => {
       setIsLoading(false);
       setIsMarksLoading(false);
     }
+  };
+
+  const getError = () => showSnackbar({
+    title: 'Ошибка при попытке получить расписание',
+    action: 'Повторить',
+    onActionClick: handleReloadData,
+  });
+
+  const { panel: activePanel, panelsHistory } = useActiveVkuiLocation();
+  const routeNavigator = useRouteNavigator();
+  const [lessonsState, setLessons] = useState<Day[] | null>();
+  const [startDate, setStartDate] = useState<Date>(startOfWeek(currentDate));
+  const [endDate, setEndDate] = useState<Date>(endOfWeek(currentDate));
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isError, setIsError] = useState<boolean>(false);
+  const [clickCount, setClickCount] = useState<number>(0);
+  const [timeoutId, setTimeoutId] = useState<NodeJS.Timeout | null>(null);
+
+  const updateDatesFromData = (data: Day[]) => {
+    const firstLessonDate = data && data.length > 0 ? new Date(data[0].date) : startDate;
+    const lastLessonDate = data && data.length > 0 ? new Date(data[data.length - 1].date) : endDate;
+    setStartDate(startOfWeek(firstLessonDate));
+    setEndDate(endOfWeek(lastLessonDate));
   };
 
   useEffect(() => {
