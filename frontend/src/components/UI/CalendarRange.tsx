@@ -102,7 +102,7 @@ const CalendarRange: FC<CalendarRangeProps> = React.forwardRef(
 );
 
 CalendarRange.propTypes = {
-  label: PropTypes.string.isRequired,
+  label: PropTypes.node.isRequired,
   onDateChange: PropTypes.func,
   value: PropTypes.instanceOf(Date),
 };
