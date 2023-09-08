@@ -72,7 +72,7 @@ const LessonCard: FC<ILessonCard> = ({ lesson }) => {
   const dayEnded = currentYear === lessonYear && currentMonth === lessonMonth && currentDay > lessonDay;
 
   const displayDay = dayEnded ? ' День завершён' : isLessonToday ? 'Сегодня' : '';
-  const displayEndDayStyles = dayEnded && 'var(--vkui--color_icon_negative)';
+  const displayEndDayStyles = dayEnded && '#888888';
   const displayCurrDayStyles = isLessonToday && 'var(--vkui--color_background_accent)';
 
   const displayDayStyles: CSSProperties = {

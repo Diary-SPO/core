@@ -38,7 +38,7 @@ const UserInfo = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [userAva, setUserAva] = useState<string | undefined>();
   const [snackbar, setSnackbar] = useState<ReactNode | null>(null);
-  
+
   const autoLogOut = async () => {
     await appStorageSet('cookie', '');
     location.reload();

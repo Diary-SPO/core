@@ -1,6 +1,6 @@
 import bridge from '@vkontakte/vk-bridge';
 
-export const appStorageSet = async (key: string, value: string): Promise<boolean | unknown> => {
+export const appStorageSet = async (key: string, value: string): Promise<boolean | string> => {
   try {
     const data = await bridge.send('VKWebAppStorageSet', {
       key,
@@ -10,8 +10,9 @@ export const appStorageSet = async (key: string, value: string): Promise<boolean
     if (data.result) {
       return data.result;
     }
+    return false;
   } catch (error) {
     console.error(error);
-    return error;
+    return error as string;
   }
 };
