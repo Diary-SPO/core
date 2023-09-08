@@ -45,13 +45,13 @@ const MarksByDay: FC<IPerformanceCurrent> = ({ performanceData }) => {
     >
       <Group header={<Header mode='secondary'>Недавние оценки</Header>}>
         <div className='marksByName'>
-          {Object.entries(marksByDay).map(([day, { grades, lessonName }], index) => (
-            <div>
+          {Object.entries(marksByDay).map(([day, { grades, lessonName }]) => (
+            <div key={day}>
               <Header mode='secondary'>{day}</Header>
-              <div key={index} style={{ display: 'flex' }}>
+              <div style={{ display: 'flex' }}>
                 {grades.map((grade, gradeIndex) => (
-                  <HorizontalCell style={{ maxWidth: 'unset' }}>
-                    <Mark style={{ maxWidth: 90 }} key={gradeIndex} mark={grade} size='l' bottom={truncateString(lessonName, 18)} useMargin={false} />
+                  <HorizontalCell style={{ maxWidth: 'unset' }} key={`${day}_${gradeIndex}`}>
+                    <Mark style={{ maxWidth: 90 }} mark={grade} size='l' bottom={truncateString(lessonName, 18)} useMargin={false} />
                   </HorizontalCell>
                 ))}
               </div>
