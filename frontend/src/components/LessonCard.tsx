@@ -135,7 +135,7 @@ const LessonCard: FC<ILessonCard> = ({ lesson }) => {
                         {timetable.teacher?.middleName[0]}
                         .
                       </div>
-                      <div>
+                      <div style={{ display: 'flex' }}>
                         {gradebook?.tasks?.map((task, index) => (
                           (task.isRequired || (Grade[setDefaultMark(task)] !== 'Д')) && (
                             <Mark

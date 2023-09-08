@@ -9,7 +9,7 @@ import Mark from '../Mark';
 
 import './index.css';
 
-interface YourComponentProps {
+interface IPerformanceCurrent {
   performanceData: PerformanceCurrent | null;
 }
 
@@ -20,10 +20,10 @@ const truncateString = (str: string, maxLength: number) => {
   return str;
 };
 
-const MarksByDay: FC<YourComponentProps> = ({ performanceData }) => {
+const MarksByDay: FC<IPerformanceCurrent> = ({ performanceData }) => {
   const marksByDay: { [key: string]: { grades: Grade[]; lessonName: string } } = {};
 
-  performanceData?.daysWithMarksForSubject.forEach((subject) => {
+  performanceData?.daysWithMarksForSubject?.length !== undefined && performanceData?.daysWithMarksForSubject?.length > 0 && performanceData?.daysWithMarksForSubject.forEach((subject) => {
     subject?.daysWithMarks?.forEach((dayWithMarks) => {
       const day = new Date(dayWithMarks.day).toLocaleDateString();
       const grades = dayWithMarks.markValues.map((gradeText) => Grade[gradeText]);

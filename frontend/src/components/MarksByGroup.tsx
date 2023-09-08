@@ -43,10 +43,10 @@ const MarksByGroup = () => {
       if (!lastFetchTime || Date.now() - Number(lastFetchTime) >= THIRD_SEC || isHandle) {
         const marks = await getPerformance();
 
-        localStorage.setItem('marks', JSON.stringify(marks));
+        localStorage.setItem('savedMarks', JSON.stringify(marks));
         localStorage.setItem('lastFetchTime', String(Date.now()));
 
-        setMarksForSubject(marks);
+        setMarksForSubject(marks as PerformanceCurrent);
       } else {
         showSnackbar({
           title: 'Оценки взяты из кеша',
@@ -54,10 +54,6 @@ const MarksByGroup = () => {
           action: 'Загрузить новые',
           icon: <Icon28InfoCircle fill='var(--vkui--color_background_accent)' />,
         });
-        const cachedMarks = localStorage.getItem('marks');
-        if (cachedMarks) {
-          setMarksForSubject(JSON.parse(cachedMarks));
-        }
       }
 
       setIsLoading(false);
@@ -74,7 +70,15 @@ const MarksByGroup = () => {
   };
 
   useEffect(() => {
-    fetchMarks();
+    const cachedMarks = localStorage.getItem('savedMarks');
+
+    if (cachedMarks) {
+      if (cachedMarks) {
+        setMarksForSubject(JSON.parse(cachedMarks));
+      }
+    } else {
+      fetchMarks();
+    }
   }, []);
 
   const subjectMarksMap: Record<string, { date: string; marks: TextMark[], absenceType?: AbsenceType }[]> = {};
@@ -120,7 +124,7 @@ const MarksByGroup = () => {
                 before={<Icon20StatisticsOutline />}
                 style={{ marginTop: 5 }}
                 after={calculateAverageMark(
-                  marksForSubject?.daysWithMarksForSubject[i]?.daysWithMarks.reduce(
+                  marksForSubject.daysWithMarksForSubject[i].daysWithMarks?.reduce(
                     (allMarks, day) => [...allMarks, ...day.markValues],
                     [] as TextMark[],
                   ),

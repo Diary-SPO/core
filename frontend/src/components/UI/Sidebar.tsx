@@ -5,7 +5,7 @@ import {
 import {
   Icon28GraphOutline,
   Icon28SettingsOutline,
-  Icon28BookSpreadOutline,
+  Icon28HomeOutline,
   Icon28HelpOutline,
 } from '@vkontakte/icons';
 
@@ -31,9 +31,9 @@ const Sidebar: FC<ISidebarProps> = ({ activeView, onStoryChange }) => (
         disabled={activeView === VIEW_SCHEDULE}
         onClick={() => onStoryChange(VIEW_SCHEDULE)}
         style={activeView === VIEW_SCHEDULE ? activeStoryStyles : undefined}
-        before={<Icon28BookSpreadOutline />}
+        before={<Icon28HomeOutline />}
       >
-        Расписание
+        Главная
       </Cell>
       <Cell
         disabled={activeView === VIEW_MARKS}

@@ -49,7 +49,7 @@ const Mark: FC<IMark> = ({
         {mark}
       </div>
       {bottom && (
-        <Footnote style={{ padding: 5 }}>
+        <Footnote style={{ padding: 3 }}>
           {bottom}
         </Footnote>
       )}

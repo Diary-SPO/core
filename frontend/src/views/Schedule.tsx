@@ -2,14 +2,13 @@ import {
   FC, lazy, useEffect, useState,
 } from 'react';
 import {
-  Button,
-  ButtonGroup, Group, Header, IconButton, Link,
-  Panel, PanelSpinner, Placeholder, View,
+  Button, ButtonGroup, Group, Header, IconButton, Link, Panel, PanelSpinner, Placeholder, View,
 } from '@vkontakte/vkui';
 import { useActiveVkuiLocation, useRouteNavigator } from '@vkontakte/vk-mini-apps-router';
 import {
   Icon16ArrowRightOutline,
   Icon16ArrowLeftOutline,
+  Icon28ErrorCircleOutline,
 } from '@vkontakte/icons';
 
 import { addDays, endOfWeek, startOfWeek } from '@vkontakte/vkui/dist/lib/date';
@@ -28,23 +27,10 @@ const CalendarRange = lazy(() => import('../components/UI/CalendarRange'));
 const ScheduleGroup = lazy(() => import('../components/ScheduleGroup'));
 
 const Schedule: FC<{ id: string }> = ({ id }) => {
-  const [marksData, setMarksData] = useState<PerformanceCurrent | null>(null); // State to hold marks data
-
-  const fetchMarksData = async () => {
-    try {
-      const marks = await getPerformance();
-      setMarksData(marks);
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
-  useEffect(() => {
-    fetchMarksData();
-  }, []);
-
   const currentDate = new Date();
 
+  const [marksData, setMarksData] = useState<PerformanceCurrent | null>(null);
+  const [isMarksLoading, setIsMarksLoading] = useState<boolean>(false);
   const [rateSnackbar, handleRateLimitExceeded] = useRateLimitExceeded();
   const [snackbar, showSnackbar] = useSnackbar();
   const [isCurrent, setIsCurrent] = useState<boolean>(() => {
@@ -77,6 +63,7 @@ const Schedule: FC<{ id: string }> = ({ id }) => {
 
   const handleReloadData = async () => {
     setIsLoading(true);
+    setIsMarksLoading(true);
     setIsError(false);
     localStorage.setItem('isCurrent', JSON.stringify(true));
     setIsCurrent(true);
@@ -85,64 +72,77 @@ const Schedule: FC<{ id: string }> = ({ id }) => {
 
     try {
       const data = await getLessons(startDate, newEndDate);
-
+      const marks = await getPerformance();
+      console.log(marks);
       if (data === 429) {
         handleRateLimitExceeded();
         setIsLoading(false);
         return;
       }
 
+      if (marks === 429) {
+        handleRateLimitExceeded();
+        setIsMarksLoading(false);
+        return;
+      }
+
+      setMarksData(marks as PerformanceCurrent);
       setLessons(data as Day[]);
       updateDatesFromData(data as Day[]);
 
       localStorage.setItem('savedLessons', JSON.stringify(data));
+      localStorage.setItem('savedMarks', JSON.stringify(marks));
     } catch (error) {
       setIsError(true);
       showSnackbar({
-        title: 'Ошибка при попытке получить расписание',
+        title: 'Ошибка при попытке получить новые данные',
         action: 'Повторить',
         onActionClick: handleReloadData,
       });
       console.error(error);
     } finally {
       setIsLoading(false);
+      setIsMarksLoading(false);
     }
   };
 
   useEffect(() => {
     const savedLessons = localStorage.getItem('savedLessons');
+    const savedMarks = localStorage.getItem('savedMarks');
     const getLastRequestTime = localStorage.getItem('lastRequestTime');
     const currentTime = Date.now();
     const lastRequestTime = getLastRequestTime ? parseInt(getLastRequestTime, 10) : 0;
     const timeSinceLastRequest = currentTime - lastRequestTime;
-
+    console.log('savedMarks', savedMarks);
     const gettedLessons = async () => {
       setIsLoading(true);
       setIsError(false);
+
+      if (savedLessons || timeSinceLastRequest < 30000) {
+        showSnackbar({
+          layout: 'vertical',
+          action: 'Загрузить новые',
+          onActionClick: handleReloadData,
+          title: 'Данные взяты из кеша',
+        });
+        setIsLoading(false);
+        return;
+      }
+
       try {
-        if (!savedLessons || timeSinceLastRequest > 30000) {
-          const data = await getLessons(startDate, endDate);
+        const data = await getLessons(startDate, endDate);
 
-          if (data === 429) {
-            handleRateLimitExceeded();
-            setIsLoading(false);
-            return;
-          }
-
-          setLessons(data as Day[]);
-
-          localStorage.setItem('savedLessons', JSON.stringify(data));
-          localStorage.setItem('lastRequestTime', currentTime.toString());
-
-          updateDatesFromData(data as Day[]);
-        } else {
-          showSnackbar({
-            layout: 'vertical',
-            action: 'Загрузить новые',
-            onActionClick: handleReloadData,
-            title: 'Данные взяты из кеша',
-          });
+        if (data === 429) {
+          handleRateLimitExceeded();
+          setIsLoading(false);
+          return;
         }
+
+        setLessons(data as Day[]);
+
+        localStorage.setItem('lastRequestTime', currentTime.toString());
+
+        updateDatesFromData(data as Day[]);
       } catch (error) {
         setIsError(true);
         getError();
@@ -162,8 +162,52 @@ const Schedule: FC<{ id: string }> = ({ id }) => {
       setEndDate(endOfWeek(lastLessonDate));
     }
 
+    if (savedMarks) {
+      setMarksData(JSON.parse(savedMarks));
+      setIsMarksLoading(false);
+    }
+
+    const fetchMarksData = async () => {
+      setIsMarksLoading(true);
+
+      if (savedMarks) {
+        showSnackbar({
+          layout: 'vertical',
+          action: 'Загрузить новые',
+          onActionClick: handleReloadData,
+          title: 'Данные взяты из кеша',
+        });
+        setIsMarksLoading(false);
+        return;
+      }
+
+      try {
+        const marks = await getPerformance();
+        if (marks === 429) {
+          handleRateLimitExceeded();
+          setIsLoading(false);
+          return;
+        }
+
+        setMarksData(marks as PerformanceCurrent);
+        localStorage.setItem('savedMarks', JSON.stringify(marks));
+      } catch (error) {
+        console.error(error);
+        showSnackbar({
+          title: 'Ошибка при попытке получить оценки',
+          action: 'Повторить',
+          icon: <Icon28ErrorCircleOutline />,
+          onActionClick: fetchMarksData,
+        });
+      } finally {
+        setIsMarksLoading(false);
+      }
+    };
+
     gettedLessons();
+    fetchMarksData();
   }, []);
+
   const sendToServerIfValid = async (start: Date, end: Date) => {
     setIsLoading(true);
     setIsCurrent(false);
@@ -380,8 +424,10 @@ const Schedule: FC<{ id: string }> = ({ id }) => {
       onSwipeBack={() => routeNavigator.back()}
     >
       <Panel nav={id}>
-        <PanelHeaderWithBack title='Расписание' />
-        <MarksByDay performanceData={marksData} />
+        <PanelHeaderWithBack title='Главная' />
+        <Suspense id='MarksByDay'>
+          {isMarksLoading ? <PanelSpinner /> : <MarksByDay performanceData={marksData} />}
+        </Suspense>
         <Group
           header={<Header mode='secondary'>Выбор даты</Header>}
           description='Разница между датами не может быть больше 14-и дней'
