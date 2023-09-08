@@ -16,9 +16,12 @@ interface IMark {
 const getBackgroundColor = (score: TMark) => {
   if (Number(score) >= 4) {
     return 'linear-gradient(135deg,#50c750,#32b332)';
-  } if (score === 3) {
+  } else if (score === 3) {
     return '#F59802';
+  } else if (score === 'ДЗ') {
+    return '#4966CF';
   }
+  
   return '#DA0A35';
 };
 
