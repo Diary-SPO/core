@@ -2,7 +2,7 @@ import { FC } from 'react';
 import { Tabbar as VKUITabbar, TabbarItem, useAdaptivityConditionalRender } from '@vkontakte/vkui';
 
 import {
-  Icon28BookSpreadOutline,
+  Icon28HomeOutline,
   Icon28HelpOutline,
   Icon28GraphOutline,
   Icon28SettingsOutline,
@@ -28,9 +28,9 @@ const Tabbar: FC<ITabbar> = ({ onStoryChange, activeView }) => {
           onClick={() => onStoryChange(VIEW_SCHEDULE)}
           selected={activeView === VIEW_SCHEDULE}
           data-story={VIEW_SCHEDULE}
-          text='Расписание'
+          text='Главная'
         >
-          <Icon28BookSpreadOutline />
+          <Icon28HomeOutline />
         </TabbarItem>
         <TabbarItem
           onClick={() => onStoryChange(VIEW_MARKS)}

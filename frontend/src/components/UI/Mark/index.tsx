@@ -1,13 +1,16 @@
 import { CSSProperties, FC } from 'react';
 
-import { TMark } from '../../../../shared';
+import { Footnote } from '@vkontakte/vkui';
+import { TMark } from '../../../../../shared';
 
 type Sizes = 'l' | 's';
 
 interface IMark {
   mark: TMark;
   size?: Sizes;
+  bottom?: string;
   useMargin?: boolean;
+  style?: CSSProperties;
 }
 
 const getBackgroundColor = (score: TMark) => {
@@ -19,7 +22,9 @@ const getBackgroundColor = (score: TMark) => {
   return '#DA0A35';
 };
 
-const Mark: FC<IMark> = ({ mark, size = 'l', useMargin = true }) => {
+const Mark: FC<IMark> = ({
+  mark, size = 'l', useMargin = true, bottom, style,
+}) => {
   const getSize = (size: Sizes) => {
     if (size === 's') {
       return '1rem';
@@ -39,8 +44,15 @@ const Mark: FC<IMark> = ({ mark, size = 'l', useMargin = true }) => {
     display: 'inline-block',
   };
   return (
-    <div style={styles}>
-      {mark}
+    <div style={{ ...style }}>
+      <div style={styles}>
+        {mark}
+      </div>
+      {bottom && (
+        <Footnote style={{ padding: 3 }}>
+          {bottom}
+        </Footnote>
+      )}
     </div>
   );
 };

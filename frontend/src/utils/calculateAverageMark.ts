@@ -1,7 +1,7 @@
 import { Grade, TextMark } from '../../../shared';
 
-const calculateAverageMark = (marks: TextMark[]): number | null => {
-  if (marks.length === 0) {
+const calculateAverageMark = (marks: TextMark[] | undefined): number | null => {
+  if (!marks || marks.length === 0) {
     return null;
   }
 

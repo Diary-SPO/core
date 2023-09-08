@@ -1,5 +1,5 @@
 import React, {
-  FC, useRef, useState, useEffect,
+  FC, useRef, useState, useEffect, ReactNode,
 } from 'react';
 import {
   Button,
@@ -14,7 +14,7 @@ import {
 import PropTypes from 'prop-types';
 
 interface CalendarRangeProps {
-  label: string;
+  label: string | ReactNode;
   onDateChange?: (newDate: Date) => void;
   value?: Date;
 }
