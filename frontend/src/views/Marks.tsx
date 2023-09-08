@@ -1,8 +1,9 @@
-import { FC, lazy, Suspense } from 'react';
+import { FC, lazy } from 'react';
 import { Panel, View } from '@vkontakte/vkui';
 import { useActiveVkuiLocation, useRouteNavigator } from '@vkontakte/vk-mini-apps-router';
 
 import PanelHeaderWithBack from '../components/UI/PanelHeaderWithBack';
+import Suspense from '../components/UI/Suspense';
 
 const MarksByGroup = lazy(() => import('../components/MarksByGroup'));
 const UserInfo = lazy(() => import('../components/UserInfo'));
@@ -20,10 +21,10 @@ const Marks: FC<{ id: string }> = ({ id }) => {
     >
       <Panel nav={id}>
         <PanelHeaderWithBack title='Успеваемость' />
-        <Suspense>
-          <Suspense>
-            <UserInfo />
-          </Suspense>
+        <Suspense id='UserInfo'>
+          <UserInfo />
+        </Suspense>
+        <Suspense id='MarksByGroup'>
           <MarksByGroup />
         </Suspense>
       </Panel>

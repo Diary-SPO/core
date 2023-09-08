@@ -4,11 +4,16 @@ import {
 import {
   Avatar, Gradient, Group, Header, SimpleCell, Title, Text, Div, Spinner, Snackbar,
 } from '@vkontakte/vkui';
+import { useRouteNavigator } from '@vkontakte/vk-mini-apps-router';
 import { Icon28SchoolOutline, Icon32PrometeyCircleFillRed } from '@vkontakte/icons';
-
 import bridge from '@vkontakte/vk-bridge';
 
 import { appStorageSet, getVkStorageData, getVkStorageKeys } from '../methods';
+import { useModal } from '../modals/ModalContext';
+import { getCollegeInfoFromServer } from '../views/Settings';
+import { useRateLimitExceeded } from '../hooks';
+import { MODAL_COLLEGE_INFO } from '../modals/ModalRoot';
+import { Organization } from '../../../shared';
 
 const styles: CSSProperties = {
   margin: 0,
@@ -25,6 +30,20 @@ interface UserData {
 }
 
 const UserInfo = () => {
+  const routeNavigator = useRouteNavigator();
+  const { openCollegeModal } = useModal();
+
+  const getCollegeInfo = async () => {
+    const data = await getCollegeInfoFromServer();
+
+    if (data === 429) {
+      useRateLimitExceeded();
+      return;
+    }
+
+    await routeNavigator.showModal(MODAL_COLLEGE_INFO);
+    openCollegeModal(data as Organization);
+  };
   const [userData, setUserData] = useState<UserData>({
     firstName: '',
     lastName: '',
@@ -138,7 +157,7 @@ const UserInfo = () => {
       </Gradient>
       <Group mode='plain'>
         <Header>Учебное заведение</Header>
-        <SimpleCell before={<Icon28SchoolOutline />} subtitle={userData.city}>
+        <SimpleCell before={<Icon28SchoolOutline />} subtitle={userData.city} onClick={() => getCollegeInfo()}>
           {userData.org}
         </SimpleCell>
       </Group>
