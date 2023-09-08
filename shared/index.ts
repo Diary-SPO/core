@@ -125,6 +125,8 @@ export enum LessonType {
   '' = 'Не указано'
 }
 
+// FIXME: enum стал страшный и в целом enum многие по понятным причинам хейтят
+// Поэтому когда-нибудь надо пофиксить
 export enum Grade {
   Five = 5,
   Four = 4,
@@ -136,6 +138,7 @@ export enum Grade {
   'Н' = 'Н',
   // Кастыль :))
   'Д' = 'Д',
+  'ДЗ' = 'ДЗ',
 }
 
 export enum LessonWorkType {
@@ -159,7 +162,7 @@ export interface Task {
   id: number
   isRequired: boolean
   mark: TextMark
-  topic: string
+  topic?: string
   type: LessonTypes
 }
 

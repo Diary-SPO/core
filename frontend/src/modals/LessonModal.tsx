@@ -1,6 +1,6 @@
 import { FC, useEffect, useState } from 'react';
 import {
-  Group, Header, InfoRow, ModalPage, ModalPageHeader, SimpleCell,
+  Group, Header, InfoRow, ModalPage, ModalPageHeader, Separator, SimpleCell, Spacing, Subhead, Text, Title,
 } from '@vkontakte/vkui';
 
 import {
@@ -128,11 +128,19 @@ const LessonModal: FC<ILessonModal> = ({ id }) => {
         ? (
           <Group header={<Header mode='tertiary'>Успеваемость</Header>}>
             {lessonData.gradebook?.tasks?.map((tasks, index) => (
-              (tasks.isRequired || (Grade[setDefaultMark(tasks)] !== 'Д')) && (
-                <SimpleCell key={index} after={<Mark mark={Grade[setDefaultMark(tasks)]} size='s' />}>
-                  {LessonType[tasks.type]}
+              <>
+                <SimpleCell multiline key={index} after={<Mark mark={Grade[setDefaultMark(tasks)]} size='s' />}>
+                  <InfoRow header='Тип работы'>
+                    {LessonType[tasks.type]}
+                  </InfoRow>
+                  <InfoRow style={{ marginTop: 10 }} header='Описание'>
+                    <Text>{tasks?.topic}</Text>
+                  </InfoRow>
                 </SimpleCell>
-              )
+                <Spacing size={16}>
+                  <Separator />
+                </Spacing>
+              </>
             ))}
             {lessonData.gradebook?.absenceType === 'IsAbsent' && (
               <SimpleCell after={<Mark mark={'Н' as TMark} size='s' />}>
