@@ -5,7 +5,7 @@ import {
 import { useRouteNavigator } from '@vkontakte/vk-mini-apps-router';
 
 import {
-  Day, Grade, Gradebook, LessonWorkType, Timetable,
+  Day, EAbsenceTypes, Grade, Gradebook, LessonWorkType, Timetable,
 } from '../../../shared';
 import { formatLessonDate, getDayOfWeek } from '../utils/formatLessonDate';
 import setDefaultMark from '../utils/setDefaultMark';
@@ -104,14 +104,21 @@ const LessonCard: FC<ILessonCard> = ({ lesson }) => {
                 key={startTime as unknown as string}
                 subtitle={!name || (
                   <div>
-                    <div style={{ display: 'flex', alignItems: 'center' }}>
-                      <div style={{ display: 'flex' }}>
+                    <div>
+                      <div style={{ display: 'flex', alignItems: 'center' }}>
                         {gradebook?.lessonType && (
                           <SubtitleWithBorder style={{ margin: '5px 5px 5px 0px' }}>
                             {LessonWorkType[gradebook?.lessonType]}
                           </SubtitleWithBorder>
                         )}
-                        {gradebook?.absenceType && <SubtitleWithBorder color='red'>Н</SubtitleWithBorder>}
+                        {gradebook?.absenceType
+                          && (
+                          <SubtitleWithBorder
+                            color={gradebook.absenceType === 'IsLate' ? 'yellow' : 'red'}
+                          >
+                            {EAbsenceTypes[gradebook?.absenceType]}
+                          </SubtitleWithBorder>
+                          )}
                       </div>
                       <TimeRemaining lessonDate={lesson.date} startTime={startTime} endTime={endTime} />
                     </div>
@@ -137,7 +144,7 @@ const LessonCard: FC<ILessonCard> = ({ lesson }) => {
                       </div>
                       <div style={{ display: 'flex' }}>
                         {gradebook?.tasks?.map((task, index) => (
-                          (task.isRequired || (Grade[setDefaultMark(task)] !== 'Д')) && (
+                          (task.isRequired || (Grade[setDefaultMark(task)])) && (
                             <Mark
                               useMargin
                               mark={Grade[setDefaultMark(task)]}

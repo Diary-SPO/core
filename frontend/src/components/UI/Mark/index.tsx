@@ -1,25 +1,27 @@
 import { CSSProperties, FC } from 'react';
 import { Footnote } from '@vkontakte/vkui';
 
-import { TMark } from '../../../../../shared';
+import { EAbsenceTypes, TMark } from '../../../../../shared';
 
 type Sizes = 'l' | 's';
 
 interface IMark {
-  mark: TMark;
+  mark?: TMark | EAbsenceTypes;
   size?: Sizes;
   bottom?: string;
   useMargin?: boolean;
   style?: CSSProperties;
 }
 
-const getBackgroundColor = (score: TMark) => {
+const getBackgroundColor = (score?: TMark | EAbsenceTypes) => {
   if (Number(score) >= 4) {
     return 'linear-gradient(135deg,#50c750,#32b332)';
   } if (score === 3) {
     return '#F59802';
   } if (score === 'ДЗ') {
     return '#4966CF';
+  } if (score === 'О') {
+    return '#ffb060';
   }
 
   return '#DA0A35';

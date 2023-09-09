@@ -139,6 +139,7 @@ export enum Grade {
   // Кастыль :))
   'Д' = 'Д',
   'ДЗ' = 'ДЗ',
+  'О' = 'О'
 }
 
 export enum LessonWorkType {
@@ -149,13 +150,23 @@ export enum LessonWorkType {
   '' = 'Не указан'
 }
 
+export enum EAbsenceTypes {
+  'IsAbsent' = 'Н',
+  'IsLate' = 'О',
+}
+
+export enum EAbsenceTypesDescription {
+  'Н' = 'Отсутствие',
+  'О' = 'Опоздание',
+}
+
 type GradeKeys = keyof typeof Grade;
 
 export type TextMark = GradeKeys;
 export type TMark = typeof Grade[GradeKeys];
 export type TLesson = keyof typeof LessonWorkType;
 export type LessonTypes = keyof typeof LessonType;
-export type AbsenceType = 'IsAbsent'
+export type AbsenceType = keyof typeof EAbsenceTypes;
 
 export interface Task {
   attachments: []
