@@ -1,49 +1,25 @@
 import {
-  FC, useEffect, useState,
+  FC, useEffect, useRef, useState,
 } from 'react';
 import {
-  Cell, CellButton, Group, Header, Panel, Subhead, View,
+  CellButton, Group, Header, InfoRow, Panel, SimpleCell, Subhead, Switch, View,
 } from '@vkontakte/vkui';
 import { useActiveVkuiLocation, useRouteNavigator } from '@vkontakte/vk-mini-apps-router';
 import {
-  Icon28ClearDataOutline, Icon28DoorArrowRightOutline, Icon28HomeArrowDownOutline,
+  Icon28ClearDataOutline, Icon28DoorArrowRightOutline, Icon28HomeArrowDownOutline, Icon28IncognitoOutline,
 } from '@vkontakte/icons';
 import bridge from '@vkontakte/vk-bridge';
 
 import { Storage } from '../types';
 import {
-  appStorageSet, getCookie, getVkStorageData, getVkStorageKeys,
+  appStorageSet, getVkStorageData, getVkStorageKeys,
 } from '../methods';
 
 import PanelHeaderWithBack from '../components/UI/PanelHeaderWithBack';
-import { Organization } from '../../../shared';
 
 interface ISettings {
   id: string,
 }
-
-export const getCollegeInfoFromServer = async (): Promise<Organization | number> => {
-  const cookie = await getCookie();
-
-  const response = await fetch(`${import.meta.env.VITE_SERVER_URL}/organization`, {
-    method: 'GET',
-    headers: {
-      'Content-Type': 'application/json;charset=UTF-8',
-      secret: cookie as string,
-    },
-  });
-
-  if (response.status === 429) {
-    console.log(response.status);
-    return response.status;
-  }
-
-  if (!response.ok) {
-    throw new Error('Failed to fetch college data');
-  }
-
-  return await response.json() as Organization;
-};
 
 const Settings: FC<ISettings> = ({ id }) => {
   const { panel: activePanel, panelsHistory } = useActiveVkuiLocation();
@@ -53,6 +29,9 @@ const Settings: FC<ISettings> = ({ id }) => {
   const [vkCacheData, setVkCacheData] = useState<Storage[]>([]);
   const [isHomeScreenSupported, setIsHomeScreenSupported] = useState<boolean>(false);
 
+  const switchRef = useRef(null);
+  const [isSwitchChecked, setIsSwitchChecked] = useState<boolean>(true);
+  console.log(isSwitchChecked);
   useEffect(() => {
     const allKeys = Object.keys(localStorage);
 
@@ -140,40 +119,53 @@ const Settings: FC<ISettings> = ({ id }) => {
             Очистить кеш
           </CellButton>
           <CellButton
+            Component='label'
+            after={<Switch getRef={switchRef} defaultChecked />}
+            onChange={() => setIsSwitchChecked(!isSwitchChecked)}
+            before={<Icon28IncognitoOutline />}
+          >
+            Показывать тех. инфрмацию
+          </CellButton>
+          <CellButton
             before={<Icon28DoorArrowRightOutline />}
             onClick={logOut}
           >
             Выйти
           </CellButton>
           {isHomeScreenSupported && (
-          <CellButton
-            before={<Icon28HomeArrowDownOutline />}
-            onClick={addToHomeScreen}
-          >
-            Добавить на экран
-          </CellButton>
+            <CellButton
+              before={<Icon28HomeArrowDownOutline />}
+              onClick={addToHomeScreen}
+            >
+              Добавить на экран
+            </CellButton>
           )}
         </Group>
-        <Group
-          header={(
-            <Header mode='secondary' aside={<Subhead>Хранится в LocalStorage</Subhead>}>Кеш</Header>)}
-        >
-          {cacheData.map((item) => (
-            <Cell key={item.key} indicator={item.value.slice(0, 30)}>
-              {item.key}
-            </Cell>
-          ))}
-        </Group>
-        <Group
-          header={(
-            <Header mode='secondary'>VK Storage</Header>)}
-        >
-          {vkCacheData.map((item) => (
-            <Cell key={item.key} indicator={item.value.slice(0, 30)}>
-              {item.key}
-            </Cell>
-          ))}
-        </Group>
+        {isSwitchChecked
+          && (
+          <Group header={(<Header mode='secondary'>Техническая информация</Header>)}>
+            <Group
+              header={(
+                <Header mode='secondary' aside={<Subhead>Хранится в LocalStorage</Subhead>}>Кеш</Header>)}
+            >
+              {cacheData.map((item) => (
+                <SimpleCell key={item.key}>
+                  <InfoRow header={item.key}>{item.value.slice(0, 30)}</InfoRow>
+                </SimpleCell>
+              ))}
+            </Group>
+            <Group
+              header={(
+                <Header mode='secondary'>VK Storage</Header>)}
+            >
+              {vkCacheData.map((item) => (
+                <SimpleCell key={item.key}>
+                  <InfoRow header={item.key}>{item.value.slice(0, 30)}</InfoRow>
+                </SimpleCell>
+              ))}
+            </Group>
+          </Group>
+          )}
       </Panel>
     </View>
   );
