@@ -1,16 +1,19 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react-swc';
 import basicSsl from '@vitejs/plugin-basic-ssl';
-
 // https://vitejs.dev/config/
+
 export default defineConfig({
-  plugins: [react(), basicSsl()],
+  plugins: [
+    react(),
+    basicSsl(),
+  ],
   resolve: {
     alias: [{ find: /^@vkontakte\/vkui$/, replacement: '@vkontakte/vkui/dist/cssm' }],
   },
   build: {
     sourcemap: false,
-    target: 'es2015',
+    target: 'es2017',
     assetsInlineLimit: 0,
     minify: 'terser',
     terserOptions: {
@@ -18,12 +21,13 @@ export default defineConfig({
         drop_console: true,
         dead_code: true,
       },
-      toplevel: false,
+      toplevel: true,
       keep_classnames: false,
       keep_fnames: false,
       safari10: false,
     },
     rollupOptions: {
+      logLevel: 'debug',
       input: 'index-b3.5.1.html',
       output: {
         manualChunks: {

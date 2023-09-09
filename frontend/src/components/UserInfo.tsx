@@ -1,8 +1,8 @@
 import {
-  CSSProperties, ReactNode, useEffect, useState,
+  CSSProperties, useEffect, useState,
 } from 'react';
 import {
-  Avatar, Gradient, Group, Header, SimpleCell, Title, Text, Div, Spinner, Snackbar,
+  Avatar, Gradient, Group, Header, SimpleCell, Title, Text, Div, Spinner, ScreenSpinner,
 } from '@vkontakte/vkui';
 import { useRouteNavigator } from '@vkontakte/vk-mini-apps-router';
 import { Icon28SchoolOutline, Icon32PrometeyCircleFillRed } from '@vkontakte/icons';
@@ -10,10 +10,11 @@ import bridge from '@vkontakte/vk-bridge';
 
 import { appStorageSet, getVkStorageData, getVkStorageKeys } from '../methods';
 import { useModal } from '../modals/ModalContext';
-import { getCollegeInfoFromServer } from '../views/Settings';
 import { useRateLimitExceeded } from '../hooks';
 import { MODAL_COLLEGE_INFO } from '../modals/ModalRoot';
 import { Organization } from '../../../shared';
+import getCollegeInfo from '../methods/server/getCollegeInfo';
+import useSnackbar from '../hooks/useSnackbar';
 
 const styles: CSSProperties = {
   margin: 0,
@@ -29,12 +30,27 @@ interface UserData {
   [key: string]: string;
 }
 
+const getUserAva = async (): Promise<string | null> => {
+  try {
+    const data = await bridge.send('VKWebAppGetUserInfo');
+    if (data.id) {
+      localStorage.setItem('ava', data.photo_100);
+      return data.photo_100;
+    }
+    return null;
+  } catch (error) {
+    console.log(error);
+    return null;
+  }
+};
+
 const UserInfo = () => {
+  const [snackbar, showSnackbar] = useSnackbar();
   const routeNavigator = useRouteNavigator();
   const { openCollegeModal } = useModal();
-
-  const getCollegeInfo = async () => {
-    const data = await getCollegeInfoFromServer();
+  const getCollegeInfoFromServer = async () => {
+    setIsCollegeLoading(true);
+    const data = await getCollegeInfo();
 
     if (data === 429) {
       useRateLimitExceeded();
@@ -43,7 +59,9 @@ const UserInfo = () => {
 
     await routeNavigator.showModal(MODAL_COLLEGE_INFO);
     openCollegeModal(data as Organization);
+    setIsCollegeLoading(false);
   };
+
   const [userData, setUserData] = useState<UserData>({
     firstName: '',
     lastName: '',
@@ -55,73 +73,77 @@ const UserInfo = () => {
   });
 
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isCollegeLoading, setIsCollegeLoading] = useState<boolean>(false);
   const [userAva, setUserAva] = useState<string | undefined>();
-  const [snackbar, setSnackbar] = useState<ReactNode | null>(null);
 
   const autoLogOut = async () => {
     await appStorageSet('cookie', '');
     location.reload();
-    setSnackbar(null);
+    showSnackbar(null);
   };
 
   const openInvalidData = () => {
-    setSnackbar(
-      <Snackbar
-        onClose={autoLogOut}
-        before={
-          <Icon32PrometeyCircleFillRed fill='#fff' width={32} height={32} />
-       }
-        subtitle='Через 10 секунд произойдет автоматический выход из аккаунта, поэтому ищите листок с паролем'
-      >
-        Данные устарели
-      </Snackbar>,
-    );
+    showSnackbar({
+      onClose: autoLogOut,
+      title: 'Данные устарели',
+      icon: <Icon32PrometeyCircleFillRed fill='#fff' width={32} height={32} />,
+      subtitle: 'Через 10 секунд произойдет автоматический выход из аккаунта, поэтому ищите листок с паролем',
+    });
+  };
+
+  const getUserInfo = async (handle?: boolean) => {
+    setIsLoading(true);
+    const localData = localStorage.getItem('userData');
+    const avaFromStorage = localStorage.getItem('ava');
+    if (localData && !handle) {
+      const parsedData = JSON.parse(localData);
+      if (parsedData.firstName && parsedData.lastName && parsedData.group) {
+        setUserData(parsedData);
+        if (avaFromStorage) {
+          setUserAva(avaFromStorage);
+        }
+        setIsLoading(false);
+        return;
+      }
+    }
+
+    const keys = await getVkStorageKeys();
+    const data = await getVkStorageData(keys);
+    const extractedData: Partial<UserData> = data.keys.reduce((acc, item) => {
+      if (
+        (item.key === 'firstName' && item.value === ' ')
+        || (item.key === 'lastName' && item.value === '')
+        || (item.key === 'group' && item.value === '')
+      ) {
+        openInvalidData();
+      }
+
+      acc[item.key] = item.value;
+      return acc;
+    }, {} as UserData);
+
+    const ava = await getUserAva();
+
+    if (ava) {
+      setUserAva(ava);
+    }
+
+    setUserData({
+      firstName: extractedData.firstName || '',
+      lastName: extractedData.lastName || '',
+      middleName: extractedData.middleName || '',
+      org: extractedData.org || '',
+      groupName: extractedData.groupName || '',
+      city: extractedData.city || '',
+      group: extractedData.group || '',
+    });
+
+    localStorage.setItem('userData', JSON.stringify(extractedData));
+
+    setIsLoading(false);
   };
 
   useEffect(() => {
-    const getUserInfo = async () => {
-      setIsLoading(true);
-
-      const keys = await getVkStorageKeys();
-      const data = await getVkStorageData(keys);
-
-      await bridge.send('VKWebAppGetUserInfo')
-        .then((data) => {
-          if (data.id) {
-            setUserAva(data.photo_100);
-          }
-        })
-        .catch((error) => {
-          console.log(error);
-        });
-
-      const extractedData: Partial<UserData> = data.keys.reduce((acc, item) => {
-        // FIXME: при пустом имени не сработало
-        if (
-          (item.key === 'firstName' && item.value === ' ')
-          || (item.key === 'lastName' && item.value === '')
-          || (item.key === 'group' && item.value === '')
-        ) {
-          openInvalidData();
-        }
-
-        acc[item.key] = item.value;
-        return acc;
-      }, {} as UserData);
-
-      setUserData({
-        firstName: extractedData.firstName || '',
-        lastName: extractedData.lastName || '',
-        middleName: extractedData.middleName || '',
-        org: extractedData.org || '',
-        groupName: extractedData.groupName || '',
-        city: extractedData.city || '',
-        group: extractedData.group || '',
-      });
-
-      setIsLoading(false);
-    };
-
     getUserInfo();
   }, []);
 
@@ -157,7 +179,8 @@ const UserInfo = () => {
       </Gradient>
       <Group mode='plain'>
         <Header>Учебное заведение</Header>
-        <SimpleCell before={<Icon28SchoolOutline />} subtitle={userData.city} onClick={() => getCollegeInfo()}>
+        {isCollegeLoading && <ScreenSpinner />}
+        <SimpleCell before={<Icon28SchoolOutline />} subtitle={userData.city} onClick={getCollegeInfoFromServer}>
           {userData.org}
         </SimpleCell>
       </Group>

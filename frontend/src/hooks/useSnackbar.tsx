@@ -14,10 +14,14 @@ interface SnackbarData {
   subtitle?: string;
 }
 
-const useSnackbar = (): [ReactNode | null, (snackbarData: SnackbarData) => void] => {
+const useSnackbar = (): [ReactNode | null, (snackbarData: SnackbarData | null) => void] => {
   const [snackbar, setSnackbar] = useState<ReactNode | null>(null);
 
-  const showSnackbar = useCallback((snackbarData: SnackbarData) => {
+  const showSnackbar = useCallback((snackbarData: SnackbarData | null) => {
+    if (!snackbarData) {
+      setSnackbar(null);
+      return null;
+    }
     setSnackbar(
       <Snackbar
         layout={snackbarData.layout || 'vertical'}

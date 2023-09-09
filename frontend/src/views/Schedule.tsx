@@ -29,6 +29,15 @@ const ScheduleGroup = lazy(() => import('../components/ScheduleGroup'));
 const Schedule: FC<{ id: string }> = ({ id }) => {
   const currentDate = new Date();
 
+  const { panel: activePanel, panelsHistory } = useActiveVkuiLocation();
+  const routeNavigator = useRouteNavigator();
+  const [lessonsState, setLessons] = useState<Day[] | null>();
+  const [startDate, setStartDate] = useState<Date>(startOfWeek(currentDate));
+  const [endDate, setEndDate] = useState<Date>(endOfWeek(currentDate));
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isError, setIsError] = useState<boolean>(false);
+  const [clickCount, setClickCount] = useState<number>(0);
+  const [timeoutId, setTimeoutId] = useState<NodeJS.Timeout | null>(null);
   const [marksData, setMarksData] = useState<PerformanceCurrent | null>(null);
   const [isMarksLoading, setIsMarksLoading] = useState<boolean>(false);
   const [rateSnackbar, handleRateLimitExceeded] = useRateLimitExceeded();
@@ -89,16 +98,6 @@ const Schedule: FC<{ id: string }> = ({ id }) => {
     onActionClick: handleReloadData,
   });
 
-  const { panel: activePanel, panelsHistory } = useActiveVkuiLocation();
-  const routeNavigator = useRouteNavigator();
-  const [lessonsState, setLessons] = useState<Day[] | null>();
-  const [startDate, setStartDate] = useState<Date>(startOfWeek(currentDate));
-  const [endDate, setEndDate] = useState<Date>(endOfWeek(currentDate));
-  const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [isError, setIsError] = useState<boolean>(false);
-  const [clickCount, setClickCount] = useState<number>(0);
-  const [timeoutId, setTimeoutId] = useState<NodeJS.Timeout | null>(null);
-
   const updateDatesFromData = (data: Day[]) => {
     const firstLessonDate = data && data.length > 0 ? new Date(data[0].date) : startDate;
     const lastLessonDate = data && data.length > 0 ? new Date(data[data.length - 1].date) : endDate;
@@ -113,7 +112,7 @@ const Schedule: FC<{ id: string }> = ({ id }) => {
     const currentTime = Date.now();
     const lastRequestTime = getLastRequestTime ? parseInt(getLastRequestTime, 10) : 0;
     const timeSinceLastRequest = currentTime - lastRequestTime;
-    console.log('savedMarks', savedMarks);
+
     const gettedLessons = async () => {
       setIsLoading(true);
       setIsError(false);
@@ -439,7 +438,7 @@ const Schedule: FC<{ id: string }> = ({ id }) => {
               onDateChange={handleStartDateChange}
             />
             <CalendarRange
-              label={<ExplanationTooltip text='Конечная' tooltipContent='Не может быть меньше конечной' />}
+              label={<ExplanationTooltip text='Конечная' tooltipContent='Не может быть меньше начальной' />}
               value={endDate}
               onDateChange={handleEndDateChange}
             />

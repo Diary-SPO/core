@@ -1,6 +1,6 @@
 import { FC, useEffect, useState } from 'react';
 import {
-  Group, Header, InfoRow, ModalPage, ModalPageHeader, Separator, SimpleCell, Spacing, Subhead, Text, Title,
+  Group, Header, InfoRow, ModalPage, ModalPageHeader, Separator, SimpleCell, Spacing, Text,
 } from '@vkontakte/vkui';
 
 import {
