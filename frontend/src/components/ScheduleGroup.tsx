@@ -1,7 +1,6 @@
 import { FC } from 'react';
 // TODO: Сделать переключатель для расписания
-// @ts-ignore
-import { CardGrid, CardScroll } from '@vkontakte/vkui';
+import { CardGrid } from '@vkontakte/vkui';
 import { Day } from '../../../shared';
 import LessonCard from './LessonCard';
 

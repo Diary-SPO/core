@@ -7,7 +7,7 @@ import {Attestation} from "../../../shared";
 
 const router = express.Router()
 
-router.get('/', [checkCookie, checkId], async (req: Request, res: Response) => {
+router.get('/:id', [checkCookie, checkId], async (req: Request, res: Response) => {
   try {
     const secret = req.headers.secret
     const { id } = req.params
