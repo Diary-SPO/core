@@ -1,5 +1,5 @@
 import React, {
-  createContext, useContext, useState, ReactNode,
+  ReactNode, createContext, useContext, useState,
 } from 'react';
 import { Lesson, Organization } from '../../../shared';
 

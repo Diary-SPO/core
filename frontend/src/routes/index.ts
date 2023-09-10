@@ -1,4 +1,4 @@
-import { createHashRouter, RouteWithoutRoot } from '@vkontakte/vk-mini-apps-router';
+import { RouteWithoutRoot, createHashRouter } from '@vkontakte/vk-mini-apps-router';
 
 export const PAGE_MAIN = '/';
 export const PAGE_SCHEDULE = '/schedule';

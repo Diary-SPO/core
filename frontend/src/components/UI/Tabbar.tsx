@@ -1,14 +1,14 @@
 import { FC } from 'react';
-import { Tabbar as VKUITabbar, TabbarItem, useAdaptivityConditionalRender } from '@vkontakte/vkui';
+import { TabbarItem, Tabbar as VKUITabbar, useAdaptivityConditionalRender } from '@vkontakte/vkui';
 import {
-  Icon28HomeOutline,
-  Icon28HelpOutline,
-  Icon28GraphOutline,
-  Icon28SettingsOutline,
   Icon28EducationOutline,
+  Icon28GraphOutline,
+  Icon28HelpOutline,
+  Icon28HomeOutline,
+  Icon28SettingsOutline,
 } from '@vkontakte/icons';
 import {
-  VIEW_CONTACTS, VIEW_SCHEDULE, VIEW_MARKS, VIEW_SETTINGS, VIEW_ATTESTATION,
+  VIEW_ATTESTATION, VIEW_CONTACTS, VIEW_MARKS, VIEW_SCHEDULE, VIEW_SETTINGS,
 } from '../../routes';
 import { Pages } from '../../types';
 

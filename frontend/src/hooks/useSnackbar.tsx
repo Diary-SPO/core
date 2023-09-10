@@ -1,4 +1,4 @@
-import React, { useState, ReactNode, useCallback } from 'react';
+import React, { ReactNode, useCallback, useState } from 'react';
 import { Snackbar, SnackbarProps } from '@vkontakte/vkui';
 import { Icon28InfoCircleOutline } from '@vkontakte/icons';
 

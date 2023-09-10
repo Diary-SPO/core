@@ -2,7 +2,7 @@ import {
   CSSProperties, useEffect, useState,
 } from 'react';
 import {
-  Avatar, Gradient, Group, Header, SimpleCell, Title, Text, Div, Spinner, ScreenSpinner,
+  Avatar, Div, Gradient, Group, Header, ScreenSpinner, SimpleCell, Spinner, Text, Title,
 } from '@vkontakte/vkui';
 import { useRouteNavigator } from '@vkontakte/vk-mini-apps-router';
 import { Icon28SchoolOutline, Icon32PrometeyCircleFillRed } from '@vkontakte/icons';

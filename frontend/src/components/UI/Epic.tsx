@@ -3,14 +3,14 @@ import { useActiveVkuiLocation } from '@vkontakte/vk-mini-apps-router';
 import { useAdaptivityConditionalRender } from '@vkontakte/vkui';
 import { Epic as VKUIEpic } from '@vkontakte/vkui/dist/components/Epic/Epic';
 import {
-  VIEW_CONTACTS, VIEW_SCHEDULE, VIEW_MARKS, VIEW_SETTINGS, MAIN_SETTINGS, VIEW_ATTESTATION,
+  MAIN_SETTINGS, VIEW_ATTESTATION, VIEW_CONTACTS, VIEW_MARKS, VIEW_SCHEDULE, VIEW_SETTINGS,
 } from '../../routes';
 import { Pages } from '../../types';
 
 import Tabbar from './Tabbar';
 import Suspense from './Suspense';
 import {
-  Contacts, LoginForm, Schedule, Marks, Settings, Attestation,
+  Attestation, Contacts, LoginForm, Marks, Schedule, Settings,
 } from '../../views';
 
 interface IEpic {

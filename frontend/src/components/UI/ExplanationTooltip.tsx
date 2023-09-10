@@ -1,6 +1,6 @@
 import { FC } from 'react';
 import {
-  Text, unstable_Popover as Popover, Subhead,
+  unstable_Popover as Popover, Subhead, Text,
 } from '@vkontakte/vkui';
 import { Icon16HelpOutline } from '@vkontakte/icons';
 
