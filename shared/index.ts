@@ -252,4 +252,40 @@ export interface PerformanceCurrent {
     }
   ],
 }
+export enum Examinations {
+  'DifferentiatedTest'= 'Дифф. зачёты',
+  'Exam'= 'Экзамены',
+  'Other'= 'Др. формы контроля',
+}
 
+export type ExaminationType = keyof typeof Examinations;
+export type TermType = 'Semester';
+
+export interface Attestation {
+  termType: TermType
+  termNumber: number
+  year: number
+  students: [
+    {
+      id: number
+      firstName: string
+      lastName: string
+      middleName: string
+    }
+  ],
+  subjects: [
+    {
+      examinationType: ExaminationType,
+      marks: {
+        // TODO: Понять что тут приходит
+        id: {}
+      },
+      name: string,
+      id: number
+    },
+  ],
+  // TODO: Понять что тут приходит
+  profModules: [],
+  courseWorks: [],
+  departmentName: ""
+}

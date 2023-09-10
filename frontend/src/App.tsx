@@ -1,25 +1,19 @@
 import {
-  AppRoot, PanelHeader, PanelSpinner, Platform, SplitCol, SplitLayout, useAdaptivityConditionalRender, usePlatform,
+  AppRoot, PanelHeader, PanelSpinner, SplitCol, SplitLayout,
 } from '@vkontakte/vkui';
 import { lazy, useEffect, useState } from 'react';
 import { useActiveVkuiLocation, useRouteNavigator } from '@vkontakte/vk-mini-apps-router';
-
 import { MAIN_SETTINGS, VIEW_SCHEDULE } from './routes';
 import { getCookie } from './methods';
 import { Pages } from './types';
-
 import Suspense from './components/UI/Suspense';
 
 const ModalRoot = lazy(() => import('./modals/ModalRoot'));
-const Sidebar = lazy(() => import('./components/UI/Sidebar'));
 const Epic = lazy(() => import('./components/UI/Epic'));
 
 const App = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const platform = usePlatform();
-  const isVKCOM = platform !== Platform.VKCOM;
 
-  const { viewWidth } = useAdaptivityConditionalRender();
   const { view: activeView = MAIN_SETTINGS } = useActiveVkuiLocation();
   const routeNavigator = useRouteNavigator();
 
@@ -56,14 +50,6 @@ const App = () => {
     <AppRoot>
       {isLoading && <PanelSpinner />}
       <SplitLayout modal={modals} header={<PanelHeader separator={false} />} style={{ justifyContent: 'center' }}>
-        {viewWidth.tabletPlus && (
-          <SplitCol className={viewWidth.tabletPlus.className} fixed width={280} maxWidth={280}>
-            {isVKCOM && <PanelHeader /> }
-            <Suspense id='sidebar'>
-              <Sidebar activeView={activeView as Pages} onStoryChange={onStoryChange} />
-            </Suspense>
-          </SplitCol>
-        )}
         <Suspense id='Epic'>
           <SplitCol width='100%' maxWidth='700px' stretchedOnMobile autoSpaced>
             <Epic onStoryChange={onStoryChange} />

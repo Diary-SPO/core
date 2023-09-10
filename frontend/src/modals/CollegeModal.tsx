@@ -1,7 +1,7 @@
 import {
   Group, Header, InfoRow, Link, ModalPage, ModalPageHeader, SimpleCell,
 } from '@vkontakte/vkui';
-import { useModal } from './ModalContext.tsx';
+import { useModal } from './ModalContext';
 
 const CollegeModal = ({ id }: { id: string }) => {
   const { collegeModalData } = useModal();

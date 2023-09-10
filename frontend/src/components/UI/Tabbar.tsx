@@ -1,15 +1,14 @@
 import { FC } from 'react';
 import { Tabbar as VKUITabbar, TabbarItem, useAdaptivityConditionalRender } from '@vkontakte/vkui';
-
 import {
   Icon28HomeOutline,
   Icon28HelpOutline,
   Icon28GraphOutline,
   Icon28SettingsOutline,
+  Icon28EducationOutline,
 } from '@vkontakte/icons';
-
 import {
-  VIEW_CONTACTS, VIEW_SCHEDULE, VIEW_MARKS, VIEW_SETTINGS,
+  VIEW_CONTACTS, VIEW_SCHEDULE, VIEW_MARKS, VIEW_SETTINGS, VIEW_ATTESTATION,
 } from '../../routes';
 import { Pages } from '../../types';
 
@@ -47,6 +46,14 @@ const Tabbar: FC<ITabbar> = ({ onStoryChange, activeView }) => {
           text='Помощь'
         >
           <Icon28HelpOutline />
+        </TabbarItem>
+        <TabbarItem
+          onClick={() => onStoryChange(VIEW_ATTESTATION)}
+          selected={activeView === VIEW_ATTESTATION}
+          data-story={VIEW_ATTESTATION}
+          text='Аттестация'
+        >
+          <Icon28EducationOutline />
         </TabbarItem>
         <TabbarItem
           onClick={() => onStoryChange(VIEW_SETTINGS)}

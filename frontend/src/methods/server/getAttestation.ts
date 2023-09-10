@@ -1,10 +1,10 @@
-import { Organization } from '../../../../shared';
 import { getCookie } from '../bridge/getCookie';
+import { Attestation } from '../../../../shared';
 
-const getCollegeInfo = async (): Promise<Organization | number> => {
+const getAttestation = async (): Promise<Attestation | number> => {
   const cookie = await getCookie();
 
-  const response = await fetch(`${import.meta.env.VITE_SERVER_URL}/organization`, {
+  const response = await fetch(`${import.meta.env.VITE_SERVER_URL}/attestation`, {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json;charset=UTF-8',
@@ -21,7 +21,7 @@ const getCollegeInfo = async (): Promise<Organization | number> => {
     throw new Error('Failed to fetch college data');
   }
 
-  return await response.json() as Organization;
+  return await response.json() as Attestation;
 };
 
-export default getCollegeInfo;
+export default getAttestation;

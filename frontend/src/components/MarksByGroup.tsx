@@ -18,7 +18,6 @@ import {
   Icon28ErrorCircleOutline,
   Icon28InfoCircle,
 } from '@vkontakte/icons';
-
 import {
   AbsenceType, EAbsenceTypes, Grade, PerformanceCurrent, TextMark,
 } from '../../../shared';

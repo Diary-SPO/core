@@ -1,4 +1,4 @@
-import React from 'react';
+import { FC } from 'react';
 
 interface ITimeRemainingProps {
   lessonDate: Date;
@@ -30,7 +30,7 @@ const getTimeRemaining = (currentDate: Date, lessonDate: Date, endTime: string, 
   return null;
 };
 
-const TimeRemaining: React.FC<ITimeRemainingProps> = ({ lessonDate, startTime, endTime }) => {
+const TimeRemaining: FC<ITimeRemainingProps> = ({ lessonDate, startTime, endTime }) => {
   const currentDate = new Date();
   const startDate = new Date(lessonDate);
   startDate.setHours(Number(startTime.split(':')[0]));

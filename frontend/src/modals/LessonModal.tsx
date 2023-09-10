@@ -2,17 +2,13 @@ import { FC, useEffect, useState } from 'react';
 import {
   Group, Header, InfoRow, ModalPage, ModalPageHeader, Separator, SimpleCell, Spacing, Text,
 } from '@vkontakte/vkui';
-
 import {
   EAbsenceTypes, EAbsenceTypesDescription, Grade, Lesson, LessonType, LessonWorkType, TLesson,
 } from '../../../shared';
 import setDefaultMark from '../utils/setDefaultMark';
 import textToLink from '../utils/textToLink';
-
 import { cleanData } from './data';
-
 import Mark from '../components/UI/Mark';
-
 import { useModal } from './ModalContext';
 
 interface ILessonModal {
