@@ -1,8 +1,8 @@
 import { getCookie } from '../bridge/getCookie';
-import { Attestation } from '../../../../shared';
-import { getUserId } from '../bridge/getUserId.ts';
+import { AttestationResponse } from '../../../../shared';
+import { getUserId } from '../bridge/getUserId';
 
-const getAttestation = async (): Promise<Attestation | number> => {
+const getAttestation = async (): Promise<AttestationResponse | number> => {
   const cookie = await getCookie();
   const id = await getUserId();
 
@@ -23,7 +23,7 @@ const getAttestation = async (): Promise<Attestation | number> => {
     throw new Error('Failed to fetch college data');
   }
 
-  return await response.json() as Attestation;
+  return await response.json() as AttestationResponse;
 };
 
 export default getAttestation;

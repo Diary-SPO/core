@@ -2,6 +2,7 @@ import {
   FC, useEffect, useRef, useState,
 } from 'react';
 import {
+  Alert,
   CellButton, Group, Header, InfoRow, Panel, SimpleCell, Subhead, Switch, View,
 } from '@vkontakte/vkui';
 import { useActiveVkuiLocation, useRouteNavigator } from '@vkontakte/vk-mini-apps-router';
@@ -9,21 +10,42 @@ import {
   Icon28ClearDataOutline, Icon28DoorArrowRightOutline, Icon28HomeArrowDownOutline, Icon28IncognitoOutline,
 } from '@vkontakte/icons';
 import bridge from '@vkontakte/vk-bridge';
-
 import { Storage } from '../types';
 import {
   appStorageSet, getVkStorageData, getVkStorageKeys,
 } from '../methods';
-
 import PanelHeaderWithBack from '../components/UI/PanelHeaderWithBack';
+import { useSnackbar } from '../hooks';
 
 interface ISettings {
   id: string,
 }
 
+export const clearVkStorage = async (excludeKey?: string) => {
+  try {
+    const keys = await getVkStorageKeys();
+
+    for (const key of keys) {
+      if (key !== excludeKey) {
+        appStorageSet(key, '');
+      }
+    }
+  } catch (error) {
+    console.error(error);
+  }
+};
+
 const Settings: FC<ISettings> = ({ id }) => {
   const { panel: activePanel, panelsHistory } = useActiveVkuiLocation();
   const routeNavigator = useRouteNavigator();
+
+  const [snackbar, showSnackbar] = useSnackbar();
+  const cleatCacheSnackbar = () => {
+    showSnackbar({
+      title: 'Кеш очищен',
+      subtitle: 'Необходимая информация загрузится при необходимости',
+    });
+  };
 
   const [cacheData, setCacheData] = useState<Storage[]>([]);
   const [vkCacheData, setVkCacheData] = useState<Storage[]>([]);
@@ -31,7 +53,7 @@ const Settings: FC<ISettings> = ({ id }) => {
 
   const switchRef = useRef(null);
   const [isSwitchChecked, setIsSwitchChecked] = useState<boolean>(true);
-  console.log(isSwitchChecked);
+
   useEffect(() => {
     const allKeys = Object.keys(localStorage);
 
@@ -60,20 +82,29 @@ const Settings: FC<ISettings> = ({ id }) => {
   const clearCache = () => {
     localStorage.clear();
     setCacheData([]);
+
+    if (!snackbar) {
+      cleatCacheSnackbar();
+    }
   };
 
-  const logOut = async () => {
-    await appStorageSet('cookie', '').then((result) => {
-      console.log(result);
-      if (result) {
-        location.reload();
-      }
+  const handleLogOut = async () => {
+    showSnackbar({
+      title: 'Выхожу',
+      icon: <Icon28DoorArrowRightOutline color='var(--vkui--color_background_accent_themed)' />,
+      subtitle: 'После удаления всех данных страница обновится',
     });
+    await clearVkStorage();
+
+    setTimeout(() => {
+      clearCache();
+      location.reload();
+    }, 1000);
   };
 
   useEffect(() => {
     const checkIsFeatureSupported = async () => {
-      bridge.send('VKWebAppAddToHomeScreenInfo')
+      await bridge.send('VKWebAppAddToHomeScreenInfo')
         .then(({ is_added_to_home_screen, is_feature_supported }) => {
           if (is_feature_supported) {
             setIsHomeScreenSupported(true);
@@ -102,6 +133,50 @@ const Settings: FC<ISettings> = ({ id }) => {
       });
   };
 
+  const clearCachePopup = (
+    <Alert
+      actions={[
+        {
+          title: 'Отмена',
+          autoClose: true,
+          mode: 'cancel',
+        },
+        {
+          title: 'Удалить',
+          autoClose: true,
+          mode: 'destructive',
+          action: () => clearCache(),
+        },
+      ]}
+      actionsLayout='horizontal'
+      onClose={() => routeNavigator.hidePopout()}
+      header='Очистка кеша'
+      text='После удаления кеша вся информация (оценки, расписание и тд) загрузится повторно.'
+    />
+  );
+
+  const logOutPopup = (
+    <Alert
+      actions={[
+        {
+          title: 'Отмена',
+          autoClose: true,
+          mode: 'cancel',
+        },
+        {
+          title: 'Выйти',
+          autoClose: true,
+          mode: 'destructive',
+          action: () => handleLogOut(),
+        },
+      ]}
+      actionsLayout='horizontal'
+      onClose={() => routeNavigator.hidePopout()}
+      header='Выход'
+      text='Вы уверены, что хотите выйти из аккаунта?'
+    />
+  );
+
   return (
     <View
       id={id}
@@ -114,7 +189,7 @@ const Settings: FC<ISettings> = ({ id }) => {
         <Group header={<Header mode='secondary'>Действия</Header>}>
           <CellButton
             before={<Icon28ClearDataOutline />}
-            onClick={clearCache}
+            onClick={() => routeNavigator.showPopout(clearCachePopup)}
           >
             Очистить кеш
           </CellButton>
@@ -128,7 +203,7 @@ const Settings: FC<ISettings> = ({ id }) => {
           </CellButton>
           <CellButton
             before={<Icon28DoorArrowRightOutline />}
-            onClick={logOut}
+            onClick={() => routeNavigator.showPopout(logOutPopup)}
           >
             Выйти
           </CellButton>
@@ -166,6 +241,7 @@ const Settings: FC<ISettings> = ({ id }) => {
             </Group>
           </Group>
           )}
+        {snackbar}
       </Panel>
     </View>
   );

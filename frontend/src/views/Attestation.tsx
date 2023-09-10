@@ -1,11 +1,10 @@
 import { FC, useEffect, useState } from 'react';
 import {
-  Div,
-  Panel, Spinner, View,
+  Button, ButtonGroup, Div, Link, Panel, Placeholder, ScreenSpinner, View,
 } from '@vkontakte/vkui';
 import { useActiveVkuiLocation, useRouteNavigator } from '@vkontakte/vk-mini-apps-router';
 import getAttestation from '../methods/server/getAttestation';
-import { Attestation } from '../../../shared';
+import { AttestationResponse } from '../../../shared';
 import PanelHeaderWithBack from '../components/UI/PanelHeaderWithBack';
 import { useRateLimitExceeded } from '../hooks';
 import SubjectList from '../components/UI/SubjectsList.tsx';
@@ -18,25 +17,35 @@ const Attestation: FC<IAttestation> = ({ id }) => {
   const { panel: activePanel, panelsHistory } = useActiveVkuiLocation();
   const routeNavigator = useRouteNavigator();
 
-  const [attestationData, setAttestationData] = useState<Attestation | null>(null);
+  const [isError, setIsError] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [attestationData, setAttestationData] = useState<AttestationResponse | null>(null);
+
+  const getUserAttestation = async () => {
+    setIsLoading(true);
+    setIsError(false);
+    try {
+      const data = await getAttestation();
+      if (data === 429) {
+        useRateLimitExceeded();
+        setIsError(true);
+        setIsLoading(false);
+        return;
+      }
+      setAttestationData(data as AttestationResponse);
+    } catch (error) {
+      setIsError(true);
+      console.error('Плоха-плоха:', error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   useEffect(() => {
-    const getUserAttestation = async () => {
-      try {
-        const data = await getAttestation();
-        if (data === 429) {
-          useRateLimitExceeded();
-        }
-        setAttestationData(data as Attestation);
-      } catch (error) {
-        console.error('Плоха-плоха:', error);
-      }
-    };
-
     getUserAttestation();
   }, []);
 
-  const semesters: Record<string, Attestation['subjects']> = {};
+  const semesters: Record<string, AttestationResponse['subjects']> = {};
   let year: number | null = null;
   let studentName: string | null = null;
 
@@ -65,15 +74,29 @@ const Attestation: FC<IAttestation> = ({ id }) => {
       <Panel nav={id}>
         <PanelHeaderWithBack title='Аттестация' />
         <Div>
-          {attestationData ? (
+          {attestationData
+            && (
             <SubjectList
               semesters={semesters}
               studentName={studentName}
               year={year}
             />
-          ) : (
-            <Spinner />
-          )}
+            )}
+          {isLoading && <ScreenSpinner />}
+          {isError
+            && (
+              <Placeholder
+                header='Ошибка при загрузке'
+                action={(
+                  <ButtonGroup mode='vertical' align='center'>
+                    <Button size='s' onClick={getUserAttestation}>Попробовать снова</Button>
+                    <Link href='https://vk.me/dnevnik_spo' target='_blank'>
+                      Сообщить о проблеме
+                    </Link>
+                  </ButtonGroup>
+                )}
+              />
+            )}
         </Div>
       </Panel>
     </View>

@@ -2,7 +2,7 @@ import { FC } from 'react';
 import {
   Card, CardGrid, Div, Group, Header, InfoRow, Subhead, Title,
 } from '@vkontakte/vkui';
-import {Examinations, ExaminationType} from '../../../../shared';
+import { Examinations, ExaminationType } from '../../../../shared';
 
 interface SubjectListProps {
   semesters: Record<string, any[]>;
@@ -34,17 +34,17 @@ const SubjectList: FC<SubjectListProps> = ({ semesters, studentName, year }) => 
                 </InfoRow>
                 <InfoRow header='Оценки'>
                   <Subhead>
-                      {subject.marks[String(subject.id)] && Object.keys(subject.marks[String(subject.id)]).length > 0 ? (
-                        Object.keys(subject.marks[subject.id]).map((studentId) => (
-                          <span key={studentId}>
-                            {/* // @ts-ignore */}
-                            {subject.marks[subject.id][studentId]}
-                          </span>
-                        ))
-                      ) : (
-                        'Оценок нет'
-                      )}
-                    </Subhead>
+                    {subject.marks[String(subject.id)] && Object.keys(subject.marks[String(subject.id)]).length > 0 ? (
+                      Object.keys(subject.marks[subject.id]).map((studentId) => (
+                        <span key={studentId}>
+                          {/* // @ts-ignore */}
+                          {subject.marks[subject.id][studentId]}
+                        </span>
+                      ))
+                    ) : (
+                      'Оценок нет'
+                    )}
+                  </Subhead>
                 </InfoRow>
               </Div>
             </Card>

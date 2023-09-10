@@ -254,6 +254,7 @@ export interface PerformanceCurrent {
 }
 export enum Examinations {
   'DifferentiatedTest'= 'Дифф. зачёт',
+  'Test'= 'Зачёт',
   'Exam'= 'Экзамен',
   'Other'= 'Др. форма контроля',
 }
@@ -261,7 +262,7 @@ export enum Examinations {
 export type ExaminationType = keyof typeof Examinations;
 export type TermType = 'Semester';
 
-export interface Attestation {
+export interface AttestationResponse {
   termType: TermType;
   termNumber: number;
   year: number;

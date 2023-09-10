@@ -33,7 +33,7 @@ const MarksByGroup = () => {
   const [marksForSubject, setMarksForSubject] = useState<PerformanceCurrent | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [snackbar, showSnackbar] = useSnackbar();
-  console.log(marksForSubject);
+
   const fetchMarks = async (isHandle?: boolean) => {
     setIsLoading(true);
     try {

@@ -117,7 +117,6 @@ const LessonModal: FC<ILessonModal> = ({ id }) => {
         </SimpleCell>
       </Group>
       {((lessonData.gradebook?.tasks?.length && lessonData.gradebook.tasks.length > 0))
-        || (lessonData.gradebook?.themes)
         ? (
           <Group header={<Header mode='tertiary'>Успеваемость</Header>}>
             {lessonData.gradebook.tasks?.map((tasks, index) => (

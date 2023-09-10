@@ -1,5 +1,5 @@
 import React, {
-  ReactNode, createContext, useContext, useState,
+  ReactNode, createContext, useContext, useState, useMemo,
 } from 'react';
 import { Lesson, Organization } from '../../../shared';
 
@@ -19,15 +19,18 @@ export const ModalProvider: React.FC<{ children: ReactNode }> = ({ children }) =
   };
 
   const openCollegeModal = (data: Organization) => {
-    console.log('college');
     setCollegeModalData(data);
   };
 
+  const contextValue = useMemo(() => ({
+    lessonModalData,
+    collegeModalData,
+    openLessonModal,
+    openCollegeModal,
+  }), [lessonModalData, collegeModalData]);
+
   return (
-    <ModalContext.Provider value={{
-      lessonModalData, collegeModalData, openLessonModal, openCollegeModal,
-    }}
-    >
+    <ModalContext.Provider value={contextValue}>
       {children}
     </ModalContext.Provider>
   );

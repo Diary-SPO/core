@@ -2,7 +2,7 @@ import {
   AppRoot, PanelHeader, PanelSpinner, SplitCol, SplitLayout,
 } from '@vkontakte/vkui';
 import { lazy, useEffect, useState } from 'react';
-import { useActiveVkuiLocation, useRouteNavigator } from '@vkontakte/vk-mini-apps-router';
+import { useActiveVkuiLocation, usePopout, useRouteNavigator } from '@vkontakte/vk-mini-apps-router';
 import { MAIN_SETTINGS, VIEW_SCHEDULE } from './routes';
 import { getCookie } from './methods';
 import { Pages } from './types';
@@ -46,10 +46,12 @@ const App = () => {
     }
   };
 
+  const routerPopout = usePopout();
+
   return (
     <AppRoot>
       {isLoading && <PanelSpinner />}
-      <SplitLayout modal={modals} header={<PanelHeader separator={false} />} style={{ justifyContent: 'center' }}>
+      <SplitLayout popout={routerPopout} modal={modals} header={<PanelHeader separator={false} />} style={{ justifyContent: 'center' }}>
         <Suspense id='Epic'>
           <SplitCol width='100%' maxWidth='700px' stretchedOnMobile autoSpaced>
             <Epic onStoryChange={onStoryChange} />

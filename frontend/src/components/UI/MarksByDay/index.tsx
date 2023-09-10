@@ -26,17 +26,10 @@ const MarksByDay: FC<IPerformanceCurrent> = ({ performanceData }) => {
   performanceData?.daysWithMarksForSubject?.forEach((subject) => {
     subject?.daysWithMarks?.forEach((dayWithMarks) => {
       const day = new Date(dayWithMarks.day).toLocaleDateString();
-      const grades = dayWithMarks.markValues.map((gradeText) => {
-        if (dayWithMarks.absenceType === 'IsLate') {
-          return 'О';
-        } if (dayWithMarks.absenceType === 'IsAbsent') {
-          return 'Н';
-        }
-        return Grade[gradeText];
-      });
+      const grades = dayWithMarks.markValues.map((gradeText) => Grade[gradeText]);
       const lessonName = subject.subjectName;
 
-      if (grades.length > 0 && grades.every((grade) => !isNaN(parseFloat(grade as string)))) {
+      if (grades.length > 0 && grades.every((grade) => !Number.isNaN(parseFloat(grade as string)))) {
         if (!marksByDay[day]) {
           marksByDay[day] = { grades: [], lessonName: '' };
         }
@@ -60,14 +53,11 @@ const MarksByDay: FC<IPerformanceCurrent> = ({ performanceData }) => {
             <div key={day}>
               <Header mode='secondary'>{day}</Header>
               <div style={{ display: 'flex' }}>
-                {grades.map((grade, gradeIndex) => {
-                  console.log(grade);
-                  return (
-                    <HorizontalCell style={{ maxWidth: 'unset' }} key={`${day}_${gradeIndex}`}>
-                      <Mark style={{ maxWidth: 90 }} mark={grade || 'Н'} size='l' bottom={truncateString(lessonName, 18)} useMargin={false} />
-                    </HorizontalCell>
-                  );
-                })}
+                {grades.map((grade, gradeIndex) => (
+                  <HorizontalCell style={{ maxWidth: 'unset' }} key={`${day}_${gradeIndex}`}>
+                    <Mark style={{ maxWidth: 90 }} mark={grade || 'Н'} size='l' bottom={truncateString(lessonName, 18)} useMargin={false} />
+                  </HorizontalCell>
+                ))}
               </div>
             </div>
           ))}

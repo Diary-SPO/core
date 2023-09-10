@@ -1,19 +1,18 @@
-import {
-  CSSProperties, useEffect, useState,
-} from 'react';
+import { CSSProperties, useEffect, useState } from 'react';
 import {
   Avatar, Div, Gradient, Group, Header, ScreenSpinner, SimpleCell, Spinner, Text, Title,
 } from '@vkontakte/vkui';
-import { useRouteNavigator } from '@vkontakte/vk-mini-apps-router';
 import { Icon28SchoolOutline, Icon32PrometeyCircleFillRed } from '@vkontakte/icons';
 import bridge from '@vkontakte/vk-bridge';
-import { appStorageSet, getVkStorageData, getVkStorageKeys } from '../methods';
+import { useRouteNavigator } from '@vkontakte/vk-mini-apps-router';
+import { getVkStorageData, getVkStorageKeys } from '../methods';
 import { useModal } from '../modals/ModalContext';
 import { useRateLimitExceeded } from '../hooks';
 import { MODAL_COLLEGE_INFO } from '../modals/ModalRoot';
 import { Organization } from '../../../shared';
 import getCollegeInfo from '../methods/server/getCollegeInfo';
 import useSnackbar from '../hooks/useSnackbar';
+import logOut from '../utils/logOut.ts';
 
 const styles: CSSProperties = {
   margin: 0,
@@ -38,7 +37,7 @@ const getUserAva = async (): Promise<string | null> => {
     }
     return null;
   } catch (error) {
-    console.log(error);
+    console.error(error);
     return null;
   }
 };
@@ -46,7 +45,13 @@ const getUserAva = async (): Promise<string | null> => {
 const UserInfo = () => {
   const [snackbar, showSnackbar] = useSnackbar();
   const routeNavigator = useRouteNavigator();
+
   const { openCollegeModal } = useModal();
+
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isCollegeLoading, setIsCollegeLoading] = useState<boolean>(false);
+  const [userAva, setUserAva] = useState<string | undefined>();
+  let logoutTimer: NodeJS.Timeout | null = null;
   const getCollegeInfoFromServer = async () => {
     setIsCollegeLoading(true);
     const data = await getCollegeInfo();
@@ -71,22 +76,11 @@ const UserInfo = () => {
     group: '',
   });
 
-  const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [isCollegeLoading, setIsCollegeLoading] = useState<boolean>(false);
-  const [userAva, setUserAva] = useState<string | undefined>();
-
-  const autoLogOut = async () => {
-    await appStorageSet('cookie', '');
-    location.reload();
-    showSnackbar(null);
-  };
-
   const openInvalidData = () => {
     showSnackbar({
-      onClose: autoLogOut,
       title: 'Данные устарели',
       icon: <Icon32PrometeyCircleFillRed fill='#fff' width={32} height={32} />,
-      subtitle: 'Через 10 секунд произойдет автоматический выход из аккаунта, поэтому ищите листок с паролем',
+      subtitle: 'Через 5 секунд произойдет автоматический выход из аккаунта, поэтому ищите листок с паролем',
     });
   };
 
@@ -109,14 +103,6 @@ const UserInfo = () => {
     const keys = await getVkStorageKeys();
     const data = await getVkStorageData(keys);
     const extractedData: Partial<UserData> = data.keys.reduce((acc, item) => {
-      if (
-        (item.key === 'firstName' && item.value === ' ')
-        || (item.key === 'lastName' && item.value === '')
-        || (item.key === 'group' && item.value === '')
-      ) {
-        openInvalidData();
-      }
-
       acc[item.key] = item.value;
       return acc;
     }, {} as UserData);
@@ -145,6 +131,23 @@ const UserInfo = () => {
   useEffect(() => {
     getUserInfo();
   }, []);
+
+  useEffect(() => {
+    logoutTimer = setTimeout(() => {
+      if (userData.firstName === '') {
+        openInvalidData();
+        setTimeout(async () => {
+          await logOut();
+        }, 5000);
+      }
+    }, 5000);
+
+    return () => {
+      if (logoutTimer) {
+        clearTimeout(logoutTimer);
+      }
+    };
+  }, [userData]);
 
   if (isLoading) {
     return (

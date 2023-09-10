@@ -55,7 +55,7 @@ const Schedule: FC<{ id: string }> = ({ id }) => {
     try {
       const data = await getLessons(startDate, newEndDate);
       const marks = await getPerformance();
-      console.log(marks);
+
       if (data === 429) {
         handleRateLimitExceeded();
         setIsLoading(false);

@@ -3,7 +3,7 @@ import express, { type Request, type Response } from 'express'
 import axiosInstance from '../axiosWrapper'
 import { checkCookie, checkId } from '../middleware'
 import {AxiosResponse} from "axios";
-import {Attestation} from "../../../shared";
+import {AttestationResponse} from "../../../shared";
 
 const router = express.Router()
 
@@ -12,7 +12,7 @@ router.get('/:id', [checkCookie, checkId], async (req: Request, res: Response) =
     const secret = req.headers.secret
     const { id } = req.params
 
-    const response: AxiosResponse<Attestation> = await axiosInstance.get(`/reports/curator/group-attestation-for-student/${id}`, {
+    const response: AxiosResponse<AttestationResponse> = await axiosInstance.get(`/reports/curator/group-attestation-for-student/${id}`, {
       headers: {
         'Content-Type': 'application/json;charset=UTF-8',
         Cookie: secret
