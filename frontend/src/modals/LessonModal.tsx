@@ -2,17 +2,13 @@ import { FC, useEffect, useState } from 'react';
 import {
   Group, Header, InfoRow, ModalPage, ModalPageHeader, Separator, SimpleCell, Spacing, Text,
 } from '@vkontakte/vkui';
-
 import {
-  Grade, Lesson, LessonType, LessonWorkType, TLesson, TMark,
+  EAbsenceTypes, EAbsenceTypesDescription, Grade, Lesson, LessonType, LessonWorkType, TLesson,
 } from '../../../shared';
 import setDefaultMark from '../utils/setDefaultMark';
 import textToLink from '../utils/textToLink';
-
 import { cleanData } from './data';
-
 import Mark from '../components/UI/Mark';
-
 import { useModal } from './ModalContext';
 
 interface ILessonModal {
@@ -89,12 +85,9 @@ const LessonModal: FC<ILessonModal> = ({ id }) => {
         </SimpleCell>
         <SimpleCell multiline>
           <InfoRow header='Тема'>
-            {lessonData.gradebook?.themes ? lessonData.gradebook?.themes.map((theme) => {
-              console.log(theme);
-              return (
-                textToLink(theme)
-              );
-            }) : 'Не указана'}
+            {lessonData.gradebook?.themes ? lessonData.gradebook?.themes.map((theme) => (
+              textToLink(theme)
+            )) : 'Не указана'}
           </InfoRow>
         </SimpleCell>
         <SimpleCell>
@@ -123,11 +116,11 @@ const LessonModal: FC<ILessonModal> = ({ id }) => {
           </InfoRow>
         </SimpleCell>
       </Group>
-      {((lessonData.gradebook?.absenceType && lessonData.gradebook.absenceType === 'IsAbsent')
-        || (lessonData.gradebook?.tasks?.length && lessonData.gradebook.tasks.length > 0))
+      {((lessonData.gradebook?.tasks?.length && lessonData.gradebook.tasks.length > 0))
+        || (lessonData.gradebook?.themes)
         ? (
           <Group header={<Header mode='tertiary'>Успеваемость</Header>}>
-            {lessonData.gradebook?.tasks?.map((tasks, index) => (
+            {lessonData.gradebook.tasks?.map((tasks, index) => (
               <>
                 <SimpleCell multiline key={index} after={<Mark mark={Grade[setDefaultMark(tasks)]} size='s' />}>
                   <InfoRow header='Тип работы'>
@@ -142,9 +135,9 @@ const LessonModal: FC<ILessonModal> = ({ id }) => {
                 </Spacing>
               </>
             ))}
-            {lessonData.gradebook?.absenceType === 'IsAbsent' && (
-              <SimpleCell after={<Mark mark={'Н' as TMark} size='s' />}>
-                Опоздание
+            {lessonData.gradebook?.absenceType && (
+              <SimpleCell after={<Mark mark={EAbsenceTypes[lessonData.gradebook?.absenceType]} size='s' />}>
+                {EAbsenceTypesDescription[EAbsenceTypes[lessonData.gradebook?.absenceType]]}
               </SimpleCell>
             )}
           </Group>

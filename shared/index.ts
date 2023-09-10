@@ -139,6 +139,7 @@ export enum Grade {
   // Кастыль :))
   'Д' = 'Д',
   'ДЗ' = 'ДЗ',
+  'О' = 'О'
 }
 
 export enum LessonWorkType {
@@ -149,13 +150,23 @@ export enum LessonWorkType {
   '' = 'Не указан'
 }
 
+export enum EAbsenceTypes {
+  'IsAbsent' = 'Н',
+  'IsLate' = 'О',
+}
+
+export enum EAbsenceTypesDescription {
+  'Н' = 'Отсутствие',
+  'О' = 'Опоздание',
+}
+
 type GradeKeys = keyof typeof Grade;
 
 export type TextMark = GradeKeys;
 export type TMark = typeof Grade[GradeKeys];
 export type TLesson = keyof typeof LessonWorkType;
 export type LessonTypes = keyof typeof LessonType;
-export type AbsenceType = 'IsAbsent'
+export type AbsenceType = keyof typeof EAbsenceTypes;
 
 export interface Task {
   attachments: []
@@ -241,4 +252,40 @@ export interface PerformanceCurrent {
     }
   ],
 }
+export enum Examinations {
+  'DifferentiatedTest'= 'Дифф. зачёты',
+  'Exam'= 'Экзамены',
+  'Other'= 'Др. формы контроля',
+}
 
+export type ExaminationType = keyof typeof Examinations;
+export type TermType = 'Semester';
+
+export interface Attestation {
+  termType: TermType
+  termNumber: number
+  year: number
+  students: [
+    {
+      id: number
+      firstName: string
+      lastName: string
+      middleName: string
+    }
+  ],
+  subjects: [
+    {
+      examinationType: ExaminationType,
+      marks: {
+        // TODO: Понять что тут приходит
+        id: {}
+      },
+      name: string,
+      id: number
+    },
+  ],
+  // TODO: Понять что тут приходит
+  profModules: [],
+  courseWorks: [],
+  departmentName: ""
+}

@@ -3,14 +3,14 @@ import { useActiveVkuiLocation } from '@vkontakte/vk-mini-apps-router';
 import { useAdaptivityConditionalRender } from '@vkontakte/vkui';
 import { Epic as VKUIEpic } from '@vkontakte/vkui/dist/components/Epic/Epic';
 import {
-  VIEW_CONTACTS, VIEW_SCHEDULE, VIEW_MARKS, VIEW_SETTINGS, MAIN_SETTINGS,
+  VIEW_CONTACTS, VIEW_SCHEDULE, VIEW_MARKS, VIEW_SETTINGS, MAIN_SETTINGS, VIEW_ATTESTATION,
 } from '../../routes';
 import { Pages } from '../../types';
 
 import Tabbar from './Tabbar';
 import Suspense from './Suspense';
 import {
-  Contacts, LoginForm, Schedule, Marks, Settings,
+  Contacts, LoginForm, Schedule, Marks, Settings, Attestation,
 } from '../../views';
 
 interface IEpic {
@@ -45,6 +45,9 @@ const Epic: FC<IEpic> = ({ onStoryChange }) => {
       </Suspense>
       <Suspense id={MAIN_SETTINGS} mode='screen'>
         <LoginForm id={MAIN_SETTINGS} />
+      </Suspense>
+      <Suspense id={VIEW_ATTESTATION} mode='screen'>
+        <Attestation id={VIEW_ATTESTATION} />
       </Suspense>
     </VKUIEpic>
   );

@@ -7,6 +7,7 @@ import 'dotenv/config'
 import { corsMiddleware, preventCrossSiteScripting } from './src/middleware'
 
 import {
+  attestation,
   dashboard, helloRoute, lessonsRoute, loginRoute, organization, performanceCurrent
 } from './src/routes'
 
@@ -37,6 +38,7 @@ app.use(limiter)
 // app.use(corsMiddleware)
 
 app.use('/performance.current', performanceCurrent)
+app.use('/attestation', attestation)
 app.use('/organization', organization)
 app.use('/lessons', lessonsRoute)
 app.use('/dashboard', dashboard)

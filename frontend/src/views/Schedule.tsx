@@ -10,16 +10,12 @@ import {
   Icon16ArrowLeftOutline,
   Icon28ErrorCircleOutline,
 } from '@vkontakte/icons';
-
 import { addDays, endOfWeek, startOfWeek } from '@vkontakte/vkui/dist/lib/date';
 import { Day, PerformanceCurrent } from '../../../shared';
 import { getLessons, getPerformance } from '../methods';
-
 import PanelHeaderWithBack from '../components/UI/PanelHeaderWithBack';
 import Suspense from '../components/UI/Suspense';
-
 import { useSnackbar, useRateLimitExceeded } from '../hooks';
-
 import ExplanationTooltip from '../components/UI/ExplanationTooltip';
 import MarksByDay from '../components/UI/MarksByDay';
 

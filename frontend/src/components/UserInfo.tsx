@@ -7,7 +7,6 @@ import {
 import { useRouteNavigator } from '@vkontakte/vk-mini-apps-router';
 import { Icon28SchoolOutline, Icon32PrometeyCircleFillRed } from '@vkontakte/icons';
 import bridge from '@vkontakte/vk-bridge';
-
 import { appStorageSet, getVkStorageData, getVkStorageKeys } from '../methods';
 import { useModal } from '../modals/ModalContext';
 import { useRateLimitExceeded } from '../hooks';

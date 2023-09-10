@@ -3,10 +3,8 @@ import {
   Card, Div, Group, Header, Panel, View,
 } from '@vkontakte/vkui';
 import { useActiveVkuiLocation, useRouteNavigator } from '@vkontakte/vk-mini-apps-router';
-
 import PanelHeaderWithBack from '../components/UI/PanelHeaderWithBack';
 import HelpAccordion from '../components/HelpAccordion';
-
 import { helpData } from '../components/data';
 
 const Contacts: FC<{ id: string }> = ({ id }) => {

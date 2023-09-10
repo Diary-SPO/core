@@ -7,13 +7,10 @@ import {
 import { useActiveVkuiLocation, useRouteNavigator } from '@vkontakte/vk-mini-apps-router';
 import Hashes from 'jshashes';
 import { Icon28ErrorCircleOutline, Icon28DoorArrowLeftOutline } from '@vkontakte/icons';
-
 import { AuthData } from '../../../shared';
 import { appStorageSet, getCookie } from '../methods';
 import { VIEW_SCHEDULE } from '../routes';
-
 import { useSnackbar } from '../hooks';
-
 import PanelHeaderWithBack from '../components/UI/PanelHeaderWithBack';
 
 const LoginForm: FC<{ id: string }> = ({ id }) => {

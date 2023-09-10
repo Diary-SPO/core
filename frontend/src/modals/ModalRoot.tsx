@@ -2,7 +2,6 @@ import {
   ModalRoot as VKUIModalRoot,
 } from '@vkontakte/vkui';
 import { useActiveVkuiLocation, useRouteNavigator } from '@vkontakte/vk-mini-apps-router';
-
 import LessonModal from './LessonModal';
 import CollegeModal from './CollegeModal';
 

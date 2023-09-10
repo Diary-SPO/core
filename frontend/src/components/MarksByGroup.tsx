@@ -18,9 +18,8 @@ import {
   Icon28ErrorCircleOutline,
   Icon28InfoCircle,
 } from '@vkontakte/icons';
-
 import {
-  AbsenceType, Grade, PerformanceCurrent, TextMark, TMark,
+  AbsenceType, EAbsenceTypes, Grade, PerformanceCurrent, TextMark,
 } from '../../../shared';
 import { getPerformance } from '../methods';
 import calculateAverageMark from '../utils/calculateAverageMark';
@@ -34,7 +33,7 @@ const MarksByGroup = () => {
   const [marksForSubject, setMarksForSubject] = useState<PerformanceCurrent | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [snackbar, showSnackbar] = useSnackbar();
-
+  console.log(marksForSubject);
   const fetchMarks = async (isHandle?: boolean) => {
     setIsLoading(true);
     try {
@@ -107,13 +106,15 @@ const MarksByGroup = () => {
             </Div>
             <HorizontalScroll>
               <div style={{ display: 'flex' }}>
-                {subjectMarksMap[subjectName].map(({ marks }, i) => (
-                  <div key={i} style={{ display: 'flex' }}>
-                    {(marks.length > 0 ? marks?.map((mark, j) => (
-                      <Mark key={j} mark={Grade[subjectMarksMap[subjectName][i].absenceType === 'IsAbsent' ? 'Н' : mark]} size='s' />
-                      // FIXME: Тут встречается баг, что ставится Д, когда нет долга и студент был на паре
-                    )) : subjectMarksMap[subjectName]?.map((mark, j) => <Mark key={j} size='s' mark={mark.absenceType === 'IsAbsent' ? 'Н' as TMark : 'Д' as TMark} />)
-                      )}
+                {subjectMarksMap[subjectName].map(({ date, marks, absenceType }) => (
+                  <div key={`${date}_${marks}`} style={{ display: 'flex' }}>
+                    {marks.length > 0 && !absenceType ? (
+                      marks.map((mark, k) => (
+                        <Mark key={k} mark={Grade[mark]} size='s' />
+                      ))
+                    ) : absenceType ? (
+                      <Mark size='s' mark={EAbsenceTypes[absenceType]} />
+                    ) : null}
                   </div>
                 ))}
               </div>
