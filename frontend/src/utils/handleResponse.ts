@@ -27,6 +27,5 @@ export function handleResponse<T>(
     limitExceededCallback();
     errorCallback();
     loadingCallback(false);
-    return;
   }
 }

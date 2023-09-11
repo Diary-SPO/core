@@ -12,7 +12,7 @@ import { MODAL_COLLEGE_INFO } from '../modals/ModalRoot';
 import { Organization } from '../../../shared';
 import getCollegeInfo from '../methods/server/getCollegeInfo';
 import useSnackbar from '../hooks/useSnackbar';
-import logOut from '../utils/logOut.ts';
+import logOut from '../utils/logOut';
 
 const styles: CSSProperties = {
   margin: 0,
@@ -45,9 +45,9 @@ const getUserAva = async (): Promise<string | null> => {
 const UserInfo = () => {
   const [snackbar, showSnackbar] = useSnackbar();
   const routeNavigator = useRouteNavigator();
-  
+
   const { openCollegeModal } = useModal();
-  
+
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isCollegeLoading, setIsCollegeLoading] = useState<boolean>(false);
   const [userAva, setUserAva] = useState<string | undefined>();
@@ -56,20 +56,20 @@ const UserInfo = () => {
     setIsCollegeLoading(true);
     try {
       const data = await getCollegeInfo();
-      
+
       if (data === 429) {
         useRateLimitExceeded();
         return;
       }
-      
+
       await routeNavigator.showModal(MODAL_COLLEGE_INFO);
       openCollegeModal(data as Organization);
       setIsCollegeLoading(false);
     } catch (e) {
-      console.error(e)
+      console.error(e);
     }
-  }
-  
+  };
+
   const [userData, setUserData] = useState<UserData>({
     firstName: '',
     lastName: '',
@@ -79,7 +79,7 @@ const UserInfo = () => {
     city: '',
     group: '',
   });
-  
+
   const openInvalidData = () => {
     showSnackbar({
       title: 'Данные устарели',
@@ -87,7 +87,7 @@ const UserInfo = () => {
       subtitle: 'Через 5 секунд произойдет автоматический выход из аккаунта, поэтому ищите листок с паролем',
     });
   };
-  
+
   const getUserInfo = async (handle?: boolean) => {
     setIsLoading(true);
     const localData = localStorage.getItem('userData');
@@ -103,20 +103,20 @@ const UserInfo = () => {
         return;
       }
     }
-    
+
     const keys = await getVkStorageKeys();
     const data = await getVkStorageData(keys);
     const extractedData: Partial<UserData> = data.keys.reduce((acc, item) => {
       acc[item.key] = item.value;
       return acc;
     }, {} as UserData);
-    
+
     const ava = await getUserAva();
-    
+
     if (ava) {
       setUserAva(ava);
     }
-    
+
     setUserData({
       firstName: extractedData.firstName || '',
       lastName: extractedData.lastName || '',
@@ -126,16 +126,16 @@ const UserInfo = () => {
       city: extractedData.city || '',
       group: extractedData.group || '',
     });
-    
+
     localStorage.setItem('userData', JSON.stringify(extractedData));
-    
+
     setIsLoading(false);
   };
-  
+
   useEffect(() => {
     getUserInfo();
   }, []);
-  
+
   useEffect(() => {
     logoutTimer = setTimeout(() => {
       if (userData.firstName === '') {
@@ -145,14 +145,14 @@ const UserInfo = () => {
         }, 5000);
       }
     }, 5000);
-    
+
     return () => {
       if (logoutTimer) {
         clearTimeout(logoutTimer);
       }
     };
   }, [userData]);
-  
+
   if (isLoading) {
     return (
       <Div>
@@ -160,7 +160,7 @@ const UserInfo = () => {
       </Div>
     );
   }
-  
+
   return (
     <Group>
       <Gradient mode='tint' style={styles}>

@@ -24,9 +24,8 @@ import {
 import { getPerformance } from '../methods';
 import calculateAverageMark from '../utils/calculateAverageMark';
 import { useSnackbar } from '../hooks';
-
 import Mark from './UI/Mark';
-import { handleResponse } from '../utils/handleResponse.ts';
+import { handleResponse } from '../utils/handleResponse';
 
 const THIRD_SEC = 30 * 1000;
 
