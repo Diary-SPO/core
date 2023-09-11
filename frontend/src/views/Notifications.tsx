@@ -106,7 +106,7 @@ const Notifications: FC<{ id: string }> = ({ id }) => {
               <Group
                 key={id}
                 description={(<div style={{ display: 'flex', gap: 10 }}>{isForEmployees && <SubtitleWithBorder>Для работников</SubtitleWithBorder>}{isForParents && <SubtitleWithBorder color='yellow-outline'>Для родителей</SubtitleWithBorder>}{isForStudents && <SubtitleWithBorder color='green-outline'>Для студентов</SubtitleWithBorder>}</div>)}
-                header={(<Header mode='tertiary' aside={(<Subhead>Удалится через{deleteInDays}{' '}дней</Subhead>)}>{new Date(date).toLocaleDateString()}</Header>)}>
+                header={(<Header mode='tertiary' aside={(<Subhead>Удалится через{' '}{deleteInDays}{' '}дней</Subhead>)}>{new Date(date).toLocaleDateString()}</Header>)}>
                 <Card mode='shadow'>
                   <Div>
                     <Title level='3'>{title}</Title>
