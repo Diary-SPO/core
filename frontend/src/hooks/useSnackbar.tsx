@@ -2,7 +2,7 @@ import React, { ReactNode, useCallback, useState } from 'react';
 import { Snackbar, SnackbarProps } from '@vkontakte/vkui';
 import { Icon28InfoCircleOutline } from '@vkontakte/icons';
 
-interface SnackbarData {
+export interface SnackbarData {
   layout?: SnackbarProps['layout'];
   icon?: ReactNode;
   action?: string;

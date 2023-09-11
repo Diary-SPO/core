@@ -18,6 +18,7 @@ import Suspense from '../components/UI/Suspense';
 import { useRateLimitExceeded, useSnackbar } from '../hooks';
 import ExplanationTooltip from '../components/UI/ExplanationTooltip';
 import MarksByDay from '../components/UI/MarksByDay';
+import { handleResponse } from '../utils/handleResponse.ts';
 
 const CalendarRange = lazy(() => import('../components/UI/CalendarRange'));
 const ScheduleGroup = lazy(() => import('../components/ScheduleGroup'));
@@ -56,17 +57,13 @@ const Schedule: FC<{ id: string }> = ({ id }) => {
       const data = await getLessons(startDate, newEndDate);
       const marks = await getPerformance();
 
-      if (data === 429) {
-        handleRateLimitExceeded();
-        setIsLoading(false);
-        return;
-      }
-
-      if (marks === 429) {
-        handleRateLimitExceeded();
+      handleResponse(data, () => {
         setIsMarksLoading(false);
-        return;
-      }
+      }, handleRateLimitExceeded, setIsLoading, showSnackbar);
+
+      handleResponse(marks, () => {
+        setIsMarksLoading(false);
+      }, handleRateLimitExceeded, setIsLoading, showSnackbar);
 
       setMarksData(marks as PerformanceCurrent);
       setLessons(data as Day[]);
@@ -127,11 +124,10 @@ const Schedule: FC<{ id: string }> = ({ id }) => {
       try {
         const data = await getLessons(startDate, endDate);
 
-        if (data === 429) {
-          handleRateLimitExceeded();
+        handleResponse(data, () => {
           setIsLoading(false);
-          return;
-        }
+          setIsMarksLoading(false);
+        }, handleRateLimitExceeded, setIsLoading, showSnackbar);
 
         setLessons(data as Day[]);
 
@@ -178,11 +174,11 @@ const Schedule: FC<{ id: string }> = ({ id }) => {
 
       try {
         const marks = await getPerformance();
-        if (marks === 429) {
-          handleRateLimitExceeded();
+
+        handleResponse(marks, () => {
           setIsLoading(false);
-          return;
-        }
+          setIsMarksLoading(false);
+        }, handleRateLimitExceeded, setIsLoading, showSnackbar);
 
         setMarksData(marks as PerformanceCurrent);
         localStorage.setItem('savedMarks', JSON.stringify(marks));
@@ -210,11 +206,11 @@ const Schedule: FC<{ id: string }> = ({ id }) => {
       const differenceInDays = (end.getTime() - start.getTime()) / (1000 * 3600 * 24);
       if (differenceInDays <= 14) {
         const data = await getLessons(start, end);
-        if (data === 429) {
-          handleRateLimitExceeded();
+
+        handleResponse(data, () => {
           setIsLoading(false);
-          return;
-        }
+          setIsMarksLoading(false);
+        }, handleRateLimitExceeded, setIsLoading, showSnackbar);
 
         setLessons(data as Day[]);
 
@@ -249,11 +245,12 @@ const Schedule: FC<{ id: string }> = ({ id }) => {
         }
 
         const data = await getLessons(start, newEndDate);
-        if (data === 429) {
-          handleRateLimitExceeded();
+
+        handleResponse(data, () => {
           setIsLoading(false);
-          return;
-        }
+          setIsMarksLoading(false);
+        }, handleRateLimitExceeded, setIsLoading, showSnackbar);
+
         setLessons(data as Day[]);
 
         localStorage.setItem('savedLessons', JSON.stringify(data));
@@ -272,11 +269,12 @@ const Schedule: FC<{ id: string }> = ({ id }) => {
         setEndDate(newEndDate);
 
         const data = await getLessons(start, newEndDate);
-        if (data === 429) {
-          handleRateLimitExceeded();
+
+        handleResponse(data, () => {
           setIsLoading(false);
-          return;
-        }
+          setIsMarksLoading(false);
+        }, handleRateLimitExceeded, setIsLoading, showSnackbar);
+
         setLessons(data as Day[]);
 
         localStorage.setItem('savedLessons', JSON.stringify(data));
@@ -368,6 +366,11 @@ const Schedule: FC<{ id: string }> = ({ id }) => {
     setIsLoading(true);
     try {
       const data = await getLessons(startWeek, endWeek);
+
+      handleResponse(data, () => {
+        setIsLoading(false);
+        setIsMarksLoading(false);
+      }, handleRateLimitExceeded, setIsLoading, showSnackbar);
 
       setLessons(data as Day[]);
       setStartDate(startWeek);

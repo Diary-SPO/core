@@ -40,14 +40,6 @@ const Tabbar: FC<ITabbar> = ({ onStoryChange, activeView }) => {
           <Icon28GraphOutline />
         </TabbarItem>
         <TabbarItem
-          onClick={() => onStoryChange(VIEW_CONTACTS)}
-          selected={activeView === VIEW_CONTACTS}
-          data-story={VIEW_CONTACTS}
-          text='Помощь'
-        >
-          <Icon28HelpOutline />
-        </TabbarItem>
-        <TabbarItem
           onClick={() => onStoryChange(VIEW_ATTESTATION)}
           selected={activeView === VIEW_ATTESTATION}
           data-story={VIEW_ATTESTATION}
@@ -62,6 +54,14 @@ const Tabbar: FC<ITabbar> = ({ onStoryChange, activeView }) => {
           text='Настройки'
         >
           <Icon28SettingsOutline />
+        </TabbarItem>
+        <TabbarItem
+          onClick={() => onStoryChange(VIEW_CONTACTS)}
+          selected={activeView === VIEW_CONTACTS}
+          data-story={VIEW_CONTACTS}
+          text='Помощь'
+        >
+          <Icon28HelpOutline />
         </TabbarItem>
       </VKUITabbar>
     )

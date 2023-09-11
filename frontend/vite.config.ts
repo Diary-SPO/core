@@ -1,12 +1,10 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react-swc';
-import basicSsl from '@vitejs/plugin-basic-ssl';
 // https://vitejs.dev/config/
 
 export default defineConfig({
   plugins: [
     react(),
-    basicSsl(),
   ],
   resolve: {
     alias: [{ find: /^@vkontakte\/vkui$/, replacement: '@vkontakte/vkui/dist/cssm' }],
@@ -28,7 +26,7 @@ export default defineConfig({
     },
     rollupOptions: {
       logLevel: 'debug',
-      input: 'index-b3.5.1.html',
+      input: 'index-b3.6.html',
       output: {
         manualChunks: {
           react: ['react', 'react-dom'],
@@ -38,8 +36,5 @@ export default defineConfig({
   },
   // Указывать только для dev сборки.
   // Либо index'у вернуть его исходное имя, а переименовывать только при деплое
-  base: 'index-b3.5.1.html',
-  server: {
-    https: true,
-  }
+  base: 'index-b3.6.html',
 })

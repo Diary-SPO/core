@@ -6,8 +6,9 @@ import { useActiveVkuiLocation, useRouteNavigator } from '@vkontakte/vk-mini-app
 import getAttestation from '../methods/server/getAttestation';
 import { AttestationResponse } from '../../../shared';
 import PanelHeaderWithBack from '../components/UI/PanelHeaderWithBack';
-import { useRateLimitExceeded } from '../hooks';
+import {useRateLimitExceeded} from '../hooks';
 import SubjectList from '../components/UI/SubjectsList.tsx';
+import {handleResponse} from "../utils/handleResponse.ts";
 
 interface IAttestation {
   id: string;
@@ -26,12 +27,23 @@ const Attestation: FC<IAttestation> = ({ id }) => {
     setIsError(false);
     try {
       const data = await getAttestation();
-      if (data === 429) {
-        useRateLimitExceeded();
-        setIsError(true);
-        setIsLoading(false);
-        return;
-      }
+      
+      handleResponse(
+        data,
+        () => {
+          setIsError(true);
+          setIsLoading(false);
+        },
+        () => {
+          useRateLimitExceeded();
+          // setIsError(true);
+          setIsLoading(false);
+        },
+        (isLoading) => {
+          setIsLoading(isLoading);
+        },
+      );
+      
       setAttestationData(data as AttestationResponse);
     } catch (error) {
       setIsError(true);

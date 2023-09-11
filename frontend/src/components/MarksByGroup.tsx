@@ -26,6 +26,7 @@ import calculateAverageMark from '../utils/calculateAverageMark';
 import { useSnackbar } from '../hooks';
 
 import Mark from './UI/Mark';
+import { handleResponse } from '../utils/handleResponse.ts';
 
 const THIRD_SEC = 30 * 1000;
 
@@ -41,6 +42,17 @@ const MarksByGroup = () => {
 
       if (!lastFetchTime || Date.now() - Number(lastFetchTime) >= THIRD_SEC || isHandle) {
         const marks = await getPerformance();
+
+        handleResponse(marks, () => {
+          setIsLoading(false);
+        }, () => {
+          showSnackbar({
+            icon: <Icon28ErrorCircleOutline fill='var(--vkui--color_icon_negative)' />,
+            title: 'Ошибка при попытке сделать запрос',
+            subtitle: 'Сообщите нам об этом',
+          });
+          setIsLoading(false);
+        }, setIsLoading, showSnackbar);
 
         localStorage.setItem('savedMarks', JSON.stringify(marks));
         localStorage.setItem('lastFetchTime', String(Date.now()));

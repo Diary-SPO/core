@@ -3,9 +3,13 @@ import formatDateForRequest from '../../utils/formatDateForRequest';
 import { getUserId } from '../bridge/getUserId';
 import { getCookie } from '../bridge/getCookie';
 
-export const getLessons = async (startDate?: Date, endDate?: Date): Promise<Day[] | number> => {
+export const getLessons = async (startDate?: Date, endDate?: Date): Promise<Day[] | 418 | 429> => {
   const cookie = await getCookie();
   const id = await getUserId();
+
+  if (!cookie) {
+    return 418;
+  }
 
   if (!startDate) {
     startDate = new Date();
@@ -23,7 +27,7 @@ export const getLessons = async (startDate?: Date, endDate?: Date): Promise<Day[
     method: 'GET',
     headers: {
       'Content-Type': 'application/json;charset=UTF-8',
-      secret: cookie as string,
+      secret: cookie,
       origin,
     },
   });

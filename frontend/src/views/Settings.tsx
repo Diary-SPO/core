@@ -21,14 +21,12 @@ interface ISettings {
   id: string,
 }
 
-export const clearVkStorage = async (excludeKey?: string) => {
+export const clearVkStorage = async () => {
   try {
     const keys = await getVkStorageKeys();
 
     for (const key of keys) {
-      if (key !== excludeKey) {
-        appStorageSet(key, '');
-      }
+      await appStorageSet(key, '');
     }
   } catch (error) {
     console.error(error);

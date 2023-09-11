@@ -1,4 +1,4 @@
-import { clearVkStorage } from '../views/Settings.tsx';
+import { clearVkStorage } from '../views/Settings';
 
 const logOut = async () => {
   await clearVkStorage();
