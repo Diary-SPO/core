@@ -2,7 +2,7 @@ import { CSSProperties, FC, ReactNode } from 'react';
 
 interface ISubtitleWithBorder {
   children: ReactNode | string;
-  color?: 'red' | 'green' | 'yellow' | 'default';
+  color?: 'red' | 'green' | 'yellow' | 'red-outline' | 'green-outline' | 'yellow-outline' | 'default';
   style?: CSSProperties;
 }
 
@@ -22,6 +22,24 @@ const SubtitleWithBorder: FC<ISubtitleWithBorder> = ({ children, color = 'defaul
           borderRadius: '5px',
           border: '1px solid green',
           color: 'white',
+        };
+      case 'green-outline':
+        return {
+          color: 'green',
+          borderRadius: '5px',
+          border: '1px solid green',
+        };
+      case 'yellow-outline':
+        return {
+          borderRadius: '5px',
+          border: '1px solid #ffb060',
+          color: '#ffb060',
+        };
+      case 'red-outline':
+        return {
+          borderRadius: '5px',
+          border: '1px solid #DA0A35',
+          color: '#DA0A35',
         };
       case 'yellow':
         return {

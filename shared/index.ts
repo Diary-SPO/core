@@ -283,3 +283,15 @@ export interface AttestationResponse {
   departmentName: string;
 }
 
+export interface NotificationsResponse {
+  id: number,
+  attachments: [],
+  date: Date,
+  title: string,
+  text: string
+  isForEmployees: boolean,
+  isForStudents: boolean,
+  isForParents: boolean,
+  shouldDeleteNews: boolean,
+  deleteInDays: number
+}
