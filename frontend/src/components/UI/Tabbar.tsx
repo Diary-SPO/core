@@ -6,9 +6,10 @@ import {
   Icon28HelpOutline,
   Icon28HomeOutline,
   Icon28SettingsOutline,
+  Icon28BookSpreadOutline,
 } from '@vkontakte/icons';
 import {
-  VIEW_ATTESTATION, VIEW_CONTACTS, VIEW_MARKS, VIEW_SCHEDULE, VIEW_SETTINGS,
+  VIEW_ATTESTATION, VIEW_CONTACTS, VIEW_MARKS, VIEW_NOTIFICATIONS, VIEW_SCHEDULE, VIEW_SETTINGS,
 } from '../../routes';
 import { Pages } from '../../types';
 
@@ -46,6 +47,14 @@ const Tabbar: FC<ITabbar> = ({ onStoryChange, activeView }) => {
           text='Аттестация'
         >
           <Icon28EducationOutline />
+        </TabbarItem>
+        <TabbarItem
+          onClick={() => onStoryChange(VIEW_NOTIFICATIONS)}
+          selected={activeView === VIEW_NOTIFICATIONS}
+          data-story={VIEW_NOTIFICATIONS}
+          text='Объявления'
+        >
+          <Icon28BookSpreadOutline />
         </TabbarItem>
         <TabbarItem
           onClick={() => onStoryChange(VIEW_SETTINGS)}

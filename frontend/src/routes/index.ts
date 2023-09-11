@@ -6,6 +6,7 @@ export const PAGE_CONTACTS = '/contacts';
 export const PAGE_MARKS = '/marks';
 export const PAGE_SETTINGS = '/settings';
 export const PAGE_ATTESTATION = '/attestation';
+export const PAGE_NOTIFICATIONS = '/notifications';
 
 export const VIEW_SCHEDULE = 'schedule';
 export const VIEW_CONTACTS = 'contacts';
@@ -14,6 +15,7 @@ export const VIEW_SETTINGS = 'settings';
 
 export const MAIN_SETTINGS = 'login';
 export const VIEW_ATTESTATION = 'attestation';
+export const VIEW_NOTIFICATIONS = 'notifications';
 
 const routes: RouteWithoutRoot[] = [
   {
@@ -45,6 +47,11 @@ const routes: RouteWithoutRoot[] = [
     path: PAGE_ATTESTATION,
     panel: VIEW_ATTESTATION,
     view: VIEW_ATTESTATION,
+  },
+  {
+    path: PAGE_NOTIFICATIONS,
+    panel: VIEW_NOTIFICATIONS,
+    view: VIEW_NOTIFICATIONS,
   },
 ];
 
