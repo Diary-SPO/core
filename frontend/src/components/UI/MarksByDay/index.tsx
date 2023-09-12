@@ -19,9 +19,15 @@ const truncateString = (str: string, maxLength: number) => {
   }
   return str;
 };
+interface IMarksByDay {
+  [key: string] : {
+    grades: Grade[];
+    lessonName: string
+  }
+}
 
 const MarksByDay: FC<IPerformanceCurrent> = ({ performanceData }) => {
-  const marksByDay: { [key: string]: { grades: Grade[]; lessonName: string } } = {};
+  const marksByDay: IMarksByDay = {};
 
   performanceData?.daysWithMarksForSubject?.forEach((subject) => {
     subject?.daysWithMarks?.forEach((dayWithMarks) => {
@@ -34,12 +40,26 @@ const MarksByDay: FC<IPerformanceCurrent> = ({ performanceData }) => {
           marksByDay[day] = { grades: [], lessonName: '' };
         }
 
-        // @ts-ignore
         marksByDay[day].grades = [...marksByDay[day].grades, ...grades];
         marksByDay[day].lessonName = lessonName;
       }
     });
   });
+  
+  const sort_by_day = (marksByDay: IMarksByDay): IMarksByDay => {
+    const mass = Object.keys(marksByDay).sort((b, a) => new Date(a).getTime() -  new Date(b).getTime());
+    const marksByDaySort: IMarksByDay = {};
+    
+    mass.forEach((day) => {
+      if (!marksByDaySort[day]) {
+        marksByDaySort[day] = { grades: [], lessonName: '' };
+      }
+
+      marksByDaySort[day].grades = [...marksByDay[day].grades];
+      marksByDaySort[day].lessonName = marksByDay[day].lessonName;
+    })
+    return marksByDaySort;
+  }
 
   return (
     <HorizontalScroll
@@ -49,7 +69,7 @@ const MarksByDay: FC<IPerformanceCurrent> = ({ performanceData }) => {
     >
       <Group header={<Header mode='secondary'>Недавние оценки</Header>}>
         <div className='marksByName'>
-          {Object.entries(marksByDay).map(([day, { grades, lessonName }]) => (
+          {Object.entries(sort_by_day(marksByDay)).map(([day, { grades, lessonName }]) => (
             <div key={day}>
               <Header mode='secondary'>{day}</Header>
               <div style={{ display: 'flex' }}>
