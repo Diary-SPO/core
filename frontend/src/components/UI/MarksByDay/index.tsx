@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import React, { FC } from 'react';
 import {
   Group, Header, HorizontalCell, HorizontalScroll,
 } from '@vkontakte/vkui';
@@ -19,11 +19,11 @@ const truncateString = (str: string, maxLength: number) => {
   }
   return str;
 };
+
 interface IMarksByDay {
-  [key: string] : {
-    grades: Grade[];
-    lessonName: string
-  }
+  [key: string]: {
+    [lessonName: string]: Grade[];
+  };
 }
 
 const MarksByDay: FC<IPerformanceCurrent> = ({ performanceData }) => {
@@ -37,29 +37,17 @@ const MarksByDay: FC<IPerformanceCurrent> = ({ performanceData }) => {
 
       if (grades.length > 0 && grades.every((grade) => !Number.isNaN(parseFloat(grade as string)))) {
         if (!marksByDay[day]) {
-          marksByDay[day] = { grades: [], lessonName: '' };
+          marksByDay[day] = {};
         }
 
-        marksByDay[day].grades = [...marksByDay[day].grades, ...grades];
-        marksByDay[day].lessonName = lessonName;
+        if (!marksByDay[day][lessonName]) {
+          marksByDay[day][lessonName] = [];
+        }
+
+        marksByDay[day][lessonName] = [...marksByDay[day][lessonName], ...grades];
       }
     });
   });
-  
-  const sort_by_day = (marksByDay: IMarksByDay): IMarksByDay => {
-    const mass = Object.keys(marksByDay).sort((b, a) => new Date(a).getTime() -  new Date(b).getTime());
-    const marksByDaySort: IMarksByDay = {};
-    
-    mass.forEach((day) => {
-      if (!marksByDaySort[day]) {
-        marksByDaySort[day] = { grades: [], lessonName: '' };
-      }
-
-      marksByDaySort[day].grades = [...marksByDay[day].grades];
-      marksByDaySort[day].lessonName = marksByDay[day].lessonName;
-    })
-    return marksByDaySort;
-  }
 
   return (
     <HorizontalScroll
@@ -69,14 +57,25 @@ const MarksByDay: FC<IPerformanceCurrent> = ({ performanceData }) => {
     >
       <Group header={<Header mode='secondary'>Недавние оценки</Header>}>
         <div className='marksByName'>
-          {Object.entries(sort_by_day(marksByDay)).map(([day, { grades, lessonName }]) => (
+          {Object.entries(marksByDay).map(([day, lessonGrades]) => (
             <div key={day}>
               <Header mode='secondary'>{day}</Header>
               <div style={{ display: 'flex' }}>
-                {grades.map((grade, gradeIndex) => (
-                  <HorizontalCell style={{ maxWidth: 'unset' }} key={`${day}_${gradeIndex}`}>
-                    <Mark style={{ maxWidth: 90 }} mark={grade || 'Н'} size='l' bottom={truncateString(lessonName, 18)} useMargin={false} />
-                  </HorizontalCell>
+                {Object.entries(lessonGrades).map(([lessonName, grades]) => (
+                  <React.Fragment key={`${day}_${lessonName}`}>
+                    {grades.map((grade, gradeIndex) => (
+                      <HorizontalCell style={{ maxWidth: 'unset' }} key={`${day}_${lessonName}_${gradeIndex}`}>
+                        <Mark
+                          style={{ maxWidth: 90 }}
+                          key={`${day}_${lessonName}_${gradeIndex}`}
+                          mark={grade || 'Н'}
+                          size='l'
+                          bottom={truncateString(lessonName, 18)}
+                          useMargin={false}
+                        />
+                      </HorizontalCell>
+                    ))}
+                  </React.Fragment>
                 ))}
               </div>
             </div>

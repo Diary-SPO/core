@@ -30,7 +30,7 @@ const Notifications: FC<{ id: string }> = ({ id }) => {
     try {
       if (isHandle) {
         const ads = await getAds();
-        console.log('asd', ads)
+        console.log('asd', ads);
         handleResponse(
           ads,
           () => {
@@ -52,7 +52,7 @@ const Notifications: FC<{ id: string }> = ({ id }) => {
           },
           showSnackbar,
         );
-        
+
         updateCache(ads as NotificationsResponse[]);
         setAdsData(ads as NotificationsResponse[]);
       } else {
@@ -76,7 +76,7 @@ const Notifications: FC<{ id: string }> = ({ id }) => {
 
   useEffect(() => {
     const cachedAds = localStorage.getItem('savedAds');
-    console.log(cachedAds)
+    console.log(cachedAds);
     if (cachedAds) {
       setAdsData(JSON.parse(cachedAds));
       showSnackbar({
@@ -105,8 +105,30 @@ const Notifications: FC<{ id: string }> = ({ id }) => {
             }) => (
               <Group
                 key={id}
-                description={(<div style={{ display: 'flex', gap: 10 }}>{isForEmployees && <SubtitleWithBorder>Для работников</SubtitleWithBorder>}{isForParents && <SubtitleWithBorder color='yellow-outline'>Для родителей</SubtitleWithBorder>}{isForStudents && <SubtitleWithBorder color='green-outline'>Для студентов</SubtitleWithBorder>}</div>)}
-                header={(<Header mode='tertiary' aside={(<Subhead>Удалится через{' '}{deleteInDays}{' '}дней</Subhead>)}>{new Date(date).toLocaleDateString()}</Header>)}>
+                description={(
+                  <div style={{ display: 'flex', gap: 10 }}>
+                    {isForEmployees && <SubtitleWithBorder>Для работников</SubtitleWithBorder>}
+                    {isForParents && <SubtitleWithBorder color='yellow-outline'>Для родителей</SubtitleWithBorder>}
+                    {isForStudents && <SubtitleWithBorder color='green-outline'>Для студентов</SubtitleWithBorder>}
+                  </div>
+)}
+                header={(
+                  <Header
+                    mode='tertiary'
+                    aside={(
+                      <Subhead>
+                        Удалится через
+                        {' '}
+                        {deleteInDays}
+                        {' '}
+                        дней
+                      </Subhead>
+)}
+                  >
+                    {new Date(date).toLocaleDateString()}
+                  </Header>
+)}
+              >
                 <Card mode='shadow'>
                   <Div>
                     <Title level='3'>{title}</Title>
@@ -116,7 +138,7 @@ const Notifications: FC<{ id: string }> = ({ id }) => {
               </Group>
             ))
           )}
-          
+
           <Div>
             {isLoading && (
               <Div>
@@ -124,7 +146,7 @@ const Notifications: FC<{ id: string }> = ({ id }) => {
               </Div>
             )}
           </Div>
-          
+
           <Div>
             {isError
               && (
@@ -141,9 +163,9 @@ const Notifications: FC<{ id: string }> = ({ id }) => {
                 />
               )}
           </Div>
-          
+
           <Div>
-            {adsData && adsData?.length < 1 && <Placeholder header='Объявлений нет'  />}
+            {adsData && adsData?.length < 1 && <Placeholder header='Объявлений нет' />}
           </Div>
           {snackbar}
         </Div>
