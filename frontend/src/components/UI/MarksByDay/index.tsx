@@ -40,7 +40,6 @@ const MarksByDay: FC<IPerformanceCurrent> = ({ performanceData }) => {
           marksByDay[day] = { grades: [], lessonName: '' };
         }
 
-        // @ts-ignore
         marksByDay[day].grades = [...marksByDay[day].grades, ...grades];
         marksByDay[day].lessonName = lessonName;
       }
@@ -48,14 +47,14 @@ const MarksByDay: FC<IPerformanceCurrent> = ({ performanceData }) => {
   });
   
   const sort_by_day = (marksByDay: IMarksByDay): IMarksByDay => {
-    var mass = Object.keys(marksByDay).sort((b, a) => new Date(a).getTime() -  new Date(b).getTime());
-    var marksByDaySort: IMarksByDay = {};
+    const mass = Object.keys(marksByDay).sort((b, a) => new Date(a).getTime() -  new Date(b).getTime());
+    const marksByDaySort: IMarksByDay = {};
+    
     mass.forEach((day) => {
       if (!marksByDaySort[day]) {
         marksByDaySort[day] = { grades: [], lessonName: '' };
       }
 
-      // @ts-ignore
       marksByDaySort[day].grades = [...marksByDay[day].grades];
       marksByDaySort[day].lessonName = marksByDay[day].lessonName;
     })
