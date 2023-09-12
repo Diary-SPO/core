@@ -1,4 +1,4 @@
-import { Lesson } from '../../../shared';
+import { Lesson } from 'diary-shared';
 
 export const cleanData: Lesson = {
   name: '',

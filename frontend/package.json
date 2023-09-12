@@ -32,6 +32,7 @@
     "@vitejs/plugin-basic-ssl": "^1.0.1",
     "@vitejs/plugin-react-swc": "^3.3.2",
     "@vkontakte/vk-miniapps-deploy": "^0.1.6",
+    "diary-shared": "^1.6.2",
     "eslint": "^8.45.0",
     "eslint-config-airbnb": "^19.0.4",
     "eslint-config-airbnb-typescript": "^17.1.0",

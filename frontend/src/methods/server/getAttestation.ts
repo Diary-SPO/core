@@ -1,5 +1,5 @@
+import { AttestationResponse } from 'diary-shared';
 import { getCookie } from '../bridge/getCookie';
-import { AttestationResponse } from '../../../../shared';
 import { getUserId } from '../bridge/getUserId';
 
 const getAttestation = async (): Promise<AttestationResponse | 418 | 429> => {

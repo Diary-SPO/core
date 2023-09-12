@@ -5,11 +5,11 @@ import {
 import { Icon28SchoolOutline, Icon32PrometeyCircleFillRed } from '@vkontakte/icons';
 import bridge from '@vkontakte/vk-bridge';
 import { useRouteNavigator } from '@vkontakte/vk-mini-apps-router';
+import { Organization } from 'diary-shared';
 import { getVkStorageData, getVkStorageKeys } from '../methods';
 import { useModal } from '../modals/ModalContext';
 import { useRateLimitExceeded } from '../hooks';
 import { MODAL_COLLEGE_INFO } from '../modals/ModalRoot';
-import { Organization } from '../../../shared';
 import getCollegeInfo from '../methods/server/getCollegeInfo';
 import useSnackbar from '../hooks/useSnackbar';
 import logOut from '../utils/logOut';

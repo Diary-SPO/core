@@ -1,6 +1,7 @@
 import { CSSProperties, FC } from 'react';
 import { Footnote } from '@vkontakte/vkui';
-import { EAbsenceTypes, TMark } from '../../../../../shared';
+import { EAbsenceTypes } from 'diary-shared';
+import { TMark } from '../../../../../shared';
 
 type Sizes = 'l' | 's';
 

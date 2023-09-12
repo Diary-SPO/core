@@ -1,4 +1,5 @@
-import { Task, TextMark } from '../../../shared';
+import { Task } from 'diary-shared';
+import { TextMark } from '../../../shared';
 // TODO: можно с помощью неё фиксить ошибки с неправильными оценами
 const setDefaultMark = (task: Task): TextMark => {
   if (task.isRequired && !task.mark) {

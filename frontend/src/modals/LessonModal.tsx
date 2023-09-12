@@ -3,13 +3,14 @@ import {
   Group, Header, InfoRow, ModalPage, ModalPageHeader, Separator, SimpleCell, Spacing, Text,
 } from '@vkontakte/vkui';
 import {
-  EAbsenceTypes, EAbsenceTypesDescription, Grade, Lesson, LessonType, LessonWorkType, TLesson,
-} from '../../../shared';
+  EAbsenceTypes, EAbsenceTypesDescription, Lesson, LessonType, LessonWorkType, TLesson,
+} from '/diary-shared';
 import setDefaultMark from '../utils/setDefaultMark';
 import textToLink from '../utils/textToLink';
 import { cleanData } from './data';
 import Mark from '../components/UI/Mark';
 import { useModal } from './ModalContext';
+import {Grade} from "../types";
 
 interface ILessonModal {
   id: string;

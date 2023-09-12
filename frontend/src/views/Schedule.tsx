@@ -11,7 +11,7 @@ import {
   Icon28ErrorCircleOutline,
 } from '@vkontakte/icons';
 import { addDays, endOfWeek, startOfWeek } from '@vkontakte/vkui/dist/lib/date';
-import { Day, PerformanceCurrent } from '../../../shared';
+import { Day, PerformanceCurrent } from 'diary-shared';
 import { getLessons, getPerformance } from '../methods';
 import PanelHeaderWithBack from '../components/UI/PanelHeaderWithBack';
 import Suspense from '../components/UI/Suspense';
