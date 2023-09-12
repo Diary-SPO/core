@@ -1,4 +1,4 @@
-import { Day } from '../../../../shared';
+import { Day } from 'diary-shared';
 import formatDateForRequest from '../../utils/formatDateForRequest';
 import { getUserId } from '../bridge/getUserId';
 import { getCookie } from '../bridge/getCookie';

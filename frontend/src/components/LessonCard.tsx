@@ -4,8 +4,8 @@ import {
 } from '@vkontakte/vkui';
 import { useRouteNavigator } from '@vkontakte/vk-mini-apps-router';
 import {
-  Day, EAbsenceTypes, Grade, Gradebook, LessonWorkType, Timetable,
-} from '../../../shared';
+  Day, EAbsenceTypes, Gradebook, LessonWorkType, Timetable,
+} from '/diary-shared';
 import { formatLessonDate, getDayOfWeek } from '../utils/formatLessonDate';
 import setDefaultMark from '../utils/setDefaultMark';
 import { isToday } from '../utils/isToday';
@@ -14,6 +14,7 @@ import { useModal } from '../modals/ModalContext';
 import SubtitleWithBorder from './SubtitleWithBorder';
 import TimeRemaining from './TimeRemaining';
 import Mark from './UI/Mark';
+import {Grade} from "../types";
 
 interface ILessonCard {
   lesson: Day;

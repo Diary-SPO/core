@@ -3,12 +3,12 @@ import {
   Button, ButtonGroup, Div, Link, Panel, Placeholder, ScreenSpinner, View,
 } from '@vkontakte/vkui';
 import { useActiveVkuiLocation, useRouteNavigator } from '@vkontakte/vk-mini-apps-router';
+import { AttestationResponse } from 'diary-shared';
 import getAttestation from '../methods/server/getAttestation';
-import { AttestationResponse } from '../../../shared';
 import PanelHeaderWithBack from '../components/UI/PanelHeaderWithBack';
 import { useRateLimitExceeded } from '../hooks';
-import SubjectList from '../components/UI/SubjectsList.tsx';
-import { handleResponse } from '../utils/handleResponse.ts';
+import SubjectList from '../components/UI/SubjectsList';
+import { handleResponse } from '../utils/handleResponse';
 
 interface IAttestation {
   id: string;

@@ -1,7 +1,7 @@
 import { FC } from 'react';
 // TODO: Сделать переключатель для расписания
 import { CardGrid } from '@vkontakte/vkui';
-import { Day } from '../../../shared';
+import { Day } from 'diary-shared';
 import LessonCard from './LessonCard';
 
 interface IScheduleGroup {

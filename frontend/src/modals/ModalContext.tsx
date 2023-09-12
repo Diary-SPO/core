@@ -1,7 +1,7 @@
 import React, {
   ReactNode, createContext, useContext, useState, useMemo,
 } from 'react';
-import { Lesson, Organization } from '../../../shared';
+import { Lesson, Organization } from 'diary-shared';
 
 const ModalContext = createContext<{
   lessonModalData: Lesson | null;

@@ -7,7 +7,7 @@ import {
 import { useActiveVkuiLocation, useRouteNavigator } from '@vkontakte/vk-mini-apps-router';
 import Hashes from 'jshashes';
 import { Icon28DoorArrowLeftOutline, Icon28ErrorCircleOutline } from '@vkontakte/icons';
-import { AuthData } from '../../../shared';
+import { AuthData } from 'diary-shared';
 import { appStorageSet, getCookie } from '../methods';
 import { VIEW_SCHEDULE } from '../routes';
 import { useSnackbar } from '../hooks';
@@ -85,14 +85,13 @@ const LoginForm: FC<{ id: string }> = ({ id }) => {
     setPopout(<ScreenSpinner state='loading' />);
     const response = await fetch(`${import.meta.env.VITE_SERVER_URL}/login`, {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json;charset=UTF-8',
-        origin,
-      },
       body: JSON.stringify({
         login,
         password: passwordHashed,
       }),
+      headers: {
+        "Access-Control-Allow-Origin": "*"
+      }
     });
     if (response.status === 401) {
       console.log('401');

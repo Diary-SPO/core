@@ -19,13 +19,14 @@ import {
   Icon28InfoCircle,
 } from '@vkontakte/icons';
 import {
-  AbsenceType, EAbsenceTypes, Grade, PerformanceCurrent, TextMark,
-} from '../../../shared';
+  AbsenceType, EAbsenceTypes, PerformanceCurrent, TextMark,
+} from '/diary-shared';
 import { getPerformance } from '../methods';
 import calculateAverageMark from '../utils/calculateAverageMark';
 import { useSnackbar } from '../hooks';
 import Mark from './UI/Mark';
 import { handleResponse } from '../utils/handleResponse';
+import {Grade} from "../types";
 
 const THIRD_SEC = 30 * 1000;
 

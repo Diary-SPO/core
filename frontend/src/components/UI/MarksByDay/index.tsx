@@ -2,11 +2,9 @@ import React, { FC } from 'react';
 import {
   Group, Header, HorizontalCell, HorizontalScroll,
 } from '@vkontakte/vkui';
-
-import { Grade, PerformanceCurrent } from '../../../../../shared';
-
+import { PerformanceCurrent } from 'diary-shared';
 import Mark from '../Mark';
-
+import {Grade} from "../../../types";
 import './index.css';
 
 interface IPerformanceCurrent {
@@ -28,29 +26,29 @@ interface IMarksByDay {
 
 const MarksByDay: FC<IPerformanceCurrent> = ({ performanceData }) => {
   const marksByDay: IMarksByDay = {};
-  
+
   performanceData?.daysWithMarksForSubject?.forEach((subject) => {
     subject?.daysWithMarks?.forEach((dayWithMarks) => {
       const day = new Date(dayWithMarks.day).toLocaleDateString();
       const grades = dayWithMarks.markValues.map((gradeText) => Grade[gradeText]);
       const lessonName = subject.subjectName;
-      
+
       if (grades.length > 0 && grades.every((grade) => !Number.isNaN(parseFloat(grade as string)))) {
         if (!marksByDay[day]) {
           marksByDay[day] = {};
         }
-        
+
         if (!marksByDay[day][lessonName]) {
           marksByDay[day][lessonName] = [];
         }
-        
+
         marksByDay[day][lessonName] = [...marksByDay[day][lessonName], ...grades];
       }
     });
   });
-  
+
   const sortedDates = Object.keys(marksByDay).sort((a, b) => new Date(b).getTime() - new Date(a).getTime());
-  
+
   return (
     <HorizontalScroll
       showArrows

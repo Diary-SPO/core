@@ -2,7 +2,7 @@ import { FC } from 'react';
 import {
   Card, CardGrid, Div, Group, Header, InfoRow, Subhead, Title,
 } from '@vkontakte/vkui';
-import { Examinations, ExaminationType } from '../../../../shared';
+import { Examinations, ExaminationType } from '/diary-shared';
 
 interface SubjectListProps {
   semesters: Record<string, any[]>;

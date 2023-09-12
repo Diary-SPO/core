@@ -1,5 +1,5 @@
+import { NotificationsResponse } from 'diary-shared';
 import { getCookie } from '../bridge/getCookie';
-import { NotificationsResponse } from '../../../../shared';
 
 const getAds = async (): Promise<NotificationsResponse[] | 418 | 429> => {
   const cookie = await getCookie();

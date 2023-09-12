@@ -1,4 +1,4 @@
-import { PerformanceCurrent } from '../../../../shared';
+import { PerformanceCurrent } from 'diary-shared';
 import { getCookie } from '../bridge/getCookie';
 import { getUserId } from '../bridge/getUserId';
 

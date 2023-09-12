@@ -1,4 +1,4 @@
-import { Organization } from '../../../../shared';
+import { Organization } from 'diary-shared';
 import { getCookie } from '../bridge/getCookie';
 
 const getCollegeInfo = async (): Promise<Organization | 418 | 429> => {

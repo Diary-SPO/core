@@ -4,11 +4,11 @@ import {
 } from '@vkontakte/vkui';
 import { useActiveVkuiLocation, useRouteNavigator } from '@vkontakte/vk-mini-apps-router';
 import { Icon28ErrorCircleOutline } from '@vkontakte/icons';
+import { NotificationsResponse } from 'diary-shared';
 import PanelHeaderWithBack from '../components/UI/PanelHeaderWithBack';
 import { handleResponse } from '../utils/handleResponse';
 import getAds from '../methods/server/getAds';
 import { useSnackbar } from '../hooks';
-import { NotificationsResponse } from '../../../shared';
 import SubtitleWithBorder from '../components/SubtitleWithBorder';
 
 const Notifications: FC<{ id: string }> = ({ id }) => {
