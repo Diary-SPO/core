@@ -28,27 +28,29 @@ interface IMarksByDay {
 
 const MarksByDay: FC<IPerformanceCurrent> = ({ performanceData }) => {
   const marksByDay: IMarksByDay = {};
-
+  
   performanceData?.daysWithMarksForSubject?.forEach((subject) => {
     subject?.daysWithMarks?.forEach((dayWithMarks) => {
       const day = new Date(dayWithMarks.day).toLocaleDateString();
       const grades = dayWithMarks.markValues.map((gradeText) => Grade[gradeText]);
       const lessonName = subject.subjectName;
-
+      
       if (grades.length > 0 && grades.every((grade) => !Number.isNaN(parseFloat(grade as string)))) {
         if (!marksByDay[day]) {
           marksByDay[day] = {};
         }
-
+        
         if (!marksByDay[day][lessonName]) {
           marksByDay[day][lessonName] = [];
         }
-
+        
         marksByDay[day][lessonName] = [...marksByDay[day][lessonName], ...grades];
       }
     });
   });
-
+  
+  const sortedDates = Object.keys(marksByDay).sort((a, b) => new Date(b).getTime() - new Date(a).getTime());
+  
   return (
     <HorizontalScroll
       showArrows
@@ -57,11 +59,11 @@ const MarksByDay: FC<IPerformanceCurrent> = ({ performanceData }) => {
     >
       <Group header={<Header mode='secondary'>Недавние оценки</Header>}>
         <div className='marksByName'>
-          {Object.entries(marksByDay).map(([day, lessonGrades]) => (
+          {sortedDates.map((day) => (
             <div key={day}>
               <Header mode='secondary'>{day}</Header>
               <div style={{ display: 'flex' }}>
-                {Object.entries(lessonGrades).map(([lessonName, grades]) => (
+                {Object.entries(marksByDay[day]).map(([lessonName, grades]) => (
                   <React.Fragment key={`${day}_${lessonName}`}>
                     {grades.map((grade, gradeIndex) => (
                       <HorizontalCell style={{ maxWidth: 'unset' }} key={`${day}_${lessonName}_${gradeIndex}`}>
