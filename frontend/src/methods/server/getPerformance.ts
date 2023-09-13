@@ -3,9 +3,8 @@ import { getCookie } from '../bridge/getCookie';
 import { getUserId } from '../bridge/getUserId';
 
 export const getPerformance = async (): Promise<PerformanceCurrent | 418 | 429> => {
-  const cookie = await getCookie();
-  const id = await getUserId();
-  console.log('getUserId', id);
+  const cookie = await getCookie() || localStorage.getItem('cookie');
+  const id = await getUserId() || localStorage.getItem('id');
 
   if (!cookie) {
     return 418;

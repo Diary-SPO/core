@@ -4,9 +4,13 @@ import { getUserId } from '../bridge/getUserId';
 import { getCookie } from '../bridge/getCookie';
 
 export const getLessons = async (startDate?: Date, endDate?: Date): Promise<Day[] | 418 | 429> => {
-  const cookie = await getCookie();
-  const id = await getUserId();
+  const cookie = await getCookie() || localStorage.getItem('cookie');
+  const id = await getUserId() || localStorage.getItem('id');
 
+  if (!id) {
+    return 418;
+  }
+  
   if (!cookie) {
     return 418;
   }

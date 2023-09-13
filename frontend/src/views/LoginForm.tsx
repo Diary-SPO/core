@@ -85,11 +85,16 @@ const LoginForm: FC<{ id: string }> = ({ id }) => {
     setPopout(<ScreenSpinner state='loading' />);
     const response = await fetch(`${import.meta.env.VITE_SERVER_URL}/login`, {
       method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
       body: JSON.stringify({
         login,
         password: passwordHashed,
+        isRemember: true,
       }),
     });
+  
     if (response.status === 401) {
       console.log('401');
       setIsLoading(false);
@@ -109,15 +114,16 @@ const LoginForm: FC<{ id: string }> = ({ id }) => {
     }
 
     try {
+      localStorage.setItem('id', String(dataResp.data.tenants.SPO_23.studentRole.id));
+      localStorage.setItem('cookie', dataResp.cookie);
+      
       await appStorageSet('cookie', dataResp.cookie);
       await appStorageSet('id', String(dataResp.data.tenants.SPO_23.studentRole.id));
-
-      await appStorageSet('firstName', String(dataResp.data.tenants.SPO_23.firstName));
       await appStorageSet('lastName', String(dataResp.data.tenants.SPO_23.lastName));
+      await appStorageSet('firstName', String(dataResp.data.tenants.SPO_23.firstName));
       await appStorageSet('middleName', String(dataResp.data.tenants.SPO_23.middleName));
       await appStorageSet('org', String(dataResp.data.tenants.SPO_23.settings.organization.abbreviation));
       await appStorageSet('city', String(dataResp.data.tenants.SPO_23.settings.organization.address.settlement));
-
       await appStorageSet('group', String(dataResp.data.tenants.SPO_23.students[0].groupName));
 
       setIsLoading(false);

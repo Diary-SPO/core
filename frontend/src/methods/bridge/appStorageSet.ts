@@ -10,6 +10,7 @@ export const appStorageSet = async (key: string, value: string): Promise<boolean
     if (data.result) {
       return data.result;
     }
+
     return false;
   } catch (error) {
     console.error(error);
