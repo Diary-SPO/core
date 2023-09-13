@@ -94,9 +94,7 @@ const MarksByGroup = () => {
     const cachedMarks = localStorage.getItem('savedMarks');
 
     if (cachedMarks) {
-      if (cachedMarks) {
-        setMarksForSubject(JSON.parse(cachedMarks));
-      }
+      setMarksForSubject(JSON.parse(cachedMarks));
     } else {
       fetchMarks();
     }
