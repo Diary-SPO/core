@@ -83,7 +83,7 @@ const LoginForm: FC<{ id: string }> = ({ id }) => {
 
     setIsLoading(true);
     setPopout(<ScreenSpinner state='loading' />);
-    const response = await fetch(`${import.meta.env.VITE_SERVER_URL}/hello`, {
+    const response = await fetch(`${import.meta.env.VITE_SERVER_URL}/login`, {
       method: 'POST',
       body: JSON.stringify({
         login,
