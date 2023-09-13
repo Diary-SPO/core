@@ -16,7 +16,7 @@ const Summary: FC = () => {
   const markCounts = getItemFromLocalStorage('markCounts');
 
   return (
-    <Group header={<Header mode='tertiary'>Сатистика</Header>}>
+    <Group header={<Header mode='tertiary'>Статистика</Header>}>
       <Div>
         <MiniInfoCell
           before={<Icon20EducationOutline style={{ marginTop: 4 }} />}
