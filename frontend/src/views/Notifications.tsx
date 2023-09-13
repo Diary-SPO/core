@@ -167,8 +167,8 @@ const Notifications: FC<{ id: string }> = ({ id }) => {
           <Div>
             {adsData && adsData?.length < 1 && <Placeholder header='Объявлений нет' />}
           </Div>
-          {snackbar}
         </Div>
+        {snackbar}
       </Panel>
     </View>
   );
