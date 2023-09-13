@@ -3,6 +3,7 @@ import { Panel, View } from '@vkontakte/vkui';
 import { useActiveVkuiLocation, useRouteNavigator } from '@vkontakte/vk-mini-apps-router';
 import PanelHeaderWithBack from '../components/UI/PanelHeaderWithBack';
 import Suspense from '../components/UI/Suspense';
+import Summary from '../components/UI/Summary';
 
 const MarksByGroup = lazy(() => import('../components/MarksByGroup'));
 const UserInfo = lazy(() => import('../components/UserInfo'));
@@ -23,6 +24,7 @@ const Marks: FC<{ id: string }> = ({ id }) => {
         <Suspense id='UserInfo'>
           <UserInfo />
         </Suspense>
+        <Summary />
         <Suspense id='MarksByGroup'>
           <MarksByGroup />
         </Suspense>
