@@ -119,46 +119,50 @@ const MarksByGroup = () => {
   });
 
   useEffect(() => {
-    const cachedMarksJSON = localStorage.getItem('savedMarks');
-    if (!cachedMarksJSON) {
-      fetchMarks();
-      return;
-    }
-
-    const cachedMarks: CachedMarks = JSON.parse(cachedMarksJSON);
-    const allMarks: TextMark[] = cachedMarks.daysWithMarksForSubject.reduce(
-      (marksArray, subject) => {
-        subject.daysWithMarks.forEach((day) =>
-          // @ts-ignore
-          marksArray.push(...day.markValues));
-        return marksArray;
-      },
-      [],
-    );
-
-    const totalNumberOfMarks: number = allMarks.length;
-    const totalSumOfMarks: number = allMarks.reduce(
-      (sum, mark) => sum + (Grade[mark] as number),
-      0,
-    );
-    const averageMark: number = totalSumOfMarks / totalNumberOfMarks;
-    const markCounts: Record<number, number> = {
-      2: 0,
-      3: 0,
-      4: 0,
-      5: 0,
-    };
-
-    allMarks.forEach((textMark: TextMark) => {
-      const numericMark: number = Grade[textMark] as number;
-      if (numericMark >= 2 && numericMark <= 5) {
-        markCounts[numericMark]++;
+    try {
+      const cachedMarksJSON = localStorage.getItem('savedMarks');
+      if (!cachedMarksJSON) {
+         fetchMarks(true);
       }
-    });
-
-    localStorage.setItem('totalNumberOfMarks', totalNumberOfMarks.toString());
-    localStorage.setItem('averageMark', averageMark.toString());
-    localStorage.setItem('markCounts', JSON.stringify(markCounts));
+      
+      // @ts-ignore
+      const cachedMarks: CachedMarks = JSON.parse(cachedMarksJSON);
+      const allMarks: TextMark[] = cachedMarks.daysWithMarksForSubject.reduce(
+        (marksArray, subject) => {
+          subject.daysWithMarks.forEach((day) =>
+            // @ts-ignore
+            marksArray.push(...day.markValues));
+          return marksArray;
+        },
+        [],
+      );
+      
+      const totalNumberOfMarks: number = allMarks.length;
+      const totalSumOfMarks: number = allMarks.reduce(
+        (sum, mark) => sum + (Grade[mark] as number),
+        0,
+      );
+      const averageMark: number = totalSumOfMarks / totalNumberOfMarks;
+      const markCounts: Record<number, number> = {
+        2: 0,
+        3: 0,
+        4: 0,
+        5: 0,
+      };
+      
+      allMarks.forEach((textMark: TextMark) => {
+        const numericMark: number = Grade[textMark] as number;
+        if (numericMark >= 2 && numericMark <= 5) {
+          markCounts[numericMark]++;
+        }
+      });
+      
+      localStorage.setItem('totalNumberOfMarks', totalNumberOfMarks.toString());
+      localStorage.setItem('averageMark', averageMark.toString());
+      localStorage.setItem('markCounts', JSON.stringify(markCounts));
+    } catch (e) {
+      console.error(e);
+    }
   }, []);
 
   return (
