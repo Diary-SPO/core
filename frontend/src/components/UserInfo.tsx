@@ -52,7 +52,7 @@ const UserInfo = () => {
   const [isCollegeLoading, setIsCollegeLoading] = useState<boolean>(false);
   const [userAva, setUserAva] = useState<string | undefined>();
   let logoutTimer: NodeJS.Timeout | null = null;
-  
+
   const getCollegeInfoFromServer = async () => {
     setIsCollegeLoading(true);
     try {
