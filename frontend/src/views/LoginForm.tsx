@@ -89,9 +89,6 @@ const LoginForm: FC<{ id: string }> = ({ id }) => {
         login,
         password: passwordHashed,
       }),
-      headers: {
-        "Access-Control-Allow-Origin": "*"
-      }
     });
     if (response.status === 401) {
       console.log('401');
