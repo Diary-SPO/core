@@ -57,20 +57,20 @@ const Tabbar: FC<ITabbar> = ({ onStoryChange, activeView }) => {
           <Icon28BookSpreadOutline />
         </TabbarItem>
         <TabbarItem
-          onClick={() => onStoryChange(VIEW_SETTINGS)}
-          selected={activeView === VIEW_SETTINGS}
-          data-story={VIEW_SETTINGS}
-          text='Настройки'
-        >
-          <Icon28SettingsOutline />
-        </TabbarItem>
-        <TabbarItem
           onClick={() => onStoryChange(VIEW_CONTACTS)}
           selected={activeView === VIEW_CONTACTS}
           data-story={VIEW_CONTACTS}
           text='Помощь'
         >
           <Icon28HelpOutline />
+        </TabbarItem>
+        <TabbarItem
+          onClick={() => onStoryChange(VIEW_SETTINGS)}
+          selected={activeView === VIEW_SETTINGS}
+          data-story={VIEW_SETTINGS}
+          text='Настройки'
+        >
+          <Icon28SettingsOutline />
         </TabbarItem>
       </VKUITabbar>
     )

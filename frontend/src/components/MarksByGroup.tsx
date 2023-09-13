@@ -30,6 +30,16 @@ import { Grade } from '../types';
 
 const THIRD_SEC = 30 * 1000;
 
+interface SubjectWithMarks {
+  daysWithMarks: {
+    markValues: TextMark[];
+  }[];
+}
+
+interface CachedMarks {
+  daysWithMarksForSubject: SubjectWithMarks[];
+}
+
 const MarksByGroup = () => {
   const [marksForSubject, setMarksForSubject] = useState<PerformanceCurrent | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -107,7 +117,50 @@ const MarksByGroup = () => {
       });
     });
   });
-
+  
+  useEffect(() => {
+    const cachedMarksJSON = localStorage.getItem('savedMarks');
+    if (!cachedMarksJSON) {
+      return;
+    }
+    
+    const cachedMarks: CachedMarks = JSON.parse(cachedMarksJSON);
+    const allMarks: TextMark[] = cachedMarks.daysWithMarksForSubject.reduce(
+      (marksArray, subject) => {
+        subject.daysWithMarks.forEach((day) => {
+          // @ts-ignore
+          return marksArray.push(...day.markValues);
+        });
+        return marksArray;
+      },
+      []
+    );
+    
+    const totalNumberOfMarks: number = allMarks.length;
+    const totalSumOfMarks: number = allMarks.reduce(
+      (sum, mark) => sum + (Grade[mark] as number),
+      0
+    );
+    const averageMark: number = totalSumOfMarks / totalNumberOfMarks;
+    const markCounts: Record<number, number> = {
+      2: 0,
+      3: 0,
+      4: 0,
+      5: 0,
+    };
+    
+    allMarks.forEach((textMark: TextMark) => {
+      const numericMark: number = Grade[textMark] as number;
+      if (numericMark >= 2 && numericMark <= 5) {
+        markCounts[numericMark]++;
+      }
+    });
+    
+    localStorage.setItem('totalNumberOfMarks', totalNumberOfMarks.toString());
+    localStorage.setItem('averageMark', averageMark.toString());
+    localStorage.setItem('markCounts', JSON.stringify(markCounts));
+  }, []);
+  
   return (
     <Group mode='plain' header={<Header mode='secondary'>Оценки по дисциплинам</Header>}>
       {Object.keys(subjectMarksMap).map((subjectName, i) => (

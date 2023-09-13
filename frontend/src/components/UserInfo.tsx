@@ -52,6 +52,7 @@ const UserInfo = () => {
   const [isCollegeLoading, setIsCollegeLoading] = useState<boolean>(false);
   const [userAva, setUserAva] = useState<string | undefined>();
   let logoutTimer: NodeJS.Timeout | null = null;
+  
   const getCollegeInfoFromServer = async () => {
     setIsCollegeLoading(true);
     try {
@@ -183,8 +184,7 @@ const UserInfo = () => {
           )
         </Text>
       </Gradient>
-      <Group mode='plain'>
-        <Header>Учебное заведение</Header>
+      <Group mode='plain' header={<Header mode='tertiary'>Учебное заведение</Header>}>
         {isCollegeLoading && <ScreenSpinner />}
         <SimpleCell before={<Icon28SchoolOutline />} subtitle={userData.city} onClick={getCollegeInfoFromServer}>
           {userData.org}
