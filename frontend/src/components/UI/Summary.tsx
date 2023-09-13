@@ -19,21 +19,21 @@ const Summary: FC = () => {
     <Group header={<Header mode='tertiary'>Сатистика</Header>}>
       <Div>
         <MiniInfoCell
-          before={<Icon20EducationOutline />}
-          after={totalNumberOfMarks}
+          before={<Icon20EducationOutline style={{ marginTop: 4 }} />}
+          after={<Mark size='s' mark={totalNumberOfMarks} />}
         >
           Суммарное количество оценок:
         </MiniInfoCell>
         <MiniInfoCell
-          before={<Icon28BrainOutline width={20} height={20} />}
-          after={averageMark}
+          before={<Icon28BrainOutline style={{ marginTop: 4 }} width={20} height={20} />}
+          after={<Mark size='s' mark={averageMark} />}
         >
           Общий средний балл:
         </MiniInfoCell>
       </Div>
       {markCounts && (
         <div style={{
-          display: 'flex', flexDirection: 'row-reverse', justifyContent: 'space-between', gap: 4, marginTop: 5,
+          display: 'flex', flexDirection: 'row-reverse', justifyContent: 'space-around', gap: 5,
         }}
         >
           {[2, 3, 4, 5].map((mark) => (

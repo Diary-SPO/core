@@ -121,6 +121,7 @@ const MarksByGroup = () => {
   useEffect(() => {
     const cachedMarksJSON = localStorage.getItem('savedMarks');
     if (!cachedMarksJSON) {
+      fetchMarks();
       return;
     }
 
