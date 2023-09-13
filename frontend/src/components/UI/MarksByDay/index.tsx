@@ -4,7 +4,7 @@ import {
 } from '@vkontakte/vkui';
 import { PerformanceCurrent } from 'diary-shared';
 import Mark from '../Mark';
-import {Grade} from "../../../types";
+import { Grade } from '../../../types';
 import './index.css';
 
 interface IPerformanceCurrent {

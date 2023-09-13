@@ -1,5 +1,5 @@
 import { TextMark } from 'diary-shared';
-import {Grade} from "../types";
+import { Grade } from '../types';
 
 const calculateAverageMark = (marks: TextMark[] | undefined): number | null => {
   if (!marks || marks.length === 0) {

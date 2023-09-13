@@ -86,7 +86,7 @@ const LoginForm: FC<{ id: string }> = ({ id }) => {
     const response = await fetch(`${import.meta.env.VITE_SERVER_URL}/login`, {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
       },
       body: JSON.stringify({
         login,
@@ -94,7 +94,7 @@ const LoginForm: FC<{ id: string }> = ({ id }) => {
         isRemember: true,
       }),
     });
-  
+
     if (response.status === 401) {
       console.log('401');
       setIsLoading(false);
@@ -116,7 +116,7 @@ const LoginForm: FC<{ id: string }> = ({ id }) => {
     try {
       localStorage.setItem('id', String(dataResp.data.tenants.SPO_23.studentRole.id));
       localStorage.setItem('cookie', dataResp.cookie);
-      
+
       await appStorageSet('cookie', dataResp.cookie);
       await appStorageSet('id', String(dataResp.data.tenants.SPO_23.studentRole.id));
       await appStorageSet('lastName', String(dataResp.data.tenants.SPO_23.lastName));

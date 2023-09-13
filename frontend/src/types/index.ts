@@ -19,9 +19,8 @@ export enum Grade {
   // Кастыль :))
   'Д' = 'Д',
   'ДЗ' = 'ДЗ',
-  'О' = 'О'
+  'О' = 'О',
 }
-
 
 type GradeKeys = keyof typeof Grade;
 

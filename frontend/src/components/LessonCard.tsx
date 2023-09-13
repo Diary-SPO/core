@@ -14,7 +14,7 @@ import { useModal } from '../modals/ModalContext';
 import SubtitleWithBorder from './SubtitleWithBorder';
 import TimeRemaining from './TimeRemaining';
 import Mark from './UI/Mark';
-import {Grade} from "../types";
+import { Grade } from '../types';
 
 interface ILessonCard {
   lesson: Day;

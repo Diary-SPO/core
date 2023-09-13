@@ -10,7 +10,7 @@ export const getLessons = async (startDate?: Date, endDate?: Date): Promise<Day[
   if (!id) {
     return 418;
   }
-  
+
   if (!cookie) {
     return 418;
   }

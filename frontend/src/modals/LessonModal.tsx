@@ -10,7 +10,7 @@ import textToLink from '../utils/textToLink';
 import { cleanData } from './data';
 import Mark from '../components/UI/Mark';
 import { useModal } from './ModalContext';
-import {Grade} from "../types";
+import { Grade } from '../types';
 
 interface ILessonModal {
   id: string;

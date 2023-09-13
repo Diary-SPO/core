@@ -36,5 +36,5 @@ export default defineConfig({
   },
   // Указывать только для dev сборки.
   // Либо index'у вернуть его исходное имя, а переименовывать только при деплое
-  base: 'index-b5.html',
+  // base: 'index-b5.html',
 })

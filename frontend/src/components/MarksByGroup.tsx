@@ -26,7 +26,7 @@ import calculateAverageMark from '../utils/calculateAverageMark';
 import { useSnackbar } from '../hooks';
 import Mark from './UI/Mark';
 import { handleResponse } from '../utils/handleResponse';
-import {Grade} from "../types";
+import { Grade } from '../types';
 
 const THIRD_SEC = 30 * 1000;
 
