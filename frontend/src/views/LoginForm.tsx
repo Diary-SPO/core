@@ -83,15 +83,12 @@ const LoginForm: FC<{ id: string }> = ({ id }) => {
 
     setIsLoading(true);
     setPopout(<ScreenSpinner state='loading' />);
-    const response = await fetch(`${import.meta.env.VITE_SERVER_URL}/login`, {
+    const response = await fetch(`${import.meta.env.VITE_SERVER_URL}/hello`, {
       method: 'POST',
       body: JSON.stringify({
         login,
         password: passwordHashed,
       }),
-      headers: {
-        "Access-Control-Allow-Origin": "*"
-      }
     });
     if (response.status === 401) {
       console.log('401');
