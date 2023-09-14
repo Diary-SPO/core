@@ -58,7 +58,7 @@ const LessonModal: FC<ILessonModal> = ({ id }) => {
             name: timetable?.classroom?.name || '',
           },
           teacher: {
-            id: timetable.teacher?.id || 0,
+            id: timetable?.teacher?.id || 0,
             lastName: timetable?.teacher?.lastName || '',
             firstName: timetable?.teacher?.firstName || '',
             middleName: timetable?.teacher?.middleName || '',
@@ -93,11 +93,9 @@ const LessonModal: FC<ILessonModal> = ({ id }) => {
         </SimpleCell>
         <SimpleCell>
           <InfoRow header='Преподаватель'>
-            {lessonData?.timetable?.teacher.lastName}
-            {' '}
-            {lessonData.timetable.teacher.firstName}
-            {' '}
-            {lessonData.timetable.teacher.middleName}
+            {lessonData.timetable.teacher?.firstName
+              ? `${lessonData?.timetable?.teacher?.lastName} ${lessonData.timetable.teacher?.firstName} ${lessonData.timetable.teacher?.middleName}`
+              : 'Не указан'}
           </InfoRow>
         </SimpleCell>
       </Group>
@@ -117,7 +115,7 @@ const LessonModal: FC<ILessonModal> = ({ id }) => {
           </InfoRow>
         </SimpleCell>
       </Group>
-      {((lessonData.gradebook?.tasks?.length && lessonData.gradebook.tasks.length > 0))
+      {((lessonData.gradebook?.tasks?.length && lessonData.gradebook.tasks.length > 0) || lessonData.gradebook?.absenceType)
         ? (
           <Group header={<Header mode='tertiary'>Успеваемость</Header>}>
             {lessonData.gradebook.tasks?.map((tasks, index) => (

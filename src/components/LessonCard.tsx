@@ -120,7 +120,9 @@ const LessonCard: FC<ILessonCard> = ({ lesson }) => {
                       <TimeRemaining lessonDate={lesson.date} startTime={startTime} endTime={endTime} />
                     </div>
                     <div>
-                      {`${startTime} — ${endTime}, каб. ${timetable?.classroom.name}`}
+                      {startTime === undefined
+                        ? ''
+                        : `${startTime} — ${endTime}, каб. ${timetable?.classroom.name}`}
                     </div>
                     <div
                       style={{
@@ -131,13 +133,9 @@ const LessonCard: FC<ILessonCard> = ({ lesson }) => {
                       }}
                     >
                       <div>
-                        {timetable.teacher?.lastName}
-                        {' '}
-                        {timetable.teacher?.firstName[0]}
-                        .
-                        {' '}
-                        {timetable.teacher?.middleName[0]}
-                        .
+                        {timetable?.teacher?.lastName
+                          ? `${timetable.teacher?.lastName} ${timetable.teacher?.firstName[0]}. ${timetable.teacher?.middleName[0]}.`
+                        : 'Не указан'}
                       </div>
                       <div style={{ display: 'flex' }}>
                         {gradebook?.tasks?.map((task, index) => (

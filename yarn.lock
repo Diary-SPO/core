@@ -987,10 +987,10 @@ dequal@^2.0.3:
   resolved "https://registry.yarnpkg.com/dequal/-/dequal-2.0.3.tgz#2644214f1997d39ed0ee0ece72335490a7ac67be"
   integrity sha512-0je+qPKHEMohvfRTCEo3CrPG6cAzAYgmzKyxRiYSSDkS6eGJdyVJm7WaYA5ECaAD9wLB2T4EEeymA5aFVcYXCA==
 
-diary-shared@^1.6.3:
-  version "1.6.3"
-  resolved "https://registry.yarnpkg.com/diary-shared/-/diary-shared-1.6.3.tgz#859fce5ea9d012c8cf0d74b567c0b29d62abc655"
-  integrity sha512-aBm5K/VvbGgCExdV/I1x0jV541sRAlV49a0gNjm1EldJD3Zi72lw4H35G4GnkSAn0j0ksJEaDBHet5/MyG7JxQ==
+diary-shared@^1.6.4:
+  version "1.6.4"
+  resolved "https://registry.yarnpkg.com/diary-shared/-/diary-shared-1.6.4.tgz#ee31f48ca9ebf63e702169a27deec9ed7f96effd"
+  integrity sha512-EtjJBQWzvvWUHQHXsnzjn4SbASSgHqrJwXrxuvil7Q5dcSj3ksTuDabjgp0RstYQsqtxyfMcZr/zi+9MJcz7UA==
 
 dir-glob@^3.0.1:
   version "3.0.1"
