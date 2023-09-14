@@ -7,7 +7,7 @@ const calculateAverageMark = (marks: TextMark[] | undefined): number | null => {
   }
 
   const sum = marks.reduce((total, mark) => total + (Grade[mark] as number), 0);
-  return sum / marks.length;
+  return Number((sum / marks.length).toFixed(2));
 };
 
 export default calculateAverageMark;

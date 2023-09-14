@@ -82,7 +82,7 @@ const Marks: FC<{ id: string }> = ({ id }) => {
   };
 
   const [totalNumberOfMarks, setTotalNumberOfMarks] = useState<string | null>(null);
-  const [averageMark, setAverageMark] = useState<string | null>(null);
+  const [averageMark, setAverageMark] = useState<number | null>(null);
   const [markCounts, setMarkCounts] = useState<Record<number, number> | null>(null);
 
   const saveStatisticsData = (marks: PerformanceCurrent) => {
@@ -118,7 +118,7 @@ const Marks: FC<{ id: string }> = ({ id }) => {
       });
       console.log(averageMark);
       setTotalNumberOfMarks(totalNumberOfMarks.toString());
-      setAverageMark(averageMark.toString());
+      setAverageMark(Number(averageMark.toFixed(3)));
       setMarkCounts(markCounts);
     } catch (e) {
       console.error(e);

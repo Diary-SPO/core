@@ -8,7 +8,7 @@ import { TMark } from '../../types';
 
 interface ISummary {
   totalNumberOfMarks: string | null;
-  averageMark: string | null;
+  averageMark: number | null;
   markCounts: Record<number, number> | null;
 }
 
