@@ -3,6 +3,7 @@ import {
 } from '@vkontakte/vkui';
 import { lazy, useEffect, useState } from 'react';
 import { useActiveVkuiLocation, usePopout, useRouteNavigator } from '@vkontakte/vk-mini-apps-router';
+import { useInsets } from '@vkontakte/vk-bridge-react';
 import { MAIN_SETTINGS, VIEW_SCHEDULE } from './routes';
 import { getCookie } from './methods';
 import { Pages } from './types';
@@ -47,9 +48,9 @@ const App = () => {
   };
 
   const routerPopout = usePopout();
-
+  const vkBridgeInsets = useInsets() || undefined;
   return (
-    <AppRoot>
+    <AppRoot safeAreaInsets={vkBridgeInsets}>
       {isLoading && <PanelSpinner />}
       <SplitLayout popout={routerPopout} modal={modals} header={<PanelHeader separator={false} />} style={{ justifyContent: 'center' }}>
         <Suspense id='Epic'>

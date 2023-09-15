@@ -135,7 +135,7 @@ const LessonCard: FC<ILessonCard> = ({ lesson }) => {
                       <div>
                         {timetable?.teacher?.lastName
                           ? `${timetable.teacher?.lastName} ${timetable.teacher?.firstName[0]}. ${timetable.teacher?.middleName[0]}.`
-                        : 'Не указан'}
+                          : 'Не указан'}
                       </div>
                       <div style={{ display: 'flex' }}>
                         {gradebook?.tasks?.map((task, index) => (

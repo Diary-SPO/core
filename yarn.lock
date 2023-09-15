@@ -171,7 +171,7 @@
     "@floating-ui/core" "^1.4.1"
     "@floating-ui/utils" "^0.1.1"
 
-"@floating-ui/react-dom@^2.0.1":
+"@floating-ui/react-dom@^2.0.2":
   version "2.0.2"
   resolved "https://registry.yarnpkg.com/@floating-ui/react-dom/-/react-dom-2.0.2.tgz#fab244d64db08e6bed7be4b5fcce65315ef44d20"
   integrity sha512-5qhlDvjaLmAst/rKb3VdlCinwTF4EYMiVxuuc/HVUjs46W0zgtbMmAZ1UTsDrRTxRmUEzl92mOtWbeeXL26lSQ==
@@ -263,7 +263,7 @@
     "@nodelib/fs.scandir" "2.1.5"
     fastq "^1.6.0"
 
-"@remix-run/router@1.8.0", "@remix-run/router@^1.7.1":
+"@remix-run/router@^1.7.1":
   version "1.8.0"
   resolved "https://registry.yarnpkg.com/@remix-run/router/-/router-1.8.0.tgz#e848d2f669f601544df15ce2a313955e4bf0bafc"
   integrity sha512-mrfKqIHnSZRyIzBcanNJmVQELTnX+qagEDlcKO90RgRBVOZGSGvZKeDihTRfWcqoDn5N/NkUcwWTccnpN18Tfg==
@@ -367,10 +367,10 @@
   resolved "https://registry.yarnpkg.com/@types/json5/-/json5-0.0.29.tgz#ee28707ae94e11d2b827bcbe5270bcea7f3e71ee"
   integrity sha512-dRLjCWHYg4oaA77cxO64oO+7JwCwnIzkZPdrrC71jQmQtlhM556pwKo5bUzqvZndkVbeFLIIi+9TC40JNF5hNQ==
 
-"@types/node@^20.5.7":
-  version "20.5.7"
-  resolved "https://registry.yarnpkg.com/@types/node/-/node-20.5.7.tgz#4b8ecac87fbefbc92f431d09c30e176fc0a7c377"
-  integrity sha512-dP7f3LdZIysZnmvP3ANJYTSwg+wLLl8p7RqniVlV7j+oXSXAbt9h0WIBFmJy5inWZoX9wZN6eXx+YXd9Rh3RBA==
+"@types/node@^20.6.1":
+  version "20.6.1"
+  resolved "https://registry.yarnpkg.com/@types/node/-/node-20.6.1.tgz#8b589bba9b2af0128796461a0979764562687e6f"
+  integrity sha512-4LcJvuXQlv4lTHnxwyHQZ3uR9Zw2j7m1C9DfuwoTFQQP4Pmu04O6IfLYgMmHoOCt0nosItLLZAH+sOrRE0Bo8g==
 
 "@types/prop-types@*":
   version "15.7.5"
@@ -507,17 +507,22 @@
   dependencies:
     "@swc/helpers" "^0.5.1"
 
-"@vkontakte/icons@^2.63.0":
-  version "2.63.0"
-  resolved "https://registry.yarnpkg.com/@vkontakte/icons/-/icons-2.63.0.tgz#c24c77de95b074efec3bef65fad00ad760591941"
-  integrity sha512-Wkex3fxi6Si9+yFCw8kdDS9RJV3WT76eQFD7c84/lvl3ySggiPFrtyh37qTVfG/BaBAcUpMyjOIWyf0YDPBhoA==
+"@vkontakte/icons@^2.62.0", "@vkontakte/icons@^2.66.0":
+  version "2.66.0"
+  resolved "https://registry.yarnpkg.com/@vkontakte/icons/-/icons-2.66.0.tgz#53fa1cacb05d30ac116d6c0a22a313a4722e5613"
+  integrity sha512-p9hY1JKtVfdkRebpo0Y8kEipcUXbRMkdDHnKgHhapwro8iCRmYpZjfVZ0u2+FE15GUZN4YNZHG7owuzV7KkQNg==
   dependencies:
     "@vkontakte/icons-sprite" "2.0.0"
 
-"@vkontakte/vk-bridge@^2.11.0":
-  version "2.11.0"
-  resolved "https://registry.yarnpkg.com/@vkontakte/vk-bridge/-/vk-bridge-2.11.0.tgz#7eeaafac05a58c4ac006bf72d92ddc530a864605"
-  integrity sha512-chtrQblQZogucEynRtD/4N4tn2nLkyWZHHLerhHX4I6i4EgbgHBlEItrCrPY8s4k+JGsAp2qWKHODmgG4XSrYw==
+"@vkontakte/vk-bridge-react@^1.0.0":
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/@vkontakte/vk-bridge-react/-/vk-bridge-react-1.0.0.tgz#f51d599b973c760ed38555439baf0e5fe38e483a"
+  integrity sha512-VimAXy2TQ4QHVfLBNLvcqHGg/8TzD7/VFeeO3Q2vfXs920bkzweyr9D4RytGrbFnds3g+LT1QKtuUqpc5gU7EQ==
+
+"@vkontakte/vk-bridge@^2.11.2":
+  version "2.11.2"
+  resolved "https://registry.yarnpkg.com/@vkontakte/vk-bridge/-/vk-bridge-2.11.2.tgz#826eb2ad990327340d77bd5462f6444560b18533"
+  integrity sha512-wFtgPsD7kdb+a6d67y6BLGEc5iI4jIlc+jV6YvyxxfEmF7WhoDNaGAQNj7B5Sx4ep1MqDyyh8wUOiHJ5HamXiA==
 
 "@vkontakte/vk-mini-apps-router@^1.1.1":
   version "1.1.1"
@@ -549,13 +554,14 @@
   dependencies:
     "@swc/helpers" "^0.5.0"
 
-"@vkontakte/vkui@^5.7.2":
-  version "5.7.2"
-  resolved "https://registry.yarnpkg.com/@vkontakte/vkui/-/vkui-5.7.2.tgz#06865941d9f7b0e6bf41936aaa4206eb6cfc5a0e"
-  integrity sha512-cxNdcEvIj/gKc+A9en79QkGMUVALOltkuLo3Rw8KQ86FCTsCi4l1h8FqYfiqB4/tJz7oKdAJPHOh/pcNj45QYA==
+"@vkontakte/vkui@^5.8.1":
+  version "5.8.1"
+  resolved "https://registry.yarnpkg.com/@vkontakte/vkui/-/vkui-5.8.1.tgz#d4789c6f7514b44e6d6a5a6cf29f91ce224f9ed9"
+  integrity sha512-YVqyX7Y+6JaFNU6ebI2Bk4UVYfBx6crPJMizvoIa3lOB/oxiIYqmQ7ktzCzbCFmMXnjL+j0bUfY1fAHo5mBYBQ==
   dependencies:
-    "@floating-ui/react-dom" "^2.0.1"
+    "@floating-ui/react-dom" "^2.0.2"
     "@swc/helpers" "^0.5.1"
+    "@vkontakte/icons" "^2.62.0"
     "@vkontakte/vkjs" "^1.1.0"
     dayjs "^1.11.9"
     mitt "^3.0.1"
@@ -987,10 +993,10 @@ dequal@^2.0.3:
   resolved "https://registry.yarnpkg.com/dequal/-/dequal-2.0.3.tgz#2644214f1997d39ed0ee0ece72335490a7ac67be"
   integrity sha512-0je+qPKHEMohvfRTCEo3CrPG6cAzAYgmzKyxRiYSSDkS6eGJdyVJm7WaYA5ECaAD9wLB2T4EEeymA5aFVcYXCA==
 
-diary-shared@^1.6.4:
-  version "1.6.4"
-  resolved "https://registry.yarnpkg.com/diary-shared/-/diary-shared-1.6.4.tgz#ee31f48ca9ebf63e702169a27deec9ed7f96effd"
-  integrity sha512-EtjJBQWzvvWUHQHXsnzjn4SbASSgHqrJwXrxuvil7Q5dcSj3ksTuDabjgp0RstYQsqtxyfMcZr/zi+9MJcz7UA==
+diary-shared@^1.7.2:
+  version "1.7.2"
+  resolved "https://registry.yarnpkg.com/diary-shared/-/diary-shared-1.7.2.tgz#6eb6bc63454a3deb2d2980ed483dfcb5a2149eb5"
+  integrity sha512-CSRm0LojTf4zawt1WisOURvkVdpfAggd5hbgIoOlnbCcizGqkdU8UibiY9PVRmqSLH9aIHIOfMTe6EWA0jk71g==
 
 dir-glob@^3.0.1:
   version "3.0.1"
@@ -2346,21 +2352,6 @@ react-is@^16.13.1:
   version "16.13.1"
   resolved "https://registry.yarnpkg.com/react-is/-/react-is-16.13.1.tgz#789729a4dc36de2999dc156dd6c1d9c18cea56a4"
   integrity sha512-24e6ynE2H+OKt4kqsOvNd8kBpV65zoxbA4BVsEOB3ARVWQki/DHzaUoC5KuON/BiccDaCCTZBuOcfZs70kR8bQ==
-
-react-router-dom@^6.15.0:
-  version "6.15.0"
-  resolved "https://registry.yarnpkg.com/react-router-dom/-/react-router-dom-6.15.0.tgz#6da7db61e56797266fbbef0d5e324d6ac443ee40"
-  integrity sha512-aR42t0fs7brintwBGAv2+mGlCtgtFQeOzK0BM1/OiqEzRejOZtpMZepvgkscpMUnKb8YO84G7s3LsHnnDNonbQ==
-  dependencies:
-    "@remix-run/router" "1.8.0"
-    react-router "6.15.0"
-
-react-router@6.15.0:
-  version "6.15.0"
-  resolved "https://registry.yarnpkg.com/react-router/-/react-router-6.15.0.tgz#bf2cb5a4a7ed57f074d4ea88db0d95033f39cac8"
-  integrity sha512-NIytlzvzLwJkCQj2HLefmeakxxWHWAP+02EGqWEZy+DgfHHKQMUoBBjUQLOtFInBMhWtb3hiUy6MfFgwLjXhqg==
-  dependencies:
-    "@remix-run/router" "1.8.0"
 
 react@^18.2.0:
   version "18.2.0"
