@@ -9,7 +9,7 @@ import Suspense from '../components/UI/Suspense';
 import Summary from '../components/UI/Summary';
 import MarksByGroup from '../components/MarksByGroup';
 import UserInfo from '../components/UserInfo';
-import { PerformanceCurrent } from '../../diary-shared';
+import { PerformanceCurrent } from '/diary-shared';
 import { getPerformance } from '../methods';
 import { handleResponse } from '../utils/handleResponse';
 import { useSnackbar } from '../hooks';
