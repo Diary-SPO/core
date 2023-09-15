@@ -36,8 +36,7 @@ const AppWrapper = () => {
 
   return (
     <AdaptivityProvider {...vkBridgeAdaptivityProps}>
-      {/* // @ts-ignore */}
-      <RouterProvider router={router} notFound={NotFoundCorrect()}>
+      <RouterProvider router={router} notFound={<NotFoundCorrect />}>
         <Suspense id='app' mode='screen'>
           <ConfigProvider
             appearance={vkBridgeAppearance}
