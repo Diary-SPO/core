@@ -3,6 +3,8 @@ import {
   AppRoot, Button, ConfigProvider, Div,
 } from '@vkontakte/vkui';
 import { useRouteNavigator } from '@vkontakte/vk-mini-apps-router';
+import vkBridge, {parseURLSearchParamsForGetLaunchParams} from "@vkontakte/vk-bridge";
+import {useAppearance, useInsets} from "@vkontakte/vk-bridge-react";
 
 const notFoundStyle: CSSProperties = {
   display: 'flex',
@@ -26,10 +28,17 @@ const text: CSSProperties = {
 
 const NotFound = () => {
   const routeNavigator = useRouteNavigator();
-
+  const { vk_platform } = parseURLSearchParamsForGetLaunchParams(window.location.search);
+  const vkBridgeInsets = useInsets() || undefined;
+  const vkBridgeAppearance = useAppearance() || undefined;
+  
   return (
-    <AppRoot>
-      <ConfigProvider>
+    <AppRoot safeAreaInsets={vkBridgeInsets}>
+      <ConfigProvider
+        appearance={vkBridgeAppearance}
+        platform={vk_platform === 'desktop_web' ? 'vkcom' : undefined}
+        isWebView={vkBridge.isWebView()}
+      >
         <Div style={notFoundStyle}>
           <h1 style={text}>404</h1>
           <Button

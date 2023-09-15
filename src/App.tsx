@@ -7,6 +7,7 @@ import { MAIN_SETTINGS, VIEW_SCHEDULE } from './routes';
 import { getCookie } from './methods';
 import { Pages } from './types';
 import Suspense from './components/UI/Suspense';
+import {useInsets} from "@vkontakte/vk-bridge-react";
 
 const ModalRoot = lazy(() => import('./modals/ModalRoot'));
 const Epic = lazy(() => import('./components/UI/Epic'));
@@ -47,9 +48,9 @@ const App = () => {
   };
 
   const routerPopout = usePopout();
-
+  const vkBridgeInsets = useInsets() || undefined;
   return (
-    <AppRoot>
+    <AppRoot safeAreaInsets={vkBridgeInsets}>
       {isLoading && <PanelSpinner />}
       <SplitLayout popout={routerPopout} modal={modals} header={<PanelHeader separator={false} />} style={{ justifyContent: 'center' }}>
         <Suspense id='Epic'>

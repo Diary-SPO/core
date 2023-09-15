@@ -13,18 +13,18 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@vkontakte/icons": "^2.63.0",
-    "@vkontakte/vk-bridge": "^2.11.0",
+    "@vkontakte/icons": "^2.66.0",
+    "@vkontakte/vk-bridge": "^2.11.2",
+    "@vkontakte/vk-bridge-react": "^1.0.0",
     "@vkontakte/vk-mini-apps-router": "^1.1.1",
-    "@vkontakte/vkui": "^5.7.2",
+    "@vkontakte/vkui": "^5.8.1",
     "jshashes": "^1.0.8",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0",
-    "react-router-dom": "^6.15.0"
+    "react-dom": "^18.2.0"
   },
   "devDependencies": {
     "@rollup/plugin-terser": "^0.4.3",
-    "@types/node": "^20.5.7",
+    "@types/node": "^20.6.1",
     "@types/react": "^18.2.15",
     "@types/react-dom": "^18.2.7",
     "@typescript-eslint/eslint-plugin": "^6.0.0",
