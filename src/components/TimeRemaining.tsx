@@ -32,14 +32,14 @@ const getTimeRemaining = (currentDate: Date, lessonDate: Date, endTime: string, 
 
 const TimeRemaining: FC<ITimeRemainingProps> = ({ lessonDate, startTime, endTime }) => {
   if (!lessonDate || !startTime || !endTime) {
-    return 'Нет времени'
+    return 'Нет времени';
   }
-  
+
   const currentDate = new Date();
   const startDate = new Date(lessonDate);
   startDate.setHours(Number(startTime.split(':')[0]));
   startDate.setMinutes(Number(startTime.split(':')[1]));
-  
+
   const timeRemainingText = getTimeRemaining(currentDate, lessonDate, endTime, startDate);
 
   if (!timeRemainingText) {

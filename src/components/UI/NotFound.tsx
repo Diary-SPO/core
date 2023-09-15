@@ -3,8 +3,8 @@ import {
   AppRoot, Button, ConfigProvider, Div,
 } from '@vkontakte/vkui';
 import { useRouteNavigator } from '@vkontakte/vk-mini-apps-router';
-import vkBridge, {parseURLSearchParamsForGetLaunchParams} from "@vkontakte/vk-bridge";
-import {useAppearance, useInsets} from "@vkontakte/vk-bridge-react";
+import vkBridge, { parseURLSearchParamsForGetLaunchParams } from '@vkontakte/vk-bridge';
+import { useAppearance, useInsets } from '@vkontakte/vk-bridge-react';
 
 const notFoundStyle: CSSProperties = {
   display: 'flex',
@@ -31,7 +31,7 @@ const NotFound = () => {
   const { vk_platform } = parseURLSearchParamsForGetLaunchParams(window.location.search);
   const vkBridgeInsets = useInsets() || undefined;
   const vkBridgeAppearance = useAppearance() || undefined;
-  
+
   return (
     <AppRoot safeAreaInsets={vkBridgeInsets}>
       <ConfigProvider

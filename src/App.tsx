@@ -3,11 +3,11 @@ import {
 } from '@vkontakte/vkui';
 import { lazy, useEffect, useState } from 'react';
 import { useActiveVkuiLocation, usePopout, useRouteNavigator } from '@vkontakte/vk-mini-apps-router';
+import { useInsets } from '@vkontakte/vk-bridge-react';
 import { MAIN_SETTINGS, VIEW_SCHEDULE } from './routes';
 import { getCookie } from './methods';
 import { Pages } from './types';
 import Suspense from './components/UI/Suspense';
-import {useInsets} from "@vkontakte/vk-bridge-react";
 
 const ModalRoot = lazy(() => import('./modals/ModalRoot'));
 const Epic = lazy(() => import('./components/UI/Epic'));
