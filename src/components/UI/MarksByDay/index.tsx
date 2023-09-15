@@ -1,10 +1,10 @@
-import React, { FC } from 'react';
+import { FC } from 'react';
 import {
   Group, Header, HorizontalCell, HorizontalScroll,
 } from '@vkontakte/vkui';
-import { PerformanceCurrent } from 'diary-shared';
 import Mark from '../Mark';
-import { Grade } from '../../../types';
+import {Grade} from "../../../types";
+import {PerformanceCurrent} from "diary-shared";
 import './index.css';
 
 interface IPerformanceCurrent {
@@ -19,36 +19,47 @@ const truncateString = (str: string, maxLength: number) => {
 };
 
 interface IMarksByDay {
-  [key: string]: {
-    [lessonName: string]: Grade[];
-  };
+  [key: string] : {
+    grades: Grade[];
+    lessonName: string
+  }
 }
 
 const MarksByDay: FC<IPerformanceCurrent> = ({ performanceData }) => {
   const marksByDay: IMarksByDay = {};
-
+  
   performanceData?.daysWithMarksForSubject?.forEach((subject) => {
     subject?.daysWithMarks?.forEach((dayWithMarks) => {
       const day = new Date(dayWithMarks.day).toLocaleDateString();
       const grades = dayWithMarks.markValues.map((gradeText) => Grade[gradeText]);
       const lessonName = subject.subjectName;
-
+      
       if (grades.length > 0 && grades.every((grade) => !Number.isNaN(parseFloat(grade as string)))) {
         if (!marksByDay[day]) {
-          marksByDay[day] = {};
+          marksByDay[day] = { grades: [], lessonName: '' };
         }
-
-        if (!marksByDay[day][lessonName]) {
-          marksByDay[day][lessonName] = [];
-        }
-
-        marksByDay[day][lessonName] = [...marksByDay[day][lessonName], ...grades];
+        
+        // @ts-ignore
+        marksByDay[day].grades = [...marksByDay[day].grades, ...grades];
+        marksByDay[day].lessonName = lessonName;
       }
     });
   });
-
-  const sortedDates = Object.keys(marksByDay).sort((a, b) => new Date(b).getTime() - new Date(a).getTime());
-
+  
+  const formatDate = (dateString: string) => {
+    const parts = dateString.split('.');
+    return new Date(Number(parts[2]), Number(parts[1]) - 1, Number(parts[0]));
+  };
+  
+  const sortByDay = (marksByDay: IMarksByDay): IMarksByDay => {
+    const sortedDays = Object.keys(marksByDay).sort((a, b) => formatDate(b).getTime() - formatDate(a).getTime());
+    const marksByDaySort: IMarksByDay = {};
+    sortedDays.forEach((day) => {
+      marksByDaySort[day] = marksByDay[day];
+    });
+    return marksByDaySort;
+  };
+  
   return (
     <HorizontalScroll
       showArrows
@@ -57,25 +68,14 @@ const MarksByDay: FC<IPerformanceCurrent> = ({ performanceData }) => {
     >
       <Group header={<Header mode='secondary'>Недавние оценки</Header>}>
         <div className='marksByName'>
-          {sortedDates.map((day) => (
+          {Object.entries(sortByDay(marksByDay)).map(([day, { grades, lessonName }]) => (
             <div key={day}>
               <Header mode='secondary'>{day}</Header>
               <div style={{ display: 'flex' }}>
-                {Object.entries(marksByDay[day]).map(([lessonName, grades]) => (
-                  <React.Fragment key={`${day}_${lessonName}`}>
-                    {grades.map((grade, gradeIndex) => (
-                      <HorizontalCell style={{ maxWidth: 'unset' }} key={`${day}_${lessonName}_${gradeIndex}`}>
-                        <Mark
-                          style={{ maxWidth: 90 }}
-                          key={`${day}_${lessonName}_${gradeIndex}`}
-                          mark={grade || 'Н'}
-                          size='l'
-                          bottom={truncateString(lessonName, 18)}
-                          useMargin={false}
-                        />
-                      </HorizontalCell>
-                    ))}
-                  </React.Fragment>
+                {grades.map((grade, gradeIndex) => (
+                  <HorizontalCell style={{ maxWidth: 'unset' }} key={`${day}_${gradeIndex}`}>
+                    <Mark style={{ maxWidth: 90 }} mark={grade || 'Н'} size='l' bottom={truncateString(lessonName, 18)} useMargin={false} />
+                  </HorizontalCell>
                 ))}
               </div>
             </div>
