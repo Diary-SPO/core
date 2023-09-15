@@ -18,7 +18,7 @@ import Suspense from '../components/UI/Suspense';
 import { useRateLimitExceeded, useSnackbar } from '../hooks';
 import ExplanationTooltip from '../components/UI/ExplanationTooltip';
 import MarksByDay from '../components/UI/MarksByDay';
-import { handleResponse } from '../utils/handleResponse.ts';
+import { handleResponse } from '../utils/handleResponse';
 
 const CalendarRange = lazy(() => import('../components/UI/CalendarRange'));
 const ScheduleGroup = lazy(() => import('../components/ScheduleGroup'));
@@ -406,7 +406,7 @@ const Schedule: FC<{ id: string }> = ({ id }) => {
   );
 
   const weekString = `
-  ${startDate.getDate() + 1}
+  ${startDate.getDate()}
   ${startDate.toLocaleString('default', { month: 'long' })
     .slice(0, 3)}
     -
