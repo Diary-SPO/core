@@ -1,10 +1,9 @@
 import { CSSProperties } from 'react';
 import {
-  AppRoot, Button, ConfigProvider, Div,
+  AppRoot, Button, Div,
 } from '@vkontakte/vkui';
 import { useRouteNavigator } from '@vkontakte/vk-mini-apps-router';
-import vkBridge, { parseURLSearchParamsForGetLaunchParams } from '@vkontakte/vk-bridge';
-import { useAppearance, useInsets } from '@vkontakte/vk-bridge-react';
+import { useInsets } from '@vkontakte/vk-bridge-react';
 
 const notFoundStyle: CSSProperties = {
   display: 'flex',
@@ -28,30 +27,22 @@ const text: CSSProperties = {
 
 const NotFound = () => {
   const routeNavigator = useRouteNavigator();
-  const { vk_platform } = parseURLSearchParamsForGetLaunchParams(window.location.search);
   const vkBridgeInsets = useInsets() || undefined;
-  const vkBridgeAppearance = useAppearance() || undefined;
 
   return (
     <AppRoot safeAreaInsets={vkBridgeInsets}>
-      <ConfigProvider
-        appearance={vkBridgeAppearance}
-        platform={vk_platform === 'desktop_web' ? 'vkcom' : undefined}
-        isWebView={vkBridge.isWebView()}
-      >
-        <Div style={notFoundStyle}>
-          <h1 style={text}>404</h1>
-          <Button
-            onClick={() => routeNavigator.replace('/')}
-            size='l'
-            mode='outline'
-            appearance='accent-invariable'
-            style={{ padding: 10 }}
-          >
-            <span style={{ fontSize: '1.5em' }}>На главную</span>
-          </Button>
-        </Div>
-      </ConfigProvider>
+      <Div style={notFoundStyle}>
+        <h1 style={text}>404</h1>
+        <Button
+          onClick={() => routeNavigator.replace('/')}
+          size='l'
+          mode='outline'
+          appearance='accent-invariable'
+          style={{ padding: 10 }}
+        >
+          <span style={{ fontSize: '1.5em' }}>На главную</span>
+        </Button>
+      </Div>
     </AppRoot>
   );
 };
