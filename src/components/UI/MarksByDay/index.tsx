@@ -6,62 +6,22 @@ import { PerformanceCurrent } from 'diary-shared';
 import Mark from '../Mark';
 import { Grade } from '../../../types';
 import './index.css';
+import { extractMarksByDay } from '../../../utils/extractMarksByDay';
+import { sortByDay } from '../../../utils/sortByDay';
+import { truncateString } from '../../../utils/truncateString';
 
 interface IPerformanceCurrent {
   performanceData: PerformanceCurrent | null;
 }
 
-const truncateString = (str: string, maxLength: number) => {
-  if (str.length > maxLength) {
-    return `${str.substring(0, maxLength)}...`;
-  }
-  return str;
-};
-
-interface IMarksByDay {
+export interface IMarksByDay {
   [key: string]: {
     [lessonName: string]: Grade[];
   };
 }
 
 const MarksByDay: FC<IPerformanceCurrent> = ({ performanceData }) => {
-  const marksByDay: IMarksByDay = {};
-  
-  performanceData?.daysWithMarksForSubject?.forEach((subject) => {
-    subject?.daysWithMarks?.forEach((dayWithMarks) => {
-      const day = new Date(dayWithMarks.day).toLocaleDateString();
-      const grades = dayWithMarks.markValues.map((gradeText) => Grade[gradeText]);
-      const lessonName = subject.subjectName;
-      
-      if (grades.length > 0 && grades.every((grade) => !Number.isNaN(parseFloat(grade as string)))) {
-        if (!marksByDay[day]) {
-          marksByDay[day] = {};
-        }
-        
-        if (!marksByDay[day][lessonName]) {
-          marksByDay[day][lessonName] = [];
-        }
-        
-        // @ts-ignore
-        marksByDay[day][lessonName] = [...marksByDay[day][lessonName], ...grades];
-      }
-    });
-  })
-  
-  const formatDate = (dateString: string) => {
-    const parts = dateString.split('.');
-    return new Date(Number(parts[2]), Number(parts[1]) - 1, Number(parts[0]));
-  };
-  
-  const sortByDay = (marksByDay: IMarksByDay): IMarksByDay => {
-    const sortedDays = Object.keys(marksByDay).sort((a, b) => formatDate(b).getTime() - formatDate(a).getTime());
-    const marksByDaySort: IMarksByDay = {};
-    sortedDays.forEach((day) => {
-      marksByDaySort[day] = marksByDay[day];
-    });
-
-    return marksByDaySort;
-  };
+  const marksByDay = extractMarksByDay(performanceData);
   
   return (
     <HorizontalScroll
@@ -79,7 +39,13 @@ const MarksByDay: FC<IPerformanceCurrent> = ({ performanceData }) => {
                   <div style={{ display: 'flex' }} key={`${day}_${lessonName}`}>
                     {grades.map((grade, gradeIndex) => (
                       <HorizontalCell style={{ maxWidth: 'unset' }} key={`${day}_${lessonName}_${gradeIndex}`}>
-                        <Mark style={{ maxWidth: 90 }} mark={grade || 'Н'} size='l' bottom={truncateString(lessonName, 18)} useMargin={false} />
+                        <Mark
+                          bottom={truncateString(lessonName, 18)}
+                          style={{ maxWidth: 90 }}
+                          mark={grade || 'Н'}
+                          useMargin={false}
+                          size='l'
+                        />
                       </HorizontalCell>
                     ))}
                   </div>
