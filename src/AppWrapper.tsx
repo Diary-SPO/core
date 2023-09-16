@@ -1,12 +1,12 @@
 import { FC, lazy } from 'react';
-import { AdaptivityProvider, AppRoot, ConfigProvider } from '@vkontakte/vkui';
+import {AdaptivityProvider, ConfigProvider, usePlatform} from '@vkontakte/vkui';
 import { RouterProvider } from '@vkontakte/vk-mini-apps-router';
-import vkBridge, { parseURLSearchParamsForGetLaunchParams } from '@vkontakte/vk-bridge';
-import { useAdaptivity, useAppearance, useInsets } from '@vkontakte/vk-bridge-react';
+import vkBridge from '@vkontakte/vk-bridge';
+import { useAdaptivity, useAppearance } from '@vkontakte/vk-bridge-react';
 import { ModalProvider } from './modals/ModalContext';
 import { router } from './routes';
 import Suspense from './components/UI/Suspense';
-import { transformVKBridgeAdaptivity } from './transformers/transformVKBridgeAdaptivity.ts';
+import { transformVKBridgeAdaptivity } from './transformers/transformVKBridgeAdaptivity';
 
 const NotFound = lazy(() => import('./components/UI/NotFound'));
 const App = lazy(() => import('./App'));
@@ -14,14 +14,14 @@ const App = lazy(() => import('./App'));
 vkBridge.send('VKWebAppInit');
 
 const NotFoundCorrect: FC = () => {
-  const { vk_platform } = parseURLSearchParamsForGetLaunchParams(window.location.search);
+  const platform = usePlatform();
   const vkBridgeAppearance = useAppearance() || undefined;
-
+  
   return (
     <ConfigProvider
       appearance={vkBridgeAppearance}
       isWebView={vkBridge.isWebView()}
-      platform={vk_platform === 'desktop_web' ? 'vkcom' : undefined}
+      platform={platform}
     >
       <NotFound />
     </ConfigProvider>
@@ -29,8 +29,7 @@ const NotFoundCorrect: FC = () => {
 };
 
 const AppWrapper = () => {
-  const vkBridgeInsets = useInsets() || undefined;
-  const { vk_platform } = parseURLSearchParamsForGetLaunchParams(window.location.search);
+  const platform = usePlatform();
   const vkBridgeAdaptivityProps = transformVKBridgeAdaptivity(useAdaptivity());
   const vkBridgeAppearance = useAppearance() || undefined;
 
@@ -40,13 +39,11 @@ const AppWrapper = () => {
         <Suspense id='app' mode='screen'>
           <ConfigProvider
             appearance={vkBridgeAppearance}
-            platform={vk_platform === 'desktop_web' ? 'vkcom' : undefined}
+            platform={platform}
             isWebView={vkBridge.isWebView()}
           >
             <ModalProvider>
-              <AppRoot safeAreaInsets={vkBridgeInsets}>
-                <App />
-              </AppRoot>
+              <App />
             </ModalProvider>
           </ConfigProvider>
         </Suspense>
