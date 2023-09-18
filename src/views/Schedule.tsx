@@ -9,6 +9,7 @@ import {
   Icon16ArrowLeftOutline,
   Icon16ArrowRightOutline,
   Icon28ErrorCircleOutline,
+  Icon24ChevronRightCircle,
 } from '@vkontakte/icons';
 import { addDays, endOfWeek, startOfWeek } from '@vkontakte/vkui/dist/lib/date';
 import { Day, PerformanceCurrent } from 'diary-shared';
@@ -25,6 +26,20 @@ const ScheduleGroup = lazy(() => import('../components/ScheduleGroup'));
 
 const Schedule: FC<{ id: string }> = ({ id }) => {
   const currentDate = new Date();
+
+  const [scrollPosition, setScrollPosition] = useState(0);
+  const showToTopButton = scrollPosition > 700;
+  const handleScroll = () => {
+    const currentPosition = window.scrollY;
+    setScrollPosition(currentPosition);
+  };
+
+  useEffect(() => {
+    window.addEventListener('scroll', handleScroll);
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, []);
 
   const { panel: activePanel, panelsHistory } = useActiveVkuiLocation();
   const routeNavigator = useRouteNavigator();
@@ -475,6 +490,22 @@ const Schedule: FC<{ id: string }> = ({ id }) => {
                 </ButtonGroup>
               )}
             />
+          )}
+          {showToTopButton && (
+            <IconButton
+              style={{ position: 'fixed', left: 5, bottom: 60 }}
+              onClick={() => {
+                window.scrollTo({
+                  top: 0,
+                  behavior: 'smooth',
+                });
+              }}
+            >
+              <Icon24ChevronRightCircle
+                style={{ transform: 'rotate(-90deg)' }}
+                color='var(--vkui--color_background_accent_themed)'
+              />
+            </IconButton>
           )}
           {snackbar}
           {rateSnackbar}
