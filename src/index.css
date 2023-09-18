@@ -11,3 +11,6 @@
         border-radius: 8px !important;
     }
 }
+ ._HorizontalCell_1q642_1:first-child::before, ._HorizontalCell_1q642_1:last-child::after {
+     content: none !important;
+ }
