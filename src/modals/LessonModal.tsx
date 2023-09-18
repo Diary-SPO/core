@@ -4,7 +4,8 @@ import {
 } from '@vkontakte/vkui';
 import {
   EAbsenceTypes, EAbsenceTypesDescription, Lesson, LessonType, LessonWorkType, TLesson,
-} from '../../diary-shared';
+// eslint-disable-line
+} from '/diary-shared';
 import setDefaultMark from '../utils/setDefaultMark';
 import textToLink from '../utils/textToLink';
 import { cleanData } from './data';
