@@ -1,5 +1,5 @@
 import { FC, lazy } from 'react';
-import {AdaptivityProvider, ConfigProvider, usePlatform} from '@vkontakte/vkui';
+import { AdaptivityProvider, ConfigProvider, usePlatform } from '@vkontakte/vkui';
 import { RouterProvider } from '@vkontakte/vk-mini-apps-router';
 import vkBridge from '@vkontakte/vk-bridge';
 import { useAdaptivity, useAppearance } from '@vkontakte/vk-bridge-react';
@@ -16,7 +16,7 @@ vkBridge.send('VKWebAppInit');
 const NotFoundCorrect: FC = () => {
   const platform = usePlatform();
   const vkBridgeAppearance = useAppearance() || undefined;
-  
+
   return (
     <ConfigProvider
       appearance={vkBridgeAppearance}

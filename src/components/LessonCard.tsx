@@ -5,6 +5,7 @@ import {
 import { useRouteNavigator } from '@vkontakte/vk-mini-apps-router';
 import {
   Day, EAbsenceTypes, Gradebook, LessonWorkType, Timetable,
+// eslint-disable-next-line
 } from '/diary-shared';
 import { formatLessonDate, getDayOfWeek } from '../utils/formatLessonDate';
 import setDefaultMark from '../utils/setDefaultMark';

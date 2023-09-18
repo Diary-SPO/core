@@ -7,6 +7,6 @@ export const sortByDay = (marksByDay: IMarksByDay): IMarksByDay => {
   sortedDays.forEach((day) => {
     marksByDaySort[day] = marksByDay[day];
   });
-  
+
   return marksByDaySort;
 };

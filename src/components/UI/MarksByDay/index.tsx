@@ -22,7 +22,7 @@ export interface IMarksByDay {
 
 const MarksByDay: FC<IPerformanceCurrent> = ({ performanceData }) => {
   const marksByDay = extractMarksByDay(performanceData);
-  
+
   return (
     <HorizontalScroll
       showArrows

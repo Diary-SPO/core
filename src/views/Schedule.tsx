@@ -2,7 +2,7 @@ import {
   FC, lazy, useEffect, useState,
 } from 'react';
 import {
-  Button, ButtonGroup, Group, Header, IconButton, Link, Panel, PanelSpinner, Placeholder, View,
+  Button, ButtonGroup, Group, Header, IconButton, Link, Panel, PanelSpinner, Placeholder, PullToRefresh, View,
 } from '@vkontakte/vkui';
 import { useActiveVkuiLocation, useRouteNavigator } from '@vkontakte/vk-mini-apps-router';
 import {
@@ -423,43 +423,44 @@ const Schedule: FC<{ id: string }> = ({ id }) => {
     >
       <Panel nav={id}>
         <PanelHeaderWithBack title='Главная' />
-        <Suspense id='MarksByDay'>
-          {isMarksLoading ? <PanelSpinner /> : <MarksByDay performanceData={marksData} />}
-        </Suspense>
-        <Group
-          header={<Header mode='secondary'>Выбор даты</Header>}
-          description='Разница между датами не может быть больше 14-и дней'
-        >
-          <Suspense id='Calendar' mode='panel'>
-            <CalendarRange
-              label={<ExplanationTooltip text='Начальная' tooltipContent='Не может быть больше конечной' />}
-              value={startDate}
-              onDateChange={handleStartDateChange}
-            />
-            <CalendarRange
-              label={<ExplanationTooltip text='Конечная' tooltipContent='Не может быть меньше начальной' />}
-              value={endDate}
-              onDateChange={handleEndDateChange}
-            />
+        <PullToRefresh onRefresh={handleReloadData} isFetching={isLoading}>
+          <Suspense id='MarksByDay'>
+            {isMarksLoading ? <PanelSpinner /> : <MarksByDay performanceData={marksData} />}
           </Suspense>
-        </Group>
-        <Suspense id='ScheduleGroup' mode='screen'>
           <Group
-            header={(
-              <Header
-                aside={Buttons}
-                mode='secondary'
-              >
-                {weekString}
-              </Header>
-            )}
+            header={<Header mode='secondary'>Выбор даты</Header>}
+            description='Разница между датами не может быть больше 14-и дней'
           >
-            {isLoading ? <PanelSpinner size='regular' /> : (
-              <ScheduleGroup lessonsState={lessonsState} />
-            )}
+            <Suspense id='Calendar' mode='panel'>
+              <CalendarRange
+                label={<ExplanationTooltip text='Начальная' tooltipContent='Не может быть больше конечной' />}
+                value={startDate}
+                onDateChange={handleStartDateChange}
+              />
+              <CalendarRange
+                label={<ExplanationTooltip text='Конечная' tooltipContent='Не может быть меньше начальной' />}
+                value={endDate}
+                onDateChange={handleEndDateChange}
+              />
+            </Suspense>
           </Group>
-        </Suspense>
-        {isError
+          <Suspense id='ScheduleGroup' mode='screen'>
+            <Group
+              header={(
+                <Header
+                  aside={Buttons}
+                  mode='secondary'
+                >
+                  {weekString}
+                </Header>
+            )}
+            >
+              {isLoading
+                ? <PanelSpinner size='regular' />
+                : <ScheduleGroup lessonsState={lessonsState} />}
+            </Group>
+          </Suspense>
+          {isError
           && (
             <Placeholder
               header='Ошибка при загрузке'
@@ -473,8 +474,9 @@ const Schedule: FC<{ id: string }> = ({ id }) => {
               )}
             />
           )}
-        {snackbar}
-        {rateSnackbar}
+          {snackbar}
+          {rateSnackbar}
+        </PullToRefresh>
       </Panel>
     </View>
   );
