@@ -2,7 +2,7 @@ import { FC } from 'react';
 import {
   Card, CardGrid, Div, Group, Header, InfoRow, Subhead, Title,
 } from '@vkontakte/vkui';
-// eslint-disable-line
+// eslint-disable-next-line
 import { Examinations, ExaminationType } from '/diary-shared';
 
 interface SubjectListProps {

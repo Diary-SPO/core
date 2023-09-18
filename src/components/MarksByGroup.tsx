@@ -15,7 +15,7 @@ import {
 } from '@vkontakte/icons';
 import {
   AbsenceType, EAbsenceTypes, PerformanceCurrent, TextMark,
-  // eslint-disable-line
+  // eslint-disable-next-line
 } from '/diary-shared';
 import calculateAverageMark from '../utils/calculateAverageMark';
 import Mark from './UI/Mark';
