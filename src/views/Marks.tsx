@@ -1,6 +1,6 @@
 import { FC, useEffect, useState } from 'react';
 import {
-  Group, Panel, PanelSpinner, View,
+  Group, Panel, PanelSpinner, PullToRefresh, View,
 } from '@vkontakte/vkui';
 import { useActiveVkuiLocation, useRouteNavigator } from '@vkontakte/vk-mini-apps-router';
 import { Icon28ErrorCircleOutline, Icon28InfoCircle } from '@vkontakte/icons';
@@ -9,7 +9,8 @@ import Suspense from '../components/UI/Suspense';
 import Summary from '../components/UI/Summary';
 import MarksByGroup from '../components/MarksByGroup';
 import UserInfo from '../components/UserInfo';
-import { PerformanceCurrent } from '../../diary-shared';
+// eslint-disable-next-line
+import { PerformanceCurrent } from '/diary-shared';
 import { getPerformance } from '../methods';
 import { handleResponse } from '../utils/handleResponse';
 import { useSnackbar } from '../hooks';
@@ -116,7 +117,7 @@ const Marks: FC<{ id: string }> = ({ id }) => {
           markCounts[numericMark]++;
         }
       });
-      console.log(averageMark);
+
       setTotalNumberOfMarks(totalNumberOfMarks.toString());
       setAverageMark(Number(averageMark.toFixed(3)));
       setMarkCounts(markCounts);
@@ -128,7 +129,7 @@ const Marks: FC<{ id: string }> = ({ id }) => {
   const fetchData = async () => {
     try {
       const marks = await fetchMarks();
-      console.log(marks);
+
       setMarksForSubject(marks as unknown as PerformanceCurrent);
     } catch (error) {
       console.error('Ошибка при получении данных:', error);
@@ -147,25 +148,28 @@ const Marks: FC<{ id: string }> = ({ id }) => {
     >
       <Panel nav={id}>
         <PanelHeaderWithBack title='Успеваемость' />
+        <PullToRefresh onRefresh={() => fetchMarks(true)} isFetching={isLoading}>
         <Suspense id='UserInfo'>
           <UserInfo />
         </Suspense>
-        {isLoading
-          ? <Group><PanelSpinner /></Group>
-          : (
-            <Summary
+       
+          {isLoading
+            ? <Group>
+              <PanelSpinner />
+            </Group>
+            : <Summary
               totalNumberOfMarks={totalNumberOfMarks}
               averageMark={averageMark}
               markCounts={markCounts}
-            />
-          )}
-        {isLoading
-          ? <Group><PanelSpinner /></Group>
-          : (
-            <Suspense id='MarksByGroup'>
+            />}
+          {isLoading
+            ? <Group>
+              <PanelSpinner />
+            </Group>
+            : <Suspense id='MarksByGroup'>
               <MarksByGroup marksForSubject={marksForSubject} />
-            </Suspense>
-          )}
+            </Suspense>}
+        </PullToRefresh>
         {snackbar}
       </Panel>
     </View>

@@ -5,7 +5,7 @@ import { useModal } from './ModalContext';
 
 const CollegeModal = ({ id }: { id: string }) => {
   const { collegeModalData } = useModal();
-  console.log(collegeModalData);
+
   return (
     <ModalPage id={id} size={500}>
       <ModalPageHeader>Подробнее о колледже</ModalPageHeader>

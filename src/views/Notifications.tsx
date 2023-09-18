@@ -30,7 +30,7 @@ const Notifications: FC<{ id: string }> = ({ id }) => {
     try {
       if (isHandle) {
         const ads = await getAds();
-        console.log('asd', ads);
+
         handleResponse(
           ads,
           () => {
@@ -56,7 +56,6 @@ const Notifications: FC<{ id: string }> = ({ id }) => {
         updateCache(ads as NotificationsResponse[]);
         setAdsData(ads as NotificationsResponse[]);
       } else {
-        console.log('кеш');
         const cachedAds = JSON.parse(localStorage.getItem('savedAds') || '[]');
         setAdsData(cachedAds);
       }
@@ -76,7 +75,7 @@ const Notifications: FC<{ id: string }> = ({ id }) => {
 
   useEffect(() => {
     const cachedAds = localStorage.getItem('savedAds');
-    console.log(cachedAds);
+
     if (cachedAds) {
       setAdsData(JSON.parse(cachedAds));
       showSnackbar({
