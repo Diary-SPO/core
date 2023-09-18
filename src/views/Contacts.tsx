@@ -1,9 +1,9 @@
 import { FC } from 'react';
 import {
-  Avatar, Card, Div, Group, Header, Link, Panel, SimpleCell, View,
+  Avatar, Card, Div, Footer, Footnote, Group, Header, Link, Panel, SimpleCell, View,
 } from '@vkontakte/vkui';
 import { useActiveVkuiLocation, useRouteNavigator } from '@vkontakte/vk-mini-apps-router';
-import { Icon28Users } from '@vkontakte/icons';
+import { Icon28Users, Icon28Hearts2Outline } from '@vkontakte/icons';
 import PanelHeaderWithBack from '../components/UI/PanelHeaderWithBack';
 import HelpAccordion from '../components/HelpAccordion';
 import { helpData } from '../components/data';
@@ -51,6 +51,10 @@ const Contacts: FC<{ id: string }> = ({ id }) => {
               </Link>
             </SimpleCell>
           </Group>
+          <Footer style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+            <Footnote style={{ marginRight: 5 }}>made with</Footnote>
+            <Icon28Hearts2Outline />
+          </Footer>
         </Div>
       </Panel>
     </View>
