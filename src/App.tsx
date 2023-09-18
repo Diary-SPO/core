@@ -23,7 +23,7 @@ const App = () => {
   useEffect(() => {
     setIsLoading(true);
     getCookie().then((cookieValue) => {
-      if (!cookieValue) {
+      if (!cookieValue || !localStorage.getItem('cookie')) {
         routeNavigator.replace('/');
         setIsLoading(false);
       } else if (cookieValue && activeView === MAIN_SETTINGS) {

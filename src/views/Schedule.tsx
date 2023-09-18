@@ -2,7 +2,7 @@ import {
   FC, lazy, useEffect, useState,
 } from 'react';
 import {
-  Button, ButtonGroup, Group, Header, IconButton, Link, Panel, PanelSpinner, Placeholder, PullToRefresh, View,
+  Button, ButtonGroup, Div, Group, Header, IconButton, Link, Panel, PanelSpinner, Placeholder, PullToRefresh, View,
 } from '@vkontakte/vkui';
 import { useActiveVkuiLocation, useRouteNavigator } from '@vkontakte/vk-mini-apps-router';
 import {
@@ -431,18 +431,20 @@ const Schedule: FC<{ id: string }> = ({ id }) => {
             header={<Header mode='secondary'>Выбор даты</Header>}
             description='Разница между датами не может быть больше 14-и дней'
           >
-            <Suspense id='Calendar' mode='panel'>
-              <CalendarRange
-                label={<ExplanationTooltip text='Начальная' tooltipContent='Не может быть больше конечной' />}
-                value={startDate}
-                onDateChange={handleStartDateChange}
-              />
-              <CalendarRange
-                label={<ExplanationTooltip text='Конечная' tooltipContent='Не может быть меньше начальной' />}
-                value={endDate}
-                onDateChange={handleEndDateChange}
-              />
-            </Suspense>
+            <Div>
+              <Suspense id='Calendar' mode='panel'>
+                <CalendarRange
+                  label={<ExplanationTooltip text='Начальная' tooltipContent='Не может быть больше конечной' />}
+                  value={startDate}
+                  onDateChange={handleStartDateChange}
+                />
+                <CalendarRange
+                  label={<ExplanationTooltip text='Конечная' tooltipContent='Не может быть меньше начальной' />}
+                  value={endDate}
+                  onDateChange={handleEndDateChange}
+                />
+              </Suspense>
+            </Div>
           </Group>
           <Suspense id='ScheduleGroup' mode='screen'>
             <Group

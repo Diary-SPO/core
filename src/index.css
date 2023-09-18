@@ -5,3 +5,9 @@
 ._SimpleCell__subtitle_rmh19_48, ._SimpleCell__extraSubtitle_rmh19_49 {
     width: 100%;
 }
+
+@media (max-width: 767.9px) {
+    ._Tappable--sizeX-none_49f5u_121 {
+        border-radius: 8px !important;
+    }
+}

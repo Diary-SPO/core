@@ -4,7 +4,6 @@ import React, {
 import {
   Button,
   Calendar,
-  Div,
   FormItem,
   FormLayout,
   FormLayoutGroup,
@@ -64,38 +63,36 @@ const CalendarRange: FC<CalendarRangeProps> = React.forwardRef(
 
     return (
       <FormLayout>
-        <Div>
-          <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-            {label}
-            {' '}
-            <Button getRootRef={buttonRef} onClick={handleButtonClick}>
-              {shown ? 'Закрыть' : 'Открыть'}
-            </Button>
-          </div>
-          {shown && (
-            <Popper targetRef={buttonRef}>
-              <FormLayoutGroup mode='vertical'>
-                <FormItem>
-                  <LocaleProvider value='ru'>
-                    <div ref={calendarRef}>
-                      <Calendar
-                        value={startDate}
-                        onChange={handleDateChange}
-                        enableTime={false}
-                        disablePast={false}
-                        disableFuture={false}
-                        disablePickers
-                        showNeighboringMonth={false}
-                        size='s'
-                        listenDayChangesForUpdate={false}
-                      />
-                    </div>
-                  </LocaleProvider>
-                </FormItem>
-              </FormLayoutGroup>
-            </Popper>
-          )}
-        </Div>
+        <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 10 }}>
+          {label}
+          {' '}
+          <Button getRootRef={buttonRef} onClick={handleButtonClick}>
+            {shown ? 'Закрыть' : 'Открыть'}
+          </Button>
+        </div>
+        {shown && (
+          <Popper targetRef={buttonRef}>
+            <FormLayoutGroup mode='vertical'>
+              <FormItem>
+                <LocaleProvider value='ru'>
+                  <div ref={calendarRef}>
+                    <Calendar
+                      value={startDate}
+                      onChange={handleDateChange}
+                      enableTime={false}
+                      disablePast={false}
+                      disableFuture={false}
+                      disablePickers
+                      showNeighboringMonth={false}
+                      size='s'
+                      listenDayChangesForUpdate={false}
+                    />
+                  </div>
+                </LocaleProvider>
+              </FormItem>
+            </FormLayoutGroup>
+          </Popper>
+        )}
       </FormLayout>
     );
   },

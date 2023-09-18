@@ -123,7 +123,7 @@ const LessonCard: FC<ILessonCard> = ({ lesson }) => {
                     <div>
                       {startTime === undefined
                         ? ''
-                        : `${startTime} — ${endTime}, каб. ${timetable?.classroom.name}`}
+                        : `${startTime} — ${endTime}, каб. ${timetable?.classroom.name === '0' ? 'ДО' : timetable?.classroom.name}`}
                     </div>
                     <div
                       style={{

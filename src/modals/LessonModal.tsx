@@ -12,6 +12,7 @@ import { cleanData } from './data';
 import Mark from '../components/UI/Mark';
 import { useModal } from './ModalContext';
 import { Grade } from '../types';
+import ExplanationTooltip from '../components/UI/ExplanationTooltip';
 
 interface ILessonModal {
   id: string;
@@ -74,7 +75,15 @@ const LessonModal: FC<ILessonModal> = ({ id }) => {
   return (
     <ModalPage id={id} size={500} dynamicContentHeight>
       <ModalPageHeader>Подробнее о паре</ModalPageHeader>
-      <Group header={<Header mode='tertiary'>Основная информация</Header>}>
+      <Group header={(
+        <Header mode='tertiary'>
+          <ExplanationTooltip
+            text='Основная информация'
+            tooltipContent='Всю информацию мы получаем из оригинального дневника и бережно отображаем здесь'
+          />
+        </Header>
+      )}
+      >
         <SimpleCell multiline>
           <InfoRow header='Предмет'>
             {lessonData.name}
@@ -102,12 +111,33 @@ const LessonModal: FC<ILessonModal> = ({ id }) => {
       </Group>
       <Group header={<Header mode='tertiary'>Место и время</Header>}>
         <SimpleCell>
-          <InfoRow header='Аудитория'>
-            {lessonData.timetable.classroom.name}
+          <InfoRow
+            header={(
+              <ExplanationTooltip
+                text='Аудитория'
+                tooltipContent='Если аудитория не указана, то возможно, что пара будет удалённо'
+              />
+          )}
+          >
+            {lessonData.timetable.classroom.name === '0'
+              ? (
+                <ExplanationTooltip
+                  text='ДО'
+                  tooltipContent='Пара будет удалённо или вам зададут ДЗ. Уточните у куратора или сверьтесь с оригинальным дневником'
+                />
+              )
+              : lessonData.timetable.classroom.name}
           </InfoRow>
         </SimpleCell>
         <SimpleCell>
-          <InfoRow header='Время'>
+          <InfoRow
+            header={(
+              <ExplanationTooltip
+                text='Время'
+                tooltipContent='Если время не задано или некорректное, вы увидете текст с ошибкой'
+              />
+          )}
+          >
             {lessonData.startTime.toLocaleString()}
             {' '}
             -
@@ -118,10 +148,19 @@ const LessonModal: FC<ILessonModal> = ({ id }) => {
       </Group>
       {((lessonData.gradebook?.tasks?.length && lessonData.gradebook.tasks.length > 0) || lessonData.gradebook?.absenceType)
         ? (
-          <Group header={<Header mode='tertiary'>Успеваемость</Header>}>
+          <Group
+            header={(
+              <Header mode='tertiary'>
+                <ExplanationTooltip
+                  text='Успеваемость'
+                  tooltipContent='Информация может быть неактуальной. При возникновении неточностей можете обратиться к нам'
+                />
+              </Header>
+          )}
+          >
             {lessonData.gradebook.tasks?.map((tasks, index) => (
               <>
-                <SimpleCell multiline key={index} after={<Mark mark={Grade[setDefaultMark(tasks)]} size='s' />}>
+                <SimpleCell multiline key={`${tasks?.topic}_${index}`} after={<Mark mark={Grade[setDefaultMark(tasks)]} size='s' />}>
                   <InfoRow header='Тип работы'>
                     {LessonType[tasks.type]}
                   </InfoRow>

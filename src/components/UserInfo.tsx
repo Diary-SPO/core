@@ -72,9 +72,7 @@ const UserInfo = () => {
   };
 
   const [userData, setUserData] = useState<UserData>({
-    firstName: '',
-    lastName: '',
-    middleName: '',
+    name: '',
     org: '',
     groupName: '',
     city: '',
@@ -91,11 +89,13 @@ const UserInfo = () => {
 
   const getUserInfo = async (handle?: boolean) => {
     setIsLoading(true);
+
     const localData = localStorage.getItem('userData');
     const avaFromStorage = localStorage.getItem('ava');
+
     if (localData && !handle) {
       const parsedData = JSON.parse(localData);
-      if (parsedData.firstName && parsedData.lastName && parsedData.group) {
+      if (parsedData.name && parsedData.group) {
         setUserData(parsedData);
         if (avaFromStorage) {
           setUserAva(avaFromStorage);
@@ -119,9 +119,7 @@ const UserInfo = () => {
     }
 
     setUserData({
-      firstName: extractedData.firstName || '',
-      lastName: extractedData.lastName || '',
-      middleName: extractedData.middleName || '',
+      name: extractedData.name || '',
       org: extractedData.org || '',
       groupName: extractedData.groupName || '',
       city: extractedData.city || '',
@@ -139,7 +137,7 @@ const UserInfo = () => {
 
   useEffect(() => {
     logoutTimer = setTimeout(() => {
-      if (userData.firstName === '') {
+      if (userData.name === '') {
         openInvalidData();
         setTimeout(async () => {
           await logOut();
@@ -167,11 +165,7 @@ const UserInfo = () => {
       <Gradient mode='tint' style={styles}>
         <Avatar size={96} src={userAva} />
         <Title style={{ marginBottom: 8, marginTop: 20 }} level='2' weight='2'>
-          {userData.lastName}
-          {' '}
-          {userData.firstName}
-          {' '}
-          {userData.middleName}
+          {userData.name}
         </Title>
         <Text
           style={{

@@ -119,9 +119,10 @@ const LoginForm: FC<{ id: string }> = ({ id }) => {
 
       await appStorageSet('cookie', dataResp.cookie);
       await appStorageSet('id', String(dataResp.data.tenants.SPO_23.studentRole.id));
-      await appStorageSet('lastName', String(dataResp.data.tenants.SPO_23.lastName));
-      await appStorageSet('firstName', String(dataResp.data.tenants.SPO_23.firstName));
-      await appStorageSet('middleName', String(dataResp.data.tenants.SPO_23.middleName));
+      await appStorageSet(
+        'name',
+        `${String(dataResp.data.tenants.SPO_23.lastName)} ${String(dataResp.data.tenants.SPO_23.firstName)} ${String(dataResp.data.tenants.SPO_23.middleName)}`,
+      );
       await appStorageSet('org', String(dataResp.data.tenants.SPO_23.settings.organization.abbreviation));
       await appStorageSet('city', String(dataResp.data.tenants.SPO_23.settings.organization.address.settlement));
       await appStorageSet('group', String(dataResp.data.tenants.SPO_23.students[0].groupName));
