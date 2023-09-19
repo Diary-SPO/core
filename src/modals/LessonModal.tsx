@@ -115,7 +115,7 @@ const LessonModal: FC<ILessonModal> = ({ id }) => {
             header={(
               <ExplanationTooltip
                 text='Аудитория'
-                tooltipContent='Если аудитория не указана, то возможно, что пара будет удалённо'
+                tooltipContent='Если аудитория не указана, возможно, пара будет удалённо'
               />
           )}
           >
