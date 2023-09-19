@@ -15,7 +15,7 @@ export function handleResponse<T>(
       showSnackbar({
         icon: errorIcon,
         title: 'Ошибка при попытке сделать запрос',
-        subtitle: 'Сообщите нам об этом',
+        subtitle: 'Попробуйте обновить страницу или зайдите на другую',
       });
     }
     loadingCallback(false);

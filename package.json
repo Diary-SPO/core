@@ -2,7 +2,7 @@
   "name": "dnevnik-ts",
   "private": true,
   "homepage": ".",
-  "version": "0.0.0",
+  "version": "6.0.0",
   "type": "module",
   "scripts": {
     "dev": "vite",

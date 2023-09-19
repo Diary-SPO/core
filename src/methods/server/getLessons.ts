@@ -5,7 +5,7 @@ import { getCookie } from '../bridge/getCookie';
 import makeRequest from './makeRequest';
 
 export const getLessons = async (startDate?: Date, endDate?: Date): Promise<Day[] | 418 | 429> => {
-  const cookie = await getCookie() || localStorage.getItem('cookie');
+  const cookie = await getCookie() ?? localStorage.getItem('cookie');
   const id = await getUserId() || localStorage.getItem('id');
 
   if (!id) {

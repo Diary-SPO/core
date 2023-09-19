@@ -4,7 +4,7 @@ import { getUserId } from '../bridge/getUserId';
 import makeRequest from './makeRequest';
 
 const getAttestation = async (): Promise<AttestationResponse | 418 | 429> => {
-  const cookie = await getCookie();
+  const cookie = await getCookie() ?? localStorage.getItem('cookie');
   const id = await getUserId();
 
   if (!cookie) {

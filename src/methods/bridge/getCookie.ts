@@ -8,9 +8,9 @@ export const getCookie = async () => {
     if (data.keys) {
       return data.keys[0].value;
     }
-    return false;
+    return null;
   } catch (error) {
     console.error(error);
-    return false;
+    return null;
   }
 };

@@ -2,8 +2,8 @@
   "static_path": "dist",
   "app_id": 51740302,
   "endpoints": {
-    "mobile": "index-b5.html",
-    "mvk": "index-b5.html",
-    "web": "index-b5.html"
+    "mobile": "index-b6.html",
+    "mvk": "index-b6.html",
+    "web": "index-b6.html"
   }
 }
