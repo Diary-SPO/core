@@ -28,5 +28,5 @@ export const getLessons = async (startDate?: Date, endDate?: Date): Promise<Day[
   const formattedStartDate = formatDateForRequest(startDate);
   const formattedEndDate = formatDateForRequest(endDate);
 
-  return makeRequest(`/lessons/${id}/${formattedStartDate}/${formattedEndDate}`); // Используем makeRequest для выполнения запроса
+  return makeRequest<Day[]>(`/lessons/${id}/${formattedStartDate}/${formattedEndDate}`);
 };

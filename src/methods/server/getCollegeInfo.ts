@@ -9,7 +9,7 @@ const getCollegeInfo = async (): Promise<Organization | 418 | 429> => {
     return 418;
   }
 
-  return makeRequest('/organization');
+  return makeRequest<Organization>('/organization');
 };
 
 export default getCollegeInfo;

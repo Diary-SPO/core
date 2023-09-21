@@ -7,7 +7,12 @@ import {
 } from '@vkontakte/vkui';
 import { useActiveVkuiLocation, useRouteNavigator } from '@vkontakte/vk-mini-apps-router';
 import {
-  Icon28ClearDataOutline, Icon28DoorArrowRightOutline, Icon28HomeArrowDownOutline, Icon28IncognitoOutline,
+  Icon28ClearDataOutline,
+  Icon28DoorArrowRightOutline,
+  Icon28HomeArrowDownOutline,
+  Icon28IncognitoOutline,
+  Icon28RefreshOutline,
+  Icon28ThumbsUpCircleFillGreen,
 } from '@vkontakte/icons';
 import bridge from '@vkontakte/vk-bridge';
 import { Storage } from '../types';
@@ -175,6 +180,50 @@ const Settings: FC<ISettings> = ({ id }) => {
     />
   );
 
+  const reloadCookie = async () => {
+    const login = await getVkStorageData(['log']).then((data) => data.keys[0].value);
+    const password = await getVkStorageData(['main']).then((data) => data.keys[0].value);
+
+    if (!login || !password) {
+      showSnackbar({
+        title: 'Чего-то не хватает',
+        subtitle: 'Попробуйте перезайти в аккаунт или сообщите об ошибке',
+      });
+      return;
+    }
+
+    const response = await fetch(`${import.meta.env.VITE_SERVER_URL_SECOND}/login`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        login,
+        password,
+        isRemember: true,
+      }),
+    });
+
+    const data = await response.json();
+
+    if (!data.cookie) {
+      showSnackbar({
+        title: 'Сервер вернул что-то плохое',
+        subtitle: 'Попробуйте перезайти в аккаунт или сообщите об ошибке',
+      });
+      return;
+    }
+
+    await appStorageSet('cookie', data.cookie);
+    localStorage.setItem('cookie', data.cookie);
+
+    showSnackbar({
+      title: 'Cookie обновлена',
+      icon: <Icon28ThumbsUpCircleFillGreen />,
+      subtitle: 'Не забывайте периодически это делать',
+    });
+  };
+
   return (
     <View
       id={id}
@@ -186,18 +235,24 @@ const Settings: FC<ISettings> = ({ id }) => {
         <PanelHeaderWithBack title='Настройки' />
         <Group header={<Header mode='secondary'>Действия</Header>}>
           <CellButton
-            before={<Icon28ClearDataOutline />}
-            onClick={() => routeNavigator.showPopout(clearCachePopup)}
-          >
-            Очистить кеш
-          </CellButton>
-          <CellButton
             Component='label'
             after={<Switch getRef={switchRef} defaultChecked />}
             onChange={() => setIsSwitchChecked(!isSwitchChecked)}
             before={<Icon28IncognitoOutline />}
           >
             Показывать тех. инфрмацию
+          </CellButton>
+          <CellButton
+            before={<Icon28RefreshOutline />}
+            onClick={reloadCookie}
+          >
+            Обновить cookie
+          </CellButton>
+          <CellButton
+            before={<Icon28ClearDataOutline />}
+            onClick={() => routeNavigator.showPopout(clearCachePopup)}
+          >
+            Очистить кеш
           </CellButton>
           <CellButton
             before={<Icon28DoorArrowRightOutline />}

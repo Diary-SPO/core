@@ -7,10 +7,10 @@ import {
 import { useActiveVkuiLocation, useRouteNavigator } from '@vkontakte/vk-mini-apps-router';
 import Hashes from 'jshashes';
 import { Icon28DoorArrowLeftOutline, Icon28ErrorCircleOutline } from '@vkontakte/icons';
+import { AuthData } from 'diary-shared';
 import PanelHeaderWithBack from '../components/UI/PanelHeaderWithBack';
 import { appStorageSet, getCookie } from '../methods';
 import { VIEW_SCHEDULE } from '../routes';
-import { AuthData } from 'diary-shared';
 import { useSnackbar } from '../hooks';
 
 const LoginForm: FC<{ id: string }> = ({ id }) => {
@@ -30,8 +30,6 @@ const LoginForm: FC<{ id: string }> = ({ id }) => {
     title: 'Ошибка при попытке авторизации',
   });
 
-  const clearPopout = () => setPopout(null);
-
   useEffect(() => {
     setIsLoading(true);
     getCookie().then((cookieValue) => {
@@ -49,16 +47,6 @@ const LoginForm: FC<{ id: string }> = ({ id }) => {
       }
     });
   }, []);
-
-  const setErrorScreenSpinner = () => {
-    setPopout(<ScreenSpinner state='loading' />);
-
-    setTimeout(() => {
-      setPopout(<ScreenSpinner state='error'>Произошла ошибка</ScreenSpinner>);
-
-      setTimeout(clearPopout, 300);
-    }, 1);
-  };
 
   const onChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.currentTarget;
@@ -83,7 +71,7 @@ const LoginForm: FC<{ id: string }> = ({ id }) => {
 
     setIsLoading(true);
     setPopout(<ScreenSpinner state='loading' />);
-    const response = await fetch(`${import.meta.env.VITE_SERVER_URL}/login`, {
+    const response = await fetch(`${import.meta.env.VITE_SERVER_URL_SECOND}/login`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -96,15 +84,17 @@ const LoginForm: FC<{ id: string }> = ({ id }) => {
     });
 
     if (response.status === 401) {
-      console.log('401');
       setIsLoading(false);
-      setErrorScreenSpinner();
       setIsDataInvalid(true);
       throw new Error('401');
     } else if (!response.ok) {
+      showSnackbar({
+        icon: <Icon28ErrorCircleOutline fill='var(--vkui--color_icon_negative)' />,
+        title: 'Ошибка при попытке сделать запрос',
+        subtitle: 'Попробуйте обновить страницу или обновите куки в настройках',
+      });
       setIsLoading(false);
       createErrorSnackbar();
-      setErrorScreenSpinner();
       throw new Error(`Failed to fetch login / status: ${response.status} / statusText: ${response.statusText}`);
     }
 
@@ -114,24 +104,39 @@ const LoginForm: FC<{ id: string }> = ({ id }) => {
     }
 
     try {
-      localStorage.setItem('id', String(dataResp.data.tenants.SPO_23.studentRole.id));
-      localStorage.setItem('cookie', dataResp.cookie);
+      const id = String(dataResp.data.tenants.SPO_23.studentRole.id);
+      const { cookie } = dataResp;
+      const name = `
+      ${String(dataResp.data.tenants.SPO_23.lastName)}
+      ${String(dataResp.data.tenants.SPO_23.firstName)}
+      ${String(dataResp.data.tenants.SPO_23.middleName)}
+      `;
+      const org = String(dataResp.data.tenants.SPO_23.settings.organization.abbreviation);
+      const city = String(dataResp.data.tenants.SPO_23.settings.organization.address.settlement);
+      const group = String(dataResp.data.tenants.SPO_23.students[0].groupName);
+      const passwordHashed = (new Hashes.SHA256()).b64(password);
 
-      await appStorageSet('cookie', dataResp.cookie);
-      await appStorageSet('id', String(dataResp.data.tenants.SPO_23.studentRole.id));
-      await appStorageSet(
-        'name',
-        `${String(dataResp.data.tenants.SPO_23.lastName)} ${String(dataResp.data.tenants.SPO_23.firstName)} ${String(dataResp.data.tenants.SPO_23.middleName)}`,
-      );
-      await appStorageSet('org', String(dataResp.data.tenants.SPO_23.settings.organization.abbreviation));
-      await appStorageSet('city', String(dataResp.data.tenants.SPO_23.settings.organization.address.settlement));
-      await appStorageSet('group', String(dataResp.data.tenants.SPO_23.students[0].groupName));
+      localStorage.setItem('id', id);
+      localStorage.setItem('cookie', cookie);
+      localStorage.setItem('main', passwordHashed);
+      localStorage.setItem('log', login);
 
-      setIsLoading(false);
-      await routeNavigator.replace(`/${VIEW_SCHEDULE}`);
+      await Promise.all([
+        appStorageSet('log', login),
+        appStorageSet('main', passwordHashed),
+        appStorageSet('cookie', cookie),
+        appStorageSet('id', id),
+        appStorageSet('name', name),
+        appStorageSet('org', org),
+        appStorageSet('city', city),
+        appStorageSet('group', group),
+        routeNavigator.replace(`/${VIEW_SCHEDULE}`),
+      ]);
     } catch (e) {
       setIsLoading(false);
       console.error(e);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -153,9 +158,9 @@ const LoginForm: FC<{ id: string }> = ({ id }) => {
         <PanelHeaderWithBack title='Авторизация' />
         <Group>
           {isDataInvalid && (
-          <FormStatus header='Некорректный данные' mode='error'>
-            Проверьте правильность логина и пароля
-          </FormStatus>
+            <FormStatus header='Некорректный данные' mode='error'>
+              Проверьте правильность логина и пароля
+            </FormStatus>
           )}
           <FormLayout>
             <FormItem

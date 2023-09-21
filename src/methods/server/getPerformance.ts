@@ -11,5 +11,5 @@ export const getPerformance = async (): Promise<PerformanceCurrent | 418 | 429> 
     return 418;
   }
 
-  return makeRequest(`/performance.current/${id}`);
+  return makeRequest<PerformanceCurrent>(`/performance.current/${id}`);
 };

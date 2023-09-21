@@ -11,7 +11,7 @@ const getAttestation = async (): Promise<AttestationResponse | 418 | 429> => {
     return 418;
   }
 
-  return makeRequest(`/attestation/${id}`);
+  return makeRequest<AttestationResponse>(`/attestation/${id}`);
 };
 
 export default getAttestation;

@@ -1,4 +1,6 @@
-import {FC, lazy, useEffect, useState} from 'react';
+import {
+  FC, lazy, useEffect, useState,
+} from 'react';
 import {
   Button, ButtonGroup, Div, Link, Panel, Placeholder, ScreenSpinner, View,
 } from '@vkontakte/vkui';
@@ -9,7 +11,7 @@ import PanelHeaderWithBack from '../components/UI/PanelHeaderWithBack';
 import { useRateLimitExceeded } from '../hooks';
 import { handleResponse } from '../utils/handleResponse';
 
-const SubjectList =  lazy(() => import('../components/UI/SubjectsList'));
+const SubjectList = lazy(() => import('../components/UI/SubjectsList'));
 
 interface IAttestation {
   id: string;
@@ -37,7 +39,7 @@ const Attestation: FC<IAttestation> = ({ id }) => {
         },
         () => {
           useRateLimitExceeded();
-          // setIsError(true);
+          setIsError(true);
           setIsLoading(false);
         },
         (isLoading) => {

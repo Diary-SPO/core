@@ -2,7 +2,7 @@ import { CSSProperties, useEffect, useState } from 'react';
 import {
   Avatar, Div, Gradient, Group, Header, ScreenSpinner, SimpleCell, Spinner, Text, Title,
 } from '@vkontakte/vkui';
-import { Icon28SchoolOutline, Icon32PrometeyCircleFillRed } from '@vkontakte/icons';
+import { Icon28SchoolOutline } from '@vkontakte/icons';
 import bridge from '@vkontakte/vk-bridge';
 import { useRouteNavigator } from '@vkontakte/vk-mini-apps-router';
 import { Organization } from 'diary-shared';
@@ -11,8 +11,6 @@ import { useModal } from '../modals/ModalContext';
 import { useRateLimitExceeded } from '../hooks';
 import { MODAL_COLLEGE_INFO } from '../modals/ModalRoot';
 import getCollegeInfo from '../methods/server/getCollegeInfo';
-import useSnackbar from '../hooks/useSnackbar';
-import logOut from '../utils/logOut';
 
 const styles: CSSProperties = {
   margin: 0,
@@ -43,7 +41,6 @@ const getUserAva = async (): Promise<string | null> => {
 };
 
 const UserInfo = () => {
-  const [snackbar, showSnackbar] = useSnackbar();
   const routeNavigator = useRouteNavigator();
 
   const { openCollegeModal } = useModal();
@@ -51,7 +48,6 @@ const UserInfo = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isCollegeLoading, setIsCollegeLoading] = useState<boolean>(false);
   const [userAva, setUserAva] = useState<string | undefined>();
-  let logoutTimer: NodeJS.Timeout | null = null;
 
   const getCollegeInfoFromServer = async () => {
     setIsCollegeLoading(true);
@@ -79,14 +75,6 @@ const UserInfo = () => {
     group: '',
   });
 
-  const openInvalidData = () => {
-    showSnackbar({
-      title: 'Данные устарели',
-      icon: <Icon32PrometeyCircleFillRed fill='#fff' width={32} height={32} />,
-      subtitle: 'Через 5 секунд произойдет автоматический выход из аккаунта, поэтому ищите листок с паролем',
-    });
-  };
-
   const getUserInfo = async (handle?: boolean) => {
     setIsLoading(true);
 
@@ -94,7 +82,7 @@ const UserInfo = () => {
     const avaFromStorage = localStorage.getItem('ava');
 
     if (localData && !handle) {
-      const parsedData = JSON.parse(localData);
+      const parsedData: UserData = JSON.parse(localData);
       if (parsedData.name && parsedData.group) {
         setUserData(parsedData);
         if (avaFromStorage) {
@@ -135,23 +123,6 @@ const UserInfo = () => {
     getUserInfo();
   }, []);
 
-  useEffect(() => {
-    logoutTimer = setTimeout(() => {
-      if (userData.name === '') {
-        openInvalidData();
-        setTimeout(async () => {
-          await logOut();
-        }, 5000);
-      }
-    }, 5000);
-
-    return () => {
-      if (logoutTimer) {
-        clearTimeout(logoutTimer);
-      }
-    };
-  }, [userData]);
-
   if (isLoading) {
     return (
       <Div>
@@ -184,7 +155,6 @@ const UserInfo = () => {
           {userData.org}
         </SimpleCell>
       </Group>
-      {snackbar}
     </Group>
   );
 };

@@ -4,17 +4,20 @@ import {
 import { lazy, useEffect, useState } from 'react';
 import { useActiveVkuiLocation, usePopout, useRouteNavigator } from '@vkontakte/vk-mini-apps-router';
 import { useInsets } from '@vkontakte/vk-bridge-react';
-import { MAIN_SETTINGS, VIEW_SCHEDULE } from './routes';
-import { getCookie } from './methods';
+import { Icon32PrometeyCircleFillRed } from '@vkontakte/icons';
+import { MAIN_SETTINGS, VIEW_SCHEDULE, VIEW_SETTINGS } from './routes';
+import { getCookie, getVkStorageData } from './methods';
 import { Pages } from './types';
 import Suspense from './components/UI/Suspense';
+import useSnackbar from './hooks/useSnackbar';
+import logOut from './utils/logOut';
 
 const ModalRoot = lazy(() => import('./modals/ModalRoot'));
 const Epic = lazy(() => import('./components/UI/Epic'));
 
 const App = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
-
+  const [snackbar, showSnackbar] = useSnackbar();
   const { view: activeView = MAIN_SETTINGS } = useActiveVkuiLocation();
   const routeNavigator = useRouteNavigator();
 
@@ -31,8 +34,48 @@ const App = () => {
         setIsLoading(false);
       }
     });
+
     setIsLoading(false);
   }, [window.location]);
+
+  useEffect(() => {
+    if (activeView === MAIN_SETTINGS || activeView === VIEW_SETTINGS) {
+      return;
+    }
+
+    const getData = async () => {
+      const data = await getVkStorageData(['log', 'main', 'name']);
+      let logoutTimer: NodeJS.Timeout | null = null;
+
+      data.keys.map((key) => {
+        if (key.value === '') {
+          const openInvalidData = () => {
+            showSnackbar({
+              title: 'Данные устарели',
+              icon: <Icon32PrometeyCircleFillRed fill='#fff' width={32} height={32} />,
+              subtitle: 'Через 5 секунд произойдет автоматический выход из аккаунта, поэтому ищите листок с паролем',
+            });
+
+            logoutTimer = setTimeout(async () => {
+              await logOut();
+            }, 5000);
+
+            return () => {
+              if (logoutTimer) {
+                clearTimeout(logoutTimer);
+              }
+            };
+          };
+
+          openInvalidData();
+        }
+      });
+
+      console.log(data);
+      return data;
+    };
+    getData();
+  }, []);
 
   const onStoryChange = async (currentView: Pages) => {
     try {
@@ -55,6 +98,7 @@ const App = () => {
       <SplitLayout popout={routerPopout} modal={modals} header={<PanelHeader separator={false} />} style={{ justifyContent: 'center' }}>
         <Suspense id='Epic'>
           <SplitCol width='100%' maxWidth='700px' stretchedOnMobile autoSpaced>
+            {snackbar}
             <Epic onStoryChange={onStoryChange} />
           </SplitCol>
         </Suspense>

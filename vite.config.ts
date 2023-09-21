@@ -26,7 +26,7 @@ export default defineConfig({
     },
     rollupOptions: {
       logLevel: 'debug',
-      input: 'index-b9.html',
+      input: 'index-b10.html',
       output: {
         manualChunks: {
           react: ['react', 'react-dom'],
@@ -36,5 +36,5 @@ export default defineConfig({
   },
   // Указывать только для dev сборки.
   // Либо index'у вернуть его исходное имя, а переименовывать только при деплое
-   base: 'index-b9.html',
+   base: 'index-b10.html',
 })
