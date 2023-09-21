@@ -18,9 +18,9 @@ import PanelHeaderWithBack from '../components/UI/PanelHeaderWithBack';
 import Suspense from '../components/UI/Suspense';
 import { useRateLimitExceeded, useSnackbar } from '../hooks';
 import ExplanationTooltip from '../components/UI/ExplanationTooltip';
-import MarksByDay from '../components/UI/MarksByDay';
 import { handleResponse } from '../utils/handleResponse';
 
+const MarksByDay = lazy(() => import('../components/UI/MarksByDay'));
 const CalendarRange = lazy(() => import('../components/UI/CalendarRange'));
 const ScheduleGroup = lazy(() => import('../components/ScheduleGroup'));
 
@@ -115,7 +115,6 @@ const Schedule: FC<{ id: string }> = ({ id }) => {
 
   useEffect(() => {
     const savedLessons = localStorage.getItem('savedLessons');
-    const savedMarks = localStorage.getItem('savedMarks');
     const getLastRequestTime = localStorage.getItem('lastRequestTime');
     const currentTime = Date.now();
     const lastRequestTime = getLastRequestTime ? parseInt(getLastRequestTime, 10) : 0;
@@ -168,6 +167,12 @@ const Schedule: FC<{ id: string }> = ({ id }) => {
       setEndDate(endOfWeek(lastLessonDate));
     }
 
+    gettedLessons();
+  }, []);
+
+  useEffect(() => {
+    const savedMarks = localStorage.getItem('savedMarks');
+
     if (savedMarks) {
       setMarksData(JSON.parse(savedMarks));
       setIsMarksLoading(false);
@@ -210,7 +215,6 @@ const Schedule: FC<{ id: string }> = ({ id }) => {
       }
     };
 
-    gettedLessons();
     fetchMarksData();
   }, []);
 
