@@ -1,4 +1,4 @@
-import { FC, useEffect, useState } from 'react';
+import {FC, lazy, useEffect, useState} from 'react';
 import {
   Button, ButtonGroup, Div, Link, Panel, Placeholder, ScreenSpinner, View,
 } from '@vkontakte/vkui';
@@ -7,8 +7,9 @@ import { AttestationResponse } from 'diary-shared';
 import getAttestation from '../methods/server/getAttestation';
 import PanelHeaderWithBack from '../components/UI/PanelHeaderWithBack';
 import { useRateLimitExceeded } from '../hooks';
-import SubjectList from '../components/UI/SubjectsList';
 import { handleResponse } from '../utils/handleResponse';
+
+const SubjectList =  lazy(() => import('../components/UI/SubjectsList'));
 
 interface IAttestation {
   id: string;
