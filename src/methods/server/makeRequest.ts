@@ -12,19 +12,20 @@ const makeRequest = async (route: string): Promise<any> => {
   }
 
   try {
-    const response = await fetch(url, {
+    const response = await fetch(BASE_URL + route, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json;charset=UTF-8',
         secret: cookie,
       },
     });
-    
+
     if (response.status === 429) {
       console.log(response.status);
       return response.status;
     }
-    
+    console.log(response);
+    console.log(response.ok);
     if (!response.ok) {
       const secondServerResponse = await fetch(SECOND_SERVER_URL + route, {
         method: 'GET',
@@ -33,20 +34,20 @@ const makeRequest = async (route: string): Promise<any> => {
           secret: cookie,
         },
       });
-      
+
       if (secondServerResponse.status === 429) {
         console.log(secondServerResponse.status);
         return secondServerResponse.status;
       }
-      
+
       if (!secondServerResponse.ok) {
         throw new Error(`Failed to fetch data from ${url} and SECOND_SERVER`);
       }
-      
-      return secondServerResponse.json();
+
+      return await secondServerResponse.json();
     }
-    
-    return response.json();
+
+    return await response.json();
   } catch (err) {
     const secondServerResponse = await fetch(SECOND_SERVER_URL + route, {
       method: 'GET',
@@ -55,16 +56,17 @@ const makeRequest = async (route: string): Promise<any> => {
         secret: cookie,
       },
     });
+
     if (secondServerResponse.status === 429) {
       console.log(secondServerResponse.status);
       return secondServerResponse.status;
     }
-    
+
     if (!secondServerResponse.ok) {
       throw new Error(`Failed to fetch data from ${url} and SECOND_SERVER`);
     }
-    
-    console.log(err)
+
+    console.log(err);
     return secondServerResponse.json();
   }
 };
