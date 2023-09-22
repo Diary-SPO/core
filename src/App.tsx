@@ -47,12 +47,12 @@ const App = () => {
     if (Boolean(cookie) || Boolean(cookieStorage)) {
       try {
         await routeNavigator.push(`/${currentView}`);
-        return
+        return;
       } catch (e) {
         console.error(e);
       }
     }
-    await routeNavigator.replace(`/`);
+    await routeNavigator.replace('/');
   };
 
   const routerPopout = usePopout();

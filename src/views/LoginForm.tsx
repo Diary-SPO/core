@@ -145,15 +145,15 @@ const LoginForm: FC<{ id: string }> = ({ id }) => {
         appStorageSet('id', id),
         appStorageSet('data', JSON.stringify(userData)),
       ]);
-      
+
       showSnackbar({
         title: 'Вхожу',
         subtitle: 'Подождите немного',
       });
-      
+
       setTimeout(async () => {
         await routeNavigator.replace(`/${VIEW_SCHEDULE}`);
-      }, 1500)
+      }, 1500);
     } catch (e) {
       setIsLoading(false);
       console.error(e);

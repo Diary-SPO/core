@@ -21,7 +21,7 @@ import {
 } from '../methods';
 import PanelHeaderWithBack from '../components/UI/PanelHeaderWithBack';
 import { useSnackbar } from '../hooks';
-import logOut from "../utils/logOut.ts";
+import logOut from '../utils/logOut';
 
 interface ISettings {
   id: string,
@@ -98,8 +98,8 @@ const Settings: FC<ISettings> = ({ id }) => {
       icon: <Icon28DoorArrowRightOutline color='var(--vkui--color_background_accent_themed)' />,
       subtitle: 'После удаления всех данных вы попадёте на страницу авторизации',
     });
-    
-    await logOut()
+
+    await logOut();
     await routeNavigator.replace('/');
   };
 

@@ -16,7 +16,12 @@ import { Day, PerformanceCurrent } from 'diary-shared';
 import { getLessons, getPerformance } from '../methods';
 import PanelHeaderWithBack from '../components/UI/PanelHeaderWithBack';
 import Suspense from '../components/UI/Suspense';
-import { useRateLimitExceeded, useSnackbar } from '../hooks';
+import {
+  useDebouncedChangeWeek,
+  useRateLimitExceeded,
+  useSnackbar,
+  useScrollPosition
+} from '../hooks';
 import ExplanationTooltip from '../components/UI/ExplanationTooltip';
 import { handleResponse } from '../utils/handleResponse';
 
@@ -27,19 +32,8 @@ const ScheduleGroup = lazy(() => import('../components/ScheduleGroup'));
 const Schedule: FC<{ id: string }> = ({ id }) => {
   const currentDate = new Date();
 
-  const [scrollPosition, setScrollPosition] = useState(0);
+  const scrollPosition = useScrollPosition();
   const showToTopButton = scrollPosition > 700;
-  const handleScroll = () => {
-    const currentPosition = window.scrollY;
-    setScrollPosition(currentPosition);
-  };
-
-  useEffect(() => {
-    window.addEventListener('scroll', handleScroll);
-    return () => {
-      window.removeEventListener('scroll', handleScroll);
-    };
-  }, []);
 
   const { panel: activePanel, panelsHistory } = useActiveVkuiLocation();
   const routeNavigator = useRouteNavigator();
@@ -48,8 +42,6 @@ const Schedule: FC<{ id: string }> = ({ id }) => {
   const [endDate, setEndDate] = useState<Date>(endOfWeek(currentDate));
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isError, setIsError] = useState<boolean>(false);
-  const [clickCount, setClickCount] = useState<number>(0);
-  const [timeoutId, setTimeoutId] = useState<NodeJS.Timeout | null>(null);
   const [marksData, setMarksData] = useState<PerformanceCurrent | null>(null);
   const [isMarksLoading, setIsMarksLoading] = useState<boolean>(false);
   const [rateSnackbar, handleRateLimitExceeded] = useRateLimitExceeded();
@@ -320,44 +312,6 @@ const Schedule: FC<{ id: string }> = ({ id }) => {
     sendToServerIfValid(startDate, newEndDate);
   };
 
-  const debouncedChangeWeek = (direction: 'prev' | 'next') => {
-    localStorage.setItem('isCurrent', JSON.stringify(false));
-    setIsCurrent(false);
-    const newStartDate = new Date(startDate);
-    const newEndDate = new Date(endDate);
-    if (clickCount > 0) {
-      const weekDifference = clickCount * 7;
-      newStartDate.setDate(newStartDate.getDate() + weekDifference);
-      newEndDate.setDate(newEndDate.getDate() + weekDifference);
-      setClickCount(0);
-    } else if (direction === 'prev') {
-      newStartDate.setDate(newStartDate.getDate() - 7);
-      newEndDate.setDate(newEndDate.getDate() - 7);
-    } else if (direction === 'next') {
-      newStartDate.setDate(newStartDate.getDate() + 7);
-      newEndDate.setDate(newEndDate.getDate() + 7);
-    }
-
-    setStartDate(newStartDate);
-    setEndDate(newEndDate);
-
-    sendToServerIfValid(newStartDate, newEndDate);
-  };
-
-  const handleButtonClick = (direction: 'prev' | 'next') => {
-    setClickCount((prevCount) => prevCount + 1);
-    if (timeoutId) {
-      clearTimeout(timeoutId);
-    }
-
-    const newTimeoutId = setTimeout(() => {
-      debouncedChangeWeek(direction);
-      setClickCount(0);
-    }, 500);
-
-    setTimeoutId(newTimeoutId);
-  };
-
   const getCurrentWeek = async () => {
     const startWeek = startOfWeek(currentDate);
     const startOfCurrWeek = startOfWeek(startDate);
@@ -407,6 +361,15 @@ const Schedule: FC<{ id: string }> = ({ id }) => {
     }
   };
 
+  const debouncedChangeWeekHook = useDebouncedChangeWeek(
+    startDate,
+    endDate,
+    setIsCurrent,
+    setStartDate,
+    setEndDate,
+  );
+  const { handleButtonClick: debouncedHandleButtonClick } = debouncedChangeWeekHook;
+
   const Buttons = (
     <ButtonGroup
       style={{
@@ -414,13 +377,19 @@ const Schedule: FC<{ id: string }> = ({ id }) => {
       }}
       gap='s'
     >
-      <IconButton aria-label='Prev' onClick={() => handleButtonClick('prev')}>
+      <IconButton
+        aria-label='Prev'
+        onClick={() => debouncedHandleButtonClick('prev', sendToServerIfValid)}
+      >
         <Icon16ArrowLeftOutline />
       </IconButton>
-      <Button size='s' mode='secondary' onClick={getCurrentWeek} disabled={isCurrent}>
+      <Button size='s' mode='secondary' onClick={() => getCurrentWeek()} disabled={isCurrent}>
         <ExplanationTooltip tooltipContent='Вернёт вас на текущую неделю' text='Домой' />
       </Button>
-      <IconButton aria-label='Next' onClick={() => handleButtonClick('next')}>
+      <IconButton
+        aria-label='Next'
+        onClick={() => debouncedHandleButtonClick('next', sendToServerIfValid)}
+      >
         <Icon16ArrowRightOutline />
       </IconButton>
     </ButtonGroup>
