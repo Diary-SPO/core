@@ -71,7 +71,7 @@ const LoginForm: FC<{ id: string }> = ({ id }) => {
 
     setIsLoading(true);
     setPopout(<ScreenSpinner state='loading' />);
-    const response = await fetch(`${import.meta.env.VITE_SERVER_URL_SECOND}/login`, {
+    const response = await fetch(`${import.meta.env.VITE_SERVER_URL}/login`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -130,8 +130,9 @@ const LoginForm: FC<{ id: string }> = ({ id }) => {
         appStorageSet('org', org),
         appStorageSet('city', city),
         appStorageSet('group', group),
-        routeNavigator.replace(`/${VIEW_SCHEDULE}`),
       ]);
+      
+      await routeNavigator.replace(`/${VIEW_SCHEDULE}`)
     } catch (e) {
       setIsLoading(false);
       console.error(e);
