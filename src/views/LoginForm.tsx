@@ -131,18 +131,29 @@ const LoginForm: FC<{ id: string }> = ({ id }) => {
       localStorage.setItem('main', passwordHashed);
       localStorage.setItem('log', login);
 
+      const userData = {
+        name,
+        org,
+        city,
+        group,
+      };
+
       await Promise.all([
         appStorageSet('log', login),
         appStorageSet('main', passwordHashed),
         appStorageSet('cookie', cookie),
         appStorageSet('id', id),
-        appStorageSet('name', name),
-        appStorageSet('org', org),
-        appStorageSet('city', city),
-        appStorageSet('group', group),
+        appStorageSet('data', JSON.stringify(userData)),
       ]);
-
-      await routeNavigator.replace(`/${VIEW_SCHEDULE}`);
+      
+      showSnackbar({
+        title: 'Вхожу',
+        subtitle: 'Подождите немного',
+      });
+      
+      setTimeout(async () => {
+        await routeNavigator.replace(`/${VIEW_SCHEDULE}`);
+      }, 1500)
     } catch (e) {
       setIsLoading(false);
       console.error(e);

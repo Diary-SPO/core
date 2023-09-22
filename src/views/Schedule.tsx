@@ -499,6 +499,7 @@ const Schedule: FC<{ id: string }> = ({ id }) => {
           )}
           {showToTopButton && (
             <IconButton
+              aria-label='scroll top'
               style={{ position: 'fixed', left: 5, bottom: 60 }}
               onClick={() => {
                 window.scrollTo({

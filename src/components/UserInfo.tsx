@@ -1,12 +1,13 @@
 import { CSSProperties, useEffect, useState } from 'react';
 import {
-  Avatar, Div, Gradient, Group, Header, ScreenSpinner, SimpleCell, Spinner, Text, Title,
+  Avatar, Button, Div, Gradient, Group, Header, ScreenSpinner, SimpleCell, Spinner, Text, Title,
 } from '@vkontakte/vkui';
-import { Icon28SchoolOutline } from '@vkontakte/icons';
+import { Icon28SchoolOutline, Icon20RefreshOutline } from '@vkontakte/icons';
+
 import bridge from '@vkontakte/vk-bridge';
 import { useRouteNavigator } from '@vkontakte/vk-mini-apps-router';
 import { Organization } from 'diary-shared';
-import { getVkStorageData, getVkStorageKeys } from '../methods';
+import { getVkStorageData } from '../methods';
 import { useModal } from '../modals/ModalContext';
 import { useRateLimitExceeded } from '../hooks';
 import { MODAL_COLLEGE_INFO } from '../modals/ModalRoot';
@@ -23,7 +24,10 @@ const styles: CSSProperties = {
 };
 
 interface UserData {
-  [key: string]: string;
+  city: string
+  group: string
+  name: string
+  org: string
 }
 
 const getUserAva = async (): Promise<string | null> => {
@@ -70,7 +74,6 @@ const UserInfo = () => {
   const [userData, setUserData] = useState<UserData>({
     name: '',
     org: '',
-    groupName: '',
     city: '',
     group: '',
   });
@@ -93,12 +96,8 @@ const UserInfo = () => {
       }
     }
 
-    const keys = await getVkStorageKeys();
-    const data = await getVkStorageData(keys);
-    const extractedData: Partial<UserData> = data.keys.reduce((acc, item) => {
-      acc[item.key] = item.value;
-      return acc;
-    }, {} as UserData);
+    const newUserData = await getVkStorageData(['data']);
+    const parsedUserData: UserData = JSON.parse(newUserData.keys[0].value);
 
     const ava = await getUserAva();
 
@@ -107,14 +106,13 @@ const UserInfo = () => {
     }
 
     setUserData({
-      name: extractedData.name || '',
-      org: extractedData.org || '',
-      groupName: extractedData.groupName || '',
-      city: extractedData.city || '',
-      group: extractedData.group || '',
+      name: parsedUserData.name || '',
+      org: parsedUserData.org || '',
+      city: parsedUserData.city || '',
+      group: parsedUserData.group || '',
     });
 
-    localStorage.setItem('userData', JSON.stringify(extractedData));
+    localStorage.setItem('userData', JSON.stringify(newUserData));
 
     setIsLoading(false);
   };
@@ -130,9 +128,28 @@ const UserInfo = () => {
       </Div>
     );
   }
+  const header = (
+    <Header
+      aside={(
+        <Button
+          size='s'
+          after={<Icon20RefreshOutline />}
+          aria-label='Обновить'
+          mode='tertiary'
+          onClick={() => getUserInfo(true)}
+        />
+    )}
+      mode='tertiary'
+    >
+      Личная информация
+    </Header>
+  );
 
   return (
-    <Group>
+    <Group
+      mode='plain'
+      header={header}
+    >
       <Gradient mode='tint' style={styles}>
         <Avatar size={96} src={userAva} />
         <Title style={{ marginBottom: 8, marginTop: 20 }} level='2' weight='2'>

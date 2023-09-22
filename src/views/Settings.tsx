@@ -21,6 +21,7 @@ import {
 } from '../methods';
 import PanelHeaderWithBack from '../components/UI/PanelHeaderWithBack';
 import { useSnackbar } from '../hooks';
+import logOut from "../utils/logOut.ts";
 
 interface ISettings {
   id: string,
@@ -95,14 +96,11 @@ const Settings: FC<ISettings> = ({ id }) => {
     showSnackbar({
       title: 'Выхожу',
       icon: <Icon28DoorArrowRightOutline color='var(--vkui--color_background_accent_themed)' />,
-      subtitle: 'После удаления всех данных страница обновится',
+      subtitle: 'После удаления всех данных вы попадёте на страницу авторизации',
     });
-    await clearVkStorage();
-
-    setTimeout(async () => {
-      clearCache();
-      await routeNavigator.replace('/');
-    }, 1000);
+    
+    await logOut()
+    await routeNavigator.replace('/');
   };
 
   useEffect(() => {

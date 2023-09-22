@@ -22,15 +22,15 @@ const App = () => {
   useEffect(() => {
     setIsLoading(true);
 
-    getCookie().then((cookieValue) => {
+    getCookie().then(async (cookieValue) => {
       console.log(cookieValue?.slice(0, 4));
       console.log(localStorage.getItem('cookie')?.length);
       if (!localStorage.getItem('cookie') && !cookieValue) {
         console.log('replace');
-        routeNavigator.replace('/');
+        await routeNavigator.replace('/');
         setIsLoading(false);
       } else if ((cookieValue || localStorage.getItem('cookie')) && activeView === MAIN_SETTINGS) {
-        routeNavigator.replace(`/${VIEW_SCHEDULE}`);
+        await routeNavigator.replace(`/${VIEW_SCHEDULE}`);
         setIsLoading(false);
       }
     });
@@ -46,12 +46,13 @@ const App = () => {
 
     if (Boolean(cookie) || Boolean(cookieStorage)) {
       try {
-        console.log('push');
-        routeNavigator.push(`/${currentView}`);
+        await routeNavigator.push(`/${currentView}`);
+        return
       } catch (e) {
         console.error(e);
       }
     }
+    await routeNavigator.replace(`/`);
   };
 
   const routerPopout = usePopout();
