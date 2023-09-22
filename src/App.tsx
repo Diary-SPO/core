@@ -36,7 +36,7 @@ const App = () => {
     });
 
     setIsLoading(false);
-  }, [window.location]);
+  }, [activeView]);
 
   useEffect(() => {
     if (activeView === MAIN_SETTINGS || activeView === VIEW_SETTINGS) {
@@ -75,7 +75,7 @@ const App = () => {
       return data;
     };
     getData();
-  }, []);
+  }, [activeView]);
 
   const onStoryChange = async (currentView: Pages) => {
     try {

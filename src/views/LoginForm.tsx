@@ -131,8 +131,8 @@ const LoginForm: FC<{ id: string }> = ({ id }) => {
         appStorageSet('city', city),
         appStorageSet('group', group),
       ]);
-      
-      await routeNavigator.replace(`/${VIEW_SCHEDULE}`)
+
+      await routeNavigator.replace(`/${VIEW_SCHEDULE}`);
     } catch (e) {
       setIsLoading(false);
       console.error(e);

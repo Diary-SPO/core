@@ -192,49 +192,48 @@ const Settings: FC<ISettings> = ({ id }) => {
       return;
     }
 
-   try{
-     setIsLoading(true);
-     const response = await fetch(`${import.meta.env.VITE_SERVER_URL}/login`, {
-       method: 'POST',
-       headers: {
-         'Content-Type': 'application/json',
-       },
-       body: JSON.stringify({
-         login,
-         password,
-         isRemember: true,
-       }),
-     });
-     
-     const data = await response.json();
-     
-     if (!data.cookie) {
-       showSnackbar({
-         title: 'Сервер вернул что-то плохое',
-         subtitle: 'Попробуйте перезайти в аккаунт или сообщите об ошибке',
-       });
-       return;
-     }
-     
-     await appStorageSet('cookie', data.cookie);
-     localStorage.setItem('cookie', data.cookie);
-     
-     showSnackbar({
-       title: 'Cookie обновлена',
-       icon: <Icon28ThumbsUpCircleFillGreen />,
-       subtitle: 'Не забывайте периодически это делать',
-     });
-   } catch (e) {
-     showSnackbar({
-       title: 'Ошибка на сервере',
-       subtitle: 'Попробуйте перезайти в аккаунт или сообщите об ошибке',
-     });
-   } finally {
-     setIsLoading(false);
-   }
+    try {
+      setIsLoading(true);
+      const response = await fetch(`${import.meta.env.VITE_SERVER_URL}/login`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          login,
+          password,
+          isRemember: true,
+        }),
+      });
+
+      const data = await response.json();
+
+      if (!data.cookie) {
+        showSnackbar({
+          title: 'Сервер вернул что-то плохое',
+          subtitle: 'Попробуйте перезайти в аккаунт или сообщите об ошибке',
+        });
+        return;
+      }
+
+      await appStorageSet('cookie', data.cookie);
+      localStorage.setItem('cookie', data.cookie);
+
+      showSnackbar({
+        title: 'Cookie обновлена',
+        icon: <Icon28ThumbsUpCircleFillGreen />,
+        subtitle: 'Не забывайте периодически это делать',
+      });
+    } catch (e) {
+      showSnackbar({
+        title: 'Ошибка на сервере',
+        subtitle: 'Попробуйте перезайти в аккаунт или сообщите об ошибке',
+      });
+    } finally {
+      setIsLoading(false);
+    }
   };
-  
-  
+
   return (
     <View
       id={id}
