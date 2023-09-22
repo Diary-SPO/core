@@ -23,7 +23,10 @@ const App = () => {
     setIsLoading(true);
 
     getCookie().then((cookieValue) => {
-      if (!localStorage.getItem('cookie')) {
+      console.log(cookieValue?.slice(0, 4));
+      console.log(localStorage.getItem('cookie')?.length);
+      if (!localStorage.getItem('cookie') && !cookieValue) {
+        console.log('replace');
         routeNavigator.replace('/');
         setIsLoading(false);
       } else if ((cookieValue || localStorage.getItem('cookie')) && activeView === MAIN_SETTINGS) {
@@ -36,10 +39,18 @@ const App = () => {
   }, [activeView, localStorage]);
 
   const onStoryChange = async (currentView: Pages) => {
-    try {
-      routeNavigator.push(`/${currentView}`);
-    } catch (e) {
-      console.error(e);
+    const cookie = await getCookie();
+    const cookieStorage = localStorage.getItem('cookie');
+    console.log(Boolean(cookieStorage?.slice(0, 5)));
+    console.log(Boolean(cookie?.length));
+
+    if (Boolean(cookie) || Boolean(cookieStorage)) {
+      try {
+        console.log('push');
+        routeNavigator.push(`/${currentView}`);
+      } catch (e) {
+        console.error(e);
+      }
     }
   };
 
