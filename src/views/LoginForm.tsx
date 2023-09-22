@@ -1,8 +1,8 @@
 import {
-  ChangeEvent, FC, ReactNode, useEffect, useState,
+  ChangeEvent, FC, useEffect, useState,
 } from 'react';
 import {
-  Button, FormItem, FormLayout, FormStatus, Group, Input, Panel, ScreenSpinner, View,
+  Button, FormItem, FormLayout, FormStatus, Group, Input, Panel, View,
 } from '@vkontakte/vkui';
 import { useActiveVkuiLocation, useRouteNavigator } from '@vkontakte/vk-mini-apps-router';
 import Hashes from 'jshashes';
@@ -21,7 +21,6 @@ const LoginForm: FC<{ id: string }> = ({ id }) => {
   const [password, setPassword] = useState<string>('');
   const [isDataInvalid, setIsDataInvalid] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [_, setPopout] = useState<ReactNode | null>(null);
   const [snackbar, showSnackbar] = useSnackbar();
 
   const createErrorSnackbar = () => showSnackbar({
@@ -31,21 +30,33 @@ const LoginForm: FC<{ id: string }> = ({ id }) => {
   });
 
   useEffect(() => {
+    const storageCookie = localStorage.getItem('cookie');
+    console.log(storageCookie);
     setIsLoading(true);
-    getCookie().then((cookieValue) => {
-      if (!cookieValue) {
-        routeNavigator.replace('/');
-        setIsLoading(false);
-        showSnackbar({
-          icon: <Icon28ErrorCircleOutline fill='var(--vkui--color_icon_negative)' />,
-          subtitle: 'Заполни форму и войди в дневник',
-          title: 'О вас нет данных, ты кто такой?',
-        });
-      } else {
-        routeNavigator.replace(`/${VIEW_SCHEDULE}`);
-        setIsLoading(false);
-      }
-    });
+    const getUserCookie = async () => {
+      getCookie().then((cookieValue) => {
+        console.log(cookieValue);
+        if (storageCookie || cookieValue) {
+          routeNavigator.replace(`/${VIEW_SCHEDULE}`);
+          setIsLoading(false);
+          return;
+        }
+
+        setTimeout(() => {
+          if (!storageCookie) {
+            routeNavigator.replace('/');
+            setIsLoading(false);
+            showSnackbar({
+              icon: <Icon28ErrorCircleOutline fill='var(--vkui--color_icon_negative)' />,
+              subtitle: 'Заполни форму и войди в дневник',
+              title: 'О вас нет данных, ты кто такой?',
+            });
+          }
+        }, 500);
+      });
+    };
+
+    getUserCookie();
   }, []);
 
   const onChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -70,7 +81,6 @@ const LoginForm: FC<{ id: string }> = ({ id }) => {
     const passwordHashed = (new Hashes.SHA256()).b64(password);
 
     setIsLoading(true);
-    setPopout(<ScreenSpinner state='loading' />);
     const response = await fetch(`${import.meta.env.VITE_SERVER_URL}/login`, {
       method: 'POST',
       headers: {
@@ -145,8 +155,16 @@ const LoginForm: FC<{ id: string }> = ({ id }) => {
   const isPasswordEmpty = password === '';
   const isPasswordValid = password && !isPasswordEmpty;
 
-  const loginTopText = isLoginEmpty ? 'Логин' : (loginPattern.test(login) ? 'Логин введён' : 'Введите корректный логин');
-  const passwordTopText = password === '' ? 'Пароль' : (isPasswordValid ? 'Пароль введён' : 'Введите корректный пароль');
+  const loginTopText = isLoginEmpty
+    ? 'Логин'
+    : (loginPattern.test(login)
+      ? 'Логин введён'
+      : 'Введите корректный логин');
+  const passwordTopText = password === ''
+    ? 'Пароль'
+    : (isPasswordValid
+      ? 'Пароль введён'
+      : 'Введите корректный пароль');
 
   return (
     <View

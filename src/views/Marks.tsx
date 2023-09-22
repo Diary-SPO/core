@@ -52,7 +52,6 @@ const Marks: FC<{ id: string }> = ({ id }) => {
           setIsLoading,
           showSnackbar,
         );
-
         localStorage.setItem('savedMarks', JSON.stringify(marks));
         localStorage.setItem('lastFetchTime', String(Date.now()));
         setMarksForSubject(marks as PerformanceCurrent);

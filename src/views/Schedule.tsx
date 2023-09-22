@@ -83,7 +83,7 @@ const Schedule: FC<{ id: string }> = ({ id }) => {
       setMarksData(marks as PerformanceCurrent);
       setLessons(data as Day[]);
       updateDatesFromData(data as Day[]);
-
+      
       localStorage.setItem('savedLessons', JSON.stringify(data));
       localStorage.setItem('savedMarks', JSON.stringify(marks));
     } catch (error) {
@@ -200,8 +200,10 @@ const Schedule: FC<{ id: string }> = ({ id }) => {
           setIsMarksLoading(false);
         }, handleRateLimitExceeded, setIsLoading, showSnackbar);
 
-        setMarksData(marks as PerformanceCurrent);
-        localStorage.setItem('savedMarks', JSON.stringify(marks));
+       if (typeof marks !== 'number') {
+         setMarksData(marks as PerformanceCurrent);
+         localStorage.setItem('savedMarks', JSON.stringify(marks));
+       }
       } catch (error) {
         console.error(error);
         showSnackbar({
