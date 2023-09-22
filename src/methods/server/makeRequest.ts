@@ -5,7 +5,7 @@ const SECOND_SERVER_URL = import.meta.env.VITE_SERVER_URL_SECOND;
 
 const makeRequest = async <T>(route: string): Promise< T | 418 | 429> => {
   const cookie = await getCookie() ?? localStorage.getItem('cookie');
-  console.log( localStorage.getItem('cookie'))
+  console.log(localStorage.getItem('cookie'));
   const url = `${BASE_URL}${route}`;
 
   if (!cookie) {

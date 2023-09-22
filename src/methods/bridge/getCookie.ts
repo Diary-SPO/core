@@ -6,7 +6,7 @@ export const getCookie = async () => {
       keys: ['cookie'],
     });
     if (data.keys) {
-      console.log(data.keys)
+      console.log(data.keys);
       return data.keys[0].value;
     }
     return null;
