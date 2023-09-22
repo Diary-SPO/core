@@ -20,7 +20,7 @@ import {
   useDebouncedChangeWeek,
   useRateLimitExceeded,
   useSnackbar,
-  useScrollPosition
+  useScrollPosition,
 } from '../hooks';
 import ExplanationTooltip from '../components/UI/ExplanationTooltip';
 import { handleResponse } from '../utils/handleResponse';
@@ -174,12 +174,6 @@ const Schedule: FC<{ id: string }> = ({ id }) => {
       setIsMarksLoading(true);
 
       if (savedMarks) {
-        showSnackbar({
-          layout: 'vertical',
-          action: 'Загрузить новые',
-          onActionClick: handleReloadData,
-          title: 'Данные взяты из кеша',
-        });
         setIsMarksLoading(false);
         return;
       }
