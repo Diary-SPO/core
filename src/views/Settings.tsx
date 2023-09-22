@@ -99,9 +99,9 @@ const Settings: FC<ISettings> = ({ id }) => {
     });
     await clearVkStorage();
 
-    setTimeout(() => {
+    setTimeout(async () => {
       clearCache();
-      location.reload();
+      await routeNavigator.replace('/');
     }, 1000);
   };
 
