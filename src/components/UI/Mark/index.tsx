@@ -1,19 +1,19 @@
 import { CSSProperties, FC } from 'react';
 import { Footnote } from '@vkontakte/vkui';
-import { EAbsenceTypes } from 'diary-shared';
+import { AbsenceTypesKeys } from 'diary-shared';
 import { TMark } from '../../../types';
 
 type Sizes = 'l' | 's';
 
 interface IMark {
-  mark?: TMark | EAbsenceTypes;
+  mark?: TMark | AbsenceTypesKeys;
   size?: Sizes;
   bottom?: string;
   useMargin?: boolean;
   style?: CSSProperties;
 }
 
-const getBackgroundColor = (score?: TMark | EAbsenceTypes) => {
+const getBackgroundColor = (score?: TMark | AbsenceTypesKeys) => {
   if (Number(score) > 5) {
     return 'var(--vkui--color_accent_purple)';
   } if (Number(score) >= 4) {

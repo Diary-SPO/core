@@ -4,13 +4,12 @@ import {
 } from '@vkontakte/vkui';
 import { useActiveVkuiLocation, useRouteNavigator } from '@vkontakte/vk-mini-apps-router';
 import { Icon28ErrorCircleOutline, Icon28InfoCircle } from '@vkontakte/icons';
+import { PerformanceCurrent } from 'diary-shared';
 import PanelHeaderWithBack from '../components/UI/PanelHeaderWithBack';
 import Suspense from '../components/UI/Suspense';
 import Summary from '../components/UI/Summary';
 import MarksByGroup from '../components/MarksByGroup';
 import UserInfo from '../components/UserInfo';
-// eslint-disable-next-line
-import { PerformanceCurrent } from '/diary-shared';
 import { getPerformance } from '../methods';
 import { handleResponse } from '../utils/handleResponse';
 import { useSnackbar } from '../hooks';

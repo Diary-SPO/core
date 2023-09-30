@@ -4,7 +4,7 @@ import {
 } from '@vkontakte/vkui';
 import { useRouteNavigator } from '@vkontakte/vk-mini-apps-router';
 import {
-  Day, EAbsenceTypes, Gradebook, LessonWorkType, Timetable,
+  AbsenceTypes, Day, Gradebook, LessonWorkType, Timetable,
 // eslint-disable-next-line
 } from '/diary-shared';
 import { formatLessonDate, getDayOfWeek } from '../utils/formatLessonDate';
@@ -114,7 +114,7 @@ const LessonCard: FC<ILessonCard> = ({ lesson }) => {
                           <SubtitleWithBorder
                             color={gradebook.absenceType === 'IsLate' ? 'yellow' : 'red'}
                           >
-                            {EAbsenceTypes[gradebook?.absenceType]}
+                            {AbsenceTypes[gradebook?.absenceType]}
                           </SubtitleWithBorder>
                           )}
                       </div>
