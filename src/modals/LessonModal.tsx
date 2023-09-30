@@ -6,6 +6,7 @@ import {
   AbsenceTypes, AbsenceTypesDescription, AbsenceTypesDescriptionKeys, Lesson, LessonType, LessonWorkType, TLesson,
 // eslint-disable-next-line
 } from '/diary-shared';
+import { AbsenceTypesKeys } from 'diary-shared';
 import setDefaultMark from '../utils/setDefaultMark';
 import textToLink from '../utils/textToLink';
 import { cleanData } from './data';
@@ -174,7 +175,7 @@ const LessonModal: FC<ILessonModal> = ({ id }) => {
               </>
             ))}
             {lessonData.gradebook?.absenceType && (
-              <SimpleCell after={<Mark mark={AbsenceTypes[lessonData.gradebook?.absenceType]} size='s' />}>
+              <SimpleCell after={<Mark mark={AbsenceTypes[lessonData.gradebook?.absenceType] as AbsenceTypesKeys} size='s' />}>
                 {AbsenceTypesDescription[AbsenceTypes[lessonData.gradebook?.absenceType] as AbsenceTypesDescriptionKeys]}
               </SimpleCell>
             )}

@@ -4,16 +4,17 @@ import { AbsenceTypesKeys } from 'diary-shared';
 import { TMark } from '../../../types';
 
 type Sizes = 'l' | 's';
+type ReturnedMark = TMark | AbsenceTypesKeys;
 
 interface IMark {
-  mark?: TMark | AbsenceTypesKeys;
+  mark?: ReturnedMark;
   size?: Sizes;
   bottom?: string;
   useMargin?: boolean;
   style?: CSSProperties;
 }
 
-const getBackgroundColor = (score?: TMark | AbsenceTypesKeys) => {
+const getBackgroundColor = (score?: ReturnedMark) => {
   if (Number(score) > 5) {
     return 'var(--vkui--color_accent_purple)';
   } if (Number(score) >= 4) {

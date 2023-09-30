@@ -14,7 +14,7 @@ import {
   Icon20StatisticsOutline,
 } from '@vkontakte/icons';
 import {
-  AbsenceType, AbsenceTypes, PerformanceCurrent, TextMark,
+  AbsenceType, AbsenceTypes, PerformanceCurrent, TextMark, AbsenceTypesKeys
 // eslint-disable-next-line
 } from '/diary-shared';
 import calculateAverageMark from '../utils/calculateAverageMark';
@@ -74,7 +74,7 @@ const MarksByGroup: FC<IMarksByGroup> = ({ marksForSubject }) => {
                         <Mark key={k} mark={Grade[mark as keyof typeof Grade]} size='s' />
                       ))
                     ) : absenceType ? (
-                      <Mark size='s' mark={AbsenceTypes[absenceType]} />
+                      <Mark size='s' mark={AbsenceTypes[absenceType] as AbsenceTypesKeys} />
                     ) : null}
                   </div>
                 ))}

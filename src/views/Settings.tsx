@@ -22,22 +22,11 @@ import {
 import PanelHeaderWithBack from '../components/UI/PanelHeaderWithBack';
 import { useSnackbar } from '../hooks';
 import logOut from '../utils/logOut';
+import {AuthData} from "diary-shared";
 
 interface ISettings {
   id: string,
 }
-
-export const clearVkStorage = async () => {
-  try {
-    const keys = await getVkStorageKeys();
-
-    for (const key of keys) {
-      await appStorageSet(key, '');
-    }
-  } catch (error) {
-    console.error(error);
-  }
-};
 
 const Settings: FC<ISettings> = ({ id }) => {
   const { panel: activePanel, panelsHistory } = useActiveVkuiLocation();
@@ -204,7 +193,7 @@ const Settings: FC<ISettings> = ({ id }) => {
         }),
       });
 
-      const data = await response.json();
+      const data = await response.json() as AuthData;
 
       if (!data.cookie) {
         showSnackbar({
