@@ -22,7 +22,7 @@ export enum Grade {
   'О' = 'О',
 }
 
-type GradeKeys = keyof typeof Grade;
+export type GradeKeys = keyof typeof Grade;
 
 export type TextMark = GradeKeys;
 export type TMark = typeof Grade[GradeKeys];

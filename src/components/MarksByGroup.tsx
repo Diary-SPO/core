@@ -19,7 +19,7 @@ import {
 } from '/diary-shared';
 import calculateAverageMark from '../utils/calculateAverageMark';
 import Mark from './UI/Mark';
-import { Grade } from '../types';
+import { Grade, GradeKeys } from '../types';
 
 interface IMarksByGroup {
   marksForSubject: PerformanceCurrent | null;
@@ -71,7 +71,7 @@ const MarksByGroup: FC<IMarksByGroup> = ({ marksForSubject }) => {
                   <div key={`${date}_${absenceType}`} style={{ display: 'flex' }}>
                     {marks.length > 0 && !absenceType ? (
                       marks.map((mark, k) => (
-                        <Mark key={k} mark={Grade[mark as keyof typeof Grade]} size='s' />
+                        <Mark key={k} mark={Grade[mark as GradeKeys]} size='s' />
                       ))
                     ) : absenceType ? (
                       <Mark size='s' mark={AbsenceTypes[absenceType] as AbsenceTypesKeys} />

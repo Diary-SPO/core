@@ -6,6 +6,7 @@ import {
 import { ExaminationType, Examinations } from '/diary-shared';
 
 interface SubjectListProps {
+  // FIXME: don't use any
   semesters: Record<string, any[]>;
   studentName: string | null;
   year: number | null;

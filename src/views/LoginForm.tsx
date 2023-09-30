@@ -37,7 +37,7 @@ const LoginForm: FC<{ id: string }> = ({ id }) => {
     const storageCookie = localStorage.getItem('cookie');
     console.log(storageCookie);
     setIsLoading(true);
-    const getUserCookie = async () => {
+    const getUserCookie = () => {
       getCookie().then((cookieValue) => {
         console.log(cookieValue);
         if (storageCookie || cookieValue) {

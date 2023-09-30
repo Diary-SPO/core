@@ -47,8 +47,12 @@ module.exports = {
         // Т.к. наши массивы статичны и юзер не может как-либо менять порядок / удалять элементы,
         // мы можем использовать индекс как key
         'react/no-array-index-key': 'off',
+        '@typescript-eslint/ban-ts-comment': 'off',
         '@typescript-eslint/no-unsafe-member-access': 'off',
         'no-nested-ternary': 'off',
+        'react/jsx-props-no-spreading': 'off',
+        'no-param-reassign': 'off',
+        'max-classes-per-file': 'off',
         'jsx-quotes': [2, 'prefer-single'],
         'react/function-component-definition': [2, {
           namedComponents: 'arrow-function',

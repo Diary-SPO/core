@@ -52,6 +52,12 @@ const UserInfo = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isCollegeLoading, setIsCollegeLoading] = useState<boolean>(false);
   const [userAva, setUserAva] = useState<string | undefined>();
+  const [userData, setUserData] = useState<UserData>({
+    name: '',
+    org: '',
+    city: '',
+    group: '',
+  });
 
   const getCollegeInfoFromServer = async () => {
     setIsCollegeLoading(true);
@@ -70,13 +76,6 @@ const UserInfo = () => {
       console.error(e);
     }
   };
-
-  const [userData, setUserData] = useState<UserData>({
-    name: '',
-    org: '',
-    city: '',
-    group: '',
-  });
 
   const getUserInfo = async (handle?: boolean) => {
     setIsLoading(true);
@@ -128,6 +127,7 @@ const UserInfo = () => {
       </Div>
     );
   }
+
   const header = (
     <Header
       aside={(

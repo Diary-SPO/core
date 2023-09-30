@@ -54,9 +54,11 @@ const LessonCard: FC<ILessonCard> = ({ lesson }) => {
   const currentDate = new Date();
   const formattedLessonDate = formatLessonDate(lesson.date);
   const lessonDate = new Date(lesson.date);
+
   if (lessonDate.getDay() === 0) {
     return null;
   }
+
   const lessonYear = lessonDate.getFullYear().toString();
   const lessonMonth = (lessonDate.getMonth() + 1).toString().padStart(2, '0');
   const lessonDay = lessonDate.getDate().toString().padStart(2, '0');

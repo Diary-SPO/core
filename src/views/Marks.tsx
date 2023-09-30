@@ -43,7 +43,7 @@ const Marks: FC<{ id: string }> = ({ id }) => {
     fetchData();
   }, []);
 
-  const fetchMarks = async (isHandle?: boolean) => {
+  const fetchMarks = async (isHandle?: boolean): Promise<PerformanceCurrent | 418 | 429 | undefined> => {
     setIsLoading(true);
     try {
       const lastFetchTime = localStorage.getItem('lastFetchTime');
