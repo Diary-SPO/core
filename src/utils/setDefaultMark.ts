@@ -11,6 +11,8 @@ const setDefaultMark = (task: Task): TextMark => {
     return 'ДЗ';
   }
 
+  // FIXME
+  // @ts-ignore
   return task.mark || '';
 };
 
