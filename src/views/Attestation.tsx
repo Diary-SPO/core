@@ -24,13 +24,13 @@ const Attestation: FC<IAttestation> = ({ id }) => {
   const [isError, setIsError] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [attestationData, setAttestationData] = useState<AttestationResponse | null>(null);
-  
+
   const getUserAttestation = async () => {
     setIsLoading(true);
     setIsError(false);
     try {
       const data = await getAttestation();
-      
+
       handleResponse(
         data,
         () => {
@@ -46,7 +46,7 @@ const Attestation: FC<IAttestation> = ({ id }) => {
           setIsLoading(isLoading);
         },
       );
-      
+
       setAttestationData(data as AttestationResponse);
     } catch (error) {
       setIsError(true);
@@ -55,7 +55,7 @@ const Attestation: FC<IAttestation> = ({ id }) => {
       setIsLoading(false);
     }
   };
-  
+
   useEffect(() => {
     getUserAttestation();
   }, []);
