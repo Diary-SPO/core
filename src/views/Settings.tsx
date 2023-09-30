@@ -15,6 +15,7 @@ import {
   Icon28ThumbsUpCircleFillGreen,
 } from '@vkontakte/icons';
 import bridge from '@vkontakte/vk-bridge';
+import { AuthData } from 'diary-shared';
 import { Storage } from '../types';
 import {
   appStorageSet, getVkStorageData, getVkStorageKeys,
@@ -26,18 +27,6 @@ import logOut from '../utils/logOut';
 interface ISettings {
   id: string,
 }
-
-export const clearVkStorage = async () => {
-  try {
-    const keys = await getVkStorageKeys();
-
-    for (const key of keys) {
-      await appStorageSet(key, '');
-    }
-  } catch (error) {
-    console.error(error);
-  }
-};
 
 const Settings: FC<ISettings> = ({ id }) => {
   const { panel: activePanel, panelsHistory } = useActiveVkuiLocation();
@@ -58,6 +47,26 @@ const Settings: FC<ISettings> = ({ id }) => {
   const switchRef = useRef(null);
   const [isSwitchChecked, setIsSwitchChecked] = useState<boolean>(true);
   const [isLoading, setIsLoading] = useState<boolean>(false);
+
+  useEffect(() => {
+    const checkIsFeatureSupported = async () => {
+      await bridge.send('VKWebAppAddToHomeScreenInfo')
+        .then(({ is_added_to_home_screen, is_feature_supported }) => {
+          if (is_feature_supported) {
+            setIsHomeScreenSupported(true);
+          }
+          if (is_added_to_home_screen) {
+            console.log(is_added_to_home_screen);
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    };
+
+    checkIsFeatureSupported();
+  }, []);
+
   useEffect(() => {
     const allKeys = Object.keys(localStorage);
 
@@ -102,25 +111,6 @@ const Settings: FC<ISettings> = ({ id }) => {
     await logOut();
     await routeNavigator.replace('/');
   };
-
-  useEffect(() => {
-    const checkIsFeatureSupported = async () => {
-      await bridge.send('VKWebAppAddToHomeScreenInfo')
-        .then(({ is_added_to_home_screen, is_feature_supported }) => {
-          if (is_feature_supported) {
-            setIsHomeScreenSupported(true);
-          }
-          if (is_added_to_home_screen) {
-            console.log(is_added_to_home_screen);
-          }
-        })
-        .catch((error) => {
-          console.log(error);
-        });
-    };
-
-    checkIsFeatureSupported();
-  }, []);
 
   const addToHomeScreen = () => {
     bridge.send('VKWebAppAddToHomeScreen')
@@ -204,7 +194,7 @@ const Settings: FC<ISettings> = ({ id }) => {
         }),
       });
 
-      const data = await response.json();
+      const data = await response.json() as AuthData;
 
       if (!data.cookie) {
         showSnackbar({

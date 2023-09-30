@@ -14,12 +14,12 @@ import {
   Icon20StatisticsOutline,
 } from '@vkontakte/icons';
 import {
-  AbsenceType, EAbsenceTypes, PerformanceCurrent, TextMark,
-  // eslint-disable-next-line
+  AbsenceType, AbsenceTypes, PerformanceCurrent, TextMark, AbsenceTypesKeys,
+// eslint-disable-next-line
 } from '/diary-shared';
 import calculateAverageMark from '../utils/calculateAverageMark';
 import Mark from './UI/Mark';
-import { Grade } from '../types';
+import { Grade, GradeKeys } from '../types';
 
 interface IMarksByGroup {
   marksForSubject: PerformanceCurrent | null;
@@ -68,13 +68,13 @@ const MarksByGroup: FC<IMarksByGroup> = ({ marksForSubject }) => {
             <HorizontalScroll>
               <div style={{ display: 'flex' }}>
                 {subjectMarksMap[subjectName].map(({ date, marks, absenceType }) => (
-                  <div key={`${date}_${marks}`} style={{ display: 'flex' }}>
+                  <div key={`${date}_${absenceType}`} style={{ display: 'flex' }}>
                     {marks.length > 0 && !absenceType ? (
                       marks.map((mark, k) => (
-                        <Mark key={k} mark={Grade[mark]} size='s' />
+                        <Mark key={k} mark={Grade[mark as GradeKeys]} size='s' />
                       ))
                     ) : absenceType ? (
-                      <Mark size='s' mark={EAbsenceTypes[absenceType]} />
+                      <Mark size='s' mark={AbsenceTypes[absenceType] as AbsenceTypesKeys} />
                     ) : null}
                   </div>
                 ))}

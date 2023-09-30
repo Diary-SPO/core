@@ -3,9 +3,10 @@ import {
   Group, Header, InfoRow, ModalPage, ModalPageHeader, Separator, SimpleCell, Spacing, Text,
 } from '@vkontakte/vkui';
 import {
-  EAbsenceTypes, EAbsenceTypesDescription, Lesson, LessonType, LessonWorkType, TLesson,
+  AbsenceTypes, AbsenceTypesDescription, AbsenceTypesDescriptionKeys, Lesson, LessonType, LessonWorkType, TLesson,
 // eslint-disable-next-line
 } from '/diary-shared';
+import { AbsenceTypesKeys } from 'diary-shared';
 import setDefaultMark from '../utils/setDefaultMark';
 import textToLink from '../utils/textToLink';
 import { cleanData } from './data';
@@ -174,8 +175,8 @@ const LessonModal: FC<ILessonModal> = ({ id }) => {
               </>
             ))}
             {lessonData.gradebook?.absenceType && (
-              <SimpleCell after={<Mark mark={EAbsenceTypes[lessonData.gradebook?.absenceType]} size='s' />}>
-                {EAbsenceTypesDescription[EAbsenceTypes[lessonData.gradebook?.absenceType]]}
+              <SimpleCell after={<Mark mark={AbsenceTypes[lessonData.gradebook?.absenceType] as AbsenceTypesKeys} size='s' />}>
+                {AbsenceTypesDescription[AbsenceTypes[lessonData.gradebook?.absenceType] as AbsenceTypesDescriptionKeys]}
               </SimpleCell>
             )}
           </Group>

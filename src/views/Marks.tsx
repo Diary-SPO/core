@@ -4,13 +4,12 @@ import {
 } from '@vkontakte/vkui';
 import { useActiveVkuiLocation, useRouteNavigator } from '@vkontakte/vk-mini-apps-router';
 import { Icon28ErrorCircleOutline, Icon28InfoCircle } from '@vkontakte/icons';
+import { PerformanceCurrent } from 'diary-shared';
 import PanelHeaderWithBack from '../components/UI/PanelHeaderWithBack';
 import Suspense from '../components/UI/Suspense';
 import Summary from '../components/UI/Summary';
 import MarksByGroup from '../components/MarksByGroup';
 import UserInfo from '../components/UserInfo';
-// eslint-disable-next-line
-import { PerformanceCurrent } from '/diary-shared';
 import { getPerformance } from '../methods';
 import { handleResponse } from '../utils/handleResponse';
 import { useSnackbar } from '../hooks';
@@ -26,8 +25,25 @@ const Marks: FC<{ id: string }> = ({ id }) => {
   const [snackbar, showSnackbar] = useSnackbar();
 
   const [marksForSubject, setMarksForSubject] = useState<PerformanceCurrent | null>(null);
+  const [totalNumberOfMarks, setTotalNumberOfMarks] = useState<string | null>(null);
+  const [averageMark, setAverageMark] = useState<number | null>(null);
+  const [markCounts, setMarkCounts] = useState<Record<number, number> | null>(null);
 
-  const fetchMarks = async (isHandle?: boolean) => {
+  const fetchData = async () => {
+    try {
+      const marks = await fetchMarks();
+
+      setMarksForSubject(marks as unknown as PerformanceCurrent);
+    } catch (error) {
+      console.error('Ошибка при получении данных:', error);
+    }
+  };
+
+  useEffect(() => {
+    fetchData();
+  }, []);
+
+  const fetchMarks = async (isHandle?: boolean): Promise<PerformanceCurrent | 418 | 429 | undefined> => {
     setIsLoading(true);
     try {
       const lastFetchTime = localStorage.getItem('lastFetchTime');
@@ -81,15 +97,12 @@ const Marks: FC<{ id: string }> = ({ id }) => {
     }
   };
 
-  const [totalNumberOfMarks, setTotalNumberOfMarks] = useState<string | null>(null);
-  const [averageMark, setAverageMark] = useState<number | null>(null);
-  const [markCounts, setMarkCounts] = useState<Record<number, number> | null>(null);
-
   const saveStatisticsData = (marks: PerformanceCurrent) => {
     try {
       const allMarks: TextMark[] = marks.daysWithMarksForSubject.reduce(
         (marksArray: TextMark[], subject) => {
           if (subject.daysWithMarks) {
+            // @ts-ignore
             subject.daysWithMarks.forEach((day) => marksArray.push(...day.markValues));
           }
           return marksArray;
@@ -124,19 +137,6 @@ const Marks: FC<{ id: string }> = ({ id }) => {
       console.error(e);
     }
   };
-
-  const fetchData = async () => {
-    try {
-      const marks = await fetchMarks();
-
-      setMarksForSubject(marks as unknown as PerformanceCurrent);
-    } catch (error) {
-      console.error('Ошибка при получении данных:', error);
-    }
-  };
-  useEffect(() => {
-    fetchData();
-  }, []);
 
   return (
     <View

@@ -8,6 +8,7 @@ import { MAIN_SETTINGS, VIEW_SCHEDULE } from './routes';
 import { getCookie } from './methods';
 import { Pages } from './types';
 import Suspense from './components/UI/Suspense';
+import { useLocalStorage } from './hooks';
 
 const ModalRoot = lazy(() => import('./modals/ModalRoot'));
 const Epic = lazy(() => import('./components/UI/Epic'));
@@ -16,20 +17,21 @@ const App = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const { view: activeView = MAIN_SETTINGS } = useActiveVkuiLocation();
   const routeNavigator = useRouteNavigator();
-
   const modals = <ModalRoot />;
+  // TODO: типизировать через дженерик (как useState)
+  const [cookie, setCookie] = useLocalStorage('cookie', undefined);
+
+  const routerPopout = usePopout();
+  const vkBridgeInsets = useInsets() || undefined;
 
   useEffect(() => {
     setIsLoading(true);
 
     getCookie().then(async (cookieValue) => {
-      console.log(cookieValue?.slice(0, 4));
-      console.log(localStorage.getItem('cookie')?.length);
-      if (!localStorage.getItem('cookie') && !cookieValue) {
-        console.log('replace');
+      if (!cookie && !cookieValue) {
         await routeNavigator.replace('/');
         setIsLoading(false);
-      } else if ((cookieValue || localStorage.getItem('cookie')) && activeView === MAIN_SETTINGS) {
+      } else if ((cookieValue || cookie) && activeView === MAIN_SETTINGS) {
         await routeNavigator.replace(`/${VIEW_SCHEDULE}`);
         setIsLoading(false);
       }
@@ -39,14 +41,12 @@ const App = () => {
   }, [activeView, localStorage]);
 
   const onStoryChange = async (currentView: Pages) => {
-    const cookie = await getCookie();
-    const cookieStorage = localStorage.getItem('cookie');
-    console.log(Boolean(cookieStorage?.slice(0, 5)));
-    console.log(Boolean(cookie?.length));
+    const cookieValue = await getCookie();
 
-    if (Boolean(cookie) || Boolean(cookieStorage)) {
+    if (Boolean(cookie) || Boolean(cookieValue)) {
       try {
         await routeNavigator.push(`/${currentView}`);
+        setCookie(cookieValue);
         return;
       } catch (e) {
         console.error(e);
@@ -55,8 +55,6 @@ const App = () => {
     await routeNavigator.replace('/');
   };
 
-  const routerPopout = usePopout();
-  const vkBridgeInsets = useInsets() || undefined;
   return (
     <AppRoot safeAreaInsets={vkBridgeInsets}>
       <SplitLayout popout={routerPopout} modal={modals} header={<PanelHeader separator={false} />} style={{ justifyContent: 'center' }}>

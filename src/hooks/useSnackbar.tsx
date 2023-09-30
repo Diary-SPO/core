@@ -22,6 +22,7 @@ const useSnackbar = (): [ReactNode | null, (snackbarData: SnackbarData | null) =
       setSnackbar(null);
       return null;
     }
+
     setSnackbar(
       <Snackbar
         layout={snackbarData.layout || 'vertical'}
@@ -36,6 +37,8 @@ const useSnackbar = (): [ReactNode | null, (snackbarData: SnackbarData | null) =
         {snackbarData.title}
       </Snackbar>,
     );
+
+    return null;
   }, []);
 
   return [snackbar, showSnackbar];

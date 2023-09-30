@@ -3,9 +3,10 @@ import {
   Card, CardGrid, Div, Group, Header, InfoRow, Subhead, Title,
 } from '@vkontakte/vkui';
 // eslint-disable-next-line
-import { Examinations, ExaminationType } from '/diary-shared';
+import { ExaminationType, Examinations } from '/diary-shared';
 
 interface SubjectListProps {
+  // FIXME: don't use any
   semesters: Record<string, any[]>;
   studentName: string | null;
   year: number | null;

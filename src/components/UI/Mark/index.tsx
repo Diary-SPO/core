@@ -1,25 +1,27 @@
 import { CSSProperties, FC } from 'react';
 import { Footnote } from '@vkontakte/vkui';
-import { EAbsenceTypes } from 'diary-shared';
+import { AbsenceTypesKeys } from 'diary-shared';
 import { TMark } from '../../../types';
 
 type Sizes = 'l' | 's';
+type ReturnedMark = TMark | AbsenceTypesKeys;
 
 interface IMark {
-  mark?: TMark | EAbsenceTypes;
+  mark?: ReturnedMark;
   size?: Sizes;
   bottom?: string;
   useMargin?: boolean;
   style?: CSSProperties;
 }
 
-const getBackgroundColor = (score?: TMark | EAbsenceTypes) => {
+const getBackgroundColor = (score?: ReturnedMark) => {
   if (Number(score) > 5) {
     return 'var(--vkui--color_accent_purple)';
   } if (Number(score) >= 4) {
     return 'linear-gradient(135deg,#50c750,#32b332)';
   } if (score === 3) {
     return '#F59802';
+  //   FIXME: 'The two values in this comparison do not have a shared enum type   @typescript-eslint/no-unsafe-enum-comparison'
   } if (score === 'ДЗ') {
     return '#4966CF';
   } if (score === 'О') {
