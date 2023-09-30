@@ -25,6 +25,23 @@ const Marks: FC<{ id: string }> = ({ id }) => {
   const [snackbar, showSnackbar] = useSnackbar();
 
   const [marksForSubject, setMarksForSubject] = useState<PerformanceCurrent | null>(null);
+  const [totalNumberOfMarks, setTotalNumberOfMarks] = useState<string | null>(null);
+  const [averageMark, setAverageMark] = useState<number | null>(null);
+  const [markCounts, setMarkCounts] = useState<Record<number, number> | null>(null);
+
+  const fetchData = async () => {
+    try {
+      const marks = await fetchMarks();
+
+      setMarksForSubject(marks as unknown as PerformanceCurrent);
+    } catch (error) {
+      console.error('Ошибка при получении данных:', error);
+    }
+  };
+
+  useEffect(() => {
+    fetchData();
+  }, []);
 
   const fetchMarks = async (isHandle?: boolean) => {
     setIsLoading(true);
@@ -80,15 +97,12 @@ const Marks: FC<{ id: string }> = ({ id }) => {
     }
   };
 
-  const [totalNumberOfMarks, setTotalNumberOfMarks] = useState<string | null>(null);
-  const [averageMark, setAverageMark] = useState<number | null>(null);
-  const [markCounts, setMarkCounts] = useState<Record<number, number> | null>(null);
-
   const saveStatisticsData = (marks: PerformanceCurrent) => {
     try {
       const allMarks: TextMark[] = marks.daysWithMarksForSubject.reduce(
         (marksArray: TextMark[], subject) => {
           if (subject.daysWithMarks) {
+            // @ts-ignore
             subject.daysWithMarks.forEach((day) => marksArray.push(...day.markValues));
           }
           return marksArray;
@@ -123,19 +137,6 @@ const Marks: FC<{ id: string }> = ({ id }) => {
       console.error(e);
     }
   };
-
-  const fetchData = async () => {
-    try {
-      const marks = await fetchMarks();
-
-      setMarksForSubject(marks as unknown as PerformanceCurrent);
-    } catch (error) {
-      console.error('Ошибка при получении данных:', error);
-    }
-  };
-  useEffect(() => {
-    fetchData();
-  }, []);
 
   return (
     <View

@@ -11,7 +11,7 @@ import { AuthData } from 'diary-shared';
 import PanelHeaderWithBack from '../components/UI/PanelHeaderWithBack';
 import { appStorageSet, getCookie } from '../methods';
 import { VIEW_SCHEDULE } from '../routes';
-import { useSnackbar } from '../hooks';
+import { useLocalStorage, useSnackbar } from '../hooks';
 
 const LoginForm: FC<{ id: string }> = ({ id }) => {
   const { panel: activePanel, panelsHistory } = useActiveVkuiLocation();
@@ -22,6 +22,10 @@ const LoginForm: FC<{ id: string }> = ({ id }) => {
   const [isDataInvalid, setIsDataInvalid] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [snackbar, showSnackbar] = useSnackbar();
+
+  const [, setCookie] = useLocalStorage('cookie', undefined);
+  const [, setMain] = useLocalStorage('main', undefined);
+  const [, setLog] = useLocalStorage('log', undefined);
 
   const createErrorSnackbar = () => showSnackbar({
     icon: <Icon28ErrorCircleOutline fill='var(--vkui--color_icon_negative)' />,
@@ -114,22 +118,21 @@ const LoginForm: FC<{ id: string }> = ({ id }) => {
     }
 
     try {
-      const id = String(dataResp.data.tenants.SPO_23.studentRole.id);
+      const basePath = dataResp.data.tenants[dataResp.data.tenantName];
+
+      const id = String(basePath.studentRole.id);
       const { cookie } = dataResp;
-      const name = `
-      ${String(dataResp.data.tenants.SPO_23.lastName)}
-      ${String(dataResp.data.tenants.SPO_23.firstName)}
-      ${String(dataResp.data.tenants.SPO_23.middleName)}
-      `;
-      const org = String(dataResp.data.tenants.SPO_23.settings.organization.abbreviation);
-      const city = String(dataResp.data.tenants.SPO_23.settings.organization.address.settlement);
-      const group = String(dataResp.data.tenants.SPO_23.students[0].groupName);
+      const name = ` ${String(basePath.lastName)} ${String(basePath.firstName)} ${String(basePath.middleName)}`;
+      const org = String(basePath.settings.organization.abbreviation);
+      const city = String(basePath.settings.organization.address.settlement);
+      const group = String(basePath.students[0].groupName);
       const passwordHashed = (new Hashes.SHA256()).b64(password);
 
       localStorage.setItem('id', id);
-      localStorage.setItem('cookie', cookie);
-      localStorage.setItem('main', passwordHashed);
-      localStorage.setItem('log', login);
+
+      setCookie(cookie);
+      setLog(login);
+      setMain(passwordHashed);
 
       const userData = {
         name,

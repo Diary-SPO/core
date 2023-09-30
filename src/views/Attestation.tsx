@@ -25,6 +25,10 @@ const Attestation: FC<IAttestation> = ({ id }) => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [attestationData, setAttestationData] = useState<AttestationResponse | null>(null);
 
+  useEffect(() => {
+    getUserAttestation();
+  }, []);
+
   const getUserAttestation = async () => {
     setIsLoading(true);
     setIsError(false);
@@ -55,10 +59,6 @@ const Attestation: FC<IAttestation> = ({ id }) => {
       setIsLoading(false);
     }
   };
-
-  useEffect(() => {
-    getUserAttestation();
-  }, []);
 
   const semesters: Record<string, AttestationResponse['subjects']> = {};
   let year: number | null = null;

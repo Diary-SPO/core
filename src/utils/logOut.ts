@@ -1,9 +1,9 @@
-import {appStorageSet, getVkStorageKeys} from "../methods";
+import { appStorageSet, getVkStorageKeys } from '../methods';
 
 const clearVkStorage = async () => {
   try {
     const keys = await getVkStorageKeys();
-    
+
     for (const key of keys) {
       appStorageSet(key, '');
     }

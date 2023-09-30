@@ -46,6 +46,13 @@ const Schedule: FC<{ id: string }> = ({ id }) => {
   const [isMarksLoading, setIsMarksLoading] = useState<boolean>(false);
   const [rateSnackbar, handleRateLimitExceeded] = useRateLimitExceeded();
   const [snackbar, showSnackbar] = useSnackbar();
+  const updateDatesFromData = (data: Day[]) => {
+    const firstLessonDate = data && data.length > 0 ? new Date(data[0].date) : startDate;
+    const lastLessonDate = data && data.length > 0 ? new Date(data[data.length - 1].date) : endDate;
+    setStartDate(startOfWeek(firstLessonDate));
+    setEndDate(endOfWeek(lastLessonDate));
+  };
+
   const [isCurrent, setIsCurrent] = useState<boolean>(() => {
     const storedIsCurrent = localStorage.getItem('isCurrent');
     return storedIsCurrent ? JSON.parse(storedIsCurrent) : true;
@@ -97,13 +104,6 @@ const Schedule: FC<{ id: string }> = ({ id }) => {
     action: 'Повторить',
     onActionClick: handleReloadData,
   });
-
-  const updateDatesFromData = (data: Day[]) => {
-    const firstLessonDate = data && data.length > 0 ? new Date(data[0].date) : startDate;
-    const lastLessonDate = data && data.length > 0 ? new Date(data[data.length - 1].date) : endDate;
-    setStartDate(startOfWeek(firstLessonDate));
-    setEndDate(endOfWeek(lastLessonDate));
-  };
 
   useEffect(() => {
     const savedLessons = localStorage.getItem('savedLessons');
