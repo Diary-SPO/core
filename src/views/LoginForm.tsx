@@ -2,9 +2,9 @@ import {
   ChangeEvent, FC, useEffect, useState,
 } from 'react';
 import {
-  Button, FormItem, FormLayout, FormStatus, Group, Input, Panel, View,
+  Button, FormItem, FormLayout, FormStatus, Group, Input,
 } from '@vkontakte/vkui';
-import { useActiveVkuiLocation, useRouteNavigator } from '@vkontakte/vk-mini-apps-router';
+import { useRouteNavigator } from '@vkontakte/vk-mini-apps-router';
 import Hashes from 'jshashes';
 import { Icon28DoorArrowLeftOutline, Icon28ErrorCircleOutline } from '@vkontakte/icons';
 import { AuthData } from 'diary-shared';
@@ -13,8 +13,7 @@ import { appStorageSet, getCookie } from '../methods';
 import { VIEW_SCHEDULE } from '../routes';
 import { useLocalStorage, useSnackbar } from '../hooks';
 
-const LoginForm: FC<{ id: string }> = ({ id }) => {
-  const { panel: activePanel, panelsHistory } = useActiveVkuiLocation();
+const LoginForm: FC = () => {
   const routeNavigator = useRouteNavigator();
 
   const [login, setLogin] = useState<string>('');
@@ -181,70 +180,63 @@ const LoginForm: FC<{ id: string }> = ({ id }) => {
       : 'Введите корректный пароль');
 
   return (
-    <View
-      id={id}
-      history={panelsHistory}
-      activePanel={activePanel as string}
-      onSwipeBack={() => routeNavigator.back()}
-    >
-      <Panel nav={id}>
-        <PanelHeaderWithBack title='Авторизация' />
-        <Group>
-          {isDataInvalid && (
-            <FormStatus header='Некорректный данные' mode='error'>
-              Проверьте правильность логина и пароля
-            </FormStatus>
-          )}
-          <FormLayout>
-            <FormItem
+    <>
+      <PanelHeaderWithBack title='Авторизация' />
+      <Group>
+        {isDataInvalid && (
+          <FormStatus header='Некорректный данные' mode='error'>
+            Проверьте правильность логина и пароля
+          </FormStatus>
+        )}
+        <FormLayout>
+          <FormItem
+            required
+            htmlFor='userLogin'
+            top='Логин'
+            status={isLoginEmpty ? 'default' : (loginPattern.test(login) ? 'valid' : 'error')}
+            bottom={isLoginEmpty || loginTopText}
+            bottomId='login-type'
+          >
+            <Input
               required
-              htmlFor='userLogin'
-              top='Логин'
-              status={isLoginEmpty ? 'default' : (loginPattern.test(login) ? 'valid' : 'error')}
-              bottom={isLoginEmpty || loginTopText}
-              bottomId='login-type'
+              aria-labelledby='login-type'
+              id='userLogin'
+              type='text'
+              name='login'
+              placeholder='Введите логин'
+              value={login}
+              onChange={onChange}
+            />
+          </FormItem>
+          <FormItem
+            top='Пароль'
+            htmlFor='pass'
+            status={isPasswordEmpty ? 'default' : (isPasswordValid ? 'valid' : 'error')}
+            bottom={isPasswordEmpty || passwordTopText}
+          >
+            <Input
+              name='password'
+              id='pass'
+              type='password'
+              placeholder='Введите пароль'
+              onChange={onChange}
+            />
+          </FormItem>
+          <FormItem>
+            <Button
+              size='l'
+              stretched
+              onClick={() => handleLogin()}
+              disabled={!password || !login || !loginPattern.test(login) || isLoading}
+              before={<Icon28DoorArrowLeftOutline />}
             >
-              <Input
-                required
-                aria-labelledby='login-type'
-                id='userLogin'
-                type='text'
-                name='login'
-                placeholder='Введите логин'
-                value={login}
-                onChange={onChange}
-              />
-            </FormItem>
-            <FormItem
-              top='Пароль'
-              htmlFor='pass'
-              status={isPasswordEmpty ? 'default' : (isPasswordValid ? 'valid' : 'error')}
-              bottom={isPasswordEmpty || passwordTopText}
-            >
-              <Input
-                name='password'
-                id='pass'
-                type='password'
-                placeholder='Введите пароль'
-                onChange={onChange}
-              />
-            </FormItem>
-            <FormItem>
-              <Button
-                size='l'
-                stretched
-                onClick={() => handleLogin()}
-                disabled={!password || !login || !loginPattern.test(login) || isLoading}
-                before={<Icon28DoorArrowLeftOutline />}
-              >
-                {isLoading ? 'Пытаюсь войти...' : 'Войти'}
-              </Button>
-            </FormItem>
-          </FormLayout>
-          {snackbar}
-        </Group>
-      </Panel>
-    </View>
+              {isLoading ? 'Пытаюсь войти...' : 'Войти'}
+            </Button>
+          </FormItem>
+        </FormLayout>
+        {snackbar}
+      </Group>
+    </>
   );
 };
 

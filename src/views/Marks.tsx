@@ -1,8 +1,7 @@
 import { FC, useEffect, useState } from 'react';
 import {
-  Group, Panel, PanelSpinner, PullToRefresh, View,
+  Group, PanelSpinner, PullToRefresh,
 } from '@vkontakte/vkui';
-import { useActiveVkuiLocation, useRouteNavigator } from '@vkontakte/vk-mini-apps-router';
 import { Icon28ErrorCircleOutline, Icon28InfoCircle } from '@vkontakte/icons';
 import { PerformanceCurrent } from 'diary-shared';
 import PanelHeaderWithBack from '../components/UI/PanelHeaderWithBack';
@@ -17,10 +16,7 @@ import { Grade, TextMark } from '../types';
 
 const THIRD_SEC = 30 * 1000;
 
-const Marks: FC<{ id: string }> = ({ id }) => {
-  const { panel: activePanel, panelsHistory } = useActiveVkuiLocation();
-  const routeNavigator = useRouteNavigator();
-
+const Marks: FC = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [snackbar, showSnackbar] = useSnackbar();
 
@@ -139,47 +135,40 @@ const Marks: FC<{ id: string }> = ({ id }) => {
   };
 
   return (
-    <View
-      id={id}
-      history={panelsHistory}
-      activePanel={activePanel as string}
-      onSwipeBack={() => routeNavigator.back()}
-    >
-      <Panel nav={id}>
-        <PanelHeaderWithBack title='Успеваемость' />
-        <PullToRefresh onRefresh={() => fetchMarks(true)} isFetching={isLoading}>
-          <Suspense id='UserInfo'>
-            <UserInfo />
-          </Suspense>
+    <>
+      <PanelHeaderWithBack title='Успеваемость' />
+      <PullToRefresh onRefresh={() => fetchMarks(true)} isFetching={isLoading}>
+        <Suspense id='UserInfo'>
+          <UserInfo />
+        </Suspense>
 
-          {isLoading
-            ? (
-              <Group>
-                <PanelSpinner />
-              </Group>
-            )
-            : (
-              <Summary
-                totalNumberOfMarks={totalNumberOfMarks}
-                averageMark={averageMark}
-                markCounts={markCounts}
-              />
-            )}
-          {isLoading
-            ? (
-              <Group>
-                <PanelSpinner />
-              </Group>
-            )
-            : (
-              <Suspense id='MarksByGroup'>
-                <MarksByGroup marksForSubject={marksForSubject} />
-              </Suspense>
-            )}
-        </PullToRefresh>
-        {snackbar}
-      </Panel>
-    </View>
+        {isLoading
+          ? (
+            <Group>
+              <PanelSpinner />
+            </Group>
+          )
+          : (
+            <Summary
+              totalNumberOfMarks={totalNumberOfMarks}
+              averageMark={averageMark}
+              markCounts={markCounts}
+            />
+          )}
+        {isLoading
+          ? (
+            <Group>
+              <PanelSpinner />
+            </Group>
+          )
+          : (
+            <Suspense id='MarksByGroup'>
+              <MarksByGroup marksForSubject={marksForSubject} />
+            </Suspense>
+          )}
+      </PullToRefresh>
+      {snackbar}
+    </>
   );
 };
 

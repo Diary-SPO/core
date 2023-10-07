@@ -1,8 +1,7 @@
 import { FC, useEffect, useState } from 'react';
 import {
-  Button, ButtonGroup, Card, Div, Group, Header, Link, Panel, Placeholder, Spinner, Title, View, Text, Subhead,
+  Button, ButtonGroup, Card, Div, Group, Header, Link, Placeholder, Spinner, Title, Text, Subhead,
 } from '@vkontakte/vkui';
-import { useActiveVkuiLocation, useRouteNavigator } from '@vkontakte/vk-mini-apps-router';
 import { Icon28ErrorCircleOutline } from '@vkontakte/icons';
 import { NotificationsResponse } from 'diary-shared';
 import PanelHeaderWithBack from '../components/UI/PanelHeaderWithBack';
@@ -11,10 +10,7 @@ import getAds from '../methods/server/getAds';
 import { useSnackbar } from '../hooks';
 import SubtitleWithBorder from '../components/SubtitleWithBorder';
 
-const Notifications: FC<{ id: string }> = ({ id }) => {
-  const { panel: activePanel, panelsHistory } = useActiveVkuiLocation();
-  const routeNavigator = useRouteNavigator();
-
+const Notifications: FC = () => {
   const [adsData, setAdsData] = useState<NotificationsResponse[] | null>(null);
   const [isLoading, setLoading] = useState<boolean>(false);
   const [isError, setIsError] = useState<boolean>(false);
@@ -89,87 +85,80 @@ const Notifications: FC<{ id: string }> = ({ id }) => {
   }, []);
 
   return (
-    <View
-      id={id}
-      history={panelsHistory}
-      activePanel={activePanel as string}
-      onSwipeBack={() => routeNavigator.back()}
-    >
-      <Panel nav={id}>
-        <PanelHeaderWithBack title='Объявления' />
-        <Div>
-          {adsData && adsData?.length > 0 && (
-            adsData?.map(({
-              title, id, date, isForEmployees, isForParents, isForStudents, deleteInDays, text,
-            }) => (
-              <Group
-                key={id}
-                description={(
-                  <div style={{ display: 'flex', gap: 10 }}>
-                    {isForEmployees && <SubtitleWithBorder>Для работников</SubtitleWithBorder>}
-                    {isForParents && <SubtitleWithBorder color='yellow-outline'>Для родителей</SubtitleWithBorder>}
-                    {isForStudents && <SubtitleWithBorder color='green-outline'>Для студентов</SubtitleWithBorder>}
-                  </div>
-)}
-                header={(
-                  <Header
-                    mode='tertiary'
-                    aside={(
-                      <Subhead>
-                        Удалится через
-                        {' '}
-                        {deleteInDays}
-                        {' '}
-                        дней
-                      </Subhead>
-)}
-                  >
-                    {new Date(date).toLocaleDateString()}
-                  </Header>
-)}
-              >
-                <Card mode='shadow'>
-                  <Div>
-                    <Title level='3'>{title}</Title>
-                    <Text>{text}</Text>
-                  </Div>
-                </Card>
-              </Group>
-            ))
-          )}
-
-          <Div>
-            {isLoading && (
-              <Div>
-                <Spinner />
-              </Div>
-            )}
-          </Div>
-
-          <Div>
-            {isError
-              && (
-                <Placeholder
-                  header='Ошибка при загрузке'
-                  action={(
-                    <ButtonGroup mode='vertical' align='center'>
-                      <Button size='s' onClick={() => fetchAds(true)}>Попробовать снова</Button>
-                      <Link href='https://vk.me/dnevnik_spo' target='_blank'>
-                        Сообщить о проблеме
-                      </Link>
-                    </ButtonGroup>
-                  )}
-                />
+    <>
+      <PanelHeaderWithBack title='Объявления' />
+      <Div>
+        {adsData && adsData?.length > 0 && (
+          adsData?.map(({
+            title, id, date, isForEmployees, isForParents, isForStudents, deleteInDays, text,
+          }) => (
+            <Group
+              key={id}
+              description={(
+                <div style={{ display: 'flex', gap: 10 }}>
+                  {isForEmployees && <SubtitleWithBorder>Для работников</SubtitleWithBorder>}
+                  {isForParents && <SubtitleWithBorder color='yellow-outline'>Для родителей</SubtitleWithBorder>}
+                  {isForStudents && <SubtitleWithBorder color='green-outline'>Для студентов</SubtitleWithBorder>}
+                </div>
               )}
-          </Div>
+              header={(
+                <Header
+                  mode='tertiary'
+                  aside={(
+                    <Subhead>
+                      Удалится через
+                      {' '}
+                      {deleteInDays}
+                      {' '}
+                      дней
+                    </Subhead>
+                  )}
+                >
+                  {new Date(date).toLocaleDateString()}
+                </Header>
+              )}
+            >
+              <Card mode='shadow'>
+                <Div>
+                  <Title level='3'>{title}</Title>
+                  <Text>{text}</Text>
+                </Div>
+              </Card>
+            </Group>
+          ))
+        )}
 
-          <Div>
-            {adsData && adsData?.length < 1 && <Placeholder header='Объявлений нет' />}
-          </Div>
+        <Div>
+          {isLoading && (
+            <Div>
+              <Spinner />
+            </Div>
+          )}
         </Div>
-        {snackbar}
-      </Panel>
-    </View>
+
+        <Div>
+          {isError
+            && (
+              <Placeholder
+                header='Ошибка при загрузке'
+                action={(
+                  <ButtonGroup mode='vertical' align='center'>
+                    <Button size='s' onClick={() => fetchAds(true)}>Попробовать снова</Button>
+                    <Link href='https://vk.me/dnevnik_spo' target='_blank'>
+                      Сообщить о проблеме
+                    </Link>
+                  </ButtonGroup>
+                )}
+              />
+            )}
+        </Div>
+
+        <Div>
+          {adsData && adsData?.length < 1 && <Placeholder header='Объявлений нет' />}
+        </Div>
+      </Div>
+      {snackbar}
+    </>
   );
 };
 

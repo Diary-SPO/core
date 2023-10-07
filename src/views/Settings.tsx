@@ -3,9 +3,9 @@ import {
 } from 'react';
 import {
   Alert,
-  CellButton, Group, Header, InfoRow, Panel, ScreenSpinner, SimpleCell, Subhead, Switch, View,
+  CellButton, Group, Header, InfoRow, ScreenSpinner, SimpleCell, Subhead, Switch,
 } from '@vkontakte/vkui';
-import { useActiveVkuiLocation, useRouteNavigator } from '@vkontakte/vk-mini-apps-router';
+import { useRouteNavigator } from '@vkontakte/vk-mini-apps-router';
 import {
   Icon28ClearDataOutline,
   Icon28DoorArrowRightOutline,
@@ -24,12 +24,7 @@ import PanelHeaderWithBack from '../components/UI/PanelHeaderWithBack';
 import { useSnackbar } from '../hooks';
 import logOut from '../utils/logOut';
 
-interface ISettings {
-  id: string,
-}
-
-const Settings: FC<ISettings> = ({ id }) => {
-  const { panel: activePanel, panelsHistory } = useActiveVkuiLocation();
+const Settings: FC = () => {
   const routeNavigator = useRouteNavigator();
 
   const [snackbar, showSnackbar] = useSnackbar();
@@ -223,79 +218,72 @@ const Settings: FC<ISettings> = ({ id }) => {
   };
 
   return (
-    <View
-      id={id}
-      history={panelsHistory}
-      activePanel={activePanel as string}
-      onSwipeBack={() => routeNavigator.back()}
-    >
-      <Panel nav={id}>
-        <PanelHeaderWithBack title='Настройки' />
-        <Group header={<Header mode='secondary'>Действия</Header>}>
-          {isLoading && <ScreenSpinner size='medium' />}
-          <CellButton
-            Component='label'
-            after={<Switch getRef={switchRef} defaultChecked />}
-            onChange={() => setIsSwitchChecked(!isSwitchChecked)}
-            before={<Icon28IncognitoOutline />}
-          >
-            Показывать тех. инфрмацию
-          </CellButton>
-          <CellButton
-            before={<Icon28RefreshOutline />}
-            onClick={reloadCookie}
-          >
-            Обновить cookie
-          </CellButton>
-          <CellButton
-            before={<Icon28ClearDataOutline />}
-            onClick={() => routeNavigator.showPopout(clearCachePopup)}
-          >
-            Очистить кеш
-          </CellButton>
-          <CellButton
-            before={<Icon28DoorArrowRightOutline />}
-            onClick={() => routeNavigator.showPopout(logOutPopup)}
-          >
-            Выйти
-          </CellButton>
-          {isHomeScreenSupported && (
-            <CellButton
-              before={<Icon28HomeArrowDownOutline />}
-              onClick={addToHomeScreen}
-            >
-              Добавить на экран
-            </CellButton>
-          )}
-        </Group>
-        {isSwitchChecked
-          && (
-          <Group header={(<Header mode='secondary'>Техническая информация</Header>)}>
-            <Group
-              header={(
-                <Header mode='secondary' aside={<Subhead>Хранится в LocalStorage</Subhead>}>Кеш</Header>)}
-            >
-              {cacheData.map((item) => (
-                <SimpleCell key={item.key}>
-                  <InfoRow header={item.key}>{item.value.slice(0, 30)}</InfoRow>
-                </SimpleCell>
-              ))}
-            </Group>
-            <Group
-              header={(
-                <Header mode='secondary'>VK Storage</Header>)}
-            >
-              {vkCacheData.map((item) => (
-                <SimpleCell key={item.key}>
-                  <InfoRow header={item.key}>{item.value.slice(0, 30)}</InfoRow>
-                </SimpleCell>
-              ))}
-            </Group>
-          </Group>
-          )}
-        {snackbar}
-      </Panel>
-    </View>
+    <>
+      <PanelHeaderWithBack title='Настройки' />
+      <Group header={<Header mode='secondary'>Действия</Header>}>
+        {isLoading && <ScreenSpinner size='medium' />}
+        <CellButton
+          Component='label'
+          after={<Switch getRef={switchRef} defaultChecked />}
+          onChange={() => setIsSwitchChecked(!isSwitchChecked)}
+          before={<Icon28IncognitoOutline />}
+        >
+          Показывать тех. инфрмацию
+        </CellButton>
+        <CellButton
+          before={<Icon28RefreshOutline />}
+          onClick={reloadCookie}
+        >
+          Обновить cookie
+        </CellButton>
+        <CellButton
+          before={<Icon28ClearDataOutline />}
+          onClick={() => routeNavigator.showPopout(clearCachePopup)}
+        >
+          Очистить кеш
+        </CellButton>
+        <CellButton
+          before={<Icon28DoorArrowRightOutline />}
+          onClick={() => routeNavigator.showPopout(logOutPopup)}
+        >
+          Выйти
+        </CellButton>
+        {isHomeScreenSupported && (
+        <CellButton
+          before={<Icon28HomeArrowDownOutline />}
+          onClick={addToHomeScreen}
+        >
+          Добавить на экран
+        </CellButton>
+        )}
+      </Group>
+      {isSwitchChecked
+       && (
+         <Group header={(<Header mode='secondary'>Техническая информация</Header>)}>
+           <Group
+             header={(
+               <Header mode='secondary' aside={<Subhead>Хранится в LocalStorage</Subhead>}>Кеш</Header>)}
+           >
+             {cacheData.map((item) => (
+               <SimpleCell key={item.key}>
+                 <InfoRow header={item.key}>{item.value.slice(0, 30)}</InfoRow>
+               </SimpleCell>
+             ))}
+           </Group>
+           <Group
+             header={(
+               <Header mode='secondary'>VK Storage</Header>)}
+           >
+             {vkCacheData.map((item) => (
+               <SimpleCell key={item.key}>
+                 <InfoRow header={item.key}>{item.value.slice(0, 30)}</InfoRow>
+               </SimpleCell>
+             ))}
+           </Group>
+         </Group>
+       )}
+      {snackbar}
+    </>
   );
 };
 

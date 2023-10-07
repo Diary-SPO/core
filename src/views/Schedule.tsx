@@ -2,9 +2,8 @@ import {
   FC, lazy, useEffect, useState,
 } from 'react';
 import {
-  Button, ButtonGroup, Div, Group, Header, IconButton, Link, Panel, PanelSpinner, Placeholder, PullToRefresh, View,
+  Button, ButtonGroup, Div, Group, Header, IconButton, Link, PanelSpinner, Placeholder, PullToRefresh,
 } from '@vkontakte/vkui';
-import { useActiveVkuiLocation, useRouteNavigator } from '@vkontakte/vk-mini-apps-router';
 import {
   Icon16ArrowLeftOutline,
   Icon16ArrowRightOutline,
@@ -29,14 +28,12 @@ const MarksByDay = lazy(() => import('../components/UI/MarksByDay'));
 const CalendarRange = lazy(() => import('../components/UI/CalendarRange'));
 const ScheduleGroup = lazy(() => import('../components/ScheduleGroup'));
 
-const Schedule: FC<{ id: string }> = ({ id }) => {
+const Schedule: FC = () => {
   const currentDate = new Date();
 
   const scrollPosition = useScrollPosition();
   const showToTopButton = scrollPosition > 700;
 
-  const { panel: activePanel, panelsHistory } = useActiveVkuiLocation();
-  const routeNavigator = useRouteNavigator();
   const [lessonsState, setLessons] = useState<Day[] | null>();
   const [startDate, setStartDate] = useState<Date>(startOfWeek(currentDate));
   const [endDate, setEndDate] = useState<Date>(endOfWeek(currentDate));
@@ -399,54 +396,48 @@ const Schedule: FC<{ id: string }> = ({ id }) => {
     .slice(0, 3)}`;
 
   return (
-    <View
-      id={id}
-      history={panelsHistory}
-      activePanel={activePanel as string}
-      onSwipeBack={() => routeNavigator.back()}
-    >
-      <Panel nav={id}>
-        <PanelHeaderWithBack title='Главная' />
-        <PullToRefresh onRefresh={handleReloadData} isFetching={isLoading}>
-          <Suspense id='MarksByDay'>
-            {isMarksLoading ? <PanelSpinner /> : <MarksByDay performanceData={marksData} />}
-          </Suspense>
+    <>
+      <PanelHeaderWithBack title='Главная' />
+      <PullToRefresh onRefresh={handleReloadData} isFetching={isLoading}>
+        <Suspense id='MarksByDay'>
+          {isMarksLoading ? <PanelSpinner /> : <MarksByDay performanceData={marksData} />}
+        </Suspense>
+        <Group
+          header={<Header mode='secondary'>Выбор даты</Header>}
+          description='Разница между датами не может быть больше 14-и дней'
+        >
+          <Div>
+            <Suspense id='Calendar' mode='panel'>
+              <CalendarRange
+                label={<ExplanationTooltip text='Начальная' tooltipContent='Не может быть больше конечной' />}
+                value={startDate}
+                onDateChange={handleStartDateChange}
+              />
+              <CalendarRange
+                label={<ExplanationTooltip text='Конечная' tooltipContent='Не может быть меньше начальной' />}
+                value={endDate}
+                onDateChange={handleEndDateChange}
+              />
+            </Suspense>
+          </Div>
+        </Group>
+        <Suspense id='ScheduleGroup' mode='screen'>
           <Group
-            header={<Header mode='secondary'>Выбор даты</Header>}
-            description='Разница между датами не может быть больше 14-и дней'
-          >
-            <Div>
-              <Suspense id='Calendar' mode='panel'>
-                <CalendarRange
-                  label={<ExplanationTooltip text='Начальная' tooltipContent='Не может быть больше конечной' />}
-                  value={startDate}
-                  onDateChange={handleStartDateChange}
-                />
-                <CalendarRange
-                  label={<ExplanationTooltip text='Конечная' tooltipContent='Не может быть меньше начальной' />}
-                  value={endDate}
-                  onDateChange={handleEndDateChange}
-                />
-              </Suspense>
-            </Div>
-          </Group>
-          <Suspense id='ScheduleGroup' mode='screen'>
-            <Group
-              header={(
-                <Header
-                  aside={Buttons}
-                  mode='secondary'
-                >
-                  {weekString}
-                </Header>
+            header={(
+              <Header
+                aside={Buttons}
+                mode='secondary'
+              >
+                {weekString}
+              </Header>
             )}
-            >
-              {isLoading
-                ? <PanelSpinner size='regular' />
-                : <ScheduleGroup lessonsState={lessonsState} />}
-            </Group>
-          </Suspense>
-          {isError
+          >
+            {isLoading
+              ? <PanelSpinner size='regular' />
+              : <ScheduleGroup lessonsState={lessonsState} />}
+          </Group>
+        </Suspense>
+        {isError
           && (
             <Placeholder
               header='Ошибка при загрузке'
@@ -460,28 +451,27 @@ const Schedule: FC<{ id: string }> = ({ id }) => {
               )}
             />
           )}
-          {showToTopButton && (
-            <IconButton
-              aria-label='scroll top'
-              style={{ position: 'fixed', left: 5, bottom: 60 }}
-              onClick={() => {
-                window.scrollTo({
-                  top: 0,
-                  behavior: 'smooth',
-                });
-              }}
-            >
-              <Icon24ChevronRightCircle
-                style={{ transform: 'rotate(-90deg)' }}
-                color='var(--vkui--color_background_accent_themed)'
-              />
-            </IconButton>
-          )}
-          {snackbar}
-          {rateSnackbar}
-        </PullToRefresh>
-      </Panel>
-    </View>
+        {showToTopButton && (
+          <IconButton
+            aria-label='scroll top'
+            style={{ position: 'fixed', left: 5, bottom: 60 }}
+            onClick={() => {
+              window.scrollTo({
+                top: 0,
+                behavior: 'smooth',
+              });
+            }}
+          >
+            <Icon24ChevronRightCircle
+              style={{ transform: 'rotate(-90deg)' }}
+              color='var(--vkui--color_background_accent_themed)'
+            />
+          </IconButton>
+        )}
+        {snackbar}
+        {rateSnackbar}
+      </PullToRefresh>
+    </>
   );
 };
 

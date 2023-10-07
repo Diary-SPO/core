@@ -26,32 +26,32 @@ const routes: RouteWithoutRoot[] = [
   {
     path: PAGE_SCHEDULE,
     panel: VIEW_SCHEDULE,
-    view: VIEW_SCHEDULE,
+    view: MAIN_SETTINGS,
   },
   {
     path: PAGE_CONTACTS,
     panel: VIEW_CONTACTS,
-    view: VIEW_CONTACTS,
+    view: MAIN_SETTINGS,
   },
   {
     path: PAGE_MARKS,
     panel: VIEW_MARKS,
-    view: VIEW_MARKS,
+    view: MAIN_SETTINGS,
   },
   {
     path: PAGE_SETTINGS,
     panel: VIEW_SETTINGS,
-    view: VIEW_SETTINGS,
+    view: MAIN_SETTINGS,
   },
   {
     path: PAGE_ATTESTATION,
     panel: VIEW_ATTESTATION,
-    view: VIEW_ATTESTATION,
+    view: MAIN_SETTINGS,
   },
   {
     path: PAGE_NOTIFICATIONS,
     panel: VIEW_NOTIFICATIONS,
-    view: VIEW_NOTIFICATIONS,
+    view: MAIN_SETTINGS,
   },
 ];
 

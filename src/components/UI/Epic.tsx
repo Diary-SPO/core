@@ -1,6 +1,6 @@
 import { FC } from 'react';
-import { useActiveVkuiLocation } from '@vkontakte/vk-mini-apps-router';
-import { useAdaptivityConditionalRender } from '@vkontakte/vkui';
+import { useActiveVkuiLocation, useRouteNavigator } from '@vkontakte/vk-mini-apps-router';
+import { Panel, useAdaptivityConditionalRender, View } from '@vkontakte/vkui';
 import { Epic as VKUIEpic } from '@vkontakte/vkui/dist/components/Epic/Epic';
 import {
   MAIN_SETTINGS, VIEW_ATTESTATION, VIEW_CONTACTS, VIEW_MARKS, VIEW_NOTIFICATIONS, VIEW_SCHEDULE, VIEW_SETTINGS,
@@ -8,7 +8,6 @@ import {
 import { Pages } from '../../types';
 
 import Tabbar from './Tabbar';
-import Suspense from './Suspense';
 import {
   Attestation, Contacts, LoginForm, Marks, Notifications, Schedule, Settings,
 } from '../../views';
@@ -23,35 +22,51 @@ const Epic: FC<IEpic> = ({ onStoryChange }) => {
   } = useActiveVkuiLocation();
   const { viewWidth } = useAdaptivityConditionalRender();
 
+  const { panel: activePanel, panelsHistory } = useActiveVkuiLocation();
+  const routeNavigator = useRouteNavigator();
+
   return (
     <VKUIEpic
       activeStory={activeView}
       tabbar={
         viewWidth.tabletMinus
-        && <Tabbar onStoryChange={onStoryChange} activeView={activeView as Pages} />
+        && <Tabbar onStoryChange={onStoryChange} activeView={activePanel as Pages} />
       }
     >
-      <Suspense id={VIEW_SCHEDULE} mode='screen'>
-        <Schedule id={VIEW_SCHEDULE} />
-      </Suspense>
-      <Suspense id={VIEW_MARKS} mode='screen'>
-        <Marks id={VIEW_MARKS} />
-      </Suspense>
-      <Suspense id={VIEW_CONTACTS} mode='screen'>
-        <Contacts id={VIEW_CONTACTS} />
-      </Suspense>
-      <Suspense id={VIEW_SETTINGS} mode='screen'>
-        <Settings id={VIEW_SETTINGS} />
-      </Suspense>
-      <Suspense id={MAIN_SETTINGS} mode='screen'>
-        <LoginForm id={MAIN_SETTINGS} />
-      </Suspense>
-      <Suspense id={VIEW_ATTESTATION} mode='screen'>
-        <Attestation id={VIEW_ATTESTATION} />
-      </Suspense>
-      <Suspense id={VIEW_NOTIFICATIONS} mode='screen'>
-        <Notifications id={VIEW_NOTIFICATIONS} />
-      </Suspense>
+      <View
+        id={MAIN_SETTINGS}
+        history={panelsHistory}
+        activePanel={activePanel as string}
+        onSwipeBack={() => routeNavigator.back()}
+      >
+        <Panel id={VIEW_CONTACTS}>
+          <Contacts />
+        </Panel>
+
+        <Panel id={VIEW_NOTIFICATIONS}>
+          <Notifications />
+        </Panel>
+
+        <Panel id={VIEW_ATTESTATION}>
+          <Attestation />
+        </Panel>
+
+        <Panel id={VIEW_MARKS}>
+          <Marks />
+        </Panel>
+
+        <Panel id={VIEW_SCHEDULE}>
+          <Schedule />
+        </Panel>
+
+        <Panel id={VIEW_SETTINGS}>
+          <Settings />
+        </Panel>
+
+        <Panel id={MAIN_SETTINGS}>
+          <LoginForm />
+        </Panel>
+      </View>
     </VKUIEpic>
   );
 };

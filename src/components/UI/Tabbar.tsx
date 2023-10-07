@@ -20,7 +20,7 @@ interface ITabbar {
 
 const Tabbar: FC<ITabbar> = ({ onStoryChange, activeView }) => {
   const { viewWidth } = useAdaptivityConditionalRender();
-
+  console.log(activeView);
   return (
     viewWidth.tabletMinus && (
       <VKUITabbar className={viewWidth.tabletMinus.className}>

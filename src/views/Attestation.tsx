@@ -2,9 +2,8 @@ import {
   FC, lazy, useEffect, useState,
 } from 'react';
 import {
-  Button, ButtonGroup, Div, Link, Panel, Placeholder, ScreenSpinner, View,
+  Button, ButtonGroup, Div, Link, Placeholder, ScreenSpinner,
 } from '@vkontakte/vkui';
-import { useActiveVkuiLocation, useRouteNavigator } from '@vkontakte/vk-mini-apps-router';
 import { AttestationResponse } from 'diary-shared';
 import getAttestation from '../methods/server/getAttestation';
 import PanelHeaderWithBack from '../components/UI/PanelHeaderWithBack';
@@ -13,14 +12,7 @@ import { handleResponse } from '../utils/handleResponse';
 
 const SubjectList = lazy(() => import('../components/UI/SubjectsList'));
 
-interface IAttestation {
-  id: string;
-}
-
-const Attestation: FC<IAttestation> = ({ id }) => {
-  const { panel: activePanel, panelsHistory } = useActiveVkuiLocation();
-  const routeNavigator = useRouteNavigator();
-
+const Attestation: FC = () => {
   const [isError, setIsError] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [attestationData, setAttestationData] = useState<AttestationResponse | null>(null);
@@ -80,41 +72,34 @@ const Attestation: FC<IAttestation> = ({ id }) => {
   }
 
   return (
-    <View
-      id={id}
-      history={panelsHistory}
-      activePanel={activePanel as string}
-      onSwipeBack={() => routeNavigator.back()}
-    >
-      <Panel nav={id}>
-        <PanelHeaderWithBack title='Аттестация' />
-        <Div>
-          {attestationData
-            && (
+    <>
+      <PanelHeaderWithBack title='Аттестация' />
+      <Div>
+        {attestationData
+          && (
             <SubjectList
               semesters={semesters}
               studentName={studentName}
               year={year}
             />
-            )}
-          {isLoading && <ScreenSpinner />}
-          {isError
-            && (
-              <Placeholder
-                header='Ошибка при загрузке'
-                action={(
-                  <ButtonGroup mode='vertical' align='center'>
-                    <Button size='s' onClick={getUserAttestation}>Попробовать снова</Button>
-                    <Link href='https://vk.me/dnevnik_spo' target='_blank'>
-                      Сообщить о проблеме
-                    </Link>
-                  </ButtonGroup>
-                )}
-              />
-            )}
-        </Div>
-      </Panel>
-    </View>
+          )}
+        {isLoading && <ScreenSpinner />}
+        {isError
+          && (
+            <Placeholder
+              header='Ошибка при загрузке'
+              action={(
+                <ButtonGroup mode='vertical' align='center'>
+                  <Button size='s' onClick={getUserAttestation}>Попробовать снова</Button>
+                  <Link href='https://vk.me/dnevnik_spo' target='_blank'>
+                    Сообщить о проблеме
+                  </Link>
+                </ButtonGroup>
+              )}
+            />
+          )}
+      </Div>
+    </>
   );
 };
 
