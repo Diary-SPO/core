@@ -21,10 +21,10 @@ const Epic: FC<IEpic> = ({ onStoryChange }) => {
     view: activeView = 'profile' as Pages,
   } = useActiveVkuiLocation();
   const { viewWidth } = useAdaptivityConditionalRender();
-
+  
   const { panel: activePanel, panelsHistory } = useActiveVkuiLocation();
   const routeNavigator = useRouteNavigator();
-
+  
   return (
     <VKUIEpic
       activeStory={activeView}
@@ -39,32 +39,32 @@ const Epic: FC<IEpic> = ({ onStoryChange }) => {
         activePanel={activePanel as string}
         onSwipeBack={() => routeNavigator.back()}
       >
-        <Panel id={VIEW_CONTACTS}>
-          <Contacts />
+        <Panel id={MAIN_SETTINGS}>
+          <LoginForm />
         </Panel>
-
-        <Panel id={VIEW_NOTIFICATIONS}>
-          <Notifications />
-        </Panel>
-
-        <Panel id={VIEW_ATTESTATION}>
-          <Attestation />
-        </Panel>
-
-        <Panel id={VIEW_MARKS}>
-          <Marks />
-        </Panel>
-
+        
         <Panel id={VIEW_SCHEDULE}>
           <Schedule />
         </Panel>
-
+        
+        <Panel id={VIEW_MARKS}>
+          <Marks />
+        </Panel>
+        
+        <Panel id={VIEW_ATTESTATION}>
+          <Attestation />
+        </Panel>
+        
+        <Panel id={VIEW_NOTIFICATIONS}>
+          <Notifications />
+        </Panel>
+        
+        <Panel id={VIEW_CONTACTS}>
+          <Contacts />
+        </Panel>
+        
         <Panel id={VIEW_SETTINGS}>
           <Settings />
-        </Panel>
-
-        <Panel id={MAIN_SETTINGS}>
-          <LoginForm />
         </Panel>
       </View>
     </VKUIEpic>
