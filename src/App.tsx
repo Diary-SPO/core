@@ -18,7 +18,7 @@ const App = () => {
   const { view: activeView = MAIN_SETTINGS } = useActiveVkuiLocation();
   const routeNavigator = useRouteNavigator();
   const modals = <ModalRoot />;
-  // TODO: типизировать через дженерик (как useState)
+  // FIXME: remove this
   const [cookie, setCookie] = useLocalStorage('cookie', undefined);
 
   const routerPopout = usePopout();

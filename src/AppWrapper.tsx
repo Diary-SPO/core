@@ -7,6 +7,7 @@ import { ModalProvider } from './modals/ModalContext';
 import { router } from './routes';
 import Suspense from './components/UI/Suspense';
 import { transformVKBridgeAdaptivity } from './transformers/transformVKBridgeAdaptivity';
+import { CookieProvider } from './context/CookieContext';
 
 const NotFound = lazy(() => import('./components/UI/NotFound'));
 const App = lazy(() => import('./App'));
@@ -43,7 +44,9 @@ const AppWrapper = () => {
             isWebView={vkBridge.isWebView()}
           >
             <ModalProvider>
-              <App />
+              <CookieProvider>
+                <App />
+              </CookieProvider>
             </ModalProvider>
           </ConfigProvider>
         </Suspense>

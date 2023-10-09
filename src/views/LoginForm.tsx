@@ -12,8 +12,10 @@ import PanelHeaderWithBack from '../components/UI/PanelHeaderWithBack';
 import { appStorageSet, getCookie } from '../methods';
 import { VIEW_SCHEDULE } from '../routes';
 import { useLocalStorage, useSnackbar } from '../hooks';
+import { useCookies } from '../context/CookieContext';
 
 const LoginForm: FC<{ id: string }> = ({ id }) => {
+  const { saveCookie } = useCookies();
   const { panel: activePanel, panelsHistory } = useActiveVkuiLocation();
   const routeNavigator = useRouteNavigator();
 
@@ -23,7 +25,6 @@ const LoginForm: FC<{ id: string }> = ({ id }) => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [snackbar, showSnackbar] = useSnackbar();
 
-  const [, setCookie] = useLocalStorage('cookie', undefined);
   const [, setMain] = useLocalStorage('main', undefined);
   const [, setLog] = useLocalStorage('log', undefined);
 
@@ -130,7 +131,7 @@ const LoginForm: FC<{ id: string }> = ({ id }) => {
 
       localStorage.setItem('id', id);
 
-      setCookie(cookie);
+      saveCookie(cookie);
       setLog(login);
       setMain(passwordHashed);
 

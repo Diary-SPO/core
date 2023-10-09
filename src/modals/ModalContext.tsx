@@ -1,5 +1,5 @@
-import React, {
-  ReactNode, createContext, useContext, useState, useMemo,
+import {
+  ReactNode, createContext, useContext, useState, useMemo, FC,
 } from 'react';
 import { Lesson, Organization } from 'diary-shared';
 
@@ -10,7 +10,7 @@ const ModalContext = createContext<{
   openCollegeModal: (data: Organization) => void;
 } | undefined>(undefined);
 
-export const ModalProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
+export const ModalProvider: FC<{ children: ReactNode }> = ({ children }) => {
   const [lessonModalData, setLessonModalData] = useState<Lesson | null>(null);
   const [collegeModalData, setCollegeModalData] = useState<Organization | null>(null);
 
