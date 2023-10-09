@@ -13,6 +13,8 @@ import { useLocalStorage } from './hooks';
 const ModalRoot = lazy(() => import('./modals/ModalRoot'));
 const Epic = lazy(() => import('./components/UI/Epic'));
 
+// TODO: use context instead of local state
+
 const App = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const { view: activeView = MAIN_SETTINGS } = useActiveVkuiLocation();
