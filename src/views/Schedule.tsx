@@ -228,21 +228,7 @@ const Schedule: FC<{ id: string }> = ({ id }) => {
         const newEndDate = new Date(start);
         newEndDate.setDate(newEndDate.getDate() + 14);
 
-        if (newEndDate > end) {
-          const newStartDate = new Date(newEndDate);
-          newStartDate.setDate(newStartDate.getDate() - 14);
-          setStartDate(newStartDate);
-          setEndDate(newEndDate);
-
-          if (!snackbar) {
-            showSnackbar({
-              title: 'Разница между датами больше 14-и дней',
-              subtitle: `Начальная дата будет автоматически изменена на ${newStartDate.toLocaleString()}`,
-            });
-          }
-        } else {
-          setEndDate(newEndDate);
-        }
+        setEndDate(newEndDate);
 
         if (!snackbar) {
           showSnackbar({

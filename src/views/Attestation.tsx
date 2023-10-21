@@ -22,7 +22,7 @@ const Attestation: FC<IAttestation> = ({ id }) => {
   const routeNavigator = useRouteNavigator();
 
   const [isError, setIsError] = useState<boolean>(false);
-  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isDataLoading, setIsLoading] = useState<boolean>(false);
   const [attestationData, setAttestationData] = useState<AttestationResponse | null>(null);
 
   const getUserAttestation = async () => {
@@ -100,7 +100,7 @@ const Attestation: FC<IAttestation> = ({ id }) => {
               year={year}
             />
             )}
-          {isLoading && <ScreenSpinner />}
+          {isDataLoading && <ScreenSpinner />}
           {isError
             && (
               <Placeholder

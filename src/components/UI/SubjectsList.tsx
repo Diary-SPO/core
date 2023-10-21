@@ -4,7 +4,7 @@ import {
 } from '@vkontakte/vkui';
 import { ExaminationType, Examinations } from 'diary-shared';
 
-interface Subject {
+export interface Subject {
   id: string;
   name: string;
   examinationType: ExaminationType;
@@ -43,13 +43,13 @@ const SubjectList: FC<SubjectListProps> = ({ semesters, studentName, year }) => 
                   <Subhead>
                     {subject.marks[subject.id] && Object.keys(subject.marks[subject.id]).length > 0 ? (
                       Object.keys(subject.marks[subject.id]).map((studentId) => (
-                          <span key={studentId}>
-                              {subject.marks[subject.id][studentId]}
-                            </span>
-                        ))
-                      ) : (
-                        'Оценок нет'
-                      )}
+                        <span key={studentId}>
+                          {subject.marks[subject.id][studentId]}
+                        </span>
+                      ))
+                    ) : (
+                      'Оценок нет'
+                    )}
                   </Subhead>
                 </InfoRow>
               </Div>

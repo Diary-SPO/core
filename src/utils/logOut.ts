@@ -4,9 +4,9 @@ const clearVkStorage = async () => {
   try {
     const keys = await getVkStorageKeys();
 
-    for (const key of keys) {
-      appStorageSet(key, '');
-    }
+    await Promise.all(keys.map(async (key) => {
+      await appStorageSet(key, '');
+    }));
   } catch (error) {
     console.error(error);
   }
