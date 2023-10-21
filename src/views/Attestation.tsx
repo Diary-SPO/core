@@ -66,7 +66,10 @@ const Attestation: FC<IAttestation> = ({ id }) => {
 
   if (attestationData && attestationData.students) {
     year = attestationData.year;
-    studentName = `${attestationData.students[0].lastName} ${attestationData.students[0].firstName.slice(0, 1)}. ${attestationData.students[0].middleName.slice(0, 1)}.`;
+    studentName = `
+    ${attestationData.students[0].lastName} 
+    ${attestationData.students[0].firstName.slice(0, 1)}. 
+    ${attestationData.students[0].middleName.slice(0, 1)}.`;
   }
 
   if (attestationData && attestationData.subjects) {

@@ -23,9 +23,9 @@ const LoginForm: FC<{ id: string }> = ({ id }) => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [snackbar, showSnackbar] = useSnackbar();
 
-  const [, setCookie] = useLocalStorage('cookie', undefined);
-  const [, setMain] = useLocalStorage('main', undefined);
-  const [, setLog] = useLocalStorage('log', undefined);
+  const [, setCookie] = useLocalStorage('cookie', '');
+  const [, setMain] = useLocalStorage('main', '');
+  const [, setLog] = useLocalStorage('log', '');
 
   const createErrorSnackbar = () => showSnackbar({
     icon: <Icon28ErrorCircleOutline fill='var(--vkui--color_icon_negative)' />,
@@ -71,6 +71,7 @@ const LoginForm: FC<{ id: string }> = ({ id }) => {
       password: setPassword,
     }[name];
     setIsDataInvalid(false);
+    // eslint-disable-next-line @typescript-eslint/no-unused-expressions
     setStateAction && setStateAction(value);
   };
 
@@ -120,15 +121,15 @@ const LoginForm: FC<{ id: string }> = ({ id }) => {
     try {
       const basePath = dataResp.data.tenants[dataResp.data.tenantName];
 
-      const id = String(basePath.studentRole.id);
+      const userId = String(basePath.studentRole.id);
       const { cookie } = dataResp;
       const name = ` ${String(basePath.lastName)} ${String(basePath.firstName)} ${String(basePath.middleName)}`;
       const org = String(basePath.settings.organization.abbreviation);
       const city = String(basePath.settings.organization.address.settlement);
       const group = String(basePath.students[0].groupName);
-      const passwordHashed = (new Hashes.SHA256()).b64(password);
 
-      localStorage.setItem('id', id);
+      localStorage.setItem('id', userId);
+      localStorage.setItem('cookie', cookie);
 
       setCookie(cookie);
       setLog(login);
@@ -145,7 +146,7 @@ const LoginForm: FC<{ id: string }> = ({ id }) => {
         appStorageSet('log', login),
         appStorageSet('main', passwordHashed),
         appStorageSet('cookie', cookie),
-        appStorageSet('id', id),
+        appStorageSet('id', userId),
         appStorageSet('data', JSON.stringify(userData)),
       ]);
 

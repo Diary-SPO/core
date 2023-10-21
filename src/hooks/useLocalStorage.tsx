@@ -26,7 +26,7 @@ function parseJSON<T>(value: string | null): T | undefined {
   }
 }
 
-export function useSessionStorage<T>(
+export default function useLocalStorage<T>(
   key: string,
   initialValue: T,
 ): [T, SetValue<T>] {
@@ -53,7 +53,8 @@ export function useSessionStorage<T>(
 
   // Return a wrapped version of useState's setter function that ...
   // ... persists the new value to sessionStorage.
-  const setValue: SetValue<T> = useEventCallback((value) => {
+
+  const setValue: SetValue<T> = useEventCallback((value: SetStateAction<T>) => {
     // Prevent build error "window is undefined" but keeps working
     if (typeof window === 'undefined') {
       console.warn(
@@ -62,8 +63,8 @@ export function useSessionStorage<T>(
     }
 
     try {
-      // Allow value to be a function so we have the same API as useState
-      const newValue = value instanceof Function ? value(storedValue) : value;
+      // Allow value to be a function, so we have the same API as useState
+      const newValue: T = value instanceof Function ? value(storedValue) : value;
 
       // Save to session storage
       window.sessionStorage.setItem(key, JSON.stringify(newValue));
@@ -93,10 +94,12 @@ export function useSessionStorage<T>(
   );
 
   // this only works for other documents, not the current one
+
   useEventListener('storage', handleStorageChange);
 
   // this is a custom event, triggered in writeValueTosessionStorage
   // See: useSessionStorage()
+
   useEventListener('session-storage', handleStorageChange);
 
   return [storedValue, setValue];

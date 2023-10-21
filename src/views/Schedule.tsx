@@ -55,7 +55,7 @@ const Schedule: FC<{ id: string }> = ({ id }) => {
 
   const [isCurrent, setIsCurrent] = useState<boolean>(() => {
     const storedIsCurrent = localStorage.getItem('isCurrent');
-    return storedIsCurrent ? JSON.parse(storedIsCurrent) : true;
+    return storedIsCurrent ? JSON.parse(storedIsCurrent) as boolean : true;
   });
 
   const handleReloadData = async () => {
@@ -150,10 +150,10 @@ const Schedule: FC<{ id: string }> = ({ id }) => {
     };
 
     if (savedLessons) {
-      setLessons(JSON.parse(savedLessons));
-      const firstLessonDate = JSON.parse(savedLessons)[0] ? new Date(JSON.parse(savedLessons)[0].date) : startDate;
+      setLessons(JSON.parse(savedLessons) as Day[]);
+      const firstLessonDate = JSON.parse(savedLessons)[0] ? new Date(JSON.parse(savedLessons)[0].date as string) : startDate;
       const lastLessonDate = JSON.parse(savedLessons)[JSON.parse(savedLessons).length - 1]
-        ? new Date(JSON.parse(savedLessons)[JSON.parse(savedLessons).length - 1].date)
+        ? new Date(JSON.parse(savedLessons)[JSON.parse(savedLessons).length - 1].date as string)
         : endDate;
       setStartDate(startOfWeek(firstLessonDate));
       setEndDate(endOfWeek(lastLessonDate));
@@ -166,7 +166,7 @@ const Schedule: FC<{ id: string }> = ({ id }) => {
     const savedMarks = localStorage.getItem('savedMarks');
 
     if (savedMarks) {
-      setMarksData(JSON.parse(savedMarks));
+      setMarksData(JSON.parse(savedMarks) as PerformanceCurrent);
       setIsMarksLoading(false);
     }
 
