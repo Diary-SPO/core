@@ -13,6 +13,7 @@ const HelpAccordion: FC<IHelpAccordion> = ({ id, title, detail }) => {
   const [openId, setOpenId] = useState<number | null>(null);
   return (
     // @ts-ignore
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-return
     <Accordion key={id} open={openId === id} onToggle={(e) => e.target.open && setOpenId(id)}>
       <Accordion.Summary>{title}</Accordion.Summary>
       <Div style={infoStyle}>

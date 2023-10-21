@@ -11,7 +11,7 @@ import { AuthData } from 'diary-shared';
 import PanelHeaderWithBack from '../components/UI/PanelHeaderWithBack';
 import { appStorageSet, getCookie } from '../methods';
 import { VIEW_SCHEDULE } from '../routes';
-import { useLocalStorage, useSnackbar } from '../hooks';
+import { useSnackbar } from '../hooks';
 
 const LoginForm: FC<{ id: string }> = ({ id }) => {
   const { panel: activePanel, panelsHistory } = useActiveVkuiLocation();
@@ -22,10 +22,6 @@ const LoginForm: FC<{ id: string }> = ({ id }) => {
   const [isDataInvalid, setIsDataInvalid] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [snackbar, showSnackbar] = useSnackbar();
-
-  const [, setCookie] = useLocalStorage('cookie', '');
-  const [, setMain] = useLocalStorage('main', '');
-  const [, setLog] = useLocalStorage('log', '');
 
   const createErrorSnackbar = () => showSnackbar({
     icon: <Icon28ErrorCircleOutline fill='var(--vkui--color_icon_negative)' />,
@@ -131,9 +127,8 @@ const LoginForm: FC<{ id: string }> = ({ id }) => {
       localStorage.setItem('id', userId);
       localStorage.setItem('cookie', cookie);
 
-      setCookie(cookie);
-      setLog(login);
-      setMain(passwordHashed);
+      localStorage.setItem('log', login);
+      localStorage.setItem('main', passwordHashed);
 
       const userData = {
         name,
