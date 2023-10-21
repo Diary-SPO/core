@@ -26,8 +26,8 @@ const Contacts: FC<{ id: string }> = ({ id }) => {
         <Div>
           <Group header={<Header mode='tertiary'>FAQ</Header>}>
             <Card mode='shadow'>
-              {helpData.map(({ detail, title, id }) => (
-                <HelpAccordion key={id} id={id} detail={detail} title={title} />
+              {helpData.map(({ detail, title, id: dataId }) => (
+                <HelpAccordion key={id} id={dataId} detail={detail} title={title} />
               ))}
             </Card>
           </Group>
