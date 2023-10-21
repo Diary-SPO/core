@@ -11,7 +11,7 @@ import { AuthData } from 'diary-shared';
 import PanelHeaderWithBack from '../components/UI/PanelHeaderWithBack';
 import { appStorageSet, getCookie } from '../methods';
 import { VIEW_SCHEDULE } from '../routes';
-import { useLocalStorage, useSnackbar } from '../hooks';
+import { useSnackbar } from '../hooks';
 
 const LoginForm: FC<{ id: string }> = ({ id }) => {
   const { panel: activePanel, panelsHistory } = useActiveVkuiLocation();
@@ -22,10 +22,6 @@ const LoginForm: FC<{ id: string }> = ({ id }) => {
   const [isDataInvalid, setIsDataInvalid] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [snackbar, showSnackbar] = useSnackbar();
-
-  const [, setCookie] = useLocalStorage('cookie', undefined);
-  const [, setMain] = useLocalStorage('main', undefined);
-  const [, setLog] = useLocalStorage('log', undefined);
 
   const createErrorSnackbar = () => showSnackbar({
     icon: <Icon28ErrorCircleOutline fill='var(--vkui--color_icon_negative)' />,
@@ -71,6 +67,7 @@ const LoginForm: FC<{ id: string }> = ({ id }) => {
       password: setPassword,
     }[name];
     setIsDataInvalid(false);
+    // eslint-disable-next-line @typescript-eslint/no-unused-expressions
     setStateAction && setStateAction(value);
   };
 
@@ -120,19 +117,18 @@ const LoginForm: FC<{ id: string }> = ({ id }) => {
     try {
       const basePath = dataResp.data.tenants[dataResp.data.tenantName];
 
-      const id = String(basePath.studentRole.id);
+      const userId = String(basePath.studentRole.id);
       const { cookie } = dataResp;
       const name = ` ${String(basePath.lastName)} ${String(basePath.firstName)} ${String(basePath.middleName)}`;
       const org = String(basePath.settings.organization.abbreviation);
       const city = String(basePath.settings.organization.address.settlement);
       const group = String(basePath.students[0].groupName);
-      const passwordHashed = (new Hashes.SHA256()).b64(password);
 
-      localStorage.setItem('id', id);
+      localStorage.setItem('id', userId);
+      localStorage.setItem('cookie', cookie);
 
-      setCookie(cookie);
-      setLog(login);
-      setMain(passwordHashed);
+      localStorage.setItem('log', login);
+      localStorage.setItem('main', passwordHashed);
 
       const userData = {
         name,
@@ -145,7 +141,7 @@ const LoginForm: FC<{ id: string }> = ({ id }) => {
         appStorageSet('log', login),
         appStorageSet('main', passwordHashed),
         appStorageSet('cookie', cookie),
-        appStorageSet('id', id),
+        appStorageSet('id', userId),
         appStorageSet('data', JSON.stringify(userData)),
       ]);
 
@@ -156,7 +152,7 @@ const LoginForm: FC<{ id: string }> = ({ id }) => {
 
       setTimeout(async () => {
         await routeNavigator.replace(`/${VIEW_SCHEDULE}`);
-      }, 1500);
+      }, 3500);
     } catch (e) {
       setIsLoading(false);
       console.error(e);

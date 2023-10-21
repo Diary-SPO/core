@@ -1,11 +1,11 @@
 import { getCookie } from '../bridge/getCookie';
 
-const BASE_URL: string = import.meta.env.VITE_SERVER_URL ?? '';
-const SECOND_SERVER_URL: string = import.meta.env.VITE_SERVER_URL_SECOND ?? '';
+// TODO: move to config
+const BASE_URL = import.meta.env.VITE_SERVER_URL as string ?? '';
+const SECOND_SERVER_URL = import.meta.env.VITE_SERVER_URL_SECOND as string ?? '';
 
 const makeRequest = async <T>(route: string): Promise< T | 418 | 429> => {
-  const cookie = await getCookie() ?? localStorage.getItem('cookie');
-  console.log(localStorage.getItem('cookie'));
+  const cookie = localStorage.getItem('cookie') ?? sessionStorage.getItem('cookie') ?? await getCookie();
   const url = `${BASE_URL}${route}`;
 
   if (!cookie) {

@@ -3,10 +3,8 @@ import {
   Group, Header, InfoRow, ModalPage, ModalPageHeader, Separator, SimpleCell, Spacing, Text,
 } from '@vkontakte/vkui';
 import {
-  AbsenceTypes, AbsenceTypesDescription, AbsenceTypesDescriptionKeys, Lesson, LessonType, LessonWorkType, TLesson,
-// eslint-disable-next-line
-} from '/diary-shared';
-import { AbsenceTypesKeys } from 'diary-shared';
+  AbsenceTypes, AbsenceTypesKeys, AbsenceTypesDescription, AbsenceTypesDescriptionKeys, Lesson, LessonType, LessonWorkType, TLesson,
+} from 'diary-shared';
 import setDefaultMark from '../utils/setDefaultMark';
 import textToLink from '../utils/textToLink';
 import { cleanData } from './data';

@@ -11,7 +11,7 @@ const setDefaultMark = (task: Task): TextMark => {
     return 'ДЗ';
   }
 
-  return task.mark || '';
+  return task.mark as TextMark;
 };
 
 export default setDefaultMark;

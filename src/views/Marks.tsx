@@ -13,7 +13,7 @@ import UserInfo from '../components/UserInfo';
 import { getPerformance } from '../methods';
 import { handleResponse } from '../utils/handleResponse';
 import { useSnackbar } from '../hooks';
-import { Grade, TextMark } from '../types';
+import { formatStatisticsData } from '../utils/formatStatisticsData';
 
 const THIRD_SEC = 30 * 1000;
 
@@ -29,19 +29,16 @@ const Marks: FC<{ id: string }> = ({ id }) => {
   const [averageMark, setAverageMark] = useState<number | null>(null);
   const [markCounts, setMarkCounts] = useState<Record<number, number> | null>(null);
 
-  const fetchData = async () => {
-    try {
-      const marks = await fetchMarks();
+  const saveStatisticsData = (marks: PerformanceCurrent | null) => {
+    if (!marks) return;
 
-      setMarksForSubject(marks as unknown as PerformanceCurrent);
-    } catch (error) {
-      console.error('Ошибка при получении данных:', error);
+    const data = formatStatisticsData(marks);
+    if (data) {
+      setTotalNumberOfMarks(data.totalNumberOfMarks);
+      setAverageMark(data.averageMark);
+      setMarkCounts(data.markCounts);
     }
   };
-
-  useEffect(() => {
-    fetchData();
-  }, []);
 
   const fetchMarks = async (isHandle?: boolean): Promise<PerformanceCurrent | 418 | 429 | undefined> => {
     setIsLoading(true);
@@ -82,9 +79,10 @@ const Marks: FC<{ id: string }> = ({ id }) => {
         action: 'Загрузить новые',
         icon: <Icon28InfoCircle fill='var(--vkui--color_background_accent)' />,
       });
-      const marks = JSON.parse(localStorage.getItem('savedMarks') || '');
-      saveStatisticsData(marks as PerformanceCurrent);
-      return marks;
+      const savedMarks = localStorage.getItem('savedMarks');
+      const marks = savedMarks ? JSON.parse(savedMarks) as PerformanceCurrent : null;
+      saveStatisticsData(marks);
+      return marks ?? undefined;
     } catch (error) {
       setIsLoading(false);
       showSnackbar({
@@ -94,49 +92,23 @@ const Marks: FC<{ id: string }> = ({ id }) => {
         onActionClick: () => fetchMarks(true),
       });
       console.error('Ошибка при получении оценок:', error);
+      return undefined;
     }
   };
 
-  const saveStatisticsData = (marks: PerformanceCurrent) => {
+  const fetchData = async () => {
     try {
-      const allMarks: TextMark[] = marks.daysWithMarksForSubject.reduce(
-        (marksArray: TextMark[], subject) => {
-          if (subject.daysWithMarks) {
-            // @ts-ignore
-            subject.daysWithMarks.forEach((day) => marksArray.push(...day.markValues));
-          }
-          return marksArray;
-        },
-        [],
-      );
+      const marks = await fetchMarks();
 
-      const totalNumberOfMarks: number = allMarks.length;
-      const totalSumOfMarks: number = allMarks.reduce(
-        (sum, mark) => sum + (Grade[mark] as number),
-        0,
-      );
-      const averageMark: number = totalSumOfMarks / totalNumberOfMarks;
-      const markCounts: Record<number, number> = {
-        2: 0,
-        3: 0,
-        4: 0,
-        5: 0,
-      };
-
-      allMarks.forEach((textMark: TextMark) => {
-        const numericMark: number = Grade[textMark] as number;
-        if (numericMark >= 2 && numericMark <= 5) {
-          markCounts[numericMark]++;
-        }
-      });
-
-      setTotalNumberOfMarks(totalNumberOfMarks.toString());
-      setAverageMark(Number(averageMark.toFixed(3)));
-      setMarkCounts(markCounts);
-    } catch (e) {
-      console.error(e);
+      setMarksForSubject(marks as unknown as PerformanceCurrent);
+    } catch (error) {
+      console.error('Ошибка при получении данных:', error);
     }
   };
+
+  useEffect(() => {
+    fetchData();
+  }, []);
 
   return (
     <View

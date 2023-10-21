@@ -15,7 +15,7 @@ const Notifications: FC<{ id: string }> = ({ id }) => {
   const { panel: activePanel, panelsHistory } = useActiveVkuiLocation();
   const routeNavigator = useRouteNavigator();
 
-  const [adsData, setAdsData] = useState<NotificationsResponse[] | null>(null);
+  const [notifications, setNotifications] = useState<NotificationsResponse[] | null>(null);
   const [isLoading, setLoading] = useState<boolean>(false);
   const [isError, setIsError] = useState<boolean>(false);
   const [snackbar, showSnackbar] = useSnackbar();
@@ -25,41 +25,32 @@ const Notifications: FC<{ id: string }> = ({ id }) => {
     localStorage.setItem('lastFetchTime', String(Date.now()));
   };
 
+  const handleError = () => {
+    setLoading(false);
+    setIsError(true);
+  };
+
   const fetchAds = async (isHandle?: boolean) => {
     setLoading(true);
     try {
       if (isHandle) {
         const ads = await getAds();
-
         handleResponse(
           ads,
-          () => {
-            setLoading(false);
-            setIsError(true);
-          },
-          () => {
-            showSnackbar({
-              icon: <Icon28ErrorCircleOutline fill='var(--vkui--color_icon_negative)' />,
-              title: 'Ошибка при попытке сделать запрос',
-              subtitle: 'Сообщите нам об этом',
-            });
-            setIsError(true);
-            setLoading(false);
-          },
+          handleError,
+          handleError,
           () => {
             setLoading(false);
             setIsError(false);
           },
           showSnackbar,
         );
-
         updateCache(ads as NotificationsResponse[]);
-        setAdsData(ads as NotificationsResponse[]);
+        setNotifications(ads as NotificationsResponse[]);
       } else {
-        const cachedAds = JSON.parse(localStorage.getItem('savedAds') || '[]');
-        setAdsData(cachedAds);
+        const cachedAds = JSON.parse(localStorage.getItem('savedAds') || '') as NotificationsResponse[] | null;
+        setNotifications(cachedAds);
       }
-
       setLoading(false);
     } catch (error) {
       setLoading(false);
@@ -77,7 +68,7 @@ const Notifications: FC<{ id: string }> = ({ id }) => {
     const cachedAds = localStorage.getItem('savedAds');
 
     if (cachedAds) {
-      setAdsData(JSON.parse(cachedAds));
+      setNotifications(JSON.parse(cachedAds) as NotificationsResponse[]);
       showSnackbar({
         title: 'Данные взяты из кеша',
         action: 'Загрузить новые',
@@ -98,19 +89,19 @@ const Notifications: FC<{ id: string }> = ({ id }) => {
       <Panel nav={id}>
         <PanelHeaderWithBack title='Объявления' />
         <Div>
-          {adsData && adsData?.length > 0 && (
-            adsData?.map(({
-              title, id, date, isForEmployees, isForParents, isForStudents, deleteInDays, text,
+          {notifications && notifications?.length > 0 && (
+            notifications?.map(({
+              title, id: _id, date, isForEmployees, isForParents, isForStudents, deleteInDays, text,
             }) => (
               <Group
-                key={id}
+                key={_id}
                 description={(
                   <div style={{ display: 'flex', gap: 10 }}>
                     {isForEmployees && <SubtitleWithBorder>Для работников</SubtitleWithBorder>}
                     {isForParents && <SubtitleWithBorder color='yellow-outline'>Для родителей</SubtitleWithBorder>}
                     {isForStudents && <SubtitleWithBorder color='green-outline'>Для студентов</SubtitleWithBorder>}
                   </div>
-)}
+                                )}
                 header={(
                   <Header
                     mode='tertiary'
@@ -122,7 +113,7 @@ const Notifications: FC<{ id: string }> = ({ id }) => {
                         {' '}
                         дней
                       </Subhead>
-)}
+                    )}
                   >
                     {new Date(date).toLocaleDateString()}
                   </Header>
@@ -140,31 +131,30 @@ const Notifications: FC<{ id: string }> = ({ id }) => {
 
           <Div>
             {isLoading && (
-              <Div>
-                <Spinner />
-              </Div>
+            <Div>
+              <Spinner />
+            </Div>
             )}
           </Div>
 
           <Div>
-            {isError
-              && (
-                <Placeholder
-                  header='Ошибка при загрузке'
-                  action={(
-                    <ButtonGroup mode='vertical' align='center'>
-                      <Button size='s' onClick={() => fetchAds(true)}>Попробовать снова</Button>
-                      <Link href='https://vk.me/dnevnik_spo' target='_blank'>
-                        Сообщить о проблеме
-                      </Link>
-                    </ButtonGroup>
-                  )}
-                />
-              )}
+            {isError && (
+            <Placeholder
+              header='Ошибка при загрузке'
+              action={(
+                <ButtonGroup mode='vertical' align='center'>
+                  <Button size='s' onClick={() => fetchAds(true)}>Попробовать снова</Button>
+                  <Link href='https://vk.me/dnevnik_spo' target='_blank'>
+                    Сообщить о проблеме
+                  </Link>
+                </ButtonGroup>
+)}
+            />
+            )}
           </Div>
 
           <Div>
-            {adsData && adsData?.length < 1 && <Placeholder header='Объявлений нет' />}
+            {notifications && notifications?.length < 1 && <Placeholder header='Объявлений нет' />}
           </Div>
         </Div>
         {snackbar}

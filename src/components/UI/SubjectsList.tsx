@@ -2,12 +2,17 @@ import { FC } from 'react';
 import {
   Card, CardGrid, Div, Group, Header, InfoRow, Subhead, Title,
 } from '@vkontakte/vkui';
-// eslint-disable-next-line
-import { ExaminationType, Examinations } from '/diary-shared';
+import { ExaminationType, Examinations } from 'diary-shared';
+
+export interface Subject {
+  id: string;
+  name: string;
+  examinationType: ExaminationType;
+  marks: Record<string, Record<string, string>>;
+}
 
 interface SubjectListProps {
-  // FIXME: don't use any
-  semesters: Record<string, any[]>;
+  semesters: Record<string, Subject[]>;
   studentName: string | null;
   year: number | null;
 }
@@ -24,7 +29,7 @@ const SubjectList: FC<SubjectListProps> = ({ semesters, studentName, year }) => 
           >
             {semesterKey}
           </Header>
-          )}
+              )}
       >
         {semesters[semesterKey].map((subject) => (
           <CardGrid key={subject.id} size='l'>
@@ -32,14 +37,13 @@ const SubjectList: FC<SubjectListProps> = ({ semesters, studentName, year }) => 
               <Div>
                 <Title level='3'>{subject.name}</Title>
                 <InfoRow header='Тип аттестации'>
-                  <Subhead>{Examinations[subject.examinationType as ExaminationType]}</Subhead>
+                  <Subhead>{Examinations[subject.examinationType]}</Subhead>
                 </InfoRow>
                 <InfoRow header='Оценки'>
                   <Subhead>
-                    {subject.marks[String(subject.id)] && Object.keys(subject.marks[String(subject.id)]).length > 0 ? (
+                    {subject.marks[subject.id] && Object.keys(subject.marks[subject.id]).length > 0 ? (
                       Object.keys(subject.marks[subject.id]).map((studentId) => (
                         <span key={studentId}>
-                          {/* // @ts-ignore */}
                           {subject.marks[subject.id][studentId]}
                         </span>
                       ))
