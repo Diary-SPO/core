@@ -101,15 +101,21 @@ const Settings: FC<ISettings> = ({ id }) => {
     }
   };
 
-  const handleLogOut = async () => {
+  const handleLogOut = () => {
     showSnackbar({
-      title: 'Выхожу',
+      title: 'Выход',
       icon: <Icon28DoorArrowRightOutline color='var(--vkui--color_background_accent_themed)' />,
       subtitle: 'После удаления всех данных вы попадёте на страницу авторизации',
     });
 
-    await logOut();
-    await routeNavigator.replace('/');
+    setTimeout(async () => {
+      try {
+        await logOut();
+        await routeNavigator.replace('/');
+      } catch (error) {
+        console.error('Error during logout:', error);
+      }
+    }, 1500);
   };
 
   const addToHomeScreen = () => {

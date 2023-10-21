@@ -152,7 +152,7 @@ const LoginForm: FC<{ id: string }> = ({ id }) => {
 
       setTimeout(async () => {
         await routeNavigator.replace(`/${VIEW_SCHEDULE}`);
-      }, 1500);
+      }, 3500);
     } catch (e) {
       setIsLoading(false);
       console.error(e);

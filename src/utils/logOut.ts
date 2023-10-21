@@ -14,10 +14,7 @@ const clearVkStorage = async () => {
 
 const logOut = async () => {
   await clearVkStorage();
-  await clearVkStorage();
   localStorage.clear();
-  localStorage.clear();
-  window.location.reload();
   window.location.reload();
 };
 

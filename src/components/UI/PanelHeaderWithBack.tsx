@@ -16,7 +16,7 @@ const PanelHeaderWithBack: FC<{ title: string }> = ({ title }) => {
         routeNavigator.replace('/');
       }
     });
-  }, []);
+  }, [view, localStorage, window.location]);
 
   return (
     <PanelHeader before={<PanelHeaderBack onClick={() => routeNavigator.back()} />}>{title}</PanelHeader>

@@ -21,12 +21,7 @@ const App = () => {
   const routerPopout = usePopout();
   const vkBridgeInsets = useInsets() || undefined;
 
-  const handleStorageChange = (event: Event) => {
-    if (!(event instanceof StorageEvent && event.key === 'your_storage_key') || !(event instanceof Event && event.type === 'hashchange')) {
-      return;
-    }
-    setIsLoading(true);
-
+  useEffect(() => {
     getCookie().then(async (cookieValue) => {
       if (!cookieValue) {
         await routeNavigator.replace('/');
@@ -36,17 +31,6 @@ const App = () => {
         setIsLoading(false);
       }
     });
-
-    setIsLoading(false);
-  };
-
-  useEffect(() => {
-    window.addEventListener('storage', handleStorageChange);
-    window.addEventListener('hashchange', handleStorageChange);
-    return () => {
-      window.removeEventListener('storage', handleStorageChange);
-      window.removeEventListener('hashchange', handleStorageChange);
-    };
   }, [activeView, localStorage, window.location]);
 
   const onStoryChange = async (currentView: Pages) => {
