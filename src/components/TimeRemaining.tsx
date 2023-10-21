@@ -46,7 +46,7 @@ const TimeRemaining: FC<ITimeRemainingProps> = ({ lessonDate, startTime, endTime
     return null;
   }
 
-  const isRed = parseInt(timeRemainingText) < 30;
+  const isRed = parseInt(timeRemainingText, 10) < 30;
 
   const styles = {
     margin: '5px 0',

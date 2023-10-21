@@ -15,8 +15,7 @@ import {
 } from '@vkontakte/icons';
 import {
   AbsenceType, AbsenceTypes, PerformanceCurrent, TextMark, AbsenceTypesKeys,
-// eslint-disable-next-line
-} from '/diary-shared';
+} from 'diary-shared';
 import calculateAverageMark from '../utils/calculateAverageMark';
 import Mark from './UI/Mark';
 import { Grade, GradeKeys } from '../types';

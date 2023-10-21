@@ -84,7 +84,7 @@ const UserInfo = () => {
     const avaFromStorage = localStorage.getItem('ava');
 
     if (localData && !handle) {
-      const parsedData: UserData = JSON.parse(localData);
+      const parsedData = JSON.parse(localData) as UserData;
       if (parsedData.name && parsedData.group) {
         setUserData(parsedData);
         if (avaFromStorage) {
@@ -96,7 +96,7 @@ const UserInfo = () => {
     }
 
     const newUserData = await getVkStorageData(['data']);
-    const parsedUserData: UserData = JSON.parse(newUserData.keys[0].value);
+    const parsedUserData = JSON.parse(newUserData.keys[0].value) as UserData;
 
     const ava = await getUserAva();
 
