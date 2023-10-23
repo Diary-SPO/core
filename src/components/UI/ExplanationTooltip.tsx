@@ -1,31 +1,27 @@
-import {
-  unstable_Popover as Popover, Subhead, Text,
-} from '@vkontakte/vkui';
-import { Icon16HelpOutline } from '@vkontakte/icons';
-import { FC } from 'preact/compat';
+import { unstable_Popover as Popover, Subhead, Text } from '@vkontakte/vkui'
+import { Icon16HelpOutline } from '@vkontakte/icons'
+import { FC } from 'preact/compat'
 
 interface TooltipTextProps {
-  text: string;
-  tooltipContent: string;
+  text: string
+  tooltipContent: string
 }
 
 const ExplanationTooltip: FC<TooltipTextProps> = ({ text, tooltipContent }) => {
   const textTooltip = (
     //@ts-ignore типы React не совсем совместимы с Preact
-    <Subhead style={{ padding: '8px ', color: 'var(--vkui--color_text_primary)' }}>
+    <Subhead
+      style={{ padding: '8px ', color: 'var(--vkui--color_text_primary)' }}
+    >
       {tooltipContent}
     </Subhead>
-  );
+  )
 
   return (
     //@ts-ignore типы React не совсем совместимы с Preact
     <Text>
       {text}
-      <Popover
-        style={{ maxWidth: 220 }}
-        action='hover'
-        content={textTooltip}
-      >
+      <Popover style={{ maxWidth: 220 }} action="hover" content={textTooltip}>
         <Icon16HelpOutline
           style={{
             display: 'inline-block',
@@ -38,7 +34,7 @@ const ExplanationTooltip: FC<TooltipTextProps> = ({ text, tooltipContent }) => {
         />
       </Popover>
     </Text>
-  );
-};
+  )
+}
 
-export default ExplanationTooltip;
+export default ExplanationTooltip

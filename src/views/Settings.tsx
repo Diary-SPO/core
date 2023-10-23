@@ -1,8 +1,20 @@
 import {
   Alert,
-  CellButton, Group, Header, InfoRow, Panel, ScreenSpinner, SimpleCell, Subhead, Switch, View,
-} from '@vkontakte/vkui';
-import { useActiveVkuiLocation, useRouteNavigator } from '@vkontakte/vk-mini-apps-router';
+  CellButton,
+  Group,
+  Header,
+  InfoRow,
+  Panel,
+  ScreenSpinner,
+  SimpleCell,
+  Subhead,
+  Switch,
+  View,
+} from '@vkontakte/vkui'
+import {
+  useActiveVkuiLocation,
+  useRouteNavigator,
+} from '@vkontakte/vk-mini-apps-router'
 import {
   Icon28ClearDataOutline,
   Icon28DoorArrowRightOutline,
@@ -10,103 +22,112 @@ import {
   Icon28IncognitoOutline,
   Icon28RefreshOutline,
   Icon28ThumbsUpCircleFillGreen,
-} from '@vkontakte/icons';
-import bridge from '@vkontakte/vk-bridge';
-import { AuthData } from 'diary-shared';
-import { useEffect, useRef, useState } from 'preact/hooks';
-import { FunctionalComponent } from 'preact';
-import { Storage } from '../types';
-import PanelHeaderWithBack from '../components/UI/PanelHeaderWithBack';
-import { useSnackbar } from '../hooks';
-import logOut from '../utils/logOut';
+} from '@vkontakte/icons'
+import bridge from '@vkontakte/vk-bridge'
+import { AuthData } from 'diary-shared'
+import { useEffect, useRef, useState } from 'preact/hooks'
+import { FunctionalComponent } from 'preact'
+import { Storage } from '../types'
+import PanelHeaderWithBack from '../components/UI/PanelHeaderWithBack'
+import { useSnackbar } from '../hooks'
+import logOut from '../utils/logOut'
 
 interface ISettings {
-  id: string,
+  id: string
 }
 
 const Settings: FunctionalComponent<ISettings> = ({ id }) => {
-  const { panel: activePanel, panelsHistory } = useActiveVkuiLocation();
-  const routeNavigator = useRouteNavigator();
+  const { panel: activePanel, panelsHistory } = useActiveVkuiLocation()
+  const routeNavigator = useRouteNavigator()
 
-  const [snackbar, showSnackbar] = useSnackbar();
+  const [snackbar, showSnackbar] = useSnackbar()
   const cleatCacheSnackbar = () => {
     showSnackbar({
       title: 'Кеш очищен',
       subtitle: 'Необходимая информация загрузится при необходимости',
-    });
-  };
+    })
+  }
 
-  const [cacheData, setCacheData] = useState<Storage[]>([]);
-  const [isHomeScreenSupported, setIsHomeScreenSupported] = useState<boolean>(false);
+  const [cacheData, setCacheData] = useState<Storage[]>([])
+  const [isHomeScreenSupported, setIsHomeScreenSupported] =
+    useState<boolean>(false)
 
-  const switchRef = useRef(null);
-  const [isSwitchChecked, setIsSwitchChecked] = useState<boolean>(true);
-  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const switchRef = useRef(null)
+  const [isSwitchChecked, setIsSwitchChecked] = useState<boolean>(true)
+  const [isLoading, setIsLoading] = useState<boolean>(false)
 
   useEffect(() => {
     const checkIsFeatureSupported = async () => {
-      await bridge.send('VKWebAppAddToHomeScreenInfo')
+      await bridge
+        .send('VKWebAppAddToHomeScreenInfo')
         .then(({ is_added_to_home_screen, is_feature_supported }) => {
           if (is_feature_supported) {
-            setIsHomeScreenSupported(true);
+            setIsHomeScreenSupported(true)
           }
           if (is_added_to_home_screen) {
-            console.log(is_added_to_home_screen);
+            console.log(is_added_to_home_screen)
           }
         })
         .catch((error) => {
-          console.log(error);
-        });
-    };
+          console.log(error)
+        })
+    }
 
-    checkIsFeatureSupported();
-  }, []);
+    checkIsFeatureSupported()
+  }, [])
 
   useEffect(() => {
-    const allKeys = Object.keys(localStorage);
+    const allKeys = Object.keys(localStorage)
 
-    const getCache = allKeys.map((key) => ({ key, value: localStorage.getItem(key) || 'false' }));
-    setCacheData(getCache);
-  }, []);
+    const getCache = allKeys.map((key) => ({
+      key,
+      value: localStorage.getItem(key) || 'false',
+    }))
+    setCacheData(getCache)
+  }, [])
 
   const clearCache = () => {
-    localStorage.clear();
-    setCacheData([]);
+    localStorage.clear()
+    setCacheData([])
 
     if (!snackbar) {
-      cleatCacheSnackbar();
+      cleatCacheSnackbar()
     }
-  };
+  }
 
   const handleLogOut = () => {
     showSnackbar({
       title: 'Выход',
       //@ts-ignore типы React не совсем совместимы с Preact
-      icon: <Icon28DoorArrowRightOutline color='var(--vkui--color_background_accent_themed)' />,
-      subtitle: 'После удаления всех данных вы попадёте на страницу авторизации',
-    });
+      icon: (
+        <Icon28DoorArrowRightOutline color="var(--vkui--color_background_accent_themed)" />
+      ),
+      subtitle:
+        'После удаления всех данных вы попадёте на страницу авторизации',
+    })
 
     setTimeout(async () => {
       try {
-        await logOut();
-        await routeNavigator.replace('/');
+        await logOut()
+        await routeNavigator.replace('/')
       } catch (error) {
-        console.error('Error during logout:', error);
+        console.error('Error during logout:', error)
       }
-    }, 1500);
-  };
+    }, 1500)
+  }
 
   const addToHomeScreen = () => {
-    bridge.send('VKWebAppAddToHomeScreen')
+    bridge
+      .send('VKWebAppAddToHomeScreen')
       .then((data) => {
         if (data.result) {
-          console.log(data);
+          console.log(data)
         }
       })
       .catch((error) => {
-        console.log(error);
-      });
-  };
+        console.log(error)
+      })
+  }
 
   const clearCachePopup = (
     <Alert
@@ -125,12 +146,12 @@ const Settings: FunctionalComponent<ISettings> = ({ id }) => {
           action: () => clearCache(),
         },
       ]}
-      actionsLayout='horizontal'
+      actionsLayout="horizontal"
       onClose={() => routeNavigator.hidePopout()}
-      header='Очистка кеша'
-      text='После удаления кеша вся информация (оценки, расписание и тд) загрузится повторно.'
+      header="Очистка кеша"
+      text="После удаления кеша вся информация (оценки, расписание и тд) загрузится повторно."
     />
-  );
+  )
 
   const logOutPopup = (
     <Alert
@@ -149,27 +170,27 @@ const Settings: FunctionalComponent<ISettings> = ({ id }) => {
           action: () => handleLogOut(),
         },
       ]}
-      actionsLayout='horizontal'
+      actionsLayout="horizontal"
       onClose={() => routeNavigator.hidePopout()}
-      header='Выход'
-      text='Вы уверены, что хотите выйти из аккаунта?'
+      header="Выход"
+      text="Вы уверены, что хотите выйти из аккаунта?"
     />
-  );
+  )
 
   const reloadCookie = async () => {
-    const login = localStorage.getItem('log');
-    const password = localStorage.getItem('main');
+    const login = localStorage.getItem('log')
+    const password = localStorage.getItem('main')
 
     if (!login || !password) {
       showSnackbar({
         title: 'Чего-то не хватает',
         subtitle: 'Попробуйте перезайти в аккаунт или сообщите об ошибке',
-      });
-      return;
+      })
+      return
     }
 
     try {
-      setIsLoading(true);
+      setIsLoading(true)
       //@ts-ignore типы React не совсем совместимы с Preact
       const response = await fetch(`${import.meta.env.VITE_SERVER_URL}/login`, {
         method: 'POST',
@@ -181,34 +202,34 @@ const Settings: FunctionalComponent<ISettings> = ({ id }) => {
           password,
           isRemember: true,
         }),
-      });
+      })
 
-      const data = await response.json() as AuthData;
+      const data = (await response.json()) as AuthData
 
       if (!data.cookie) {
         showSnackbar({
           title: 'Сервер вернул что-то плохое',
           subtitle: 'Попробуйте перезайти в аккаунт или сообщите об ошибке',
-        });
-        return;
+        })
+        return
       }
 
-      localStorage.setItem('cookie', data.cookie);
+      localStorage.setItem('cookie', data.cookie)
 
       showSnackbar({
         title: 'Cookie обновлена',
         icon: <Icon28ThumbsUpCircleFillGreen />,
         subtitle: 'Не забывайте периодически это делать',
-      });
+      })
     } catch (e) {
       showSnackbar({
         title: 'Ошибка на сервере',
         subtitle: 'Попробуйте перезайти в аккаунт или сообщите об ошибке',
-      });
+      })
     } finally {
-      setIsLoading(false);
+      setIsLoading(false)
     }
-  };
+  }
 
   return (
     <View
@@ -218,11 +239,11 @@ const Settings: FunctionalComponent<ISettings> = ({ id }) => {
       onSwipeBack={() => routeNavigator.back()}
     >
       <Panel nav={id}>
-        <PanelHeaderWithBack title='Настройки' />
-        <Group header={<Header mode='secondary'>Действия</Header>}>
-          {isLoading && <ScreenSpinner size='medium' />}
+        <PanelHeaderWithBack title="Настройки" />
+        <Group header={<Header mode="secondary">Действия</Header>}>
+          {isLoading && <ScreenSpinner size="medium" />}
           <CellButton
-            Component='label'
+            Component="label"
             //@ts-ignore типы React не совсем совместимы с Preact
             after={<Switch getRef={switchRef} defaultChecked />}
             onChange={() => setIsSwitchChecked(!isSwitchChecked)}
@@ -230,10 +251,7 @@ const Settings: FunctionalComponent<ISettings> = ({ id }) => {
           >
             Показывать тех. инфрмацию
           </CellButton>
-          <CellButton
-            before={<Icon28RefreshOutline />}
-            onClick={reloadCookie}
-          >
+          <CellButton before={<Icon28RefreshOutline />} onClick={reloadCookie}>
             Обновить cookie
           </CellButton>
           <CellButton
@@ -257,13 +275,20 @@ const Settings: FunctionalComponent<ISettings> = ({ id }) => {
             </CellButton>
           )}
         </Group>
-        {isSwitchChecked
-          && (
-          <Group header={(<Header mode='secondary'>Техническая информация</Header>)}>
+        {isSwitchChecked && (
+          <Group
+            header={<Header mode="secondary">Техническая информация</Header>}
+          >
             <Group
-              header={(
+              header={
                 //@ts-ignore типы React не совсем совместимы с Preact
-                <Header mode='secondary' aside={<Subhead>Хранится в LocalStorage</Subhead>}>Кеш</Header>)}
+                <Header
+                  mode="secondary"
+                  aside={<Subhead>Хранится в LocalStorage</Subhead>}
+                >
+                  Кеш
+                </Header>
+              }
             >
               {cacheData.map((item) => (
                 <SimpleCell key={item.key}>
@@ -272,11 +297,11 @@ const Settings: FunctionalComponent<ISettings> = ({ id }) => {
               ))}
             </Group>
           </Group>
-          )}
+        )}
         {snackbar}
       </Panel>
     </View>
-  );
-};
+  )
+}
 
-export default Settings;
+export default Settings

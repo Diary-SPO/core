@@ -1,7 +1,13 @@
-export type Pages = 'schedule' | 'contacts' | 'marks' | 'settings' | 'attestation' | 'notifications';
+export type Pages =
+  | 'schedule'
+  | 'contacts'
+  | 'marks'
+  | 'settings'
+  | 'attestation'
+  | 'notifications'
 
 export interface Storage {
-  key: string;
+  key: string
   value: string
 }
 
@@ -24,7 +30,7 @@ export enum Grade {
   'О' = 'О',
 }
 
-export type GradeKeys = keyof typeof Grade;
+export type GradeKeys = keyof typeof Grade
 
-export type TextMark = GradeKeys;
-export type TMark = typeof Grade[GradeKeys];
+export type TextMark = GradeKeys
+export type TMark = (typeof Grade)[GradeKeys]

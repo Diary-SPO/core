@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import { FC } from 'react'
 import {
   Card,
   CardGrid,
@@ -8,44 +8,54 @@ import {
   HorizontalScroll,
   MiniInfoCell,
   Title,
-} from '@vkontakte/vkui';
+} from '@vkontakte/vkui'
 import {
   Icon20IncognitoOutline,
   Icon20StatisticsOutline,
-} from '@vkontakte/icons';
+} from '@vkontakte/icons'
 import {
-  AbsenceType, AbsenceTypes, AbsenceTypesKeys, PerformanceCurrent, TextMark,
-} from 'diary-shared';
-import calculateAverageMark from '../utils/calculateAverageMark';
-import Mark from './UI/Mark';
-import { Grade, GradeKeys } from '../types';
+  AbsenceType,
+  AbsenceTypes,
+  AbsenceTypesKeys,
+  PerformanceCurrent,
+  TextMark,
+} from 'diary-shared'
+import calculateAverageMark from '../utils/calculateAverageMark'
+import Mark from './UI/Mark'
+import { Grade, GradeKeys } from '../types'
 
 interface IMarksByGroup {
-  marksForSubject: PerformanceCurrent | null;
+  marksForSubject: PerformanceCurrent | null
 }
 
 const MarksByGroup: FC<IMarksByGroup> = ({ marksForSubject }) => {
-  const subjectMarksMap: Record<string, { date: string; marks: TextMark[], absenceType?: AbsenceType }[]> = {};
+  const subjectMarksMap: Record<
+    string,
+    { date: string; marks: TextMark[]; absenceType?: AbsenceType }[]
+  > = {}
 
   if (!marksForSubject) {
     return (
-      <Group mode='plain' header={<Header mode='secondary'>Оценки по дисциплинам</Header>}>
-        <CardGrid size='l'>
-          <Card mode='shadow'>
+      <Group
+        mode="plain"
+        header={<Header mode="secondary">Оценки по дисциплинам</Header>}
+      >
+        <CardGrid size="l">
+          <Card mode="shadow">
             <Div>
               {/*//@ts-ignore типы React не совсем совместимы с Preact*/}
-              <Title level='3'>Нет данных</Title>
+              <Title level="3">Нет данных</Title>
             </Div>
           </Card>
         </CardGrid>
       </Group>
-    );
+    )
   }
 
   marksForSubject?.daysWithMarksForSubject?.map((subject) => {
-    const { subjectName, daysWithMarks } = subject;
+    const { subjectName, daysWithMarks } = subject
     if (!subjectMarksMap[subjectName]) {
-      subjectMarksMap[subjectName] = [];
+      subjectMarksMap[subjectName] = []
     }
 
     daysWithMarks?.forEach((dayWithMark) => {
@@ -53,56 +63,76 @@ const MarksByGroup: FC<IMarksByGroup> = ({ marksForSubject }) => {
         date: new Date(dayWithMark.day).toLocaleDateString(),
         marks: dayWithMark.markValues,
         absenceType: dayWithMark.absenceType,
-      });
-    });
-  });
+      })
+    })
+  })
 
   return (
-    <Group mode='plain' header={<Header mode='secondary'>Оценки по дисциплинам</Header>}>
+    <Group
+      mode="plain"
+      header={<Header mode="secondary">Оценки по дисциплинам</Header>}
+    >
       {Object.keys(subjectMarksMap).map((subjectName, i) => (
-        <CardGrid key={i} size='l'>
-          <Card mode='shadow'>
+        <CardGrid key={i} size="l">
+          <Card mode="shadow">
             <Div>
               {/*//@ts-ignore типы React не совсем совместимы с Preact*/}
-              <Title level='3'>{subjectName}</Title>
+              <Title level="3">{subjectName}</Title>
             </Div>
             <HorizontalScroll>
               <div style={{ display: 'flex' }}>
-                {subjectMarksMap[subjectName].map(({ date, marks, absenceType }) => (
-                  <div key={`${date}_${absenceType}`} style={{ display: 'flex' }}>
-                    {marks.length > 0 && !absenceType ? (
-                      marks.map((mark, k) => (
-                        <Mark key={k} mark={Grade[mark as GradeKeys]} size='s' />
-                      ))
-                    ) : absenceType ? (
-                      <Mark size='s' mark={AbsenceTypes[absenceType] as AbsenceTypesKeys} />
-                    ) : null}
-                  </div>
-                ))}
+                {subjectMarksMap[subjectName].map(
+                  ({ date, marks, absenceType }) => (
+                    <div
+                      key={`${date}_${absenceType}`}
+                      style={{ display: 'flex' }}
+                    >
+                      {marks.length > 0 && !absenceType ? (
+                        marks.map((mark, k) => (
+                          <Mark
+                            key={k}
+                            mark={Grade[mark as GradeKeys]}
+                            size="s"
+                          />
+                        ))
+                      ) : absenceType ? (
+                        <Mark
+                          size="s"
+                          mark={AbsenceTypes[absenceType] as AbsenceTypesKeys}
+                        />
+                      ) : null}
+                    </div>
+                  )
+                )}
               </div>
             </HorizontalScroll>
-            {marksForSubject && marksForSubject.daysWithMarksForSubject[i].averageMark ? (
+            {marksForSubject &&
+            marksForSubject.daysWithMarksForSubject[i].averageMark ? (
               <MiniInfoCell
-                textWrap='full'
+                textWrap="full"
                 before={<Icon20StatisticsOutline />}
                 style={{ marginTop: 5 }}
                 after={calculateAverageMark(
-                  marksForSubject.daysWithMarksForSubject[i].daysWithMarks?.reduce(
+                  marksForSubject.daysWithMarksForSubject[
+                    i
+                  ].daysWithMarks?.reduce(
                     (allMarks, day) => [...allMarks, ...day.markValues],
-                    [] as TextMark[],
-                  ),
+                    [] as TextMark[]
+                  )
                 )}
               >
                 Средний балл:
               </MiniInfoCell>
             ) : (
-              <MiniInfoCell before={<Icon20IncognitoOutline />}>Нет оценок</MiniInfoCell>
+              <MiniInfoCell before={<Icon20IncognitoOutline />}>
+                Нет оценок
+              </MiniInfoCell>
             )}
           </Card>
         </CardGrid>
       ))}
     </Group>
-  );
-};
+  )
+}
 
-export default MarksByGroup;
+export default MarksByGroup

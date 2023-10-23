@@ -1,47 +1,56 @@
-import { Footnote } from '@vkontakte/vkui';
-import { AbsenceTypesKeys } from 'diary-shared';
-import { CSSProperties, FC } from 'preact/compat';
-import { TMark } from '../../../types';
+import { Footnote } from '@vkontakte/vkui'
+import { AbsenceTypesKeys } from 'diary-shared'
+import { CSSProperties, FC } from 'preact/compat'
+import { TMark } from '../../../types'
 
-type Sizes = 'l' | 's';
-type ReturnedMark = 'Н' | TMark | AbsenceTypesKeys;
+type Sizes = 'l' | 's'
+type ReturnedMark = 'Н' | TMark | AbsenceTypesKeys
 
 interface IMark {
-  mark?: ReturnedMark;
-  size?: Sizes;
-  bottom?: string;
-  useMargin?: boolean;
-  style?: CSSProperties;
+  mark?: ReturnedMark
+  size?: Sizes
+  bottom?: string
+  useMargin?: boolean
+  style?: CSSProperties
 }
 
 const getBackgroundColor = (score?: ReturnedMark) => {
   if (Number(score) > 5) {
-    return 'var(--vkui--color_accent_purple)';
-  } if (Number(score) >= 4) {
-    return 'linear-gradient(135deg,#50c750,#32b332)';
-  } if (score === 3) {
-    return '#F59802';
+    return 'var(--vkui--color_accent_purple)'
+  }
+  if (Number(score) >= 4) {
+    return 'linear-gradient(135deg,#50c750,#32b332)'
+  }
+  if (score === 3) {
+    return '#F59802'
     //   FIXME: 'The two values in this comparison do not have a shared enum type   @typescript-eslint/no-unsafe-enum-comparison'
-  } if (score === 'ДЗ') {
-    return '#4966CF';
-  } if (score === 'О') {
-    return '#ffb060';
+  }
+  if (score === 'ДЗ') {
+    return '#4966CF'
+  }
+  if (score === 'О') {
+    return '#ffb060'
   }
 
-  return '#DA0A35';
-};
+  return '#DA0A35'
+}
 
 const Mark: FC<IMark> = ({
-  mark, size = 'l', useMargin = true, bottom, style,
+  mark,
+  size = 'l',
+  useMargin = true,
+  bottom,
+  style,
 }) => {
   const getSize = (size: Sizes) => {
     if (size === 's') {
-      return '1rem';
-    } if (size === 'l') {
-      return '3rem';
+      return '1rem'
     }
-    return undefined;
-  };
+    if (size === 'l') {
+      return '3rem'
+    }
+    return undefined
+  }
 
   const styles: CSSProperties = {
     padding: size === 'l' ? '10px 29px' : '5px 10px',
@@ -51,21 +60,17 @@ const Mark: FC<IMark> = ({
     color: 'white',
     marginLeft: useMargin ? 10 : undefined,
     display: 'inline-block',
-  };
+  }
 
   return (
     <div style={{ ...style }}>
-      <div style={styles}>
-        {mark}
-      </div>
+      <div style={styles}>{mark}</div>
       {bottom && (
         // @ts-ignore
-        <Footnote style={{ padding: 3 }}>
-          {bottom}
-        </Footnote>
+        <Footnote style={{ padding: 3 }}>{bottom}</Footnote>
       )}
     </div>
-  );
-};
+  )
+}
 
-export default Mark;
+export default Mark
