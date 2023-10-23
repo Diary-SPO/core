@@ -1,8 +1,8 @@
-import { FC } from 'react';
 import {
   Group, Header, MiniInfoCell,
 } from '@vkontakte/vkui';
 import { Icon20EducationOutline, Icon28BrainOutline } from '@vkontakte/icons';
+import { FC } from 'preact/compat';
 import Mark from './Mark';
 import { TMark } from '../../types';
 

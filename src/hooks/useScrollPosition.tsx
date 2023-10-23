@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'preact/hooks';
 
 const useScrollPosition = () => {
   const [scrollPosition, setScrollPosition] = useState(0);

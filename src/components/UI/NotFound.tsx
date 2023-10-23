@@ -1,9 +1,9 @@
-import { CSSProperties } from 'react';
 import {
   AppRoot, Button, Div,
 } from '@vkontakte/vkui';
 import { useRouteNavigator } from '@vkontakte/vk-mini-apps-router';
 import { useInsets } from '@vkontakte/vk-bridge-react';
+import { CSSProperties } from 'preact/compat';
 
 const notFoundStyle: CSSProperties = {
   display: 'flex',

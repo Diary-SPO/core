@@ -1,10 +1,11 @@
-import { FC, useEffect, useState } from 'react';
 import {
   Button, ButtonGroup, Card, Div, Group, Header, Link, Panel, Placeholder, Spinner, Title, View, Text, Subhead,
 } from '@vkontakte/vkui';
 import { useActiveVkuiLocation, useRouteNavigator } from '@vkontakte/vk-mini-apps-router';
 import { Icon28ErrorCircleOutline } from '@vkontakte/icons';
 import { NotificationsResponse } from 'diary-shared';
+import { useEffect, useState } from 'preact/hooks';
+import { FC } from 'preact/compat';
 import PanelHeaderWithBack from '../components/UI/PanelHeaderWithBack';
 import { handleResponse } from '../utils/handleResponse';
 import getAds from '../methods/server/getAds';

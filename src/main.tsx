@@ -1,16 +1,9 @@
-import { lazy } from 'react';
-import { createRoot } from 'react-dom/client';
-import '@vkontakte/vkui/dist/cssm/styles/themes.css';
+import { render } from 'preact';
 import './index.css';
-import Suspense from './components/UI/Suspense';
+import '@vkontakte/vkui/dist/vkui.css';
+import Suspense from './components/UI/Suspense.tsx';
+import AppWrapper from './AppWrapper.tsx';
 
-const AppWrapper = lazy(() => import('./AppWrapper'));
-
-const domNode = document.getElementById('root')!;
-const root = createRoot(domNode);
-
-root.render(
-  <Suspense id='AppWrapper' mode='screen'>
-    <AppWrapper />
-  </Suspense>,
-);
+render(<Suspense id='AppWrapper' mode='screen'>
+  <AppWrapper />
+       </Suspense>, document.getElementById('app')!);

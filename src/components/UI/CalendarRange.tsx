@@ -1,6 +1,3 @@
-import React, {
-  FC, ReactNode, useEffect, useRef, useState,
-} from 'react';
 import {
   Button,
   Calendar,
@@ -11,6 +8,11 @@ import {
   unstable_Popper as Popper,
 } from '@vkontakte/vkui';
 import PropTypes from 'prop-types';
+import { forwardRef, ReactNode } from 'preact/compat';
+import {
+  useEffect, useImperativeHandle, useRef, useState,
+} from 'preact/hooks';
+import { FunctionalComponent } from 'preact';
 
 interface CalendarRangeProps {
   label: string | ReactNode;
@@ -18,7 +20,7 @@ interface CalendarRangeProps {
   value?: Date;
 }
 
-const CalendarRange: FC<CalendarRangeProps> = React.forwardRef(
+const CalendarRange: FunctionalComponent<CalendarRangeProps> = forwardRef(
   ({ label, onDateChange, value }, ref) => {
     const [startDate, setStartDate] = useState<Date | undefined>(value);
     const [shown, setShown] = useState(false);
@@ -55,7 +57,7 @@ const CalendarRange: FC<CalendarRangeProps> = React.forwardRef(
       };
     }, [shown]);
 
-    React.useImperativeHandle(ref, () => ({
+    useImperativeHandle(ref, () => ({
       close: () => {
         setShown(false);
       },
@@ -104,4 +106,4 @@ CalendarRange.propTypes = {
   value: PropTypes.instanceOf(Date),
 };
 
-export default CalendarRange;
+export default forwardRef<HTMLDivElement, CalendarRangeProps>(CalendarRange);

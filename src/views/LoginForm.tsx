@@ -1,13 +1,12 @@
 import {
-  ChangeEvent, FC, useEffect, useState,
-} from 'react';
-import {
   Button, FormItem, FormLayout, FormStatus, Group, Input, Panel, View,
 } from '@vkontakte/vkui';
 import { useActiveVkuiLocation, useRouteNavigator } from '@vkontakte/vk-mini-apps-router';
 import Hashes from 'jshashes';
 import { Icon28DoorArrowLeftOutline, Icon28ErrorCircleOutline } from '@vkontakte/icons';
 import { AuthData } from 'diary-shared';
+import { useEffect, useState } from 'preact/hooks';
+import { ChangeEvent, FC } from 'preact/compat';
 import PanelHeaderWithBack from '../components/UI/PanelHeaderWithBack';
 import { appStorageSet, getCookie } from '../methods';
 import { VIEW_SCHEDULE } from '../routes';

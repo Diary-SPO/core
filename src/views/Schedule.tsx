@@ -1,7 +1,4 @@
 import {
-  FC, lazy, useEffect, useState,
-} from 'react';
-import {
   Button, ButtonGroup, Div, Group, Header, IconButton, Link, Panel, PanelSpinner, Placeholder, PullToRefresh, View,
 } from '@vkontakte/vkui';
 import { useActiveVkuiLocation, useRouteNavigator } from '@vkontakte/vk-mini-apps-router';
@@ -13,6 +10,8 @@ import {
 } from '@vkontakte/icons';
 import { addDays, endOfWeek, startOfWeek } from '@vkontakte/vkui/dist/lib/date';
 import { Day, PerformanceCurrent } from 'diary-shared';
+import { FC, lazy } from 'preact/compat';
+import { useEffect, useState } from 'preact/hooks';
 import { getLessons, getPerformance } from '../methods';
 import PanelHeaderWithBack from '../components/UI/PanelHeaderWithBack';
 import Suspense from '../components/UI/Suspense';

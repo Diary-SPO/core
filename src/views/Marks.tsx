@@ -1,10 +1,11 @@
-import { FC, useEffect, useState } from 'react';
 import {
   Group, Panel, PanelSpinner, PullToRefresh, View,
 } from '@vkontakte/vkui';
 import { useActiveVkuiLocation, useRouteNavigator } from '@vkontakte/vk-mini-apps-router';
 import { Icon28ErrorCircleOutline, Icon28InfoCircle } from '@vkontakte/icons';
 import { PerformanceCurrent } from 'diary-shared';
+import { FC } from 'preact/compat';
+import { useEffect, useState } from 'preact/hooks';
 import PanelHeaderWithBack from '../components/UI/PanelHeaderWithBack';
 import Suspense from '../components/UI/Suspense';
 import Summary from '../components/UI/Summary';

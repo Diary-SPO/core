@@ -1,7 +1,4 @@
 import {
-  FC, useEffect, useRef, useState,
-} from 'react';
-import {
   Alert,
   CellButton, Group, Header, InfoRow, Panel, ScreenSpinner, SimpleCell, Subhead, Switch, View,
 } from '@vkontakte/vkui';
@@ -16,6 +13,8 @@ import {
 } from '@vkontakte/icons';
 import bridge from '@vkontakte/vk-bridge';
 import { AuthData } from 'diary-shared';
+import { useEffect, useRef, useState } from 'preact/hooks';
+import { FunctionalComponent } from 'preact';
 import { Storage } from '../types';
 import {
   appStorageSet, getVkStorageData, getVkStorageKeys,
@@ -28,7 +27,7 @@ interface ISettings {
   id: string,
 }
 
-const Settings: FC<ISettings> = ({ id }) => {
+const Settings: FunctionalComponent<ISettings> = ({ id }) => {
   const { panel: activePanel, panelsHistory } = useActiveVkuiLocation();
   const routeNavigator = useRouteNavigator();
 

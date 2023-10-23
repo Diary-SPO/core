@@ -1,4 +1,3 @@
-import { FC } from 'react';
 import { TabbarItem, Tabbar as VKUITabbar, useAdaptivityConditionalRender } from '@vkontakte/vkui';
 import {
   Icon28EducationOutline,
@@ -8,6 +7,7 @@ import {
   Icon28SettingsOutline,
   Icon28BookSpreadOutline,
 } from '@vkontakte/icons';
+import { FC } from 'preact/compat';
 import {
   VIEW_ATTESTATION, VIEW_CONTACTS, VIEW_MARKS, VIEW_NOTIFICATIONS, VIEW_SCHEDULE, VIEW_SETTINGS,
 } from '../../routes';

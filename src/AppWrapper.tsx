@@ -1,15 +1,16 @@
-import { FC, lazy } from 'react';
 import { AdaptivityProvider, ConfigProvider, usePlatform } from '@vkontakte/vkui';
 import { RouterProvider } from '@vkontakte/vk-mini-apps-router';
 import vkBridge from '@vkontakte/vk-bridge';
 import { useAdaptivity, useAppearance } from '@vkontakte/vk-bridge-react';
-import { ModalProvider } from './modals/ModalContext';
+import { FC, lazy } from 'preact/compat';
+import { Provider } from 'react-redux';
 import { router } from './routes';
 import Suspense from './components/UI/Suspense';
 import { transformVKBridgeAdaptivity } from './transformers/transformVKBridgeAdaptivity';
+import store from './store';
 
 const NotFound = lazy(() => import('./components/UI/NotFound'));
-const App = lazy(() => import('./App'));
+const App = lazy(() => import('./app.tsx'));
 
 vkBridge.send('VKWebAppInit');
 
@@ -42,9 +43,9 @@ const AppWrapper = () => {
             platform={platform}
             isWebView={vkBridge.isWebView()}
           >
-            <ModalProvider>
+            <Provider store={store}>
               <App />
-            </ModalProvider>
+            </Provider>
           </ConfigProvider>
         </Suspense>
       </RouterProvider>

@@ -1,4 +1,4 @@
-import { lazy } from 'react';
+import { lazy } from 'preact/compat';
 
 const Contacts = lazy(() => import('./Contacts'));
 const Schedule = lazy(() => import('./Schedule'));

@@ -1,6 +1,6 @@
-import { CSSProperties, FC } from 'react';
 import { Footnote } from '@vkontakte/vkui';
 import { AbsenceTypesKeys } from 'diary-shared';
+import { CSSProperties, FC } from 'preact/compat';
 import { TMark } from '../../../types';
 
 type Sizes = 'l' | 's';

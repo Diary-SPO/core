@@ -1,5 +1,5 @@
-import React from 'react';
 import { Icon28ErrorCircleOutline } from '@vkontakte/icons';
+import { createElement } from 'preact';
 import { SnackbarData } from '../hooks/useSnackbar';
 
 export function handleResponse<T>(
@@ -10,7 +10,7 @@ export function handleResponse<T>(
   showSnackbar?: (snackbarData: SnackbarData) => void,
 ): void {
   if (response === 418) {
-    const errorIcon = React.createElement(Icon28ErrorCircleOutline, { fill: 'var(--vkui--color_icon_negative)' });
+    const errorIcon = createElement(Icon28ErrorCircleOutline, { fill: 'var(--vkui--color_icon_negative)' });
     if (showSnackbar) {
       showSnackbar({
         icon: errorIcon,

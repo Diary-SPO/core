@@ -1,6 +1,7 @@
-import React, { ReactNode, useCallback, useState } from 'react';
 import { Snackbar, SnackbarProps } from '@vkontakte/vkui';
 import { Icon28InfoCircleOutline } from '@vkontakte/icons';
+import { ReactNode } from 'preact/compat';
+import { useCallback, useState } from 'preact/hooks';
 
 export interface SnackbarData {
   layout?: SnackbarProps['layout'];

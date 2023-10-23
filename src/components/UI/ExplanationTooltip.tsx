@@ -1,8 +1,8 @@
-import { FC } from 'react';
 import {
   unstable_Popover as Popover, Subhead, Text,
 } from '@vkontakte/vkui';
 import { Icon16HelpOutline } from '@vkontakte/icons';
+import { FC } from 'preact/compat';
 
 interface TooltipTextProps {
   text: string;

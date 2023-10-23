@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import { FunctionalComponent, Fragment } from 'preact';
 import {
   Group, Header, HorizontalCell, HorizontalScroll,
 } from '@vkontakte/vkui';
@@ -20,15 +20,11 @@ export interface IMarksByDay {
   };
 }
 
-const MarksByDay: FC<IPerformanceCurrent> = ({ performanceData }) => {
+const MarksByDay: FunctionalComponent<IPerformanceCurrent> = ({ performanceData }) => {
   const marksByDay = extractMarksByDay(performanceData);
 
   return (
-    <HorizontalScroll
-      showArrows
-      getScrollToLeft={(i) => i - 120}
-      getScrollToRight={(i) => i + 120}
-    >
+    <HorizontalScroll showArrows getScrollToLeft={(i) => i - 120} getScrollToRight={(i) => i + 120}>
       <Group header={<Header mode='secondary'>Недавние оценки</Header>}>
         <div className='marksByName'>
           {Object.entries(sortByDay(marksByDay)).map(([day, lessonGrades]) => (
@@ -39,13 +35,17 @@ const MarksByDay: FC<IPerformanceCurrent> = ({ performanceData }) => {
                   <div style={{ display: 'flex' }} key={`${day}_${lessonName}`}>
                     {grades.map((grade, gradeIndex) => (
                       <HorizontalCell style={{ maxWidth: 'unset' }} key={`${day}_${lessonName}_${gradeIndex}`}>
-                        <Mark
-                          bottom={truncateString(lessonName, 18)}
-                          style={{ maxWidth: 90 }}
-                          mark={grade || 'Н'}
-                          useMargin={false}
-                          size='l'
-                        />
+                        <Fragment>
+                          {' '}
+                          {/* Use Fragment to wrap Mark component */}
+                          <Mark
+                            bottom={truncateString(lessonName, 18)}
+                            style={{ maxWidth: 90 }}
+                            mark={grade || 'Н'}
+                            useMargin={false}
+                            size='l'
+                          />
+                        </Fragment>
                       </HorizontalCell>
                     ))}
                   </div>

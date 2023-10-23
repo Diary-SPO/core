@@ -8,7 +8,6 @@ import bridge from '@vkontakte/vk-bridge';
 import { useRouteNavigator } from '@vkontakte/vk-mini-apps-router';
 import { Organization } from 'diary-shared';
 import { getVkStorageData } from '../methods';
-import { useModal } from '../modals/ModalContext';
 import { useRateLimitExceeded } from '../hooks';
 import { MODAL_COLLEGE_INFO } from '../modals/ModalRoot';
 import getCollegeInfo from '../methods/server/getCollegeInfo';
@@ -47,7 +46,7 @@ const getUserAva = async (): Promise<string | null> => {
 const UserInfo = () => {
   const routeNavigator = useRouteNavigator();
 
-  const { openCollegeModal } = useModal();
+  // const { openCollegeModal } = useModal();
 
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isCollegeLoading, setIsCollegeLoading] = useState<boolean>(false);
@@ -70,7 +69,7 @@ const UserInfo = () => {
       }
 
       await routeNavigator.showModal(MODAL_COLLEGE_INFO);
-      openCollegeModal(data as Organization);
+      // openCollegeModal(data as Organization);
       setIsCollegeLoading(false);
     } catch (e) {
       console.error(e);

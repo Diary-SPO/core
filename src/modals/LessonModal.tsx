@@ -1,24 +1,26 @@
-import { FC, useEffect, useState } from 'react';
 import {
   Group, Header, InfoRow, ModalPage, ModalPageHeader, Separator, SimpleCell, Spacing, Text,
 } from '@vkontakte/vkui';
 import {
   AbsenceTypes, AbsenceTypesKeys, AbsenceTypesDescription, AbsenceTypesDescriptionKeys, Lesson, LessonType, LessonWorkType, TLesson,
 } from 'diary-shared';
+import { FC } from 'preact/compat';
+import { useEffect, useState } from 'preact/hooks';
+import { useSelector } from 'react-redux';
 import setDefaultMark from '../utils/setDefaultMark';
 import textToLink from '../utils/textToLink';
 import { cleanData } from './data';
 import Mark from '../components/UI/Mark';
-import { useModal } from './ModalContext';
 import { Grade } from '../types';
 import ExplanationTooltip from '../components/UI/ExplanationTooltip';
+import { selectLessonModalData } from '../store/lessonSlice.ts';
 
 interface ILessonModal {
   id: string;
 }
 
 const LessonModal: FC<ILessonModal> = ({ id }) => {
-  const { lessonModalData } = useModal();
+  const lessonModalData = useSelector(selectLessonModalData);
 
   const [lessonData, setLessonData] = useState<Lesson>(cleanData);
 

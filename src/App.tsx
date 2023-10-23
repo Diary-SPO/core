@@ -1,9 +1,10 @@
 import {
   AppRoot, PanelHeader, ScreenSpinner, SplitCol, SplitLayout,
 } from '@vkontakte/vkui';
-import { lazy, useEffect, useState } from 'react';
 import { useActiveVkuiLocation, usePopout, useRouteNavigator } from '@vkontakte/vk-mini-apps-router';
 import { useInsets } from '@vkontakte/vk-bridge-react';
+import { lazy } from 'preact/compat';
+import { useEffect, useState } from 'preact/hooks';
 import { MAIN_SETTINGS, VIEW_SCHEDULE } from './routes';
 import { getCookie } from './methods';
 import { Pages } from './types';
@@ -14,24 +15,24 @@ const Epic = lazy(() => import('./components/UI/Epic'));
 
 const App = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const { view: activeView = MAIN_SETTINGS } = useActiveVkuiLocation();
   const routeNavigator = useRouteNavigator();
   const modals = <ModalRoot />;
+  const { view: activeView = MAIN_SETTINGS } = useActiveVkuiLocation();
 
   const routerPopout = usePopout();
   const vkBridgeInsets = useInsets() || undefined;
 
-  useEffect(() => {
-    getCookie().then(async (cookieValue) => {
-      if (!cookieValue) {
-        await routeNavigator.replace('/');
-        setIsLoading(false);
-      } else if ((cookieValue) && activeView === MAIN_SETTINGS) {
-        await routeNavigator.replace(`/${VIEW_SCHEDULE}`);
-        setIsLoading(false);
-      }
-    });
-  }, [activeView, localStorage, window.location]);
+  // useEffect(() => {
+  //   getCookie().then(async (cookieValue) => {
+  //     if (!cookieValue) {
+  //       await routeNavigator.replace('/');
+  //       setIsLoading(false);
+  //     } else if ((cookieValue) && activeView === MAIN_SETTINGS) {
+  //       await routeNavigator.replace(`/${VIEW_SCHEDULE}`);
+  //       setIsLoading(false);
+  //     }
+  //   });
+  // }, [activeView, localStorage, window.location]);
 
   const onStoryChange = async (currentView: Pages) => {
     const cookieValue = await getCookie();

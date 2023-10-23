@@ -1,8 +1,9 @@
-import { FC } from 'react';
 import {
   Card, CardGrid, Div, Group, Header, InfoRow, Subhead, Title,
 } from '@vkontakte/vkui';
 import { ExaminationType, Examinations } from 'diary-shared';
+import { FC } from 'preact/compat';
+import { FunctionalComponent } from 'preact';
 
 export interface Subject {
   id: string;
@@ -17,7 +18,7 @@ interface SubjectListProps {
   year: number | null;
 }
 
-const SubjectList: FC<SubjectListProps> = ({ semesters, studentName, year }) => (
+const SubjectList: FunctionalComponent<SubjectListProps> = ({ semesters, studentName, year }) => (
   <div>
     {Object.keys(semesters).map((semesterKey) => (
       <Group

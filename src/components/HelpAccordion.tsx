@@ -1,5 +1,6 @@
 import { Accordion, Div, Text } from '@vkontakte/vkui';
-import { FC, ReactNode, useState } from 'react';
+import { FC, ReactNode } from 'preact/compat';
+import { useState } from 'preact/hooks';
 
 export interface IHelpAccordion {
   id: number

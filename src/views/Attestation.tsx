@@ -1,11 +1,10 @@
 import {
-  FC, lazy, useEffect, useState,
-} from 'react';
-import {
   Button, ButtonGroup, Div, Link, Panel, Placeholder, ScreenSpinner, View,
 } from '@vkontakte/vkui';
 import { useActiveVkuiLocation, useRouteNavigator } from '@vkontakte/vk-mini-apps-router';
 import { AttestationResponse } from 'diary-shared';
+import { FC, lazy } from 'preact/compat';
+import { useEffect, useState } from 'preact/hooks';
 import getAttestation from '../methods/server/getAttestation';
 import PanelHeaderWithBack from '../components/UI/PanelHeaderWithBack';
 import { useRateLimitExceeded } from '../hooks';
@@ -95,6 +94,7 @@ const Attestation: FC<IAttestation> = ({ id }) => {
           {attestationData
             && (
             <SubjectList
+              // @ts-ignore
               semesters={semesters}
               studentName={studentName}
               year={year}

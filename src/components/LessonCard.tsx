@@ -6,15 +6,16 @@ import { useRouteNavigator } from '@vkontakte/vk-mini-apps-router';
 import {
   AbsenceTypes, Day, Gradebook, LessonWorkType, Timetable,
 } from 'diary-shared';
+import { useDispatch } from 'react-redux';
 import { formatLessonDate, getDayOfWeek } from '../utils/formatLessonDate';
 import setDefaultMark from '../utils/setDefaultMark';
 import { isToday } from '../utils/isToday';
 import { MODAL_PAGE_LESSON } from '../modals/ModalRoot';
-import { useModal } from '../modals/ModalContext';
 import SubtitleWithBorder from './SubtitleWithBorder';
 import TimeRemaining from './TimeRemaining';
 import Mark from './UI/Mark';
 import { Grade } from '../types';
+import { setLessonModalData } from '../store/lessonSlice.ts';
 
 interface ILessonCard {
   lesson: Day;
@@ -22,8 +23,7 @@ interface ILessonCard {
 
 const LessonCard: FC<ILessonCard> = ({ lesson }) => {
   const routeNavigator = useRouteNavigator();
-
-  const { openLessonModal } = useModal();
+  const dispatch = useDispatch();
 
   const handleLessonClick = (
     name: string,
@@ -47,7 +47,7 @@ const LessonCard: FC<ILessonCard> = ({ lesson }) => {
       lessonId,
     };
 
-    openLessonModal(modalData);
+    dispatch(setLessonModalData(modalData));
   };
 
   const currentDate = new Date();

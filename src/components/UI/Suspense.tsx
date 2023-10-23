@@ -1,5 +1,5 @@
-import { FC, ReactNode, Suspense as ReactSuspense } from 'react';
 import { PanelSpinner, ScreenSpinner, Spinner } from '@vkontakte/vkui';
+import { Suspense as ReactSuspense, FC, ReactNode } from 'preact/compat';
 
 interface ISpinner {
   size?: 'small' | 'regular' | 'medium' | 'large',
