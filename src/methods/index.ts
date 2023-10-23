@@ -1,12 +1,11 @@
 import { getVkStorageData } from './bridge/getVkStorageData';
 import { getVkStorageKeys } from './bridge/getVkStorageKeys';
 import { appStorageSet } from './bridge/appStorageSet';
-import { getCookie } from './bridge/getCookie';
 import { getUserId } from './bridge/getUserId';
 
 import { getPerformance } from './server/getPerformance';
 import { getLessons } from './server/getLessons';
 
 export {
-  getCookie, getUserId, getLessons, appStorageSet, getPerformance, getVkStorageData, getVkStorageKeys,
+ getUserId, getLessons, appStorageSet, getPerformance, getVkStorageData, getVkStorageKeys,
 };

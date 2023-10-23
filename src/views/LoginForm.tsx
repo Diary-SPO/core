@@ -8,7 +8,7 @@ import { AuthData } from 'diary-shared';
 import { useEffect, useState } from 'preact/hooks';
 import { ChangeEvent, FC } from 'preact/compat';
 import PanelHeaderWithBack from '../components/UI/PanelHeaderWithBack';
-import { appStorageSet, getCookie } from '../methods';
+import { appStorageSet } from '../methods';
 import { VIEW_SCHEDULE } from '../routes';
 import { useSnackbar } from '../hooks';
 
@@ -33,26 +33,15 @@ const LoginForm: FC<{ id: string }> = ({ id }) => {
     console.log(storageCookie);
     setIsLoading(true);
     const getUserCookie = () => {
-      getCookie().then((cookieValue) => {
-        console.log(cookieValue);
-        if (storageCookie || cookieValue) {
-          routeNavigator.replace(`/${VIEW_SCHEDULE}`);
-          setIsLoading(false);
-          return;
-        }
-
-        setTimeout(() => {
-          if (!storageCookie) {
-            routeNavigator.replace('/');
-            setIsLoading(false);
-            showSnackbar({
-              icon: <Icon28ErrorCircleOutline fill='var(--vkui--color_icon_negative)' />,
-              subtitle: 'Заполни форму и войди в дневник',
-              title: 'О вас нет данных, ты кто такой?',
-            });
-          }
-        }, 500);
-      });
+      if (!storageCookie) {
+        routeNavigator.replace('/');
+        setIsLoading(false);
+        showSnackbar({
+          icon: <Icon28ErrorCircleOutline fill='var(--vkui--color_icon_negative)' />,
+          subtitle: 'Заполни форму и войди в дневник',
+          title: 'О вас нет данных, ты кто такой?',
+        });
+      }
     };
 
     getUserCookie();
@@ -149,9 +138,7 @@ const LoginForm: FC<{ id: string }> = ({ id }) => {
         subtitle: 'Подождите немного',
       });
 
-      setTimeout(async () => {
-        await routeNavigator.replace(`/${VIEW_SCHEDULE}`);
-      }, 3500);
+      await routeNavigator.replace(`/${VIEW_SCHEDULE}`);
     } catch (e) {
       setIsLoading(false);
       console.error(e);
@@ -186,7 +173,7 @@ const LoginForm: FC<{ id: string }> = ({ id }) => {
         <PanelHeaderWithBack title='Авторизация' />
         <Group>
           {isDataInvalid && (
-            <FormStatus header='Некорректный данные' mode='error'>
+            <FormStatus header='Некорректные данные' mode='error'>
               Проверьте правильность логина и пароля
             </FormStatus>
           )}

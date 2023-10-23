@@ -6,7 +6,6 @@ import { useInsets } from '@vkontakte/vk-bridge-react';
 import { lazy } from 'preact/compat';
 import { useEffect, useState } from 'preact/hooks';
 import { MAIN_SETTINGS, VIEW_SCHEDULE } from './routes';
-import { getCookie } from './methods';
 import { Pages } from './types';
 import Suspense from './components/UI/Suspense';
 
@@ -18,24 +17,26 @@ const App = () => {
   const routeNavigator = useRouteNavigator();
   const modals = <ModalRoot />;
   const { view: activeView = MAIN_SETTINGS } = useActiveVkuiLocation();
+  const cookieValue = localStorage.getItem('cookie');
 
   const routerPopout = usePopout();
   const vkBridgeInsets = useInsets() || undefined;
 
   useEffect(() => {
-    getCookie().then(async (cookieValue) => {
-      if (!cookieValue) {
-        await routeNavigator.replace('/');
-        setIsLoading(false);
-      } else if ((cookieValue) && activeView === MAIN_SETTINGS) {
-        await routeNavigator.replace(`/${VIEW_SCHEDULE}`);
-        setIsLoading(false);
-      }
-    });
+   const onRoute = async () => {
+     if (!cookieValue) {
+       await routeNavigator.replace('/');
+       setIsLoading(false);
+     } else if ((cookieValue) && activeView === MAIN_SETTINGS) {
+       await routeNavigator.replace(`/${VIEW_SCHEDULE}`);
+       setIsLoading(false);
+     }
+   }
+
+   onRoute()
   }, [activeView, localStorage, window.location]);
 
   const onStoryChange = async (currentView: Pages) => {
-    const cookieValue = await getCookie();
 
     if (cookieValue) {
       try {
