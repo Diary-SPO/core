@@ -1,10 +1,9 @@
 import { Day } from 'diary-shared';
 import formatDateForRequest from '../../utils/formatDateForRequest';
-import { getUserId } from '../bridge/getUserId';
 import makeRequest from './makeRequest';
 
 export const getLessons = async (startDate?: Date, endDate?: Date): Promise<Day[] | 418 | 429> => {
-  const id = await getUserId() || localStorage.getItem('id');
+  const id = localStorage.getItem('id');
 
   if (!id) {
     return 418;

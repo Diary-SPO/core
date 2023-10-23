@@ -8,9 +8,9 @@ import { useEffect, useState } from 'preact/hooks';
 import { FC } from 'preact/compat';
 import PanelHeaderWithBack from '../components/UI/PanelHeaderWithBack';
 import { handleResponse } from '../utils/handleResponse';
-import getAds from '../methods/server/getAds';
 import { useSnackbar } from '../hooks';
 import SubtitleWithBorder from '../components/SubtitleWithBorder';
+import { getAds } from '../methods'
 
 const Notifications: FC<{ id: string }> = ({ id }) => {
   const { panel: activePanel, panelsHistory } = useActiveVkuiLocation();
@@ -107,6 +107,7 @@ const Notifications: FC<{ id: string }> = ({ id }) => {
                   <Header
                     mode='tertiary'
                     aside={(
+                      //@ts-ignore типы React не совсем совместимы с Preact
                       <Subhead>
                         Удалится через
                         {' '}
@@ -122,7 +123,9 @@ const Notifications: FC<{ id: string }> = ({ id }) => {
               >
                 <Card mode='shadow'>
                   <Div>
+                    {/*//@ts-ignore типы React не совсем совместимы с Preact*/}
                     <Title level='3'>{title}</Title>
+                    {/*//@ts-ignore типы React не совсем совместимы с Preact*/}
                     <Text>{text}</Text>
                   </Div>
                 </Card>

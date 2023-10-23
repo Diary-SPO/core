@@ -8,7 +8,6 @@ import { AuthData } from 'diary-shared';
 import { useEffect, useState } from 'preact/hooks';
 import { ChangeEvent, FC } from 'preact/compat';
 import PanelHeaderWithBack from '../components/UI/PanelHeaderWithBack';
-import { appStorageSet } from '../methods';
 import { VIEW_SCHEDULE } from '../routes';
 import { useSnackbar } from '../hooks';
 
@@ -70,6 +69,7 @@ const LoginForm: FC<{ id: string }> = ({ id }) => {
     const passwordHashed = (new Hashes.SHA256()).b64(password);
 
     setIsLoading(true);
+    //@ts-ignore типы React не совсем совместимы с Preact
     const response = await fetch(`${import.meta.env.VITE_SERVER_URL}/login`, {
       method: 'POST',
       headers: {
@@ -117,21 +117,15 @@ const LoginForm: FC<{ id: string }> = ({ id }) => {
 
       localStorage.setItem('log', login);
       localStorage.setItem('main', passwordHashed);
-
+      
       const userData = {
         name,
         org,
         city,
         group,
       };
-
-      await Promise.all([
-        appStorageSet('log', login),
-        appStorageSet('main', passwordHashed),
-        appStorageSet('cookie', cookie),
-        appStorageSet('id', userId),
-        appStorageSet('data', JSON.stringify(userData)),
-      ]);
+      
+      localStorage.setItem('data', JSON.stringify(userData));
 
       showSnackbar({
         title: 'Вхожу',
@@ -178,6 +172,7 @@ const LoginForm: FC<{ id: string }> = ({ id }) => {
             </FormStatus>
           )}
           <FormLayout>
+            {/*//@ts-ignore типы React не совсем совместимы с Preact*/}
             <FormItem
               required
               htmlFor='userLogin'
@@ -187,6 +182,7 @@ const LoginForm: FC<{ id: string }> = ({ id }) => {
               bottomId='login-type'
             >
               <Input
+                //@ts-ignore типы React не совсем совместимы с Preact
                 required
                 aria-labelledby='login-type'
                 id='userLogin'
@@ -197,6 +193,7 @@ const LoginForm: FC<{ id: string }> = ({ id }) => {
                 onChange={onChange}
               />
             </FormItem>
+            {/*//@ts-ignore типы React не совсем совместимы с Preact*/}
             <FormItem
               top='Пароль'
               htmlFor='pass'
@@ -204,6 +201,7 @@ const LoginForm: FC<{ id: string }> = ({ id }) => {
               bottom={isPasswordEmpty || passwordTopText}
             >
               <Input
+                //@ts-ignore типы React не совсем совместимы с Preact
                 name='password'
                 id='pass'
                 type='password'
@@ -211,6 +209,7 @@ const LoginForm: FC<{ id: string }> = ({ id }) => {
                 onChange={onChange}
               />
             </FormItem>
+            {/*//@ts-ignore типы React не совсем совместимы с Preact*/}
             <FormItem>
               <Button
                 size='l'

@@ -2,7 +2,6 @@ import {
   Card, CardGrid, Div, Group, Header, InfoRow, Subhead, Title,
 } from '@vkontakte/vkui';
 import { ExaminationType, Examinations } from 'diary-shared';
-import { FC } from 'preact/compat';
 import { FunctionalComponent } from 'preact';
 
 export interface Subject {
@@ -36,11 +35,14 @@ const SubjectList: FunctionalComponent<SubjectListProps> = ({ semesters, student
           <CardGrid key={subject.id} size='l'>
             <Card mode='shadow'>
               <Div>
+                {/*//@ts-ignore типы React не совсем совместимы с Preact*/}
                 <Title level='3'>{subject.name}</Title>
                 <InfoRow header='Тип аттестации'>
+                  {/*//@ts-ignore типы React не совсем совместимы с Preact*/}
                   <Subhead>{Examinations[subject.examinationType]}</Subhead>
                 </InfoRow>
                 <InfoRow header='Оценки'>
+                  {/*//@ts-ignore типы React не совсем совместимы с Preact*/}
                   <Subhead>
                     {subject.marks[subject.id] && Object.keys(subject.marks[subject.id]).length > 0 ? (
                       Object.keys(subject.marks[subject.id]).map((studentId) => (

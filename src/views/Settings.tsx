@@ -16,9 +16,6 @@ import { AuthData } from 'diary-shared';
 import { useEffect, useRef, useState } from 'preact/hooks';
 import { FunctionalComponent } from 'preact';
 import { Storage } from '../types';
-import {
-  appStorageSet, getVkStorageData, getVkStorageKeys,
-} from '../methods';
 import PanelHeaderWithBack from '../components/UI/PanelHeaderWithBack';
 import { useSnackbar } from '../hooks';
 import logOut from '../utils/logOut';
@@ -40,7 +37,6 @@ const Settings: FunctionalComponent<ISettings> = ({ id }) => {
   };
 
   const [cacheData, setCacheData] = useState<Storage[]>([]);
-  const [vkCacheData, setVkCacheData] = useState<Storage[]>([]);
   const [isHomeScreenSupported, setIsHomeScreenSupported] = useState<boolean>(false);
 
   const switchRef = useRef(null);
@@ -73,24 +69,6 @@ const Settings: FunctionalComponent<ISettings> = ({ id }) => {
     setCacheData(getCache);
   }, []);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      const keys = await getVkStorageKeys();
-      const data = await getVkStorageData(keys);
-
-      const updatedVkCacheData = data.keys.map((item) => {
-        if (item.key === 'cookie') {
-          return { ...item, value: 'secret' };
-        }
-        return item;
-      });
-
-      setVkCacheData(updatedVkCacheData);
-    };
-
-    fetchData();
-  }, []);
-
   const clearCache = () => {
     localStorage.clear();
     setCacheData([]);
@@ -103,6 +81,7 @@ const Settings: FunctionalComponent<ISettings> = ({ id }) => {
   const handleLogOut = () => {
     showSnackbar({
       title: 'Выход',
+      //@ts-ignore типы React не совсем совместимы с Preact
       icon: <Icon28DoorArrowRightOutline color='var(--vkui--color_background_accent_themed)' />,
       subtitle: 'После удаления всех данных вы попадёте на страницу авторизации',
     });
@@ -132,11 +111,13 @@ const Settings: FunctionalComponent<ISettings> = ({ id }) => {
   const clearCachePopup = (
     <Alert
       actions={[
+        //@ts-ignore типы React не совсем совместимы с Preact
         {
           title: 'Отмена',
           autoClose: true,
           mode: 'cancel',
         },
+        //@ts-ignore типы React не совсем совместимы с Preact
         {
           title: 'Удалить',
           autoClose: true,
@@ -154,11 +135,13 @@ const Settings: FunctionalComponent<ISettings> = ({ id }) => {
   const logOutPopup = (
     <Alert
       actions={[
+        //@ts-ignore типы React не совсем совместимы с Preact
         {
           title: 'Отмена',
           autoClose: true,
           mode: 'cancel',
         },
+        //@ts-ignore типы React не совсем совместимы с Preact
         {
           title: 'Выйти',
           autoClose: true,
@@ -174,8 +157,8 @@ const Settings: FunctionalComponent<ISettings> = ({ id }) => {
   );
 
   const reloadCookie = async () => {
-    const login = await getVkStorageData(['log']).then((data) => data.keys[0].value);
-    const password = await getVkStorageData(['main']).then((data) => data.keys[0].value);
+    const login = localStorage.getItem('log');
+    const password = localStorage.getItem('main');
 
     if (!login || !password) {
       showSnackbar({
@@ -187,6 +170,7 @@ const Settings: FunctionalComponent<ISettings> = ({ id }) => {
 
     try {
       setIsLoading(true);
+      //@ts-ignore типы React не совсем совместимы с Preact
       const response = await fetch(`${import.meta.env.VITE_SERVER_URL}/login`, {
         method: 'POST',
         headers: {
@@ -209,7 +193,6 @@ const Settings: FunctionalComponent<ISettings> = ({ id }) => {
         return;
       }
 
-      await appStorageSet('cookie', data.cookie);
       localStorage.setItem('cookie', data.cookie);
 
       showSnackbar({
@@ -240,6 +223,7 @@ const Settings: FunctionalComponent<ISettings> = ({ id }) => {
           {isLoading && <ScreenSpinner size='medium' />}
           <CellButton
             Component='label'
+            //@ts-ignore типы React не совсем совместимы с Preact
             after={<Switch getRef={switchRef} defaultChecked />}
             onChange={() => setIsSwitchChecked(!isSwitchChecked)}
             before={<Icon28IncognitoOutline />}
@@ -278,19 +262,10 @@ const Settings: FunctionalComponent<ISettings> = ({ id }) => {
           <Group header={(<Header mode='secondary'>Техническая информация</Header>)}>
             <Group
               header={(
+                //@ts-ignore типы React не совсем совместимы с Preact
                 <Header mode='secondary' aside={<Subhead>Хранится в LocalStorage</Subhead>}>Кеш</Header>)}
             >
               {cacheData.map((item) => (
-                <SimpleCell key={item.key}>
-                  <InfoRow header={item.key}>{item.value.slice(0, 30)}</InfoRow>
-                </SimpleCell>
-              ))}
-            </Group>
-            <Group
-              header={(
-                <Header mode='secondary'>VK Storage</Header>)}
-            >
-              {vkCacheData.map((item) => (
                 <SimpleCell key={item.key}>
                   <InfoRow header={item.key}>{item.value.slice(0, 30)}</InfoRow>
                 </SimpleCell>

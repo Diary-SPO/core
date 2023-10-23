@@ -166,6 +166,7 @@ const LessonModal: FC<ILessonModal> = ({ id }) => {
                     {LessonType[tasks.type]}
                   </InfoRow>
                   <InfoRow style={{ marginTop: 10 }} header='Описание'>
+                    {/*//@ts-ignore типы React не совсем совместимы с Preact*/}
                     <Text>{tasks?.topic}</Text>
                   </InfoRow>
                 </SimpleCell>

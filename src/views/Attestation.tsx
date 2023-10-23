@@ -5,10 +5,10 @@ import { useActiveVkuiLocation, useRouteNavigator } from '@vkontakte/vk-mini-app
 import { AttestationResponse } from 'diary-shared';
 import { FC, lazy } from 'preact/compat';
 import { useEffect, useState } from 'preact/hooks';
-import getAttestation from '../methods/server/getAttestation';
 import PanelHeaderWithBack from '../components/UI/PanelHeaderWithBack';
 import { useRateLimitExceeded } from '../hooks';
 import { handleResponse } from '../utils/handleResponse';
+import { getAttestation } from '../methods'
 
 const SubjectList = lazy(() => import('../components/UI/SubjectsList'));
 
@@ -66,8 +66,8 @@ const Attestation: FC<IAttestation> = ({ id }) => {
   if (attestationData && attestationData.students) {
     year = attestationData.year;
     studentName = `
-    ${attestationData.students[0].lastName} 
-    ${attestationData.students[0].firstName.slice(0, 1)}. 
+    ${attestationData.students[0].lastName}
+    ${attestationData.students[0].firstName.slice(0, 1)}.
     ${attestationData.students[0].middleName.slice(0, 1)}.`;
   }
 

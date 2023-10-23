@@ -1,5 +1,7 @@
 // TODO: move to config
+//@ts-ignore типы React не совсем совместимы с Preact
 const BASE_URL = import.meta.env.VITE_SERVER_URL as string ?? '';
+//@ts-ignore типы React не совсем совместимы с Preact
 const SECOND_SERVER_URL = import.meta.env.VITE_SERVER_URL_SECOND as string ?? '';
 
 const makeRequest = async <T>(route: string): Promise< T | 418 | 429> => {

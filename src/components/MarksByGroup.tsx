@@ -33,6 +33,7 @@ const MarksByGroup: FC<IMarksByGroup> = ({ marksForSubject }) => {
         <CardGrid size='l'>
           <Card mode='shadow'>
             <Div>
+              {/*//@ts-ignore типы React не совсем совместимы с Preact*/}
               <Title level='3'>Нет данных</Title>
             </Div>
           </Card>
@@ -62,6 +63,7 @@ const MarksByGroup: FC<IMarksByGroup> = ({ marksForSubject }) => {
         <CardGrid key={i} size='l'>
           <Card mode='shadow'>
             <Div>
+              {/*//@ts-ignore типы React не совсем совместимы с Preact*/}
               <Title level='3'>{subjectName}</Title>
             </Div>
             <HorizontalScroll>

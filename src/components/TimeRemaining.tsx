@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import {FunctionComponent} from 'preact';
 
 interface ITimeRemainingProps {
   lessonDate: Date;
@@ -30,9 +30,9 @@ const getTimeRemaining = (currentDate: Date, lessonDate: Date, endTime: string, 
   return null;
 };
 
-const TimeRemaining: FC<ITimeRemainingProps> = ({ lessonDate, startTime, endTime }) => {
+const TimeRemaining: FunctionComponent<ITimeRemainingProps> = ({ lessonDate, startTime, endTime }) => {
   if (!lessonDate || !startTime || !endTime) {
-    return 'Нет времени';
+    return <div>Нет времени</div>;
   }
 
   const currentDate = new Date();

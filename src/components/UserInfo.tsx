@@ -6,11 +6,10 @@ import { Icon20RefreshOutline, Icon28SchoolOutline } from '@vkontakte/icons';
 
 import bridge from '@vkontakte/vk-bridge';
 import { useRouteNavigator } from '@vkontakte/vk-mini-apps-router';
-import { Organization } from 'diary-shared';
-import { getVkStorageData } from '../methods';
+// import { Organization } from 'diary-shared';
 import { useRateLimitExceeded } from '../hooks';
 import { MODAL_COLLEGE_INFO } from '../modals/ModalRoot';
-import getCollegeInfo from '../methods/server/getCollegeInfo';
+import { getCollegeInfo } from '../methods'
 
 const styles: CSSProperties = {
   margin: 0,
@@ -94,8 +93,8 @@ const UserInfo = () => {
       }
     }
 
-    const newUserData = await getVkStorageData(['data']);
-    const parsedUserData = JSON.parse(newUserData.keys[0].value) as UserData;
+    const newUserData = localStorage.getItem('data');
+    const parsedUserData = JSON.parse(newUserData) as UserData;
 
     const ava = await getUserAva();
 
@@ -151,9 +150,11 @@ const UserInfo = () => {
     >
       <Gradient mode='tint' style={styles}>
         <Avatar size={96} src={userAva} />
+        {/*//@ts-ignore типы React не совсем совместимы с Preact*/}
         <Title style={{ marginBottom: 8, marginTop: 20 }} level='2' weight='2'>
           {userData.name}
         </Title>
+        {/*//@ts-ignore типы React не совсем совместимы с Preact*/}
         <Text
           style={{
             marginBottom: 24,

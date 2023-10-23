@@ -11,12 +11,14 @@ interface TooltipTextProps {
 
 const ExplanationTooltip: FC<TooltipTextProps> = ({ text, tooltipContent }) => {
   const textTooltip = (
+    //@ts-ignore типы React не совсем совместимы с Preact
     <Subhead style={{ padding: '8px ', color: 'var(--vkui--color_text_primary)' }}>
       {tooltipContent}
     </Subhead>
   );
 
   return (
+    //@ts-ignore типы React не совсем совместимы с Preact
     <Text>
       {text}
       <Popover

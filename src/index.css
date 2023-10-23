@@ -1,15 +1,16 @@
-:root {
-  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
-  line-height: 1.5;
-  font-weight: 400;
+._HorizontalCell__content_1q642_21 {
+  word-break: unset !important;
+}
 
-  color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
+._SimpleCell__subtitle_rmh19_48, ._SimpleCell__extraSubtitle_rmh19_49, .lesson ._Typography_182ve_1 {
+  width: 100%;
+}
 
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  -webkit-text-size-adjust: 100%;
+@media (max-width: 767.9px) {
+  ._Tappable--sizeX-none_49f5u_121 {
+    border-radius: 8px !important;
+  }
+}
+._HorizontalCell_1q642_1:first-child::before, ._HorizontalCell_1q642_1:last-child::after {
+  content: none !important;
 }

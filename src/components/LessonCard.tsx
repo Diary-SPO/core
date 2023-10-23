@@ -87,6 +87,7 @@ const LessonCard: FC<ILessonCard> = ({ lesson }) => {
         /* Без этого Group не растягивается и немного уезжает на планшетах */
         style={{ height: '100%', marginTop: '4px' }}
         header={(
+          //@ts-ignore типы React не совсем совместимы с Preact
           <Header mode='secondary' aside={<Footnote style={displayDayStyles}>{displayDay}</Footnote>}>
             {lessonDayOfWeek && `${lessonDayOfWeek}. `}
             {formattedLessonDate}
@@ -99,8 +100,9 @@ const LessonCard: FC<ILessonCard> = ({ lesson }) => {
           }) => (
             name && (
               <SimpleCell
+                className='lesson'
                 onClick={() => handleLessonClick(name, endTime, startTime, timetable, gradebook)}
-                key={startTime as unknown as string}
+                key={startTime}
                 subtitle={!name || (
                   <div>
                     <div>

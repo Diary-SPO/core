@@ -1,4 +1,5 @@
-import { CSSProperties, FC, ReactNode } from 'react';
+import { CSSProperties, ReactNode } from 'preact/compat'
+import { FunctionComponent } from 'preact'
 
 interface ISubtitleWithBorder {
   children: ReactNode | string;
@@ -6,7 +7,7 @@ interface ISubtitleWithBorder {
   style?: CSSProperties;
 }
 
-const SubtitleWithBorder: FC<ISubtitleWithBorder> = ({ children, color = 'default', style }) => {
+const SubtitleWithBorder: FunctionComponent<ISubtitleWithBorder> = ({ children, color = 'default', style }) => {
   const getColorStyles = () => {
     switch (color) {
       case 'red':

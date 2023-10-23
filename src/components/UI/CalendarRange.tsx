@@ -7,7 +7,6 @@ import {
   LocaleProvider,
   unstable_Popper as Popper,
 } from '@vkontakte/vkui';
-import PropTypes from 'prop-types';
 import { ReactNode, forwardRef } from 'preact/compat';
 import {
   useEffect, useImperativeHandle, useRef, useState,
@@ -20,7 +19,9 @@ interface CalendarRangeProps {
   value?: Date;
 }
 
+{/*//@ts-ignore типы React не совсем совместимы с Preact*/}
 const CalendarRange: FunctionalComponent<CalendarRangeProps> = forwardRef(
+    //@ts-ignore типы React не совсем совместимы с Preact
   ({ label, onDateChange, value }, ref) => {
     const [startDate, setStartDate] = useState<Date | undefined>(value);
     const [shown, setShown] = useState(false);
@@ -75,6 +76,7 @@ const CalendarRange: FunctionalComponent<CalendarRangeProps> = forwardRef(
         {shown && (
           <Popper targetRef={buttonRef}>
             <FormLayoutGroup mode='vertical'>
+              {/*//@ts-ignore типы React не совсем совместимы с Preact*/}
               <FormItem>
                 <LocaleProvider value='ru'>
                   <div ref={calendarRef}>
@@ -99,11 +101,5 @@ const CalendarRange: FunctionalComponent<CalendarRangeProps> = forwardRef(
     );
   },
 );
-
-CalendarRange.propTypes = {
-  label: PropTypes.node.isRequired,
-  onDateChange: PropTypes.func,
-  value: PropTypes.instanceOf(Date),
-};
 
 export default forwardRef<HTMLDivElement, CalendarRangeProps>(CalendarRange);

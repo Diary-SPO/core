@@ -1,10 +1,9 @@
 import { AttestationResponse } from 'diary-shared';
-import { getUserId } from '../bridge/getUserId';
 import makeRequest from './makeRequest';
 
-const getAttestation = async (): Promise<AttestationResponse | 418 | 429> => {
+export const getAttestation = async (): Promise<AttestationResponse | 418 | 429> => {
   const cookie = localStorage.getItem('cookie');
-  const id = await getUserId();
+  const id = localStorage.getItem('id');
 
   if (!cookie) {
     return 418;
@@ -13,4 +12,3 @@ const getAttestation = async (): Promise<AttestationResponse | 418 | 429> => {
   return makeRequest<AttestationResponse>(`/attestation/${id}`);
 };
 
-export default getAttestation;
