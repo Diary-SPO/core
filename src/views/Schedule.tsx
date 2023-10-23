@@ -387,7 +387,7 @@ const Schedule: FC<{ id: string }> = ({ id }) => {
     <View
       id={id}
       history={panelsHistory}
-      activePanel={activePanel as string}
+      activePanel={activePanel}
       onSwipeBack={() => routeNavigator.back()}
     >
       <Panel nav={id}>
@@ -457,8 +457,7 @@ const Schedule: FC<{ id: string }> = ({ id }) => {
               }}
             >
               <Icon24ChevronRightCircle
-                style={{ transform: 'rotate(-90deg)' }}
-                color='var(--vkui--color_background_accent_themed)'
+                style={{ transform: 'rotate(-90deg)', color: 'var(--vkui--color_background_accent_themed)' }}
               />
             </IconButton>
           )}

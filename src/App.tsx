@@ -22,17 +22,17 @@ const App = () => {
   const routerPopout = usePopout();
   const vkBridgeInsets = useInsets() || undefined;
 
-  // useEffect(() => {
-  //   getCookie().then(async (cookieValue) => {
-  //     if (!cookieValue) {
-  //       await routeNavigator.replace('/');
-  //       setIsLoading(false);
-  //     } else if ((cookieValue) && activeView === MAIN_SETTINGS) {
-  //       await routeNavigator.replace(`/${VIEW_SCHEDULE}`);
-  //       setIsLoading(false);
-  //     }
-  //   });
-  // }, [activeView, localStorage, window.location]);
+  useEffect(() => {
+    getCookie().then(async (cookieValue) => {
+      if (!cookieValue) {
+        await routeNavigator.replace('/');
+        setIsLoading(false);
+      } else if ((cookieValue) && activeView === MAIN_SETTINGS) {
+        await routeNavigator.replace(`/${VIEW_SCHEDULE}`);
+        setIsLoading(false);
+      }
+    });
+  }, [activeView, localStorage, window.location]);
 
   const onStoryChange = async (currentView: Pages) => {
     const cookieValue = await getCookie();

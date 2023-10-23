@@ -1,20 +1,19 @@
 module.exports = {
-  env: {
-    browser: true,
-    es2021: true,
+  "env": {
+    "browser": true,
+    "es2021": true
   },
-  parser: '@typescript-eslint/parser',
-  plugins: ['react', '@typescript-eslint', '@typescript-eslint/eslint-plugin'],
-  extends: ['airbnb', 'airbnb-typescript'],
-  parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    project: ['./tsconfig.json'],
-  },
-  settings: {
-    react: {
-      version: '^18.2.0',
+  "extends": [
+    "eslint:recommended",
+    "preact"
+  ],
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+    "ecmaFeatures": {
+      "jsx": true
     },
+    "ecmaVersion": 12,
+    "sourceType": "module"
   },
   rules: {
     quotes: ['error', 'single'],

@@ -10,7 +10,7 @@ import { transformVKBridgeAdaptivity } from './transformers/transformVKBridgeAda
 import store from './store';
 
 const NotFound = lazy(() => import('./components/UI/NotFound'));
-const App = lazy(() => import('./app.tsx'));
+const App = lazy(() => import('./App.tsx'));
 
 vkBridge.send('VKWebAppInit');
 
