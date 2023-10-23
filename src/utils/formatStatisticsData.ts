@@ -6,8 +6,8 @@ export const formatStatisticsData = (marks: PerformanceCurrent) => {
     const allMarks: TextMark[] = marks.daysWithMarksForSubject.reduce(
       (marksArray: TextMark[], subject) => {
         if (subject.daysWithMarks) {
-          // @ts-ignore
           subject.daysWithMarks.forEach((day) =>
+            // @ts-ignore
             marksArray.push(...day.markValues)
           )
         }

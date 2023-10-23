@@ -107,6 +107,7 @@ const LessonCard: FC<ILessonCard> = ({ lesson }) => {
           //@ts-ignore типы React не совсем совместимы с Preact
           <Header
             mode="secondary"
+            /*//@ts-ignore типы React не совсем совместимы с Preact*/
             aside={<Footnote style={displayDayStyles}>{displayDay}</Footnote>}
           >
             {lessonDayOfWeek && `${lessonDayOfWeek}. `}

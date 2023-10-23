@@ -17,9 +17,7 @@ interface CalendarRangeProps {
   value?: Date
 }
 
-{
-  /*//@ts-ignore типы React не совсем совместимы с Preact*/
-}
+/*//@ts-ignore типы React не совсем совместимы с Preact*/
 const CalendarRange: FunctionalComponent<CalendarRangeProps> = forwardRef(
   //@ts-ignore типы React не совсем совместимы с Preact
   ({ label, onDateChange, value }, ref) => {

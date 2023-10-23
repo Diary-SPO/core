@@ -3,6 +3,7 @@ import { useCallback, useState } from 'preact/hooks'
 interface SendToServerIfValid {
   (start: Date, end: Date): void
 }
+
 const useDebouncedChangeWeek = (
   startDate: Date,
   endDate: Date,
