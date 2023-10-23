@@ -16,7 +16,7 @@ import {
   useRouteNavigator,
 } from '@vkontakte/vk-mini-apps-router'
 import {
-  Icon28ClearDataOutline,
+  // Icon28ClearDataOutline,
   Icon28DoorArrowRightOutline,
   Icon28HomeArrowDownOutline,
   Icon28IncognitoOutline,
@@ -41,12 +41,12 @@ const Settings: FunctionalComponent<ISettings> = ({ id }) => {
   const routeNavigator = useRouteNavigator()
 
   const [snackbar, showSnackbar] = useSnackbar()
-  const cleatCacheSnackbar = () => {
-    showSnackbar({
-      title: 'Кеш очищен',
-      subtitle: 'Необходимая информация загрузится при необходимости',
-    })
-  }
+  // const cleatCacheSnackbar = () => {
+  //   showSnackbar({
+  //     title: 'Кеш очищен',
+  //     subtitle: 'Необходимая информация загрузится при необходимости',
+  //   })
+  // }
 
   const [cacheData, setCacheData] = useState<Storage[]>([])
   const [isHomeScreenSupported, setIsHomeScreenSupported] =
@@ -86,20 +86,21 @@ const Settings: FunctionalComponent<ISettings> = ({ id }) => {
     setCacheData(getCache)
   }, [])
 
-  const clearCache = () => {
-    localStorage.clear()
-    setCacheData([])
-
-    if (!snackbar) {
-      cleatCacheSnackbar()
-    }
-  }
+  // const clearCache = () => {
+  //   localStorage.clear()
+  //   setCacheData([])
+  //
+  //   if (!snackbar) {
+  //     cleatCacheSnackbar()
+  //   }
+  // }
 
   const handleLogOut = () => {
     showSnackbar({
       title: 'Выход',
       //@ts-ignore типы React не совсем совместимы с Preact
       icon: (
+        //@ts-ignore типы React не совсем совместимы с Preact
         <Icon28DoorArrowRightOutline color="var(--vkui--color_background_accent_themed)" />
       ),
       subtitle:
@@ -129,29 +130,29 @@ const Settings: FunctionalComponent<ISettings> = ({ id }) => {
       })
   }
 
-  const clearCachePopup = (
-    <Alert
-      actions={[
-        //@ts-ignore типы React не совсем совместимы с Preact
-        {
-          title: 'Отмена',
-          autoClose: true,
-          mode: 'cancel',
-        },
-        //@ts-ignore типы React не совсем совместимы с Preact
-        {
-          title: 'Удалить',
-          autoClose: true,
-          mode: 'destructive',
-          action: () => clearCache(),
-        },
-      ]}
-      actionsLayout="horizontal"
-      onClose={() => routeNavigator.hidePopout()}
-      header="Очистка кеша"
-      text="После удаления кеша вся информация (оценки, расписание и тд) загрузится повторно."
-    />
-  )
+  // const clearCachePopup = (
+  //   <Alert
+  //     actions={[
+  //       //@ts-ignore типы React не совсем совместимы с Preact
+  //       {
+  //         title: 'Отмена',
+  //         autoClose: true,
+  //         mode: 'cancel',
+  //       },
+  //       //@ts-ignore типы React не совсем совместимы с Preact
+  //       {
+  //         title: 'Удалить',
+  //         autoClose: true,
+  //         mode: 'destructive',
+  //         action: () => clearCache(),
+  //       },
+  //     ]}
+  //     actionsLayout="horizontal"
+  //     onClose={() => routeNavigator.hidePopout()}
+  //     header="Очистка кеша"
+  //     text="После удаления кеша вся информация (оценки, расписание и тд) загрузится повторно."
+  //   />
+  // )
 
   const logOutPopup = (
     <Alert
@@ -254,12 +255,12 @@ const Settings: FunctionalComponent<ISettings> = ({ id }) => {
           <CellButton before={<Icon28RefreshOutline />} onClick={reloadCookie}>
             Обновить cookie
           </CellButton>
-          <CellButton
-            before={<Icon28ClearDataOutline />}
-            onClick={() => routeNavigator.showPopout(clearCachePopup)}
-          >
-            Очистить кеш
-          </CellButton>
+          {/*<CellButton*/}
+          {/*  before={<Icon28ClearDataOutline />}*/}
+          {/*  onClick={() => routeNavigator.showPopout(clearCachePopup)}*/}
+          {/*>*/}
+          {/*  Очистить кеш*/}
+          {/*</CellButton>*/}
           <CellButton
             before={<Icon28DoorArrowRightOutline />}
             onClick={() => routeNavigator.showPopout(logOutPopup)}
@@ -284,6 +285,7 @@ const Settings: FunctionalComponent<ISettings> = ({ id }) => {
                 //@ts-ignore типы React не совсем совместимы с Preact
                 <Header
                   mode="secondary"
+                  //@ts-ignore типы React не совсем совместимы с Preact
                   aside={<Subhead>Хранится в LocalStorage</Subhead>}
                 >
                   Кеш
