@@ -191,7 +191,7 @@ const LoginForm: FC<{ id: string }> = ({ id }) => {
               Проверьте правильность логина и пароля
             </FormStatus>
           )}
-          <FormLayout>
+          <FormLayout onSubmit={() => handleLogin()}>
             <FormItem
               required
               htmlFor='userLogin'
