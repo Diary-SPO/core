@@ -3,7 +3,7 @@ import {
 } from '@vkontakte/vkui';
 import { useActiveVkuiLocation, useRouteNavigator } from '@vkontakte/vk-mini-apps-router';
 import LessonModal from './LessonModal';
-// import CollegeModal from './CollegeModal';
+// Import CollegeModal from './CollegeModal';
 
 export const MODAL_PAGE_LESSON = 'lesson';
 export const MODAL_COLLEGE_INFO = 'college';

@@ -8,7 +8,7 @@ export interface Storage {
 /**
  * FIXME: enum стал страшный и в целом enum многие по понятным причинам хейтят
  * Поэтому когда-нибудь надо пофиксить
-*/
+ */
 export enum Grade {
   Five = 5,
   Four = 4,

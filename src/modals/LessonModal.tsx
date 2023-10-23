@@ -2,7 +2,7 @@ import {
   Group, Header, InfoRow, ModalPage, ModalPageHeader, Separator, SimpleCell, Spacing, Text,
 } from '@vkontakte/vkui';
 import {
-  AbsenceTypes, AbsenceTypesKeys, AbsenceTypesDescription, AbsenceTypesDescriptionKeys, Lesson, LessonType, LessonWorkType, TLesson,
+  AbsenceTypes, AbsenceTypesDescription, AbsenceTypesDescriptionKeys, AbsenceTypesKeys, Lesson, LessonType, LessonWorkType, TLesson,
 } from 'diary-shared';
 import { FC } from 'preact/compat';
 import { useEffect, useState } from 'preact/hooks';

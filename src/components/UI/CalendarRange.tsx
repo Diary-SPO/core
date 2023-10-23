@@ -8,7 +8,7 @@ import {
   unstable_Popper as Popper,
 } from '@vkontakte/vkui';
 import PropTypes from 'prop-types';
-import { forwardRef, ReactNode } from 'preact/compat';
+import { ReactNode, forwardRef } from 'preact/compat';
 import {
   useEffect, useImperativeHandle, useRef, useState,
 } from 'preact/hooks';

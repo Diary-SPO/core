@@ -1,5 +1,5 @@
 import {
-  Button, ButtonGroup, Card, Div, Group, Header, Link, Panel, Placeholder, Spinner, Title, View, Text, Subhead,
+  Button, ButtonGroup, Card, Div, Group, Header, Link, Panel, Placeholder, Spinner, Subhead, Text, Title, View,
 } from '@vkontakte/vkui';
 import { useActiveVkuiLocation, useRouteNavigator } from '@vkontakte/vk-mini-apps-router';
 import { Icon28ErrorCircleOutline } from '@vkontakte/icons';

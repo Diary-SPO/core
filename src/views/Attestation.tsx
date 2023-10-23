@@ -60,8 +60,8 @@ const Attestation: FC<IAttestation> = ({ id }) => {
   }, []);
 
   const semesters: Record<string, AttestationResponse['subjects']> = {};
-  let year: number | null = null;
   let studentName: string | null = null;
+  let year: number | null = null;
 
   if (attestationData && attestationData.students) {
     year = attestationData.year;

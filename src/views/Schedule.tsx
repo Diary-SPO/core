@@ -5,8 +5,8 @@ import { useActiveVkuiLocation, useRouteNavigator } from '@vkontakte/vk-mini-app
 import {
   Icon16ArrowLeftOutline,
   Icon16ArrowRightOutline,
-  Icon28ErrorCircleOutline,
   Icon24ChevronRightCircle,
+  Icon28ErrorCircleOutline,
 } from '@vkontakte/icons';
 import { addDays, endOfWeek, startOfWeek } from '@vkontakte/vkui/dist/lib/date';
 import { Day, PerformanceCurrent } from 'diary-shared';
@@ -18,8 +18,8 @@ import Suspense from '../components/UI/Suspense';
 import {
   useDebouncedChangeWeek,
   useRateLimitExceeded,
-  useSnackbar,
   useScrollPosition,
+  useSnackbar,
 } from '../hooks';
 import ExplanationTooltip from '../components/UI/ExplanationTooltip';
 import { handleResponse } from '../utils/handleResponse';

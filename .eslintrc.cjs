@@ -4,8 +4,8 @@ module.exports = {
     es2021: true,
   },
   parser: '@typescript-eslint/parser',
-  // plugins: ['react', '@typescript-eslint', '@typescript-eslint/eslint-plugin'],
-  extends: ['eslint:all', 'preact', 'prettier'],
+  plugins: ['react', '@typescript-eslint', '@typescript-eslint/eslint-plugin'],
+  extends: ['airbnb', 'airbnb-typescript'],
   parserOptions: {
     ecmaVersion: 'latest',
     sourceType: 'module',

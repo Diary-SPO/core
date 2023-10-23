@@ -55,7 +55,7 @@ const LoginForm: FC<{ id: string }> = ({ id }) => {
       password: setPassword,
     }[name];
     setIsDataInvalid(false);
-    // eslint-disable-next-line @typescript-eslint/no-unused-expressions
+
     setStateAction && setStateAction(value);
   };
 

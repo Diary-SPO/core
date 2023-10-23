@@ -61,7 +61,7 @@ const SubtitleWithBorder: FC<ISubtitleWithBorder> = ({ children, color = 'defaul
   return (
     <div
       style={{
-        // margin: '0 5px 5px 0',
+        // Margin: '0 5px 5px 0',
         display: 'inline-block',
         ...getColorStyles(),
         padding: '3px 5px',

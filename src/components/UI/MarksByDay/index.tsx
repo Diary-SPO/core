@@ -1,4 +1,4 @@
-import { FunctionalComponent, Fragment } from 'preact';
+import { Fragment, FunctionalComponent } from 'preact';
 import {
   Group, Header, HorizontalCell, HorizontalScroll,
 } from '@vkontakte/vkui';

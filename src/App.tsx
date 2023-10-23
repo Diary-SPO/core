@@ -23,21 +23,20 @@ const App = () => {
   const vkBridgeInsets = useInsets() || undefined;
 
   useEffect(() => {
-   const onRoute = async () => {
-     if (!cookieValue) {
-       await routeNavigator.replace('/');
-       setIsLoading(false);
-     } else if ((cookieValue) && activeView === MAIN_SETTINGS) {
-       await routeNavigator.replace(`/${VIEW_SCHEDULE}`);
-       setIsLoading(false);
-     }
-   }
+    const onRoute = async () => {
+      if (!cookieValue) {
+        await routeNavigator.replace('/');
+        setIsLoading(false);
+      } else if ((cookieValue) && activeView === MAIN_SETTINGS) {
+        await routeNavigator.replace(`/${VIEW_SCHEDULE}`);
+        setIsLoading(false);
+      }
+    };
 
-   onRoute()
+    onRoute();
   }, [activeView, localStorage, window.location]);
 
   const onStoryChange = async (currentView: Pages) => {
-
     if (cookieValue) {
       try {
         await routeNavigator.push(`/${currentView}`);

@@ -7,5 +7,5 @@ import { getPerformance } from './server/getPerformance';
 import { getLessons } from './server/getLessons';
 
 export {
- getUserId, getLessons, appStorageSet, getPerformance, getVkStorageData, getVkStorageKeys,
+  getUserId, getLessons, appStorageSet, getPerformance, getVkStorageData, getVkStorageKeys,
 };

@@ -1,11 +1,11 @@
 import { TabbarItem, Tabbar as VKUITabbar, useAdaptivityConditionalRender } from '@vkontakte/vkui';
 import {
+  Icon28BookSpreadOutline,
   Icon28EducationOutline,
   Icon28GraphOutline,
   Icon28HelpOutline,
   Icon28HomeOutline,
   Icon28SettingsOutline,
-  Icon28BookSpreadOutline,
 } from '@vkontakte/icons';
 import { FC } from 'preact/compat';
 import {

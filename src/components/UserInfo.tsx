@@ -2,7 +2,7 @@ import { CSSProperties, useEffect, useState } from 'react';
 import {
   Avatar, Button, Div, Gradient, Group, Header, ScreenSpinner, SimpleCell, Spinner, Text, Title,
 } from '@vkontakte/vkui';
-import { Icon28SchoolOutline, Icon20RefreshOutline } from '@vkontakte/icons';
+import { Icon20RefreshOutline, Icon28SchoolOutline } from '@vkontakte/icons';
 
 import bridge from '@vkontakte/vk-bridge';
 import { useRouteNavigator } from '@vkontakte/vk-mini-apps-router';
@@ -46,7 +46,7 @@ const getUserAva = async (): Promise<string | null> => {
 const UserInfo = () => {
   const routeNavigator = useRouteNavigator();
 
-  // const { openCollegeModal } = useModal();
+  // Const { openCollegeModal } = useModal();
 
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isCollegeLoading, setIsCollegeLoading] = useState<boolean>(false);
@@ -69,7 +69,7 @@ const UserInfo = () => {
       }
 
       await routeNavigator.showModal(MODAL_COLLEGE_INFO);
-      // openCollegeModal(data as Organization);
+      // OpenCollegeModal(data as Organization);
       setIsCollegeLoading(false);
     } catch (e) {
       console.error(e);
