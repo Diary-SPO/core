@@ -18,6 +18,7 @@ const HelpAccordion: FC<IHelpAccordion> = ({ id, title, detail }) => {
     <Accordion key={id} open={openId === id} onToggle={(e) => e.target.open && setOpenId(id)}>
       <Accordion.Summary>{title}</Accordion.Summary>
       <Div style={infoStyle}>
+        {/*// @ts-ignore */}
         <Text>
           {detail}
         </Text>

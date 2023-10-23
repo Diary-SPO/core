@@ -24,12 +24,7 @@ export default defineConfig({
     },
     rollupOptions: {
       logLevel: 'debug',
-      input: 'index-a12.html',
-      output: {
-        manualChunks: {
-          react: ['react', 'react-dom'],
-        },
-      },
+      input: 'index.html',
     },
   },
 })

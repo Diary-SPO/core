@@ -4,7 +4,7 @@ import { CSSProperties, FC } from 'preact/compat';
 import { TMark } from '../../../types';
 
 type Sizes = 'l' | 's';
-type ReturnedMark = TMark | AbsenceTypesKeys;
+type ReturnedMark = 'Н' | TMark | AbsenceTypesKeys;
 
 interface IMark {
   mark?: ReturnedMark;
@@ -52,12 +52,14 @@ const Mark: FC<IMark> = ({
     marginLeft: useMargin ? 10 : undefined,
     display: 'inline-block',
   };
+
   return (
     <div style={{ ...style }}>
       <div style={styles}>
         {mark}
       </div>
       {bottom && (
+        // @ts-ignore
         <Footnote style={{ padding: 3 }}>
           {bottom}
         </Footnote>

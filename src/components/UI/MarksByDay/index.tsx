@@ -34,10 +34,9 @@ const MarksByDay: FunctionalComponent<IPerformanceCurrent> = ({ performanceData 
                 {Object.entries(lessonGrades).map(([lessonName, grades]) => (
                   <div style={{ display: 'flex' }} key={`${day}_${lessonName}`}>
                     {grades.map((grade, gradeIndex) => (
+                      // @ts-ignore
                       <HorizontalCell style={{ maxWidth: 'unset' }} key={`${day}_${lessonName}_${gradeIndex}`}>
                         <Fragment>
-                          {' '}
-                          {/* Use Fragment to wrap Mark component */}
                           <Mark
                             bottom={truncateString(lessonName, 18)}
                             style={{ maxWidth: 90 }}
