@@ -24,7 +24,14 @@ export default defineConfig({
     },
     rollupOptions: {
       logLevel: 'debug',
-      input: 'index.html',
+      input: 'index1.html',
+      output: {
+        manualChunks: {
+          '@reduxjs/toolkit': ['@reduxjs/toolkit'],
+          'react-redux': ['react-redux'],
+          '@vkontakte/icons': ['@vkontakte/icons'],
+        },
+      },
     },
   },
 })
