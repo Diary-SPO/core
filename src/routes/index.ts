@@ -1,21 +1,24 @@
-import { RouteWithoutRoot, createHashRouter } from '@vkontakte/vk-mini-apps-router';
+import {
+  RouteWithoutRoot,
+  createHashRouter,
+} from '@vkontakte/vk-mini-apps-router'
 
-export const PAGE_MAIN = '/';
-export const PAGE_SCHEDULE = '/schedule';
-export const PAGE_CONTACTS = '/contacts';
-export const PAGE_MARKS = '/marks';
-export const PAGE_SETTINGS = '/settings';
-export const PAGE_ATTESTATION = '/attestation';
-export const PAGE_NOTIFICATIONS = '/notifications';
+export const PAGE_MAIN = '/'
+export const PAGE_SCHEDULE = '/schedule'
+export const PAGE_CONTACTS = '/contacts'
+export const PAGE_MARKS = '/marks'
+export const PAGE_SETTINGS = '/settings'
+export const PAGE_ATTESTATION = '/attestation'
+export const PAGE_NOTIFICATIONS = '/notifications'
 
-export const VIEW_SCHEDULE = 'schedule';
-export const VIEW_CONTACTS = 'contacts';
-export const VIEW_MARKS = 'marks';
-export const VIEW_SETTINGS = 'settings';
+export const VIEW_SCHEDULE = 'schedule'
+export const VIEW_CONTACTS = 'contacts'
+export const VIEW_MARKS = 'marks'
+export const VIEW_SETTINGS = 'settings'
 
-export const MAIN_SETTINGS = 'login';
-export const VIEW_ATTESTATION = 'attestation';
-export const VIEW_NOTIFICATIONS = 'notifications';
+export const MAIN_SETTINGS = 'login'
+export const VIEW_ATTESTATION = 'attestation'
+export const VIEW_NOTIFICATIONS = 'notifications'
 
 const routes: RouteWithoutRoot[] = [
   {
@@ -53,6 +56,6 @@ const routes: RouteWithoutRoot[] = [
     panel: VIEW_NOTIFICATIONS,
     view: VIEW_NOTIFICATIONS,
   },
-];
+]
 
-export const router = createHashRouter(routes);
+export const router = createHashRouter(routes)

@@ -1,23 +1,27 @@
+import { ModalRoot as VKUIModalRoot } from '@vkontakte/vkui'
 import {
-  ModalRoot as VKUIModalRoot,
-} from '@vkontakte/vkui';
-import { useActiveVkuiLocation, useRouteNavigator } from '@vkontakte/vk-mini-apps-router';
-import LessonModal from './LessonModal';
-import CollegeModal from './CollegeModal';
+  useActiveVkuiLocation,
+  useRouteNavigator,
+} from '@vkontakte/vk-mini-apps-router'
+import LessonModal from './LessonModal'
+// Import CollegeModal from './CollegeModal';
 
-export const MODAL_PAGE_LESSON = 'lesson';
-export const MODAL_COLLEGE_INFO = 'college';
+export const MODAL_PAGE_LESSON = 'lesson'
+export const MODAL_COLLEGE_INFO = 'college'
 
 const ModalRoot = () => {
-  const routeNavigator = useRouteNavigator();
-  const { modal: activeModal } = useActiveVkuiLocation();
+  const routeNavigator = useRouteNavigator()
+  const { modal: activeModal } = useActiveVkuiLocation()
 
   return (
-    <VKUIModalRoot activeModal={activeModal} onClose={() => routeNavigator.hideModal()}>
+    <VKUIModalRoot
+      activeModal={activeModal}
+      onClose={() => routeNavigator.hideModal()}
+    >
       <LessonModal id={MODAL_PAGE_LESSON} />
-      <CollegeModal id={MODAL_COLLEGE_INFO} />
+      {/* <CollegeModal id={MODAL_COLLEGE_INFO} /> */}
     </VKUIModalRoot>
-  );
-};
+  )
+}
 
-export default ModalRoot;
+export default ModalRoot

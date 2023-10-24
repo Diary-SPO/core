@@ -1,59 +1,63 @@
-import { useCallback, useState } from 'react';
+import { useCallback, useState } from 'preact/hooks'
 
 interface SendToServerIfValid {
-  (start: Date, end: Date): void;
+  (start: Date, end: Date): void
 }
+
 const useDebouncedChangeWeek = (
   startDate: Date,
   endDate: Date,
   setIsCurrent: (value: boolean) => void,
   setStartDate: (startDate: Date) => void,
-  setEndDate: (endDate: Date) => void,
+  setEndDate: (endDate: Date) => void
 ) => {
-  const [clickCount, setClickCount] = useState<number>(0);
-  const [timeoutId, setTimeoutId] = useState<NodeJS.Timeout | null>(null);
+  const [clickCount, setClickCount] = useState<number>(0)
+  const [timeoutId, setTimeoutId] = useState<NodeJS.Timeout | null>(null)
 
   const debouncedChangeWeek = useCallback(
     (direction: 'prev' | 'next', sendToServerIfValid: SendToServerIfValid) => {
-      localStorage.setItem('isCurrent', JSON.stringify(false));
-      setIsCurrent(false);
-      const newStartDate = new Date(startDate);
-      const newEndDate = new Date(endDate);
+      localStorage.setItem('isCurrent', JSON.stringify(false))
+      setIsCurrent(false)
+      const newStartDate = new Date(startDate)
+      const newEndDate = new Date(endDate)
       if (clickCount > 0) {
-        const weekDifference = clickCount * 7;
-        newStartDate.setDate(newStartDate.getDate() + weekDifference);
-        newEndDate.setDate(newEndDate.getDate() + weekDifference);
-        setClickCount(0);
+        const weekDifference = clickCount * 7
+        newStartDate.setDate(newStartDate.getDate() + weekDifference)
+        newEndDate.setDate(newEndDate.getDate() + weekDifference)
+        setClickCount(0)
       } else if (direction === 'prev') {
-        newStartDate.setDate(newStartDate.getDate() - 7);
-        newEndDate.setDate(newEndDate.getDate() - 7);
+        newStartDate.setDate(newStartDate.getDate() - 7)
+        newEndDate.setDate(newEndDate.getDate() - 7)
       } else if (direction === 'next') {
-        newStartDate.setDate(newStartDate.getDate() + 7);
-        newEndDate.setDate(newEndDate.getDate() + 7);
+        newStartDate.setDate(newStartDate.getDate() + 7)
+        newEndDate.setDate(newEndDate.getDate() + 7)
       }
 
-      sendToServerIfValid(newStartDate, newEndDate);
-      setStartDate(newStartDate);
-      setEndDate(newEndDate);
+      sendToServerIfValid(newStartDate, newEndDate)
+      setStartDate(newStartDate)
+      setEndDate(newEndDate)
     },
-    [clickCount, startDate, endDate, setIsCurrent, setStartDate, setEndDate],
-  );
+    [clickCount, startDate, endDate, setIsCurrent, setStartDate, setEndDate]
+  )
 
-  const handleButtonClick = (direction: 'prev' | 'next', sendToServerIfValid: SendToServerIfValid) => {
-    setClickCount((prevCount) => prevCount + 1);
+  const handleButtonClick = (
+    direction: 'prev' | 'next',
+    sendToServerIfValid: SendToServerIfValid
+  ) => {
+    setClickCount((prevCount) => prevCount + 1)
     if (timeoutId) {
-      clearTimeout(timeoutId);
+      clearTimeout(timeoutId)
     }
 
     const newTimeoutId = setTimeout(() => {
-      debouncedChangeWeek(direction, sendToServerIfValid);
-      setClickCount(0);
-    }, 500);
+      debouncedChangeWeek(direction, sendToServerIfValid)
+      setClickCount(0)
+    }, 500)
 
-    setTimeoutId(newTimeoutId);
-  };
+    setTimeoutId(newTimeoutId)
+  }
 
-  return { handleButtonClick };
-};
+  return { handleButtonClick }
+}
 
-export default useDebouncedChangeWeek;
+export default useDebouncedChangeWeek

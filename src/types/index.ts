@@ -1,14 +1,20 @@
-export type Pages = 'schedule' | 'contacts' | 'marks' | 'settings' | 'attestation' | 'notifications';
+export type Pages =
+  | 'schedule'
+  | 'contacts'
+  | 'marks'
+  | 'settings'
+  | 'attestation'
+  | 'notifications'
 
 export interface Storage {
-  key: string;
+  key: string
   value: string
 }
 
 /**
  * FIXME: enum стал страшный и в целом enum многие по понятным причинам хейтят
  * Поэтому когда-нибудь надо пофиксить
-*/
+ */
 export enum Grade {
   Five = 5,
   Four = 4,
@@ -24,7 +30,7 @@ export enum Grade {
   'О' = 'О',
 }
 
-export type GradeKeys = keyof typeof Grade;
+export type GradeKeys = keyof typeof Grade
 
-export type TextMark = GradeKeys;
-export type TMark = typeof Grade[GradeKeys];
+export type TextMark = GradeKeys
+export type TMark = (typeof Grade)[GradeKeys]
