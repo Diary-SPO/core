@@ -14,3 +14,12 @@
 ._HorizontalCell_1q642_1:first-child::before, ._HorizontalCell_1q642_1:last-child::after {
   content: none !important;
 }
+
+/* Для PC / Tablet */
+.lessonCard > section {
+  padding-bottom: 10px !important;
+}
+
+.lessonCard > div {
+  display: none !important;
+}

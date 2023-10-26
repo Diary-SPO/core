@@ -48,15 +48,13 @@ const MarksByDay: FunctionalComponent<IPerformanceCurrent> = ({
                         style={{ maxWidth: 'unset' }}
                         key={`${day}_${lessonName}_${gradeIndex}`}
                       >
-                        <Fragment>
-                          <Mark
-                            bottom={truncateString(lessonName, 18)}
-                            style={{ maxWidth: 90 }}
-                            mark={grade || 'Н'}
-                            useMargin={false}
-                            size="l"
-                          />
-                        </Fragment>
+                        <Mark
+                          bottom={truncateString(lessonName, 18)}
+                          style={{ maxWidth: 90 }}
+                          mark={grade || 'Н'}
+                          useMargin={false}
+                          size="l"
+                        />
                       </HorizontalCell>
                     ))}
                   </div>

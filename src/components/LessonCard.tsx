@@ -1,4 +1,4 @@
-import { CSSProperties, FC } from 'react'
+import {CSSProperties, FC} from 'react'
 import {
   Card,
   Footnote,
@@ -7,7 +7,7 @@ import {
   Placeholder,
   SimpleCell,
 } from '@vkontakte/vkui'
-import { useRouteNavigator } from '@vkontakte/vk-mini-apps-router'
+import {useRouteNavigator} from '@vkontakte/vk-mini-apps-router'
 import {
   AbsenceTypes,
   Day,
@@ -15,22 +15,22 @@ import {
   LessonWorkType,
   Timetable,
 } from 'diary-shared'
-import { useDispatch } from 'react-redux'
-import { formatLessonDate, getDayOfWeek } from '../utils/formatLessonDate'
+import {useDispatch} from 'react-redux'
+import {formatLessonDate, getDayOfWeek} from '../utils/formatLessonDate'
 import setDefaultMark from '../utils/setDefaultMark'
-import { isToday } from '../utils/isToday'
-import { MODAL_PAGE_LESSON } from '../modals/ModalRoot'
+import {isToday} from '../utils/isToday'
+import {MODAL_PAGE_LESSON} from '../modals/ModalRoot'
 import SubtitleWithBorder from './SubtitleWithBorder'
 import TimeRemaining from './TimeRemaining'
 import Mark from './UI/Mark'
-import { Grade } from '../types'
-import { setLessonModalData } from '../store/lessonSlice.ts'
+import {Grade} from '../types'
+import {setLessonModalData} from '../store/lessonSlice.ts'
 
 interface ILessonCard {
   lesson: Day
 }
 
-const LessonCard: FC<ILessonCard> = ({ lesson }) => {
+const LessonCard: FC<ILessonCard> = ({lesson}) => {
   const routeNavigator = useRouteNavigator()
   const dispatch = useDispatch()
 
@@ -85,8 +85,8 @@ const LessonCard: FC<ILessonCard> = ({ lesson }) => {
   const displayDay = dayEnded
     ? ' День завершён'
     : isLessonToday
-    ? 'Сегодня'
-    : ''
+      ? 'Сегодня'
+      : ''
   const displayEndDayStyles = dayEnded && '#888888'
   const displayCurrDayStyles =
     isLessonToday && 'var(--vkui--color_background_accent)'
@@ -99,10 +99,8 @@ const LessonCard: FC<ILessonCard> = ({ lesson }) => {
   }
 
   return (
-    <Card key={lesson.date as unknown as string} style={{ height: '100%' }}>
+    <Card className='lessonCard' key={lesson.date}>
       <Group
-        /* Без этого Group не растягивается и немного уезжает на планшетах */
-        style={{ height: '100%', marginTop: '4px' }}
         header={
           //@ts-ignore типы React не совсем совместимы с Preact
           <Header
@@ -117,7 +115,7 @@ const LessonCard: FC<ILessonCard> = ({ lesson }) => {
       >
         {lesson.lessons && lesson.lessons.length > 0 ? (
           lesson.lessons.map(
-            ({ name, endTime, startTime, timetable, gradebook }) =>
+            ({name, endTime, startTime, timetable, gradebook}) =>
               name && (
                 <SimpleCell
                   className="lesson"
@@ -136,11 +134,11 @@ const LessonCard: FC<ILessonCard> = ({ lesson }) => {
                       <div>
                         <div>
                           <div
-                            style={{ display: 'flex', alignItems: 'center' }}
+                            style={{display: 'flex', alignItems: 'center'}}
                           >
                             {gradebook?.lessonType && (
                               <SubtitleWithBorder
-                                style={{ margin: '5px 5px 5px 0px' }}
+                                style={{margin: '5px 5px 5px 0px'}}
                               >
                                 {LessonWorkType[gradebook?.lessonType]}
                               </SubtitleWithBorder>
@@ -167,10 +165,10 @@ const LessonCard: FC<ILessonCard> = ({ lesson }) => {
                           {startTime === undefined
                             ? ''
                             : `${startTime} — ${endTime}, каб. ${
-                                timetable?.classroom.name === '0'
-                                  ? 'ДО'
-                                  : timetable?.classroom.name
-                              }`}
+                              timetable?.classroom.name === '0'
+                                ? 'ДО'
+                                : timetable?.classroom.name
+                            }`}
                         </div>
                         <div
                           style={{
@@ -185,7 +183,7 @@ const LessonCard: FC<ILessonCard> = ({ lesson }) => {
                               ? `${timetable.teacher?.lastName} ${timetable.teacher?.firstName[0]}. ${timetable.teacher?.middleName[0]}.`
                               : 'Не указан'}
                           </div>
-                          <div style={{ display: 'flex' }}>
+                          <div style={{display: 'flex'}}>
                             {gradebook?.tasks?.map(
                               (task, index) =>
                                 (task.isRequired ||
