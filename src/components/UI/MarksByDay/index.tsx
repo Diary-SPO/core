@@ -29,12 +29,12 @@ const MarksByDay: FunctionalComponent<IPerformanceCurrent> = ({
   const marksByDay = extractMarksByDay(performanceData)
 
   return (
-    <HorizontalScroll
-      showArrows
-      getScrollToLeft={(i) => i - 120}
-      getScrollToRight={(i) => i + 120}
-    >
-      <Group header={<Header mode="secondary">Недавние оценки</Header>}>
+    <Group header={<Header mode="secondary">Недавние оценки</Header>}>
+      <HorizontalScroll
+        showArrows
+        getScrollToLeft={(i) => i - 120}
+        getScrollToRight={(i) => i + 120}
+      >
         <div className="marksByName">
           {Object.entries(sortByDay(marksByDay)).map(([day, lessonGrades]) => (
             <div key={day}>
@@ -65,8 +65,8 @@ const MarksByDay: FunctionalComponent<IPerformanceCurrent> = ({
             </div>
           ))}
         </div>
-      </Group>
-    </HorizontalScroll>
+      </HorizontalScroll>
+    </Group>
   )
 }
 
