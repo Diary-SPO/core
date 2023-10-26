@@ -34,7 +34,7 @@ const SubjectList: FunctionalComponent<SubjectListProps> = ({
       <Group
         key={semesterKey}
         header={
-          <Header mode="tertiary" aside={`${studentName}, ${year}`}>
+          <Header style={{ alignItems: 'center' }} mode="tertiary" aside={`${studentName}, ${year}`}>
             {semesterKey}
           </Header>
         }
