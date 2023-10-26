@@ -1,14 +1,4 @@
-import {
-  Group,
-  Panel,
-  PanelSpinner,
-  PullToRefresh,
-  View,
-} from '@vkontakte/vkui'
-import {
-  useActiveVkuiLocation,
-  useRouteNavigator,
-} from '@vkontakte/vk-mini-apps-router'
+import { Group, Panel, PanelSpinner, PullToRefresh } from '@vkontakte/vkui'
 import { Icon28ErrorCircleOutline, Icon28InfoCircle } from '@vkontakte/icons'
 import { PerformanceCurrent } from 'diary-shared'
 import { FC } from 'preact/compat'
@@ -26,9 +16,6 @@ import { formatStatisticsData } from '../utils/formatStatisticsData'
 const THIRD_SEC = 30 * 1000
 
 const Marks: FC<{ id: string }> = ({ id }) => {
-  const { panel: activePanel, panelsHistory } = useActiveVkuiLocation()
-  const routeNavigator = useRouteNavigator()
-
   const [isLoading, setIsLoading] = useState<boolean>(false)
   const [snackbar, showSnackbar] = useSnackbar()
 
@@ -138,14 +125,11 @@ const Marks: FC<{ id: string }> = ({ id }) => {
   return (
     <Panel nav={id}>
       <PanelHeaderWithBack title="Успеваемость" />
-      <PullToRefresh
-        onRefresh={() => fetchMarks(true)}
-        isFetching={isLoading}
-      >
+      <PullToRefresh onRefresh={() => fetchMarks(true)} isFetching={isLoading}>
         <Suspense id="UserInfo">
           <UserInfo />
         </Suspense>
-        
+
         {isLoading ? (
           <Group>
             <PanelSpinner />

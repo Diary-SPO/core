@@ -7,7 +7,9 @@ import {
   Platform,
   ScreenSpinner,
   SplitCol,
-  SplitLayout, useAdaptivityConditionalRender, usePlatform,
+  SplitLayout,
+  useAdaptivityConditionalRender,
+  usePlatform,
 } from '@vkontakte/vkui'
 import {
   useActiveVkuiLocation,
@@ -32,7 +34,8 @@ import {
   Icon28BookSpreadOutline,
   Icon28EducationOutline,
   Icon28GraphOutline,
-  Icon28HomeOutline, Icon28SettingsOutline,
+  Icon28HomeOutline,
+  Icon28SettingsOutline,
 } from '@vkontakte/icons'
 
 const ModalRoot = lazy(() => import('./modals/ModalRoot'))
@@ -42,14 +45,14 @@ const App = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false)
   const routeNavigator = useRouteNavigator()
   const modals = <ModalRoot />
-  const { view: activeView = MAIN_SETTINGS } = useActiveVkuiLocation()
+  const { view: activeView, panel } = useActiveVkuiLocation()
   const cookieValue = localStorage.getItem('cookie')
   const { viewWidth } = useAdaptivityConditionalRender()
-  const platform = usePlatform();
-  const isVKCOM = platform === Platform.VKCOM;
+  const platform = usePlatform()
+  const isVKCOM = platform === Platform.VKCOM
   const routerPopout = usePopout()
   const vkBridgeInsets = useInsets() || undefined
-  
+
   useEffect(() => {
     const onRoute = async () => {
       if (!cookieValue) {
@@ -60,10 +63,10 @@ const App = () => {
         setIsLoading(false)
       }
     }
-    
+
     onRoute()
   }, [activeView, localStorage, window.location])
-  
+
   const onStoryChange = async (currentView: Pages) => {
     if (cookieValue) {
       try {
@@ -75,7 +78,7 @@ const App = () => {
     }
     await routeNavigator.replace('/')
   }
-  
+
   return (
     <AppRoot safeAreaInsets={vkBridgeInsets}>
       <SplitLayout
@@ -84,49 +87,54 @@ const App = () => {
         header={!isVKCOM && <PanelHeader separator={false} />}
         style={{ justifyContent: 'center' }}
       >
-        {viewWidth.tabletPlus && activeView !== MAIN_SETTINGS && (
-          <SplitCol className={viewWidth.tabletPlus.className} fixed width={280} maxWidth={280}>
+        {viewWidth.tabletPlus && panel !== MAIN_SETTINGS && (
+          <SplitCol
+            className={viewWidth.tabletPlus.className}
+            fixed
+            width={280}
+            maxWidth={280}
+          >
             <Panel>
               {!isVKCOM && <PanelHeader />}
               <Group>
                 <Cell
                   onClick={() => onStoryChange(VIEW_SCHEDULE)}
-                  hovered={activeView === VIEW_SCHEDULE}
+                  hovered={panel === VIEW_SCHEDULE}
                   before={<Icon28HomeOutline />}
                 >
                   Главная
                 </Cell>
                 <Cell
                   onClick={() => onStoryChange(VIEW_MARKS)}
-                  hovered={activeView === VIEW_MARKS}
+                  hovered={panel === VIEW_MARKS}
                   before={<Icon28GraphOutline />}
                 >
                   Успеваемость
                 </Cell>
                 <Cell
                   onClick={() => onStoryChange(VIEW_ATTESTATION)}
-                  hovered={activeView === VIEW_ATTESTATION}
+                  hovered={panel === VIEW_ATTESTATION}
                   before={<Icon28EducationOutline />}
                 >
                   Аттестация
                 </Cell>
                 <Cell
                   onClick={() => onStoryChange(VIEW_NOTIFICATIONS)}
-                  hovered={activeView === VIEW_NOTIFICATIONS}
+                  hovered={panel === VIEW_NOTIFICATIONS}
                   before={<Icon28BookSpreadOutline />}
                 >
                   Объявления
                 </Cell>
                 <Cell
                   onClick={() => onStoryChange(VIEW_CONTACTS)}
-                  hovered={activeView === VIEW_CONTACTS}
+                  hovered={panel === VIEW_CONTACTS}
                   before={<Icon28EducationOutline />}
                 >
                   Помощь
                 </Cell>
                 <Cell
                   onClick={() => onStoryChange(VIEW_SETTINGS)}
-                  hovered={activeView === VIEW_SETTINGS}
+                  hovered={panel === VIEW_SETTINGS}
                   before={<Icon28SettingsOutline />}
                 >
                   Настройки
@@ -135,9 +143,9 @@ const App = () => {
             </Panel>
           </SplitCol>
         )}
-        <Suspense id='Epic'>
-          {isLoading && <ScreenSpinner size='large' />}
-          <SplitCol width='100%' maxWidth='700px' stretchedOnMobile autoSpaced>
+        <Suspense id="Epic">
+          {isLoading && <ScreenSpinner size="large" />}
+          <SplitCol width="100%" maxWidth="700px" stretchedOnMobile autoSpaced>
             <Epic onStoryChange={onStoryChange} />
           </SplitCol>
         </Suspense>

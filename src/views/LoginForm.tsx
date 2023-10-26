@@ -6,12 +6,8 @@ import {
   Group,
   Input,
   Panel,
-  View,
 } from '@vkontakte/vkui'
-import {
-  useActiveVkuiLocation,
-  useRouteNavigator,
-} from '@vkontakte/vk-mini-apps-router'
+import { useRouteNavigator } from '@vkontakte/vk-mini-apps-router'
 import Hashes from 'jshashes'
 import {
   Icon28DoorArrowLeftOutline,
@@ -25,7 +21,6 @@ import { VIEW_SCHEDULE } from '../routes'
 import { useSnackbar } from '../hooks'
 
 const LoginForm: FC<{ id: string }> = ({ id }) => {
-  const { panel: activePanel, panelsHistory } = useActiveVkuiLocation()
   const routeNavigator = useRouteNavigator()
 
   const [login, setLogin] = useState<string>('')
@@ -200,8 +195,8 @@ const LoginForm: FC<{ id: string }> = ({ id }) => {
               isLoginEmpty
                 ? 'default'
                 : loginPattern.test(login)
-                  ? 'valid'
-                  : 'error'
+                ? 'valid'
+                : 'error'
             }
             bottom={isLoginEmpty || loginTopText}
             bottomId="login-type"
@@ -223,11 +218,7 @@ const LoginForm: FC<{ id: string }> = ({ id }) => {
             top="Пароль"
             htmlFor="pass"
             status={
-              isPasswordEmpty
-                ? 'default'
-                : isPasswordValid
-                  ? 'valid'
-                  : 'error'
+              isPasswordEmpty ? 'default' : isPasswordValid ? 'valid' : 'error'
             }
             bottom={isPasswordEmpty || passwordTopText}
           >

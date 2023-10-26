@@ -12,12 +12,7 @@ import {
   Subhead,
   Text,
   Title,
-  View,
 } from '@vkontakte/vkui'
-import {
-  useActiveVkuiLocation,
-  useRouteNavigator,
-} from '@vkontakte/vk-mini-apps-router'
 import { Icon28ErrorCircleOutline } from '@vkontakte/icons'
 import { NotificationsResponse } from 'diary-shared'
 import { useEffect, useState } from 'preact/hooks'
@@ -29,9 +24,6 @@ import SubtitleWithBorder from '../components/SubtitleWithBorder'
 import { getAds } from '../methods'
 
 const Notifications: FC<{ id: string }> = ({ id }) => {
-  const { panel: activePanel, panelsHistory } = useActiveVkuiLocation()
-  const routeNavigator = useRouteNavigator()
-
   const [notifications, setNotifications] = useState<
     NotificationsResponse[] | null
   >(null)
@@ -110,15 +102,15 @@ const Notifications: FC<{ id: string }> = ({ id }) => {
           notifications?.length > 0 &&
           notifications?.map(
             ({
-               title,
-               id: _id,
-               date,
-               isForEmployees,
-               isForParents,
-               isForStudents,
-               deleteInDays,
-               text,
-             }) => (
+              title,
+              id: _id,
+              date,
+              isForEmployees,
+              isForParents,
+              isForStudents,
+              deleteInDays,
+              text,
+            }) => (
               <Group
                 key={_id}
                 description={
@@ -161,7 +153,7 @@ const Notifications: FC<{ id: string }> = ({ id }) => {
               </Group>
             )
           )}
-        
+
         <Div>
           {isLoading && (
             <Div>
@@ -169,7 +161,7 @@ const Notifications: FC<{ id: string }> = ({ id }) => {
             </Div>
           )}
         </Div>
-        
+
         <Div>
           {isError && (
             <Placeholder
@@ -187,7 +179,7 @@ const Notifications: FC<{ id: string }> = ({ id }) => {
             />
           )}
         </Div>
-        
+
         <Div>
           {notifications && notifications?.length < 1 && (
             <Placeholder header="Объявлений нет" />

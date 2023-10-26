@@ -10,12 +10,7 @@ import {
   PanelSpinner,
   Placeholder,
   PullToRefresh,
-  View,
 } from '@vkontakte/vkui'
-import {
-  useActiveVkuiLocation,
-  useRouteNavigator,
-} from '@vkontakte/vk-mini-apps-router'
 import {
   Icon16ArrowLeftOutline,
   Icon16ArrowRightOutline,
@@ -48,8 +43,6 @@ const Schedule: FC<{ id: string }> = ({ id }) => {
   const scrollPosition = useScrollPosition()
   const showToTopButton = scrollPosition > 700
 
-  const { panel: activePanel, panelsHistory } = useActiveVkuiLocation()
-  const routeNavigator = useRouteNavigator()
   const [lessonsState, setLessons] = useState<Day[] | null>()
   const [startDate, setStartDate] = useState<Date>(startOfWeek(currentDate))
   const [endDate, setEndDate] = useState<Date>(endOfWeek(currentDate))

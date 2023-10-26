@@ -9,12 +9,8 @@ import {
   SimpleCell,
   Subhead,
   Switch,
-  View,
 } from '@vkontakte/vkui'
-import {
-  useActiveVkuiLocation,
-  useRouteNavigator,
-} from '@vkontakte/vk-mini-apps-router'
+import { useRouteNavigator } from '@vkontakte/vk-mini-apps-router'
 import {
   // Icon28ClearDataOutline,
   Icon28DoorArrowRightOutline,
@@ -37,7 +33,6 @@ interface ISettings {
 }
 
 const Settings: FunctionalComponent<ISettings> = ({ id }) => {
-  const { panel: activePanel, panelsHistory } = useActiveVkuiLocation()
   const routeNavigator = useRouteNavigator()
 
   const [snackbar, showSnackbar] = useSnackbar()
