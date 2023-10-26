@@ -136,46 +136,39 @@ const Marks: FC<{ id: string }> = ({ id }) => {
   }, [])
 
   return (
-    <View
-      id={id}
-      history={panelsHistory}
-      activePanel={activePanel}
-      onSwipeBack={() => routeNavigator.back()}
-    >
-      <Panel nav={id}>
-        <PanelHeaderWithBack title="Успеваемость" />
-        <PullToRefresh
-          onRefresh={() => fetchMarks(true)}
-          isFetching={isLoading}
-        >
-          <Suspense id="UserInfo">
-            <UserInfo />
+    <Panel nav={id}>
+      <PanelHeaderWithBack title="Успеваемость" />
+      <PullToRefresh
+        onRefresh={() => fetchMarks(true)}
+        isFetching={isLoading}
+      >
+        <Suspense id="UserInfo">
+          <UserInfo />
+        </Suspense>
+        
+        {isLoading ? (
+          <Group>
+            <PanelSpinner />
+          </Group>
+        ) : (
+          <Summary
+            totalNumberOfMarks={totalNumberOfMarks}
+            averageMark={averageMark}
+            markCounts={markCounts}
+          />
+        )}
+        {isLoading ? (
+          <Group>
+            <PanelSpinner />
+          </Group>
+        ) : (
+          <Suspense id="MarksByGroup">
+            <MarksByGroup marksForSubject={marksForSubject} />
           </Suspense>
-
-          {isLoading ? (
-            <Group>
-              <PanelSpinner />
-            </Group>
-          ) : (
-            <Summary
-              totalNumberOfMarks={totalNumberOfMarks}
-              averageMark={averageMark}
-              markCounts={markCounts}
-            />
-          )}
-          {isLoading ? (
-            <Group>
-              <PanelSpinner />
-            </Group>
-          ) : (
-            <Suspense id="MarksByGroup">
-              <MarksByGroup marksForSubject={marksForSubject} />
-            </Suspense>
-          )}
-        </PullToRefresh>
-        {snackbar}
-      </Panel>
-    </View>
+        )}
+      </PullToRefresh>
+      {snackbar}
+    </Panel>
   )
 }
 

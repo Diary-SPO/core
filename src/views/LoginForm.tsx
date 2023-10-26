@@ -182,89 +182,82 @@ const LoginForm: FC<{ id: string }> = ({ id }) => {
       : 'Введите корректный пароль'
 
   return (
-    <View
-      id={id}
-      history={panelsHistory}
-      activePanel={activePanel}
-      onSwipeBack={() => routeNavigator.back()}
-    >
-      <Panel nav={id}>
-        <PanelHeaderWithBack title="Авторизация" />
-        <Group>
-          {isDataInvalid && (
-            <FormStatus header="Некорректные данные" mode="error">
-              Проверьте правильность логина и пароля
-            </FormStatus>
-          )}
-          <FormLayout>
-            {/*//@ts-ignore типы React не совсем совместимы с Preact*/}
-            <FormItem
+    <Panel nav={id}>
+      <PanelHeaderWithBack title="Авторизация" />
+      <Group>
+        {isDataInvalid && (
+          <FormStatus header="Некорректные данные" mode="error">
+            Проверьте правильность логина и пароля
+          </FormStatus>
+        )}
+        <FormLayout>
+          {/*//@ts-ignore типы React не совсем совместимы с Preact*/}
+          <FormItem
+            required
+            htmlFor="userLogin"
+            top="Логин"
+            status={
+              isLoginEmpty
+                ? 'default'
+                : loginPattern.test(login)
+                  ? 'valid'
+                  : 'error'
+            }
+            bottom={isLoginEmpty || loginTopText}
+            bottomId="login-type"
+          >
+            <Input
+              //@ts-ignore типы React не совсем совместимы с Preact
               required
-              htmlFor="userLogin"
-              top="Логин"
-              status={
-                isLoginEmpty
-                  ? 'default'
-                  : loginPattern.test(login)
+              aria-labelledby="login-type"
+              id="userLogin"
+              type="text"
+              name="login"
+              placeholder="Введите логин"
+              value={login}
+              onChange={onChange}
+            />
+          </FormItem>
+          {/*//@ts-ignore типы React не совсем совместимы с Preact*/}
+          <FormItem
+            top="Пароль"
+            htmlFor="pass"
+            status={
+              isPasswordEmpty
+                ? 'default'
+                : isPasswordValid
                   ? 'valid'
                   : 'error'
+            }
+            bottom={isPasswordEmpty || passwordTopText}
+          >
+            <Input
+              //@ts-ignore типы React не совсем совместимы с Preact
+              name="password"
+              id="pass"
+              type="password"
+              placeholder="Введите пароль"
+              onChange={onChange}
+            />
+          </FormItem>
+          {/*//@ts-ignore типы React не совсем совместимы с Preact*/}
+          <FormItem>
+            <Button
+              size="l"
+              stretched
+              onClick={() => handleLogin()}
+              disabled={
+                !password || !login || !loginPattern.test(login) || isLoading
               }
-              bottom={isLoginEmpty || loginTopText}
-              bottomId="login-type"
+              before={<Icon28DoorArrowLeftOutline />}
             >
-              <Input
-                //@ts-ignore типы React не совсем совместимы с Preact
-                required
-                aria-labelledby="login-type"
-                id="userLogin"
-                type="text"
-                name="login"
-                placeholder="Введите логин"
-                value={login}
-                onChange={onChange}
-              />
-            </FormItem>
-            {/*//@ts-ignore типы React не совсем совместимы с Preact*/}
-            <FormItem
-              top="Пароль"
-              htmlFor="pass"
-              status={
-                isPasswordEmpty
-                  ? 'default'
-                  : isPasswordValid
-                  ? 'valid'
-                  : 'error'
-              }
-              bottom={isPasswordEmpty || passwordTopText}
-            >
-              <Input
-                //@ts-ignore типы React не совсем совместимы с Preact
-                name="password"
-                id="pass"
-                type="password"
-                placeholder="Введите пароль"
-                onChange={onChange}
-              />
-            </FormItem>
-            {/*//@ts-ignore типы React не совсем совместимы с Preact*/}
-            <FormItem>
-              <Button
-                size="l"
-                stretched
-                onClick={() => handleLogin()}
-                disabled={
-                  !password || !login || !loginPattern.test(login) || isLoading
-                }
-                before={<Icon28DoorArrowLeftOutline />}
-              >
-                {isLoading ? 'Пытаюсь войти...' : 'Войти'}
-              </Button>
-            </FormItem>
-          </FormLayout>
-          {snackbar}
-        </Group>
-      </Panel>
-    </View>
+              {isLoading ? 'Пытаюсь войти...' : 'Войти'}
+            </Button>
+          </FormItem>
+        </FormLayout>
+        {snackbar}
+      </Group>
+    </Panel>
   )
 }
 

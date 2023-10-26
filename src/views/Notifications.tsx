@@ -103,106 +103,99 @@ const Notifications: FC<{ id: string }> = ({ id }) => {
   }, [])
 
   return (
-    <View
-      id={id}
-      history={panelsHistory}
-      activePanel={activePanel}
-      onSwipeBack={() => routeNavigator.back()}
-    >
-      <Panel nav={id}>
-        <PanelHeaderWithBack title="Объявления" />
-        <Div>
-          {notifications &&
-            notifications?.length > 0 &&
-            notifications?.map(
-              ({
-                title,
-                id: _id,
-                date,
-                isForEmployees,
-                isForParents,
-                isForStudents,
-                deleteInDays,
-                text,
-              }) => (
-                <Group
-                  key={_id}
-                  description={
-                    <div style={{ display: 'flex', gap: 10 }}>
-                      {isForEmployees && (
-                        <SubtitleWithBorder>Для работников</SubtitleWithBorder>
-                      )}
-                      {isForParents && (
-                        <SubtitleWithBorder color="yellow-outline">
-                          Для родителей
-                        </SubtitleWithBorder>
-                      )}
-                      {isForStudents && (
-                        <SubtitleWithBorder color="green-outline">
-                          Для студентов
-                        </SubtitleWithBorder>
-                      )}
-                    </div>
-                  }
-                  header={
-                    <Header
-                      mode="tertiary"
-                      aside={
-                        //@ts-ignore типы React не совсем совместимы с Preact
-                        <Subhead>Удалится через {deleteInDays} дней</Subhead>
-                      }
-                    >
-                      {new Date(date).toLocaleDateString()}
-                    </Header>
-                  }
-                >
-                  <Card mode="shadow">
-                    <Div>
-                      {/*//@ts-ignore типы React не совсем совместимы с Preact*/}
-                      <Title level="3">{title}</Title>
-                      {/*//@ts-ignore типы React не совсем совместимы с Preact*/}
-                      <Text>{text}</Text>
-                    </Div>
-                  </Card>
-                </Group>
-              )
-            )}
-
-          <Div>
-            {isLoading && (
-              <Div>
-                <Spinner />
-              </Div>
-            )}
-          </Div>
-
-          <Div>
-            {isError && (
-              <Placeholder
-                header="Ошибка при загрузке"
-                action={
-                  <ButtonGroup mode="vertical" align="center">
-                    <Button size="s" onClick={() => fetchAds(true)}>
-                      Попробовать снова
-                    </Button>
-                    <Link href="https://vk.me/dnevnik_spo" target="_blank">
-                      Сообщить о проблеме
-                    </Link>
-                  </ButtonGroup>
+    <Panel nav={id}>
+      <PanelHeaderWithBack title="Объявления" />
+      <Div>
+        {notifications &&
+          notifications?.length > 0 &&
+          notifications?.map(
+            ({
+               title,
+               id: _id,
+               date,
+               isForEmployees,
+               isForParents,
+               isForStudents,
+               deleteInDays,
+               text,
+             }) => (
+              <Group
+                key={_id}
+                description={
+                  <div style={{ display: 'flex', gap: 10 }}>
+                    {isForEmployees && (
+                      <SubtitleWithBorder>Для работников</SubtitleWithBorder>
+                    )}
+                    {isForParents && (
+                      <SubtitleWithBorder color="yellow-outline">
+                        Для родителей
+                      </SubtitleWithBorder>
+                    )}
+                    {isForStudents && (
+                      <SubtitleWithBorder color="green-outline">
+                        Для студентов
+                      </SubtitleWithBorder>
+                    )}
+                  </div>
                 }
-              />
-            )}
-          </Div>
-
-          <Div>
-            {notifications && notifications?.length < 1 && (
-              <Placeholder header="Объявлений нет" />
-            )}
-          </Div>
+                header={
+                  <Header
+                    mode="tertiary"
+                    aside={
+                      //@ts-ignore типы React не совсем совместимы с Preact
+                      <Subhead>Удалится через {deleteInDays} дней</Subhead>
+                    }
+                  >
+                    {new Date(date).toLocaleDateString()}
+                  </Header>
+                }
+              >
+                <Card mode="shadow">
+                  <Div>
+                    {/*//@ts-ignore типы React не совсем совместимы с Preact*/}
+                    <Title level="3">{title}</Title>
+                    {/*//@ts-ignore типы React не совсем совместимы с Preact*/}
+                    <Text>{text}</Text>
+                  </Div>
+                </Card>
+              </Group>
+            )
+          )}
+        
+        <Div>
+          {isLoading && (
+            <Div>
+              <Spinner />
+            </Div>
+          )}
         </Div>
-        {snackbar}
-      </Panel>
-    </View>
+        
+        <Div>
+          {isError && (
+            <Placeholder
+              header="Ошибка при загрузке"
+              action={
+                <ButtonGroup mode="vertical" align="center">
+                  <Button size="s" onClick={() => fetchAds(true)}>
+                    Попробовать снова
+                  </Button>
+                  <Link href="https://vk.me/dnevnik_spo" target="_blank">
+                    Сообщить о проблеме
+                  </Link>
+                </ButtonGroup>
+              }
+            />
+          )}
+        </Div>
+        
+        <Div>
+          {notifications && notifications?.length < 1 && (
+            <Placeholder header="Объявлений нет" />
+          )}
+        </Div>
+      </Div>
+      {snackbar}
+    </Panel>
   )
 }
 
