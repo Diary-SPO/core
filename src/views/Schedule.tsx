@@ -10,12 +10,7 @@ import {
   PanelSpinner,
   Placeholder,
   PullToRefresh,
-  View,
 } from '@vkontakte/vkui'
-import {
-  useActiveVkuiLocation,
-  useRouteNavigator,
-} from '@vkontakte/vk-mini-apps-router'
 import {
   Icon16ArrowLeftOutline,
   Icon16ArrowRightOutline,
@@ -48,8 +43,6 @@ const Schedule: FC<{ id: string }> = ({ id }) => {
   const scrollPosition = useScrollPosition()
   const showToTopButton = scrollPosition > 700
 
-  const { panel: activePanel, panelsHistory } = useActiveVkuiLocation()
-  const routeNavigator = useRouteNavigator()
   const [lessonsState, setLessons] = useState<Day[] | null>()
   const [startDate, setStartDate] = useState<Date>(startOfWeek(currentDate))
   const [endDate, setEndDate] = useState<Date>(endOfWeek(currentDate))
@@ -470,105 +463,98 @@ const Schedule: FC<{ id: string }> = ({ id }) => {
     ${endDate.toLocaleString('default', { month: 'long' }).slice(0, 3)}`
 
   return (
-    <View
-      id={id}
-      history={panelsHistory}
-      activePanel={activePanel}
-      onSwipeBack={() => routeNavigator.back()}
-    >
-      <Panel nav={id}>
-        <PanelHeaderWithBack title="Главная" />
-        <PullToRefresh onRefresh={handleReloadData} isFetching={isLoading}>
-          <Suspense id="MarksByDay">
-            {isMarksLoading ? (
-              <PanelSpinner />
-            ) : (
-              <MarksByDay performanceData={marksData} />
-            )}
-          </Suspense>
-          <Group
-            header={<Header mode="secondary">Выбор даты</Header>}
-            description="Разница между датами не может быть больше 14-и дней"
-          >
-            <Div>
-              <Suspense id="Calendar" mode="panel">
-                <CalendarRange
-                  label={
-                    <ExplanationTooltip
-                      text="Начальная"
-                      tooltipContent="Не может быть больше конечной"
-                    />
-                  }
-                  value={startDate}
-                  onDateChange={handleStartDateChange}
-                />
-                <CalendarRange
-                  label={
-                    <ExplanationTooltip
-                      text="Конечная"
-                      tooltipContent="Не может быть меньше начальной"
-                    />
-                  }
-                  value={endDate}
-                  onDateChange={handleEndDateChange}
-                />
-              </Suspense>
-            </Div>
-          </Group>
-          <Suspense id="ScheduleGroup" mode="screen">
-            <Group
-              header={
-                <Header aside={Buttons} mode="secondary">
-                  {weekString}
-                </Header>
-              }
-            >
-              {isLoading ? (
-                <PanelSpinner size="regular" />
-              ) : (
-                <ScheduleGroup lessonsState={lessonsState} />
-              )}
-            </Group>
-          </Suspense>
-          {isError && (
-            <Placeholder
-              header="Ошибка при загрузке"
-              action={
-                <ButtonGroup mode="vertical" align="center">
-                  <Button size="s" onClick={handleReloadData}>
-                    Попробовать снова
-                  </Button>
-                  <Link href="https://vk.me/dnevnik_spo" target="_blank">
-                    Сообщить о проблеме
-                  </Link>
-                </ButtonGroup>
-              }
-            />
+    <Panel nav={id}>
+      <PanelHeaderWithBack title="Главная" />
+      <PullToRefresh onRefresh={handleReloadData} isFetching={isLoading}>
+        <Suspense id="MarksByDay">
+          {isMarksLoading ? (
+            <PanelSpinner />
+          ) : (
+            <MarksByDay performanceData={marksData} />
           )}
-          {showToTopButton && (
-            <IconButton
-              aria-label="scroll top"
-              style={{ position: 'fixed', left: 5, bottom: 60 }}
-              onClick={() => {
-                window.scrollTo({
-                  top: 0,
-                  behavior: 'smooth',
-                })
-              }}
-            >
-              <Icon24ChevronRightCircle
-                style={{
-                  transform: 'rotate(-90deg)',
-                  color: 'var(--vkui--color_background_accent_themed)',
-                }}
+        </Suspense>
+        <Group
+          header={<Header mode="secondary">Выбор даты</Header>}
+          description="Разница между датами не может быть больше 14-и дней"
+        >
+          <Div>
+            <Suspense id="Calendar" mode="panel">
+              <CalendarRange
+                label={
+                  <ExplanationTooltip
+                    text="Начальная"
+                    tooltipContent="Не может быть больше конечной"
+                  />
+                }
+                value={startDate}
+                onDateChange={handleStartDateChange}
               />
-            </IconButton>
-          )}
-          {snackbar}
-          {rateSnackbar}
-        </PullToRefresh>
-      </Panel>
-    </View>
+              <CalendarRange
+                label={
+                  <ExplanationTooltip
+                    text="Конечная"
+                    tooltipContent="Не может быть меньше начальной"
+                  />
+                }
+                value={endDate}
+                onDateChange={handleEndDateChange}
+              />
+            </Suspense>
+          </Div>
+        </Group>
+        <Suspense id="ScheduleGroup" mode="screen">
+          <Group
+            header={
+              <Header aside={Buttons} mode="secondary">
+                {weekString}
+              </Header>
+            }
+          >
+            {isLoading ? (
+              <PanelSpinner size="regular" />
+            ) : (
+              <ScheduleGroup lessonsState={lessonsState} />
+            )}
+          </Group>
+        </Suspense>
+        {isError && (
+          <Placeholder
+            header="Ошибка при загрузке"
+            action={
+              <ButtonGroup mode="vertical" align="center">
+                <Button size="s" onClick={handleReloadData}>
+                  Попробовать снова
+                </Button>
+                <Link href="https://vk.me/dnevnik_spo" target="_blank">
+                  Сообщить о проблеме
+                </Link>
+              </ButtonGroup>
+            }
+          />
+        )}
+        {showToTopButton && (
+          <IconButton
+            aria-label="scroll top"
+            style={{ position: 'fixed', left: 5, bottom: 60 }}
+            onClick={() => {
+              window.scrollTo({
+                top: 0,
+                behavior: 'smooth',
+              })
+            }}
+          >
+            <Icon24ChevronRightCircle
+              style={{
+                transform: 'rotate(-90deg)',
+                color: 'var(--vkui--color_background_accent_themed)',
+              }}
+            />
+          </IconButton>
+        )}
+        {snackbar}
+        {rateSnackbar}
+      </PullToRefresh>
+    </Panel>
   )
 }
 

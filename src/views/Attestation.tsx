@@ -6,12 +6,7 @@ import {
   Panel,
   Placeholder,
   ScreenSpinner,
-  View,
 } from '@vkontakte/vkui'
-import {
-  useActiveVkuiLocation,
-  useRouteNavigator,
-} from '@vkontakte/vk-mini-apps-router'
 import { AttestationResponse } from 'diary-shared'
 import { FC, lazy } from 'preact/compat'
 import { useEffect, useState } from 'preact/hooks'
@@ -27,9 +22,6 @@ interface IAttestation {
 }
 
 const Attestation: FC<IAttestation> = ({ id }) => {
-  const { panel: activePanel, panelsHistory } = useActiveVkuiLocation()
-  const routeNavigator = useRouteNavigator()
-
   const [isError, setIsError] = useState<boolean>(false)
   const [isDataLoading, setIsLoading] = useState<boolean>(false)
   const [attestationData, setAttestationData] =
@@ -93,42 +85,35 @@ const Attestation: FC<IAttestation> = ({ id }) => {
   }
 
   return (
-    <View
-      id={id}
-      history={panelsHistory}
-      activePanel={activePanel}
-      onSwipeBack={() => routeNavigator.back()}
-    >
-      <Panel nav={id}>
-        <PanelHeaderWithBack title="Аттестация" />
-        <Div>
-          {attestationData && (
-            <SubjectList
-              // @ts-ignore
-              semesters={semesters}
-              studentName={studentName}
-              year={year}
-            />
-          )}
-          {isDataLoading && <ScreenSpinner />}
-          {isError && (
-            <Placeholder
-              header="Ошибка при загрузке"
-              action={
-                <ButtonGroup mode="vertical" align="center">
-                  <Button size="s" onClick={getUserAttestation}>
-                    Попробовать снова
-                  </Button>
-                  <Link href="https://vk.me/dnevnik_spo" target="_blank">
-                    Сообщить о проблеме
-                  </Link>
-                </ButtonGroup>
-              }
-            />
-          )}
-        </Div>
-      </Panel>
-    </View>
+    <Panel nav={id}>
+      <PanelHeaderWithBack title="Аттестация" />
+      <Div>
+        {attestationData && (
+          <SubjectList
+            // @ts-ignore
+            semesters={semesters}
+            studentName={studentName}
+            year={year}
+          />
+        )}
+        {isDataLoading && <ScreenSpinner />}
+        {isError && (
+          <Placeholder
+            header="Ошибка при загрузке"
+            action={
+              <ButtonGroup mode="vertical" align="center">
+                <Button size="s" onClick={getUserAttestation}>
+                  Попробовать снова
+                </Button>
+                <Link href="https://vk.me/dnevnik_spo" target="_blank">
+                  Сообщить о проблеме
+                </Link>
+              </ButtonGroup>
+            }
+          />
+        )}
+      </Div>
+    </Panel>
   )
 }
 

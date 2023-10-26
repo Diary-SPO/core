@@ -6,7 +6,7 @@ import {
   Gradient,
   Group,
   Header,
-  ScreenSpinner,
+  // ScreenSpinner,
   SimpleCell,
   Spinner,
   Text,
@@ -15,11 +15,12 @@ import {
 import { Icon20RefreshOutline, Icon28SchoolOutline } from '@vkontakte/icons'
 
 import bridge from '@vkontakte/vk-bridge'
-import { useRouteNavigator } from '@vkontakte/vk-mini-apps-router'
+// import { useRouteNavigator } from '@vkontakte/vk-mini-apps-router'
 // import { Organization } from 'diary-shared';
-import { useRateLimitExceeded } from '../hooks'
-import { MODAL_COLLEGE_INFO } from '../modals/ModalRoot'
-import { getCollegeInfo } from '../methods'
+// import { useRateLimitExceeded } from '../hooks'
+// import { MODAL_COLLEGE_INFO } from '../modals/ModalRoot'
+// import { getCollegeInfo } from '../methods'
+import winxAva from '../assets/winx48.webp'
 
 const styles: CSSProperties = {
   margin: 0,
@@ -53,12 +54,12 @@ const getUserAva = async (): Promise<string | null> => {
 }
 
 const UserInfo = () => {
-  const routeNavigator = useRouteNavigator()
+  // const routeNavigator = useRouteNavigator()
 
   // Const { openCollegeModal } = useModal();
 
   const [isLoading, setIsLoading] = useState<boolean>(false)
-  const [isCollegeLoading, setIsCollegeLoading] = useState<boolean>(false)
+  // const [isCollegeLoading, setIsCollegeLoading] = useState<boolean>(false)
   const [userAva, setUserAva] = useState<string | undefined>()
   const [userData, setUserData] = useState<UserData>({
     name: '',
@@ -67,28 +68,28 @@ const UserInfo = () => {
     group: '',
   })
 
-  const getCollegeInfoFromServer = async () => {
-    setIsCollegeLoading(true)
-    try {
-      const data = await getCollegeInfo()
-
-      if (data === 429) {
-        useRateLimitExceeded()
-        return
-      }
-
-      await routeNavigator.showModal(MODAL_COLLEGE_INFO)
-      // OpenCollegeModal(data as Organization);
-      setIsCollegeLoading(false)
-    } catch (e) {
-      console.error(e)
-    }
-  }
+  // const getCollegeInfoFromServer = async () => {
+  //   setIsCollegeLoading(true)
+  //   try {
+  //     const data = await getCollegeInfo()
+  //
+  //     if (data === 429) {
+  //       useRateLimitExceeded()
+  //       return
+  //     }
+  //
+  //     await routeNavigator.showModal(MODAL_COLLEGE_INFO)
+  //     // OpenCollegeModal(data as Organization);
+  //     setIsCollegeLoading(false)
+  //   } catch (e) {
+  //     console.error(e)
+  //   }
+  // }
 
   const getUserInfo = async (handle?: boolean) => {
     setIsLoading(true)
 
-    const localData = localStorage.getItem('userData')
+    const localData = localStorage.getItem('data')
     const avaFromStorage = localStorage.getItem('ava')
 
     if (localData && !handle) {
@@ -139,13 +140,15 @@ const UserInfo = () => {
   const header = (
     <Header
       aside={
-        <Button
-          size="s"
-          after={<Icon20RefreshOutline />}
-          aria-label="Обновить"
-          mode="tertiary"
-          onClick={() => getUserInfo(true)}
-        />
+        userAva && (
+          <Button
+            size="s"
+            after={<Icon20RefreshOutline />}
+            aria-label="Обновить"
+            mode="tertiary"
+            onClick={() => getUserInfo(true)}
+          />
+        )
       }
       mode="tertiary"
     >
@@ -156,7 +159,7 @@ const UserInfo = () => {
   return (
     <Group mode="plain" header={header}>
       <Gradient mode="tint" style={styles}>
-        <Avatar size={96} src={userAva} />
+        <Avatar size={96} src={userAva ?? winxAva} />
         {/*//@ts-ignore типы React не совсем совместимы с Preact*/}
         <Title style={{ marginBottom: 8, marginTop: 20 }} level="2" weight="2">
           {userData.name}
@@ -175,11 +178,11 @@ const UserInfo = () => {
         mode="plain"
         header={<Header mode="tertiary">Учебное заведение</Header>}
       >
-        {isCollegeLoading && <ScreenSpinner />}
+        {/*{isCollegeLoading && <ScreenSpinner />}*/}
         <SimpleCell
           before={<Icon28SchoolOutline />}
           subtitle={userData.city}
-          onClick={getCollegeInfoFromServer}
+          // onClick={getCollegeInfoFromServer}
         >
           {userData.org}
         </SimpleCell>

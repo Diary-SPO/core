@@ -9,12 +9,8 @@ import {
   SimpleCell,
   Subhead,
   Switch,
-  View,
 } from '@vkontakte/vkui'
-import {
-  useActiveVkuiLocation,
-  useRouteNavigator,
-} from '@vkontakte/vk-mini-apps-router'
+import { useRouteNavigator } from '@vkontakte/vk-mini-apps-router'
 import {
   // Icon28ClearDataOutline,
   Icon28DoorArrowRightOutline,
@@ -37,7 +33,6 @@ interface ISettings {
 }
 
 const Settings: FunctionalComponent<ISettings> = ({ id }) => {
-  const { panel: activePanel, panelsHistory } = useActiveVkuiLocation()
   const routeNavigator = useRouteNavigator()
 
   const [snackbar, showSnackbar] = useSnackbar()
@@ -233,76 +228,69 @@ const Settings: FunctionalComponent<ISettings> = ({ id }) => {
   }
 
   return (
-    <View
-      id={id}
-      history={panelsHistory}
-      activePanel={activePanel}
-      onSwipeBack={() => routeNavigator.back()}
-    >
-      <Panel nav={id}>
-        <PanelHeaderWithBack title="Настройки" />
-        <Group header={<Header mode="secondary">Действия</Header>}>
-          {isLoading && <ScreenSpinner size="medium" />}
+    <Panel nav={id}>
+      <PanelHeaderWithBack title="Настройки" />
+      <Group header={<Header mode="secondary">Действия</Header>}>
+        {isLoading && <ScreenSpinner size="medium" />}
+        <CellButton
+          Component="label"
+          //@ts-ignore типы React не совсем совместимы с Preact
+          after={<Switch getRef={switchRef} defaultChecked />}
+          onChange={() => setIsSwitchChecked(!isSwitchChecked)}
+          before={<Icon28IncognitoOutline />}
+        >
+          Показывать тех. инфрмацию
+        </CellButton>
+        <CellButton before={<Icon28RefreshOutline />} onClick={reloadCookie}>
+          Обновить cookie
+        </CellButton>
+        {/*<CellButton*/}
+        {/*  before={<Icon28ClearDataOutline />}*/}
+        {/*  onClick={() => routeNavigator.showPopout(clearCachePopup)}*/}
+        {/*>*/}
+        {/*  Очистить кеш*/}
+        {/*</CellButton>*/}
+        <CellButton
+          before={<Icon28DoorArrowRightOutline />}
+          onClick={() => routeNavigator.showPopout(logOutPopup)}
+        >
+          Выйти
+        </CellButton>
+        {isHomeScreenSupported && (
           <CellButton
-            Component="label"
-            //@ts-ignore типы React не совсем совместимы с Preact
-            after={<Switch getRef={switchRef} defaultChecked />}
-            onChange={() => setIsSwitchChecked(!isSwitchChecked)}
-            before={<Icon28IncognitoOutline />}
+            before={<Icon28HomeArrowDownOutline />}
+            onClick={addToHomeScreen}
           >
-            Показывать тех. инфрмацию
+            Добавить на экран
           </CellButton>
-          <CellButton before={<Icon28RefreshOutline />} onClick={reloadCookie}>
-            Обновить cookie
-          </CellButton>
-          {/*<CellButton*/}
-          {/*  before={<Icon28ClearDataOutline />}*/}
-          {/*  onClick={() => routeNavigator.showPopout(clearCachePopup)}*/}
-          {/*>*/}
-          {/*  Очистить кеш*/}
-          {/*</CellButton>*/}
-          <CellButton
-            before={<Icon28DoorArrowRightOutline />}
-            onClick={() => routeNavigator.showPopout(logOutPopup)}
-          >
-            Выйти
-          </CellButton>
-          {isHomeScreenSupported && (
-            <CellButton
-              before={<Icon28HomeArrowDownOutline />}
-              onClick={addToHomeScreen}
-            >
-              Добавить на экран
-            </CellButton>
-          )}
-        </Group>
-        {isSwitchChecked && (
-          <Group
-            header={<Header mode="secondary">Техническая информация</Header>}
-          >
-            <Group
-              header={
-                //@ts-ignore типы React не совсем совместимы с Preact
-                <Header
-                  mode="secondary"
-                  //@ts-ignore типы React не совсем совместимы с Preact
-                  aside={<Subhead>Хранится в LocalStorage</Subhead>}
-                >
-                  Кеш
-                </Header>
-              }
-            >
-              {cacheData.map((item) => (
-                <SimpleCell key={item.key}>
-                  <InfoRow header={item.key}>{item.value.slice(0, 30)}</InfoRow>
-                </SimpleCell>
-              ))}
-            </Group>
-          </Group>
         )}
-        {snackbar}
-      </Panel>
-    </View>
+      </Group>
+      {isSwitchChecked && (
+        <Group
+          header={<Header mode="secondary">Техническая информация</Header>}
+        >
+          <Group
+            header={
+              //@ts-ignore типы React не совсем совместимы с Preact
+              <Header
+                mode="secondary"
+                //@ts-ignore типы React не совсем совместимы с Preact
+                aside={<Subhead>Хранится в LocalStorage</Subhead>}
+              >
+                Кеш
+              </Header>
+            }
+          >
+            {cacheData.map((item) => (
+              <SimpleCell key={item.key}>
+                <InfoRow header={item.key}>{item.value.slice(0, 30)}</InfoRow>
+              </SimpleCell>
+            ))}
+          </Group>
+        </Group>
+      )}
+      {snackbar}
+    </Panel>
   )
 }
 

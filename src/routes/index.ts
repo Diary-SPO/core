@@ -24,7 +24,7 @@ const routes: RouteWithoutRoot[] = [
   {
     path: PAGE_MAIN,
     panel: MAIN_SETTINGS,
-    view: MAIN_SETTINGS,
+    view: VIEW_SCHEDULE,
   },
   {
     path: PAGE_SCHEDULE,
@@ -34,27 +34,27 @@ const routes: RouteWithoutRoot[] = [
   {
     path: PAGE_CONTACTS,
     panel: VIEW_CONTACTS,
-    view: VIEW_CONTACTS,
+    view: VIEW_SCHEDULE,
   },
   {
     path: PAGE_MARKS,
     panel: VIEW_MARKS,
-    view: VIEW_MARKS,
+    view: VIEW_SCHEDULE,
   },
   {
     path: PAGE_SETTINGS,
     panel: VIEW_SETTINGS,
-    view: VIEW_SETTINGS,
+    view: VIEW_SCHEDULE,
   },
   {
     path: PAGE_ATTESTATION,
     panel: VIEW_ATTESTATION,
-    view: VIEW_ATTESTATION,
+    view: VIEW_SCHEDULE,
   },
   {
     path: PAGE_NOTIFICATIONS,
     panel: VIEW_NOTIFICATIONS,
-    view: VIEW_NOTIFICATIONS,
+    view: VIEW_SCHEDULE,
   },
 ]
 

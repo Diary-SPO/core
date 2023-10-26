@@ -13,7 +13,7 @@ const ScheduleGroup: FunctionComponent<IScheduleGroup> = ({ lessonsState }) => (
     {lessonsState?.length &&
       lessonsState?.length > 0 &&
       lessonsState?.map((lesson) => (
-        <LessonCard key={lesson.date as unknown as string} lesson={lesson} />
+        <LessonCard key={lesson.date} lesson={lesson} />
       ))}
   </CardGrid>
 )

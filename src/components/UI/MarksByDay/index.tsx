@@ -1,4 +1,4 @@
-import { Fragment, FunctionalComponent } from 'preact'
+import { FunctionalComponent } from 'preact'
 import {
   Group,
   Header,
@@ -29,12 +29,12 @@ const MarksByDay: FunctionalComponent<IPerformanceCurrent> = ({
   const marksByDay = extractMarksByDay(performanceData)
 
   return (
-    <HorizontalScroll
-      showArrows
-      getScrollToLeft={(i) => i - 120}
-      getScrollToRight={(i) => i + 120}
-    >
-      <Group header={<Header mode="secondary">Недавние оценки</Header>}>
+    <Group header={<Header mode="secondary">Недавние оценки</Header>}>
+      <HorizontalScroll
+        showArrows
+        getScrollToLeft={(i) => i - 120}
+        getScrollToRight={(i) => i + 120}
+      >
         <div className="marksByName">
           {Object.entries(sortByDay(marksByDay)).map(([day, lessonGrades]) => (
             <div key={day}>
@@ -48,15 +48,13 @@ const MarksByDay: FunctionalComponent<IPerformanceCurrent> = ({
                         style={{ maxWidth: 'unset' }}
                         key={`${day}_${lessonName}_${gradeIndex}`}
                       >
-                        <Fragment>
-                          <Mark
-                            bottom={truncateString(lessonName, 18)}
-                            style={{ maxWidth: 90 }}
-                            mark={grade || 'Н'}
-                            useMargin={false}
-                            size="l"
-                          />
-                        </Fragment>
+                        <Mark
+                          bottom={truncateString(lessonName, 18)}
+                          style={{ maxWidth: 90 }}
+                          mark={grade || 'Н'}
+                          useMargin={false}
+                          size="l"
+                        />
                       </HorizontalCell>
                     ))}
                   </div>
@@ -65,8 +63,8 @@ const MarksByDay: FunctionalComponent<IPerformanceCurrent> = ({
             </div>
           ))}
         </div>
-      </Group>
-    </HorizontalScroll>
+      </HorizontalScroll>
+    </Group>
   )
 }
 
