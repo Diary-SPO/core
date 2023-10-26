@@ -20,9 +20,7 @@ import { FC } from 'preact/compat'
 import PanelHeaderWithBack from '../components/UI/PanelHeaderWithBack'
 import HelpAccordion from '../components/HelpAccordion'
 import { helpData } from '../components/data'
-//@ts-ignore типы React не совсем совместимы с Preact
 import winxAva from '../assets/winx48.webp'
-//@ts-ignore типы React не совсем совместимы с Preact
 import scffsAva from '../assets/ava.jpg'
 
 const Contacts: FC<{ id: string }> = ({ id }) => {

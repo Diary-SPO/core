@@ -20,6 +20,7 @@ import { useRouteNavigator } from '@vkontakte/vk-mini-apps-router'
 import { useRateLimitExceeded } from '../hooks'
 import { MODAL_COLLEGE_INFO } from '../modals/ModalRoot'
 import { getCollegeInfo } from '../methods'
+import winxAva from '../assets/winx48.webp'
 
 const styles: CSSProperties = {
   margin: 0,
@@ -88,7 +89,7 @@ const UserInfo = () => {
   const getUserInfo = async (handle?: boolean) => {
     setIsLoading(true)
 
-    const localData = localStorage.getItem('userData')
+    const localData = localStorage.getItem('data')
     const avaFromStorage = localStorage.getItem('ava')
 
     if (localData && !handle) {
@@ -138,7 +139,7 @@ const UserInfo = () => {
 
   const header = (
     <Header
-      aside={
+      aside={userAva &&
         <Button
           size="s"
           after={<Icon20RefreshOutline />}
@@ -156,7 +157,7 @@ const UserInfo = () => {
   return (
     <Group mode="plain" header={header}>
       <Gradient mode="tint" style={styles}>
-        <Avatar size={96} src={userAva} />
+        <Avatar size={96} src={userAva ?? winxAva} />
         {/*//@ts-ignore типы React не совсем совместимы с Preact*/}
         <Title style={{ marginBottom: 8, marginTop: 20 }} level="2" weight="2">
           {userData.name}

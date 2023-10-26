@@ -7,6 +7,7 @@ export default defineConfig({
   resolve: {
     alias: [{ find: /^@vkontakte\/vkui$/, replacement: '@vkontakte/vkui/dist/cssm' }],
   },
+  base: 'index.html',
   build: {
     sourcemap: false,
     target: 'es2017',
@@ -24,7 +25,7 @@ export default defineConfig({
     },
     rollupOptions: {
       logLevel: 'debug',
-      input: 'index1.html',
+      input: 'index.html',
       output: {
         manualChunks: {
           '@reduxjs/toolkit': ['@reduxjs/toolkit'],

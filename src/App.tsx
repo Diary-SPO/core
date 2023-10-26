@@ -1,9 +1,13 @@
 import {
   AppRoot,
+  Cell,
+  Group,
+  Panel,
   PanelHeader,
+  Platform,
   ScreenSpinner,
   SplitCol,
-  SplitLayout,
+  SplitLayout, useAdaptivityConditionalRender, usePlatform,
 } from '@vkontakte/vkui'
 import {
   useActiveVkuiLocation,
@@ -13,9 +17,23 @@ import {
 import { useInsets } from '@vkontakte/vk-bridge-react'
 import { lazy } from 'preact/compat'
 import { useEffect, useState } from 'preact/hooks'
-import { MAIN_SETTINGS, VIEW_SCHEDULE } from './routes'
+import {
+  MAIN_SETTINGS,
+  VIEW_ATTESTATION,
+  VIEW_CONTACTS,
+  VIEW_MARKS,
+  VIEW_NOTIFICATIONS,
+  VIEW_SCHEDULE,
+  VIEW_SETTINGS,
+} from './routes'
 import { Pages } from './types'
 import Suspense from './components/UI/Suspense'
+import {
+  Icon28BookSpreadOutline,
+  Icon28EducationOutline,
+  Icon28GraphOutline,
+  Icon28HomeOutline, Icon28SettingsOutline,
+} from '@vkontakte/icons'
 
 const ModalRoot = lazy(() => import('./modals/ModalRoot'))
 const Epic = lazy(() => import('./components/UI/Epic'))
@@ -26,10 +44,12 @@ const App = () => {
   const modals = <ModalRoot />
   const { view: activeView = MAIN_SETTINGS } = useActiveVkuiLocation()
   const cookieValue = localStorage.getItem('cookie')
-
+  const { viewWidth } = useAdaptivityConditionalRender()
+  const platform = usePlatform();
+  const isVKCOM = platform === Platform.VKCOM;
   const routerPopout = usePopout()
   const vkBridgeInsets = useInsets() || undefined
-
+  
   useEffect(() => {
     const onRoute = async () => {
       if (!cookieValue) {
@@ -40,10 +60,10 @@ const App = () => {
         setIsLoading(false)
       }
     }
-
+    
     onRoute()
   }, [activeView, localStorage, window.location])
-
+  
   const onStoryChange = async (currentView: Pages) => {
     if (cookieValue) {
       try {
@@ -55,18 +75,69 @@ const App = () => {
     }
     await routeNavigator.replace('/')
   }
-
+  
   return (
     <AppRoot safeAreaInsets={vkBridgeInsets}>
       <SplitLayout
         popout={routerPopout}
         modal={modals}
-        header={<PanelHeader separator={false} />}
+        header={!isVKCOM && <PanelHeader separator={false} />}
         style={{ justifyContent: 'center' }}
       >
-        <Suspense id="Epic">
-          {isLoading && <ScreenSpinner size="large" />}
-          <SplitCol width="100%" maxWidth="700px" stretchedOnMobile autoSpaced>
+        {viewWidth.tabletPlus && activeView !== MAIN_SETTINGS && (
+          <SplitCol className={viewWidth.tabletPlus.className} fixed width={280} maxWidth={280}>
+            <Panel>
+              {!isVKCOM && <PanelHeader />}
+              <Group>
+                <Cell
+                  onClick={() => onStoryChange(VIEW_SCHEDULE)}
+                  hovered={activeView === VIEW_SCHEDULE}
+                  before={<Icon28HomeOutline />}
+                >
+                  Главная
+                </Cell>
+                <Cell
+                  onClick={() => onStoryChange(VIEW_MARKS)}
+                  hovered={activeView === VIEW_MARKS}
+                  before={<Icon28GraphOutline />}
+                >
+                  Успеваемость
+                </Cell>
+                <Cell
+                  onClick={() => onStoryChange(VIEW_ATTESTATION)}
+                  hovered={activeView === VIEW_ATTESTATION}
+                  before={<Icon28EducationOutline />}
+                >
+                  Аттестация
+                </Cell>
+                <Cell
+                  onClick={() => onStoryChange(VIEW_NOTIFICATIONS)}
+                  hovered={activeView === VIEW_NOTIFICATIONS}
+                  before={<Icon28BookSpreadOutline />}
+                >
+                  Объявления
+                </Cell>
+                <Cell
+                  onClick={() => onStoryChange(VIEW_CONTACTS)}
+                  hovered={activeView === VIEW_CONTACTS}
+                  before={<Icon28EducationOutline />}
+                >
+                  Помощь
+                </Cell>
+                <Cell
+                  onClick={() => onStoryChange(VIEW_SETTINGS)}
+                  hovered={activeView === VIEW_SETTINGS}
+                  before={<Icon28SettingsOutline />}
+                >
+                  Настройки
+                </Cell>
+              </Group>
+            </Panel>
+          </SplitCol>
+        )}
+        <Suspense id='Epic'>
+          {isLoading && <ScreenSpinner size='large' />}
+          <SplitCol width='100%' maxWidth='700px' stretchedOnMobile autoSpaced>
             <Epic onStoryChange={onStoryChange} />
           </SplitCol>
         </Suspense>
