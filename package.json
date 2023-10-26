@@ -3,12 +3,13 @@
   "private": true,
   "version": "7.0.0",
   "type": "module",
-  "homepage": ".",
+  "homepage": "https://diary-spo.github.io/frontend",
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
     "predeploy": "tsc && vite build",
-    "deploy": "vk-miniapps-deploy",
+    "deploy:gh": "gh-pages -d dist",
+    "deploy:vk": "vk-miniapps-deploy",
     "lint:fix": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0 --fix",
     "preview": "vite preview"
   },
@@ -48,6 +49,7 @@
     "eslint-plugin-react": "^7.32.2",
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-react-refresh": "^0.4.3",
+    "gh-pages": "^6.0.0",
     "prettier": "^3.0.3",
     "typescript": "^5.2.2",
     "vite": "^4.4.5"
