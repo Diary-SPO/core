@@ -1,4 +1,4 @@
-import { Fragment, FunctionalComponent } from 'preact'
+import { FunctionalComponent } from 'preact'
 import {
   Group,
   Header,
