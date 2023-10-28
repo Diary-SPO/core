@@ -1,10 +1,8 @@
 import { Footnote } from '@vkontakte/vkui'
-import { AbsenceTypesKeys } from 'diary-shared'
 import { CSSProperties, FC } from 'preact/compat'
-import { TMark } from '../../../types'
+import { ReturnedMark } from '../../../utils/setDefaultMark'
 
 type Sizes = 'l' | 's'
-type ReturnedMark = 'Н' | TMark | AbsenceTypesKeys
 
 interface IMark {
   mark?: ReturnedMark
@@ -21,9 +19,8 @@ const getBackgroundColor = (score?: ReturnedMark) => {
   if (Number(score) >= 4) {
     return 'linear-gradient(135deg,#50c750,#32b332)'
   }
-  if (score === 3) {
+  if (Number(score) === 3) {
     return '#F59802'
-    //   FIXME: 'The two values in this comparison do not have a shared enum type   @typescript-eslint/no-unsafe-enum-comparison'
   }
   if (score === 'ДЗ') {
     return '#4966CF'

@@ -1,5 +1,4 @@
-import { PerformanceCurrent } from 'diary-shared'
-import { Grade, GradeKeys } from '../types'
+import { Grade, PerformanceCurrent } from 'diary-shared'
 import { IMarksByDay } from '../components/UI/MarksByDay'
 
 export const extractMarksByDay = (
@@ -11,7 +10,7 @@ export const extractMarksByDay = (
     subject?.daysWithMarks?.forEach((markData) => {
       const day = new Date(markData.day).toLocaleDateString()
       const grades = markData.markValues.map(
-        (gradeText) => Grade[gradeText as GradeKeys]
+        (gradeText) => Grade[gradeText]
       )
       const lessonName = subject.subjectName
 

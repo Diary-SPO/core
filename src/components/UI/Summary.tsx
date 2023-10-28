@@ -2,7 +2,6 @@ import { Group, Header, MiniInfoCell } from '@vkontakte/vkui'
 import { Icon20EducationOutline, Icon28BrainOutline } from '@vkontakte/icons'
 import { FC } from 'preact/compat'
 import Mark from './Mark'
-import { TMark } from '../../types'
 
 interface ISummary {
   totalNumberOfMarks: string | null
@@ -18,7 +17,7 @@ const Summary: FC<ISummary> = ({
   <Group header={<Header mode="tertiary">Статистика</Header>}>
     <MiniInfoCell
       before={<Icon20EducationOutline style={{ marginTop: 4 }} />}
-      after={<Mark size="s" mark={totalNumberOfMarks as TMark} />}
+      after={<Mark size="s" mark={totalNumberOfMarks} />}
     >
       Суммарное количество оценок:
     </MiniInfoCell>
@@ -26,7 +25,7 @@ const Summary: FC<ISummary> = ({
       before={
         <Icon28BrainOutline style={{ marginTop: 4 }} width={20} height={20} />
       }
-      after={<Mark size="s" mark={averageMark as TMark} />}
+      after={<Mark size="s" mark={averageMark} />}
     >
       Общий средний балл:
     </MiniInfoCell>

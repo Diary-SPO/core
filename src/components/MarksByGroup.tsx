@@ -16,13 +16,13 @@ import {
 import {
   AbsenceType,
   AbsenceTypes,
-  AbsenceTypesKeys,
+  AbsenceTypesKeys, Grade,
   PerformanceCurrent,
   TextMark,
 } from 'diary-shared'
 import calculateAverageMark from '../utils/calculateAverageMark'
 import Mark from './UI/Mark'
-import { Grade, GradeKeys } from '../types'
+import { ReturnedMark } from '../utils/setDefaultMark.ts'
 
 interface IMarksByGroup {
   marksForSubject: PerformanceCurrent | null
@@ -91,7 +91,7 @@ const MarksByGroup: FC<IMarksByGroup> = ({ marksForSubject }) => {
                         marks.map((mark, k) => (
                           <Mark
                             key={k}
-                            mark={Grade[mark as GradeKeys]}
+                            mark={Grade[mark] as ReturnedMark}
                             size="s"
                           />
                         ))
@@ -112,14 +112,7 @@ const MarksByGroup: FC<IMarksByGroup> = ({ marksForSubject }) => {
                 textWrap="full"
                 before={<Icon20StatisticsOutline />}
                 style={{ marginTop: 5 }}
-                after={calculateAverageMark(
-                  marksForSubject.daysWithMarksForSubject[
-                    i
-                  ].daysWithMarks?.reduce(
-                    (allMarks, day) => [...allMarks, ...day.markValues],
-                    [] as TextMark[]
-                  )
-                )}
+                after={calculateAverageMark(subjectMarksMap[subjectName].flatMap(({ marks }) => marks))}
               >
                 Средний балл:
               </MiniInfoCell>

@@ -44,14 +44,14 @@ const Epic = lazy(() => import('./components/UI/Epic'))
 const App = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false)
   const routeNavigator = useRouteNavigator()
-  const modals = <ModalRoot />
   const { view: activeView, panel } = useActiveVkuiLocation()
-  const cookieValue = localStorage.getItem('cookie')
   const { viewWidth } = useAdaptivityConditionalRender()
   const platform = usePlatform()
   const isVKCOM = platform === Platform.VKCOM
   const routerPopout = usePopout()
   const vkBridgeInsets = useInsets() || undefined
+
+  const cookieValue = localStorage.getItem('cookie')
 
   useEffect(() => {
     const onRoute = async () => {
@@ -65,7 +65,7 @@ const App = () => {
     }
 
     onRoute()
-  }, [activeView, localStorage, window.location])
+  }, [activeView, window.location])
 
   const onStoryChange = async (currentView: Pages) => {
     if (cookieValue) {
@@ -79,6 +79,7 @@ const App = () => {
     await routeNavigator.replace('/')
   }
 
+  const modals = <ModalRoot />
   return (
     <AppRoot safeAreaInsets={vkBridgeInsets}>
       <SplitLayout

@@ -26,7 +26,6 @@ import setDefaultMark from '../utils/setDefaultMark'
 import textToLink from '../utils/textToLink'
 import { cleanData } from './data'
 import Mark from '../components/UI/Mark'
-import { Grade } from '../types'
 import ExplanationTooltip from '../components/UI/ExplanationTooltip'
 import { selectLessonModalData } from '../store/lessonSlice.ts'
 
@@ -181,7 +180,7 @@ const LessonModal: FC<ILessonModal> = ({ id }) => {
               <SimpleCell
                 multiline
                 key={`${tasks?.topic}_${index}`}
-                after={<Mark mark={Grade[setDefaultMark(tasks)]} size="s" />}
+                after={<Mark mark={setDefaultMark(tasks)} size="s" />}
               >
                 <InfoRow header="Тип работы">{LessonType[tasks.type]}</InfoRow>
                 <InfoRow style={{ marginTop: 10 }} header="Описание">

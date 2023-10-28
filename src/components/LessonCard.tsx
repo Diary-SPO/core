@@ -23,7 +23,6 @@ import { MODAL_PAGE_LESSON } from '../modals/ModalRoot'
 import SubtitleWithBorder from './SubtitleWithBorder'
 import TimeRemaining from './TimeRemaining'
 import Mark from './UI/Mark'
-import { Grade } from '../types'
 import { setLessonModalData } from '../store/lessonSlice.ts'
 
 interface ILessonCard {
@@ -185,16 +184,18 @@ const LessonCard: FC<ILessonCard> = ({ lesson }) => {
                           </div>
                           <div style={{ display: 'flex' }}>
                             {gradebook?.tasks?.map(
-                              (task, index) =>
-                                (task.isRequired ||
-                                  Grade[setDefaultMark(task)]) && (
+                              (task, index) => {
+                                
+                                return (task.isRequired ||
+                                  setDefaultMark(task)) && (
                                   <Mark
                                     useMargin
-                                    mark={Grade[setDefaultMark(task)]}
+                                    mark={setDefaultMark(task)}
                                     size="s"
                                     key={index}
                                   />
                                 )
+                              }
                             )}
                           </div>
                         </div>
