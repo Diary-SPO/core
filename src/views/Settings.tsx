@@ -55,12 +55,11 @@ const Settings: FunctionalComponent<ISettings> = ({ id }) => {
     const checkIsFeatureSupported = async () => {
       await bridge
         .send('VKWebAppAddToHomeScreenInfo')
-        .then(({ is_added_to_home_screen, is_feature_supported }) => {
+        // eslint-disable-next-line camelcase
+        .then(({ is_feature_supported }) => {
+          // eslint-disable-next-line camelcase
           if (is_feature_supported) {
             setIsHomeScreenSupported(true)
-          }
-          if (is_added_to_home_screen) {
-            console.log(is_added_to_home_screen)
           }
         })
         .catch((error) => {

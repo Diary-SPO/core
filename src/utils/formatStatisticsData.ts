@@ -1,5 +1,4 @@
-import { PerformanceCurrent } from 'diary-shared'
-import { Grade, TextMark } from '../types'
+import { Grade, PerformanceCurrent, TextMark } from 'diary-shared'
 
 export const formatStatisticsData = (marks: PerformanceCurrent) => {
   try {
@@ -18,7 +17,7 @@ export const formatStatisticsData = (marks: PerformanceCurrent) => {
 
     const totalNumberOfMarks: number = allMarks.length
     const totalSumOfMarks: number = allMarks.reduce(
-      (sum, mark) => sum + (Grade[mark] as number),
+      (sum, mark) => sum + Number(Grade[mark]),
       0
     )
     const averageMark: number = totalSumOfMarks / totalNumberOfMarks

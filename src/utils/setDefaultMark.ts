@@ -1,11 +1,7 @@
-import { Task } from 'diary-shared'
-import { TextMark } from '../types'
+import { Grade, Task, TextMark } from 'diary-shared'
+export type ReturnedMark = TextMark | 'Н' | 'ДЗ' | 'О' | 'Д' | number
 
-/*
- * TODO: можно с помощью неё фиксить ошибки с неправильными оценами
- * FIXME: Переписать
- */
-const setDefaultMark = (task: Task): TextMark => {
+const setDefaultMark = (task: Task): ReturnedMark => {
   if (task.isRequired && !task.mark) {
     return 'Д'
   }
@@ -14,7 +10,7 @@ const setDefaultMark = (task: Task): TextMark => {
     return 'ДЗ'
   }
 
-  return task.mark as TextMark
+  return Grade[task.mark] as ReturnedMark
 }
 
 export default setDefaultMark
