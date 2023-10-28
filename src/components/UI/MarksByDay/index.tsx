@@ -1,6 +1,6 @@
 import { FunctionalComponent } from 'preact'
 import { Header, HorizontalCell, HorizontalScroll } from '@vkontakte/vkui'
-import { PerformanceCurrent, Grade } from 'diary-shared'
+import { PerformanceCurrent } from 'diary-shared'
 import Mark from '../Mark'
 import './index.css'
 import { extractMarksByDay } from '../../../utils/extractMarksByDay'
@@ -13,7 +13,7 @@ interface IPerformanceCurrent {
 
 export interface IMarksByDay {
   [key: string]: {
-    [lessonName: string]: Grade[]
+    [lessonName: string]: number[]
   }
 }
 

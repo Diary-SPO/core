@@ -16,7 +16,8 @@ import {
 import {
   AbsenceType,
   AbsenceTypes,
-  AbsenceTypesKeys, Grade,
+  AbsenceTypesKeys,
+  Grade,
   PerformanceCurrent,
   TextMark,
 } from 'diary-shared'
@@ -112,7 +113,9 @@ const MarksByGroup: FC<IMarksByGroup> = ({ marksForSubject }) => {
                 textWrap="full"
                 before={<Icon20StatisticsOutline />}
                 style={{ marginTop: 5 }}
-                after={calculateAverageMark(subjectMarksMap[subjectName].flatMap(({ marks }) => marks))}
+                after={calculateAverageMark(
+                  subjectMarksMap[subjectName].flatMap(({ marks }) => marks)
+                )}
               >
                 Средний балл:
               </MiniInfoCell>

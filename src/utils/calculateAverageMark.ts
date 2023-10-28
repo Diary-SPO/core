@@ -1,27 +1,27 @@
-import { Grade, TextMark } from 'diary-shared';
+import { Grade, TextMark } from 'diary-shared'
 
 const calculateAverageMark = (marks: TextMark[] | undefined): number | null => {
   if (!marks || marks.length === 0) {
-    return null;
+    return null
   }
-  
-  let sum = 0;
-  let validMarksCount = 0;
-  
-  marks.forEach(mark => {
+
+  let sum = 0
+  let validMarksCount = 0
+
+  marks.forEach((mark) => {
     const markNumber = Number(Grade[mark])
     if (!isNaN(markNumber)) {
-      sum += markNumber;
-      validMarksCount++;
+      sum += markNumber
+      validMarksCount++
     }
-  });
-  
+  })
+
   if (validMarksCount === 0) {
-    return null;
+    return null
   }
 
-  const average = sum / validMarksCount;
-  return Number(average.toFixed(2));
-};
+  const average = sum / validMarksCount
+  return Number(average.toFixed(2))
+}
 
-export default calculateAverageMark;
+export default calculateAverageMark

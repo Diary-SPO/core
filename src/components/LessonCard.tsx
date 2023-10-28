@@ -184,10 +184,8 @@ const LessonCard: FC<ILessonCard> = ({ lesson }) => {
                           </div>
                           <div style={{ display: 'flex' }}>
                             {gradebook?.tasks?.map(
-                              (task, index) => {
-                                
-                                return (task.isRequired ||
-                                  setDefaultMark(task)) && (
+                              (task, index) =>
+                                (task.isRequired || setDefaultMark(task)) && (
                                   <Mark
                                     useMargin
                                     mark={setDefaultMark(task)}
@@ -195,7 +193,6 @@ const LessonCard: FC<ILessonCard> = ({ lesson }) => {
                                     key={index}
                                   />
                                 )
-                              }
                             )}
                           </div>
                         </div>

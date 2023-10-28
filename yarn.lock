@@ -1501,10 +1501,10 @@ dequal@^2.0.3:
   resolved "https://registry.yarnpkg.com/dequal/-/dequal-2.0.3.tgz#2644214f1997d39ed0ee0ece72335490a7ac67be"
   integrity sha512-0je+qPKHEMohvfRTCEo3CrPG6cAzAYgmzKyxRiYSSDkS6eGJdyVJm7WaYA5ECaAD9wLB2T4EEeymA5aFVcYXCA==
 
-diary-shared@^1.8.0:
-  version "1.8.0"
-  resolved "https://registry.yarnpkg.com/diary-shared/-/diary-shared-1.8.0.tgz#a7bf08d4e92c1fd968c335a6295f6b5b77acaba6"
-  integrity sha512-YI0bmOeO7wuDQX0BxaNkksoTwElCq06tHWmf6/NX43j6GTnPpTfem63okJLIh99k1Vrw01UVqR7Lv0dRDzhuhg==
+diary-shared@^1.8.1:
+  version "1.8.1"
+  resolved "https://registry.yarnpkg.com/diary-shared/-/diary-shared-1.8.1.tgz#dbc65fc62ab65835b4487658269cde09d9a78759"
+  integrity sha512-vIDqWksHCNCB8Ec/7hhOxBACZT6gr5+9b7JS+DYuucUxsPHWiBJ6KiIULeBSo/vmKGyxIsIV4vyzD+0qpB1gqg==
 
 dir-glob@^3.0.1:
   version "3.0.1"
@@ -3365,6 +3365,11 @@ randombytes@^2.1.0:
   integrity sha512-vYl3iOX+4CKUWuxGi9Ukhie6fsqXqS9FE2Zaic4tNFD2N2QQaXOMFbuKK4QmDHC0JO6B1Zp41J0LpT0oR68amQ==
   dependencies:
     safe-buffer "^5.1.0"
+
+"react-dom@npm:@preact/compat", "react@npm:@preact/compat":
+  version "17.1.2"
+  resolved "https://registry.yarnpkg.com/@preact/compat/-/compat-17.1.2.tgz#928756713b07af6faf7812f6a56840d8ce6fed37"
+  integrity sha512-7pOZN9lMDDRQ+6aWvjwTp483KR8/zOpfS83wmOo3zfuLKdngS8/5RLbsFWzFZMGdYlotAhX980hJ75bjOHTwWg==
 
 react-is@^16.13.1, react-is@^16.7.0:
   version "16.13.1"

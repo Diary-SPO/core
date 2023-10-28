@@ -17,7 +17,7 @@ export const formatStatisticsData = (marks: PerformanceCurrent) => {
 
     const totalNumberOfMarks: number = allMarks.length
     const totalSumOfMarks: number = allMarks.reduce(
-      (sum, mark) => sum + (Number(Grade[mark])),
+      (sum, mark) => sum + Number(Grade[mark]),
       0
     )
     const averageMark: number = totalSumOfMarks / totalNumberOfMarks
