@@ -2,7 +2,7 @@ import {
   FC, lazy, useEffect, useState,
 } from 'react';
 import {
-  Button, ButtonGroup, Div, Group, Header, IconButton, Link, Panel, PanelSpinner, Placeholder, PullToRefresh, View,
+  Button, ButtonGroup, Group, Header, IconButton, Link, Panel, PanelSpinner, Placeholder, PullToRefresh, View,
 } from '@vkontakte/vkui';
 import { useActiveVkuiLocation, useRouteNavigator } from '@vkontakte/vk-mini-apps-router';
 import {
@@ -26,7 +26,6 @@ import ExplanationTooltip from '../components/UI/ExplanationTooltip';
 import { handleResponse } from '../utils/handleResponse';
 
 const MarksByDay = lazy(() => import('../components/UI/MarksByDay'));
-const CalendarRange = lazy(() => import('../components/UI/CalendarRange'));
 const ScheduleGroup = lazy(() => import('../components/ScheduleGroup'));
 
 const Schedule: FC<{ id: string }> = ({ id }) => {
@@ -62,8 +61,8 @@ const Schedule: FC<{ id: string }> = ({ id }) => {
     setIsLoading(true);
     setIsMarksLoading(true);
     setIsError(false);
-    localStorage.setItem('isCurrent', JSON.stringify(true));
     setIsCurrent(true);
+    localStorage.setItem('isCurrent', JSON.stringify(true));
     const newEndDate = new Date(endDate);
     newEndDate.setDate(newEndDate.getDate() + 7);
 
@@ -209,87 +208,17 @@ const Schedule: FC<{ id: string }> = ({ id }) => {
   const sendToServerIfValid = async (start: Date, end: Date) => {
     setIsLoading(true);
     setIsCurrent(false);
-    if (start <= end) {
-      const differenceInDays = (end.getTime() - start.getTime()) / (1000 * 3600 * 24);
-      if (differenceInDays <= 14) {
-        const data = await getLessons(start, end);
+    const data = await getLessons(start, end);
 
-        handleResponse(data, () => {
-          setIsLoading(false);
-          setIsMarksLoading(false);
-        }, handleRateLimitExceeded, setIsLoading, showSnackbar);
+    handleResponse(data, () => {
+      setIsLoading(false);
+      setIsMarksLoading(false);
+    }, handleRateLimitExceeded, setIsLoading, showSnackbar);
 
-        setLessons(data as Day[]);
+    setLessons(data as Day[]);
 
-        localStorage.setItem('savedLessons', JSON.stringify(data));
-      } else {
-        console.info('Разница между датами больше 14-и дней');
-
-        const newEndDate = new Date(start);
-        newEndDate.setDate(newEndDate.getDate() + 14);
-
-        setEndDate(newEndDate);
-
-        if (!snackbar) {
-          showSnackbar({
-            title: 'Разница между датами больше 14-и дней',
-            subtitle: `Конечная дата будет автоматически изменена на ${newEndDate.toLocaleString()}`,
-          });
-        }
-
-        const data = await getLessons(start, newEndDate);
-
-        handleResponse(data, () => {
-          setIsLoading(false);
-          setIsMarksLoading(false);
-        }, handleRateLimitExceeded, setIsLoading, showSnackbar);
-
-        setLessons(data as Day[]);
-
-        localStorage.setItem('savedLessons', JSON.stringify(data));
-      }
-    } else {
-      console.info('Начальная дата больше конечной');
-
-      if (!snackbar) {
-        showSnackbar({
-          subtitle: 'Конечная дата будет автоматически установлена на 5 дней больше начальной',
-          title: 'Начальная дата больше конечной',
-        });
-
-        const newEndDate = new Date(start);
-        newEndDate.setDate(newEndDate.getDate() + 5);
-        setEndDate(newEndDate);
-
-        const data = await getLessons(start, newEndDate);
-
-        handleResponse(data, () => {
-          setIsLoading(false);
-          setIsMarksLoading(false);
-        }, handleRateLimitExceeded, setIsLoading, showSnackbar);
-
-        setLessons(data as Day[]);
-
-        localStorage.setItem('savedLessons', JSON.stringify(data));
-      }
-    }
+    localStorage.setItem('savedLessons', JSON.stringify(data));
     setIsLoading(false);
-  };
-
-  const handleStartDateChange = (newStartDate: Date) => {
-    if (newStartDate.getTime() === startDate.getTime()) {
-      return;
-    }
-    setStartDate(newStartDate);
-    sendToServerIfValid(newStartDate, endDate);
-  };
-
-  const handleEndDateChange = (newEndDate: Date) => {
-    if (newEndDate.getTime() === endDate.getTime()) {
-      return;
-    }
-    setEndDate(newEndDate);
-    sendToServerIfValid(startDate, newEndDate);
   };
 
   const getCurrentWeek = async () => {
@@ -397,25 +326,6 @@ const Schedule: FC<{ id: string }> = ({ id }) => {
           <Suspense id='MarksByDay'>
             {isMarksLoading ? <PanelSpinner /> : <MarksByDay performanceData={marksData} />}
           </Suspense>
-          <Group
-            header={<Header mode='secondary'>Выбор даты</Header>}
-            description='Разница между датами не может быть больше 14-и дней'
-          >
-            <Div>
-              <Suspense id='Calendar' mode='panel'>
-                <CalendarRange
-                  label={<ExplanationTooltip text='Начальная' tooltipContent='Не может быть больше конечной' />}
-                  value={startDate}
-                  onDateChange={handleStartDateChange}
-                />
-                <CalendarRange
-                  label={<ExplanationTooltip text='Конечная' tooltipContent='Не может быть меньше начальной' />}
-                  value={endDate}
-                  onDateChange={handleEndDateChange}
-                />
-              </Suspense>
-            </Div>
-          </Group>
           <Suspense id='ScheduleGroup' mode='screen'>
             <Group
               header={(
