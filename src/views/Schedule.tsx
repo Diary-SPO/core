@@ -378,11 +378,13 @@ const Schedule: FC<{ id: string }> = ({ id }) => {
         <PanelHeaderWithBack title="Главная" />
         <PullToRefresh onRefresh={handleReloadData} isFetching={isLoading}>
           <Suspense id="MarksByDay">
-            {isMarksLoading ? (
-              <PanelSpinner />
-            ) : (
-              <MarksByDay performanceData={marksData} />
-            )}
+            <Group header={<Header mode="secondary">Недавние оценки</Header>}>
+              {isMarksLoading ? (
+                <PanelSpinner />
+              ) : (
+                <MarksByDay performanceData={marksData} />
+              )}
+            </Group>
           </Suspense>
           <Suspense id="ScheduleGroup" mode="screen">
             <Group
@@ -424,6 +426,7 @@ const ErrorPlaceholder: FC<{ onClick: () => void }> = ({ onClick }) => (
     }
   />
 )
+
 const ScrollToTop: FC = () => (
   <IconButton
     aria-label="scroll top"
