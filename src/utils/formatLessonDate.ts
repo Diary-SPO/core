@@ -1,8 +1,12 @@
 export const formatLessonDate = (dateString: Date | string) => {
-  const date = new Date(dateString);
-  const options: Intl.DateTimeFormatOptions = { year: 'numeric', month: 'long', day: 'numeric' };
-  
-  return date.toLocaleDateString(undefined, options);
+  const date = new Date(dateString)
+  const options: Intl.DateTimeFormatOptions = {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+  }
+
+  return date.toLocaleDateString(undefined, options)
 }
 
 export function getDayOfWeek(date: Date) {
