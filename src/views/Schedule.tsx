@@ -35,6 +35,7 @@ import {
 } from '../hooks'
 import ExplanationTooltip from '../components/UI/ExplanationTooltip'
 import { handleResponse } from '../utils/handleResponse'
+import { useCallback } from 'preact/hooks'
 
 const MarksByDay = lazy(() => import('../components/UI/MarksByDay'))
 const ScheduleGroup = lazy(() => import('../components/ScheduleGroup'))
@@ -56,6 +57,24 @@ const Schedule: FC<{ id: string }> = ({ id }) => {
   const [isMarksLoading, setIsMarksLoading] = useState<boolean>(false)
   const [rateSnackbar, handleRateLimitExceeded] = useRateLimitExceeded()
   const [snackbar, showSnackbar] = useSnackbar()
+
+  const handleGetLesson = async (start: Date, end: Date) => {
+    const data = await getLessons(start, end)
+
+    handleResponse(
+      data,
+      () => {
+        setIsLoading(false)
+        setIsMarksLoading(false)
+      },
+      handleRateLimitExceeded,
+      setIsLoading,
+      showSnackbar
+    )
+
+    return data
+  }
+
   const updateDatesFromData = (data: Day[]) => {
     const firstLessonDate =
       data && data.length > 0 ? new Date(data[0].date) : startDate
@@ -67,10 +86,10 @@ const Schedule: FC<{ id: string }> = ({ id }) => {
 
   const [isCurrent, setIsCurrent] = useState<boolean>(() => {
     const storedIsCurrent = localStorage.getItem('isCurrent')
-    return storedIsCurrent ? (JSON.parse(storedIsCurrent) as boolean) : true
+    return storedIsCurrent ? Boolean(JSON.parse(storedIsCurrent)) : true
   })
 
-  const handleReloadData = async () => {
+  const handleReloadData = useCallback(async () => {
     setIsLoading(true)
     setIsMarksLoading(true)
     setIsError(false)
@@ -121,7 +140,7 @@ const Schedule: FC<{ id: string }> = ({ id }) => {
       setIsLoading(false)
       setIsMarksLoading(false)
     }
-  }
+  }, [endDate])
 
   const getError = () =>
     showSnackbar({
@@ -155,23 +174,10 @@ const Schedule: FC<{ id: string }> = ({ id }) => {
       }
 
       try {
-        const data = await getLessons(startDate, endDate)
-
-        handleResponse(
-          data,
-          () => {
-            setIsLoading(false)
-            setIsMarksLoading(false)
-          },
-          handleRateLimitExceeded,
-          setIsLoading,
-          showSnackbar
-        )
-
+        const data = await handleGetLesson(startDate, endDate)
         setLessons(data as Day[])
 
         localStorage.setItem('lastRequestTime', currentTime.toString())
-
         updateDatesFromData(data as Day[])
       } catch (error) {
         setIsError(true)
@@ -255,19 +261,7 @@ const Schedule: FC<{ id: string }> = ({ id }) => {
   const sendToServerIfValid = async (start: Date, end: Date) => {
     setIsLoading(true)
     setIsCurrent(false)
-    const data = await getLessons(start, end)
-
-    handleResponse(
-      data,
-      () => {
-        setIsLoading(false)
-        setIsMarksLoading(false)
-      },
-      handleRateLimitExceeded,
-      setIsLoading,
-      showSnackbar
-    )
-
+    const data = await handleGetLesson(start, end)
     setLessons(data as Day[])
 
     localStorage.setItem('savedLessons', JSON.stringify(data))
@@ -302,19 +296,7 @@ const Schedule: FC<{ id: string }> = ({ id }) => {
 
     setIsLoading(true)
     try {
-      const data = await getLessons(startWeek, endWeek)
-
-      handleResponse(
-        data,
-        () => {
-          setIsLoading(false)
-          setIsMarksLoading(false)
-        },
-        handleRateLimitExceeded,
-        setIsLoading,
-        showSnackbar
-      )
-
+      const data = await handleGetLesson(startWeek, endWeek)
       setLessons(data as Day[])
       setStartDate(startWeek)
       setEndDate(endWeek)
@@ -414,38 +396,8 @@ const Schedule: FC<{ id: string }> = ({ id }) => {
               )}
             </Group>
           </Suspense>
-          {isError && (
-            <Placeholder
-              header="Ошибка при загрузке"
-              action={
-                <ButtonGroup mode="vertical" align="center">
-                  <Button size="s" onClick={handleReloadData}>
-                    Попробовать снова
-                  </Button>
-                  <Link href="https://vk.me/dnevnik_spo" target="_blank">
-                    Сообщить о проблеме
-                  </Link>
-                </ButtonGroup>
-              }
-            />
-          )}
-          {showToTopButton && (
-            <IconButton
-              aria-label="scroll top"
-              style={{ position: 'fixed', left: 5, bottom: 60 }}
-              onClick={() => {
-                window.scrollTo({
-                  top: 0,
-                  behavior: 'smooth',
-                })
-              }}
-            >
-              <Icon24ChevronRightCircle
-                style={{ transform: 'rotate(-90deg)' }}
-                color="var(--vkui--color_background_accent_themed)"
-              />
-            </IconButton>
-          )}
+          {isError && <ErrorPlaceholder onClick={handleReloadData} />}
+          {showToTopButton && <ScrollToTop />}
           {snackbar}
           {rateSnackbar}
         </PullToRefresh>
@@ -453,5 +405,40 @@ const Schedule: FC<{ id: string }> = ({ id }) => {
     </View>
   )
 }
+
+const ErrorPlaceholder: FC<{ onClick: () => void }> = ({ onClick }) => (
+  <Placeholder
+    header="Ошибка при загрузке"
+    action={
+      <ButtonGroup mode="vertical" align="center">
+        <Button size="s" onClick={() => onClick()}>
+          Попробовать снова
+        </Button>
+        <Link href="https://vk.me/dnevnik_spo" target="_blank">
+          Сообщить о проблеме
+        </Link>
+      </ButtonGroup>
+    }
+  />
+)
+const ScrollToTop: FC = () => (
+  <IconButton
+    aria-label="scroll top"
+    style={{ position: 'fixed', left: 5, bottom: 60 }}
+    onClick={() => {
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth',
+      })
+    }}
+  >
+    <Icon24ChevronRightCircle
+      style={{
+        transform: 'rotate(-90deg)',
+        color: 'var(--vkui--color_background_accent_themed)',
+      }}
+    />
+  </IconButton>
+)
 
 export default Schedule
