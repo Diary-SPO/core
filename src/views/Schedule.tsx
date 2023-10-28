@@ -58,22 +58,25 @@ const Schedule: FC<{ id: string }> = ({ id }) => {
   const [rateSnackbar, handleRateLimitExceeded] = useRateLimitExceeded()
   const [snackbar, showSnackbar] = useSnackbar()
 
-  const handleGetLesson = async (start: Date, end: Date) => {
-    const data = await getLessons(start, end)
+  const handleGetLesson = useCallback(
+    async (start: Date, end: Date) => {
+      const data = await getLessons(start, end)
 
-    handleResponse(
-      data,
-      () => {
-        setIsLoading(false)
-        setIsMarksLoading(false)
-      },
-      handleRateLimitExceeded,
-      setIsLoading,
-      showSnackbar
-    )
+      handleResponse(
+        data,
+        () => {
+          setIsLoading(false)
+          setIsMarksLoading(false)
+        },
+        handleRateLimitExceeded,
+        setIsLoading,
+        showSnackbar
+      )
 
-    return data
-  }
+      return data
+    },
+    [startDate]
+  )
 
   const updateDatesFromData = (data: Day[]) => {
     const firstLessonDate =
