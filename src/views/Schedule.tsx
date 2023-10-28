@@ -1,119 +1,147 @@
+import { FC, lazy, useEffect, useState } from 'react'
 import {
-  FC, lazy, useEffect, useState,
-} from 'react';
+  Button,
+  ButtonGroup,
+  Group,
+  Header,
+  IconButton,
+  Link,
+  Panel,
+  PanelSpinner,
+  Placeholder,
+  PullToRefresh,
+  View,
+} from '@vkontakte/vkui'
 import {
-  Button, ButtonGroup, Group, Header, IconButton, Link, Panel, PanelSpinner, Placeholder, PullToRefresh, View,
-} from '@vkontakte/vkui';
-import { useActiveVkuiLocation, useRouteNavigator } from '@vkontakte/vk-mini-apps-router';
+  useActiveVkuiLocation,
+  useRouteNavigator,
+} from '@vkontakte/vk-mini-apps-router'
 import {
   Icon16ArrowLeftOutline,
   Icon16ArrowRightOutline,
   Icon28ErrorCircleOutline,
   Icon24ChevronRightCircle,
-} from '@vkontakte/icons';
-import { addDays, endOfWeek, startOfWeek } from '@vkontakte/vkui/dist/lib/date';
-import { Day, PerformanceCurrent } from 'diary-shared';
-import { getLessons, getPerformance } from '../methods';
-import PanelHeaderWithBack from '../components/UI/PanelHeaderWithBack';
-import Suspense from '../components/UI/Suspense';
+} from '@vkontakte/icons'
+import { addDays, endOfWeek, startOfWeek } from '@vkontakte/vkui/dist/lib/date'
+import { Day, PerformanceCurrent } from 'diary-shared'
+import { getLessons, getPerformance } from '../methods'
+import PanelHeaderWithBack from '../components/UI/PanelHeaderWithBack'
+import Suspense from '../components/UI/Suspense'
 import {
   useDebouncedChangeWeek,
   useRateLimitExceeded,
   useSnackbar,
   useScrollPosition,
-} from '../hooks';
-import ExplanationTooltip from '../components/UI/ExplanationTooltip';
-import { handleResponse } from '../utils/handleResponse';
+} from '../hooks'
+import ExplanationTooltip from '../components/UI/ExplanationTooltip'
+import { handleResponse } from '../utils/handleResponse'
 
-const MarksByDay = lazy(() => import('../components/UI/MarksByDay'));
-const ScheduleGroup = lazy(() => import('../components/ScheduleGroup'));
+const MarksByDay = lazy(() => import('../components/UI/MarksByDay'))
+const ScheduleGroup = lazy(() => import('../components/ScheduleGroup'))
 
 const Schedule: FC<{ id: string }> = ({ id }) => {
-  const currentDate = new Date();
+  const currentDate = new Date()
 
-  const scrollPosition = useScrollPosition();
-  const showToTopButton = scrollPosition > 700;
+  const scrollPosition = useScrollPosition()
+  const showToTopButton = scrollPosition > 700
 
-  const { panel: activePanel, panelsHistory } = useActiveVkuiLocation();
-  const routeNavigator = useRouteNavigator();
-  const [lessonsState, setLessons] = useState<Day[] | null>();
-  const [startDate, setStartDate] = useState<Date>(startOfWeek(currentDate));
-  const [endDate, setEndDate] = useState<Date>(endOfWeek(currentDate));
-  const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [isError, setIsError] = useState<boolean>(false);
-  const [marksData, setMarksData] = useState<PerformanceCurrent | null>(null);
-  const [isMarksLoading, setIsMarksLoading] = useState<boolean>(false);
-  const [rateSnackbar, handleRateLimitExceeded] = useRateLimitExceeded();
-  const [snackbar, showSnackbar] = useSnackbar();
+  const { panel: activePanel, panelsHistory } = useActiveVkuiLocation()
+  const routeNavigator = useRouteNavigator()
+  const [lessonsState, setLessons] = useState<Day[] | null>()
+  const [startDate, setStartDate] = useState<Date>(startOfWeek(currentDate))
+  const [endDate, setEndDate] = useState<Date>(endOfWeek(currentDate))
+  const [isLoading, setIsLoading] = useState<boolean>(false)
+  const [isError, setIsError] = useState<boolean>(false)
+  const [marksData, setMarksData] = useState<PerformanceCurrent | null>(null)
+  const [isMarksLoading, setIsMarksLoading] = useState<boolean>(false)
+  const [rateSnackbar, handleRateLimitExceeded] = useRateLimitExceeded()
+  const [snackbar, showSnackbar] = useSnackbar()
   const updateDatesFromData = (data: Day[]) => {
-    const firstLessonDate = data && data.length > 0 ? new Date(data[0].date) : startDate;
-    const lastLessonDate = data && data.length > 0 ? new Date(data[data.length - 1].date) : endDate;
-    setStartDate(startOfWeek(firstLessonDate));
-    setEndDate(endOfWeek(lastLessonDate));
-  };
+    const firstLessonDate =
+      data && data.length > 0 ? new Date(data[0].date) : startDate
+    const lastLessonDate =
+      data && data.length > 0 ? new Date(data[data.length - 1].date) : endDate
+    setStartDate(startOfWeek(firstLessonDate))
+    setEndDate(endOfWeek(lastLessonDate))
+  }
 
   const [isCurrent, setIsCurrent] = useState<boolean>(() => {
-    const storedIsCurrent = localStorage.getItem('isCurrent');
-    return storedIsCurrent ? JSON.parse(storedIsCurrent) as boolean : true;
-  });
+    const storedIsCurrent = localStorage.getItem('isCurrent')
+    return storedIsCurrent ? (JSON.parse(storedIsCurrent) as boolean) : true
+  })
 
   const handleReloadData = async () => {
-    setIsLoading(true);
-    setIsMarksLoading(true);
-    setIsError(false);
-    setIsCurrent(true);
-    localStorage.setItem('isCurrent', JSON.stringify(true));
-    const newEndDate = new Date(endDate);
-    newEndDate.setDate(newEndDate.getDate() + 7);
+    setIsLoading(true)
+    setIsMarksLoading(true)
+    setIsError(false)
+    setIsCurrent(true)
+    localStorage.setItem('isCurrent', JSON.stringify(true))
+    const newEndDate = new Date(endDate)
+    newEndDate.setDate(newEndDate.getDate() + 7)
 
     try {
-      const data = await getLessons(startDate, newEndDate);
-      const marks = await getPerformance();
+      const data = await getLessons(startDate, newEndDate)
+      const marks = await getPerformance()
 
-      handleResponse(data, () => {
-        setIsMarksLoading(false);
-      }, handleRateLimitExceeded, setIsLoading, showSnackbar);
+      handleResponse(
+        data,
+        () => {
+          setIsMarksLoading(false)
+        },
+        handleRateLimitExceeded,
+        setIsLoading,
+        showSnackbar
+      )
 
-      handleResponse(marks, () => {
-        setIsMarksLoading(false);
-      }, handleRateLimitExceeded, setIsLoading, showSnackbar);
+      handleResponse(
+        marks,
+        () => {
+          setIsMarksLoading(false)
+        },
+        handleRateLimitExceeded,
+        setIsLoading,
+        showSnackbar
+      )
 
-      setMarksData(marks as PerformanceCurrent);
-      setLessons(data as Day[]);
-      updateDatesFromData(data as Day[]);
+      setMarksData(marks as PerformanceCurrent)
+      setLessons(data as Day[])
+      updateDatesFromData(data as Day[])
 
-      localStorage.setItem('savedLessons', JSON.stringify(data));
-      localStorage.setItem('savedMarks', JSON.stringify(marks));
+      localStorage.setItem('savedLessons', JSON.stringify(data))
+      localStorage.setItem('savedMarks', JSON.stringify(marks))
     } catch (error) {
-      setIsError(true);
+      setIsError(true)
       showSnackbar({
         title: 'Ошибка при попытке получить новые данные',
         action: 'Повторить',
         onActionClick: handleReloadData,
-      });
-      console.error(error);
+      })
+      console.error(error)
     } finally {
-      setIsLoading(false);
-      setIsMarksLoading(false);
+      setIsLoading(false)
+      setIsMarksLoading(false)
     }
-  };
+  }
 
-  const getError = () => showSnackbar({
-    title: 'Ошибка при попытке получить расписание',
-    action: 'Повторить',
-    onActionClick: handleReloadData,
-  });
+  const getError = () =>
+    showSnackbar({
+      title: 'Ошибка при попытке получить расписание',
+      action: 'Повторить',
+      onActionClick: handleReloadData,
+    })
 
   useEffect(() => {
-    const savedLessons = localStorage.getItem('savedLessons');
-    const getLastRequestTime = localStorage.getItem('lastRequestTime');
-    const currentTime = Date.now();
-    const lastRequestTime = getLastRequestTime ? parseInt(getLastRequestTime, 10) : 0;
-    const timeSinceLastRequest = currentTime - lastRequestTime;
+    const savedLessons = localStorage.getItem('savedLessons')
+    const getLastRequestTime = localStorage.getItem('lastRequestTime')
+    const currentTime = Date.now()
+    const lastRequestTime = getLastRequestTime
+      ? parseInt(getLastRequestTime, 10)
+      : 0
+    const timeSinceLastRequest = currentTime - lastRequestTime
 
     const gettedLessons = async () => {
-      setIsLoading(true);
-      setIsError(false);
+      setIsLoading(true)
+      setIsError(false)
 
       if (savedLessons || timeSinceLastRequest < 30000) {
         showSnackbar({
@@ -121,197 +149,238 @@ const Schedule: FC<{ id: string }> = ({ id }) => {
           action: 'Загрузить новые',
           onActionClick: handleReloadData,
           title: 'Данные взяты из кеша',
-        });
-        setIsLoading(false);
-        return;
+        })
+        setIsLoading(false)
+        return
       }
 
       try {
-        const data = await getLessons(startDate, endDate);
+        const data = await getLessons(startDate, endDate)
 
-        handleResponse(data, () => {
-          setIsLoading(false);
-          setIsMarksLoading(false);
-        }, handleRateLimitExceeded, setIsLoading, showSnackbar);
+        handleResponse(
+          data,
+          () => {
+            setIsLoading(false)
+            setIsMarksLoading(false)
+          },
+          handleRateLimitExceeded,
+          setIsLoading,
+          showSnackbar
+        )
 
-        setLessons(data as Day[]);
+        setLessons(data as Day[])
 
-        localStorage.setItem('lastRequestTime', currentTime.toString());
+        localStorage.setItem('lastRequestTime', currentTime.toString())
 
-        updateDatesFromData(data as Day[]);
+        updateDatesFromData(data as Day[])
       } catch (error) {
-        setIsError(true);
-        getError();
-        console.error(error);
+        setIsError(true)
+        getError()
+        console.error(error)
       } finally {
-        setIsLoading(false);
+        setIsLoading(false)
       }
-    };
-
-    if (savedLessons) {
-      setLessons(JSON.parse(savedLessons) as Day[]);
-      const firstLessonDate = JSON.parse(savedLessons)[0] ? new Date(JSON.parse(savedLessons)[0].date as string) : startDate;
-      const lastLessonDate = JSON.parse(savedLessons)[JSON.parse(savedLessons).length - 1]
-        ? new Date(JSON.parse(savedLessons)[JSON.parse(savedLessons).length - 1].date as string)
-        : endDate;
-      setStartDate(startOfWeek(firstLessonDate));
-      setEndDate(endOfWeek(lastLessonDate));
     }
 
-    gettedLessons();
-  }, []);
+    if (savedLessons) {
+      setLessons(JSON.parse(savedLessons) as Day[])
+      const firstLessonDate = JSON.parse(savedLessons)[0]
+        ? new Date(JSON.parse(savedLessons)[0].date as string)
+        : startDate
+      const lastLessonDate = JSON.parse(savedLessons)[
+        JSON.parse(savedLessons).length - 1
+      ]
+        ? new Date(
+            JSON.parse(savedLessons)[JSON.parse(savedLessons).length - 1]
+              .date as string
+          )
+        : endDate
+      setStartDate(startOfWeek(firstLessonDate))
+      setEndDate(endOfWeek(lastLessonDate))
+    }
+
+    gettedLessons()
+  }, [])
 
   useEffect(() => {
-    const savedMarks = localStorage.getItem('savedMarks');
+    const savedMarks = localStorage.getItem('savedMarks')
 
     if (savedMarks) {
-      setMarksData(JSON.parse(savedMarks) as PerformanceCurrent);
-      setIsMarksLoading(false);
+      setMarksData(JSON.parse(savedMarks) as PerformanceCurrent)
+      setIsMarksLoading(false)
     }
 
     const fetchMarksData = async () => {
-      setIsMarksLoading(true);
+      setIsMarksLoading(true)
 
       if (savedMarks) {
-        setIsMarksLoading(false);
-        return;
+        setIsMarksLoading(false)
+        return
       }
 
       try {
-        const marks = await getPerformance();
+        const marks = await getPerformance()
 
-        handleResponse(marks, () => {
-          setIsLoading(false);
-          setIsMarksLoading(false);
-        }, handleRateLimitExceeded, setIsLoading, showSnackbar);
+        handleResponse(
+          marks,
+          () => {
+            setIsLoading(false)
+            setIsMarksLoading(false)
+          },
+          handleRateLimitExceeded,
+          setIsLoading,
+          showSnackbar
+        )
 
         if (typeof marks !== 'number') {
-          setMarksData(marks);
-          localStorage.setItem('savedMarks', JSON.stringify(marks));
+          setMarksData(marks)
+          localStorage.setItem('savedMarks', JSON.stringify(marks))
         }
       } catch (error) {
-        console.error(error);
+        console.error(error)
         showSnackbar({
           title: 'Ошибка при попытке получить оценки',
           action: 'Повторить',
           icon: <Icon28ErrorCircleOutline />,
           onActionClick: fetchMarksData,
-        });
+        })
       } finally {
-        setIsMarksLoading(false);
+        setIsMarksLoading(false)
       }
-    };
+    }
 
-    fetchMarksData();
-  }, []);
+    fetchMarksData()
+  }, [])
 
   const sendToServerIfValid = async (start: Date, end: Date) => {
-    setIsLoading(true);
-    setIsCurrent(false);
-    const data = await getLessons(start, end);
+    setIsLoading(true)
+    setIsCurrent(false)
+    const data = await getLessons(start, end)
 
-    handleResponse(data, () => {
-      setIsLoading(false);
-      setIsMarksLoading(false);
-    }, handleRateLimitExceeded, setIsLoading, showSnackbar);
+    handleResponse(
+      data,
+      () => {
+        setIsLoading(false)
+        setIsMarksLoading(false)
+      },
+      handleRateLimitExceeded,
+      setIsLoading,
+      showSnackbar
+    )
 
-    setLessons(data as Day[]);
+    setLessons(data as Day[])
 
-    localStorage.setItem('savedLessons', JSON.stringify(data));
-    setIsLoading(false);
-  };
+    localStorage.setItem('savedLessons', JSON.stringify(data))
+    setIsLoading(false)
+  }
 
   const getCurrentWeek = async () => {
-    const startWeek = startOfWeek(currentDate);
-    const startOfCurrWeek = startOfWeek(startDate);
-    const endWeek = addDays(endOfWeek(currentDate), 7);
+    const startWeek = startOfWeek(currentDate)
+    const startOfCurrWeek = startOfWeek(startDate)
+    const endWeek = addDays(endOfWeek(currentDate), 7)
 
     const startWeekStr = startWeek.toLocaleString('default', {
       month: 'short',
       day: 'numeric',
       year: 'numeric',
-    });
+    })
 
     const startOfCurrWeekStr = startOfCurrWeek.toLocaleString('default', {
       month: 'short',
       day: 'numeric',
       year: 'numeric',
-    });
+    })
 
     if (startWeekStr === startOfCurrWeekStr) {
       showSnackbar({
         title: 'Вы уже на текущей неделе',
-      });
-      localStorage.setItem('isCurrent', JSON.stringify(true));
-      setIsCurrent(true);
-      return;
+      })
+      localStorage.setItem('isCurrent', JSON.stringify(true))
+      setIsCurrent(true)
+      return
     }
 
-    setIsLoading(true);
+    setIsLoading(true)
     try {
-      const data = await getLessons(startWeek, endWeek);
+      const data = await getLessons(startWeek, endWeek)
 
-      handleResponse(data, () => {
-        setIsLoading(false);
-        setIsMarksLoading(false);
-      }, handleRateLimitExceeded, setIsLoading, showSnackbar);
+      handleResponse(
+        data,
+        () => {
+          setIsLoading(false)
+          setIsMarksLoading(false)
+        },
+        handleRateLimitExceeded,
+        setIsLoading,
+        showSnackbar
+      )
 
-      setLessons(data as Day[]);
-      setStartDate(startWeek);
-      setEndDate(endWeek);
+      setLessons(data as Day[])
+      setStartDate(startWeek)
+      setEndDate(endWeek)
 
-      localStorage.setItem('isCurrent', JSON.stringify(true));
-      setIsCurrent(true);
+      localStorage.setItem('isCurrent', JSON.stringify(true))
+      setIsCurrent(true)
     } catch (e) {
-      console.error(e);
-      getError();
+      console.error(e)
+      getError()
     } finally {
-      setIsLoading(false);
+      setIsLoading(false)
     }
-  };
+  }
 
   const debouncedChangeWeekHook = useDebouncedChangeWeek(
     startDate,
     endDate,
     setIsCurrent,
     setStartDate,
-    setEndDate,
-  );
-  const { handleButtonClick: debouncedHandleButtonClick } = debouncedChangeWeekHook;
+    setEndDate
+  )
+  const { handleButtonClick: debouncedHandleButtonClick } =
+    debouncedChangeWeekHook
 
   const Buttons = (
     <ButtonGroup
       style={{
-        alignItems: 'center', position: 'relative', top: 20, color: 'var(--vkui--color_stroke_accent_themed)',
+        alignItems: 'center',
+        position: 'relative',
+        top: 20,
+        color: 'var(--vkui--color_stroke_accent_themed)',
       }}
-      gap='s'
+      gap="s"
     >
       <IconButton
-        aria-label='Prev'
+        aria-label="Prev"
         onClick={() => debouncedHandleButtonClick('prev', sendToServerIfValid)}
       >
         <Icon16ArrowLeftOutline />
       </IconButton>
-      <Button size='s' mode='secondary' onClick={() => getCurrentWeek()} disabled={isCurrent}>
-        <ExplanationTooltip tooltipContent='Вернёт вас на текущую неделю' text='Домой' />
+      <Button
+        size="s"
+        mode="secondary"
+        onClick={() => getCurrentWeek()}
+        disabled={isCurrent}
+      >
+        <ExplanationTooltip
+          tooltipContent="Вернёт вас на текущую неделю"
+          text="Домой"
+        />
       </Button>
       <IconButton
-        aria-label='Next'
+        aria-label="Next"
         onClick={() => debouncedHandleButtonClick('next', sendToServerIfValid)}
       >
         <Icon16ArrowRightOutline />
       </IconButton>
     </ButtonGroup>
-  );
+  )
 
   const weekString = `
   ${startDate.getDate()}
-  ${startDate.toLocaleString('default', { month: 'long' })
-    .slice(0, 3)}
+  ${startDate.toLocaleString('default', { month: 'long' }).slice(0, 3)}
     -
     ${endDate.getDate()}
-    ${endDate.toLocaleString('default', { month: 'long' })
-    .slice(0, 3)}`;
+    ${endDate.toLocaleString('default', { month: 'long' }).slice(0, 3)}`
 
   return (
     <View
@@ -321,55 +390,59 @@ const Schedule: FC<{ id: string }> = ({ id }) => {
       onSwipeBack={() => routeNavigator.back()}
     >
       <Panel nav={id}>
-        <PanelHeaderWithBack title='Главная' />
+        <PanelHeaderWithBack title="Главная" />
         <PullToRefresh onRefresh={handleReloadData} isFetching={isLoading}>
-          <Suspense id='MarksByDay'>
-            {isMarksLoading ? <PanelSpinner /> : <MarksByDay performanceData={marksData} />}
+          <Suspense id="MarksByDay">
+            {isMarksLoading ? (
+              <PanelSpinner />
+            ) : (
+              <MarksByDay performanceData={marksData} />
+            )}
           </Suspense>
-          <Suspense id='ScheduleGroup' mode='screen'>
+          <Suspense id="ScheduleGroup" mode="screen">
             <Group
-              header={(
-                <Header
-                  aside={Buttons}
-                  mode='secondary'
-                >
+              header={
+                <Header aside={Buttons} mode="secondary">
                   {weekString}
                 </Header>
-            )}
+              }
             >
-              {isLoading
-                ? <PanelSpinner size='regular' />
-                : <ScheduleGroup lessonsState={lessonsState} />}
+              {isLoading ? (
+                <PanelSpinner size="regular" />
+              ) : (
+                <ScheduleGroup lessonsState={lessonsState} />
+              )}
             </Group>
           </Suspense>
-          {isError
-          && (
+          {isError && (
             <Placeholder
-              header='Ошибка при загрузке'
-              action={(
-                <ButtonGroup mode='vertical' align='center'>
-                  <Button size='s' onClick={handleReloadData}>Попробовать снова</Button>
-                  <Link href='https://vk.me/dnevnik_spo' target='_blank'>
+              header="Ошибка при загрузке"
+              action={
+                <ButtonGroup mode="vertical" align="center">
+                  <Button size="s" onClick={handleReloadData}>
+                    Попробовать снова
+                  </Button>
+                  <Link href="https://vk.me/dnevnik_spo" target="_blank">
                     Сообщить о проблеме
                   </Link>
                 </ButtonGroup>
-              )}
+              }
             />
           )}
           {showToTopButton && (
             <IconButton
-              aria-label='scroll top'
+              aria-label="scroll top"
               style={{ position: 'fixed', left: 5, bottom: 60 }}
               onClick={() => {
                 window.scrollTo({
                   top: 0,
                   behavior: 'smooth',
-                });
+                })
               }}
             >
               <Icon24ChevronRightCircle
                 style={{ transform: 'rotate(-90deg)' }}
-                color='var(--vkui--color_background_accent_themed)'
+                color="var(--vkui--color_background_accent_themed)"
               />
             </IconButton>
           )}
@@ -378,7 +451,7 @@ const Schedule: FC<{ id: string }> = ({ id }) => {
         </PullToRefresh>
       </Panel>
     </View>
-  );
-};
+  )
+}
 
-export default Schedule;
+export default Schedule
