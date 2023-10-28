@@ -47,19 +47,19 @@ const App = () => {
   const { view: activeView, panel } = useActiveVkuiLocation()
   const { viewWidth } = useAdaptivityConditionalRender()
   const platform = usePlatform()
-  const isVKCOM = platform === Platform.VKCOM
   const routerPopout = usePopout()
   const vkBridgeInsets = useInsets() || undefined
+  const isVKCOM = platform === Platform.VKCOM
 
   const cookieValue = localStorage.getItem('cookie')
 
   useEffect(() => {
-    const onRoute = async () => {
+    const onRoute = () => {
       if (!cookieValue) {
-        await routeNavigator.replace('/')
+        routeNavigator.replace('/')
         setIsLoading(false)
-      } else if (cookieValue && activeView === MAIN_SETTINGS) {
-        await routeNavigator.replace(`/${VIEW_SCHEDULE}`)
+      } else if (cookieValue && panel === MAIN_SETTINGS) {
+        routeNavigator.replace(`/${VIEW_SCHEDULE}`)
         setIsLoading(false)
       }
     }
