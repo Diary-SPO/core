@@ -2,10 +2,11 @@ import { FunctionalComponent } from 'preact'
 import { Header, HorizontalCell, HorizontalScroll } from '@vkontakte/vkui'
 import { PerformanceCurrent } from 'diary-shared'
 import Mark from '../Mark'
-import './index.css'
 import { extractMarksByDay } from '../../../utils/extractMarksByDay'
 import { sortByDay } from '../../../utils/sortByDay'
 import { truncateString } from '../../../utils/truncateString'
+
+import './index.css'
 
 interface IPerformanceCurrent {
   performanceData: PerformanceCurrent | null
