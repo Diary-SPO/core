@@ -1,12 +1,15 @@
-import { getVkStorageData } from './bridge/getVkStorageData';
-import { getVkStorageKeys } from './bridge/getVkStorageKeys';
-import { appStorageSet } from './bridge/appStorageSet';
-import { getCookie } from './bridge/getCookie';
-import { getUserId } from './bridge/getUserId';
-
-import { getPerformance } from './server/getPerformance';
-import { getLessons } from './server/getLessons';
+import { getPerformance } from './server/getPerformance'
+import { getLessons } from './server/getLessons'
+import { getAds } from './server/getAds.ts'
+import { getAttestation } from './server/getAttestation.ts'
+import { getCollegeInfo } from './server/getCollegeInfo.ts'
+import makeRequest from './server/makeRequest'
 
 export {
-  getCookie, getUserId, getLessons, appStorageSet, getPerformance, getVkStorageData, getVkStorageKeys,
-};
+  getLessons,
+  getPerformance,
+  getAds,
+  makeRequest,
+  getAttestation,
+  getCollegeInfo,
+}

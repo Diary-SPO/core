@@ -1,24 +1,27 @@
-import { ReactNode, useState } from 'react';
-import { Snackbar } from '@vkontakte/vkui';
-import { Icon28ErrorCircleOutline } from '@vkontakte/icons';
+import { Snackbar } from '@vkontakte/vkui'
+import { Icon28ErrorCircleOutline } from '@vkontakte/icons'
+import { useState } from 'preact/hooks'
+import { ReactNode } from 'preact/compat'
 
 const useRateLimitExceeded = (): [ReactNode | null, () => void] => {
-  const [rateSnackbar, setRateSnackbar] = useState<ReactNode | null>(null);
+  const [rateSnackbar, setRateSnackbar] = useState<ReactNode | null>(null)
 
   const handleRateLimitExceeded = () => {
     setRateSnackbar(
       <Snackbar
-        layout='vertical'
+        layout="vertical"
         onClose={() => setRateSnackbar(null)}
-        before={<Icon28ErrorCircleOutline fill='var(--vkui--color_icon_negative)' />}
-        subtitle='Вы временно заблокированы. Если вы считаете, что это ошибка, то сообщите нам'
+        before={
+          <Icon28ErrorCircleOutline fill="var(--vkui--color_icon_negative)" />
+        }
+        subtitle="Вы временно заблокированы. Если вы считаете, что это ошибка, то сообщите нам"
       >
         Слишком частые запросы
-      </Snackbar>,
-    );
-  };
+      </Snackbar>
+    )
+  }
 
-  return [rateSnackbar, handleRateLimitExceeded];
-};
+  return [rateSnackbar, handleRateLimitExceeded]
+}
 
-export default useRateLimitExceeded;
+export default useRateLimitExceeded

@@ -1,34 +1,37 @@
-import { FC, ReactNode, Suspense as ReactSuspense } from 'react';
-import { PanelSpinner, ScreenSpinner, Spinner } from '@vkontakte/vkui';
+import { PanelSpinner, ScreenSpinner, Spinner } from '@vkontakte/vkui'
+import { FC, ReactNode, Suspense as ReactSuspense } from 'preact/compat'
 
 interface ISpinner {
-  size?: 'small' | 'regular' | 'medium' | 'large',
-  mode?: 'panel' | 'screen' | 'default',
+  size?: 'small' | 'regular' | 'medium' | 'large'
+  mode?: 'panel' | 'screen' | 'default'
 }
 
 interface ISuspense extends ISpinner {
-  children: ReactNode,
-  id: string,
+  children: ReactNode
+  id: string
 }
 
 const SpinnerWrapper: FC<ISpinner> = ({ size, mode }) => {
   switch (mode) {
     case 'panel':
-      return <PanelSpinner size={size} />;
+      return <PanelSpinner size={size} />
     case 'screen':
-      return <ScreenSpinner size={size} />;
+      return <ScreenSpinner size={size} />
     case 'default':
     default:
-      return <Spinner size={size} />;
+      return <Spinner size={size} />
   }
-};
+}
 
 const Suspense: FC<ISuspense> = ({
-  children, size = 'regular', id, mode = 'panel',
+  children,
+  size = 'regular',
+  id,
+  mode = 'panel',
 }) => (
   <ReactSuspense key={id} fallback={<SpinnerWrapper size={size} mode={mode} />}>
     {children}
   </ReactSuspense>
-);
+)
 
-export default Suspense;
+export default Suspense

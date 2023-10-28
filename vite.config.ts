@@ -1,14 +1,13 @@
 import { defineConfig } from 'vite'
-import react from '@vitejs/plugin-react-swc';
-// https://vitejs.dev/config/
+import preact from '@preact/preset-vite'
 
+// https://vitejs.dev/config/
 export default defineConfig({
-  plugins: [
-    react(),
-  ],
+  plugins: [preact()],
   resolve: {
     alias: [{ find: /^@vkontakte\/vkui$/, replacement: '@vkontakte/vkui/dist/cssm' }],
   },
+  base: '/frontend/',
   build: {
     sourcemap: false,
     target: 'es2017',
@@ -26,15 +25,14 @@ export default defineConfig({
     },
     rollupOptions: {
       logLevel: 'debug',
-      input: 'index-a12.html',
+      // input: 'frontend',
       output: {
         manualChunks: {
-          react: ['react', 'react-dom'],
+          '@reduxjs/toolkit': ['@reduxjs/toolkit'],
+          'react-redux': ['react-redux'],
+          '@vkontakte/icons': ['@vkontakte/icons'],
         },
       },
     },
   },
-  // Указывать только для dev сборки.
-  // Либо index'у вернуть его исходное имя, а переименовывать только при деплое
-   base: 'index-a12.html',
 })

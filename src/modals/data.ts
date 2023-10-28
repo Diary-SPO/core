@@ -1,4 +1,4 @@
-import { Lesson } from 'diary-shared';
+import { Lesson } from 'diary-shared'
 
 export const cleanData: Lesson = {
   name: '',
@@ -23,4 +23,4 @@ export const cleanData: Lesson = {
   },
   startTime: '',
   endTime: '',
-};
+}
