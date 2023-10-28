@@ -9,12 +9,12 @@ export const extractMarksByDay = (
   performanceData?.daysWithMarksForSubject?.forEach((subject) => {
     subject?.daysWithMarks?.forEach((markData) => {
       const day = new Date(markData.day).toLocaleDateString()
-      const grades = markData.markValues.map((gradeText) => Grade[gradeText])
+      const grades = markData.markValues.map((gradeText) => Number(Grade[gradeText]))
       const lessonName = subject.subjectName
 
       if (
         grades.length > 0 &&
-        grades.every((grade) => !Number.isNaN(parseFloat(grade as string)))
+        grades.every((grade) => !Number.isNaN(parseFloat(String(grade))))
       ) {
         if (!marksByDay[day]) {
           marksByDay[day] = {}
