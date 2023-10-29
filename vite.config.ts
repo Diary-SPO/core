@@ -7,7 +7,6 @@ export default defineConfig({
   resolve: {
     alias: [{ find: /^@vkontakte\/vkui$/, replacement: '@vkontakte/vkui/dist/cssm' }],
   },
-  base: '/service/',
   build: {
     sourcemap: false,
     target: 'es2017',

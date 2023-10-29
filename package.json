@@ -3,7 +3,6 @@
   "private": true,
   "version": "7.0.0",
   "type": "module",
-  "homepage": "https://diary-spo.github.io/service",
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
