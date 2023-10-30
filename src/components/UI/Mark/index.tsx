@@ -14,7 +14,7 @@ interface IMark {
 
 /**
  * Функция getBackgroundColor возвращает цвет в зависимости от переданной оценки (score).
- * При этом оценка может быть строкой в случае, если это ДЗ / Опоздание / Н-ка.
+ * При этом оценка может быть строкой в случае, если это ДЗ / Долг / Опоздание / Н-ка.
  */
 const getBackgroundColor = (score?: ReturnedMark): string => {
   if (typeof score === 'number') {
