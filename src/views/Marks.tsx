@@ -104,7 +104,7 @@ const Marks: FC<{ id: string }> = ({ id }) => {
         onActionClick: () => fetchMarks(true),
       })
       console.error('Ошибка при получении оценок:', error)
-      return undefined
+      return
     }
   }
 
