@@ -5,6 +5,7 @@ import {
   Group,
   Header,
   InfoRow,
+  Spinner,
   Subhead,
   Title,
 } from '@vkontakte/vkui'
@@ -19,17 +20,26 @@ export interface Subject {
 }
 
 interface SubjectListProps {
-  semesters: Record<string, Subject[]>
-  studentName: string | null
-  year: number | null
+  semesters?: Record<string, Subject[]>
+  studentName?: string | null
+  year?: number | null
+  isDataLoading: boolean
 }
 
 const SubjectList: FunctionalComponent<SubjectListProps> = ({
   semesters,
   studentName,
   year,
+  isDataLoading,
 }) => (
   <div>
+    {isDataLoading && (
+      <Group header={<Header mode="tertiary">Загрузка...</Header>}>
+        <Div>
+          <Spinner />
+        </Div>
+      </Group>
+    )}
     {Object.keys(semesters).map((semesterKey) => (
       <Group
         key={semesterKey}
