@@ -32,7 +32,6 @@ interface ILessonModal {
 
 const LessonModal: FC<ILessonModal> = ({ id }) => {
   const { modal } = useModal()
-  console.log('modal', modal)
   const [lessonData, setLessonData] = useState<Lesson>(cleanData)
 
   useEffect(() => {

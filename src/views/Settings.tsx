@@ -63,7 +63,7 @@ const Settings: FunctionalComponent<ISettings> = ({ id }) => {
           }
         })
         .catch((error) => {
-          console.log(error)
+          console.error(error)
         })
     }
 

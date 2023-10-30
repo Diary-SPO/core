@@ -143,7 +143,7 @@ const Schedule: FC<{ id: string }> = ({ id }) => {
       setIsLoading(false)
       setIsMarksLoading(false)
     }
-  }, [endDate])
+  }, [startDate, endDate])
 
   const getError = () =>
     showSnackbar({

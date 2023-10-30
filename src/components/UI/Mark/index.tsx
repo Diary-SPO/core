@@ -18,7 +18,6 @@ interface IMark {
  */
 const getBackgroundColor = (score?: ReturnedMark): string => {
   if (typeof score === 'number') {
-    console.log(score)
     if (score > 5) {
       return 'var(--vkui--color_accent_purple)'
     }

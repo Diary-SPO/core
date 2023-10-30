@@ -7,6 +7,7 @@ import { sortByDay } from '../../../utils/sortByDay'
 import { truncateString } from '../../../utils/truncateString'
 
 import './index.css'
+import {memo} from "react";
 
 interface IPerformanceCurrent {
   performanceData: PerformanceCurrent | null
@@ -22,7 +23,6 @@ const MarksByDay: FunctionalComponent<IPerformanceCurrent> = ({
   performanceData,
 }) => {
   const marksByDay = extractMarksByDay(performanceData)
-
   return (
     <HorizontalScroll
       showArrows
@@ -61,4 +61,4 @@ const MarksByDay: FunctionalComponent<IPerformanceCurrent> = ({
   )
 }
 
-export default MarksByDay
+export default memo(MarksByDay)

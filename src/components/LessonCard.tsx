@@ -1,4 +1,4 @@
-import { CSSProperties, FC } from 'react'
+import { CSSProperties, FC, memo } from 'react'
 import {
   Card,
   Footnote,
@@ -217,4 +217,4 @@ const LessonCard: FC<ILessonCard> = ({ lesson }) => {
   )
 }
 
-export default LessonCard
+export default memo(LessonCard)
