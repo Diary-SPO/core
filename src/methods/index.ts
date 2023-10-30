@@ -1,8 +1,8 @@
 import { getPerformance } from './server/getPerformance'
 import { getLessons } from './server/getLessons'
-import { getAds } from './server/getAds.ts'
-import { getAttestation } from './server/getAttestation.ts'
-import { getCollegeInfo } from './server/getCollegeInfo.ts'
+import { getAds } from './server/getAds'
+import { getAttestation } from './server/getAttestation'
+import { getCollegeInfo } from './server/getCollegeInfo'
 import makeRequest from './server/makeRequest'
 
 export {

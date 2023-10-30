@@ -7,14 +7,12 @@ import { RouterProvider } from '@vkontakte/vk-mini-apps-router'
 import vkBridge from '@vkontakte/vk-bridge'
 import { useAdaptivity, useAppearance } from '@vkontakte/vk-bridge-react'
 import { FC, lazy } from 'preact/compat'
-import { Provider } from 'react-redux'
 import { router } from './routes'
 import Suspense from './components/UI/Suspense'
 import { transformVKBridgeAdaptivity } from './transformers/transformVKBridgeAdaptivity'
-import store from './store'
 
 const NotFound = lazy(() => import('./components/UI/NotFound'))
-const App = lazy(() => import('./App.tsx'))
+const App = lazy(() => import('./App'))
 
 vkBridge.send('VKWebAppInit')
 
@@ -47,9 +45,7 @@ const AppWrapper = () => {
             platform={platform}
             isWebView={vkBridge.isWebView()}
           >
-            <Provider store={store}>
-              <App />
-            </Provider>
+            <App />
           </ConfigProvider>
         </Suspense>
       </RouterProvider>
