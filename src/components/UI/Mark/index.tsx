@@ -1,6 +1,6 @@
 import { Footnote } from '@vkontakte/vkui'
 import { CSSProperties, FC } from 'preact/compat'
-import { ReturnedMark } from '../../../utils/setDefaultMark'
+import { ReturnedMark } from '../../../utils'
 
 type Sizes = 'l' | 's'
 

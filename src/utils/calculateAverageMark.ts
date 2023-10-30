@@ -1,6 +1,14 @@
 import { Grade, TextMark } from 'diary-shared'
 
-const calculateAverageMark = (marks: TextMark[] | undefined): number | null => {
+/**
+ * Функция 'calculateAverageMark' высчитывает средний балл учащегося до двух знаков после запятой.
+ * Оценки приходят в формате Five, Fourth и тд.
+ * Для верности есть дополнительная валидация оценки.
+ */
+
+export const calculateAverageMark = (
+  marks: TextMark[] | undefined
+): number | null => {
   if (!marks || marks.length === 0) {
     return null
   }
@@ -23,5 +31,3 @@ const calculateAverageMark = (marks: TextMark[] | undefined): number | null => {
   const average = sum / validMarksCount
   return Number(average.toFixed(2))
 }
-
-export default calculateAverageMark

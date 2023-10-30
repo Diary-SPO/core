@@ -15,9 +15,12 @@ import {
   LessonWorkType,
   Timetable,
 } from 'diary-shared'
-import { formatLessonDate, getDayOfWeek } from '../utils/formatLessonDate'
-import setDefaultMark from '../utils/setDefaultMark'
-import { isToday } from '../utils/isToday'
+import {
+  isToday,
+  formatLessonDate,
+  getDayOfWeek,
+  setDefaultMark,
+} from '../utils'
 import { MODAL_PAGE_LESSON } from '../modals/ModalRoot'
 import SubtitleWithBorder from './SubtitleWithBorder'
 import TimeRemaining from './TimeRemaining'
