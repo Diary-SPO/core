@@ -21,7 +21,7 @@ const Marks: FC<{ id: string }> = ({ id }) => {
 
   const [marksForSubject, setMarksForSubject] =
     useState<PerformanceCurrent | null>(null)
-  const [totalNumberOfMarks, setTotalNumberOfMarks] = useState<string | null>(
+  const [totalNumberOfMarks, setTotalNumberOfMarks] = useState<number | null>(
     null
   )
   const [averageMark, setAverageMark] = useState<number | null>(null)
