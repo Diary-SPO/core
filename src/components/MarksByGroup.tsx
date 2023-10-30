@@ -23,7 +23,7 @@ import {
 } from 'diary-shared'
 import calculateAverageMark from '../utils/calculateAverageMark'
 import Mark from './UI/Mark'
-import { ReturnedMark } from '../utils/setDefaultMark.ts'
+import { ReturnedMark } from '../utils/setDefaultMark'
 
 interface IMarksByGroup {
   marksForSubject: PerformanceCurrent | null

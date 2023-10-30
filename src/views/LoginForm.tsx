@@ -40,7 +40,6 @@ const LoginForm: FC<{ id: string }> = ({ id }) => {
 
   useEffect(() => {
     const storageCookie = localStorage.getItem('cookie')
-    console.log(storageCookie)
     setIsLoading(true)
     const getUserCookie = () => {
       if (!storageCookie) {

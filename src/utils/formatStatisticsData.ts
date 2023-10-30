@@ -36,7 +36,7 @@ export const formatStatisticsData = (marks: PerformanceCurrent) => {
     })
 
     return {
-      totalNumberOfMarks: totalNumberOfMarks.toString(),
+      totalNumberOfMarks,
       averageMark: Number(averageMark.toFixed(3)),
       markCounts,
     }

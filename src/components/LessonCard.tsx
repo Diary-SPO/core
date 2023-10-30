@@ -1,4 +1,4 @@
-import { CSSProperties, FC } from 'react'
+import { CSSProperties, FC, memo } from 'react'
 import {
   Card,
   Footnote,
@@ -15,7 +15,6 @@ import {
   LessonWorkType,
   Timetable,
 } from 'diary-shared'
-import { useDispatch } from 'react-redux'
 import { formatLessonDate, getDayOfWeek } from '../utils/formatLessonDate'
 import setDefaultMark from '../utils/setDefaultMark'
 import { isToday } from '../utils/isToday'
@@ -23,7 +22,8 @@ import { MODAL_PAGE_LESSON } from '../modals/ModalRoot'
 import SubtitleWithBorder from './SubtitleWithBorder'
 import TimeRemaining from './TimeRemaining'
 import Mark from './UI/Mark'
-import { setLessonModalData } from '../store/lessonSlice.ts'
+import useModal from '../store/useModal'
+import { useCallback } from 'preact/hooks'
 
 interface ILessonCard {
   lesson: Day
@@ -31,32 +31,34 @@ interface ILessonCard {
 
 const LessonCard: FC<ILessonCard> = ({ lesson }) => {
   const routeNavigator = useRouteNavigator()
-  const dispatch = useDispatch()
+  const { setData } = useModal()
+  const handleLessonClick = useCallback(
+    (
+      name: string,
+      endTime: string,
+      startTime: string,
+      timetable: Timetable,
+      gradebook: Gradebook | undefined
+    ) => {
+      routeNavigator.showModal(MODAL_PAGE_LESSON)
 
-  const handleLessonClick = (
-    name: string,
-    endTime: string,
-    startTime: string,
-    timetable: Timetable,
-    gradebook: Gradebook | undefined
-  ) => {
-    routeNavigator.showModal(MODAL_PAGE_LESSON)
+      const lessonDate = new Date(lesson.date)
+      const lessonId = lessonDate.toISOString()
 
-    const lessonDate = new Date(lesson.date)
-    const lessonId = lessonDate.toISOString()
+      const modalData = {
+        name,
+        endTime,
+        startTime,
+        timetable,
+        gradebook,
+        tasks: gradebook?.tasks,
+        lessonId,
+      }
 
-    const modalData = {
-      name,
-      endTime,
-      startTime,
-      timetable,
-      gradebook,
-      tasks: gradebook?.tasks,
-      lessonId,
-    }
-
-    dispatch(setLessonModalData(modalData))
-  }
+      setData(modalData)
+    },
+    []
+  )
 
   const currentDate = new Date()
   const formattedLessonDate = formatLessonDate(lesson.date)
@@ -114,95 +116,98 @@ const LessonCard: FC<ILessonCard> = ({ lesson }) => {
       >
         {lesson.lessons && lesson.lessons.length > 0 ? (
           lesson.lessons.map(
-            ({ name, endTime, startTime, timetable, gradebook }) =>
-              name && (
-                <SimpleCell
-                  className="lesson"
-                  onClick={() =>
-                    handleLessonClick(
-                      name,
-                      endTime,
-                      startTime,
-                      timetable,
-                      gradebook
-                    )
-                  }
-                  key={startTime}
-                  subtitle={
-                    !name || (
-                      <div>
+            ({ name, endTime, startTime, timetable, gradebook }) => {
+              const lessonTime =
+                startTime === undefined
+                  ? 'Нет данных'
+                  : `${startTime} — ${endTime}, каб. ${
+                      Number(timetable?.classroom.name) === 0
+                        ? 'ДО'
+                        : timetable?.classroom.name
+                    }`
+              return (
+                name && (
+                  <SimpleCell
+                    className="lesson"
+                    onClick={() =>
+                      handleLessonClick(
+                        name,
+                        endTime,
+                        startTime,
+                        timetable,
+                        gradebook
+                      )
+                    }
+                    key={startTime}
+                    subtitle={
+                      !name || (
                         <div>
-                          <div
-                            style={{ display: 'flex', alignItems: 'center' }}
-                          >
-                            {gradebook?.lessonType && (
-                              <SubtitleWithBorder
-                                style={{ margin: '5px 5px 5px 0px' }}
-                              >
-                                {LessonWorkType[gradebook?.lessonType]}
-                              </SubtitleWithBorder>
-                            )}
-                            {gradebook?.absenceType && (
-                              <SubtitleWithBorder
-                                color={
-                                  gradebook.absenceType === 'IsLate'
-                                    ? 'yellow'
-                                    : 'red'
-                                }
-                              >
-                                {AbsenceTypes[gradebook?.absenceType]}
-                              </SubtitleWithBorder>
-                            )}
-                          </div>
-                          <TimeRemaining
-                            lessonDate={lesson.date}
-                            startTime={startTime}
-                            endTime={endTime}
-                          />
-                        </div>
-                        <div>
-                          {startTime === undefined
-                            ? ''
-                            : `${startTime} — ${endTime}, каб. ${
-                                timetable?.classroom.name === '0'
-                                  ? 'ДО'
-                                  : timetable?.classroom.name
-                              }`}
-                        </div>
-                        <div
-                          style={{
-                            marginBottom: 5,
-                            display: 'flex',
-                            justifyContent: 'space-between',
-                            alignItems: 'center',
-                          }}
-                        >
                           <div>
-                            {timetable?.teacher?.lastName
-                              ? `${timetable.teacher?.lastName} ${timetable.teacher?.firstName[0]}. ${timetable.teacher?.middleName[0]}.`
-                              : 'Не указан'}
+                            <div
+                              style={{ display: 'flex', alignItems: 'center' }}
+                            >
+                              {gradebook?.lessonType && (
+                                <SubtitleWithBorder
+                                  style={{ margin: '5px 5px 5px 0px' }}
+                                >
+                                  {LessonWorkType[gradebook?.lessonType]}
+                                </SubtitleWithBorder>
+                              )}
+                              {gradebook?.absenceType && (
+                                <SubtitleWithBorder
+                                  color={
+                                    gradebook.absenceType === 'IsLate'
+                                      ? 'yellow'
+                                      : 'red'
+                                  }
+                                >
+                                  {AbsenceTypes[gradebook?.absenceType]}
+                                </SubtitleWithBorder>
+                              )}
+                            </div>
+                            <TimeRemaining
+                              lessonDate={lesson.date}
+                              startTime={startTime}
+                              endTime={endTime}
+                            />
                           </div>
-                          <div style={{ display: 'flex' }}>
-                            {gradebook?.tasks?.map(
-                              (task, index) =>
-                                (task.isRequired || setDefaultMark(task)) && (
-                                  <Mark
-                                    useMargin
-                                    mark={setDefaultMark(task)}
-                                    size="s"
-                                    key={index}
-                                  />
-                                )
-                            )}
+                          <div>{lessonTime}</div>
+                          <div
+                            style={{
+                              marginBottom: 5,
+                              display: 'flex',
+                              justifyContent: 'space-between',
+                              alignItems: 'center',
+                            }}
+                          >
+                            <div>
+                              {timetable?.teacher?.lastName
+                                ? `${timetable.teacher?.lastName} ${timetable.teacher?.firstName[0]}. ${timetable.teacher?.middleName[0]}.`
+                                : 'Не указан'}
+                            </div>
+                            <div style={{ display: 'flex' }}>
+                              {gradebook?.tasks?.map(
+                                (task, index) =>
+                                  (task.isRequired || setDefaultMark(task)) && (
+                                    <Mark
+                                      useMargin
+                                      mark={setDefaultMark(task)}
+                                      size="s"
+                                      key={index}
+                                    />
+                                  )
+                              )}
+                            </div>
                           </div>
                         </div>
-                      </div>
-                    )
-                  }
-                >
-                  {name}
-                </SimpleCell>
+                      )
+                    }
+                  >
+                    {name}
+                  </SimpleCell>
+                )
               )
+            }
           )
         ) : (
           <Placeholder>Пар нет</Placeholder>
@@ -212,4 +217,4 @@ const LessonCard: FC<ILessonCard> = ({ lesson }) => {
   )
 }
 
-export default LessonCard
+export default memo(LessonCard)

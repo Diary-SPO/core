@@ -44,7 +44,7 @@ const TimeRemaining: FunctionComponent<ITimeRemainingProps> = ({
   endTime,
 }) => {
   if (!lessonDate || !startTime || !endTime) {
-    return <div>Нет времени</div>
+    return undefined
   }
 
   const currentDate = new Date()

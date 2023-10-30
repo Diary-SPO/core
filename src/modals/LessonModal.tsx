@@ -12,8 +12,6 @@ import {
 import {
   AbsenceTypes,
   AbsenceTypesDescription,
-  AbsenceTypesDescriptionKeys,
-  AbsenceTypesKeys,
   Lesson,
   LessonType,
   LessonWorkType,
@@ -21,25 +19,23 @@ import {
 } from 'diary-shared'
 import { FC } from 'preact/compat'
 import { useEffect, useState } from 'preact/hooks'
-import { useSelector } from 'react-redux'
 import setDefaultMark from '../utils/setDefaultMark'
 import textToLink from '../utils/textToLink'
 import { cleanData } from './data'
 import Mark from '../components/UI/Mark'
 import ExplanationTooltip from '../components/UI/ExplanationTooltip'
-import { selectLessonModalData } from '../store/lessonSlice.ts'
+import useModal from '../store/useModal'
 
 interface ILessonModal {
   id: string
 }
 
 const LessonModal: FC<ILessonModal> = ({ id }) => {
-  const lessonModalData = useSelector(selectLessonModalData)
-
+  const { modal } = useModal()
   const [lessonData, setLessonData] = useState<Lesson>(cleanData)
 
   useEffect(() => {
-    if (lessonModalData) {
+    if (modal) {
       const {
         name,
         endTime,
@@ -47,7 +43,7 @@ const LessonModal: FC<ILessonModal> = ({ id }) => {
         timetable,
         gradebook,
         tasks: tasksArray,
-      } = lessonModalData
+      } = modal
 
       let lessonName = name || ''
 
@@ -90,7 +86,7 @@ const LessonModal: FC<ILessonModal> = ({ id }) => {
         endTime: endTime || 'Что-то не так с датой',
       })
     }
-  }, [lessonModalData])
+  }, [])
 
   return (
     <ModalPage id={id} size={500} dynamicContentHeight>
@@ -197,20 +193,14 @@ const LessonModal: FC<ILessonModal> = ({ id }) => {
             <SimpleCell
               after={
                 <Mark
-                  mark={
-                    AbsenceTypes[
-                      lessonData.gradebook?.absenceType
-                    ] as AbsenceTypesKeys
-                  }
+                  mark={AbsenceTypes[lessonData.gradebook?.absenceType]}
                   size="s"
                 />
               }
             >
               {
                 AbsenceTypesDescription[
-                  AbsenceTypes[
-                    lessonData.gradebook?.absenceType
-                  ] as AbsenceTypesDescriptionKeys
+                  AbsenceTypes[lessonData.gradebook?.absenceType]
                 ]
               }
             </SimpleCell>
