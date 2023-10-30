@@ -5,9 +5,9 @@ import Mark from '../Mark'
 import { extractMarksByDay } from '../../../utils/extractMarksByDay'
 import { sortByDay } from '../../../utils/sortByDay'
 import { truncateString } from '../../../utils/truncateString'
+import { memo } from 'react'
 
 import './index.css'
-import {memo} from "react";
 
 interface IPerformanceCurrent {
   performanceData: PerformanceCurrent | null
