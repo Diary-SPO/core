@@ -1,12 +1,19 @@
 import { Snackbar } from '@vkontakte/vkui'
 import { Icon28ErrorCircleOutline } from '@vkontakte/icons'
-import { useState } from 'preact/hooks'
+import { useCallback, useState } from 'preact/hooks'
 import { ReactNode } from 'preact/compat'
+
+/**
+ * Функция 'useRateLimitExceeded' обрабатывает случай превышения лимита запросов.
+ * Устанавливает Snackbar для сообщения об ошибке о превышении лимита запросов.
+ * При вызове функции handleRateLimitExceeded устанавливает Snackbar с соответствующим сообщением и иконкой.
+ * Возвращает состояние rateSnackbar и функцию handleRateLimitExceeded для управления Snackbar'ом.
+ */
 
 const useRateLimitExceeded = (): [ReactNode | null, () => void] => {
   const [rateSnackbar, setRateSnackbar] = useState<ReactNode | null>(null)
 
-  const handleRateLimitExceeded = () => {
+  const handleRateLimitExceeded = useCallback(() => {
     setRateSnackbar(
       <Snackbar
         layout="vertical"
@@ -19,7 +26,7 @@ const useRateLimitExceeded = (): [ReactNode | null, () => void] => {
         Слишком частые запросы
       </Snackbar>
     )
-  }
+  }, [])
 
   return [rateSnackbar, handleRateLimitExceeded]
 }

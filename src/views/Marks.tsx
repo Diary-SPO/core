@@ -9,9 +9,8 @@ import Summary from '../components/UI/Summary'
 import MarksByGroup from '../components/MarksByGroup'
 import UserInfo from '../components/UserInfo'
 import { getPerformance } from '../methods'
-import { handleResponse } from '../utils/handleResponse'
+import { handleResponse, formatStatisticsData } from '../utils'
 import { useSnackbar } from '../hooks'
-import { formatStatisticsData } from '../utils/formatStatisticsData'
 
 const THIRD_SEC = 30 * 1000
 

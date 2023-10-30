@@ -1,6 +1,13 @@
 import { Grade, PerformanceCurrent } from 'diary-shared'
 import { IMarksByDay } from '../components/UI/MarksByDay'
 
+/**
+ * Функция 'extractMarksByDay' обрабатывает данные оценок, извлекая оценки по дням для каждого урока (пары).
+ * Она проходит по performanceData, организуя оценки по дате и названию урока, преобразуя markValues в числовые оценки.
+ * Перед сохранением оценок по дням и урокам убеждается в их числовой пригодности.
+ * Функция возвращает структуру, содержащую оценки, организованные по дням для каждого урока.
+ */
+
 export const extractMarksByDay = (
   performanceData: PerformanceCurrent | null
 ): IMarksByDay => {

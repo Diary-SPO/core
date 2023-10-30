@@ -21,9 +21,8 @@ import {
   PerformanceCurrent,
   TextMark,
 } from 'diary-shared'
-import calculateAverageMark from '../utils/calculateAverageMark'
 import Mark from './UI/Mark'
-import { ReturnedMark } from '../utils/setDefaultMark'
+import { ReturnedMark, calculateAverageMark } from '../utils'
 
 interface IMarksByGroup {
   marksForSubject: PerformanceCurrent | null
