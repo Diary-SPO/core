@@ -35,6 +35,7 @@ const getTimeRemaining = (
       (endDate.getTime() - currentDate.getTime()) / (1000 * 60)
     return `${Math.floor(remainingMinutes)} мин до конца`
   }
+
   return null
 }
 
@@ -46,17 +47,15 @@ const TimeRemaining: FunctionComponent<ITimeRemainingProps> = ({
   if (!lessonDate || !startTime || !endTime) {
     return undefined
   }
-
   const currentDate = new Date()
-  const startDate = new Date(lessonDate)
-  startDate.setHours(Number(startTime.split(':')[0]))
-  startDate.setMinutes(Number(startTime.split(':')[1]))
+  lessonDate.setHours(Number(startTime.split(':')[0]))
+  lessonDate.setMinutes(Number(startTime.split(':')[1]))
 
   const timeRemainingText = getTimeRemaining(
     currentDate,
     lessonDate,
     endTime,
-    startDate
+    lessonDate
   )
 
   if (!timeRemainingText) {
