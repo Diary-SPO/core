@@ -5,7 +5,7 @@ import LessonSubtitle from './LessonSubtitle'
 import { setDefaultMark } from '../../../utils'
 import Mark from '../Mark'
 
-interface ILessonCellProps {
+interface ILessonCell {
   lesson: Lesson
   lessonDate: Date
   handleLessonClick: (
@@ -17,7 +17,7 @@ interface ILessonCellProps {
   ) => void
 }
 
-const LessonCell: FC<ILessonCellProps> = ({
+const LessonCell: FC<ILessonCell> = ({
   lessonDate,
   lesson,
   handleLessonClick,

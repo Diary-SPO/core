@@ -3,14 +3,14 @@ import { FC } from 'react'
 import TimeRemaining from '../TimeRemaining'
 import SubtitleWithBorder from '../SubtitleWithBorder'
 
-interface ILessonSubtitleProps {
+interface ILessonSubtitle {
   gradebook: Gradebook | undefined
   lessonDate: Date
   startTime: string | undefined
   endTime: string | undefined
 }
 
-const LessonSubtitle: FC<ILessonSubtitleProps> = ({
+const LessonSubtitle: FC<ILessonSubtitle> = ({
   gradebook,
   lessonDate,
   startTime,

@@ -1,45 +1,13 @@
 import { FunctionComponent } from 'preact'
+import { getTimeRemaining } from '../../utils'
 
-interface ITimeRemainingProps {
+interface ITimeRemaining {
   lessonDate: Date
   startTime: string
   endTime: string
 }
 
-const getTimeRemaining = (
-  currentDate: Date,
-  lessonDate: Date,
-  endTime: string,
-  startDate: Date
-): string | null => {
-  const endDate = new Date(lessonDate)
-  endDate.setHours(Number(endTime.split(':')[0]))
-  endDate.setMinutes(Number(endTime.split(':')[1]))
-
-  const timeToStart =
-    (startDate.getTime() - currentDate.getTime()) / (1000 * 60)
-
-  if (timeToStart > 60) {
-    return ''
-  }
-
-  if (currentDate > endDate) {
-    return null
-  }
-
-  if (currentDate < startDate) {
-    return `${Math.floor(timeToStart)} мин до начала`
-  }
-  if (currentDate < endDate) {
-    const remainingMinutes =
-      (endDate.getTime() - currentDate.getTime()) / (1000 * 60)
-    return `${Math.floor(remainingMinutes)} мин до конца`
-  }
-
-  return null
-}
-
-const TimeRemaining: FunctionComponent<ITimeRemainingProps> = ({
+const TimeRemaining: FunctionComponent<ITimeRemaining> = ({
   lessonDate,
   startTime,
   endTime,

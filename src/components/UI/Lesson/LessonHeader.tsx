@@ -1,14 +1,14 @@
 import { CSSProperties, FC } from 'react'
 import { Footnote, Header } from '@vkontakte/vkui'
 
-interface ILessonHeaderProps {
+interface ILessonHeader {
   lessonDayOfWeek: string | undefined
   formattedLessonDate: string
   displayDayStyles: CSSProperties
   displayDay: string
 }
 
-const LessonHeader: FC<ILessonHeaderProps> = ({
+const LessonHeader: FC<ILessonHeader> = ({
   lessonDayOfWeek,
   formattedLessonDate,
   displayDayStyles,
