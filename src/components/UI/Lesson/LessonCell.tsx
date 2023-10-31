@@ -25,9 +25,9 @@ const LessonCell: FC<ILessonCell> = ({
   const { name, endTime, startTime, timetable, gradebook } = lesson
   const lessonTime = startTime
     ? `${startTime} — ${endTime}, каб. ${
-        Number(timetable?.classroom.name) === 0
+        Number(timetable?.classroom?.name) === 0
           ? 'ДО'
-          : timetable?.classroom.name
+          : timetable?.classroom?.name
       }`
     : 'Нет данных'
 

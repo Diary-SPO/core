@@ -21,7 +21,7 @@ const LessonTimePlaceInfo: FC<{
           />
         }
       >
-        {lessonTimePlaceInfo.classroomName === '0' ? (
+        {Number(lessonTimePlaceInfo.classroomName) === 0 ? (
           <ExplanationTooltip
             text="ДО"
             tooltipContent="Пара будет удалённо или будет задано домашнее задание. Уточните у куратора или проверьте в оригинальном дневнике."

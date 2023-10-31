@@ -9,7 +9,6 @@ export interface ILessonMainInfo {
   lessonType: string
   themes?: string[]
   teacherName: string
-  classroomName: string
 }
 
 const LessonMainInfo: FC<{ lessonMainInfo: Partial<ILessonMainInfo> }> = ({

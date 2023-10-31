@@ -55,12 +55,11 @@ export const setLessonDetails = (lesson: Lesson) => {
       teacherName: timetable?.teacher?.firstName
         ? `${timetable.teacher.lastName} ${timetable.teacher.firstName} ${timetable.teacher.middleName}`
         : 'Не указан',
-      classroomName: timetable?.classroom?.name || 'Не указана',
     },
     lessonTimePlaceInfo: {
       startTime: startTime || 'Ошибка',
       endTime: endTime || 'Ошибка',
-      classroomName: timetable?.classroom?.name || 'Неизвестно',
+      classroomName: (timetable?.classroom && timetable?.classroom?.name) || 'Неизвестно',
     },
   }
 }
