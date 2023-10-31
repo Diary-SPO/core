@@ -26,7 +26,7 @@ import { FunctionalComponent } from 'preact'
 import { Storage } from '../types'
 import PanelHeaderWithBack from '../components/UI/PanelHeaderWithBack'
 import { useSnackbar } from '../hooks'
-import logOut from '../utils/logOut'
+import { logOut } from '../utils'
 
 interface ISettings {
   id: string
