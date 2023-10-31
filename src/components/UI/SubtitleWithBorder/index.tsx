@@ -31,6 +31,7 @@ const SubtitleWithBorder: FunctionComponent<ISubtitleWithBorder> = ({
     const colorStyle = colors[color] ?? defaultColor
     return {
       borderRadius: '5px',
+      padding: '3px 5px',
       ...colorStyle,
     }
   }

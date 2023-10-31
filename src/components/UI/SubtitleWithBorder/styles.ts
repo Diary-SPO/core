@@ -2,12 +2,12 @@ export const colors = {
   red: {
     background: '#DA0A35',
     border: '1px solid #DA0A35',
-    text: 'white',
+    color: 'white',
   },
   green: {
     background: 'green',
     border: '1px solid green',
-    text: 'white',
+    color: 'white',
   },
   'green-outline': {
     color: 'green',
@@ -34,6 +34,6 @@ export const colors = {
 
 export const defaultColor = {
   background: 'transparent',
-  color: 'white',
   border: '1px solid var(--vkui--color_background_accent_themed)',
+  color: 'var(--vkui--color_background_accent_themed)',
 }

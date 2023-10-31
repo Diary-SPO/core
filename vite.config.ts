@@ -31,8 +31,6 @@ export default defineConfig({
       logLevel: 'debug',
       output: {
         manualChunks: {
-          '@reduxjs/toolkit': ['@reduxjs/toolkit'],
-          'react-redux': ['react-redux'],
           '@vkontakte/icons': ['@vkontakte/icons'],
         },
       },
