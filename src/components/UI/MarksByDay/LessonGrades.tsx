@@ -1,6 +1,6 @@
 import { FunctionalComponent } from 'preact'
 import { Header, HorizontalCell } from '@vkontakte/vkui'
-import Mark from '../Mark.tsx'
+import Mark from '../Mark'
 import { truncateString } from '@utils'
 
 export interface ILessonGrades {

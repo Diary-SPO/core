@@ -1,5 +1,5 @@
 import { FC } from 'react'
-import { AbsenceTypes, AbsenceTypesKeys, Grade } from 'diary-shared'
+import { AbsenceTypes, Grade } from 'diary-shared'
 import Mark from '../Mark'
 import { SubjectMarksMap } from '@utils'
 
@@ -16,7 +16,7 @@ const MarksList: FC<IMarksList> = ({ marks }) => (
             <Mark key={k} mark={Grade[mark]} size="s" />
           ))
         ) : absenceType ? (
-          <Mark size="s" mark={AbsenceTypes[absenceType] as AbsenceTypesKeys} />
+          <Mark size="s" mark={AbsenceTypes[absenceType]} />
         ) : null}
       </div>
     ))}

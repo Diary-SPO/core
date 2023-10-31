@@ -89,9 +89,7 @@ const Marks: FC<{ id: string }> = ({ id }) => {
         icon: <Icon28InfoCircle fill="var(--vkui--color_background_accent)" />,
       })
       const savedMarks = localStorage.getItem('savedMarks')
-      const marks = savedMarks
-        ? (JSON.parse(savedMarks) as PerformanceCurrent)
-        : null
+      const marks = savedMarks ? JSON.parse(savedMarks) : null
       saveStatisticsData(marks)
       return marks ?? undefined
     } catch (error) {
