@@ -52,7 +52,7 @@ export const setLessonDetails = (lesson: Lesson) => {
       name: formattedName,
       lessonType: gradebook?.lessonType || '',
       themes: gradebook?.themes,
-      teacherName: timetable?.teacher.firstName
+      teacherName: timetable?.teacher?.firstName
         ? `${timetable.teacher.lastName} ${timetable.teacher.firstName} ${timetable.teacher.middleName}`
         : 'Не указан',
       classroomName: timetable?.classroom?.name || 'Не указана',
