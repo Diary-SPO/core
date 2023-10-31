@@ -14,60 +14,45 @@ import {
   Icon20StatisticsOutline,
 } from '@vkontakte/icons'
 import {
-  AbsenceType,
   AbsenceTypes,
   AbsenceTypesKeys,
   Grade,
   PerformanceCurrent,
-  TextMark,
 } from 'diary-shared'
 import Mark from './UI/Mark'
-import { ReturnedMark, calculateAverageMark } from '../utils'
+import {
+  ReturnedMark,
+  calculateAverageMark,
+  createSubjectMarksMap,
+} from '../utils'
+import { FunctionalComponent } from 'preact'
 
 interface IMarksByGroup {
   marksForSubject: PerformanceCurrent | null
 }
 
+const NoData: FunctionalComponent = () => (
+  <Group
+    mode="plain"
+    header={<Header mode="secondary">Оценки по дисциплинам</Header>}
+  >
+    <CardGrid size="l">
+      <Card mode="shadow">
+        <Div>
+          {/*//@ts-ignore типы React не совсем совместимы с Preact*/}
+          <Title level="3">Нет данных</Title>
+        </Div>
+      </Card>
+    </CardGrid>
+  </Group>
+)
+
 const MarksByGroup: FC<IMarksByGroup> = ({ marksForSubject }) => {
-  const subjectMarksMap: Record<
-    string,
-    { date: string; marks: TextMark[]; absenceType?: AbsenceType }[]
-  > = {}
-
   if (!marksForSubject) {
-    return (
-      <Group
-        mode="plain"
-        header={<Header mode="secondary">Оценки по дисциплинам</Header>}
-      >
-        <CardGrid size="l">
-          <Card mode="shadow">
-            <Div>
-              {/*//@ts-ignore типы React не совсем совместимы с Preact*/}
-              <Title level="3">Нет данных</Title>
-            </Div>
-          </Card>
-        </CardGrid>
-      </Group>
-    )
+    return <NoData />
   }
-
-  marksForSubject.daysWithMarksForSubject.forEach((subject) => {
-    const { subjectName, daysWithMarks } = subject
-
-    if (!subjectMarksMap[subjectName]) {
-      subjectMarksMap[subjectName] = []
-    }
-
-    subjectMarksMap[subjectName].push(
-      ...(daysWithMarks?.map((dayWithMark) => ({
-        date: new Date(dayWithMark.day).toLocaleDateString(),
-        marks: dayWithMark.markValues,
-        absenceType: dayWithMark.absenceType,
-      })) ?? [])
-    )
-  })
-
+  console.log()
+  const subjectMarksMap = createSubjectMarksMap(marksForSubject)
   return (
     <Group
       mode="plain"

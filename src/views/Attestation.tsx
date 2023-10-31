@@ -15,7 +15,9 @@ import { useRateLimitExceeded } from '../hooks'
 import { handleResponse } from '../utils'
 import { getAttestation } from '../methods'
 
-const SubjectList = lazy(() => import('../components/UI/AttestationSubjects/SubjectsList'))
+const SubjectList = lazy(
+  () => import('../components/UI/AttestationSubjects/SubjectsList')
+)
 
 interface IAttestation {
   id: string

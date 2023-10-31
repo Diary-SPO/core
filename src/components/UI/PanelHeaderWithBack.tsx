@@ -1,7 +1,6 @@
 import { FunctionalComponent } from 'preact'
 import { PanelHeader, PanelHeaderBack } from '@vkontakte/vkui'
 import { useRouteNavigator } from '@vkontakte/vk-mini-apps-router'
-import { memo } from 'react'
 
 const PanelHeaderWithBack: FunctionalComponent<{ title: string }> = ({
   title,
@@ -17,4 +16,4 @@ const PanelHeaderWithBack: FunctionalComponent<{ title: string }> = ({
   )
 }
 
-export default memo(PanelHeaderWithBack)
+export default PanelHeaderWithBack
