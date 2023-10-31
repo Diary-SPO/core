@@ -1,4 +1,4 @@
-import { Sizes } from '../../components/UI/Mark'
+import { Sizes } from '@components'
 
 export const getSize = (size: Sizes) => {
   if (size === 's') {

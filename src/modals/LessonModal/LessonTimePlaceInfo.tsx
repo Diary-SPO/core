@@ -1,6 +1,6 @@
 import { FC } from 'react'
 import { Group, Header, InfoRow, SimpleCell } from '@vkontakte/vkui'
-import ExplanationTooltip from '../../components/UI/ExplanationTooltip'
+import { ExplanationTooltip } from '@components'
 
 export interface ILessonTimePlaceInfo {
   classroomName?: string

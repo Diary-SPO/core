@@ -1,5 +1,5 @@
 import { Grade, PerformanceCurrent } from 'diary-shared'
-import { IMarksByDay } from '../../components/UI/MarksByDay'
+import { IMarksByDay } from '@components'
 
 /**
  * Функция 'extractMarksByDay' обрабатывает данные оценок, извлекая оценки по дням для каждого урока (пары).

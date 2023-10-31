@@ -1,4 +1,4 @@
-import { IMarksByDay } from '../components/UI/MarksByDay'
+import { IMarksByDay } from '@components'
 import { formatDate } from './formatted/formatDate'
 
 /**

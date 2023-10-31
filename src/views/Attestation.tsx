@@ -10,7 +10,7 @@ import {
 import { AttestationResponse } from 'diary-shared'
 import { FC, lazy } from 'preact/compat'
 import { useEffect, useState } from 'preact/hooks'
-import PanelHeaderWithBack from '../components/UI/PanelHeaderWithBack'
+import { PanelHeaderWithBack } from '@components'
 import { useRateLimitExceeded } from '../hooks'
 import { handleResponse } from '@utils'
 import { getAttestation } from '../methods'

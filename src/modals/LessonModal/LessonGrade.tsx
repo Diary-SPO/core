@@ -1,8 +1,7 @@
 import { FC } from 'preact/compat'
 import { Group, Header, SimpleCell } from '@vkontakte/vkui'
 import { AbsenceTypes, AbsenceTypesDescription, Lesson } from 'diary-shared'
-import Mark from '../../components/UI/Mark'
-import ExplanationTooltip from '../../components/UI/ExplanationTooltip'
+import { Mark, ExplanationTooltip } from '@components'
 import LessonTasks from './LessonTasks'
 
 interface ILessonGrade {

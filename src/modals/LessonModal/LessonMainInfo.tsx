@@ -1,7 +1,7 @@
 import { FC } from 'react'
 import { Group, Header, InfoRow, SimpleCell } from '@vkontakte/vkui'
 import { LessonWorkType, TLesson } from 'diary-shared'
-import ExplanationTooltip from '../../components/UI/ExplanationTooltip'
+import { ExplanationTooltip } from '@components'
 import { textToLink } from '@utils'
 
 export interface ILessonMainInfo {

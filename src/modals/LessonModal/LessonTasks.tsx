@@ -1,7 +1,7 @@
 import { FC } from 'react'
 import { Lesson, LessonType } from 'diary-shared'
 import { InfoRow, Separator, SimpleCell, Spacing, Text } from '@vkontakte/vkui'
-import Mark from '../../components/UI/Mark.tsx'
+import { Mark } from '@components'
 import { setDefaultMark } from '@utils'
 
 interface ILessonTasks {
