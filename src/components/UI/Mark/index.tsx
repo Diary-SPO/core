@@ -1,10 +1,10 @@
 import { Footnote } from '@vkontakte/vkui'
-import { CSSProperties, FC } from 'preact/compat'
+import { CSSProperties, FC, HTMLAttributes, useMemo } from 'preact/compat'
 import { ReturnedMark } from '../../../utils/setDefaultMark'
 
 type Sizes = 'l' | 's'
 
-interface IMark {
+interface IMark extends Omit<HTMLAttributes<HTMLDivElement>, 'size'>{
   mark?: ReturnedMark
   size?: Sizes
   bottom?: string
@@ -42,24 +42,24 @@ const getBackgroundColor = (score?: ReturnedMark): string => {
   }
 }
 
+const getSize = (size: Sizes) => {
+  if (size === 's') {
+    return '1rem'
+  }
+  if (size === 'l') {
+    return '3rem'
+  }
+  return undefined
+}
+
 const Mark: FC<IMark> = ({
   mark,
   size = 'l',
   useMargin = true,
   bottom,
-  style,
+  ...props
 }) => {
-  const getSize = (size: Sizes) => {
-    if (size === 's') {
-      return '1rem'
-    }
-    if (size === 'l') {
-      return '3rem'
-    }
-    return undefined
-  }
-
-  const styles: CSSProperties = {
+  const style: CSSProperties = {
     padding: size === 'l' ? '10px 29px' : '5px 10px',
     background: getBackgroundColor(mark),
     fontSize: getSize(size),
@@ -69,14 +69,17 @@ const Mark: FC<IMark> = ({
     display: 'inline-block',
   }
 
-  return (
-    <div style={{ ...style }}>
-      <div style={styles}>{mark}</div>
-      {bottom && (
-        // @ts-ignore
-        <Footnote style={{ padding: 3 }}>{bottom}</Footnote>
-      )}
-    </div>
+  return useMemo(
+    () => (
+      <div {...props}>
+        <div style={style}>{mark}</div>
+        {bottom && (
+          // @ts-ignore
+          <Footnote style={{ padding: 3 }}>{bottom}</Footnote>
+        )}
+      </div>
+    ),
+    [mark, bottom, size]
   )
 }
 

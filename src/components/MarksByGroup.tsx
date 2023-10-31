@@ -16,14 +16,12 @@ import {
 import {
   AbsenceType,
   AbsenceTypes,
-  AbsenceTypesKeys,
   Grade,
   PerformanceCurrent,
   TextMark,
 } from 'diary-shared'
 import calculateAverageMark from '../utils/calculateAverageMark'
 import Mark from './UI/Mark'
-import { ReturnedMark } from '../utils/setDefaultMark'
 
 interface IMarksByGroup {
   marksForSubject: PerformanceCurrent | null
@@ -53,21 +51,22 @@ const MarksByGroup: FC<IMarksByGroup> = ({ marksForSubject }) => {
     )
   }
 
-  marksForSubject?.daysWithMarksForSubject?.map((subject) => {
-    const { subjectName, daysWithMarks } = subject
+  marksForSubject.daysWithMarksForSubject.forEach((subject) => {
+    const { subjectName, daysWithMarks } = subject;
+    
     if (!subjectMarksMap[subjectName]) {
-      subjectMarksMap[subjectName] = []
+      subjectMarksMap[subjectName] = [];
     }
-
-    daysWithMarks?.forEach((dayWithMark) => {
-      subjectMarksMap[subjectName].push({
+    
+    subjectMarksMap[subjectName].push(
+      ...daysWithMarks?.map((dayWithMark) => ({
         date: new Date(dayWithMark.day).toLocaleDateString(),
         marks: dayWithMark.markValues,
         absenceType: dayWithMark.absenceType,
-      })
-    })
-  })
-
+      })) ?? []
+    );
+  });
+  
   return (
     <Group
       mode="plain"
@@ -92,14 +91,14 @@ const MarksByGroup: FC<IMarksByGroup> = ({ marksForSubject }) => {
                         marks.map((mark, k) => (
                           <Mark
                             key={k}
-                            mark={Grade[mark] as ReturnedMark}
+                            mark={Grade[mark]}
                             size="s"
                           />
                         ))
                       ) : absenceType ? (
                         <Mark
                           size="s"
-                          mark={AbsenceTypes[absenceType] as AbsenceTypesKeys}
+                          mark={AbsenceTypes[absenceType]}
                         />
                       ) : null}
                     </div>
