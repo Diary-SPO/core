@@ -25,13 +25,12 @@ import {
   calculateAverageMark,
   createSubjectMarksMap,
 } from '../utils'
-import { FunctionalComponent } from 'preact'
 
 interface IMarksByGroup {
   marksForSubject: PerformanceCurrent | null
 }
 
-const NoData: FunctionalComponent = () => (
+const NoData = (
   <Group
     mode="plain"
     header={<Header mode="secondary">Оценки по дисциплинам</Header>}
@@ -47,12 +46,17 @@ const NoData: FunctionalComponent = () => (
   </Group>
 )
 
+const NoMarks = (
+  <MiniInfoCell before={<Icon20IncognitoOutline />}>Нет оценок</MiniInfoCell>
+)
+
 const MarksByGroup: FC<IMarksByGroup> = ({ marksForSubject }) => {
   if (!marksForSubject) {
-    return <NoData />
+    return NoData
   }
-  console.log()
+
   const subjectMarksMap = createSubjectMarksMap(marksForSubject)
+
   return (
     <Group
       mode="plain"
@@ -92,8 +96,7 @@ const MarksByGroup: FC<IMarksByGroup> = ({ marksForSubject }) => {
                 )}
               </div>
             </HorizontalScroll>
-            {marksForSubject &&
-            marksForSubject.daysWithMarksForSubject[i].averageMark ? (
+            {marksForSubject.daysWithMarksForSubject[i].averageMark ? (
               <MiniInfoCell
                 textWrap="full"
                 before={<Icon20StatisticsOutline />}
@@ -105,9 +108,7 @@ const MarksByGroup: FC<IMarksByGroup> = ({ marksForSubject }) => {
                 Средний балл:
               </MiniInfoCell>
             ) : (
-              <MiniInfoCell before={<Icon20IncognitoOutline />}>
-                Нет оценок
-              </MiniInfoCell>
+              NoMarks
             )}
           </Card>
         </CardGrid>

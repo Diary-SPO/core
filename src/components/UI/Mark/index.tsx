@@ -1,8 +1,8 @@
 import { Footnote } from '@vkontakte/vkui'
 import { CSSProperties, FC, HTMLAttributes, useMemo } from 'preact/compat'
-import { ReturnedMark } from '../../../utils'
+import { getBackgroundColor, getSize, ReturnedMark } from '../../../utils'
 
-type Sizes = 'l' | 's'
+export type Sizes = 'l' | 's'
 
 interface IMark extends Omit<HTMLAttributes<HTMLDivElement>, 'size'> {
   mark?: ReturnedMark
@@ -10,46 +10,6 @@ interface IMark extends Omit<HTMLAttributes<HTMLDivElement>, 'size'> {
   bottom?: string
   useMargin?: boolean
   style?: CSSProperties
-}
-
-/**
- * Функция getBackgroundColor возвращает цвет в зависимости от переданной оценки (score).
- * При этом оценка может быть строкой в случае, если это ДЗ / Долг / Опоздание / Н-ка.
- */
-const getBackgroundColor = (score?: ReturnedMark): string => {
-  if (typeof score === 'number') {
-    if (score > 5) {
-      return 'var(--vkui--color_accent_purple)'
-    }
-    if (score >= 4) {
-      return 'linear-gradient(135deg,#50c750,#32b332)'
-    }
-    if (score === 3) {
-      return '#F59802'
-    }
-  } else {
-    switch (score) {
-      case 'ДЗ':
-        return '#4966CF'
-      case 'О':
-        return '#ffb060'
-      case 'Н':
-      case 'Д':
-        return '#DA0A35'
-      default:
-        return '#959595'
-    }
-  }
-}
-
-const getSize = (size: Sizes) => {
-  if (size === 's') {
-    return '1rem'
-  }
-  if (size === 'l') {
-    return '3rem'
-  }
-  return undefined
 }
 
 const Mark: FC<IMark> = ({

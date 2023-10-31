@@ -1,5 +1,5 @@
 import { IMarksByDay } from '../components/UI/MarksByDay'
-import { formatDate } from './formatDate'
+import { formatDate } from './formatted/formatDate'
 
 /**
  * Функция 'sortByDay' сортирует оценки по дням.
