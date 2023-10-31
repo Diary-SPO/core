@@ -1,6 +1,6 @@
 import { AbsenceType, PerformanceCurrent, TextMark } from 'diary-shared'
 
-interface SubjectMarksMap {
+export interface SubjectMarksMap {
   [subjectName: string]: {
     date: string
     marks: TextMark[]

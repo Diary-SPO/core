@@ -16,6 +16,7 @@ export const getBackgroundColor = (score?: ReturnedMark): string => {
     if (score >= 3) {
       return '#F59802'
     }
+
     return '#DA0A35'
   }
 
