@@ -13,31 +13,29 @@ const LessonGrade: FC<ILessonGrade> = ({ tasks, absenceType }) => {
   const hasTasks = tasks?.length
   const hasAbsenceType = absenceType
 
-  if (hasTasks || hasAbsenceType) {
-    return (
-      <Group
-        header={
-          <Header mode="tertiary">
-            <ExplanationTooltip
-              text="Успеваемость"
-              tooltipContent="Информация может быть неактуальной. При возникновении неточностей можете обратиться к нам"
-            />
-          </Header>
-        }
-      >
-        {hasTasks && <LessonTasks tasks={tasks} />}
-        {hasAbsenceType && (
-          <SimpleCell
-            after={<Mark mark={AbsenceTypes[absenceType]} size="s" />}
-          >
-            {AbsenceTypesDescription[absenceType]}
-          </SimpleCell>
-        )}
-      </Group>
-    )
+  if (!hasTasks || !hasAbsenceType) {
+    return
   }
 
-  return null
+  return (
+    <Group
+      header={
+        <Header mode="tertiary">
+          <ExplanationTooltip
+            text="Успеваемость"
+            tooltipContent="Информация может быть неактуальной. При возникновении неточностей можете обратиться к нам"
+          />
+        </Header>
+      }
+    >
+      {hasTasks && <LessonTasks tasks={tasks} />}
+      {hasAbsenceType && (
+        <SimpleCell after={<Mark mark={AbsenceTypes[absenceType]} size="s" />}>
+          {AbsenceTypesDescription[absenceType]}
+        </SimpleCell>
+      )}
+    </Group>
+  )
 }
 
 export default LessonGrade
