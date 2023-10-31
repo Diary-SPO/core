@@ -1,4 +1,3 @@
-// TODO: Сделать переключатель для расписания
 import { CardGrid } from '@vkontakte/vkui'
 import { Day } from 'diary-shared'
 import LessonCard from './LessonCard'

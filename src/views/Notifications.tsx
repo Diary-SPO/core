@@ -20,7 +20,7 @@ import { FC } from 'preact/compat'
 import PanelHeaderWithBack from '../components/UI/PanelHeaderWithBack'
 import { handleResponse } from '../utils'
 import { useSnackbar } from '../hooks'
-import SubtitleWithBorder from '../components/SubtitleWithBorder'
+import SubtitleWithBorder from '../components/UI/SubtitleWithBorder'
 import { getAds } from '../methods'
 
 const Notifications: FC<{ id: string }> = ({ id }) => {

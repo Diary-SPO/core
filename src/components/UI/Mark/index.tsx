@@ -4,7 +4,7 @@ import { ReturnedMark } from '../../../utils'
 
 type Sizes = 'l' | 's'
 
-interface IMark extends Omit<HTMLAttributes<HTMLDivElement>, 'size'>{
+interface IMark extends Omit<HTMLAttributes<HTMLDivElement>, 'size'> {
   mark?: ReturnedMark
   size?: Sizes
   bottom?: string

@@ -53,21 +53,21 @@ const MarksByGroup: FC<IMarksByGroup> = ({ marksForSubject }) => {
   }
 
   marksForSubject.daysWithMarksForSubject.forEach((subject) => {
-    const { subjectName, daysWithMarks } = subject;
-    
+    const { subjectName, daysWithMarks } = subject
+
     if (!subjectMarksMap[subjectName]) {
-      subjectMarksMap[subjectName] = [];
+      subjectMarksMap[subjectName] = []
     }
-    
+
     subjectMarksMap[subjectName].push(
-      ...daysWithMarks?.map((dayWithMark) => ({
+      ...(daysWithMarks?.map((dayWithMark) => ({
         date: new Date(dayWithMark.day).toLocaleDateString(),
         marks: dayWithMark.markValues,
         absenceType: dayWithMark.absenceType,
-      })) ?? []
-    );
-  });
-  
+      })) ?? [])
+    )
+  })
+
   return (
     <Group
       mode="plain"
