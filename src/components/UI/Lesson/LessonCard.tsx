@@ -5,7 +5,7 @@ import { useCallback } from 'preact/hooks'
 import { Day, Gradebook, Timetable } from 'diary-shared'
 import useModal from '../../../store/useModal'
 import { MODAL_PAGE_LESSON } from '../../../modals/ModalRoot'
-import { formatLessonDate, isToday } from '../../../utils'
+import { formatLessonDate, isToday } from '@utils'
 import LessonHeader from './LessonHeader'
 import LessonCell from './LessonCell'
 

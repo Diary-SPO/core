@@ -8,7 +8,7 @@ import Suspense from '../components/UI/Suspense'
 import Summary from '../components/UI/Summary'
 import UserInfo from '../components/UserInfo'
 import { getPerformance } from '../methods'
-import { handleResponse, formatStatisticsData } from '../utils'
+import { handleResponse, formatStatisticsData } from '@utils'
 import { useSnackbar } from '../hooks'
 import MarksByGroup from '../components/UI/Marks/MarksByGroup'
 

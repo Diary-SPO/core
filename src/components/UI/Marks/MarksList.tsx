@@ -1,7 +1,7 @@
 import { FC } from 'react'
 import { AbsenceTypes, AbsenceTypesKeys, Grade } from 'diary-shared'
 import Mark from '../Mark'
-import { SubjectMarksMap } from '../../../utils'
+import { SubjectMarksMap } from '@utils'
 
 interface IMarksList {
   marks: SubjectMarksMap[string]

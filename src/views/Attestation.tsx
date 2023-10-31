@@ -12,7 +12,7 @@ import { FC, lazy } from 'preact/compat'
 import { useEffect, useState } from 'preact/hooks'
 import PanelHeaderWithBack from '../components/UI/PanelHeaderWithBack'
 import { useRateLimitExceeded } from '../hooks'
-import { handleResponse } from '../utils'
+import { handleResponse } from '@utils'
 import { getAttestation } from '../methods'
 
 const SubjectList = lazy(

@@ -1,4 +1,4 @@
-import { getTimeRemaining } from '../../utils'
+import { getTimeRemaining } from '@utils'
 import { CSSProperties } from 'preact/compat'
 import { FunctionComponent } from 'preact'
 

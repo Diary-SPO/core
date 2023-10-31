@@ -2,7 +2,7 @@ import { FunctionalComponent } from 'preact'
 import { Header, HorizontalCell, HorizontalScroll } from '@vkontakte/vkui'
 import { PerformanceCurrent } from 'diary-shared'
 import Mark from '../Mark'
-import { truncateString, extractMarksByDay, sortByDay } from '../../../utils'
+import { truncateString, extractMarksByDay, sortByDay } from '@utils'
 import { memo } from 'react'
 
 import './index.css'

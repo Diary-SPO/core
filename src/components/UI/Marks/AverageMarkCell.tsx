@@ -4,7 +4,7 @@ import {
   Icon20IncognitoOutline,
   Icon20StatisticsOutline,
 } from '@vkontakte/icons'
-import { calculateAverageMark } from '../../../utils'
+import { calculateAverageMark } from '@utils'
 
 interface IAverageMarkCell {
   marks: string[]

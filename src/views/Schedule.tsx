@@ -34,7 +34,7 @@ import {
   useScrollPosition,
 } from '../hooks'
 import ExplanationTooltip from '../components/UI/ExplanationTooltip'
-import { handleResponse } from '../utils'
+import { handleResponse } from '@utils'
 import { useCallback } from 'preact/hooks'
 
 const MarksByDay = lazy(() => import('../components/UI/MarksByDay'))

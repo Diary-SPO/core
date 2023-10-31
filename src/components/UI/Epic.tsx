@@ -49,7 +49,7 @@ const Epic: FC<IEpic> = ({ onStoryChange }) => {
       <View
         id={VIEW_SCHEDULE}
         history={panelsHistory}
-        activePanel={activePanel as string}
+        activePanel={activePanel}
         onSwipeBack={() => routeNavigator.back()}
       >
         <Suspense id={MAIN_SETTINGS} mode="screen">

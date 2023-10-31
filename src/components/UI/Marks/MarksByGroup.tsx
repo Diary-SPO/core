@@ -9,7 +9,7 @@ import {
   Title,
 } from '@vkontakte/vkui'
 import { PerformanceCurrent } from 'diary-shared'
-import { createSubjectMarksMap } from '../../../utils'
+import { createSubjectMarksMap } from '@utils'
 import MarksList from './MarksList'
 import AverageMarkCell from './AverageMarkCell'
 import NoData from './NoData'
