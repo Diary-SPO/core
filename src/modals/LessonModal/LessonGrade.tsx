@@ -13,7 +13,7 @@ const LessonGrade: FC<ILessonGrade> = ({ tasks, absenceType }) => {
   const hasTasks = tasks?.length
   const hasAbsenceType = absenceType
 
-  if (!hasTasks || !hasAbsenceType) {
+  if (!hasTasks && !hasAbsenceType) {
     return
   }
 

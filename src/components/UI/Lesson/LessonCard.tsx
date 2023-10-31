@@ -8,6 +8,7 @@ import { MODAL_PAGE_LESSON } from '../../../modals/ModalRoot'
 import { formatLessonDate, isToday } from '@utils'
 import LessonHeader from './LessonHeader'
 import LessonCell from './LessonCell'
+import { useMemo } from 'preact/compat'
 
 interface ILessonCard {
   lesson: Day
@@ -70,6 +71,20 @@ const LessonCard: FC<ILessonCard> = ({ lesson }) => {
     ? 'Сегодня'
     : undefined
 
+  const lessonComponents = useMemo(() => {
+    if (lesson.lessons && lesson.lessons.length > 0) {
+      return lesson.lessons.map((lesson) => (
+        <LessonCell
+          key={lesson.lessonId}
+          lessonDate={lessonDate}
+          lesson={lesson}
+          handleLessonClick={handleLessonClick}
+        />
+      ))
+    }
+    return <Placeholder>Пар нет</Placeholder>
+  }, [lesson.lessons, lessonDate, handleLessonClick])
+
   return (
     <Card className="lessonCard" key={lesson.date}>
       <Group
@@ -82,17 +97,7 @@ const LessonCard: FC<ILessonCard> = ({ lesson }) => {
           />
         }
       >
-        {lesson.lessons && lesson.lessons.length > 0 ? (
-          lesson.lessons.map((lesson) => (
-            <LessonCell
-              lessonDate={lessonDate}
-              lesson={lesson}
-              handleLessonClick={handleLessonClick}
-            />
-          ))
-        ) : (
-          <Placeholder>Пар нет</Placeholder>
-        )}
+        {lessonComponents}
       </Group>
     </Card>
   )
