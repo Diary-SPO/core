@@ -3,21 +3,23 @@ import {
   HTMLAttributes,
   ReactNode,
   useMemo,
+  memo,
 } from 'preact/compat'
 import { FunctionComponent } from 'preact'
-import { memo } from 'react'
-import { colors, defaultColor } from './styles.ts'
+import { colors, defaultColor } from './styles'
+
+type SubtitleColors =
+  | 'red'
+  | 'green'
+  | 'yellow'
+  | 'red-outline'
+  | 'green-outline'
+  | 'yellow-outline'
+  | 'default'
 
 interface ISubtitleWithBorder extends HTMLAttributes<HTMLDivElement> {
   children: ReactNode | string
-  color?:
-    | 'red'
-    | 'green'
-    | 'yellow'
-    | 'red-outline'
-    | 'green-outline'
-    | 'yellow-outline'
-    | 'default'
+  color?: SubtitleColors
   style?: CSSProperties
 }
 
