@@ -58,9 +58,9 @@ export const setLessonDetails = (lesson: Lesson) => {
       classroomName: timetable?.classroom?.name || 'Не указана',
     },
     lessonTimePlaceInfo: {
-      startTime: startTime || 'Что-то не так с датой',
-      endTime: endTime || 'Что-то не так с датой',
-      classroomName: timetable?.classroom?.name || 'Не указан',
+      startTime: startTime || 'Ошибка',
+      endTime: endTime || 'Ошибка',
+      classroomName: timetable?.classroom?.name || 'Неизвестно',
     },
   }
 }

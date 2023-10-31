@@ -11,20 +11,20 @@ export interface ILessonTimePlaceInfo {
 const LessonTimePlaceInfo: FC<{
   lessonTimePlaceInfo: ILessonTimePlaceInfo
 }> = ({ lessonTimePlaceInfo }) => (
-  <Group header={<Header mode="tertiary">Место и время</Header>}>
+  <Group header={<Header mode="tertiary">Куда бежать</Header>}>
     <SimpleCell>
       <InfoRow
         header={
           <ExplanationTooltip
             text="Аудитория"
-            tooltipContent="Если аудитория не указана, возможно, пара будет удалена"
+            tooltipContent="Если аудитория не указана, возможно, пара будет удалённо"
           />
         }
       >
         {lessonTimePlaceInfo.classroomName === '0' ? (
           <ExplanationTooltip
             text="ДО"
-            tooltipContent="Пара будет удалена или будет задано домашнее задание. Уточните у куратора или проверьте в оригинальном дневнике."
+            tooltipContent="Пара будет удалённо или будет задано домашнее задание. Уточните у куратора или проверьте в оригинальном дневнике."
           />
         ) : (
           lessonTimePlaceInfo.classroomName
