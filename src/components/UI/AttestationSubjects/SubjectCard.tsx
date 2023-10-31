@@ -3,11 +3,11 @@ import { FunctionalComponent } from 'preact'
 import { Examinations } from 'diary-shared'
 import Subject from './types'
 
-interface SubjectCardProps {
+interface ISubjectCard {
   subject: Subject
 }
 
-const SubjectCard: FunctionalComponent<SubjectCardProps> = ({ subject }) => (
+const SubjectCard: FunctionalComponent<ISubjectCard> = ({ subject }) => (
   <CardGrid key={subject.id} size="l">
     <Card mode="shadow">
       <Div>

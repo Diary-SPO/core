@@ -3,14 +3,14 @@ import { FunctionalComponent } from 'preact'
 import SubjectCard from './SubjectCard'
 import Subject from './types'
 
-interface SubjectGroupProps {
+interface ISubjectGroup {
   semesterKey: string
   subjects: Subject[]
   studentName: string | null
   year: number | null
 }
 
-const SubjectGroup: FunctionalComponent<SubjectGroupProps> = ({
+const SubjectGroup: FunctionalComponent<ISubjectGroup> = ({
   semesterKey,
   subjects,
   studentName,

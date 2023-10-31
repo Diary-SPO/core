@@ -41,9 +41,6 @@ const MarksByGroup: FC<IMarksByGroup> = ({ marksForSubject }) => {
               <MarksList marks={subjectMarksMap[subjectName]} />
             </HorizontalScroll>
             <AverageMarkCell
-              averageMark={
-                marksForSubject.daysWithMarksForSubject[i].averageMark as number
-              }
               marks={subjectMarksMap[subjectName].flatMap(({ marks }) => marks)}
             />
           </Card>
