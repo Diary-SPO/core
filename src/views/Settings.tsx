@@ -20,13 +20,12 @@ import {
   Icon28ThumbsUpCircleFillGreen,
 } from '@vkontakte/icons'
 import bridge from '@vkontakte/vk-bridge'
-import { AuthData } from 'diary-shared'
 import { useEffect, useRef, useState } from 'preact/hooks'
 import { FunctionalComponent } from 'preact'
 import { Storage } from '../types'
 import PanelHeaderWithBack from '../components/UI/PanelHeaderWithBack'
 import { useSnackbar } from '../hooks'
-import { logOut } from '../utils'
+import { logOut } from '@utils'
 
 interface ISettings {
   id: string
@@ -199,7 +198,7 @@ const Settings: FunctionalComponent<ISettings> = ({ id }) => {
         }),
       })
 
-      const data = (await response.json()) as AuthData
+      const data = await response.json()
 
       if (!data.cookie) {
         showSnackbar({

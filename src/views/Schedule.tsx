@@ -25,17 +25,15 @@ import {
 import { addDays, endOfWeek, startOfWeek } from '@vkontakte/vkui/dist/lib/date'
 import { Day, PerformanceCurrent } from 'diary-shared'
 import { getLessons, getPerformance } from '../methods'
-import PanelHeaderWithBack from '../components/UI/PanelHeaderWithBack'
-import Suspense from '../components/UI/Suspense'
+import { ExplanationTooltip, PanelHeaderWithBack, Suspense } from '@components'
 import {
   useDebouncedChangeWeek,
   useRateLimitExceeded,
   useSnackbar,
   useScrollPosition,
 } from '../hooks'
-import ExplanationTooltip from '../components/UI/ExplanationTooltip'
-import { handleResponse } from '../utils'
 import { useCallback } from 'preact/hooks'
+import { handleResponse } from '@utils'
 
 const MarksByDay = lazy(() => import('../components/UI/MarksByDay'))
 const ScheduleGroup = lazy(() => import('../components/ScheduleGroup'))

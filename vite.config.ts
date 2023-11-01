@@ -1,11 +1,16 @@
 import { defineConfig } from 'vite'
 import preact from '@preact/preset-vite'
+import * as path from 'node:path'
 
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [preact()],
   resolve: {
-    alias: [{ find: /^@vkontakte\/vkui$/, replacement: '@vkontakte/vkui/dist/cssm' }],
+    alias: [
+      { find: /^@vkontakte\/vkui$/, replacement: '@vkontakte/vkui/dist/cssm' },
+      { find: '@utils', replacement: path.resolve(__dirname, './src/utils') },
+      { find: '@components', replacement: path.resolve(__dirname, 'src/components') }
+    ],
   },
   build: {
     sourcemap: false,
@@ -26,8 +31,6 @@ export default defineConfig({
       logLevel: 'debug',
       output: {
         manualChunks: {
-          '@reduxjs/toolkit': ['@reduxjs/toolkit'],
-          'react-redux': ['react-redux'],
           '@vkontakte/icons': ['@vkontakte/icons'],
         },
       },

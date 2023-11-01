@@ -8,11 +8,11 @@ import vkBridge from '@vkontakte/vk-bridge'
 import { useAdaptivity, useAppearance } from '@vkontakte/vk-bridge-react'
 import { FC, lazy } from 'preact/compat'
 import { router } from './routes'
-import Suspense from './components/UI/Suspense'
+import { Suspense } from '@components'
 import { transformVKBridgeAdaptivity } from './transformers/transformVKBridgeAdaptivity'
 
-const NotFound = lazy(() => import('./components/UI/NotFound'))
 const App = lazy(() => import('./App'))
+const NotFound = lazy(() => import('./views/NotFound'))
 
 vkBridge.send('VKWebAppInit')
 

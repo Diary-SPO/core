@@ -3,13 +3,15 @@ import { Icon28ErrorCircleOutline, Icon28InfoCircle } from '@vkontakte/icons'
 import { PerformanceCurrent } from 'diary-shared'
 import { FC } from 'preact/compat'
 import { useEffect, useState } from 'preact/hooks'
-import PanelHeaderWithBack from '../components/UI/PanelHeaderWithBack'
-import Suspense from '../components/UI/Suspense'
-import Summary from '../components/UI/Summary'
-import MarksByGroup from '../components/MarksByGroup'
-import UserInfo from '../components/UserInfo'
+import {
+  Suspense,
+  Summary,
+  UserInfo,
+  PanelHeaderWithBack,
+  MarksByGroup,
+} from '@components'
 import { getPerformance } from '../methods'
-import { handleResponse, formatStatisticsData } from '../utils'
+import { handleResponse, formatStatisticsData } from '@utils'
 import { useSnackbar } from '../hooks'
 
 const THIRD_SEC = 30 * 1000
@@ -87,9 +89,7 @@ const Marks: FC<{ id: string }> = ({ id }) => {
         icon: <Icon28InfoCircle fill="var(--vkui--color_background_accent)" />,
       })
       const savedMarks = localStorage.getItem('savedMarks')
-      const marks = savedMarks
-        ? (JSON.parse(savedMarks) as PerformanceCurrent)
-        : null
+      const marks = savedMarks ? JSON.parse(savedMarks) : null
       saveStatisticsData(marks)
       return marks ?? undefined
     } catch (error) {
