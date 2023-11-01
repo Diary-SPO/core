@@ -29,7 +29,6 @@ const TimeRemaining: FunctionComponent<ITimeRemaining> = ({
   const lessonEndDate = convertStringToTime(endTime, lessonDate)
 
   if (!lessonEndDate) {
-    // Handle the case where the conversion fails
     return null
   }
 
