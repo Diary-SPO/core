@@ -29,7 +29,7 @@ import {
   VIEW_SETTINGS,
 } from './routes'
 import { Pages } from './types'
-import Suspense from './components/UI/Suspense'
+import { Suspense } from '@components'
 import {
   Icon28BookSpreadOutline,
   Icon28EducationOutline,

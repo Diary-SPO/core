@@ -1,8 +1,8 @@
-// TODO: Сделать переключатель для расписания
 import { CardGrid } from '@vkontakte/vkui'
 import { Day } from 'diary-shared'
-import LessonCard from './LessonCard'
 import { FunctionComponent } from 'preact'
+import { memo } from 'react'
+import LessonCard from './UI/Lesson/LessonCard'
 
 interface IScheduleGroup {
   lessonsState?: Day[] | null
@@ -18,4 +18,4 @@ const ScheduleGroup: FunctionComponent<IScheduleGroup> = ({ lessonsState }) => (
   </CardGrid>
 )
 
-export default ScheduleGroup
+export default memo(ScheduleGroup)

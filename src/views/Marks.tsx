@@ -3,15 +3,16 @@ import { Icon28ErrorCircleOutline, Icon28InfoCircle } from '@vkontakte/icons'
 import { PerformanceCurrent } from 'diary-shared'
 import { FC } from 'preact/compat'
 import { useEffect, useState } from 'preact/hooks'
-import PanelHeaderWithBack from '../components/UI/PanelHeaderWithBack'
-import Suspense from '../components/UI/Suspense'
-import Summary from '../components/UI/Summary'
-import MarksByGroup from '../components/MarksByGroup'
-import UserInfo from '../components/UserInfo'
+import {
+  Suspense,
+  Summary,
+  UserInfo,
+  PanelHeaderWithBack,
+  MarksByGroup,
+} from '@components'
 import { getPerformance } from '../methods'
-import { handleResponse } from '../utils/handleResponse'
+import { handleResponse, formatStatisticsData } from '@utils'
 import { useSnackbar } from '../hooks'
-import { formatStatisticsData } from '../utils/formatStatisticsData'
 
 const THIRD_SEC = 30 * 1000
 
@@ -21,7 +22,7 @@ const Marks: FC<{ id: string }> = ({ id }) => {
 
   const [marksForSubject, setMarksForSubject] =
     useState<PerformanceCurrent | null>(null)
-  const [totalNumberOfMarks, setTotalNumberOfMarks] = useState<string | null>(
+  const [totalNumberOfMarks, setTotalNumberOfMarks] = useState<number | null>(
     null
   )
   const [averageMark, setAverageMark] = useState<number | null>(null)
@@ -88,9 +89,7 @@ const Marks: FC<{ id: string }> = ({ id }) => {
         icon: <Icon28InfoCircle fill="var(--vkui--color_background_accent)" />,
       })
       const savedMarks = localStorage.getItem('savedMarks')
-      const marks = savedMarks
-        ? (JSON.parse(savedMarks) as PerformanceCurrent)
-        : null
+      const marks = savedMarks ? JSON.parse(savedMarks) : null
       saveStatisticsData(marks)
       return marks ?? undefined
     } catch (error) {
@@ -104,7 +103,7 @@ const Marks: FC<{ id: string }> = ({ id }) => {
         onActionClick: () => fetchMarks(true),
       })
       console.error('Ошибка при получении оценок:', error)
-      return undefined
+      return
     }
   }
 

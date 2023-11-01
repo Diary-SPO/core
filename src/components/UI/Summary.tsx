@@ -4,7 +4,7 @@ import { FC } from 'preact/compat'
 import Mark from './Mark'
 
 interface ISummary {
-  totalNumberOfMarks: string | null
+  totalNumberOfMarks: number | null
   averageMark: number | null
   markCounts: Record<number, number> | null
 }

@@ -5,7 +5,6 @@ export const getPerformance = async (): Promise<
   PerformanceCurrent | 418 | 429
 > => {
   const id = localStorage.getItem('id')
-  console.log(id)
 
   if (!id) {
     return 418

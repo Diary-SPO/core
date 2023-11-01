@@ -17,10 +17,9 @@ import { Icon28ErrorCircleOutline } from '@vkontakte/icons'
 import { NotificationsResponse } from 'diary-shared'
 import { useEffect, useState } from 'preact/hooks'
 import { FC } from 'preact/compat'
-import PanelHeaderWithBack from '../components/UI/PanelHeaderWithBack'
-import { handleResponse } from '../utils/handleResponse'
+import { PanelHeaderWithBack, SubtitleWithBorder } from '@components'
+import { handleResponse } from '@utils'
 import { useSnackbar } from '../hooks'
-import SubtitleWithBorder from '../components/SubtitleWithBorder'
 import { getAds } from '../methods'
 
 const Notifications: FC<{ id: string }> = ({ id }) => {

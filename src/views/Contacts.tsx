@@ -12,9 +12,7 @@ import {
 } from '@vkontakte/vkui'
 import { Icon28Hearts2Outline, Icon28Users } from '@vkontakte/icons'
 import { FC } from 'preact/compat'
-import PanelHeaderWithBack from '../components/UI/PanelHeaderWithBack'
-import HelpAccordion from '../components/HelpAccordion'
-import { helpData } from '../components/data'
+import { PanelHeaderWithBack, HelpAccordion, helpData } from '@components'
 import winxAva from '../assets/winx48.webp'
 import scffsAva from '../assets/ava.jpg'
 
