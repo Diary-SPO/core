@@ -9,6 +9,10 @@ import { Grade, PerformanceCurrent, TextMark } from 'diary-shared'
  */
 
 export const formatStatisticsData = (marks: PerformanceCurrent) => {
+  if (!marks.daysWithMarksForSubject.length) {
+    return null
+  }
+
   try {
     const allMarks: TextMark[] = marks.daysWithMarksForSubject.reduce(
       (marksArray: TextMark[], subject) => {
