@@ -5,11 +5,23 @@
  * Возвращает булево значение: true, если переданная дата соответствует сегодняшней дате, иначе - false.
  */
 
-export const isToday = (date: Date) => {
-  const today = new Date()
-  return (
-    date.getDate() === today.getDate() &&
-    date.getMonth() === today.getMonth() &&
-    date.getFullYear() === today.getFullYear()
-  )
-}
+// export const isToday = (date: Date) => {
+//   const today = new Date()
+//   return (
+//     date.getDate() === today.getDate() &&
+//     date.getMonth() === today.getMonth() &&
+//     date.getFullYear() === today.getFullYear()
+//   )
+// }
+
+import init, * as wasm from '../../pkg'
+
+export const isToday = async (date: Date): Promise<boolean> => {
+  await init();
+  
+  const day = date.getDate();
+  const month = date.getMonth();
+  const year = date.getFullYear();
+
+  return wasm.is_today(day, month, year)
+};

@@ -1,7 +1,7 @@
 import { FC, memo } from 'react'
 import { Card, Group, Placeholder } from '@vkontakte/vkui'
 import { useRouteNavigator } from '@vkontakte/vk-mini-apps-router'
-import { useCallback } from 'preact/hooks'
+import { useCallback, useEffect, useState } from 'preact/hooks'
 import { Day, Gradebook, Timetable } from 'diary-shared'
 import useModal from '../../../store/useModal'
 import { MODAL_PAGE_LESSON } from '../../../modals/ModalRoot'
@@ -15,21 +15,22 @@ interface ILessonCard {
 }
 
 const LessonCard: FC<ILessonCard> = ({ lesson }) => {
+  const [isLessonToday, setIsLessonToday] = useState<boolean | null>(null)
   const routeNavigator = useRouteNavigator()
   const { setData } = useModal()
-
+  
   const handleLessonClick = useCallback(
     (
       name: string,
       endTime: string,
       startTime: string,
       timetable: Timetable,
-      gradebook: Gradebook | undefined
+      gradebook: Gradebook | undefined,
     ) => {
       routeNavigator.showModal(MODAL_PAGE_LESSON)
-
+      
       const lessonId = lessonDate.toISOString()
-
+      
       const modalData = {
         name,
         endTime,
@@ -39,19 +40,27 @@ const LessonCard: FC<ILessonCard> = ({ lesson }) => {
         tasks: gradebook?.tasks,
         lessonId,
       }
-
+      
       setData(modalData)
     },
-    []
+    [],
   )
-
+  
   const currentDate = new Date()
   const lessonDate = new Date(lesson.date)
   const formattedLessonDate = formatLessonDate(lesson.date)
   const lessonDayOfWeek = lessonDate.toLocaleString('default', {
     weekday: 'long',
   })
-  const isLessonToday = isToday(lessonDate)
+  
+  useEffect(() => {
+    const checkIsToday = async () => {
+      const result = await isToday(lesson.date)
+      setIsLessonToday(result)
+    }
+    
+    checkIsToday()
+  }, [lesson.date])
 
   const displayDayStyles = {
     color: isLessonToday ? 'var(--vkui--color_background_accent)' : undefined,
@@ -61,14 +70,14 @@ const LessonCard: FC<ILessonCard> = ({ lesson }) => {
       isLessonToday ? 'var(--vkui--color_background_accent)' : '#888888'
     }`,
   }
-
+  
   const dayEnded = currentDate > lessonDate
   const displayDay = isLessonToday
     ? 'Сегодня'
     : dayEnded
-    ? ' День завершён'
-    : undefined
-
+      ? ' День завершён'
+      : undefined
+  
   const lessonComponents = useMemo(() => {
     if (lesson.lessons && lesson.lessons.length > 0) {
       return lesson.lessons.map((lesson) => (
@@ -82,9 +91,9 @@ const LessonCard: FC<ILessonCard> = ({ lesson }) => {
     }
     return <Placeholder>Пар нет</Placeholder>
   }, [lesson.lessons, lessonDate, handleLessonClick])
-
+  
   return (
-    <Card className="lessonCard" key={lesson.date}>
+    <Card className='lessonCard' key={lesson.date}>
       <Group
         header={
           <LessonHeader
