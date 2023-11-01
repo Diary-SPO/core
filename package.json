@@ -11,7 +11,8 @@
     "deploy:vk": "vk-miniapps-deploy",
     "lint:fix": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0 --fix",
     "preview": "vite preview",
-    "test": "vitest"
+    "test": "vitest",
+    "coverage": "vitest run --coverage"
   },
   "dependencies": {
     "@vkontakte/icons": "^2.72.0",
@@ -31,6 +32,7 @@
     "@types/node": "^20.8.7",
     "@typescript-eslint/eslint-plugin": "^6.0.0",
     "@typescript-eslint/parser": "^6.8.0",
+    "@vitest/coverage-v8": "^0.34.6",
     "@vkontakte/vk-miniapps-deploy": "^0.1.6",
     "diary-shared": "^1.8.1",
     "eslint": "^8.52.0",
