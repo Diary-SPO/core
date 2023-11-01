@@ -5,11 +5,10 @@ import {
   Link,
   Panel,
   Placeholder,
-  ScreenSpinner,
 } from '@vkontakte/vkui'
 import { AttestationResponse } from 'diary-shared'
 import { FC, lazy } from 'preact/compat'
-import { useEffect, useState } from 'preact/hooks'
+import { useCallback, useEffect, useState } from 'preact/hooks'
 import { PanelHeaderWithBack } from '@components'
 import { useRateLimitExceeded } from '../hooks'
 import { handleResponse } from '@utils'
@@ -29,7 +28,7 @@ const Attestation: FC<IAttestation> = ({ id }) => {
   const [attestationData, setAttestationData] =
     useState<AttestationResponse | null>(null)
 
-  const getUserAttestation = async () => {
+  const getUserAttestation = useCallback(async () => {
     setIsLoading(true)
     setIsError(false)
     try {
@@ -58,7 +57,7 @@ const Attestation: FC<IAttestation> = ({ id }) => {
     } finally {
       setIsLoading(false)
     }
-  }
+  }, [])
 
   useEffect(() => {
     getUserAttestation()
@@ -90,33 +89,33 @@ const Attestation: FC<IAttestation> = ({ id }) => {
     <Panel nav={id}>
       <PanelHeaderWithBack title="Аттестация" />
       <Div>
-        {attestationData && (
-          <SubjectList
-            // @ts-ignore
-            semesters={semesters}
-            studentName={studentName}
-            year={year}
-          />
-        )}
-        {isDataLoading && <ScreenSpinner />}
-        {isError && (
-          <Placeholder
-            header="Ошибка при загрузке"
-            action={
-              <ButtonGroup mode="vertical" align="center">
-                <Button size="s" onClick={getUserAttestation}>
-                  Попробовать снова
-                </Button>
-                <Link href="https://vk.me/dnevnik_spo" target="_blank">
-                  Сообщить о проблеме
-                </Link>
-              </ButtonGroup>
-            }
-          />
-        )}
+        <SubjectList
+          isDataLoading={isDataLoading}
+          // @ts-ignore
+          semesters={semesters}
+          studentName={studentName}
+          year={year}
+        />
+        {isError && <ErrorPlaceholder onClick={getUserAttestation} />}
       </Div>
     </Panel>
   )
 }
+
+const ErrorPlaceholder = ({ onClick }: { onClick: () => void }) => (
+  <Placeholder
+    header="Ошибка при загрузке"
+    action={
+      <ButtonGroup mode="vertical" align="center">
+        <Button size="s" onClick={onClick}>
+          Попробовать снова
+        </Button>
+        <Link href="https://vk.me/dnevnik_spo" target="_blank">
+          Сообщить о проблеме
+        </Link>
+      </ButtonGroup>
+    }
+  />
+)
 
 export default Attestation
