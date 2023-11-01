@@ -15,7 +15,8 @@ export default defineConfig({
     alias: [
       { find: /^@vkontakte\/vkui$/, replacement: '@vkontakte/vkui/dist/cssm' },
       { find: '@utils', replacement: path.resolve(__dirname, './src/utils') },
-      { find: '@components', replacement: path.resolve(__dirname, 'src/components') }
+      { find: '@components', replacement: path.resolve(__dirname, './src/components') },
+      { find: '@rust', replacement: path.resolve(__dirname, './pkg') }
     ],
   },
   build: {

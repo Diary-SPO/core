@@ -39,7 +39,7 @@ import {
   Icon28SettingsOutline,
 } from '@vkontakte/icons'
 
-import init, * as wasm from '../pkg'
+import init, * as wasm from '@rust'
 
 const ModalRoot = lazy(() => import('./modals/ModalRoot'))
 const Epic = lazy(() => import('./components/UI/Epic'))

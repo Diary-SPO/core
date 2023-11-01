@@ -1,5 +1,5 @@
 import { PerformanceCurrent } from 'diary-shared'
-import init, * as wasm from '../../../pkg'
+import init, * as wasm from '@rust'
 
 /**
  * Функция 'formatStatisticsData' обрабатывает данные оценок, вычисляя статистику на их основе.

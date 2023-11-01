@@ -5,7 +5,7 @@
  * Возвращает булево значение: true, если переданная дата соответствует сегодняшней дате, иначе - false.
  */
 
-import init, * as wasm from '../../pkg'
+import init, * as wasm from '@rust'
 
 export const isToday = async (date: Date): Promise<boolean> => {
   await init()

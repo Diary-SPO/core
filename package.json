@@ -19,7 +19,6 @@
     "@vkontakte/vk-bridge-react": "^1.0.0",
     "@vkontakte/vk-mini-apps-router": "^1.1.1",
     "@vkontakte/vkui": "^5.9.4",
-    "dnevnik": "./pkg",
     "jshashes": "^1.0.8",
     "preact": "^10.16.0",
     "react": "npm:@preact/compat",

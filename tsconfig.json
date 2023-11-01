@@ -27,6 +27,7 @@
       "react-dom": ["./node_modules/preact/compat/"],
       "@utils": ["./src/utils"],
       "@components": ["./src/components"],
+      "@rust": ["./pkg"],
     }
   },
   "include": ["src"],
