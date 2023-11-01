@@ -10,9 +10,11 @@ export const getBackgroundColor = (score?: ReturnedMark): string => {
     if (score > 5) {
       return 'var(--vkui--color_accent_purple)'
     }
+
     if (score >= 4) {
       return 'linear-gradient(135deg,#50c750,#32b332)'
     }
+
     if (score >= 3) {
       return '#F59802'
     }
@@ -29,6 +31,8 @@ export const getBackgroundColor = (score?: ReturnedMark): string => {
     case 'Д':
       return '#DA0A35'
     default:
-      return '#959595'
+      return Number(score) > 4
+        ? 'linear-gradient(135deg,#50c750,#32b332)'
+        : '#959595'
   }
 }

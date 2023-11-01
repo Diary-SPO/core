@@ -29,7 +29,7 @@ const Marks: FC<{ id: string }> = ({ id }) => {
   const [markCounts, setMarkCounts] = useState<Record<number, number> | null>(
     null
   )
-  console.log(markCounts)
+
   const saveStatisticsData = async (marks: PerformanceCurrent | null) => {
     if (!marks) return
 

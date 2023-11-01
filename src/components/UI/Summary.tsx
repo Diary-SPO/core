@@ -26,7 +26,7 @@ const Summary: FC<ISummary> = ({
       before={
         <Icon28BrainOutline style={{ marginTop: 4 }} width={20} height={20} />
       }
-      after={<Mark size="s" mark={averageMark.toFixed(2)} />}
+      after={<Mark size="s" mark={averageMark && averageMark.toFixed(3)} />}
     >
       Общий средний балл:
     </MiniInfoCell>

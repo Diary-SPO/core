@@ -25,17 +25,16 @@ const TimeRemaining: FunctionComponent<ITimeRemaining> = ({
   }
 
   const currentDate = new Date()
-
   const lessonEndDate = convertStringToTime(endTime, lessonDate)
+  const lessonStartDate = convertStringToTime(startTime, lessonDate)
 
-  if (!lessonEndDate) {
+  if (isNaN(Number(lessonEndDate))) {
     return null
   }
-
   const timeRemainingText = getTimeRemaining(
     currentDate,
     lessonEndDate,
-    lessonDate
+    lessonStartDate
   )
 
   if (!timeRemainingText) {

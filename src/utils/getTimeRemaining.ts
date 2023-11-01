@@ -11,6 +11,7 @@ export const getTimeRemaining = (
 ): string | null => {
   const timeToStart =
     (startDate.getTime() - currentDate.getTime()) / (1000 * 60)
+
   if (timeToStart > 60 || currentDate > endTime) {
     return null
   }
