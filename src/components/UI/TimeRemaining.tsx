@@ -1,11 +1,11 @@
-import { getTimeRemaining } from '@utils'
+import { convertStringToTime, getTimeRemaining } from '@utils'
 import { CSSProperties } from 'preact/compat'
 import { FunctionComponent } from 'preact'
 
 interface ITimeRemaining {
   lessonDate: Date
   startTime: string
-  endTime: Date
+  endTime: string
 }
 
 const timeRemainingStyles: CSSProperties = {
@@ -25,10 +25,19 @@ const TimeRemaining: FunctionComponent<ITimeRemaining> = ({
   }
 
   const currentDate = new Date()
-  lessonDate.setHours(Number(startTime.split(':')[0]))
-  lessonDate.setMinutes(Number(startTime.split(':')[1]))
 
-  const timeRemainingText = getTimeRemaining(currentDate, endTime, lessonDate)
+  const lessonEndDate = convertStringToTime(endTime, lessonDate)
+
+  if (!lessonEndDate) {
+    // Handle the case where the conversion fails
+    return null
+  }
+
+  const timeRemainingText = getTimeRemaining(
+    currentDate,
+    lessonEndDate,
+    lessonDate
+  )
 
   if (!timeRemainingText) {
     return null

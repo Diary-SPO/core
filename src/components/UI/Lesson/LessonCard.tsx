@@ -47,7 +47,6 @@ const LessonCard: FC<ILessonCard> = ({ lesson }) => {
 
   const currentDate = new Date()
   const lessonDate = new Date(lesson.date)
-
   const formattedLessonDate = formatLessonDate(lesson.date)
   const lessonDayOfWeek = lessonDate.toLocaleString('default', {
     weekday: 'long',
@@ -64,11 +63,10 @@ const LessonCard: FC<ILessonCard> = ({ lesson }) => {
   }
 
   const dayEnded = currentDate > lessonDate
-
-  const displayDay = dayEnded
-    ? ' День завершён'
-    : isLessonToday
+  const displayDay = isLessonToday
     ? 'Сегодня'
+    : dayEnded
+    ? ' День завершён'
     : undefined
 
   const lessonComponents = useMemo(() => {
