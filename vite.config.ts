@@ -1,10 +1,17 @@
 import { defineConfig } from 'vite'
 import preact from '@preact/preset-vite'
 import * as path from 'node:path'
-
+import wasm from 'vite-plugin-wasm'
+// import ViteRsw from 'vite-plugin-rsw'
+import topLevelAwait from "vite-plugin-top-level-await";
 // https://vitejs.dev/config/
 export default defineConfig({
-  plugins: [preact()],
+  plugins: [
+    preact(),
+    wasm(),
+    topLevelAwait()
+  //   // ViteRsw(),
+  ],
   resolve: {
     alias: [
       { find: /^@vkontakte\/vkui$/, replacement: '@vkontakte/vkui/dist/cssm' },

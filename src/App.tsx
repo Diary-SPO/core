@@ -1,5 +1,5 @@
 import {
-  AppRoot,
+  AppRoot, Button,
   Cell,
   Group,
   Panel,
@@ -38,6 +38,8 @@ import {
   Icon28SettingsOutline,
 } from '@vkontakte/icons'
 
+import init, * as wasm from '../pkg'
+
 const ModalRoot = lazy(() => import('./modals/ModalRoot'))
 const Epic = lazy(() => import('./components/UI/Epic'))
 
@@ -50,9 +52,9 @@ const App = () => {
   const routerPopout = usePopout()
   const vkBridgeInsets = useInsets() || undefined
   const isVKCOM = platform === Platform.VKCOM
-
+  
   const cookieValue = localStorage.getItem('cookie')
-
+  
   useEffect(() => {
     const onRoute = () => {
       if (!cookieValue) {
@@ -63,10 +65,10 @@ const App = () => {
         setIsLoading(false)
       }
     }
-
+    
     onRoute()
   }, [activeView, window.location])
-
+  
   const onStoryChange = async (currentView: Pages) => {
     if (cookieValue) {
       try {
@@ -78,8 +80,14 @@ const App = () => {
     }
     await routeNavigator.replace('/')
   }
-
+  
   const modals = <ModalRoot />
+  
+  const greetFromWasm = async () => {
+    await init()
+    wasm.greet('World')
+  }
+  
   return (
     <AppRoot safeAreaInsets={vkBridgeInsets}>
       <SplitLayout
@@ -98,6 +106,7 @@ const App = () => {
             <Panel>
               {!isVKCOM && <PanelHeader />}
               <Group>
+                <Button onClick={greetFromWasm}>Test Wasm + Rust + React</Button>
                 <Cell
                   onClick={() => onStoryChange(VIEW_SCHEDULE)}
                   hovered={panel === VIEW_SCHEDULE}
@@ -144,9 +153,9 @@ const App = () => {
             </Panel>
           </SplitCol>
         )}
-        <Suspense id="Epic">
-          {isLoading && <ScreenSpinner size="large" />}
-          <SplitCol width="100%" maxWidth="700px" stretchedOnMobile autoSpaced>
+        <Suspense id='Epic'>
+          {isLoading && <ScreenSpinner size='large' />}
+          <SplitCol width='100%' maxWidth='700px' stretchedOnMobile autoSpaced>
             <Epic onStoryChange={onStoryChange} />
           </SplitCol>
         </Suspense>
