@@ -1,4 +1,6 @@
 mod is_today;
+mod format_statistics_data;
+
 use wasm_bindgen::prelude::*;
 
 #[wasm_bindgen]
@@ -14,4 +16,9 @@ pub fn greet(name: &str) {
 #[wasm_bindgen]
 pub fn is_today(day: u32, month: u32, year: u32) -> bool {
     is_today::is_today(day, month, year)
+}
+
+#[wasm_bindgen]
+pub fn format_statistics_data(marks: JsValue) -> JsValue {
+    format_statistics_data::format_statistics_data(marks)
 }

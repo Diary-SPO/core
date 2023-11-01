@@ -2,11 +2,12 @@ import { Group, Header, MiniInfoCell } from '@vkontakte/vkui'
 import { Icon20EducationOutline, Icon28BrainOutline } from '@vkontakte/icons'
 import { FC } from 'preact/compat'
 import Mark from './Mark'
+import { Grade } from 'diary-shared'
 
 interface ISummary {
   totalNumberOfMarks: number | null
   averageMark: number | null
-  markCounts: Record<number, number> | null
+  markCounts: Record<keyof typeof Grade, number> | null
 }
 
 const Summary: FC<ISummary> = ({
@@ -38,10 +39,13 @@ const Summary: FC<ISummary> = ({
           gap: 5,
         }}
       >
-        {[2, 3, 4, 5].map(
+        {Object.keys(markCounts).map(
           (mark) =>
             markCounts[mark] > 0 && (
-              <MiniInfoCell key={mark} before={<Mark mark={mark} size="s" />}>
+              <MiniInfoCell
+                key={mark}
+                before={<Mark mark={Grade[mark]} size="s" />}
+              >
                 x {markCounts[mark]}
               </MiniInfoCell>
             )

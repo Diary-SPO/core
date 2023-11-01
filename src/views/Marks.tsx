@@ -29,11 +29,12 @@ const Marks: FC<{ id: string }> = ({ id }) => {
   const [markCounts, setMarkCounts] = useState<Record<number, number> | null>(
     null
   )
-
-  const saveStatisticsData = (marks: PerformanceCurrent | null) => {
+  console.log(markCounts)
+  const saveStatisticsData = async (marks: PerformanceCurrent | null) => {
     if (!marks) return
 
-    const data = formatStatisticsData(marks)
+    const data = JSON.parse(await formatStatisticsData(marks))
+    console.log(data)
     if (data) {
       setTotalNumberOfMarks(data.totalNumberOfMarks)
       setAverageMark(data.averageMark)
