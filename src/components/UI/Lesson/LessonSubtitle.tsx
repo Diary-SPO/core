@@ -34,7 +34,7 @@ const LessonSubtitle: FC<ILessonSubtitle> = ({
     <TimeRemaining
       lessonDate={lessonDate}
       startTime={startTime}
-      endTime={new Date(endTime)}
+      endTime={endTime}
     />
   </div>
 )
