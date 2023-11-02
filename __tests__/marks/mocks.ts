@@ -1,5 +1,7 @@
 import { PerformanceCurrent } from 'diary-shared'
-import { SubjectMarksMap } from '../../src/utils'
+import { SubjectMarksMap } from '@utils'
+
+/** createSubjectMarksMap */
 
 export const mockData: PerformanceCurrent = {
   monthsWithDays: [
@@ -57,4 +59,96 @@ export const expectedMapData: SubjectMarksMap = {
       absenceType: undefined,
     },
   ],
+}
+
+/** extractMarksByDay */
+
+export const performanceMockData: PerformanceCurrent = {
+  monthsWithDays: [
+    {
+      month: {
+        name: 'Имя',
+        num: 1,
+      },
+      daysWithLessons: [new Date()],
+    },
+  ],
+  daysWithMarksForSubject: [
+    {
+      subjectName: 'Math',
+      daysWithMarks: [
+        {
+          day: new Date('2023-10-30'),
+          markValues: ['Five', 'Four'],
+        },
+        {
+          day: new Date('2023-10-31'),
+          markValues: ['Three', 'Two'],
+        },
+      ],
+      averageMark: 0,
+    },
+    {
+      subjectName: 'Science',
+      daysWithMarks: [
+        {
+          day: new Date('2023-10-30'),
+          markValues: ['Five', 'Four'],
+        },
+        {
+          day: new Date('2023-10-31'),
+          markValues: ['Five', 'Five'],
+        },
+      ],
+      averageMark: 0,
+    },
+  ],
+}
+
+export const expectedExtractByDayData = {
+  '30.10.2023': {
+    Math: [5, 4],
+    Science: [5, 4],
+  },
+  '31.10.2023': {
+    Math: [3, 2],
+    Science: [5, 5],
+  },
+}
+
+export const invalidPerformanceMockData: PerformanceCurrent = {
+  monthsWithDays: [
+    {
+      month: {
+        name: 'Имя',
+        num: 1,
+      },
+      daysWithLessons: [new Date()],
+    },
+  ],
+  daysWithMarksForSubject: [
+    {
+      subjectName: 'Math',
+      daysWithMarks: [
+        {
+          day: new Date('2023-10-30'),
+          markValues: ['Invalid', 'Five'],
+        },
+        {
+          day: new Date('2023-10-31'),
+          markValues: ['Three', 'Unknown'],
+        },
+      ],
+      averageMark: 0,
+    },
+  ],
+}
+
+export const expectedInvalidExtractByDayData = {
+  '30.10.2023': {
+    Math: [5],
+  },
+  '31.10.2023': {
+    Math: [3],
+  },
 }

@@ -9,10 +9,14 @@ import {
 } from '@utils'
 import { Task } from 'diary-shared'
 import {
+  expectedExtractByDayData,
+  expectedInvalidExtractByDayData,
   expectedMapData,
   expectedMapDataWithoutMarks,
+  invalidPerformanceMockData,
   mockData,
   mockDataWithoutMarks,
+  performanceMockData,
 } from './mocks'
 
 describe('calculateAverageMark', () => {
@@ -176,4 +180,25 @@ describe('setDefaultMark', () => {
   })
 })
 
-describe('extractMarksByDay', () => {})
+describe('extractMarksByDay', () => {
+  it('возвращает пустой объект при отсутствии данных об оценках', () => {
+    const marksByDay = extractMarksByDay(null)
+    expect(marksByDay).toEqual({})
+  })
+
+  it('возвращает структуру с оценками, организованными по дням для каждого урока', () => {
+    const performanceData = performanceMockData
+    const expectedMarksByDay = expectedExtractByDayData
+
+    const marksByDay = extractMarksByDay(performanceData)
+    expect(marksByDay).toEqual(expectedMarksByDay)
+  })
+
+  it('обрабатывает случай невалидных оценок и возвращает пустые данные для этих дней', () => {
+    const performanceData = invalidPerformanceMockData
+    const expectedMarksByDay = expectedInvalidExtractByDayData
+
+    const marksByDay = extractMarksByDay(performanceData)
+    expect(marksByDay).toEqual(expectedMarksByDay)
+  })
+})
