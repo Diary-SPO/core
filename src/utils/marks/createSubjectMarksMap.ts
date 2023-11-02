@@ -12,9 +12,9 @@ export interface SubjectMarksMap {
  * Функция createSubjectMarksMap предназначена для создания карты (коллекции) оценок по предметам.
  * Принимает объект marksForSubject, содержащий информацию об оценках и пропусках по предметам.
  *
- * @param {PerformanceCurrent} marksForSubject - Объект с информацией об оценках и пропусках по предметам.
- * @returns {SubjectMarksMap} - Возвращает объект, в котором ключами являются названия предметов,
- * а значениями - массивы объектов с данными оценок, отметок и типов пропусков по соответствующему предмету.
+ * marksForSubject - Объект с информацией об оценках и пропусках по предметам.
+ * Возвращает объект, в котором ключами являются названия предметов, а значениями - массивы объектов с данными оценок,
+ * отметок и типов пропусков по соответствующему предмету.
  *
  * Пример получаемых данных:
  * daysWithMarksForSubject: [
@@ -78,13 +78,15 @@ export const createSubjectMarksMap = (
       subjectMarksMap[subjectName] = []
     }
 
-    subjectMarksMap[subjectName].push(
-      ...(daysWithMarks?.map((dayWithMark) => ({
+    if (daysWithMarks) {
+      const mappedMarks = daysWithMarks.map((dayWithMark) => ({
         date: new Date(dayWithMark.day).toLocaleDateString(),
         marks: dayWithMark.markValues,
         absenceType: dayWithMark.absenceType,
-      })) ?? [])
-    )
+      }))
+
+      subjectMarksMap[subjectName].push(...mappedMarks)
+    }
   })
 
   return subjectMarksMap

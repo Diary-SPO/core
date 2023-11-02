@@ -19,17 +19,17 @@ describe('Тесты утилит для форматирования', () => {
     expect(result.getHours()).toBe(14)
     expect(result.getMinutes()).toBe(30)
   })
-  
-  it('должна вернуть null для некорректного формата времени', async ({ expect }) => {
+
+  it('должна вернуть null для некорректного формата времени', async ({
+    expect,
+  }) => {
     const baseDate = new Date(2023, 10, 1, 0, 0, 0)
     const result = convertStringToTime('25:70', baseDate)
     expect(result).toBe(null)
   })
 
   /** formatDate **/
-  it('должна форматировать строку даты в объект Date', async ({
-    expect,
-  }) => {
+  it('должна форматировать строку даты в объект Date', async ({ expect }) => {
     const result = formatDate('01.11.2023')
     expect(result.getFullYear()).toBe(2023)
     expect(result.getMonth()).toBe(10)
@@ -37,27 +37,21 @@ describe('Тесты утилит для форматирования', () => {
   })
 
   /** formatDateForRequest **/
-    it('должна форматировать объект Date в строку', async ({
-    expect,
-  }) => {
+  it('должна форматировать объект Date в строку', async ({ expect }) => {
     const date = new Date(2023, 10, 1)
     const result = formatDateForRequest(date)
     expect(result).toBe('2023-11-01')
   })
 
   /** formatLessonDate **/
-  it('должна правильно форматировать дату урока', async ({
-    expect,
-  }) => {
+  it('должна правильно форматировать дату урока', async ({ expect }) => {
     const date = new Date(2023, 10, 1)
     const result = formatLessonDate(date)
     expect(result).toBe('1 ноября 2023 г.')
   })
 
   /** formatLessonName **/
-  it('должна корректно форматировать название урока', async ({
-    expect,
-  }) => {
+  it('должна корректно форматировать название урока', async ({ expect }) => {
     const lessonName = 'МДК 01.01/1 подгруппа'
     const result = formatLessonName(lessonName)
     expect(result).toBe('МДК 01.01 (1 подгруппа)')

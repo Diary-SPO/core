@@ -12,7 +12,7 @@ export const formatStatisticsData = (marks: PerformanceCurrent) => {
   if (!marks.daysWithMarksForSubject.length) {
     return null
   }
-  
+
   const allMarks: TextMark[] = marks.daysWithMarksForSubject.reduce(
     (marksArray: TextMark[], subject) => {
       if (subject.daysWithMarks) {
@@ -25,7 +25,7 @@ export const formatStatisticsData = (marks: PerformanceCurrent) => {
     },
     []
   )
-  
+
   const totalNumberOfMarks: number = allMarks.length
   const totalSumOfMarks: number = allMarks.reduce(
     (sum, mark) => sum + Number(Grade[mark]),
@@ -38,14 +38,14 @@ export const formatStatisticsData = (marks: PerformanceCurrent) => {
     4: 0,
     5: 0,
   }
-  
+
   allMarks.forEach((textMark: TextMark) => {
     const numericMark: number = Grade[textMark] as number
     if (numericMark >= 2 && numericMark <= 5) {
       markCounts[numericMark] += 1
     }
   })
-  
+
   return {
     totalNumberOfMarks,
     averageMark: Number(averageMark.toFixed(3)),
