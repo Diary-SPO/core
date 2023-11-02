@@ -6,7 +6,6 @@ import {
   getBackgroundColor,
   getSize,
   setDefaultMark,
-  SubjectMarksMap,
 } from '@utils'
 import { Task } from 'diary-shared'
 import {
@@ -102,7 +101,7 @@ describe('getSize', () => {
 
     /**
      * В коде мы не передаём "неправильный" параметр
-     * Но лучше все-таки покрыть тестом этот случа
+     * Но лучше покрыть тестом этот случай
      */
     // @ts-expect-error
     const invalid = getSize('invalid size')
@@ -176,3 +175,5 @@ describe('setDefaultMark', () => {
     expect(mark).toBeUndefined()
   })
 })
+
+describe('extractMarksByDay', () => {})

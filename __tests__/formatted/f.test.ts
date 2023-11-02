@@ -104,7 +104,7 @@ describe('Тесты утилит для форматирования', () => {
     })
 
     it('должна вернуть null, если массив пустой', () => {
-      // @ts-expect-error Пустой массив не передаётся никогда, но на всякий случай лучше этот случай покрыть тестом
+      // @ts-expect-error Пустой массив не передаётся никогда, но лучше этот случай покрыть тестом
       const result = formatStatisticsData({ daysWithMarksForSubject: [] })
 
       expect(result).toBeNull()
