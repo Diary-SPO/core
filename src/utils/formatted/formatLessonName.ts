@@ -5,7 +5,7 @@
  */
 
 export const formatLessonName = (name: string): string => {
-  let lessonName = name || ''
+  let lessonName = name
   if (lessonName.includes('/')) {
     const [firstPart, ...additionalParts] = lessonName.split('/')
     lessonName = `${firstPart} (${additionalParts.join('/')})`.trim()

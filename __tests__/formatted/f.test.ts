@@ -11,7 +11,7 @@ import { PerformanceCurrent } from 'diary-shared'
 
 describe('Тесты утилит для форматирования', () => {
   /** convertStringToTime **/
-  it('convertStringToTime должна конвертировать строку времени в объект Date', async ({
+  it('должна конвертировать строку времени в объект Date', async ({
     expect,
   }) => {
     const baseDate = new Date(2023, 10, 1, 0, 0, 0)
@@ -19,9 +19,15 @@ describe('Тесты утилит для форматирования', () => {
     expect(result.getHours()).toBe(14)
     expect(result.getMinutes()).toBe(30)
   })
+  
+  it('должна вернуть null для некорректного формата времени', async ({ expect }) => {
+    const baseDate = new Date(2023, 10, 1, 0, 0, 0)
+    const result = convertStringToTime('25:70', baseDate)
+    expect(result).toBe(null)
+  })
 
   /** formatDate **/
-  it('formatDate должна форматировать строку даты в объект Date', async ({
+  it('должна форматировать строку даты в объект Date', async ({
     expect,
   }) => {
     const result = formatDate('01.11.2023')
@@ -31,7 +37,7 @@ describe('Тесты утилит для форматирования', () => {
   })
 
   /** formatDateForRequest **/
-    it('formatDateForRequest должна форматировать объект Date в строку', async ({
+    it('должна форматировать объект Date в строку', async ({
     expect,
   }) => {
     const date = new Date(2023, 10, 1)
@@ -40,7 +46,7 @@ describe('Тесты утилит для форматирования', () => {
   })
 
   /** formatLessonDate **/
-  it('formatLessonDate должна правильно форматировать дату урока', async ({
+  it('должна правильно форматировать дату урока', async ({
     expect,
   }) => {
     const date = new Date(2023, 10, 1)
@@ -49,7 +55,7 @@ describe('Тесты утилит для форматирования', () => {
   })
 
   /** formatLessonName **/
-  it('formatLessonName должна корректно форматировать название урока', async ({
+  it('должна корректно форматировать название урока', async ({
     expect,
   }) => {
     const lessonName = 'МДК 01.01/1 подгруппа'
@@ -58,7 +64,7 @@ describe('Тесты утилит для форматирования', () => {
   })
 
   /** formatStatisticsData **/
-  describe('formatStatisticsData', () => {
+  describe('должна создать коллекцию с нужными полями', () => {
     const testData: PerformanceCurrent = {
       daysWithMarksForSubject: [
         {
@@ -83,7 +89,7 @@ describe('Тесты утилит для форматирования', () => {
       ],
     }
 
-    it('Проверка ответа при валидных данных', () => {
+    it('должна вернуть правильные данные при валидных параметрах', () => {
       const result = formatStatisticsData(testData)
 
       expect(result).not.toBeNull()
@@ -103,7 +109,7 @@ describe('Тесты утилит для форматирования', () => {
       })
     })
 
-    it('Проверка, если передан пустой массив', () => {
+    it('должна вернуть null, если массив пустой', () => {
       // @ts-expect-error Пустой массив не передаётся никогда, но на всякий случай лучше этот случай покрыть тестом
       const result = formatStatisticsData({ daysWithMarksForSubject: [] })
 
