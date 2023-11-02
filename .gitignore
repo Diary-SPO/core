@@ -28,3 +28,8 @@ dist-ssr
 /build.zip
 
 coverage
+
+# Added by cargo
+
+/target
+/Cargo.lock

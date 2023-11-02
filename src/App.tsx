@@ -80,6 +80,7 @@ const App = () => {
   }
 
   const modals = <ModalRoot />
+
   return (
     <AppRoot safeAreaInsets={vkBridgeInsets}>
       <SplitLayout
