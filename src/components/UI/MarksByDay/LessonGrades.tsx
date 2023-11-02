@@ -18,7 +18,6 @@ const LessonGrades: FunctionalComponent<{
         <div style={{ display: 'flex' }} key={`${day}_${lessonName}`}>
           {grades.map((grade, gradeIndex) => (
             // @ts-ignore
-
             <HorizontalCell
               style={{ maxWidth: 'unset' }}
               key={`${day}_${lessonName}_${gradeIndex}`}

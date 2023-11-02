@@ -8,6 +8,7 @@ interface IMarksList {
 }
 
 const MarksList: FC<IMarksList> = ({ marks }) => (
+  // TODO: перенести в функцию / разделить логику
   <div style={{ display: 'flex' }}>
     {marks.map(({ date, marks: markValues, absenceType }) => (
       <div key={`${date}_${absenceType}`} style={{ display: 'flex' }}>
