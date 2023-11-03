@@ -386,7 +386,11 @@ const Schedule: FC<{ id: string }> = ({ id }) => {
           <Suspense id="ScheduleGroup" mode="screen">
             <Group
               header={
-                <Header aside={Buttons} mode="secondary" style="align-items: center;">
+                <Header
+                  aside={Buttons}
+                  mode="secondary"
+                  style="align-items: center;"
+                >
                   {weekString}
                 </Header>
               }

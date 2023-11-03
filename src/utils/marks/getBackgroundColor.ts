@@ -6,14 +6,15 @@ import { ReturnedMark } from './setDefaultMark'
  */
 
 export const getBackgroundColor = (score?: ReturnedMark): string => {
-  if (typeof score === 'number') {
-    if (score > 5) {
+  const numberScore = Number(score)
+  if (!isNaN(numberScore)) {
+    if (numberScore > 5) {
       return 'var(--vkui--color_accent_purple)'
     }
-    if (score >= 4) {
+    if (numberScore >= 4) {
       return 'linear-gradient(135deg,#50c750,#32b332)'
     }
-    if (score >= 3) {
+    if (numberScore >= 3) {
       return '#F59802'
     }
 
