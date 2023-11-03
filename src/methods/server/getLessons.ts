@@ -1,5 +1,5 @@
 import { Day } from 'diary-shared'
-import formatDateForRequest from '../../utils/formatDateForRequest'
+import { formatDateForRequest } from '@utils'
 import makeRequest from './makeRequest'
 
 export const getLessons = async (

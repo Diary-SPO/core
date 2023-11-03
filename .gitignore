@@ -26,3 +26,9 @@ dist-ssr
 
 .env
 /build.zip
+
+
+# Added by cargo
+
+/target
+/Cargo.lock

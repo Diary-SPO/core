@@ -16,7 +16,7 @@ import {
 import { AuthData } from 'diary-shared'
 import { useEffect, useState } from 'preact/hooks'
 import { ChangeEvent, FC } from 'preact/compat'
-import PanelHeaderWithBack from '../components/UI/PanelHeaderWithBack'
+import { PanelHeaderWithBack } from '@components'
 import { VIEW_SCHEDULE } from '../routes'
 import { useSnackbar } from '../hooks'
 
@@ -40,7 +40,6 @@ const LoginForm: FC<{ id: string }> = ({ id }) => {
 
   useEffect(() => {
     const storageCookie = localStorage.getItem('cookie')
-    console.log(storageCookie)
     setIsLoading(true)
     const getUserCookie = () => {
       if (!storageCookie) {

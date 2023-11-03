@@ -3,6 +3,14 @@ import { Icon28InfoCircleOutline } from '@vkontakte/icons'
 import { CSSProperties, ReactNode } from 'preact/compat'
 import { useCallback, useState } from 'preact/hooks'
 
+/**
+ * Функция 'useSnackbar' управляет отображением Snackbar'а для уведомлений.
+ * Предоставляет метод 'showSnackbar', который позволяет отображать уведомления на основе переданных данных.
+ * Возвращает состояние 'snackbar', отображающее текущий Snackbar, и функцию 'showSnackbar' для управления им.
+ * 'showSnackbar' принимает 'snackbarData' (данные для Snackbar) и отображает Snackbar с соответствующими свойствами.
+ * Если передан null в качестве 'snackbarData', закрывает Snackbar, в противном случае отображает новый Snackbar с заданными данными.
+ */
+
 export interface SnackbarData {
   layout?: SnackbarProps['layout']
   icon?: ReactNode

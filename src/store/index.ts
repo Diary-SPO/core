@@ -1,10 +1,28 @@
-import { configureStore } from '@reduxjs/toolkit'
-import lessonReducer from './lessonSlice'
+interface TStore<T> {
+  initialState: T
+}
 
-const store = configureStore({
-  reducer: {
-    lesson: lessonReducer,
-  },
-})
+const createStore = <T>({ initialState }: TStore<T>) => {
+  type State = T
+  type ListenerCallback = () => void
 
-export default store
+  const store = {
+    state: initialState,
+    setState: (newValue: State) => {
+      store.state = newValue
+      store.listeners.forEach((listener) => listener())
+    },
+    getState: (): State => store.state,
+    listeners: new Set<ListenerCallback>(),
+    subscribe: (cb: ListenerCallback) => {
+      store.listeners.add(cb)
+      return () => {
+        store.listeners.delete(cb)
+      }
+    },
+  }
+
+  return store
+}
+
+export default createStore

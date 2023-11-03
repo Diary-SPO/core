@@ -1,27 +1,23 @@
 import { FunctionalComponent } from 'preact'
-import { Header, HorizontalCell, HorizontalScroll } from '@vkontakte/vkui'
+import { HorizontalScroll } from '@vkontakte/vkui'
 import { PerformanceCurrent } from 'diary-shared'
-import Mark from '../Mark'
-import { extractMarksByDay } from '../../../utils/extractMarksByDay'
-import { sortByDay } from '../../../utils/sortByDay'
-import { truncateString } from '../../../utils/truncateString'
-
-import './index.css'
+import { extractMarksByDay, sortByDay } from '@utils'
+import { memo } from 'preact/compat'
+import LessonGrades, { ILessonGrades } from './LessonGrades'
 
 interface IPerformanceCurrent {
   performanceData: PerformanceCurrent | null
 }
 
 export interface IMarksByDay {
-  [key: string]: {
-    [lessonName: string]: number[]
-  }
+  [key: string]: ILessonGrades
 }
 
 const MarksByDay: FunctionalComponent<IPerformanceCurrent> = ({
   performanceData,
 }) => {
   const marksByDay = extractMarksByDay(performanceData)
+  const sortedMarksByDay = sortByDay(marksByDay)
 
   return (
     <HorizontalScroll
@@ -29,36 +25,13 @@ const MarksByDay: FunctionalComponent<IPerformanceCurrent> = ({
       getScrollToLeft={(i) => i - 120}
       getScrollToRight={(i) => i + 120}
     >
-      <div className="marksByName">
-        {Object.entries(sortByDay(marksByDay)).map(([day, lessonGrades]) => (
-          <div key={day}>
-            <Header mode="secondary">{day}</Header>
-            <div style={{ display: 'flex' }}>
-              {Object.entries(lessonGrades).map(([lessonName, grades]) => (
-                <div style={{ display: 'flex' }} key={`${day}_${lessonName}`}>
-                  {grades.map((grade, gradeIndex) => (
-                    // @ts-ignore
-                    <HorizontalCell
-                      style={{ maxWidth: 'unset' }}
-                      key={`${day}_${lessonName}_${gradeIndex}`}
-                    >
-                      <Mark
-                        bottom={truncateString(lessonName, 18)}
-                        style={{ maxWidth: 90 }}
-                        mark={grade || 'Н'}
-                        useMargin={false}
-                        size="l"
-                      />
-                    </HorizontalCell>
-                  ))}
-                </div>
-              ))}
-            </div>
-          </div>
+      <div style={{ display: 'flex' }}>
+        {Object.entries(sortedMarksByDay).map(([day, lessonGrades]) => (
+          <LessonGrades day={day} lessonGrades={lessonGrades} />
         ))}
       </div>
     </HorizontalScroll>
   )
 }
 
-export default MarksByDay
+export default memo(MarksByDay)

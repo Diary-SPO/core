@@ -1,5 +1,13 @@
 import { useCallback, useState } from 'preact/hooks'
 
+/**
+ * Функция 'useDebouncedChangeWeek' обрабатывает изменения недели с задержкой.
+ * Принимает начальную и конечную даты, устанавливает значения текущей даты, начальной и конечной даты.
+ * Создает обработчик для событий клика с учетом задержки и изменения даты.
+ * При каждом клике увеличивает счетчик нажатий, а также устанавливает таймер для вызова функции с новыми датами.
+ * После задержки сбрасывает счетчик и вызывает функцию, отправляющую измененные даты на сервер.
+ */
+
 interface SendToServerIfValid {
   (start: Date, end: Date): void
 }
@@ -12,6 +20,7 @@ const useDebouncedChangeWeek = (
   setEndDate: (endDate: Date) => void
 ) => {
   const [clickCount, setClickCount] = useState<number>(0)
+  // eslint-disable-next-line no-undef
   const [timeoutId, setTimeoutId] = useState<NodeJS.Timeout | null>(null)
 
   const debouncedChangeWeek = useCallback(
