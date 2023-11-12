@@ -9,6 +9,6 @@ export const truncateString = (str: string, maxLength: number) => {
   if (str.length > maxLength && maxLength !== 0) {
     return `${str.substring(0, maxLength)}...`
   }
-  
+
   return str
 }

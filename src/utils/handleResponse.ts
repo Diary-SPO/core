@@ -12,13 +12,13 @@ export const handleResponse = <T>(
   errorCallback: () => void,
   limitExceededCallback: () => void,
   loadingCallback: (isLoading: boolean) => void,
-  showSnackbar?: (snackbarData: SnackbarData) => void,
+  showSnackbar?: (snackbarData: SnackbarData) => void
 ): void => {
   if (response === 418) {
     const errorIcon = createElement(Icon28ErrorCircleOutline, {
       fill: 'var(--vkui--color_icon_negative)',
     })
-    
+
     if (showSnackbar) {
       showSnackbar({
         icon: errorIcon,
@@ -26,12 +26,12 @@ export const handleResponse = <T>(
         subtitle: 'Попробуйте обновить страницу или обновите куки в настройках',
       })
     }
-    
+
     loadingCallback(false)
     errorCallback()
     return
   }
-  
+
   if (response === 429) {
     limitExceededCallback()
     errorCallback()
