@@ -1,5 +1,5 @@
-import { it, expect, describe } from 'vitest'
-import { isToday, logOut, truncateString } from '@utils'
+import { it, expect, describe, vitest } from 'vitest'
+import { getTimeRemaining, handleResponse, isToday, logOut, truncateString } from '@utils'
 
 describe('Тесты базовых утилит', () => {
   /** isToday **/
@@ -53,6 +53,130 @@ describe('Тесты базовых утилит', () => {
       const result = truncateString(inputString, maxLength)
       
       expect(result).toBe(inputString)
+    })
+  })
+  
+  
+  describe('Тесты для handleResponse', () => {
+    /** mock-функции для тестирования **/
+    const errorCallbackMock = vitest.fn()
+    const limitExceededCallbackMock = vitest.fn()
+    const loadingCallbackMock = vitest.fn()
+    const showSnackbarMock = vitest.fn()
+    
+    it('должна вызывать showSnackbar и колбэки при response равном 418', () => {
+      const response = 418
+      
+      handleResponse(
+        response,
+        errorCallbackMock,
+        limitExceededCallbackMock,
+        loadingCallbackMock,
+        showSnackbarMock,
+      )
+      
+      expect(showSnackbarMock).toHaveBeenCalled()
+      
+      expect(errorCallbackMock).toHaveBeenCalled()
+      expect(loadingCallbackMock).toHaveBeenCalled()
+      
+      /** Сброс mock-функций **/
+      showSnackbarMock.mockReset()
+      errorCallbackMock.mockReset()
+      loadingCallbackMock.mockReset()
+    })
+    
+    it('должна вызывать limitExceededCallback, errorCallback и loadingCallback при response равном 429', () => {
+      const response = 429
+      
+      handleResponse(
+        response,
+        errorCallbackMock,
+        limitExceededCallbackMock,
+        loadingCallbackMock,
+      )
+      
+      expect(limitExceededCallbackMock).toHaveBeenCalled()
+      expect(errorCallbackMock).toHaveBeenCalled()
+      expect(loadingCallbackMock).toHaveBeenCalled()
+      
+      limitExceededCallbackMock.mockReset()
+      errorCallbackMock.mockReset()
+      loadingCallbackMock.mockReset()
+    })
+    
+    it('не должна вызывать коллбеки при положительном ответе от сервера', () => {
+      const response = 200
+      
+      handleResponse(
+        response,
+        errorCallbackMock,
+        limitExceededCallbackMock,
+        loadingCallbackMock,
+        showSnackbarMock,
+      )
+      
+      expect(showSnackbarMock).not.toHaveBeenCalled()
+      expect(errorCallbackMock).not.toHaveBeenCalled()
+      expect(loadingCallbackMock).not.toHaveBeenCalled()
+      
+      /** Сброс mock-функций **/
+      showSnackbarMock.mockReset()
+      errorCallbackMock.mockReset()
+      loadingCallbackMock.mockReset()
+    })
+  })
+  
+  /** getTimeRemaining **/
+  describe('getTimeRemaining', () => {
+    it('должна возвращать null, если урок уже завершился', () => {
+      const currentDate = new Date('2023-01-01T18:00:00')
+      const endTime = new Date('2023-01-01T13:00:00')
+      const startDate = new Date('2023-01-01T11:00:00')
+      
+      const result = getTimeRemaining(currentDate, endTime, startDate)
+      
+      expect(result).toBe(null)
+    })
+    
+    it('должна возвращать null, если урок еще не начался', () => {
+      const currentDate = new Date('2023-01-01T10:00:00')
+      const endTime = new Date('2023-01-01T13:00:00')
+      const startDate = new Date('2023-01-01T13:00:00')
+      
+      const result = getTimeRemaining(currentDate, endTime, startDate)
+      
+      expect(result).toBe(null)
+    })
+    
+    it('должна возвращать null, если до начала урока более 1 часа', () => {
+      const currentDate = new Date('2023-01-01T10:00:00')
+      const endTime = new Date('2023-01-01T12:00:00')
+      const startDate = new Date('2023-01-01T13:00:00')
+      
+      const result = getTimeRemaining(currentDate, endTime, startDate)
+      
+      expect(result).toBe(null)
+    })
+    
+    it('должна возвращать время до начала урока в формате "N мин до начала"', () => {
+      const currentDate = new Date('2023-01-01T10:00:00')
+      const endTime = new Date('2023-01-01T12:00:00')
+      const startDate = new Date('2023-01-01T11:30:00')
+      
+      const result = getTimeRemaining(currentDate, endTime, startDate)
+      
+      expect(result).toBe('90 мин до начала')
+    })
+    
+    it('должна возвращать время до конца урока в формате "N мин до конца"', () => {
+      const currentDate = new Date('2023-01-01T11:00:00')
+      const endTime = new Date('2023-01-01T12:30:00')
+      const startDate = new Date('2023-01-01T10:00:00')
+      
+      const result = getTimeRemaining(currentDate, endTime, startDate)
+      
+      expect(result).toBe('90 мин до конца')
     })
   })
 })
