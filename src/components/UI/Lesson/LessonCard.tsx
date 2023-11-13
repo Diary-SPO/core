@@ -51,6 +51,7 @@ const LessonCard: FC<ILessonCard> = ({ lesson }) => {
   const lessonDayOfWeek = lessonDate.toLocaleString('default', {
     weekday: 'long',
   })
+
   const isLessonToday = isToday(lessonDate)
 
   const displayDayStyles = {
