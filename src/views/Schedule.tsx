@@ -1,4 +1,4 @@
-import { FC, lazy, useEffect, useState } from 'react'
+import { FC, lazy, useEffect, useState } from 'preact/compat'
 import {
   Button,
   ButtonGroup,

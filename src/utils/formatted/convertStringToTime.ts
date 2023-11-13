@@ -8,8 +8,6 @@ export const convertStringToTime = (
   timeString: string,
   baseDate: Date
 ): Date | null => {
-  if (!timeString) return null
-
   const [hours, minutes] = timeString.split(':').map(Number)
 
   if (

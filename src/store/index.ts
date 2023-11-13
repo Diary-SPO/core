@@ -13,7 +13,7 @@
  *   - subscribe: функция подписки на изменения с возможностью отписки.
  */
 
-interface TStore<T> {
+export interface TStore<T> {
   initialState: T
 }
 

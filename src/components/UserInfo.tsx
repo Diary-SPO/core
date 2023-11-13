@@ -1,4 +1,4 @@
-import { CSSProperties, useEffect, useState } from 'react'
+import { CSSProperties, useEffect, useState } from 'preact/compat'
 import {
   Avatar,
   Button,

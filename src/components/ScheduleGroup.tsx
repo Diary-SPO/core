@@ -1,7 +1,7 @@
 import { CardGrid } from '@vkontakte/vkui'
 import { Day } from 'diary-shared'
 import { FunctionComponent } from 'preact'
-import { memo } from 'react'
+import { memo } from 'preact/compat'
 import LessonCard from './UI/Lesson/LessonCard'
 
 interface IScheduleGroup {

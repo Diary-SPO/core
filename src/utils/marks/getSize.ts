@@ -1,11 +1,16 @@
 import { Sizes } from '@components'
 
+/**
+ * Функция 'getSize' возвращает размер текста для оценки в зависимости от размера
+ * */
+
 export const getSize = (size: Sizes) => {
-  if (size === 's') {
-    return '1rem'
+  switch (size) {
+    case 's':
+      return '1rem'
+    case 'l':
+      return '3rem'
+    default:
+      return
   }
-  if (size === 'l') {
-    return '3rem'
-  }
-  return undefined
 }

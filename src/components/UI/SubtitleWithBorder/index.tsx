@@ -23,32 +23,30 @@ interface ISubtitleWithBorder extends HTMLAttributes<HTMLDivElement> {
   style?: CSSProperties
 }
 
+const getColorStyles = (color: SubtitleColors) => {
+  const colorStyle = colors[color] ?? defaultColor
+  return {
+    display: 'inline-block',
+    borderRadius: '5px',
+    padding: '3px 5px',
+    ...colorStyle,
+  }
+}
+
 const SubtitleWithBorder: FunctionComponent<ISubtitleWithBorder> = ({
   children,
   color = 'default',
   style,
   ...props
 }) => {
-  const getColorStyles = () => {
-    const colorStyle = colors[color] ?? defaultColor
-    return {
-      borderRadius: '5px',
-      padding: '3px 5px',
-      ...colorStyle,
-    }
+  const styles = {
+    ...getColorStyles(color),
+    ...style,
   }
 
   return useMemo(
     () => (
-      <div
-        {...props}
-        style={{
-          display: 'inline-block',
-          ...getColorStyles(),
-          padding: '3px 5px',
-          ...style,
-        }}
-      >
+      <div {...props} style={styles}>
         {children}
       </div>
     ),

@@ -20,6 +20,7 @@ const SubjectCard: FunctionalComponent<ISubjectCard> = ({ subject }) => (
         <InfoRow header="Оценки">
           {/*// @ts-ignore*/}
           <Subhead>
+            {/*// TODO: перенести в функцию*/}
             {subject.marks[subject.id] &&
             Object.keys(subject.marks[subject.id]).length > 0
               ? Object.keys(subject.marks[subject.id]).map((studentId) => (

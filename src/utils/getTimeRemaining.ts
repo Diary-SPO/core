@@ -11,7 +11,8 @@ export const getTimeRemaining = (
 ): string | null => {
   const timeToStart =
     (startDate.getTime() - currentDate.getTime()) / (1000 * 60)
-  if (timeToStart > 60 || currentDate > endTime) {
+
+  if (timeToStart > 90 || currentDate > endTime) {
     return null
   }
 
@@ -24,6 +25,4 @@ export const getTimeRemaining = (
       (endTime.getTime() - currentDate.getTime()) / (1000 * 60)
     return `${Math.floor(remainingMinutes)} мин до конца`
   }
-
-  return null
 }

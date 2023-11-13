@@ -27,6 +27,7 @@ const TimeRemaining: FunctionComponent<ITimeRemaining> = ({
   const currentDate = new Date()
 
   const lessonEndDate = convertStringToTime(endTime, lessonDate)
+  const lessonStartDate = convertStringToTime(startTime, lessonDate)
 
   if (!lessonEndDate) {
     return null
@@ -35,7 +36,7 @@ const TimeRemaining: FunctionComponent<ITimeRemaining> = ({
   const timeRemainingText = getTimeRemaining(
     currentDate,
     lessonEndDate,
-    lessonDate
+    lessonStartDate
   )
 
   if (!timeRemainingText) {

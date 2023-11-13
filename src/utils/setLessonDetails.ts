@@ -28,7 +28,7 @@ export const setLessonDetails = (lesson: Lesson) => {
       gradebook: {
         absenceType: gradebook?.absenceType,
         id: gradebook?.id || 0,
-        lessonType: gradebook?.lessonType,
+        lessonType: gradebook?.lessonType || 'Не задан',
         tasks: tasksArray,
         themes: gradebook?.themes,
       },
@@ -36,7 +36,7 @@ export const setLessonDetails = (lesson: Lesson) => {
         classroom: {
           id: 0,
           building: '',
-          name: timetable?.classroom?.name || '',
+          name: timetable?.classroom?.name || 'Нет кабинета',
         },
         teacher: {
           id: timetable?.teacher?.id || 0,
@@ -50,7 +50,7 @@ export const setLessonDetails = (lesson: Lesson) => {
     },
     lessonMainInfo: {
       name: formattedName,
-      lessonType: gradebook?.lessonType || '',
+      lessonType: gradebook?.lessonType || 'Не задан',
       themes: gradebook?.themes,
       teacherName: timetable?.teacher?.firstName
         ? `${timetable.teacher.lastName} ${timetable.teacher.firstName} ${timetable.teacher.middleName}`
@@ -60,7 +60,7 @@ export const setLessonDetails = (lesson: Lesson) => {
       startTime: startTime || 'Ошибка',
       endTime: endTime || 'Ошибка',
       classroomName:
-        (timetable?.classroom && timetable?.classroom?.name) || 'Неизвестно',
+        (timetable?.classroom && timetable?.classroom?.name) || 'Нет кабинета',
     },
   }
 }

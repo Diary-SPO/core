@@ -23,6 +23,7 @@ const LessonCell: FC<ILessonCell> = ({
   handleLessonClick,
 }) => {
   const { name, endTime, startTime, timetable, gradebook } = lesson
+  // TODO: перенести в функцию
   const lessonTime = startTime
     ? `${startTime} — ${endTime}, каб. ${
         Number(timetable?.classroom?.name) === 0

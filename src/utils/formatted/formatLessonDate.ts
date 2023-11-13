@@ -6,7 +6,7 @@
  * возвращая отформатированную строку, представляющую дату урока.
  */
 
-export const formatLessonDate = (dateString: Date | string) => {
+export const formatLessonDate = (dateString: Date) => {
   const date = new Date(dateString)
   const options: Intl.DateTimeFormatOptions = {
     year: 'numeric',
@@ -14,16 +14,5 @@ export const formatLessonDate = (dateString: Date | string) => {
     day: 'numeric',
   }
 
-  return date.toLocaleDateString(undefined, options)
-}
-
-/**
- * Функция 'getDayOfWeek' возвращает сокращенное представление дня недели (например, 'Пн', 'Вт') на основе переданной даты.
- * Использует массив 'daysOfWeek', содержащий сокращенные названия дней недели.
- * Возвращает сокращенное название дня недели на основе индекса, полученного из переданного объекта Date.
- */
-
-export const getDayOfWeek = (date: Date) => {
-  const daysOfWeek = ['Вс', 'Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб']
-  return daysOfWeek[date.getDay()]
+  return date.toLocaleDateString('ru-RU', options)
 }
