@@ -13,6 +13,6 @@ export const formatLessonDate = (dateString: Date) => {
     month: 'long',
     day: 'numeric',
   }
-  
+
   return date.toLocaleDateString('ru-RU', options)
 }

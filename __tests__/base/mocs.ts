@@ -2,7 +2,8 @@ import { Lesson } from 'diary-shared'
 import { IMarksByDay } from '../../src/components'
 
 /** Переданные данные **/
-export const mockTextWithLinks = 'Check out this website: https://www.example.com.'
+export const mockTextWithLinks =
+  'Check out this website: https://www.example.com.'
 
 export const mockLesson: Lesson = {
   name: 'Math',
