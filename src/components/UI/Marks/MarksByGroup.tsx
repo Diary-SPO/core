@@ -1,4 +1,4 @@
-import { FC } from 'react'
+import { FC } from 'preact/compat'
 import {
   Card,
   CardGrid,
@@ -20,7 +20,7 @@ interface IMarksByGroup {
 
 const MarksByGroup: FC<IMarksByGroup> = ({ marksForSubject }) => {
   if (!marksForSubject) {
-    return NoData
+    return <NoData />
   }
 
   const subjectMarksMap = createSubjectMarksMap(marksForSubject)
