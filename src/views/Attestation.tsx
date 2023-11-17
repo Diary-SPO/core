@@ -6,7 +6,7 @@ import {
   Panel,
   Placeholder,
 } from '@vkontakte/vkui'
-import { AttestationResponse } from 'diary-shared'
+import { AttestationResponse } from '@diary-spo/shared'
 import { FC, lazy } from 'preact/compat'
 import { useCallback, useEffect, useState } from 'preact/hooks'
 import { PanelHeaderWithBack } from '@components'

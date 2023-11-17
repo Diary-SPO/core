@@ -7,7 +7,7 @@ import {
   formatLessonName,
   formatStatisticsData,
 } from '@utils'
-import { PerformanceCurrent } from 'diary-shared'
+import { PerformanceCurrent } from '@diary-spo/shared'
 
 describe('Тесты утилит для форматирования', () => {
   /** convertStringToTime **/

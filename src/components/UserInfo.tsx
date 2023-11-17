@@ -16,7 +16,7 @@ import { Icon20RefreshOutline, Icon28SchoolOutline } from '@vkontakte/icons'
 
 import bridge from '@vkontakte/vk-bridge'
 // import { useRouteNavigator } from '@vkontakte/vk-mini-apps-router'
-// import { Organization } from 'diary-shared';
+// import { Organization } from '@diary-spo/shared';
 // import { useRateLimitExceeded } from '../hooks'
 // import { MODAL_COLLEGE_INFO } from '../modals/ModalRoot'
 // import { getCollegeInfo } from '../methods'

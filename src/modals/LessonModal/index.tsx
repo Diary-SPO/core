@@ -1,5 +1,5 @@
 import { ModalPage, ModalPageHeader } from '@vkontakte/vkui'
-import { Lesson } from 'diary-shared'
+import { Lesson } from '@diary-spo/shared'
 import { FC } from 'preact/compat'
 import { useEffect, useState } from 'preact/hooks'
 import LessonMainInfo, { ILessonMainInfo } from './LessonMainInfo'

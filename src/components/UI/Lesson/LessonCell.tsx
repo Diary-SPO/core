@@ -1,6 +1,6 @@
 import { FC } from 'react'
 import { SimpleCell } from '@vkontakte/vkui'
-import { Gradebook, Lesson, Timetable } from 'diary-shared'
+import { Gradebook, Lesson, Timetable } from '@diary-spo/shared'
 import LessonSubtitle from './LessonSubtitle'
 import { setDefaultMark } from '@utils'
 import Mark from '../Mark'

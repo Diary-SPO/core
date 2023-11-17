@@ -27,6 +27,7 @@
   },
   "devDependencies": {
     "@babel/eslint-parser": "^7.22.15",
+    "@diary-spo/shared": "^1.8.5",
     "@preact/preset-vite": "^2.5.0",
     "@rollup/plugin-terser": "^0.4.4",
     "@types/node": "^20.8.7",
@@ -34,7 +35,6 @@
     "@typescript-eslint/parser": "^6.8.0",
     "@vitest/coverage-v8": "^0.34.6",
     "@vkontakte/vk-miniapps-deploy": "^0.1.6",
-    "diary-shared": "^1.8.1",
     "eslint": "^8.52.0",
     "eslint-config-airbnb": "^19.0.4",
     "eslint-config-airbnb-typescript": "^17.1.0",

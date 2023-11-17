@@ -1,4 +1,4 @@
-import { AttestationResponse } from 'diary-shared'
+import { AttestationResponse } from '@diary-spo/shared'
 import makeRequest from './makeRequest'
 
 export const getAttestation = async (): Promise<

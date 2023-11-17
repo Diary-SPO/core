@@ -1,4 +1,4 @@
-import { Lesson } from 'diary-shared'
+import { Lesson } from '@diary-spo/shared'
 import { formatLessonName } from './formatted/formatLessonName'
 
 /**

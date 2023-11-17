@@ -1,4 +1,4 @@
-import { Grade, Task, TextMark } from 'diary-shared'
+import { Grade, Task, TextMark } from '@diary-spo/shared'
 
 export type ReturnedMark = TextMark | 'Н' | 'ДЗ' | 'О' | 'Д' | number
 

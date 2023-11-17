@@ -266,6 +266,11 @@
   resolved "https://registry.yarnpkg.com/@bcoe/v8-coverage/-/v8-coverage-0.2.3.tgz#75a2e8b51cb758a7553d6804a5932d7aace75c39"
   integrity sha512-0hYQ8SB4Db5zvZB4axdMHGwEaQjkZzFjQiN9LVYvIFB2nSUHW9tYpxWriPrWDASIxiaXax83REcLxuSdnGPZtw==
 
+"@diary-spo/shared@^1.8.5":
+  version "1.8.5"
+  resolved "https://registry.yarnpkg.com/@diary-spo/shared/-/shared-1.8.5.tgz#58f5b8f002638b37e2cc74a64de51c9142742582"
+  integrity sha512-MgTlwjA1GJBRkFIbkuqKtcpyj/Fh+2YBqRqrqJDptFCKyyL72M3Ea3jd1rPwRY2GswncXu3jN7XqhOZB29Js2A==
+
 "@esbuild/android-arm64@0.18.20":
   version "0.18.20"
   resolved "https://registry.yarnpkg.com/@esbuild/android-arm64/-/android-arm64-0.18.20.tgz#984b4f9c8d0377443cc2dfcef266d02244593622"
@@ -1644,11 +1649,6 @@ dequal@^2.0.3:
   version "2.0.3"
   resolved "https://registry.yarnpkg.com/dequal/-/dequal-2.0.3.tgz#2644214f1997d39ed0ee0ece72335490a7ac67be"
   integrity sha512-0je+qPKHEMohvfRTCEo3CrPG6cAzAYgmzKyxRiYSSDkS6eGJdyVJm7WaYA5ECaAD9wLB2T4EEeymA5aFVcYXCA==
-
-diary-shared@^1.8.1:
-  version "1.8.1"
-  resolved "https://registry.yarnpkg.com/diary-shared/-/diary-shared-1.8.1.tgz#dbc65fc62ab65835b4487658269cde09d9a78759"
-  integrity sha512-vIDqWksHCNCB8Ec/7hhOxBACZT6gr5+9b7JS+DYuucUxsPHWiBJ6KiIULeBSo/vmKGyxIsIV4vyzD+0qpB1gqg==
 
 diff-sequences@^29.4.3:
   version "29.6.3"

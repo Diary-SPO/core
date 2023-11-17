@@ -1,5 +1,5 @@
 import { FC } from 'react'
-import { Lesson, LessonType } from 'diary-shared'
+import { Lesson, LessonType } from '@diary-spo/shared'
 import { InfoRow, Separator, SimpleCell, Spacing, Text } from '@vkontakte/vkui'
 import { Mark } from '@components'
 import { setDefaultMark } from '@utils'

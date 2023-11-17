@@ -1,6 +1,6 @@
 import { FunctionalComponent } from 'preact'
 import { HorizontalScroll } from '@vkontakte/vkui'
-import { PerformanceCurrent } from 'diary-shared'
+import { PerformanceCurrent } from '@diary-spo/shared'
 import { extractMarksByDay, sortByDay } from '@utils'
 import { memo } from 'preact/compat'
 import LessonGrades, { ILessonGrades } from './LessonGrades'

@@ -8,7 +8,7 @@ import {
   HorizontalScroll,
   Title,
 } from '@vkontakte/vkui'
-import { PerformanceCurrent } from 'diary-shared'
+import { PerformanceCurrent } from '@diary-spo/shared'
 import { createSubjectMarksMap } from '@utils'
 import MarksList from './MarksList'
 import AverageMarkCell from './AverageMarkCell'

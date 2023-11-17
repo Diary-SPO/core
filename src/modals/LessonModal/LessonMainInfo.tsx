@@ -1,6 +1,6 @@
 import { FC } from 'react'
 import { Group, Header, InfoRow, SimpleCell } from '@vkontakte/vkui'
-import { LessonWorkType, TLesson } from 'diary-shared'
+import { LessonWorkType, TLesson } from '@diary-spo/shared'
 import { ExplanationTooltip } from '@components'
 import { textToLink } from '@utils'
 
