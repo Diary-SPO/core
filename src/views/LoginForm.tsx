@@ -166,14 +166,14 @@ const LoginForm: FC<{ id: string }> = ({ id }) => {
   const loginTopText = isLoginEmpty
     ? 'Логин'
     : loginPattern.test(login)
-    ? 'Логин введён'
-    : 'Введите корректный логин'
+      ? 'Логин введён'
+      : 'Введите корректный логин'
   const passwordTopText =
     password === ''
       ? 'Пароль'
       : isPasswordValid
-      ? 'Пароль введён'
-      : 'Введите корректный пароль'
+        ? 'Пароль введён'
+        : 'Введите корректный пароль'
 
   return (
     <Panel nav={id}>
@@ -194,8 +194,8 @@ const LoginForm: FC<{ id: string }> = ({ id }) => {
               isLoginEmpty
                 ? 'default'
                 : loginPattern.test(login)
-                ? 'valid'
-                : 'error'
+                  ? 'valid'
+                  : 'error'
             }
             bottom={isLoginEmpty || loginTopText}
             bottomId="login-type"

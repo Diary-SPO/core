@@ -67,8 +67,8 @@ const LessonCard: FC<ILessonCard> = ({ lesson }) => {
   const displayDay = isLessonToday
     ? 'Сегодня'
     : dayEnded
-    ? ' День завершён'
-    : undefined
+      ? ' День завершён'
+      : undefined
 
   const lessonComponents = useMemo(() => {
     if (lesson.lessons && lesson.lessons.length > 0) {
