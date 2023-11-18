@@ -1,4 +1,4 @@
-import { PerformanceCurrent } from 'diary-shared'
+import { PerformanceCurrent } from '@diary-spo/shared'
 import { SubjectMarksMap } from '@utils'
 
 /** createSubjectMarksMap */

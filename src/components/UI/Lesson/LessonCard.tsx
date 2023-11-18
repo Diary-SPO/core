@@ -2,7 +2,7 @@ import { FC, memo } from 'react'
 import { Card, Group, Placeholder } from '@vkontakte/vkui'
 import { useRouteNavigator } from '@vkontakte/vk-mini-apps-router'
 import { useCallback } from 'preact/hooks'
-import { Day, Gradebook, Timetable } from 'diary-shared'
+import { Day, Gradebook, Timetable } from '@diary-spo/shared'
 import useModal from '../../../store/useModal'
 import { MODAL_PAGE_LESSON } from '../../../modals/ModalRoot'
 import { formatLessonDate, isToday } from '@utils'
@@ -67,8 +67,8 @@ const LessonCard: FC<ILessonCard> = ({ lesson }) => {
   const displayDay = isLessonToday
     ? 'Сегодня'
     : dayEnded
-    ? ' День завершён'
-    : undefined
+      ? ' День завершён'
+      : undefined
 
   const lessonComponents = useMemo(() => {
     if (lesson.lessons && lesson.lessons.length > 0) {

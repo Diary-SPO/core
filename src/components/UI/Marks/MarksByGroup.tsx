@@ -1,4 +1,4 @@
-import { FC } from 'react'
+import { FC } from 'preact/compat'
 import {
   Card,
   CardGrid,
@@ -8,7 +8,7 @@ import {
   HorizontalScroll,
   Title,
 } from '@vkontakte/vkui'
-import { PerformanceCurrent } from 'diary-shared'
+import { PerformanceCurrent } from '@diary-spo/shared'
 import { createSubjectMarksMap } from '@utils'
 import MarksList from './MarksList'
 import AverageMarkCell from './AverageMarkCell'
@@ -20,7 +20,7 @@ interface IMarksByGroup {
 
 const MarksByGroup: FC<IMarksByGroup> = ({ marksForSubject }) => {
   if (!marksForSubject) {
-    return NoData
+    return <NoData />
   }
 
   const subjectMarksMap = createSubjectMarksMap(marksForSubject)

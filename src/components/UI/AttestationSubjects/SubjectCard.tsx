@@ -1,6 +1,6 @@
 import { Card, CardGrid, Div, InfoRow, Subhead, Title } from '@vkontakte/vkui'
 import { FunctionalComponent } from 'preact'
-import { Examinations } from 'diary-shared'
+import { Examinations } from '@diary-spo/shared'
 import Subject from './types'
 
 interface ISubjectCard {

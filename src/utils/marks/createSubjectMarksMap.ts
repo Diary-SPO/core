@@ -1,4 +1,4 @@
-import { AbsenceType, PerformanceCurrent, TextMark } from 'diary-shared'
+import { AbsenceType, PerformanceCurrent, TextMark } from '@diary-spo/shared'
 
 export interface SubjectMarksMap {
   [subjectName: string]: {

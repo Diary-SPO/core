@@ -14,7 +14,7 @@ import {
   Title,
 } from '@vkontakte/vkui'
 import { Icon28ErrorCircleOutline } from '@vkontakte/icons'
-import { NotificationsResponse } from 'diary-shared'
+import { NotificationsResponse } from '@diary-spo/shared'
 import { useEffect, useState } from 'preact/hooks'
 import { FC } from 'preact/compat'
 import { PanelHeaderWithBack, SubtitleWithBorder } from '@components'

@@ -1,5 +1,5 @@
 import { FC } from 'react'
-import { AbsenceTypes, Grade } from 'diary-shared'
+import { AbsenceTypes, Grade } from '@diary-spo/shared'
 import Mark from '../Mark'
 import { SubjectMarksMap } from '@utils'
 

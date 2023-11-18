@@ -1,5 +1,5 @@
 import { CardGrid } from '@vkontakte/vkui'
-import { Day } from 'diary-shared'
+import { Day } from '@diary-spo/shared'
 import { FunctionComponent } from 'preact'
 import { memo } from 'preact/compat'
 import LessonCard from './UI/Lesson/LessonCard'

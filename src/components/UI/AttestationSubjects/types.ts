@@ -1,4 +1,4 @@
-import { ExaminationType } from 'diary-shared'
+import { ExaminationType } from '@diary-spo/shared'
 
 export default interface Subject {
   id: string

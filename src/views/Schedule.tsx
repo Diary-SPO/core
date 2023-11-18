@@ -23,7 +23,7 @@ import {
   Icon24ChevronRightCircle,
 } from '@vkontakte/icons'
 import { addDays, endOfWeek, startOfWeek } from '@vkontakte/vkui/dist/lib/date'
-import { Day, PerformanceCurrent } from 'diary-shared'
+import { Day, PerformanceCurrent } from '@diary-spo/shared'
 import { getLessons, getPerformance } from '../methods'
 import { ExplanationTooltip, PanelHeaderWithBack, Suspense } from '@components'
 import {

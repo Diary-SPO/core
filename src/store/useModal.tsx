@@ -1,5 +1,5 @@
 import { useSyncExternalStore } from 'react'
-import { Lesson } from 'diary-shared'
+import { Lesson } from '@diary-spo/shared'
 import { cleanData } from '../modals/data'
 import createStore from './index'
 

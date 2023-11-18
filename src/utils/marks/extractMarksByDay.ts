@@ -1,4 +1,4 @@
-import { Grade, PerformanceCurrent } from 'diary-shared'
+import { Grade, PerformanceCurrent } from '@diary-spo/shared'
 import { IMarksByDay } from '@components'
 
 /**

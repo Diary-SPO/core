@@ -1,4 +1,4 @@
-import { Lesson } from 'diary-shared'
+import { Lesson, LessonWorkTypeKeys } from '@diary-spo/shared'
 import { formatLessonName } from './formatted/formatLessonName'
 
 /**
@@ -28,7 +28,7 @@ export const setLessonDetails = (lesson: Lesson) => {
       gradebook: {
         absenceType: gradebook?.absenceType,
         id: gradebook?.id || 0,
-        lessonType: gradebook?.lessonType || 'Не задан',
+        lessonType: gradebook?.lessonType || ('Не задан' as LessonWorkTypeKeys),
         tasks: tasksArray,
         themes: gradebook?.themes,
       },

@@ -7,7 +7,8 @@ import {
   getSize,
   setDefaultMark,
 } from '@utils'
-import { Task } from 'diary-shared'
+import { Task } from '@diary-spo/shared'
+
 import {
   expectedExtractByDayData,
   expectedInvalidExtractByDayData,

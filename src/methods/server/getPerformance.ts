@@ -1,4 +1,4 @@
-import { PerformanceCurrent } from 'diary-shared'
+import { PerformanceCurrent } from '@diary-spo/shared'
 import makeRequest from './makeRequest'
 
 export const getPerformance = async (): Promise<

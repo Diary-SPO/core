@@ -1,4 +1,4 @@
-import { Day } from 'diary-shared'
+import { Day } from '@diary-spo/shared'
 import { formatDateForRequest } from '@utils'
 import makeRequest from './makeRequest'
 

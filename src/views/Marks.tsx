@@ -1,6 +1,6 @@
 import { Group, Panel, PanelSpinner, PullToRefresh } from '@vkontakte/vkui'
 import { Icon28ErrorCircleOutline, Icon28InfoCircle } from '@vkontakte/icons'
-import { PerformanceCurrent } from 'diary-shared'
+import { PerformanceCurrent } from '@diary-spo/shared'
 import { FC } from 'preact/compat'
 import { useEffect, useState } from 'preact/hooks'
 import {

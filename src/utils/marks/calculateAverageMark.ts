@@ -1,4 +1,4 @@
-import { Grade, TextMark } from 'diary-shared'
+import { Grade, TextMark } from '@diary-spo/shared'
 
 /**
  * Функция 'calculateAverageMark' высчитывает средний балл учащегося до двух знаков после запятой.
