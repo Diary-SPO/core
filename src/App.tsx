@@ -51,7 +51,7 @@ const App = () => {
   const vkBridgeInsets = useInsets() || undefined
   const isVKCOM = platform === Platform.VKCOM
 
-  const cookieValue = localStorage.getItem('cookie')
+  const cookieValue = localStorage.getItem('token')
 
   useEffect(() => {
     const onRoute = () => {

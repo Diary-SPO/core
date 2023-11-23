@@ -7,7 +7,7 @@ const SECOND_SERVER_URL =
 
 const makeRequest = async <T>(route: string): Promise<T | 418 | 429> => {
   const cookie =
-    localStorage.getItem('cookie') ?? sessionStorage.getItem('cookie')
+    localStorage.getItem('token') ?? sessionStorage.getItem('token')
   const url = `${BASE_URL}${route}`
 
   if (!cookie) {

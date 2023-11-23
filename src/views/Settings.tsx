@@ -194,13 +194,13 @@ const Settings: FunctionalComponent<ISettings> = ({ id }) => {
         body: JSON.stringify({
           login,
           password,
-          isRemember: true,
+          isHash: true,
         }),
       })
 
       const data = await response.json()
 
-      if (!data.cookie) {
+      if (!data.token) {
         showSnackbar({
           title: 'Сервер вернул что-то плохое',
           subtitle: 'Попробуйте перезайти в аккаунт или сообщите об ошибке',
@@ -208,10 +208,10 @@ const Settings: FunctionalComponent<ISettings> = ({ id }) => {
         return
       }
 
-      localStorage.setItem('cookie', data.cookie)
+      localStorage.setItem('token', data.token)
 
       showSnackbar({
-        title: 'Cookie обновлена',
+        title: 'Token обновлён',
         icon: <Icon28ThumbsUpCircleFillGreen />,
         subtitle: 'Не забывайте периодически это делать',
       })
@@ -240,7 +240,7 @@ const Settings: FunctionalComponent<ISettings> = ({ id }) => {
           Показывать тех. инфрмацию
         </CellButton>
         <CellButton before={<Icon28RefreshOutline />} onClick={reloadCookie}>
-          Обновить cookie
+          Перевыпустить токен
         </CellButton>
         {/*<CellButton*/}
         {/*  before={<Icon28ClearDataOutline />}*/}

@@ -39,10 +39,10 @@ const LoginForm: FC<{ id: string }> = ({ id }) => {
     })
 
   useEffect(() => {
-    const storageCookie = localStorage.getItem('cookie')
+    const storageToken = localStorage.getItem('token')
     setIsLoading(true)
     const getUserCookie = () => {
-      if (!storageCookie) {
+      if (!storageToken) {
         routeNavigator.replace('/')
         setIsLoading(false)
         showSnackbar({
@@ -90,7 +90,7 @@ const LoginForm: FC<{ id: string }> = ({ id }) => {
       body: JSON.stringify({
         login,
         password: passwordHashed,
-        isRemember: true,
+        isHash: true,
       }),
     })
 
@@ -114,24 +114,24 @@ const LoginForm: FC<{ id: string }> = ({ id }) => {
     }
 
     const dataResp = (await response.json()) as AuthData
-    if (!String(dataResp.cookie)) {
+    if (!String(dataResp.token)) {
       createErrorSnackbar()
     }
 
     try {
-      const basePath = dataResp.data.tenants[dataResp.data.tenantName]
+      const basePath = dataResp
 
-      const userId = String(basePath.studentRole.id)
-      const { cookie } = dataResp
-      const name = ` ${String(basePath.lastName)} ${String(
+      const userId = String(basePath.id)
+      const token = dataResp.token
+      const name = `${String(basePath.lastName)} ${String(
         basePath.firstName
       )} ${String(basePath.middleName)}`
-      const org = String(basePath.settings.organization.abbreviation)
-      const city = String(basePath.settings.organization.address.settlement)
-      const group = String(basePath.students[0].groupName)
+      const org = String(basePath.organization.abbreviation)
+      const city = String(basePath.organization.addressSettlement)
+      const group = String(basePath.groupName)
 
       localStorage.setItem('id', userId)
-      localStorage.setItem('cookie', cookie)
+      localStorage.setItem('token', token)
 
       localStorage.setItem('log', login)
       localStorage.setItem('main', passwordHashed)

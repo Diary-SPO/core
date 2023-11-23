@@ -4,7 +4,7 @@ import makeRequest from './makeRequest'
 export const getAttestation = async (): Promise<
   AttestationResponse | 418 | 429
 > => {
-  const cookie = localStorage.getItem('cookie')
+  const cookie = localStorage.getItem('token')
   const id = localStorage.getItem('id')
 
   if (!cookie) {
