@@ -13,7 +13,6 @@ import {
   Icon28DoorArrowLeftOutline,
   Icon28ErrorCircleOutline,
 } from '@vkontakte/icons'
-import { AuthData } from '@diary-spo/shared'
 import { useEffect, useState } from 'preact/hooks'
 import { ChangeEvent, FC } from 'preact/compat'
 import { PanelHeaderWithBack } from '@components'
