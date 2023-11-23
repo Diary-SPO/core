@@ -112,23 +112,8 @@ const LoginForm: FC<{ id: string }> = ({ id }) => {
       )
     }
 
-    const dataResp = (await response.json()) as {
-      id: number
-      spoId?: number
-      groupId: number
-      groupName: string
-      organization: {
-        abbreviation: string
-        addressSettlement: string
-      }
-      login: string
-      phone: string
-      birthday: string
-      firstName: string
-      lastName: string
-      middleName: string
-      token?: string
-    }
+    // FIXME: использовать тип
+    const dataResp = await response.json()
     if (!String(dataResp.token)) {
       createErrorSnackbar()
     }
