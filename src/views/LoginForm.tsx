@@ -18,6 +18,8 @@ import { ChangeEvent, FC } from 'preact/compat'
 import { PanelHeaderWithBack } from '@components'
 import { VIEW_SCHEDULE } from '../routes'
 import { useSnackbar } from '../hooks'
+import { BASE_URL } from '../config'
+import { loginPattern } from '../types'
 
 const LoginForm: FC<{ id: string }> = ({ id }) => {
   const routeNavigator = useRouteNavigator()
@@ -69,8 +71,6 @@ const LoginForm: FC<{ id: string }> = ({ id }) => {
     setStateAction && setStateAction(value)
   }
 
-  const loginPattern = /^[a-zA-Z0-9а-яА-ЯёЁ-]+$/
-
   const handleLogin = async () => {
     if (!loginPattern.test(login)) {
       setIsDataInvalid(true)
@@ -81,7 +81,7 @@ const LoginForm: FC<{ id: string }> = ({ id }) => {
 
     setIsLoading(true)
     //@ts-ignore типы React не совсем совместимы с Preact
-    const response = await fetch(`${import.meta.env.VITE_SERVER_URL}/login`, {
+    const response = await fetch(`${BASE_URL}/login`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

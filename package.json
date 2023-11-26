@@ -12,7 +12,8 @@
     "lint:fix": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0 --fix",
     "preview": "vite preview",
     "test": "vitest",
-    "coverage": "vitest run --coverage"
+    "coverage": "vitest run --coverage",
+    "format": "prettier --write ."
   },
   "dependencies": {
     "@vkontakte/icons": "^2.79.0",

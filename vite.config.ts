@@ -5,19 +5,20 @@ import * as path from 'node:path'
 // https://vitejs.dev/config/
 export default defineConfig({
   test: {
-    environment: "jsdom",
+    environment: 'jsdom',
     globals: true,
     setupFiles: ['vitest-localstorage-mock'],
     mockReset: false,
   },
-  plugins: [
-    preact(),
-  ],
+  plugins: [preact()],
   resolve: {
     alias: [
       { find: /^@vkontakte\/vkui$/, replacement: '@vkontakte/vkui/dist/cssm' },
       { find: '@utils', replacement: path.resolve(__dirname, './src/utils') },
-      { find: '@components', replacement: path.resolve(__dirname, 'src/components') }
+      {
+        find: '@components',
+        replacement: path.resolve(__dirname, 'src/components'),
+      },
     ],
   },
   build: {

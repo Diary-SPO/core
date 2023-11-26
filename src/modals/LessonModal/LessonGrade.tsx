@@ -1,4 +1,4 @@
-import { FC } from 'preact/compat'
+import { FC, useMemo } from 'preact/compat'
 import { Group, Header, SimpleCell } from '@vkontakte/vkui'
 import {
   AbsenceTypes,
@@ -15,26 +15,30 @@ interface ILessonGrade {
 
 const LessonGrade: FC<ILessonGrade> = ({ tasks, absenceType }) => {
   const hasTasks = tasks?.length
-  const hasAbsenceType = absenceType
 
-  if (!hasTasks && !hasAbsenceType) {
+  if (!hasTasks && !absenceType) {
     return
   }
 
+  const header = useMemo(
+    () => (
+      <Header mode="tertiary">
+        <ExplanationTooltip
+          text="Успеваемость"
+          tooltipContent="Информация может быть неактуальной. При возникновении неточностей можете обратиться к нам"
+        />
+      </Header>
+    ),
+    []
+  )
+
+  const mark = <Mark mark={AbsenceTypes[absenceType]} size="s" />
+
   return (
-    <Group
-      header={
-        <Header mode="tertiary">
-          <ExplanationTooltip
-            text="Успеваемость"
-            tooltipContent="Информация может быть неактуальной. При возникновении неточностей можете обратиться к нам"
-          />
-        </Header>
-      }
-    >
+    <Group header={header}>
       {hasTasks && <LessonTasks tasks={tasks} />}
-      {hasAbsenceType && (
-        <SimpleCell after={<Mark mark={AbsenceTypes[absenceType]} size="s" />}>
+      {absenceType && (
+        <SimpleCell after={mark}>
           {AbsenceTypesDescription[absenceType]}
         </SimpleCell>
       )}

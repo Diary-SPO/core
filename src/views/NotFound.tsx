@@ -1,7 +1,14 @@
-import { AppRoot, Button, Div } from '@vkontakte/vkui'
+import {
+  AppRoot,
+  Button,
+  ConfigProvider,
+  Div,
+  usePlatform,
+} from '@vkontakte/vkui'
 import { useRouteNavigator } from '@vkontakte/vk-mini-apps-router'
-import { useInsets } from '@vkontakte/vk-bridge-react'
-import { CSSProperties } from 'preact/compat'
+import { useAppearance, useInsets } from '@vkontakte/vk-bridge-react'
+import { CSSProperties, FC } from 'preact/compat'
+import vkBridge from '@vkontakte/vk-bridge'
 
 const notFoundStyle: CSSProperties = {
   display: 'flex',
@@ -23,7 +30,7 @@ const text: CSSProperties = {
   marginBottom: 40,
 }
 
-const NotFound = () => {
+const NotFound: FC = () => {
   const routeNavigator = useRouteNavigator()
   const vkBridgeInsets = useInsets() || undefined
 
@@ -45,4 +52,19 @@ const NotFound = () => {
   )
 }
 
-export default NotFound
+const NotFoundCorrect: FC = () => {
+  const platform = usePlatform()
+  const vkBridgeAppearance = useAppearance() || undefined
+
+  return (
+    <ConfigProvider
+      appearance={vkBridgeAppearance}
+      isWebView={vkBridge.isWebView()}
+      platform={platform}
+    >
+      <NotFound />
+    </ConfigProvider>
+  )
+}
+
+export default NotFoundCorrect

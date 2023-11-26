@@ -2,7 +2,9 @@
   word-break: unset !important;
 }
 
-._SimpleCell__subtitle_rmh19_48, ._SimpleCell__extraSubtitle_rmh19_49, .lesson ._Typography_182ve_1 {
+._SimpleCell__subtitle_rmh19_48,
+._SimpleCell__extraSubtitle_rmh19_49,
+.lesson ._Typography_182ve_1 {
   width: 100%;
 }
 
@@ -11,7 +13,8 @@
     border-radius: 8px !important;
   }
 }
-._HorizontalCell_1q642_1:first-child::before, ._HorizontalCell_1q642_1:last-child::after {
+._HorizontalCell_1q642_1:first-child::before,
+._HorizontalCell_1q642_1:last-child::after {
   content: none !important;
 }
 

@@ -1,11 +1,8 @@
-// TODO: move to config
-//@ts-ignore типы React не совсем совместимы с Preact
-const BASE_URL = (import.meta.env.VITE_SERVER_URL as string) ?? ''
-//@ts-ignore типы React не совсем совместимы с Preact
-const SECOND_SERVER_URL =
-  (import.meta.env.VITE_SERVER_URL_SECOND as string) ?? ''
+import { BASE_URL } from '../../config'
+import requestToSecondServer from './requestToSecondServer.ts'
+import { ServerResponse } from '../../types'
 
-const makeRequest = async <T>(route: string): Promise<T | 418 | 429> => {
+const makeRequest = async <T>(route: string): ServerResponse<T> => {
   const cookie =
     localStorage.getItem('token') ?? sessionStorage.getItem('token')
   const url = `${BASE_URL}${route}`
@@ -28,49 +25,14 @@ const makeRequest = async <T>(route: string): Promise<T | 418 | 429> => {
       return response.status
     }
 
-    console.log(response.ok)
     if (!response.ok) {
-      const secondServerResponse = await fetch(SECOND_SERVER_URL + route, {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json;charset=UTF-8',
-          secret: cookie,
-        },
-      })
-
-      if (secondServerResponse.status === 429) {
-        console.log(secondServerResponse.status)
-        return secondServerResponse.status
-      }
-
-      if (!secondServerResponse.ok) {
-        throw new Error(`Failed to fetch data from ${url} and SECOND_SERVER`)
-      }
-
-      return (await secondServerResponse.json()) as T
+      await requestToSecondServer(route, cookie, url)
     }
 
     return (await response.json()) as T
   } catch (err) {
-    const secondServerResponse = await fetch(SECOND_SERVER_URL + route, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json;charset=UTF-8',
-        secret: cookie,
-      },
-    })
-
-    if (secondServerResponse.status === 429) {
-      console.log(secondServerResponse.status)
-      return secondServerResponse.status
-    }
-
-    if (!secondServerResponse.ok) {
-      throw new Error(`Failed to fetch data from ${url} and SECOND_SERVER`)
-    }
-
-    console.log(err)
-    return (await secondServerResponse.json()) as T
+    console.error(err)
+    await requestToSecondServer(route, cookie, url)
   }
 }
 

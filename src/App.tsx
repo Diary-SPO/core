@@ -43,6 +43,7 @@ const Epic = lazy(() => import('./components/UI/Epic'))
 
 const App = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false)
+
   const routeNavigator = useRouteNavigator()
   const { view: activeView, panel } = useActiveVkuiLocation()
   const { viewWidth } = useAdaptivityConditionalRender()
@@ -57,11 +58,11 @@ const App = () => {
     const onRoute = () => {
       if (!cookieValue) {
         routeNavigator.replace('/')
-        setIsLoading(false)
       } else if (cookieValue && panel === MAIN_SETTINGS) {
         routeNavigator.replace(`/${VIEW_SCHEDULE}`)
-        setIsLoading(false)
       }
+
+      setIsLoading(false)
     }
 
     onRoute()
@@ -76,6 +77,7 @@ const App = () => {
         console.error(e)
       }
     }
+
     await routeNavigator.replace('/')
   }
 

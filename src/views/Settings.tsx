@@ -5,19 +5,15 @@ import {
   Header,
   InfoRow,
   Panel,
-  ScreenSpinner,
   SimpleCell,
   Subhead,
   Switch,
 } from '@vkontakte/vkui'
 import { useRouteNavigator } from '@vkontakte/vk-mini-apps-router'
 import {
-  // Icon28ClearDataOutline,
   Icon28DoorArrowRightOutline,
   Icon28HomeArrowDownOutline,
   Icon28IncognitoOutline,
-  Icon28RefreshOutline,
-  Icon28ThumbsUpCircleFillGreen,
 } from '@vkontakte/icons'
 import bridge from '@vkontakte/vk-bridge'
 import { useEffect, useRef, useState } from 'preact/hooks'
@@ -33,22 +29,12 @@ interface ISettings {
 
 const Settings: FunctionalComponent<ISettings> = ({ id }) => {
   const routeNavigator = useRouteNavigator()
-
-  const [snackbar, showSnackbar] = useSnackbar()
-  // const cleatCacheSnackbar = () => {
-  //   showSnackbar({
-  //     title: 'Кеш очищен',
-  //     subtitle: 'Необходимая информация загрузится при необходимости',
-  //   })
-  // }
-
   const [cacheData, setCacheData] = useState<Storage[]>([])
   const [isHomeScreenSupported, setIsHomeScreenSupported] =
     useState<boolean>(false)
-
   const switchRef = useRef(null)
-  const [isSwitchChecked, setIsSwitchChecked] = useState<boolean>(true)
-  const [isLoading, setIsLoading] = useState<boolean>(false)
+  const [isSwitchChecked, setIsSwitchChecked] = useState<boolean>(false)
+  const [snackbar, showSnackbar] = useSnackbar()
 
   useEffect(() => {
     const checkIsFeatureSupported = async () => {
@@ -78,15 +64,6 @@ const Settings: FunctionalComponent<ISettings> = ({ id }) => {
     }))
     setCacheData(getCache)
   }, [])
-
-  // const clearCache = () => {
-  //   localStorage.clear()
-  //   setCacheData([])
-  //
-  //   if (!snackbar) {
-  //     cleatCacheSnackbar()
-  //   }
-  // }
 
   const handleLogOut = () => {
     showSnackbar({
@@ -123,30 +100,6 @@ const Settings: FunctionalComponent<ISettings> = ({ id }) => {
       })
   }
 
-  // const clearCachePopup = (
-  //   <Alert
-  //     actions={[
-  //       //@ts-ignore типы React не совсем совместимы с Preact
-  //       {
-  //         title: 'Отмена',
-  //         autoClose: true,
-  //         mode: 'cancel',
-  //       },
-  //       //@ts-ignore типы React не совсем совместимы с Preact
-  //       {
-  //         title: 'Удалить',
-  //         autoClose: true,
-  //         mode: 'destructive',
-  //         action: () => clearCache(),
-  //       },
-  //     ]}
-  //     actionsLayout="horizontal"
-  //     onClose={() => routeNavigator.hidePopout()}
-  //     header="Очистка кеша"
-  //     text="После удаления кеша вся информация (оценки, расписание и тд) загрузится повторно."
-  //   />
-  // )
-
   const logOutPopup = (
     <Alert
       actions={[
@@ -171,65 +124,10 @@ const Settings: FunctionalComponent<ISettings> = ({ id }) => {
     />
   )
 
-  const reloadCookie = async () => {
-    const login = localStorage.getItem('log')
-    const password = localStorage.getItem('main')
-
-    if (!login || !password) {
-      showSnackbar({
-        title: 'Чего-то не хватает',
-        subtitle: 'Попробуйте перезайти в аккаунт или сообщите об ошибке',
-      })
-      return
-    }
-
-    try {
-      setIsLoading(true)
-      //@ts-ignore типы React не совсем совместимы с Preact
-      const response = await fetch(`${import.meta.env.VITE_SERVER_URL}/login`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          login,
-          password,
-          isHash: true,
-        }),
-      })
-
-      const data = await response.json()
-
-      if (!data.token) {
-        showSnackbar({
-          title: 'Сервер вернул что-то плохое',
-          subtitle: 'Попробуйте перезайти в аккаунт или сообщите об ошибке',
-        })
-        return
-      }
-
-      localStorage.setItem('token', data.token)
-
-      showSnackbar({
-        title: 'Token обновлён',
-        icon: <Icon28ThumbsUpCircleFillGreen />,
-        subtitle: 'Не забывайте периодически это делать',
-      })
-    } catch (e) {
-      showSnackbar({
-        title: 'Ошибка на сервере',
-        subtitle: 'Попробуйте перезайти в аккаунт или сообщите об ошибке',
-      })
-    } finally {
-      setIsLoading(false)
-    }
-  }
-
   return (
     <Panel nav={id}>
       <PanelHeaderWithBack title="Настройки" />
       <Group header={<Header mode="secondary">Действия</Header>}>
-        {isLoading && <ScreenSpinner size="medium" />}
         <CellButton
           Component="label"
           //@ts-ignore типы React не совсем совместимы с Preact
@@ -239,15 +137,6 @@ const Settings: FunctionalComponent<ISettings> = ({ id }) => {
         >
           Показывать тех. инфрмацию
         </CellButton>
-        <CellButton before={<Icon28RefreshOutline />} onClick={reloadCookie}>
-          Перевыпустить токен
-        </CellButton>
-        {/*<CellButton*/}
-        {/*  before={<Icon28ClearDataOutline />}*/}
-        {/*  onClick={() => routeNavigator.showPopout(clearCachePopup)}*/}
-        {/*>*/}
-        {/*  Очистить кеш*/}
-        {/*</CellButton>*/}
         <CellButton
           before={<Icon28DoorArrowRightOutline />}
           onClick={() => routeNavigator.showPopout(logOutPopup)}
