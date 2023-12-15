@@ -4,23 +4,24 @@ import { ServerResponse } from '../../types'
 const requestToSecondServer = async <T>(
   route: string,
   cookie: string,
-  url: string
+  method: 'POST' | 'GET' = 'GET',
+  body: BodyInit
 ): ServerResponse<T> => {
   const secondServerResponse = await fetch(SECOND_SERVER_URL + route, {
-    method: 'GET',
+    method: method,
     headers: {
       'Content-Type': 'application/json;charset=UTF-8',
       secret: cookie,
     },
+    body,
   })
 
   if (secondServerResponse.status === 429) {
-    console.log(secondServerResponse.status)
     return secondServerResponse.status
   }
 
   if (!secondServerResponse.ok) {
-    throw new Error(`Failed to fetch data from ${url} and SECOND_SERVER`)
+    throw new Error(`Failed to fetch data from ${route} and SECOND_SERVER`)
   }
 
   return (await secondServerResponse.json()) as T

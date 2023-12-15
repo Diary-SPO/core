@@ -32,7 +32,7 @@ const Marks: FC<{ id: string }> = ({ id }) => {
 
   const saveStatisticsData = (marks: PerformanceCurrent | null) => {
     if (!marks) return
-    console.log(marks)
+
     const data = formatStatisticsData(marks)
     if (data) {
       setTotalNumberOfMarks(data.totalNumberOfMarks)

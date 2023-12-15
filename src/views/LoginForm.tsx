@@ -18,18 +18,18 @@ import { ChangeEvent, FC } from 'preact/compat'
 import { PanelHeaderWithBack } from '@components'
 import { VIEW_SCHEDULE } from '../routes'
 import { useSnackbar } from '../hooks'
-import { BASE_URL } from '../config'
 import { loginPattern } from '../types'
+import makeRequest from '../methods/server/makeRequest'
 
 const LoginForm: FC<{ id: string }> = ({ id }) => {
   const routeNavigator = useRouteNavigator()
-
+  
   const [login, setLogin] = useState<string>('')
   const [password, setPassword] = useState<string>('')
   const [isDataInvalid, setIsDataInvalid] = useState<boolean>(false)
   const [isLoading, setIsLoading] = useState<boolean>(false)
   const [snackbar, showSnackbar] = useSnackbar()
-
+  
   const createErrorSnackbar = () =>
     showSnackbar({
       icon: (
@@ -38,7 +38,7 @@ const LoginForm: FC<{ id: string }> = ({ id }) => {
       subtitle: 'Попробуйте заного или сообщите об ошибке',
       title: 'Ошибка при попытке авторизации',
     })
-
+  
   useEffect(() => {
     const storageToken = localStorage.getItem('token')
     setIsLoading(true)
@@ -55,111 +55,113 @@ const LoginForm: FC<{ id: string }> = ({ id }) => {
         })
       }
     }
-
+    
     getUserCookie()
   }, [])
-
+  
   const onChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.currentTarget
-
+    
     const setStateAction = {
       login: setLogin,
       password: setPassword,
     }[name]
     setIsDataInvalid(false)
-
+    
     setStateAction && setStateAction(value)
   }
-
+  
   const handleLogin = async () => {
     if (!loginPattern.test(login)) {
       setIsDataInvalid(true)
       return
     }
-
+    
     const passwordHashed = new Hashes.SHA256().b64(password)
-
-    setIsLoading(true)
-    //@ts-ignore типы React не совсем совместимы с Preact
-    const response = await fetch(`${BASE_URL}/login`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
+    const response = await makeRequest<Response>(
+      '/login/',
+      'POST',
+      JSON.stringify({
         login,
         password: passwordHashed,
         isHash: true,
       }),
-    })
-
-    if (response.status === 401) {
-      setIsLoading(false)
-      setIsDataInvalid(true)
-      throw new Error('401')
-    } else if (!response.ok) {
-      showSnackbar({
-        icon: (
-          <Icon28ErrorCircleOutline fill="var(--vkui--color_icon_negative)" />
-        ),
-        title: 'Ошибка при попытке сделать запрос',
-        subtitle: 'Попробуйте обновить страницу или обновите куки в настройках',
-      })
-      setIsLoading(false)
-      createErrorSnackbar()
-      throw new Error(
-        `Failed to fetch login / status: ${response.status} / statusText: ${response.statusText}`
-      )
-    }
-
-    // FIXME: использовать тип
-    const dataResp = await response.json()
-    if (!String(dataResp.token)) {
-      createErrorSnackbar()
-    }
-
+    )
     try {
-      const basePath = dataResp
+      setIsLoading(true)
 
-      const userId = String(basePath.id)
-      const token = dataResp.token
-      const name = `${String(basePath.lastName)} ${String(
-        basePath.firstName
-      )} ${String(basePath.middleName)}`
-      const org = String(basePath.organization.abbreviation)
-      const city = String(basePath.organization.addressSettlement)
-      const group = String(basePath.groupName)
-
-      localStorage.setItem('id', userId)
-      localStorage.setItem('token', token)
-
-      const userData = {
-        name,
-        org,
-        city,
-        group,
+      if (response === 401) {
+        setIsLoading(false)
+        setIsDataInvalid(true)
+        throw new Error('401')
       }
-
-      localStorage.setItem('data', JSON.stringify(userData))
-
+      
+      if (typeof response === 'number') {
+        showSnackbar({
+          icon: (
+            <Icon28ErrorCircleOutline fill="var(--vkui--color_icon_negative)" />
+          ),
+          title: 'Ошибка при попытке сделать запрос',
+          subtitle:
+            'Попробуйте обновить страницу или обновите куки в настройках',
+        })
+        throw new Error('500')
+      }
+      
+      if (typeof response !== 'number' && !response.ok) {
+        showSnackbar({
+          icon: (
+            <Icon28ErrorCircleOutline fill="var(--vkui--color_icon_negative)" />
+          ),
+          title: 'Ошибка при попытке сделать запрос',
+          subtitle:
+            'Попробуйте обновить страницу или обновите куки в настройках',
+        })
+        setIsLoading(false)
+        createErrorSnackbar()
+        throw new Error(
+          `Failed to fetch login / status: ${response.status} / statusText: ${response.statusText}`,
+        )
+      }
+      
+      // FIXME: использовать тип
+      const dataResp = await response.json()
+      if (!String(dataResp.token)) {
+        createErrorSnackbar()
+      }
+      
+      saveData(dataResp)
+      
       showSnackbar({
         title: 'Вхожу',
         subtitle: 'Подождите немного',
       })
-
+      
       routeNavigator.replace(`/${VIEW_SCHEDULE}`)
     } catch (e) {
       setIsLoading(false)
       console.error(e)
+      
+      if (response) {
+        console.log(response)
+        saveData(response)
+        showSnackbar({
+          title: 'Вхожу',
+          subtitle: 'Подождите немного',
+        })
+        
+        routeNavigator.replace(`/${VIEW_SCHEDULE}`)
+      }
+      
     } finally {
       setIsLoading(false)
     }
   }
-
+  
   const isLoginEmpty = login === ''
   const isPasswordEmpty = password === ''
   const isPasswordValid = password && !isPasswordEmpty
-
+  
   const loginTopText = isLoginEmpty
     ? 'Логин'
     : loginPattern.test(login)
@@ -171,7 +173,7 @@ const LoginForm: FC<{ id: string }> = ({ id }) => {
       : isPasswordValid
         ? 'Пароль введён'
         : 'Введите корректный пароль'
-
+  
   return (
     <Panel nav={id}>
       <PanelHeaderWithBack title="Авторизация" />
@@ -246,6 +248,31 @@ const LoginForm: FC<{ id: string }> = ({ id }) => {
       </Group>
     </Panel>
   )
+}
+
+// FIXME: use type
+// FIXME: remove '?'
+const saveData = (basePath: any) => {
+  const userId = String(basePath.id)
+  const token = basePath?.token
+  const name = `${String(basePath.lastName)} ${String(
+    basePath.firstName,
+  )} ${String(basePath.middleName)}`
+  const org = String(basePath.organization?.abbreviation)
+  const city = String(basePath.organization?.addressSettlement)
+  const group = String(basePath?.groupName)
+  
+  localStorage.setItem('id', userId)
+  localStorage.setItem('token', token)
+  
+  const userData = {
+    name,
+    org,
+    city,
+    group,
+  }
+  
+  localStorage.setItem('data', JSON.stringify(userData))
 }
 
 export default LoginForm

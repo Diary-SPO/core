@@ -11,6 +11,6 @@ export interface Storage {
   value: string
 }
 
-export type ServerResponse<T> = Promise<T | 418 | 429>
+export type ServerResponse<T> = Promise<T | 418 | 429 | 401>
 
 export const loginPattern = /^[a-zA-Z0-9а-яА-ЯёЁ-]+$/
