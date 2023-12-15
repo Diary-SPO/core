@@ -1,20 +1,17 @@
 import { CSSProperties, useEffect, useState } from 'preact/compat'
 import {
   Avatar,
-  Button,
   Div,
   Gradient,
   Group,
   Header,
-  // ScreenSpinner,
   SimpleCell,
   Spinner,
   Text,
   Title,
 } from '@vkontakte/vkui'
-import { Icon20RefreshOutline, Icon28SchoolOutline } from '@vkontakte/icons'
+import { Icon28SchoolOutline } from '@vkontakte/icons'
 
-import bridge from '@vkontakte/vk-bridge'
 import winxAva from '../assets/winx48.webp'
 
 const styles: CSSProperties = {
@@ -34,23 +31,8 @@ interface UserData {
   org: string
 }
 
-const getUserAva = async (): Promise<string | null> => {
-  try {
-    const data = await bridge.send('VKWebAppGetUserInfo')
-    if (data.id) {
-      localStorage.setItem('ava', data.photo_100)
-      return data.photo_100
-    }
-    return null
-  } catch (error) {
-    console.error(error)
-    return null
-  }
-}
-
 const UserInfo = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false)
-  const [userAva, setUserAva] = useState<string | undefined>()
   const [userData, setUserData] = useState<UserData>({
     name: '',
     org: '',
@@ -58,19 +40,15 @@ const UserInfo = () => {
     group: '',
   })
 
-  const getUserInfo = async (handle?: boolean) => {
+  const getUserInfo = async () => {
     setIsLoading(true)
 
     const localData = localStorage.getItem('data')
-    const avaFromStorage = localStorage.getItem('ava')
 
-    if (localData && !handle) {
+    if (localData) {
       const parsedData = JSON.parse(localData) as UserData
       if (parsedData.name && parsedData.group) {
         setUserData(parsedData)
-        if (avaFromStorage) {
-          setUserAva(avaFromStorage)
-        }
         setIsLoading(false)
         return
       }
@@ -78,12 +56,6 @@ const UserInfo = () => {
 
     const newUserData = localStorage.getItem('data')
     const parsedUserData = JSON.parse(newUserData) as UserData
-
-    const ava = await getUserAva()
-
-    if (ava) {
-      setUserAva(ava)
-    }
 
     setUserData({
       name: parsedUserData.name || '',
@@ -109,29 +81,12 @@ const UserInfo = () => {
     )
   }
 
-  const header = (
-    <Header
-      aside={
-        userAva && (
-          <Button
-            size="s"
-            after={<Icon20RefreshOutline />}
-            aria-label="Обновить"
-            mode="tertiary"
-            onClick={() => getUserInfo(true)}
-          />
-        )
-      }
-      mode="tertiary"
-    >
-      Личная информация
-    </Header>
-  )
+  const header = <Header mode="tertiary">Личная информация</Header>
 
   return (
     <Group mode="plain" header={header}>
       <Gradient mode="tint" style={styles}>
-        <Avatar size={96} src={userAva ?? winxAva} />
+        <Avatar size={96} src={winxAva} />
         {/*//@ts-ignore типы React не совсем совместимы с Preact*/}
         <Title style={{ marginBottom: 8, marginTop: 20 }} level="2" weight="2">
           {userData.name}

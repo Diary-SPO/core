@@ -133,9 +133,6 @@ const LoginForm: FC<{ id: string }> = ({ id }) => {
       localStorage.setItem('id', userId)
       localStorage.setItem('token', token)
 
-      localStorage.setItem('log', login)
-      localStorage.setItem('main', passwordHashed)
-
       const userData = {
         name,
         org,
@@ -150,7 +147,7 @@ const LoginForm: FC<{ id: string }> = ({ id }) => {
         subtitle: 'Подождите немного',
       })
 
-      await routeNavigator.replace(`/${VIEW_SCHEDULE}`)
+      routeNavigator.replace(`/${VIEW_SCHEDULE}`)
     } catch (e) {
       setIsLoading(false)
       console.error(e)
