@@ -7,7 +7,7 @@ const makeRequest = async <T>(
   method: 'POST' | 'GET' = 'GET',
   body: BodyInit,
 ): Promise<ServerResponse<T>> => {
-  const cookie = localStorage.getItem('cookie')
+  const cookie = localStorage.getItem('token')
   const url = `${BASE_URL}${route}`
   
   const controller = new AbortController()
