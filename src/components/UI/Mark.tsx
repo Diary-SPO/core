@@ -1,6 +1,6 @@
+import { ReturnedMark, getBackgroundColor, getSize } from '@utils'
 import { Footnote } from '@vkontakte/vkui'
 import { CSSProperties, FC, HTMLAttributes, useMemo } from 'preact/compat'
-import { getBackgroundColor, getSize, ReturnedMark } from '@utils'
 
 export type Sizes = 'l' | 's'
 
@@ -26,7 +26,7 @@ const Mark: FC<IMark> = ({
     borderRadius: size === 'l' ? '10px' : '5px',
     color: 'white',
     marginLeft: useMargin ? 10 : undefined,
-    display: 'inline-block',
+    display: 'inline-block'
   }
 
   return useMemo(

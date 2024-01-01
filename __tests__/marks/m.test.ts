@@ -1,13 +1,13 @@
-import { expect, describe, it } from 'vitest'
+import { Task } from '@diary-spo/shared'
 import {
   calculateAverageMark,
   createSubjectMarksMap,
   extractMarksByDay,
   getBackgroundColor,
   getSize,
-  setDefaultMark,
+  setDefaultMark
 } from '@utils'
-import { Task } from '@diary-spo/shared'
+import { describe, expect, it } from 'vitest'
 
 import {
   expectedExtractByDayData,
@@ -17,7 +17,7 @@ import {
   invalidPerformanceMockData,
   mockData,
   mockDataWithoutMarks,
-  performanceMockData,
+  performanceMockData
 } from './mocks'
 
 describe('calculateAverageMark', () => {
@@ -121,7 +121,7 @@ describe('setDefaultMark', () => {
       id: 0,
       type: undefined,
       isRequired: true,
-      mark: null,
+      mark: null
     }
 
     const mark = setDefaultMark(task)
@@ -134,7 +134,7 @@ describe('setDefaultMark', () => {
       id: 0,
       isRequired: false,
       type: 'Home',
-      mark: null,
+      mark: null
     }
 
     const mark = setDefaultMark(task)
@@ -147,7 +147,7 @@ describe('setDefaultMark', () => {
       id: 0,
       isRequired: false,
       type: undefined,
-      mark: 'Five',
+      mark: 'Five'
     }
 
     const mark = setDefaultMark(task)
@@ -160,7 +160,7 @@ describe('setDefaultMark', () => {
       id: 0,
       isRequired: false,
       type: undefined,
-      mark: 'Unknown',
+      mark: 'Unknown'
     }
 
     const mark = setDefaultMark(task)
@@ -173,7 +173,7 @@ describe('setDefaultMark', () => {
       id: 0,
       type: undefined,
       isRequired: false,
-      mark: null,
+      mark: null
     }
 
     const mark = setDefaultMark(task)

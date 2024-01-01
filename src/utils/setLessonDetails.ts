@@ -17,7 +17,7 @@ export const setLessonDetails = (lesson: Lesson) => {
     startTime,
     timetable,
     gradebook,
-    tasks: tasksArray,
+    tasks: tasksArray
   } = lesson
 
   const formattedName = formatLessonName(name)
@@ -30,23 +30,23 @@ export const setLessonDetails = (lesson: Lesson) => {
         id: gradebook?.id || 0,
         lessonType: gradebook?.lessonType || ('Не задан' as LessonWorkTypeKeys),
         tasks: tasksArray,
-        themes: gradebook?.themes,
+        themes: gradebook?.themes
       },
       timetable: {
         classroom: {
           id: 0,
           building: '',
-          name: timetable?.classroom?.name || 'Нет кабинета',
+          name: timetable?.classroom?.name || 'Нет кабинета'
         },
         teacher: {
           id: timetable?.teacher?.id || 0,
           lastName: timetable?.teacher?.lastName || '',
           firstName: timetable?.teacher?.firstName || '',
-          middleName: timetable?.teacher?.middleName || '',
-        },
+          middleName: timetable?.teacher?.middleName || ''
+        }
       },
       startTime: startTime || 'Что-то не так с датой',
-      endTime: endTime || 'Что-то не так с датой',
+      endTime: endTime || 'Что-то не так с датой'
     },
     lessonMainInfo: {
       name: formattedName,
@@ -54,13 +54,12 @@ export const setLessonDetails = (lesson: Lesson) => {
       themes: gradebook?.themes,
       teacherName: timetable?.teacher?.firstName
         ? `${timetable.teacher.lastName} ${timetable.teacher.firstName} ${timetable.teacher.middleName}`
-        : 'Не указан',
+        : 'Не указан'
     },
     lessonTimePlaceInfo: {
       startTime: startTime || 'Ошибка',
       endTime: endTime || 'Ошибка',
-      classroomName:
-        (timetable?.classroom && timetable?.classroom?.name) || 'Нет кабинета',
-    },
+      classroomName: timetable?.classroom?.name || 'Нет кабинета'
+    }
   }
 }

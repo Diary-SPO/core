@@ -1,5 +1,6 @@
 import { NotificationsResponse } from '@diary-spo/shared'
+import { ServerResponse } from '../../types'
 import makeRequest from './makeRequest'
 
-export const getAds = async (): Promise<NotificationsResponse[] | 418 | 429> =>
+export const getAds = async (): ServerResponse<NotificationsResponse[]> =>
   makeRequest<NotificationsResponse[]>('/ads')

@@ -1,7 +1,7 @@
 import { FunctionalComponent } from 'preact'
+import LoadingData from './LoadingData'
 import SubjectGroup from './SubjectGroup'
 import Subject from './types'
-import LoadingData from './LoadingData'
 
 interface ISubjectList {
   semesters: Record<string, Subject[]>
@@ -14,7 +14,7 @@ const SubjectList: FunctionalComponent<ISubjectList> = ({
   semesters,
   studentName,
   year,
-  isDataLoading,
+  isDataLoading
 }) => (
   <div>
     {isDataLoading && <LoadingData />}

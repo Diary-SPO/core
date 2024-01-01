@@ -1,4 +1,16 @@
-import { FC, lazy, useEffect, useState } from 'preact/compat'
+import { ExplanationTooltip, PanelHeaderWithBack, Suspense } from '@components'
+import { Day, PerformanceCurrent } from '@diary-spo/shared'
+import { handleResponse } from '@utils'
+import {
+  Icon16ArrowLeftOutline,
+  Icon16ArrowRightOutline,
+  Icon24ChevronRightCircle,
+  Icon28ErrorCircleOutline
+} from '@vkontakte/icons'
+import {
+  useActiveVkuiLocation,
+  useRouteNavigator
+} from '@vkontakte/vk-mini-apps-router'
 import {
   Button,
   ButtonGroup,
@@ -10,30 +22,18 @@ import {
   PanelSpinner,
   Placeholder,
   PullToRefresh,
-  View,
+  View
 } from '@vkontakte/vkui'
-import {
-  useActiveVkuiLocation,
-  useRouteNavigator,
-} from '@vkontakte/vk-mini-apps-router'
-import {
-  Icon16ArrowLeftOutline,
-  Icon16ArrowRightOutline,
-  Icon28ErrorCircleOutline,
-  Icon24ChevronRightCircle,
-} from '@vkontakte/icons'
 import { addDays, endOfWeek, startOfWeek } from '@vkontakte/vkui/dist/lib/date'
-import { Day, PerformanceCurrent } from '@diary-spo/shared'
-import { getLessons, getPerformance } from '../methods'
-import { ExplanationTooltip, PanelHeaderWithBack, Suspense } from '@components'
+import { FC, lazy, useEffect, useState } from 'preact/compat'
+import { useCallback } from 'preact/hooks'
 import {
   useDebouncedChangeWeek,
   useRateLimitExceeded,
-  useSnackbar,
   useScrollPosition,
+  useSnackbar
 } from '../hooks'
-import { useCallback } from 'preact/hooks'
-import { handleResponse } from '@utils'
+import { getLessons, getPerformance } from '../methods'
 
 const MarksByDay = lazy(() => import('../components/UI/MarksByDay'))
 const ScheduleGroup = lazy(() => import('../components/ScheduleGroup'))
@@ -134,7 +134,7 @@ const Schedule: FC<{ id: string }> = ({ id }) => {
       showSnackbar({
         title: 'Ошибка при попытке получить новые данные',
         action: 'Повторить',
-        onActionClick: handleReloadData,
+        onActionClick: handleReloadData
       })
       console.error(error)
     } finally {
@@ -147,7 +147,7 @@ const Schedule: FC<{ id: string }> = ({ id }) => {
     showSnackbar({
       title: 'Ошибка при попытке получить расписание',
       action: 'Повторить',
-      onActionClick: handleReloadData,
+      onActionClick: handleReloadData
     })
 
   useEffect(() => {
@@ -168,7 +168,7 @@ const Schedule: FC<{ id: string }> = ({ id }) => {
           layout: 'vertical',
           action: 'Загрузить новые',
           onActionClick: handleReloadData,
-          title: 'Данные взяты из кеша',
+          title: 'Данные взяты из кеша'
         })
         setIsLoading(false)
         return
@@ -249,7 +249,7 @@ const Schedule: FC<{ id: string }> = ({ id }) => {
           title: 'Ошибка при попытке получить оценки',
           action: 'Повторить',
           icon: <Icon28ErrorCircleOutline />,
-          onActionClick: fetchMarksData,
+          onActionClick: fetchMarksData
         })
       } finally {
         setIsMarksLoading(false)
@@ -277,18 +277,18 @@ const Schedule: FC<{ id: string }> = ({ id }) => {
     const startWeekStr = startWeek.toLocaleString('default', {
       month: 'short',
       day: 'numeric',
-      year: 'numeric',
+      year: 'numeric'
     })
 
     const startOfCurrWeekStr = startOfCurrWeek.toLocaleString('default', {
       month: 'short',
       day: 'numeric',
-      year: 'numeric',
+      year: 'numeric'
     })
 
     if (startWeekStr === startOfCurrWeekStr) {
       showSnackbar({
-        title: 'Вы уже на текущей неделе',
+        title: 'Вы уже на текущей неделе'
       })
       localStorage.setItem('isCurrent', JSON.stringify(true))
       setIsCurrent(true)
@@ -327,29 +327,29 @@ const Schedule: FC<{ id: string }> = ({ id }) => {
       style={{
         alignItems: 'center',
         position: 'relative',
-        color: 'var(--vkui--color_stroke_accent_themed)',
+        color: 'var(--vkui--color_stroke_accent_themed)'
       }}
-      gap="s"
+      gap='s'
     >
       <IconButton
-        aria-label="Prev"
+        aria-label='Prev'
         onClick={() => debouncedHandleButtonClick('prev', sendToServerIfValid)}
       >
         <Icon16ArrowLeftOutline />
       </IconButton>
       <Button
-        size="s"
-        mode="secondary"
+        size='s'
+        mode='secondary'
         onClick={() => getCurrentWeek()}
         disabled={isCurrent}
       >
         <ExplanationTooltip
-          tooltipContent="Вернёт вас на текущую неделю"
-          text="Домой"
+          tooltipContent='Вернёт вас на текущую неделю'
+          text='Домой'
         />
       </Button>
       <IconButton
-        aria-label="Next"
+        aria-label='Next'
         onClick={() => debouncedHandleButtonClick('next', sendToServerIfValid)}
       >
         <Icon16ArrowRightOutline />
@@ -372,10 +372,10 @@ const Schedule: FC<{ id: string }> = ({ id }) => {
       onSwipeBack={() => routeNavigator.back()}
     >
       <Panel nav={id}>
-        <PanelHeaderWithBack title="Главная" />
+        <PanelHeaderWithBack title='Главная' />
         <PullToRefresh onRefresh={handleReloadData} isFetching={isLoading}>
-          <Suspense id="MarksByDay">
-            <Group header={<Header mode="secondary">Недавние оценки</Header>}>
+          <Suspense id='MarksByDay'>
+            <Group header={<Header mode='secondary'>Недавние оценки</Header>}>
               {isMarksLoading ? (
                 <PanelSpinner />
               ) : (
@@ -383,20 +383,20 @@ const Schedule: FC<{ id: string }> = ({ id }) => {
               )}
             </Group>
           </Suspense>
-          <Suspense id="ScheduleGroup" mode="screen">
+          <Suspense id='ScheduleGroup' mode='screen'>
             <Group
               header={
                 <Header
                   aside={Buttons}
-                  mode="secondary"
-                  style="align-items: center;"
+                  mode='secondary'
+                  style='align-items: center;'
                 >
                   {weekString}
                 </Header>
               }
             >
               {isLoading ? (
-                <PanelSpinner size="regular" />
+                <PanelSpinner size='regular' />
               ) : (
                 <ScheduleGroup lessonsState={lessonsState} />
               )}
@@ -414,13 +414,13 @@ const Schedule: FC<{ id: string }> = ({ id }) => {
 
 const ErrorPlaceholder: FC<{ onClick: () => void }> = ({ onClick }) => (
   <Placeholder
-    header="Ошибка при загрузке"
+    header='Ошибка при загрузке'
     action={
-      <ButtonGroup mode="vertical" align="center">
-        <Button size="s" onClick={() => onClick()}>
+      <ButtonGroup mode='vertical' align='center'>
+        <Button size='s' onClick={() => onClick()}>
           Попробовать снова
         </Button>
-        <Link href="https://vk.me/dnevnik_spo" target="_blank">
+        <Link href='https://vk.me/dnevnik_spo' target='_blank'>
           Сообщить о проблеме
         </Link>
       </ButtonGroup>
@@ -430,19 +430,19 @@ const ErrorPlaceholder: FC<{ onClick: () => void }> = ({ onClick }) => (
 
 const ScrollToTop: FC = () => (
   <IconButton
-    aria-label="scroll top"
+    aria-label='scroll top'
     style={{ position: 'fixed', left: 5, bottom: 60 }}
     onClick={() => {
       window.scrollTo({
         top: 0,
-        behavior: 'smooth',
+        behavior: 'smooth'
       })
     }}
   >
     <Icon24ChevronRightCircle
       style={{
         transform: 'rotate(-90deg)',
-        color: 'var(--vkui--color_background_accent_themed)',
+        color: 'var(--vkui--color_background_accent_themed)'
       }}
     />
   </IconButton>

@@ -1,7 +1,7 @@
 import { AbsenceTypes, Gradebook, LessonWorkType } from '@diary-spo/shared'
 import { FC } from 'react'
-import TimeRemaining from '../TimeRemaining'
 import SubtitleWithBorder from '../SubtitleWithBorder'
+import TimeRemaining from '../TimeRemaining'
 
 interface ILessonSubtitle {
   gradebook: Gradebook | undefined
@@ -14,7 +14,7 @@ const LessonSubtitle: FC<ILessonSubtitle> = ({
   gradebook,
   lessonDate,
   startTime,
-  endTime,
+  endTime
 }) => (
   <div>
     <div style={{ display: 'flex', alignItems: 'center' }}>

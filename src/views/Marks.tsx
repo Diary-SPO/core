@@ -1,18 +1,19 @@
-import { Group, Panel, PanelSpinner, PullToRefresh } from '@vkontakte/vkui'
-import { Icon28ErrorCircleOutline, Icon28InfoCircle } from '@vkontakte/icons'
+import {
+  MarksByGroup,
+  PanelHeaderWithBack,
+  Summary,
+  Suspense,
+  UserInfo
+} from '@components'
 import { PerformanceCurrent } from '@diary-spo/shared'
+import { formatStatisticsData, handleResponse } from '@utils'
+import { Icon28ErrorCircleOutline, Icon28InfoCircle } from '@vkontakte/icons'
+import { Group, Panel, PanelSpinner, PullToRefresh } from '@vkontakte/vkui'
 import { FC } from 'preact/compat'
 import { useEffect, useState } from 'preact/hooks'
-import {
-  Suspense,
-  Summary,
-  UserInfo,
-  PanelHeaderWithBack,
-  MarksByGroup,
-} from '@components'
-import { getPerformance } from '../methods'
-import { handleResponse, formatStatisticsData } from '@utils'
 import { useSnackbar } from '../hooks'
+import { getPerformance } from '../methods'
+import { ServerResponse } from '../types'
 
 const THIRD_SEC = 30 * 1000
 
@@ -32,7 +33,7 @@ const Marks: FC<{ id: string }> = ({ id }) => {
 
   const saveStatisticsData = (marks: PerformanceCurrent | null) => {
     if (!marks) return
-    console.log(marks)
+
     const data = formatStatisticsData(marks)
     if (data) {
       setTotalNumberOfMarks(data.totalNumberOfMarks)
@@ -43,7 +44,7 @@ const Marks: FC<{ id: string }> = ({ id }) => {
 
   const fetchMarks = async (
     isHandle?: boolean
-  ): Promise<PerformanceCurrent | 418 | 429 | undefined> => {
+  ): ServerResponse<PerformanceCurrent | undefined> => {
     setIsLoading(true)
     try {
       const lastFetchTime = localStorage.getItem('lastFetchTime')
@@ -64,10 +65,10 @@ const Marks: FC<{ id: string }> = ({ id }) => {
           () => {
             showSnackbar({
               icon: (
-                <Icon28ErrorCircleOutline fill="var(--vkui--color_icon_negative)" />
+                <Icon28ErrorCircleOutline fill='var(--vkui--color_icon_negative)' />
               ),
               title: 'Ошибка при попытке сделать запрос',
-              subtitle: 'Сообщите нам об этом',
+              subtitle: 'Сообщите нам об этом'
             })
             setIsLoading(false)
           },
@@ -86,7 +87,7 @@ const Marks: FC<{ id: string }> = ({ id }) => {
         title: 'Оценки взяты из кеша',
         onActionClick: () => fetchMarks(true),
         action: 'Загрузить новые',
-        icon: <Icon28InfoCircle fill="var(--vkui--color_background_accent)" />,
+        icon: <Icon28InfoCircle fill='var(--vkui--color_background_accent)' />
       })
       const savedMarks = localStorage.getItem('savedMarks')
       const marks = savedMarks ? JSON.parse(savedMarks) : null
@@ -96,11 +97,11 @@ const Marks: FC<{ id: string }> = ({ id }) => {
       setIsLoading(false)
       showSnackbar({
         icon: (
-          <Icon28ErrorCircleOutline fill="var(--vkui--color_icon_negative)" />
+          <Icon28ErrorCircleOutline fill='var(--vkui--color_icon_negative)' />
         ),
         title: 'Ошибка при попытке загрузить оценки',
         action: 'Попробовать снова',
-        onActionClick: () => fetchMarks(true),
+        onActionClick: () => fetchMarks(true)
       })
       console.error('Ошибка при получении оценок:', error)
       return
@@ -123,9 +124,9 @@ const Marks: FC<{ id: string }> = ({ id }) => {
 
   return (
     <Panel nav={id}>
-      <PanelHeaderWithBack title="Успеваемость" />
+      <PanelHeaderWithBack title='Успеваемость' />
       <PullToRefresh onRefresh={() => fetchMarks(true)} isFetching={isLoading}>
-        <Suspense id="UserInfo">
+        <Suspense id='UserInfo'>
           <UserInfo />
         </Suspense>
 
@@ -145,7 +146,7 @@ const Marks: FC<{ id: string }> = ({ id }) => {
             <PanelSpinner />
           </Group>
         ) : (
-          <Suspense id="MarksByGroup">
+          <Suspense id='MarksByGroup'>
             <MarksByGroup marksForSubject={marksForSubject} />
           </Suspense>
         )}

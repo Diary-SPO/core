@@ -82,7 +82,7 @@ export const createSubjectMarksMap = (
       const mappedMarks = daysWithMarks.map((dayWithMark) => ({
         date: new Date(dayWithMark.day).toLocaleDateString(),
         marks: dayWithMark.markValues,
-        absenceType: dayWithMark.absenceType,
+        absenceType: dayWithMark.absenceType
       }))
 
       subjectMarksMap[subjectName].push(...mappedMarks)

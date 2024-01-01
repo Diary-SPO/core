@@ -1,76 +1,50 @@
-// TODO: move to config
-//@ts-ignore типы React не совсем совместимы с Preact
-const BASE_URL = (import.meta.env.VITE_SERVER_URL as string) ?? ''
-//@ts-ignore типы React не совсем совместимы с Preact
-const SECOND_SERVER_URL =
-  (import.meta.env.VITE_SERVER_URL_SECOND as string) ?? ''
+import { BASE_URL } from '../../config'
+import { ServerResponse } from '../../types'
+import requestToSecondServer from './requestToSecondServer.ts'
 
-const makeRequest = async <T>(route: string): Promise<T | 418 | 429> => {
-  const cookie =
-    localStorage.getItem('cookie') ?? sessionStorage.getItem('cookie')
+const makeRequest = async <T>(
+  route: string,
+  method: 'POST' | 'GET' = 'GET',
+  body?: BodyInit
+): Promise<ServerResponse<T>> => {
+  const token = localStorage.getItem('token')
   const url = `${BASE_URL}${route}`
 
-  if (!cookie) {
-    return 418
-  }
+  const controller = new AbortController()
+  const timeoutId = setTimeout(() => controller.abort(), 3000)
 
   try {
-    const response = await fetch(BASE_URL + route, {
-      method: 'GET',
+    const response = await fetch(url, {
+      method,
       headers: {
         'Content-Type': 'application/json;charset=UTF-8',
-        secret: cookie,
+        secret: token
       },
+      body,
+      signal: controller.signal
     })
 
-    if (response.status === 429) {
-      console.log(response.status)
-      return response.status
-    }
+    clearTimeout(timeoutId)
 
-    console.log(response.ok)
-    if (!response.ok) {
-      const secondServerResponse = await fetch(SECOND_SERVER_URL + route, {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json;charset=UTF-8',
-          secret: cookie,
-        },
-      })
-
-      if (secondServerResponse.status === 429) {
-        console.log(secondServerResponse.status)
-        return secondServerResponse.status
-      }
-
-      if (!secondServerResponse.ok) {
-        throw new Error(`Failed to fetch data from ${url} and SECOND_SERVER`)
-      }
-
-      return (await secondServerResponse.json()) as T
+    if (response.status === 429 || !response.ok) {
+      // If the response status is 429 or not OK, proceed with the second server request
+      return requestToSecondServer(route, token, method, body)
     }
 
     return (await response.json()) as T
   } catch (err) {
-    const secondServerResponse = await fetch(SECOND_SERVER_URL + route, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json;charset=UTF-8',
-        secret: cookie,
-      },
-    })
+    console.error(err)
 
-    if (secondServerResponse.status === 429) {
-      console.log(secondServerResponse.status)
-      return secondServerResponse.status
+    if (err.name === 'AbortError') {
+      // Handle timeout error
+      return requestToSecondServer(route, token, method, body)
     }
-
-    if (!secondServerResponse.ok) {
-      throw new Error(`Failed to fetch data from ${url} and SECOND_SERVER`)
-    }
-
-    console.log(err)
-    return (await secondServerResponse.json()) as T
+    // Handle other errors without rethrowing
+    console.error(
+      'Error occurred, but continuing with second server request:',
+      err
+    )
+    return requestToSecondServer(route, token, method, body)
   }
 }
 

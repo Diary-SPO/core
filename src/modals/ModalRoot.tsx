@@ -1,13 +1,11 @@
-import { ModalRoot as VKUIModalRoot } from '@vkontakte/vkui'
 import {
   useActiveVkuiLocation,
-  useRouteNavigator,
+  useRouteNavigator
 } from '@vkontakte/vk-mini-apps-router'
+import { ModalRoot as VKUIModalRoot } from '@vkontakte/vkui'
 import LessonModal from './LessonModal'
-// Import CollegeModal from './CollegeModal';
 
 export const MODAL_PAGE_LESSON = 'lesson'
-export const MODAL_COLLEGE_INFO = 'college'
 
 const ModalRoot = () => {
   const routeNavigator = useRouteNavigator()
@@ -19,7 +17,6 @@ const ModalRoot = () => {
       onClose={() => routeNavigator.hideModal()}
     >
       <LessonModal id={MODAL_PAGE_LESSON} />
-      {/* <CollegeModal id={MODAL_COLLEGE_INFO} /> */}
     </VKUIModalRoot>
   )
 }

@@ -1,35 +1,20 @@
+import { Suspense } from '@components'
+import vkBridge from '@vkontakte/vk-bridge'
+import { useAdaptivity, useAppearance } from '@vkontakte/vk-bridge-react'
+import { RouterProvider } from '@vkontakte/vk-mini-apps-router'
 import {
   AdaptivityProvider,
   ConfigProvider,
-  usePlatform,
+  usePlatform
 } from '@vkontakte/vkui'
-import { RouterProvider } from '@vkontakte/vk-mini-apps-router'
-import vkBridge from '@vkontakte/vk-bridge'
-import { useAdaptivity, useAppearance } from '@vkontakte/vk-bridge-react'
-import { FC, lazy } from 'preact/compat'
+import { lazy } from 'preact/compat'
 import { router } from './routes'
-import { Suspense } from '@components'
 import { transformVKBridgeAdaptivity } from './transformers/transformVKBridgeAdaptivity'
 
 const App = lazy(() => import('./App'))
-const NotFound = lazy(() => import('./views/NotFound'))
+const NotFoundCorrect = lazy(() => import('./views/NotFound'))
 
 vkBridge.send('VKWebAppInit')
-
-const NotFoundCorrect: FC = () => {
-  const platform = usePlatform()
-  const vkBridgeAppearance = useAppearance() || undefined
-
-  return (
-    <ConfigProvider
-      appearance={vkBridgeAppearance}
-      isWebView={vkBridge.isWebView()}
-      platform={platform}
-    >
-      <NotFound />
-    </ConfigProvider>
-  )
-}
 
 const AppWrapper = () => {
   const platform = usePlatform()
@@ -39,7 +24,7 @@ const AppWrapper = () => {
   return (
     <AdaptivityProvider {...vkBridgeAdaptivityProps}>
       <RouterProvider router={router} notFound={<NotFoundCorrect />}>
-        <Suspense id="app" mode="screen">
+        <Suspense id='app' mode='screen'>
           <ConfigProvider
             appearance={vkBridgeAppearance}
             platform={platform}

@@ -13,8 +13,6 @@ const infoStyle = { color: 'var(--vkui--color_text_subhead)' }
 const HelpAccordion: FC<IHelpAccordion> = ({ id, title, detail }) => {
   const [openId, setOpenId] = useState<number | null>(null)
   return (
-    // @ts-ignore
-
     <Accordion
       key={id}
       open={openId === id}

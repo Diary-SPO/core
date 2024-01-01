@@ -1,17 +1,17 @@
+import { PanelHeaderWithBack } from '@components'
+import { AttestationResponse } from '@diary-spo/shared'
+import { handleResponse } from '@utils'
 import {
   Button,
   ButtonGroup,
   Div,
   Link,
   Panel,
-  Placeholder,
+  Placeholder
 } from '@vkontakte/vkui'
-import { AttestationResponse } from '@diary-spo/shared'
 import { FC, lazy } from 'preact/compat'
 import { useCallback, useEffect, useState } from 'preact/hooks'
-import { PanelHeaderWithBack } from '@components'
 import { useRateLimitExceeded } from '../hooks'
-import { handleResponse } from '@utils'
 import { getAttestation } from '../methods'
 
 const SubjectList = lazy(
@@ -67,7 +67,7 @@ const Attestation: FC<IAttestation> = ({ id }) => {
   let studentName: string | null = null
   let year: number | null = null
 
-  if (attestationData && attestationData.students) {
+  if (attestationData?.students) {
     year = attestationData.year
     studentName = `
     ${attestationData.students[0].lastName}
@@ -75,7 +75,7 @@ const Attestation: FC<IAttestation> = ({ id }) => {
     ${attestationData.students[0].middleName.slice(0, 1)}.`
   }
 
-  if (attestationData && attestationData.subjects) {
+  if (attestationData?.subjects) {
     attestationData.subjects.forEach((subject) => {
       const semesterKey = `Семестр ${attestationData.termNumber}`
       if (!semesters[semesterKey]) {
@@ -87,7 +87,7 @@ const Attestation: FC<IAttestation> = ({ id }) => {
 
   return (
     <Panel nav={id}>
-      <PanelHeaderWithBack title="Аттестация" />
+      <PanelHeaderWithBack title='Аттестация' />
       <Div>
         <SubjectList
           isDataLoading={isDataLoading}
@@ -104,13 +104,13 @@ const Attestation: FC<IAttestation> = ({ id }) => {
 
 const ErrorPlaceholder = ({ onClick }: { onClick: () => void }) => (
   <Placeholder
-    header="Ошибка при загрузке"
+    header='Ошибка при загрузке'
     action={
-      <ButtonGroup mode="vertical" align="center">
-        <Button size="s" onClick={onClick}>
+      <ButtonGroup mode='vertical' align='center'>
+        <Button size='s' onClick={onClick}>
           Попробовать снова
         </Button>
-        <Link href="https://vk.me/dnevnik_spo" target="_blank">
+        <Link href='https://vk.me/dnevnik_spo' target='_blank'>
           Сообщить о проблеме
         </Link>
       </ButtonGroup>

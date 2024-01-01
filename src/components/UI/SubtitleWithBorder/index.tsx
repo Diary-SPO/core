@@ -1,11 +1,11 @@
+import { FunctionComponent } from 'preact'
 import {
   CSSProperties,
   HTMLAttributes,
   ReactNode,
-  useMemo,
   memo,
+  useMemo
 } from 'preact/compat'
-import { FunctionComponent } from 'preact'
 import { colors, defaultColor } from './styles'
 
 type SubtitleColors =
@@ -29,7 +29,7 @@ const getColorStyles = (color: SubtitleColors) => {
     display: 'inline-block',
     borderRadius: '5px',
     padding: '3px 5px',
-    ...colorStyle,
+    ...colorStyle
   }
 }
 
@@ -41,7 +41,7 @@ const SubtitleWithBorder: FunctionComponent<ISubtitleWithBorder> = ({
 }) => {
   const styles = {
     ...getColorStyles(color),
-    ...style,
+    ...style
   }
 
   return useMemo(

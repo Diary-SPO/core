@@ -11,7 +11,7 @@ export const formatLessonDate = (dateString: Date) => {
   const options: Intl.DateTimeFormatOptions = {
     year: 'numeric',
     month: 'long',
-    day: 'numeric',
+    day: 'numeric'
   }
 
   return date.toLocaleDateString('ru-RU', options)

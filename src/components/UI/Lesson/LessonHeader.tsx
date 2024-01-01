@@ -1,5 +1,5 @@
-import { CSSProperties, FC } from 'react'
 import { Footnote, Header } from '@vkontakte/vkui'
+import { CSSProperties, FC } from 'react'
 
 interface ILessonHeader {
   lessonDayOfWeek: string | undefined
@@ -12,10 +12,10 @@ const LessonHeader: FC<ILessonHeader> = ({
   lessonDayOfWeek,
   formattedLessonDate,
   displayDayStyles,
-  displayDay,
+  displayDay
 }) => (
   <Header
-    mode="secondary"
+    mode='secondary'
     aside={
       // @ts-ignore
       displayDay && <Footnote style={displayDayStyles}>{displayDay}</Footnote>

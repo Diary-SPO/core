@@ -17,7 +17,6 @@ const SpinnerWrapper: FC<ISpinner> = ({ size, mode }) => {
       return <PanelSpinner size={size} />
     case 'screen':
       return <ScreenSpinner size={size} />
-    case 'default':
     default:
       return <Spinner size={size} />
   }
@@ -27,7 +26,7 @@ const Suspense: FC<ISuspense> = ({
   children,
   size = 'regular',
   id,
-  mode = 'panel',
+  mode = 'panel'
 }) => (
   <ReactSuspense key={id} fallback={<SpinnerWrapper size={size} mode={mode} />}>
     {children}

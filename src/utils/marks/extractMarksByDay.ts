@@ -1,5 +1,5 @@
-import { Grade, PerformanceCurrent } from '@diary-spo/shared'
 import { IMarksByDay } from '@components'
+import { Grade, PerformanceCurrent } from '@diary-spo/shared'
 
 /**
  * Функция 'extractMarksByDay' обрабатывает данные оценок, извлекая оценки по дням для каждого урока (пары).

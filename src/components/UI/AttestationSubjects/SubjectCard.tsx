@@ -1,6 +1,6 @@
+import { Examinations } from '@diary-spo/shared'
 import { Card, CardGrid, Div, InfoRow, Subhead, Title } from '@vkontakte/vkui'
 import { FunctionalComponent } from 'preact'
-import { Examinations } from '@diary-spo/shared'
 import Subject from './types'
 
 interface ISubjectCard {
@@ -8,16 +8,16 @@ interface ISubjectCard {
 }
 
 const SubjectCard: FunctionalComponent<ISubjectCard> = ({ subject }) => (
-  <CardGrid key={subject.id} size="l">
-    <Card mode="shadow">
+  <CardGrid key={subject.id} size='l'>
+    <Card mode='shadow'>
       <Div>
         {/*// @ts-ignore*/}
-        <Title level="3">{subject.name}</Title>
-        <InfoRow header="Тип аттестации">
+        <Title level='3'>{subject.name}</Title>
+        <InfoRow header='Тип аттестации'>
           {/*// @ts-ignore*/}
           <Subhead>{Examinations[subject.examinationType]}</Subhead>
         </InfoRow>
-        <InfoRow header="Оценки">
+        <InfoRow header='Оценки'>
           {/*// @ts-ignore*/}
           <Subhead>
             {/*// TODO: перенести в функцию*/}

@@ -1,9 +1,9 @@
-import { FC } from 'react'
-import { SimpleCell } from '@vkontakte/vkui'
 import { Gradebook, Lesson, Timetable } from '@diary-spo/shared'
-import LessonSubtitle from './LessonSubtitle'
 import { setDefaultMark } from '@utils'
+import { SimpleCell } from '@vkontakte/vkui'
+import { FC } from 'react'
 import Mark from '../Mark'
+import LessonSubtitle from './LessonSubtitle'
 
 interface ILessonCell {
   lesson: Lesson
@@ -20,7 +20,7 @@ interface ILessonCell {
 const LessonCell: FC<ILessonCell> = ({
   lessonDate,
   lesson,
-  handleLessonClick,
+  handleLessonClick
 }) => {
   const { name, endTime, startTime, timetable, gradebook } = lesson
   // TODO: перенести в функцию
@@ -39,7 +39,7 @@ const LessonCell: FC<ILessonCell> = ({
   return (
     name && (
       <SimpleCell
-        className="lesson"
+        className='lesson'
         onClick={() =>
           handleLessonClick(name, endTime, startTime, timetable, gradebook)
         }
@@ -59,7 +59,7 @@ const LessonCell: FC<ILessonCell> = ({
                   marginBottom: 5,
                   display: 'flex',
                   justifyContent: 'space-between',
-                  alignItems: 'center',
+                  alignItems: 'center'
                 }}
               >
                 <div>{teacherInfo}</div>
@@ -70,7 +70,7 @@ const LessonCell: FC<ILessonCell> = ({
                         <Mark
                           useMargin
                           mark={setDefaultMark(task)}
-                          size="s"
+                          size='s'
                           key={index}
                         />
                       )
