@@ -43,9 +43,9 @@ const LoginForm: FC<{ id: string }> = ({ id }) => {
   useEffect(() => {
     const storageToken = localStorage.getItem('token')
     setIsLoading(true)
-    const getUserCookie = () => {
+    const getUserCookie = async () => {
       if (!storageToken) {
-        routeNavigator.replace('/')
+        await routeNavigator.replace('/')
         setIsLoading(false)
         showSnackbar({
           icon: (
@@ -79,7 +79,7 @@ const LoginForm: FC<{ id: string }> = ({ id }) => {
     }
 
     const passwordHashed = new Hashes.SHA256().b64(password)
-    const response = await makeRequest<Response>(
+    const response = await makeRequest<Response & ResponseLogin>(
       '/login/',
       'POST',
       JSON.stringify({
@@ -141,17 +141,6 @@ const LoginForm: FC<{ id: string }> = ({ id }) => {
     } catch (e) {
       setIsLoading(false)
       console.error(e)
-
-      if (response) {
-        console.log(response)
-        saveData(response)
-        showSnackbar({
-          title: 'Вхожу',
-          subtitle: 'Подождите немного'
-        })
-
-        await routeNavigator.replace(`/${VIEW_SCHEDULE}`)
-      }
     } finally {
       setIsLoading(false)
     }
@@ -249,11 +238,9 @@ const LoginForm: FC<{ id: string }> = ({ id }) => {
   )
 }
 
-// FIXME: use type
-// FIXME: remove '?'
-const saveData = (basePath: any) => {
+const saveData = (basePath: ResponseLogin) => {
   const userId = String(basePath.id)
-  const token = basePath?.token
+  const token = basePath.token
   const name = `${String(basePath.lastName)} ${String(
     basePath.firstName
   )} ${String(basePath.middleName)}`
