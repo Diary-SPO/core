@@ -18,7 +18,7 @@ export const calculateAverageMark = (
 
   marks.forEach((mark) => {
     const markNumber = Number(Grade[mark])
-    if (!isNaN(markNumber)) {
+    if (!Number.isNaN(markNumber)) {
       sum += markNumber
       validMarksCount++
     }

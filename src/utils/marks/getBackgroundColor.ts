@@ -8,7 +8,7 @@ import { ReturnedMark } from './setDefaultMark'
 export const getBackgroundColor = (score?: ReturnedMark): string => {
   const numberScore = Number(score)
 
-  if (isNaN(numberScore)) {
+  if (Number.isNaN(numberScore)) {
     switch (score) {
       case 'ДЗ':
         return '#4966CF'
