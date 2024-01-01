@@ -20,7 +20,7 @@ import { useSnackbar } from '../hooks'
 import makeRequest from '../methods/server/makeRequest'
 import { VIEW_SCHEDULE } from '../routes'
 import { loginPattern } from '../types'
-import { Auth } from '@diary-spo/types'
+import { ResponseLogin } from '@diary-spo/types'
 
 const LoginForm: FC<{ id: string }> = ({ id }) => {
   const routeNavigator = useRouteNavigator()
@@ -125,7 +125,7 @@ const LoginForm: FC<{ id: string }> = ({ id }) => {
         )
       }
 
-      const dataResp = await response.json() as Auth
+      const dataResp = await response.json() as ResponseLogin
       if (!String(dataResp.token)) {
         createErrorSnackbar()
       }
@@ -150,7 +150,7 @@ const LoginForm: FC<{ id: string }> = ({ id }) => {
           subtitle: 'Подождите немного'
         })
 
-        routeNavigator.replace(`/${VIEW_SCHEDULE}`)
+        await routeNavigator.replace(`/${VIEW_SCHEDULE}`)
       }
     } finally {
       setIsLoading(false)

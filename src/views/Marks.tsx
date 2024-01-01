@@ -13,6 +13,7 @@ import { FC } from 'preact/compat'
 import { useEffect, useState } from 'preact/hooks'
 import { useSnackbar } from '../hooks'
 import { getPerformance } from '../methods'
+import { ServerResponse } from '../types'
 
 const THIRD_SEC = 30 * 1000
 
@@ -43,7 +44,7 @@ const Marks: FC<{ id: string }> = ({ id }) => {
 
   const fetchMarks = async (
     isHandle?: boolean
-  ): Promise<PerformanceCurrent | 418 | 429 | undefined> => {
+  ): ServerResponse<PerformanceCurrent | undefined> => {
     setIsLoading(true)
     try {
       const lastFetchTime = localStorage.getItem('lastFetchTime')
