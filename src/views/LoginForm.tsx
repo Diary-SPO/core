@@ -20,6 +20,7 @@ import { useSnackbar } from '../hooks'
 import makeRequest from '../methods/server/makeRequest'
 import { VIEW_SCHEDULE } from '../routes'
 import { loginPattern } from '../types'
+import { Auth } from '@diary-spo/types'
 
 const LoginForm: FC<{ id: string }> = ({ id }) => {
   const routeNavigator = useRouteNavigator()
@@ -124,8 +125,7 @@ const LoginForm: FC<{ id: string }> = ({ id }) => {
         )
       }
 
-      // FIXME: использовать тип
-      const dataResp = await response.json()
+      const dataResp = await response.json() as Auth
       if (!String(dataResp.token)) {
         createErrorSnackbar()
       }

@@ -287,6 +287,11 @@
   resolved "https://registry.yarnpkg.com/@diary-spo/shared/-/shared-1.8.6.tgz#968e4bf44480076b7203e33bde1f430fa9370326"
   integrity sha512-YoKUn1klNLNPxlWFHkrG74wLXGSlx0NO7/Qa5CR1IDpAKd7cMQnj9E3nP2wZ3AmPffMcWXW8UbUB5OJ7c1+CMQ==
 
+"@diary-spo/types@latest":
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/@diary-spo/types/-/types-1.0.0.tgz#2d6a6189550e97cc4502361fcd6b6509c901a84d"
+  integrity sha512-7l47Wxm3MHW+UJAhD9A2dqe5MJREeDQ0I74Dqfy038Di53TmQ/EchXL0dVZ006cETALzPySGuL4znZxulYEU2Q==
+
 "@esbuild/aix-ppc64@0.19.11":
   version "0.19.11"
   resolved "https://registry.yarnpkg.com/@esbuild/aix-ppc64/-/aix-ppc64-0.19.11.tgz#2acd20be6d4f0458bc8c784103495ff24f13b1d3"
