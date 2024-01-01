@@ -1,3 +1,11 @@
+import { logOut } from '@utils'
+import {
+  Icon28DoorArrowRightOutline,
+  Icon28HomeArrowDownOutline,
+  Icon28IncognitoOutline
+} from '@vkontakte/icons'
+import bridge from '@vkontakte/vk-bridge'
+import { useRouteNavigator } from '@vkontakte/vk-mini-apps-router'
 import {
   Alert,
   CellButton,
@@ -7,21 +15,13 @@ import {
   Panel,
   SimpleCell,
   Subhead,
-  Switch,
+  Switch
 } from '@vkontakte/vkui'
-import { useRouteNavigator } from '@vkontakte/vk-mini-apps-router'
-import {
-  Icon28DoorArrowRightOutline,
-  Icon28HomeArrowDownOutline,
-  Icon28IncognitoOutline,
-} from '@vkontakte/icons'
-import bridge from '@vkontakte/vk-bridge'
-import { useEffect, useRef, useState } from 'preact/hooks'
 import { FunctionalComponent } from 'preact'
-import { Storage } from '../types'
+import { useEffect, useRef, useState } from 'preact/hooks'
 import PanelHeaderWithBack from '../components/UI/PanelHeaderWithBack'
 import { useSnackbar } from '../hooks'
-import { logOut } from '@utils'
+import { Storage } from '../types'
 
 interface ISettings {
   id: string
@@ -60,7 +60,7 @@ const Settings: FunctionalComponent<ISettings> = ({ id }) => {
 
     const getCache = allKeys.map((key) => ({
       key,
-      value: localStorage.getItem(key) || 'false',
+      value: localStorage.getItem(key) || 'false'
     }))
     setCacheData(getCache)
   }, [])
@@ -71,10 +71,9 @@ const Settings: FunctionalComponent<ISettings> = ({ id }) => {
       //@ts-ignore типы React не совсем совместимы с Preact
       icon: (
         //@ts-ignore типы React не совсем совместимы с Preact
-        <Icon28DoorArrowRightOutline color="var(--vkui--color_background_accent_themed)" />
+        <Icon28DoorArrowRightOutline color='var(--vkui--color_background_accent_themed)' />
       ),
-      subtitle:
-        'После удаления всех данных вы попадёте на страницу авторизации',
+      subtitle: 'После удаления всех данных вы попадёте на страницу авторизации'
     })
 
     setTimeout(async () => {
@@ -107,29 +106,29 @@ const Settings: FunctionalComponent<ISettings> = ({ id }) => {
         {
           title: 'Отмена',
           autoClose: true,
-          mode: 'cancel',
+          mode: 'cancel'
         },
         //@ts-ignore типы React не совсем совместимы с Preact
         {
           title: 'Выйти',
           autoClose: true,
           mode: 'destructive',
-          action: () => handleLogOut(),
-        },
+          action: () => handleLogOut()
+        }
       ]}
-      actionsLayout="horizontal"
+      actionsLayout='horizontal'
       onClose={() => routeNavigator.hidePopout()}
-      header="Выход"
-      text="Вы уверены, что хотите выйти из аккаунта?"
+      header='Выход'
+      text='Вы уверены, что хотите выйти из аккаунта?'
     />
   )
 
   return (
     <Panel nav={id}>
-      <PanelHeaderWithBack title="Настройки" />
-      <Group header={<Header mode="secondary">Действия</Header>}>
+      <PanelHeaderWithBack title='Настройки' />
+      <Group header={<Header mode='secondary'>Действия</Header>}>
         <CellButton
-          Component="label"
+          Component='label'
           //@ts-ignore типы React не совсем совместимы с Preact
           after={<Switch getRef={switchRef} defaultChecked />}
           onChange={() => setIsSwitchChecked(!isSwitchChecked)}
@@ -154,13 +153,13 @@ const Settings: FunctionalComponent<ISettings> = ({ id }) => {
       </Group>
       {isSwitchChecked && (
         <Group
-          header={<Header mode="secondary">Техническая информация</Header>}
+          header={<Header mode='secondary'>Техническая информация</Header>}
         >
           <Group
             header={
               //@ts-ignore типы React не совсем совместимы с Preact
               <Header
-                mode="secondary"
+                mode='secondary'
                 //@ts-ignore типы React не совсем совместимы с Preact
                 aside={<Subhead>Хранится в LocalStorage</Subhead>}
               >

@@ -1,6 +1,6 @@
 import { convertStringToTime, getTimeRemaining } from '@utils'
-import { CSSProperties } from 'preact/compat'
 import { FunctionComponent } from 'preact'
+import { CSSProperties } from 'preact/compat'
 
 interface ITimeRemaining {
   lessonDate: Date
@@ -12,13 +12,13 @@ const timeRemainingStyles: CSSProperties = {
   margin: '5px 0',
   display: 'inline-block',
   padding: '3px 5px',
-  borderRadius: '5px',
+  borderRadius: '5px'
 }
 
 const TimeRemaining: FunctionComponent<ITimeRemaining> = ({
   lessonDate,
   startTime,
-  endTime,
+  endTime
 }) => {
   if (!lessonDate || !startTime || !endTime) {
     return null
@@ -52,7 +52,7 @@ const TimeRemaining: FunctionComponent<ITimeRemaining> = ({
       : '1px solid var(--vkui--color_accent_violet)',
     color: isRed
       ? 'var(--vkui--color_background_negative)'
-      : 'var(--vkui--color_accent_violet)',
+      : 'var(--vkui--color_accent_violet)'
   }
 
   return <div style={styles}>{timeRemainingText}</div>

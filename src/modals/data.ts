@@ -6,21 +6,21 @@ export const cleanData: Lesson = {
     id: 0,
     lessonType: '',
     tasks: [],
-    themes: [],
+    themes: []
   },
   timetable: {
     classroom: {
       building: '',
       id: 0,
-      name: '',
+      name: ''
     },
     teacher: {
       id: 0,
       lastName: '',
       firstName: '',
-      middleName: '',
-    },
+      middleName: ''
+    }
   },
   startTime: '',
-  endTime: '',
+  endTime: ''
 }

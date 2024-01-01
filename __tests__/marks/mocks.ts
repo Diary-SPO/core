@@ -5,7 +5,7 @@ import { SubjectMarksMap } from '@utils'
 
 export const mockData: PerformanceCurrent = {
   monthsWithDays: [
-    { daysWithLessons: [undefined], month: { name: '', num: 0 } },
+    { daysWithLessons: [undefined], month: { name: '', num: 0 } }
   ],
   daysWithMarksForSubject: [
     {
@@ -14,17 +14,17 @@ export const mockData: PerformanceCurrent = {
         {
           day: new Date(),
           markValues: ['Five', 'Four'],
-          absenceType: undefined,
-        },
+          absenceType: undefined
+        }
       ],
-      averageMark: 'Four',
-    },
-  ],
+      averageMark: 'Four'
+    }
+  ]
 }
 
 export const mockDataWithoutMarks: PerformanceCurrent = {
   monthsWithDays: [
-    { daysWithLessons: [undefined], month: { name: '', num: 0 } },
+    { daysWithLessons: [undefined], month: { name: '', num: 0 } }
   ],
   daysWithMarksForSubject: [
     {
@@ -33,12 +33,12 @@ export const mockDataWithoutMarks: PerformanceCurrent = {
         {
           day: new Date(),
           markValues: [],
-          absenceType: undefined,
-        },
+          absenceType: undefined
+        }
       ],
-      averageMark: 'Four',
-    },
-  ],
+      averageMark: 'Four'
+    }
+  ]
 }
 
 export const expectedMapDataWithoutMarks: SubjectMarksMap = {
@@ -46,9 +46,9 @@ export const expectedMapDataWithoutMarks: SubjectMarksMap = {
     {
       date: new Date().toLocaleDateString(),
       marks: [],
-      absenceType: undefined,
-    },
-  ],
+      absenceType: undefined
+    }
+  ]
 }
 
 export const expectedMapData: SubjectMarksMap = {
@@ -56,9 +56,9 @@ export const expectedMapData: SubjectMarksMap = {
     {
       date: new Date().toLocaleDateString(),
       marks: ['Five', 'Four'],
-      absenceType: undefined,
-    },
-  ],
+      absenceType: undefined
+    }
+  ]
 }
 
 /** extractMarksByDay */
@@ -68,10 +68,10 @@ export const performanceMockData: PerformanceCurrent = {
     {
       month: {
         name: 'Имя',
-        num: 1,
+        num: 1
       },
-      daysWithLessons: [new Date()],
-    },
+      daysWithLessons: [new Date()]
+    }
   ],
   daysWithMarksForSubject: [
     {
@@ -79,41 +79,41 @@ export const performanceMockData: PerformanceCurrent = {
       daysWithMarks: [
         {
           day: new Date('2023-10-30'),
-          markValues: ['Five', 'Four'],
+          markValues: ['Five', 'Four']
         },
         {
           day: new Date('2023-10-31'),
-          markValues: ['Three', 'Two'],
-        },
+          markValues: ['Three', 'Two']
+        }
       ],
-      averageMark: 0,
+      averageMark: 0
     },
     {
       subjectName: 'Science',
       daysWithMarks: [
         {
           day: new Date('2023-10-30'),
-          markValues: ['Five', 'Four'],
+          markValues: ['Five', 'Four']
         },
         {
           day: new Date('2023-10-31'),
-          markValues: ['Five', 'Five'],
-        },
+          markValues: ['Five', 'Five']
+        }
       ],
-      averageMark: 0,
-    },
-  ],
+      averageMark: 0
+    }
+  ]
 }
 
 export const expectedExtractByDayData = {
   '30.10.2023': {
     Math: [5, 4],
-    Science: [5, 4],
+    Science: [5, 4]
   },
   '31.10.2023': {
     Math: [3, 2],
-    Science: [5, 5],
-  },
+    Science: [5, 5]
+  }
 }
 
 export const invalidPerformanceMockData: PerformanceCurrent = {
@@ -121,10 +121,10 @@ export const invalidPerformanceMockData: PerformanceCurrent = {
     {
       month: {
         name: 'Имя',
-        num: 1,
+        num: 1
       },
-      daysWithLessons: [new Date()],
-    },
+      daysWithLessons: [new Date()]
+    }
   ],
   daysWithMarksForSubject: [
     {
@@ -132,23 +132,23 @@ export const invalidPerformanceMockData: PerformanceCurrent = {
       daysWithMarks: [
         {
           day: new Date('2023-10-30'),
-          markValues: ['Invalid', 'Five'],
+          markValues: ['Invalid', 'Five']
         },
         {
           day: new Date('2023-10-31'),
-          markValues: ['Three', 'Unknown'],
-        },
+          markValues: ['Three', 'Unknown']
+        }
       ],
-      averageMark: 0,
-    },
-  ],
+      averageMark: 0
+    }
+  ]
 }
 
 export const expectedInvalidExtractByDayData = {
   '30.10.2023': {
-    Math: [5],
+    Math: [5]
   },
   '31.10.2023': {
-    Math: [3],
-  },
+    Math: [3]
+  }
 }

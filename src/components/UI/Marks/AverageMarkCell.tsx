@@ -1,10 +1,10 @@
-import { FC } from 'react'
-import { MiniInfoCell } from '@vkontakte/vkui'
+import { calculateAverageMark } from '@utils'
 import {
   Icon20IncognitoOutline,
-  Icon20StatisticsOutline,
+  Icon20StatisticsOutline
 } from '@vkontakte/icons'
-import { calculateAverageMark } from '@utils'
+import { MiniInfoCell } from '@vkontakte/vkui'
+import { FC } from 'react'
 
 interface IAverageMarkCell {
   marks: string[]
@@ -21,7 +21,7 @@ const AverageMarkCell: FC<IAverageMarkCell> = ({ marks }) => {
 
   return (
     <MiniInfoCell
-      textWrap="full"
+      textWrap='full'
       before={<Icon20StatisticsOutline />}
       style={{ marginTop: 5 }}
       after={calculateAverageMark(marks)}

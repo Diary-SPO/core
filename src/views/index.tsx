@@ -15,5 +15,5 @@ export {
   Settings,
   LoginForm,
   Attestation,
-  Notifications,
+  Notifications
 }

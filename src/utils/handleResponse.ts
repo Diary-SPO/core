@@ -16,14 +16,14 @@ export const handleResponse = <T>(
 ): void => {
   if (response === 418) {
     const errorIcon = createElement(Icon28ErrorCircleOutline, {
-      fill: 'var(--vkui--color_icon_negative)',
+      fill: 'var(--vkui--color_icon_negative)'
     })
 
     if (showSnackbar) {
       showSnackbar({
         icon: errorIcon,
         title: 'Ошибка при попытке сделать запрос',
-        subtitle: 'Попробуйте обновить страницу или обновите куки в настройках',
+        subtitle: 'Попробуйте обновить страницу или обновите куки в настройках'
       })
     }
 

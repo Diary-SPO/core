@@ -1,3 +1,9 @@
+import { PanelHeaderWithBack } from '@components'
+import {
+  Icon28DoorArrowLeftOutline,
+  Icon28ErrorCircleOutline
+} from '@vkontakte/icons'
+import { useRouteNavigator } from '@vkontakte/vk-mini-apps-router'
 import {
   Button,
   FormItem,
@@ -5,40 +11,34 @@ import {
   FormStatus,
   Group,
   Input,
-  Panel,
+  Panel
 } from '@vkontakte/vkui'
-import { useRouteNavigator } from '@vkontakte/vk-mini-apps-router'
 import Hashes from 'jshashes'
-import {
-  Icon28DoorArrowLeftOutline,
-  Icon28ErrorCircleOutline,
-} from '@vkontakte/icons'
-import { useEffect, useState } from 'preact/hooks'
 import { ChangeEvent, FC } from 'preact/compat'
-import { PanelHeaderWithBack } from '@components'
-import { VIEW_SCHEDULE } from '../routes'
+import { useEffect, useState } from 'preact/hooks'
 import { useSnackbar } from '../hooks'
-import { loginPattern } from '../types'
 import makeRequest from '../methods/server/makeRequest'
+import { VIEW_SCHEDULE } from '../routes'
+import { loginPattern } from '../types'
 
 const LoginForm: FC<{ id: string }> = ({ id }) => {
   const routeNavigator = useRouteNavigator()
-  
+
   const [login, setLogin] = useState<string>('')
   const [password, setPassword] = useState<string>('')
   const [isDataInvalid, setIsDataInvalid] = useState<boolean>(false)
   const [isLoading, setIsLoading] = useState<boolean>(false)
   const [snackbar, showSnackbar] = useSnackbar()
-  
+
   const createErrorSnackbar = () =>
     showSnackbar({
       icon: (
-        <Icon28ErrorCircleOutline fill="var(--vkui--color_icon_negative)" />
+        <Icon28ErrorCircleOutline fill='var(--vkui--color_icon_negative)' />
       ),
       subtitle: 'Попробуйте заного или сообщите об ошибке',
-      title: 'Ошибка при попытке авторизации',
+      title: 'Ошибка при попытке авторизации'
     })
-  
+
   useEffect(() => {
     const storageToken = localStorage.getItem('token')
     setIsLoading(true)
@@ -48,35 +48,35 @@ const LoginForm: FC<{ id: string }> = ({ id }) => {
         setIsLoading(false)
         showSnackbar({
           icon: (
-            <Icon28ErrorCircleOutline fill="var(--vkui--color_icon_negative)" />
+            <Icon28ErrorCircleOutline fill='var(--vkui--color_icon_negative)' />
           ),
           subtitle: 'Заполни форму и войди в дневник',
-          title: 'О вас нет данных, ты кто такой?',
+          title: 'О вас нет данных, ты кто такой?'
         })
       }
     }
-    
+
     getUserCookie()
   }, [])
-  
+
   const onChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.currentTarget
-    
+
     const setStateAction = {
       login: setLogin,
-      password: setPassword,
+      password: setPassword
     }[name]
     setIsDataInvalid(false)
-    
-    setStateAction && setStateAction(value)
+
+    setStateAction?.(value)
   }
-  
+
   const handleLogin = async () => {
     if (!loginPattern.test(login)) {
       setIsDataInvalid(true)
       return
     }
-    
+
     const passwordHashed = new Hashes.SHA256().b64(password)
     const response = await makeRequest<Response>(
       '/login/',
@@ -84,8 +84,8 @@ const LoginForm: FC<{ id: string }> = ({ id }) => {
       JSON.stringify({
         login,
         password: passwordHashed,
-        isHash: true,
-      }),
+        isHash: true
+      })
     )
     try {
       setIsLoading(true)
@@ -95,73 +95,72 @@ const LoginForm: FC<{ id: string }> = ({ id }) => {
         setIsDataInvalid(true)
         throw new Error('401')
       }
-      
+
       if (typeof response === 'number') {
         showSnackbar({
           icon: (
-            <Icon28ErrorCircleOutline fill="var(--vkui--color_icon_negative)" />
+            <Icon28ErrorCircleOutline fill='var(--vkui--color_icon_negative)' />
           ),
           title: 'Ошибка при попытке сделать запрос',
           subtitle:
-            'Попробуйте обновить страницу или обновите куки в настройках',
+            'Попробуйте обновить страницу или обновите куки в настройках'
         })
         throw new Error('500')
       }
-      
+
       if (typeof response !== 'number' && !response.ok) {
         showSnackbar({
           icon: (
-            <Icon28ErrorCircleOutline fill="var(--vkui--color_icon_negative)" />
+            <Icon28ErrorCircleOutline fill='var(--vkui--color_icon_negative)' />
           ),
           title: 'Ошибка при попытке сделать запрос',
           subtitle:
-            'Попробуйте обновить страницу или обновите куки в настройках',
+            'Попробуйте обновить страницу или обновите куки в настройках'
         })
         setIsLoading(false)
         createErrorSnackbar()
         throw new Error(
-          `Failed to fetch login / status: ${response.status} / statusText: ${response.statusText}`,
+          `Failed to fetch login / status: ${response.status} / statusText: ${response.statusText}`
         )
       }
-      
+
       // FIXME: использовать тип
       const dataResp = await response.json()
       if (!String(dataResp.token)) {
         createErrorSnackbar()
       }
-      
+
       saveData(dataResp)
-      
+
       showSnackbar({
         title: 'Вхожу',
-        subtitle: 'Подождите немного',
+        subtitle: 'Подождите немного'
       })
-      
+
       routeNavigator.replace(`/${VIEW_SCHEDULE}`)
     } catch (e) {
       setIsLoading(false)
       console.error(e)
-      
+
       if (response) {
         console.log(response)
         saveData(response)
         showSnackbar({
           title: 'Вхожу',
-          subtitle: 'Подождите немного',
+          subtitle: 'Подождите немного'
         })
-        
+
         routeNavigator.replace(`/${VIEW_SCHEDULE}`)
       }
-      
     } finally {
       setIsLoading(false)
     }
   }
-  
+
   const isLoginEmpty = login === ''
   const isPasswordEmpty = password === ''
   const isPasswordValid = password && !isPasswordEmpty
-  
+
   const loginTopText = isLoginEmpty
     ? 'Логин'
     : loginPattern.test(login)
@@ -173,13 +172,13 @@ const LoginForm: FC<{ id: string }> = ({ id }) => {
       : isPasswordValid
         ? 'Пароль введён'
         : 'Введите корректный пароль'
-  
+
   return (
     <Panel nav={id}>
-      <PanelHeaderWithBack title="Авторизация" />
+      <PanelHeaderWithBack title='Авторизация' />
       <Group>
         {isDataInvalid && (
-          <FormStatus header="Некорректные данные" mode="error">
+          <FormStatus header='Некорректные данные' mode='error'>
             Проверьте правильность логина и пароля
           </FormStatus>
         )}
@@ -187,8 +186,8 @@ const LoginForm: FC<{ id: string }> = ({ id }) => {
           {/*//@ts-ignore типы React не совсем совместимы с Preact*/}
           <FormItem
             required
-            htmlFor="userLogin"
-            top="Логин"
+            htmlFor='userLogin'
+            top='Логин'
             status={
               isLoginEmpty
                 ? 'default'
@@ -197,24 +196,24 @@ const LoginForm: FC<{ id: string }> = ({ id }) => {
                   : 'error'
             }
             bottom={isLoginEmpty || loginTopText}
-            bottomId="login-type"
+            bottomId='login-type'
           >
             <Input
               //@ts-ignore типы React не совсем совместимы с Preact
               required
-              aria-labelledby="login-type"
-              id="userLogin"
-              type="text"
-              name="login"
-              placeholder="Введите логин"
+              aria-labelledby='login-type'
+              id='userLogin'
+              type='text'
+              name='login'
+              placeholder='Введите логин'
               value={login}
               onChange={onChange}
             />
           </FormItem>
           {/*//@ts-ignore типы React не совсем совместимы с Preact*/}
           <FormItem
-            top="Пароль"
-            htmlFor="pass"
+            top='Пароль'
+            htmlFor='pass'
             status={
               isPasswordEmpty ? 'default' : isPasswordValid ? 'valid' : 'error'
             }
@@ -222,17 +221,17 @@ const LoginForm: FC<{ id: string }> = ({ id }) => {
           >
             <Input
               //@ts-ignore типы React не совсем совместимы с Preact
-              name="password"
-              id="pass"
-              type="password"
-              placeholder="Введите пароль"
+              name='password'
+              id='pass'
+              type='password'
+              placeholder='Введите пароль'
               onChange={onChange}
             />
           </FormItem>
           {/*//@ts-ignore типы React не совсем совместимы с Preact*/}
           <FormItem>
             <Button
-              size="l"
+              size='l'
               stretched
               onClick={() => handleLogin()}
               disabled={
@@ -256,22 +255,22 @@ const saveData = (basePath: any) => {
   const userId = String(basePath.id)
   const token = basePath?.token
   const name = `${String(basePath.lastName)} ${String(
-    basePath.firstName,
+    basePath.firstName
   )} ${String(basePath.middleName)}`
   const org = String(basePath.organization?.abbreviation)
   const city = String(basePath.organization?.addressSettlement)
   const group = String(basePath?.groupName)
-  
+
   localStorage.setItem('id', userId)
   localStorage.setItem('token', token)
-  
+
   const userData = {
     name,
     org,
     city,
-    group,
+    group
   }
-  
+
   localStorage.setItem('data', JSON.stringify(userData))
 }
 

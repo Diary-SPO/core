@@ -1,7 +1,7 @@
-import { FunctionalComponent } from 'preact'
-import { Header, HorizontalCell } from '@vkontakte/vkui'
-import Mark from '../Mark'
 import { truncateString } from '@utils'
+import { Header, HorizontalCell } from '@vkontakte/vkui'
+import { FunctionalComponent } from 'preact'
+import Mark from '../Mark'
 
 export interface ILessonGrades {
   [lessonName: string]: number[]
@@ -12,7 +12,7 @@ const LessonGrades: FunctionalComponent<{
   lessonGrades: ILessonGrades
 }> = ({ day, lessonGrades }) => (
   <div key={day}>
-    <Header mode="secondary">{day}</Header>
+    <Header mode='secondary'>{day}</Header>
     <div style={{ display: 'flex' }}>
       {Object.entries(lessonGrades).map(([lessonName, grades]) => (
         <div style={{ display: 'flex' }} key={`${day}_${lessonName}`}>
@@ -27,7 +27,7 @@ const LessonGrades: FunctionalComponent<{
                 style={{ maxWidth: 90 }}
                 mark={grade || 'Н'}
                 useMargin={false}
-                size="l"
+                size='l'
               />
             </HorizontalCell>
           ))}

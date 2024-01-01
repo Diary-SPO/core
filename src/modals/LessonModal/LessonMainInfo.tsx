@@ -1,9 +1,9 @@
-import { FC } from 'react'
-import { Group, Header, InfoRow, SimpleCell } from '@vkontakte/vkui'
-import { LessonWorkType } from '@diary-spo/shared'
 import { ExplanationTooltip } from '@components'
+import { LessonWorkType } from '@diary-spo/shared'
 import { textToLink } from '@utils'
+import { Group, Header, InfoRow, SimpleCell } from '@vkontakte/vkui'
 import { useMemo } from 'preact/compat'
+import { FC } from 'react'
 
 export interface ILessonMainInfo {
   name: string
@@ -13,14 +13,14 @@ export interface ILessonMainInfo {
 }
 
 const LessonMainInfo: FC<{ lessonMainInfo: Partial<ILessonMainInfo> }> = ({
-  lessonMainInfo,
+  lessonMainInfo
 }) => {
   const header = useMemo(
     () => (
-      <Header mode="tertiary">
+      <Header mode='tertiary'>
         <ExplanationTooltip
-          text="Основная информация"
-          tooltipContent="Вся информация берется из оригинального дневника и отображается здесь"
+          text='Основная информация'
+          tooltipContent='Вся информация берется из оригинального дневника и отображается здесь'
         />
       </Header>
     ),
@@ -34,18 +34,18 @@ const LessonMainInfo: FC<{ lessonMainInfo: Partial<ILessonMainInfo> }> = ({
   return (
     <Group header={header}>
       <SimpleCell multiline>
-        <InfoRow header="Предмет">{lessonMainInfo.name}</InfoRow>
+        <InfoRow header='Предмет'>{lessonMainInfo.name}</InfoRow>
       </SimpleCell>
       <SimpleCell>
-        <InfoRow header="Тип занятия">
+        <InfoRow header='Тип занятия'>
           {LessonWorkType[lessonMainInfo.lessonType]}
         </InfoRow>
       </SimpleCell>
       <SimpleCell multiline>
-        <InfoRow header="Тема">{theme}</InfoRow>
+        <InfoRow header='Тема'>{theme}</InfoRow>
       </SimpleCell>
       <SimpleCell>
-        <InfoRow header="Преподаватель">{lessonMainInfo.teacherName}</InfoRow>
+        <InfoRow header='Преподаватель'>{lessonMainInfo.teacherName}</InfoRow>
       </SimpleCell>
     </Group>
   )

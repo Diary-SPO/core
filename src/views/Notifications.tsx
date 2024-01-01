@@ -1,3 +1,7 @@
+import { PanelHeaderWithBack, SubtitleWithBorder } from '@components'
+import { NotificationsResponse } from '@diary-spo/shared'
+import { handleResponse } from '@utils'
+import { Icon28ErrorCircleOutline } from '@vkontakte/icons'
 import {
   Button,
   ButtonGroup,
@@ -11,14 +15,10 @@ import {
   Spinner,
   Subhead,
   Text,
-  Title,
+  Title
 } from '@vkontakte/vkui'
-import { Icon28ErrorCircleOutline } from '@vkontakte/icons'
-import { NotificationsResponse } from '@diary-spo/shared'
-import { useEffect, useState } from 'preact/hooks'
 import { FC } from 'preact/compat'
-import { PanelHeaderWithBack, SubtitleWithBorder } from '@components'
-import { handleResponse } from '@utils'
+import { useEffect, useState } from 'preact/hooks'
 import { useSnackbar } from '../hooks'
 import { getAds } from '../methods'
 
@@ -68,11 +68,11 @@ const Notifications: FC<{ id: string }> = ({ id }) => {
       setLoading(false)
       showSnackbar({
         icon: (
-          <Icon28ErrorCircleOutline fill="var(--vkui--color_icon_negative)" />
+          <Icon28ErrorCircleOutline fill='var(--vkui--color_icon_negative)' />
         ),
         title: 'Ошибка при попытке загрузить объявления',
         action: 'Попробовать снова',
-        onActionClick: () => fetchAds(true),
+        onActionClick: () => fetchAds(true)
       })
       console.error('Ошибка при получении объявлений:', error)
     }
@@ -86,7 +86,7 @@ const Notifications: FC<{ id: string }> = ({ id }) => {
       showSnackbar({
         title: 'Данные взяты из кеша',
         action: 'Загрузить новые',
-        onActionClick: () => fetchAds(true),
+        onActionClick: () => fetchAds(true)
       })
     } else {
       fetchAds(true)
@@ -95,7 +95,7 @@ const Notifications: FC<{ id: string }> = ({ id }) => {
 
   return (
     <Panel nav={id}>
-      <PanelHeaderWithBack title="Объявления" />
+      <PanelHeaderWithBack title='Объявления' />
       <Div>
         {notifications &&
           notifications?.length > 0 &&
@@ -108,7 +108,7 @@ const Notifications: FC<{ id: string }> = ({ id }) => {
               isForParents,
               isForStudents,
               deleteInDays,
-              text,
+              text
             }) => (
               <Group
                 key={_id}
@@ -118,12 +118,12 @@ const Notifications: FC<{ id: string }> = ({ id }) => {
                       <SubtitleWithBorder>Для работников</SubtitleWithBorder>
                     )}
                     {isForParents && (
-                      <SubtitleWithBorder color="yellow-outline">
+                      <SubtitleWithBorder color='yellow-outline'>
                         Для родителей
                       </SubtitleWithBorder>
                     )}
                     {isForStudents && (
-                      <SubtitleWithBorder color="green-outline">
+                      <SubtitleWithBorder color='green-outline'>
                         Для студентов
                       </SubtitleWithBorder>
                     )}
@@ -131,7 +131,7 @@ const Notifications: FC<{ id: string }> = ({ id }) => {
                 }
                 header={
                   <Header
-                    mode="tertiary"
+                    mode='tertiary'
                     aside={
                       //@ts-ignore типы React не совсем совместимы с Preact
                       <Subhead>Удалится через {deleteInDays} дней</Subhead>
@@ -141,10 +141,10 @@ const Notifications: FC<{ id: string }> = ({ id }) => {
                   </Header>
                 }
               >
-                <Card mode="shadow">
+                <Card mode='shadow'>
                   <Div>
                     {/*//@ts-ignore типы React не совсем совместимы с Preact*/}
-                    <Title level="3">{title}</Title>
+                    <Title level='3'>{title}</Title>
                     {/*//@ts-ignore типы React не совсем совместимы с Preact*/}
                     <Text>{text}</Text>
                   </Div>
@@ -164,13 +164,13 @@ const Notifications: FC<{ id: string }> = ({ id }) => {
         <Div>
           {isError && (
             <Placeholder
-              header="Ошибка при загрузке"
+              header='Ошибка при загрузке'
               action={
-                <ButtonGroup mode="vertical" align="center">
-                  <Button size="s" onClick={() => fetchAds(true)}>
+                <ButtonGroup mode='vertical' align='center'>
+                  <Button size='s' onClick={() => fetchAds(true)}>
                     Попробовать снова
                   </Button>
-                  <Link href="https://vk.me/dnevnik_spo" target="_blank">
+                  <Link href='https://vk.me/dnevnik_spo' target='_blank'>
                     Сообщить о проблеме
                   </Link>
                 </ButtonGroup>
@@ -181,7 +181,7 @@ const Notifications: FC<{ id: string }> = ({ id }) => {
 
         <Div>
           {notifications && notifications?.length < 1 && (
-            <Placeholder header="Объявлений нет" />
+            <Placeholder header='Объявлений нет' />
           )}
         </Div>
       </Div>

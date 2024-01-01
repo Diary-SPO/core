@@ -1,15 +1,15 @@
-import { ModalPage, ModalPageHeader } from '@vkontakte/vkui'
 import { Lesson } from '@diary-spo/shared'
+import { setLessonDetails } from '@utils'
+import { ModalPage, ModalPageHeader } from '@vkontakte/vkui'
 import { FC } from 'preact/compat'
 import { useEffect, useState } from 'preact/hooks'
-import LessonMainInfo, { ILessonMainInfo } from './LessonMainInfo'
-import LessonTimePlaceInfo, {
-  ILessonTimePlaceInfo,
-} from './LessonTimePlaceInfo'
 import useModal from '../../store/useModal'
 import { cleanData } from '../data'
 import LessonGrade from './LessonGrade'
-import { setLessonDetails } from '@utils'
+import LessonMainInfo, { ILessonMainInfo } from './LessonMainInfo'
+import LessonTimePlaceInfo, {
+  ILessonTimePlaceInfo
+} from './LessonTimePlaceInfo'
 
 interface ILessonModal {
   id: string
@@ -30,7 +30,7 @@ const LessonModal: FC<ILessonModal> = ({ id }) => {
       const {
         lessonData: newLessonData,
         lessonMainInfo: newLessonMainInfo,
-        lessonTimePlaceInfo: newLessonTimePlaceInfo,
+        lessonTimePlaceInfo: newLessonTimePlaceInfo
       } = setLessonDetails(modal)
 
       setLessonData(newLessonData)

@@ -1,4 +1,3 @@
-import { it, expect, describe, vitest } from 'vitest'
 import {
   formatDate,
   getTimeRemaining,
@@ -8,17 +7,18 @@ import {
   setLessonDetails,
   sortByDay,
   textToLink,
-  truncateString,
+  truncateString
 } from '@utils'
+import { describe, expect, it, vitest } from 'vitest'
+import { IMarksByDay } from '../../src/components'
 import {
   expectedLessonDetailsInvalid,
   expectedLessonDetailsValid,
   mockLesson,
   mockLessonInvalid,
   mockMarksByDay,
-  mockTextWithLinks,
+  mockTextWithLinks
 } from './mocs'
-import { IMarksByDay } from '../../src/components'
 
 describe('Тесты базовых утилит', () => {
   /** isToday **/

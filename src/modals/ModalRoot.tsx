@@ -1,8 +1,8 @@
-import { ModalRoot as VKUIModalRoot } from '@vkontakte/vkui'
 import {
   useActiveVkuiLocation,
-  useRouteNavigator,
+  useRouteNavigator
 } from '@vkontakte/vk-mini-apps-router'
+import { ModalRoot as VKUIModalRoot } from '@vkontakte/vkui'
 import LessonModal from './LessonModal'
 
 export const MODAL_PAGE_LESSON = 'lesson'

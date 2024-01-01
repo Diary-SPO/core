@@ -1,6 +1,6 @@
 import {
   RouteWithoutRoot,
-  createHashRouter,
+  createHashRouter
 } from '@vkontakte/vk-mini-apps-router'
 
 export const PAGE_MAIN = '/'
@@ -24,38 +24,38 @@ const routes: RouteWithoutRoot[] = [
   {
     path: PAGE_MAIN,
     panel: MAIN_SETTINGS,
-    view: VIEW_SCHEDULE,
+    view: VIEW_SCHEDULE
   },
   {
     path: PAGE_SCHEDULE,
     panel: VIEW_SCHEDULE,
-    view: VIEW_SCHEDULE,
+    view: VIEW_SCHEDULE
   },
   {
     path: PAGE_CONTACTS,
     panel: VIEW_CONTACTS,
-    view: VIEW_SCHEDULE,
+    view: VIEW_SCHEDULE
   },
   {
     path: PAGE_MARKS,
     panel: VIEW_MARKS,
-    view: VIEW_SCHEDULE,
+    view: VIEW_SCHEDULE
   },
   {
     path: PAGE_SETTINGS,
     panel: VIEW_SETTINGS,
-    view: VIEW_SCHEDULE,
+    view: VIEW_SCHEDULE
   },
   {
     path: PAGE_ATTESTATION,
     panel: VIEW_ATTESTATION,
-    view: VIEW_SCHEDULE,
+    view: VIEW_SCHEDULE
   },
   {
     path: PAGE_NOTIFICATIONS,
     panel: VIEW_NOTIFICATIONS,
-    view: VIEW_SCHEDULE,
-  },
+    view: VIEW_SCHEDULE
+  }
 ]
 
 export const router = createHashRouter(routes)

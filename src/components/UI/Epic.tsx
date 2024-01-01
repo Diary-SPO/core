@@ -1,8 +1,8 @@
 import {
   useActiveVkuiLocation,
-  useRouteNavigator,
+  useRouteNavigator
 } from '@vkontakte/vk-mini-apps-router'
-import { useAdaptivityConditionalRender, View } from '@vkontakte/vkui'
+import { View, useAdaptivityConditionalRender } from '@vkontakte/vkui'
 import { Epic as VKUIEpic } from '@vkontakte/vkui/dist/components/Epic/Epic'
 import { FC } from 'preact/compat'
 import {
@@ -12,12 +12,10 @@ import {
   VIEW_MARKS,
   VIEW_NOTIFICATIONS,
   VIEW_SCHEDULE,
-  VIEW_SETTINGS,
+  VIEW_SETTINGS
 } from '../../routes'
 import { Pages } from '../../types'
 
-import Tabbar from './Tabbar'
-import Suspense from './Suspense'
 import {
   Attestation,
   Contacts,
@@ -25,8 +23,10 @@ import {
   Marks,
   Notifications,
   Schedule,
-  Settings,
+  Settings
 } from '../../views'
+import Suspense from './Suspense'
+import Tabbar from './Tabbar'
 
 interface IEpic {
   onStoryChange: (current: Pages) => void
@@ -52,25 +52,25 @@ const Epic: FC<IEpic> = ({ onStoryChange }) => {
         activePanel={activePanel}
         onSwipeBack={() => routeNavigator.back()}
       >
-        <Suspense id={MAIN_SETTINGS} mode="screen">
+        <Suspense id={MAIN_SETTINGS} mode='screen'>
           <LoginForm id={MAIN_SETTINGS} />
         </Suspense>
-        <Suspense id={VIEW_SCHEDULE} mode="screen">
+        <Suspense id={VIEW_SCHEDULE} mode='screen'>
           <Schedule id={VIEW_SCHEDULE} />
         </Suspense>
-        <Suspense id={VIEW_MARKS} mode="screen">
+        <Suspense id={VIEW_MARKS} mode='screen'>
           <Marks id={VIEW_MARKS} />
         </Suspense>
-        <Suspense id={VIEW_ATTESTATION} mode="screen">
+        <Suspense id={VIEW_ATTESTATION} mode='screen'>
           <Attestation id={VIEW_ATTESTATION} />
         </Suspense>
-        <Suspense id={VIEW_NOTIFICATIONS} mode="screen">
+        <Suspense id={VIEW_NOTIFICATIONS} mode='screen'>
           <Notifications id={VIEW_NOTIFICATIONS} />
         </Suspense>
-        <Suspense id={VIEW_CONTACTS} mode="screen">
+        <Suspense id={VIEW_CONTACTS} mode='screen'>
           <Contacts id={VIEW_CONTACTS} />
         </Suspense>
-        <Suspense id={VIEW_SETTINGS} mode="screen">
+        <Suspense id={VIEW_SETTINGS} mode='screen'>
           <Settings id={VIEW_SETTINGS} />
         </Suspense>
       </View>

@@ -1,14 +1,14 @@
-import { FC, memo } from 'react'
-import { Card, Group, Placeholder } from '@vkontakte/vkui'
-import { useRouteNavigator } from '@vkontakte/vk-mini-apps-router'
-import { useCallback } from 'preact/hooks'
 import { Day, Gradebook, Timetable } from '@diary-spo/shared'
-import useModal from '../../../store/useModal'
-import { MODAL_PAGE_LESSON } from '../../../modals/ModalRoot'
 import { formatLessonDate, isToday } from '@utils'
-import LessonHeader from './LessonHeader'
-import LessonCell from './LessonCell'
+import { useRouteNavigator } from '@vkontakte/vk-mini-apps-router'
+import { Card, Group, Placeholder } from '@vkontakte/vkui'
 import { useMemo } from 'preact/compat'
+import { useCallback } from 'preact/hooks'
+import { FC, memo } from 'react'
+import { MODAL_PAGE_LESSON } from '../../../modals/ModalRoot'
+import useModal from '../../../store/useModal'
+import LessonCell from './LessonCell'
+import LessonHeader from './LessonHeader'
 
 interface ILessonCard {
   lesson: Day
@@ -37,7 +37,7 @@ const LessonCard: FC<ILessonCard> = ({ lesson }) => {
         timetable,
         gradebook,
         tasks: gradebook?.tasks,
-        lessonId,
+        lessonId
       }
 
       setData(modalData)
@@ -49,7 +49,7 @@ const LessonCard: FC<ILessonCard> = ({ lesson }) => {
   const lessonDate = new Date(lesson.date)
   const formattedLessonDate = formatLessonDate(lesson.date)
   const lessonDayOfWeek = lessonDate.toLocaleString('default', {
-    weekday: 'long',
+    weekday: 'long'
   })
 
   const isLessonToday = isToday(lessonDate)
@@ -60,7 +60,7 @@ const LessonCard: FC<ILessonCard> = ({ lesson }) => {
     borderRadius: '5px',
     border: `1px solid ${
       isLessonToday ? 'var(--vkui--color_background_accent)' : '#888888'
-    }`,
+    }`
   }
 
   const dayEnded = currentDate > lessonDate
@@ -85,7 +85,7 @@ const LessonCard: FC<ILessonCard> = ({ lesson }) => {
   }, [lesson.lessons, lessonDate, handleLessonClick])
 
   return (
-    <Card className="lessonCard" key={lesson.date}>
+    <Card className='lessonCard' key={lesson.date}>
       <Group
         header={
           <LessonHeader

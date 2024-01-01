@@ -4,16 +4,16 @@ import { ServerResponse } from '../../types'
 const requestToSecondServer = async <T>(
   route: string,
   cookie: string,
-  method: 'POST' | 'GET' = 'GET',
+  method: 'POST' | 'GET',
   body: BodyInit
 ): ServerResponse<T> => {
   const secondServerResponse = await fetch(SECOND_SERVER_URL + route, {
     method: method,
     headers: {
       'Content-Type': 'application/json;charset=UTF-8',
-      secret: cookie,
+      secret: cookie
     },
-    body,
+    body
   })
 
   if (secondServerResponse.status === 429) {

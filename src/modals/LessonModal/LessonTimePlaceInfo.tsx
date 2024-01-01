@@ -1,7 +1,7 @@
-import { FC } from 'react'
-import { Group, Header, InfoRow, SimpleCell } from '@vkontakte/vkui'
 import { ExplanationTooltip } from '@components'
+import { Group, Header, InfoRow, SimpleCell } from '@vkontakte/vkui'
 import { useMemo } from 'preact/compat'
+import { FC } from 'react'
 
 export interface ILessonTimePlaceInfo {
   classroomName?: string
@@ -15,8 +15,8 @@ const LessonTimePlaceInfo: FC<{
   const header = useMemo(
     () => (
       <ExplanationTooltip
-        text="Аудитория"
-        tooltipContent="Если аудитория не указана, возможно, пара будет удалённо"
+        text='Аудитория'
+        tooltipContent='Если аудитория не указана, возможно, пара будет удалённо'
       />
     ),
     []
@@ -25,8 +25,8 @@ const LessonTimePlaceInfo: FC<{
   const homeStudyTooltip = useMemo(
     () => (
       <ExplanationTooltip
-        text="ДО"
-        tooltipContent="Пара будет удалённо или будет задано домашнее задание. Уточните у куратора или проверьте в оригинальном дневнике."
+        text='ДО'
+        tooltipContent='Пара будет удалённо или будет задано домашнее задание. Уточните у куратора или проверьте в оригинальном дневнике.'
       />
     ),
     []
@@ -35,8 +35,8 @@ const LessonTimePlaceInfo: FC<{
   const timeTooltip = useMemo(
     () => (
       <ExplanationTooltip
-        text="Время"
-        tooltipContent="Если время не указано или некорректно, вы увидите текст с ошибкой"
+        text='Время'
+        tooltipContent='Если время не указано или некорректно, вы увидите текст с ошибкой'
       />
     ),
     []
@@ -48,7 +48,7 @@ const LessonTimePlaceInfo: FC<{
       : lessonTimePlaceInfo.classroomName
 
   return (
-    <Group header={<Header mode="tertiary">Куда бежать</Header>}>
+    <Group header={<Header mode='tertiary'>Куда бежать</Header>}>
       <SimpleCell>
         <InfoRow header={header}>{className}</InfoRow>
       </SimpleCell>

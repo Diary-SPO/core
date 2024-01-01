@@ -1,3 +1,17 @@
+import { Suspense } from '@components'
+import {
+  Icon28BookSpreadOutline,
+  Icon28EducationOutline,
+  Icon28GraphOutline,
+  Icon28HomeOutline,
+  Icon28SettingsOutline
+} from '@vkontakte/icons'
+import { useInsets } from '@vkontakte/vk-bridge-react'
+import {
+  useActiveVkuiLocation,
+  usePopout,
+  useRouteNavigator
+} from '@vkontakte/vk-mini-apps-router'
 import {
   AppRoot,
   Cell,
@@ -9,14 +23,8 @@ import {
   SplitCol,
   SplitLayout,
   useAdaptivityConditionalRender,
-  usePlatform,
+  usePlatform
 } from '@vkontakte/vkui'
-import {
-  useActiveVkuiLocation,
-  usePopout,
-  useRouteNavigator,
-} from '@vkontakte/vk-mini-apps-router'
-import { useInsets } from '@vkontakte/vk-bridge-react'
 import { lazy } from 'preact/compat'
 import { useEffect, useState } from 'preact/hooks'
 import {
@@ -26,17 +34,9 @@ import {
   VIEW_MARKS,
   VIEW_NOTIFICATIONS,
   VIEW_SCHEDULE,
-  VIEW_SETTINGS,
+  VIEW_SETTINGS
 } from './routes'
 import { Pages } from './types'
-import { Suspense } from '@components'
-import {
-  Icon28BookSpreadOutline,
-  Icon28EducationOutline,
-  Icon28GraphOutline,
-  Icon28HomeOutline,
-  Icon28SettingsOutline,
-} from '@vkontakte/icons'
 
 const ModalRoot = lazy(() => import('./modals/ModalRoot'))
 const Epic = lazy(() => import('./components/UI/Epic'))
@@ -147,9 +147,9 @@ const App = () => {
             </Panel>
           </SplitCol>
         )}
-        <Suspense id="Epic">
-          {isLoading && <ScreenSpinner size="large" />}
-          <SplitCol width="100%" maxWidth="700px" stretchedOnMobile autoSpaced>
+        <Suspense id='Epic'>
+          {isLoading && <ScreenSpinner size='large' />}
+          <SplitCol width='100%' maxWidth='700px' stretchedOnMobile autoSpaced>
             <Epic onStoryChange={onStoryChange} />
           </SplitCol>
         </Suspense>

@@ -14,14 +14,14 @@ const SubjectGroup: FunctionalComponent<ISubjectGroup> = ({
   semesterKey,
   subjects,
   studentName,
-  year,
+  year
 }) => (
   <Group
     key={semesterKey}
     header={
       <Header
         style={{ alignItems: 'center' }}
-        mode="tertiary"
+        mode='tertiary'
         aside={`${studentName}, ${year}`}
       >
         {semesterKey}

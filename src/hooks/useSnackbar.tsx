@@ -1,5 +1,5 @@
-import { Snackbar, SnackbarProps } from '@vkontakte/vkui'
 import { Icon28InfoCircleOutline } from '@vkontakte/icons'
+import { Snackbar, SnackbarProps } from '@vkontakte/vkui'
 import { CSSProperties, ReactNode } from 'preact/compat'
 import { useCallback, useState } from 'preact/hooks'
 
@@ -25,7 +25,7 @@ export interface SnackbarData {
 
 const useSnackbar = (): [
   ReactNode | null,
-  (snackbarData: SnackbarData | null) => void,
+  (snackbarData: SnackbarData | null) => void
 ] => {
   const [snackbar, setSnackbar] = useState<ReactNode | null>(null)
 
@@ -41,7 +41,7 @@ const useSnackbar = (): [
         onClose={() => setSnackbar(null)}
         before={
           snackbarData.icon || (
-            <Icon28InfoCircleOutline fill="var(--vkui--color_background_accent)" />
+            <Icon28InfoCircleOutline fill='var(--vkui--color_background_accent)' />
           )
         }
         action={snackbarData.action}

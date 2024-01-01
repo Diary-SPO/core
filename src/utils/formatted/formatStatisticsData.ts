@@ -36,7 +36,7 @@ export const formatStatisticsData = (marks: PerformanceCurrent) => {
     2: 0,
     3: 0,
     4: 0,
-    5: 0,
+    5: 0
   }
 
   allMarks.forEach((textMark: TextMark) => {
@@ -49,6 +49,6 @@ export const formatStatisticsData = (marks: PerformanceCurrent) => {
   return {
     totalNumberOfMarks,
     averageMark: Number(averageMark.toFixed(3)),
-    markCounts,
+    markCounts
   }
 }

@@ -1,5 +1,5 @@
-import { useSyncExternalStore } from 'react'
 import { Lesson } from '@diary-spo/shared'
+import { useSyncExternalStore } from 'react'
 import { cleanData } from '../modals/data'
 import createStore from './index'
 
@@ -10,7 +10,7 @@ const useModal = () => {
 
   return {
     modal,
-    setData: (data: Lesson) => modalStore.setState(data),
+    setData: (data: Lesson) => modalStore.setState(data)
   }
 }
 

@@ -1,18 +1,18 @@
-import { describe, expect, it } from 'vitest'
+import { PerformanceCurrent } from '@diary-spo/shared'
 import {
   convertStringToTime,
   formatDate,
   formatDateForRequest,
   formatLessonDate,
   formatLessonName,
-  formatStatisticsData,
+  formatStatisticsData
 } from '@utils'
-import { PerformanceCurrent } from '@diary-spo/shared'
+import { describe, expect, it } from 'vitest'
 
 describe('Тесты утилит для форматирования', () => {
   /** convertStringToTime **/
   it('должна конвертировать строку времени в объект Date', async ({
-    expect,
+    expect
   }) => {
     const baseDate = new Date(2023, 10, 1, 0, 0, 0)
     const result = convertStringToTime('14:30', baseDate)
@@ -21,7 +21,7 @@ describe('Тесты утилит для форматирования', () => {
   })
 
   it('должна вернуть null для некорректного формата времени', async ({
-    expect,
+    expect
   }) => {
     const baseDate = new Date(2023, 10, 1, 0, 0, 0)
     const result = convertStringToTime('25:70', baseDate)
@@ -66,21 +66,21 @@ describe('Тесты утилит для форматирования', () => {
           daysWithMarks: [
             {
               day: new Date(),
-              markValues: ['Five', 'Five', 'Four'],
-            },
+              markValues: ['Five', 'Five', 'Four']
+            }
           ],
-          subjectName: 'Иностранный язык в профессиональной деятельности',
-        },
+          subjectName: 'Иностранный язык в профессиональной деятельности'
+        }
       ],
       monthsWithDays: [
         {
           month: {
             name: 'Сентябрь',
-            num: 9,
+            num: 9
           },
-          daysWithLessons: [new Date()],
-        },
-      ],
+          daysWithLessons: [new Date()]
+        }
+      ]
     }
 
     it('должна вернуть правильные данные при валидных параметрах', () => {
@@ -99,7 +99,7 @@ describe('Тесты утилит для форматирования', () => {
         '2': 0,
         '3': 0,
         '4': 1,
-        '5': 2,
+        '5': 2
       })
     })
 

@@ -1,7 +1,7 @@
-import { FunctionalComponent } from 'preact'
-import { HorizontalScroll } from '@vkontakte/vkui'
 import { PerformanceCurrent } from '@diary-spo/shared'
 import { extractMarksByDay, sortByDay } from '@utils'
+import { HorizontalScroll } from '@vkontakte/vkui'
+import { FunctionalComponent } from 'preact'
 import { memo } from 'preact/compat'
 import LessonGrades, { ILessonGrades } from './LessonGrades'
 
@@ -14,7 +14,7 @@ export interface IMarksByDay {
 }
 
 const MarksByDay: FunctionalComponent<IPerformanceCurrent> = ({
-  performanceData,
+  performanceData
 }) => {
   const marksByDay = extractMarksByDay(performanceData)
   const sortedMarksByDay = sortByDay(marksByDay)

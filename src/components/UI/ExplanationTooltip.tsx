@@ -1,5 +1,5 @@
-import { unstable_Popover as Popover, Subhead, Text } from '@vkontakte/vkui'
 import { Icon16HelpOutline } from '@vkontakte/icons'
+import { Subhead, Text, unstable_Popover as Popover } from '@vkontakte/vkui'
 import { CSSProperties, FC } from 'preact/compat'
 
 interface ITooltipText {
@@ -13,7 +13,7 @@ const style: CSSProperties = {
   position: 'relative',
   top: -1,
   color: 'var(--vkui--color_icon_secondary)',
-  marginLeft: 5,
+  marginLeft: 5
 }
 
 const ExplanationTooltip: FC<ITooltipText> = ({ text, tooltipContent }) => {
@@ -30,7 +30,7 @@ const ExplanationTooltip: FC<ITooltipText> = ({ text, tooltipContent }) => {
     //@ts-ignore типы React не совсем совместимы с Preact
     <Text>
       {text}
-      <Popover style={{ maxWidth: 220 }} action="hover" content={textTooltip}>
+      <Popover style={{ maxWidth: 220 }} action='hover' content={textTooltip}>
         <Icon16HelpOutline style={style} />
       </Popover>
     </Text>

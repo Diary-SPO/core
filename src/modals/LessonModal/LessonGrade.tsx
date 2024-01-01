@@ -1,11 +1,11 @@
-import { FC, useMemo } from 'preact/compat'
-import { Group, Header, SimpleCell } from '@vkontakte/vkui'
+import { ExplanationTooltip, Mark } from '@components'
 import {
   AbsenceTypes,
   AbsenceTypesDescription,
-  Lesson,
+  Lesson
 } from '@diary-spo/shared'
-import { Mark, ExplanationTooltip } from '@components'
+import { Group, Header, SimpleCell } from '@vkontakte/vkui'
+import { FC, useMemo } from 'preact/compat'
 import LessonTasks from './LessonTasks'
 
 interface ILessonGrade {
@@ -22,17 +22,17 @@ const LessonGrade: FC<ILessonGrade> = ({ tasks, absenceType }) => {
 
   const header = useMemo(
     () => (
-      <Header mode="tertiary">
+      <Header mode='tertiary'>
         <ExplanationTooltip
-          text="Успеваемость"
-          tooltipContent="Информация может быть неактуальной. При возникновении неточностей можете обратиться к нам"
+          text='Успеваемость'
+          tooltipContent='Информация может быть неактуальной. При возникновении неточностей можете обратиться к нам'
         />
       </Header>
     ),
     []
   )
 
-  const mark = <Mark mark={AbsenceTypes[absenceType]} size="s" />
+  const mark = <Mark mark={AbsenceTypes[absenceType]} size='s' />
 
   return (
     <Group header={header}>

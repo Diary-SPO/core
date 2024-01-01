@@ -34,7 +34,7 @@ const createStore = <T>({ initialState }: TStore<T>) => {
       return () => {
         store.listeners.delete(cb)
       }
-    },
+    }
   }
 
   return store
