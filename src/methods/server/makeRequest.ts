@@ -4,10 +4,10 @@ import requestToSecondServer from './requestToSecondServer.ts'
 
 const makeRequest = async <T>(
   route: string,
-  method: 'POST' | 'GET',
-  body: BodyInit
+  method: 'POST' | 'GET' = 'GET',
+  body?: BodyInit
 ): Promise<ServerResponse<T>> => {
-  const cookie = localStorage.getItem('token')
+  const token = localStorage.getItem('token')
   const url = `${BASE_URL}${route}`
 
   const controller = new AbortController()
@@ -18,7 +18,7 @@ const makeRequest = async <T>(
       method,
       headers: {
         'Content-Type': 'application/json;charset=UTF-8',
-        secret: cookie
+        secret: token
       },
       body,
       signal: controller.signal
@@ -28,7 +28,7 @@ const makeRequest = async <T>(
 
     if (response.status === 429 || !response.ok) {
       // If the response status is 429 or not OK, proceed with the second server request
-      return requestToSecondServer(route, cookie, method, body)
+      return requestToSecondServer(route, token, method, body)
     }
 
     return (await response.json()) as T
@@ -37,14 +37,14 @@ const makeRequest = async <T>(
 
     if (err.name === 'AbortError') {
       // Handle timeout error
-      return requestToSecondServer(route, cookie, method, body)
+      return requestToSecondServer(route, token, method, body)
     }
     // Handle other errors without rethrowing
     console.error(
       'Error occurred, but continuing with second server request:',
       err
     )
-    return requestToSecondServer(route, cookie, method, body)
+    return requestToSecondServer(route, token, method, body)
   }
 }
 

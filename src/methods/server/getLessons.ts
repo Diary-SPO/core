@@ -1,11 +1,12 @@
 import { Day } from '@diary-spo/shared'
 import { formatDateForRequest } from '@utils'
+import { ServerResponse } from '../../types'
 import makeRequest from './makeRequest'
 
 export const getLessons = async (
   startDate?: Date,
   endDate?: Date
-): Promise<Day[] | 418 | 429> => {
+): ServerResponse<Day[]> => {
   const id = localStorage.getItem('id')
 
   if (!id) {
