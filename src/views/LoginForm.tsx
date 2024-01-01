@@ -137,7 +137,7 @@ const LoginForm: FC<{ id: string }> = ({ id }) => {
         subtitle: 'Подождите немного'
       })
 
-      routeNavigator.replace(`/${VIEW_SCHEDULE}`)
+      await routeNavigator.replace(`/${VIEW_SCHEDULE}`)
     } catch (e) {
       setIsLoading(false)
       console.error(e)
