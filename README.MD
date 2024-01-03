@@ -12,12 +12,12 @@
 ## Статистика работы серверов
 |Роль|Статус|Uptime|Ping|Расположение|
 |----|------|------|----|--------|
-|[Оригинальный дневник](https://poo.tomedu.ru/)|![status](https://uptime.diary.keenetic.link/api/badge/7/status)|![uptime](https://uptime.diary.keenetic.link/api/badge/7/uptime/24)|![ping](https://uptime.diary.keenetic.link/api/badge/7/ping/24)|Томск|
-|[Web-интерфейс](https://spo-diary.ru/)|![status](https://uptime.diary.keenetic.link/api/badge/10/status)|![uptime](https://uptime.diary.keenetic.link/api/badge/10/uptime/24)|![ping](https://uptime.diary.keenetic.link/api/badge/10/ping/24)|Москва|
-|[Основной сервер](https://api.spo-diary.ru/)|![status](https://uptime.diary.keenetic.link/api/badge/5/status)|![uptime](https://uptime.diary.keenetic.link/api/badge/5/uptime/24)|![ping](https://uptime.diary.keenetic.link/api/badge/5/ping/24)|Москва|
-|[Аварийный сервер](https://dnevnik3.kopchan7.keenetic.link/)|![status](https://uptime.diary.keenetic.link/api/badge/8/status)|![uptime](https://uptime.diary.keenetic.link/api/badge/8/uptime/24)|![ping](https://uptime.diary.keenetic.link/api/badge/8/ping/24)|Томск|
+|[Оригинальный дневник](https://poo.tomedu.ru/)|![status](https://up.zm.noho.st/api/badge/7/status)|![uptime](https://up.zm.noho.st/api/badge/7/uptime/24)|![ping](https://up.zm.noho.st/api/badge/7/ping/24)|Томск|
+|[Web-интерфейс](https://spo-diary.ru/)|![status](https://uup.zm.noho.st/api/badge/10/status)|![uptime](https://up.zm.noho.st/api/badge/10/uptime/24)|![ping](https://up.zm.noho.st/api/badge/10/ping/24)|Москва|
+|[Основной сервер](https://api.spo-diary.ru/)|![status](https://up.zm.noho.st/api/badge/5/status)|![uptime](https://up.zm.noho.st/api/badge/5/uptime/24)|![ping](https://up.zm.noho.st/api/badge/5/ping/24)|Москва|
+|[Аварийный сервер](https://dnevnik3.kopchan7.keenetic.link/)|![status](https://up.zm.noho.st/api/badge/8/status)|![uptime](https://up.zm.noho.st/api/badge/8/uptime/24)|![ping](https://up.zm.noho.st/api/badge/8/ping/24)|Томск|
 
-Смотри подробнее [здесь](https://uptime.diary.keenetic.link/status/dnevniks).
+Смотри подробнее [здесь](https://up.zm.noho.st/status/dnevniks).
 
 ## Для программистов
 
