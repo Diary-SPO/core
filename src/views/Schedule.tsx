@@ -282,9 +282,6 @@ const Schedule: FC<{ id: string }> = ({ id }) => {
     })
 
     if (startWeekStr === startOfCurrWeekStr) {
-      showSnackbar({
-        title: 'Вы на текущей неделе'
-      })
       localStorage.setItem('isCurrent', JSON.stringify(true))
       setIsCurrent(true)
       return
