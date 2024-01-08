@@ -3,7 +3,7 @@
   "formatter": {
     "indentStyle": "space",
     "indentWidth": 2,
-    "ignore": ["node_modules"]
+    "ignore": ["node_modules", "yarn.lock", "coverage"]
   },
   "javascript": {
     "formatter": {
@@ -19,8 +19,11 @@
   "linter": {
     "enabled": true,
     "rules": {
-      "recommended": true
+      "recommended": true,
+      "suspicious": {
+        "noArrayIndexKey": "off"
+      }
     },
-    "ignore": ["node_modules", "bun.lockb"]
+    "ignore": ["node_modules", "yarn.lock", "coverage"]
   }
 }

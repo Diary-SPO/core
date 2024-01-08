@@ -12,15 +12,15 @@ import {
 import { FC } from 'preact/compat'
 import AverageMarkCell from './AverageMarkCell'
 import MarksList from './MarksList'
-import NoData from './NoData'
 
 interface IMarksByGroup {
   marksForSubject: PerformanceCurrent | null
 }
 
 const MarksByGroup: FC<IMarksByGroup> = ({ marksForSubject }) => {
-  if (!marksForSubject) {
-    return <NoData />
+  console.log(marksForSubject)
+  if (!marksForSubject?.daysWithMarksForSubject.length) {
+    return
   }
 
   const subjectMarksMap = createSubjectMarksMap(marksForSubject)
