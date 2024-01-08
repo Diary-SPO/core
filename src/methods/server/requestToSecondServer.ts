@@ -21,7 +21,7 @@ const requestToSecondServer = async <T>(
   }
 
   if (!secondServerResponse.ok) {
-    throw new Error(`Failed to fetch data from ${route} and SECOND_SERVER`)
+    return secondServerResponse.status
   }
 
   return (await secondServerResponse.json()) as T

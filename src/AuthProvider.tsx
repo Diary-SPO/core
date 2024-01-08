@@ -3,8 +3,7 @@ import {
   useRouteNavigator
 } from '@vkontakte/vk-mini-apps-router'
 import { VNode } from 'preact'
-import { ReactNode } from 'preact/compat'
-import { useEffect } from 'preact/hooks'
+import { useLayoutEffect } from 'react'
 import { MAIN_SETTINGS, VIEW_SCHEDULE } from './routes'
 
 const AuthProvider = ({ children }: { children: VNode }) => {
@@ -13,7 +12,7 @@ const AuthProvider = ({ children }: { children: VNode }) => {
 
   const cookieValue = localStorage.getItem('token')
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     const onRoute = () => {
       if (!cookieValue) {
         routeNavigator.replace('/')
@@ -23,7 +22,7 @@ const AuthProvider = ({ children }: { children: VNode }) => {
     }
 
     onRoute()
-  }, [activeView, window.location])
+  }, [activeView, panel])
 
   return children
 }
