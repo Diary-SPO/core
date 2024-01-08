@@ -76,13 +76,15 @@ const Attestation: FC<IAttestation> = ({ id }) => {
   }
 
   if (attestationData?.subjects) {
-    attestationData.subjects.forEach((subject) => {
-      const semesterKey = `Семестр ${attestationData.termNumber}`
-      if (!semesters[semesterKey]) {
-        semesters[semesterKey] = []
-      }
+    const semesterKey = `Семестр ${attestationData.termNumber}`
+
+    if (!semesters[semesterKey]) {
+      semesters[semesterKey] = []
+    }
+
+    for (const subject of attestationData.subjects) {
       semesters[semesterKey].push(subject)
-    })
+    }
   }
 
   return (

@@ -12,10 +12,9 @@ export const extractMarksByDay = (
   performanceData: PerformanceCurrent | null
 ): IMarksByDay => {
   const marksByDay: IMarksByDay = {}
-
-  performanceData?.daysWithMarksForSubject?.forEach((subject) => {
-    subject?.daysWithMarks?.forEach((markData) => {
-      const day = new Date(markData.day).toLocaleDateString()
+  for (const subject of performanceData?.daysWithMarksForSubject || []) {
+    for (const markData of subject?.daysWithMarks || []) {
+      const day = new Date(markData.day).toLocaleDateString('ru')
       const lessonName = subject.subjectName
 
       const validGrades = markData.markValues.filter(
@@ -24,20 +23,15 @@ export const extractMarksByDay = (
       const grades = validGrades.map((gradeText) => Number(Grade[gradeText]))
 
       if (grades.length > 0) {
-        if (!marksByDay[day]) {
-          marksByDay[day] = {}
-        }
-
-        if (!marksByDay[day][lessonName]) {
-          marksByDay[day][lessonName] = []
-        }
+        marksByDay[day] = marksByDay[day] || {}
+        marksByDay[day][lessonName] = marksByDay[day][lessonName] || []
 
         if (grades.every((grade) => !Number.isNaN(grade))) {
           marksByDay[day][lessonName].push(...grades)
         }
       }
-    })
-  })
+    }
+  }
 
   return marksByDay
 }

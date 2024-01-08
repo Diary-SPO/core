@@ -8,13 +8,12 @@ import {
   usePlatform
 } from '@vkontakte/vkui'
 import { lazy } from 'preact/compat'
+import AuthProvider from './AuthProvider.tsx'
 import { router } from './routes'
 import { transformVKBridgeAdaptivity } from './transformers/transformVKBridgeAdaptivity'
 
 const App = lazy(() => import('./App'))
 const NotFoundCorrect = lazy(() => import('./views/NotFound'))
-
-vkBridge.send('VKWebAppInit')
 
 const AppWrapper = () => {
   const platform = usePlatform()
@@ -30,7 +29,9 @@ const AppWrapper = () => {
             platform={platform}
             isWebView={vkBridge.isWebView()}
           >
-            <App />
+            <AuthProvider>
+              <App />
+            </AuthProvider>
           </ConfigProvider>
         </Suspense>
       </RouterProvider>

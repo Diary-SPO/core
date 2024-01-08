@@ -1,4 +1,5 @@
 import { PanelHeaderWithBack } from '@components'
+import { ResponseLogin } from '@diary-spo/types'
 import {
   Icon28DoorArrowLeftOutline,
   Icon28ErrorCircleOutline
@@ -20,7 +21,6 @@ import { useSnackbar } from '../hooks'
 import makeRequest from '../methods/server/makeRequest'
 import { VIEW_SCHEDULE } from '../routes'
 import { loginPattern } from '../types'
-import { ResponseLogin } from '@diary-spo/types'
 
 const LoginForm: FC<{ id: string }> = ({ id }) => {
   const routeNavigator = useRouteNavigator()
@@ -88,6 +88,9 @@ const LoginForm: FC<{ id: string }> = ({ id }) => {
         isHash: true
       })
     )
+
+    console.log(response)
+
     try {
       setIsLoading(true)
 
@@ -109,23 +112,7 @@ const LoginForm: FC<{ id: string }> = ({ id }) => {
         throw new Error('500')
       }
 
-      if (typeof response !== 'number' && !response.ok) {
-        showSnackbar({
-          icon: (
-            <Icon28ErrorCircleOutline fill='var(--vkui--color_icon_negative)' />
-          ),
-          title: 'Ошибка при попытке сделать запрос',
-          subtitle:
-            'Попробуйте обновить страницу или обновите куки в настройках'
-        })
-        setIsLoading(false)
-        createErrorSnackbar()
-        throw new Error(
-          `Failed to fetch login / status: ${response.status} / statusText: ${response.statusText}`
-        )
-      }
-
-      const dataResp = await response.json() as ResponseLogin
+      const dataResp = response as ResponseLogin
       if (!String(dataResp.token)) {
         createErrorSnackbar()
       }
@@ -246,6 +233,7 @@ const saveData = (basePath: ResponseLogin) => {
   )} ${String(basePath.middleName)}`
   const org = String(basePath.organization?.abbreviation)
   const city = String(basePath.organization?.addressSettlement)
+  // @ts-expect-error ошибка в типах
   const group = String(basePath?.groupName)
 
   localStorage.setItem('id', userId)

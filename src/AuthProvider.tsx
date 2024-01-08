@@ -2,33 +2,28 @@ import {
   useActiveVkuiLocation,
   useRouteNavigator
 } from '@vkontakte/vk-mini-apps-router'
-import { ReactNode } from 'preact/compat'
-import { useEffect } from 'preact/hooks'
-import {
-  MAIN_SETTINGS,
-  VIEW_SCHEDULE,
-} from './routes'
+import { VNode } from 'preact'
+import { useLayoutEffect } from 'react'
+import { MAIN_SETTINGS, VIEW_SCHEDULE } from './routes'
 
-const AuthProvider = ({ children }: {children: ReactNode}) => {
+const AuthProvider = ({ children }: { children: VNode }) => {
   const routeNavigator = useRouteNavigator()
   const { view: activeView, panel } = useActiveVkuiLocation()
- 
 
   const cookieValue = localStorage.getItem('token')
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     const onRoute = () => {
       if (!cookieValue) {
         routeNavigator.replace('/')
       } else if (cookieValue && panel === MAIN_SETTINGS) {
         routeNavigator.replace(`/${VIEW_SCHEDULE}`)
       }
-      
     }
 
     onRoute()
-  }, [activeView, window.location])
-  
+  }, [activeView, panel])
+
   return children
 }
 

@@ -71,7 +71,7 @@ export const createSubjectMarksMap = (
 ): SubjectMarksMap => {
   const subjectMarksMap: SubjectMarksMap = {}
 
-  marksForSubject.daysWithMarksForSubject.forEach((subject) => {
+  for (const subject of marksForSubject.daysWithMarksForSubject) {
     const { subjectName, daysWithMarks } = subject
 
     if (!subjectMarksMap[subjectName]) {
@@ -79,15 +79,17 @@ export const createSubjectMarksMap = (
     }
 
     if (daysWithMarks) {
-      const mappedMarks = daysWithMarks.map((dayWithMark) => ({
-        date: new Date(dayWithMark.day).toLocaleDateString(),
-        marks: dayWithMark.markValues,
-        absenceType: dayWithMark.absenceType
-      }))
+      for (const dayWithMark of daysWithMarks) {
+        const mappedMarks = {
+          date: new Date(dayWithMark.day).toLocaleDateString(),
+          marks: dayWithMark.markValues,
+          absenceType: dayWithMark.absenceType
+        }
 
-      subjectMarksMap[subjectName].push(...mappedMarks)
+        subjectMarksMap[subjectName].push(mappedMarks)
+      }
     }
-  })
+  }
 
   return subjectMarksMap
 }
