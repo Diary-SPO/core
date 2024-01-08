@@ -30,7 +30,7 @@
   "devDependencies": {
     "@babel/eslint-parser": "^7.23.3",
     "@biomejs/biome": "1.4.1",
-    "@diary-spo/shared": "^1.8.5",
+    "@diary-spo/shared": "^1.8.6",
     "@diary-spo/types": "latest",
     "@preact/preset-vite": "^2.7.0",
     "@rollup/plugin-terser": "^0.4.4",

@@ -282,7 +282,7 @@
   resolved "https://registry.yarnpkg.com/@biomejs/cli-win32-x64/-/cli-win32-x64-1.4.1.tgz#dd8ee6e14a5d74cbeb2eb9824a43c61bb5c460e4"
   integrity sha512-88fR2CQxQ4YLs2BUDuywWYQpUKgU3A3sTezANFc/4LGKQFFLV2yX+F7QAdZVkMHfA+RD9Xg178HomM/6mnTNPA==
 
-"@diary-spo/shared@^1.8.5":
+"@diary-spo/shared@^1.8.6":
   version "1.8.6"
   resolved "https://registry.yarnpkg.com/@diary-spo/shared/-/shared-1.8.6.tgz#968e4bf44480076b7203e33bde1f430fa9370326"
   integrity sha512-YoKUn1klNLNPxlWFHkrG74wLXGSlx0NO7/Qa5CR1IDpAKd7cMQnj9E3nP2wZ3AmPffMcWXW8UbUB5OJ7c1+CMQ==
@@ -2357,7 +2357,6 @@ vite-node@0.34.6:
   version "5.0.5"
   resolved "https://registry.yarnpkg.com/vite/-/vite-5.0.5.tgz#3eebe3698e3b32cea36350f58879258fec858a3c"
   integrity sha512-OekeWqR9Ls56f3zd4CaxzbbS11gqYkEiBtnWFFgYR2WV8oPJRRKq0mpskYy/XaoCL3L7VINDhqqOMNDiYdGvGg==
-
   dependencies:
     esbuild "^0.19.3"
     postcss "^8.4.32"

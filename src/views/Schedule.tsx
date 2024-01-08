@@ -363,6 +363,7 @@ const Schedule: FC<{ id: string }> = ({ id }) => {
     -
     ${endDate.getDate()}
     ${endDate.toLocaleString('default', { month: 'long' }).slice(0, 3)}`
+  const isNoMarks = !marksData?.daysWithMarksForSubject.length
 
   return (
     <View
@@ -375,7 +376,13 @@ const Schedule: FC<{ id: string }> = ({ id }) => {
         <PanelHeaderWithBack title='Главная' />
         <PullToRefresh onRefresh={handleReloadData} isFetching={isLoading}>
           <Suspense id='MarksByDay'>
-            <Group header={<Header mode='secondary'>Недавние оценки</Header>}>
+            <Group
+              header={
+                <Header mode='secondary'>
+                  Недавние оценки {isNoMarks && 'отсутствуют'}
+                </Header>
+              }
+            >
               {isMarksLoading ? (
                 <PanelSpinner />
               ) : (
