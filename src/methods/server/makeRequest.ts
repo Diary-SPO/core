@@ -26,8 +26,13 @@ const makeRequest = async <T>(
 
     clearTimeout(timeoutId)
 
-    if (response.status === 429 || !response.ok) {
-      // If the response status is 429 or not OK, proceed with the second server request
+    // TODO: implement
+    // if (response.status === 401) {
+    //
+    // }
+    
+    if (!response.ok) {
+      // If the response status is not OK, proceed with the second server request
       return requestToSecondServer(route, token, method, body)
     }
 

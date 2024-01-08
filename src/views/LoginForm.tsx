@@ -97,7 +97,8 @@ const LoginForm: FC<{ id: string }> = ({ id }) => {
       if (response === 401) {
         setIsLoading(false)
         setIsDataInvalid(true)
-        throw new Error('401')
+        // TODO: 401 error msg
+        return
       }
 
       if (typeof response === 'number') {
@@ -109,7 +110,8 @@ const LoginForm: FC<{ id: string }> = ({ id }) => {
           subtitle:
             'Попробуйте обновить страницу или обновите куки в настройках'
         })
-        throw new Error('500')
+        // TODO: 500 error msg
+        return
       }
 
       const dataResp = response as ResponseLogin
