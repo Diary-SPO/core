@@ -24,9 +24,8 @@ import {
   PullToRefresh,
   View
 } from '@vkontakte/vkui'
-import { addDays, endOfWeek, startOfWeek } from '@vkontakte/vkui/dist/lib/date'
-import { FC, lazy, useEffect, useState } from 'preact/compat'
-import { useCallback } from 'preact/hooks'
+import { endOfWeek, startOfWeek } from '@vkontakte/vkui/dist/lib/date'
+import { FC, lazy, useCallback, useEffect, useState } from 'preact/compat'
 import {
   useDebouncedChangeWeek,
   useRateLimitExceeded,
@@ -77,10 +76,9 @@ const Schedule: FC<{ id: string }> = ({ id }) => {
   )
 
   const updateDatesFromData = (data: Day[]) => {
-    const firstLessonDate =
-      data && data.length > 0 ? new Date(data[0].date) : startDate
+    const firstLessonDate = data.length > 0 ? new Date(data[0].date) : startDate
     const lastLessonDate =
-      data && data.length > 0 ? new Date(data[data.length - 1].date) : endDate
+      data.length > 0 ? new Date(data[data.length - 1].date) : endDate
     setStartDate(startOfWeek(firstLessonDate))
     setEndDate(endOfWeek(lastLessonDate))
   }
@@ -94,8 +92,6 @@ const Schedule: FC<{ id: string }> = ({ id }) => {
     setIsLoading(true)
     setIsMarksLoading(true)
     setIsError(false)
-    setIsCurrent(true)
-    localStorage.setItem('isCurrent', JSON.stringify(true))
     const newEndDate = new Date(endDate)
     newEndDate.setDate(newEndDate.getDate() + 7)
 
@@ -269,10 +265,39 @@ const Schedule: FC<{ id: string }> = ({ id }) => {
     setIsLoading(false)
   }
 
+  useEffect(() => {
+    const startWeek = startOfWeek(currentDate)
+    const startOfCurrWeek = startOfWeek(startDate)
+
+    const startWeekStr = startWeek.toLocaleString('default', {
+      month: 'short',
+      day: 'numeric',
+      year: 'numeric'
+    })
+
+    const startOfCurrWeekStr = startOfCurrWeek.toLocaleString('default', {
+      month: 'short',
+      day: 'numeric',
+      year: 'numeric'
+    })
+
+    if (startWeekStr === startOfCurrWeekStr) {
+      showSnackbar({
+        title: 'Вы на текущей неделе'
+      })
+      localStorage.setItem('isCurrent', JSON.stringify(true))
+      setIsCurrent(true)
+      return
+    }
+
+    localStorage.setItem('isCurrent', JSON.stringify(false))
+    setIsCurrent(false)
+  }, [endDate, startDate])
+
   const getCurrentWeek = async () => {
     const startWeek = startOfWeek(currentDate)
     const startOfCurrWeek = startOfWeek(startDate)
-    const endWeek = addDays(endOfWeek(currentDate), 7)
+    const endWeek = endOfWeek(currentDate)
 
     const startWeekStr = startWeek.toLocaleString('default', {
       month: 'short',
