@@ -130,7 +130,7 @@ const Settings: FunctionalComponent<ISettings> = ({ id }) => {
         <CellButton
           Component='label'
           //@ts-ignore типы React не совсем совместимы с Preact
-          after={<Switch getRef={switchRef} defaultChecked />}
+          after={<Switch getRef={switchRef} />}
           onChange={() => setIsSwitchChecked(!isSwitchChecked)}
           before={<Icon28IncognitoOutline />}
         >
