@@ -10,7 +10,7 @@ import {
 } from '@vkontakte/vkui'
 import { CSSProperties, FC } from 'preact/compat'
 
-const notFoundStyle: CSSProperties = {
+export const notFoundStyle: CSSProperties = {
   display: 'flex',
   margin: 'auto',
   height: '100vh',
@@ -20,7 +20,7 @@ const notFoundStyle: CSSProperties = {
   textAlign: 'center'
 }
 
-const text: CSSProperties = {
+export const text: CSSProperties = {
   padding: '0px 8px',
   fontFamily: 'Roboto, sans-serif',
   fontSize: 80,

@@ -233,6 +233,7 @@ const saveData = (basePath: ResponseLogin) => {
   )} ${String(basePath.middleName)}`
   const org = String(basePath.organization?.abbreviation)
   const city = String(basePath.organization?.addressSettlement)
+  // @ts-expect-error ошибка в типах
   const group = String(basePath?.groupName)
 
   localStorage.setItem('id', userId)

@@ -15,8 +15,6 @@ import { transformVKBridgeAdaptivity } from './transformers/transformVKBridgeAda
 const App = lazy(() => import('./App'))
 const NotFoundCorrect = lazy(() => import('./views/NotFound'))
 
-vkBridge.send('VKWebAppInit')
-
 const AppWrapper = () => {
   const platform = usePlatform()
   const vkBridgeAdaptivityProps = transformVKBridgeAdaptivity(useAdaptivity())
