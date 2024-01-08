@@ -14,7 +14,7 @@ export const extractMarksByDay = (
   const marksByDay: IMarksByDay = {}
   for (const subject of performanceData?.daysWithMarksForSubject || []) {
     for (const markData of subject?.daysWithMarks || []) {
-      const day = new Date(markData.day).toLocaleDateString()
+      const day = new Date(markData.day).toLocaleDateString('ru')
       const lessonName = subject.subjectName
 
       const validGrades = markData.markValues.filter(
