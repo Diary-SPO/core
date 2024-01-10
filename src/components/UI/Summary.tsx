@@ -17,16 +17,14 @@ const Summary: FC<ISummary> = ({
 }) => (
   <Group
     header={
-      <Header mode='tertiary'>
-        Статистика {!markCounts && 'отсутствует'}{' '}
-      </Header>
+      <Header mode='tertiary'>Статистика {!markCounts && 'отсутствует'}</Header>
     }
   >
     {!markCounts ? undefined : (
       <React.Fragment>
         <MiniInfoCell
           before={<Icon20EducationOutline style={{ marginTop: 4 }} />}
-          after={<Mark size='s' mark={totalNumberOfMarks} />}
+          after={<Mark color='blueviolet' size='s' mark={totalNumberOfMarks} />}
         >
           Суммарное количество оценок:
         </MiniInfoCell>

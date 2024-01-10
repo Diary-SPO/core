@@ -18,7 +18,6 @@ interface IMarksByGroup {
 }
 
 const MarksByGroup: FC<IMarksByGroup> = ({ marksForSubject }) => {
-  console.log(marksForSubject)
   if (!marksForSubject?.daysWithMarksForSubject.length) {
     return
   }

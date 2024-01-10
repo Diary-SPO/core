@@ -15,7 +15,7 @@ const NoMarks = (
 )
 
 const AverageMarkCell: FC<IAverageMarkCell> = ({ marks }) => {
-  if (!marks) {
+  if (!marks.length) {
     return NoMarks
   }
 

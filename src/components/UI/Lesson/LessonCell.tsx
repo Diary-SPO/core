@@ -46,7 +46,7 @@ const LessonCell: FC<ILessonCell> = ({
         key={startTime}
         subtitle={
           !name || (
-            <div>
+            <div style={{ width: '100%' }}>
               <LessonSubtitle
                 gradebook={gradebook}
                 lessonDate={lessonDate}
@@ -54,28 +54,16 @@ const LessonCell: FC<ILessonCell> = ({
                 endTime={endTime}
               />
               <div>{lessonTime}</div>
-              <div
-                style={{
-                  marginBottom: 5,
-                  display: 'flex',
-                  justifyContent: 'space-between',
-                  alignItems: 'center'
-                }}
-              >
+              <div>
                 <div>{teacherInfo}</div>
-                <div style={{ display: 'flex' }}>
-                  {gradebook?.tasks?.map(
-                    (task, index) =>
-                      (task.isRequired || setDefaultMark(task)) && (
-                        <Mark
-                          useMargin
-                          mark={setDefaultMark(task)}
-                          size='s'
-                          key={index}
-                        />
-                      )
-                  )}
-                </div>
+              </div>
+              <div style={{ marginTop: 10, display: 'flex', gap: 5 }}>
+                {gradebook?.tasks?.map(
+                  (task, index) =>
+                    (task.isRequired || setDefaultMark(task)) && (
+                      <Mark mark={setDefaultMark(task)} size='s' key={index} />
+                    )
+                )}
               </div>
             </div>
           )
