@@ -30,7 +30,7 @@ const makeRequest = async <T>(
     // if (response.status === 401) {
     //
     // }
-    
+
     if (!response.ok) {
       // If the response status is not OK, proceed with the second server request
       return requestToSecondServer(route, token, method, body)

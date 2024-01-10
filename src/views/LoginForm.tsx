@@ -8,7 +8,6 @@ import { useRouteNavigator } from '@vkontakte/vk-mini-apps-router'
 import {
   Button,
   FormItem,
-  FormLayout,
   FormStatus,
   Group,
   Input,
@@ -160,7 +159,7 @@ const LoginForm: FC<{ id: string }> = ({ id }) => {
             Проверьте правильность логина и пароля
           </FormStatus>
         )}
-        <FormLayout>
+        <form>
           {/*//@ts-ignore типы React не совсем совместимы с Preact*/}
           <FormItem
             required
@@ -220,7 +219,7 @@ const LoginForm: FC<{ id: string }> = ({ id }) => {
               {isLoading ? 'Пытаюсь войти...' : 'Войти'}
             </Button>
           </FormItem>
-        </FormLayout>
+        </form>
         {snackbar}
       </Group>
     </Panel>
