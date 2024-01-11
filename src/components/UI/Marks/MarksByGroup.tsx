@@ -35,7 +35,9 @@ const MarksByGroup: FC<IMarksByGroup> = ({ marksForSubject }) => {
             <Card mode='shadow'>
               <Div>
                 {/*//@ts-ignore типы React не совсем совместимы с Preact*/}
-                <Title level='3'>{subjectName}</Title>
+                <Title level='3' Component='h3'>
+                  {subjectName}
+                </Title>
               </Div>
               <HorizontalScroll>
                 <MarksList marks={subjectMarksMap[subjectName]} />

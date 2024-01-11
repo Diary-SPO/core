@@ -128,9 +128,7 @@ const Notifications: FC<{ id: string }> = ({ id }) => {
                   </div>
                 }
                 header={
-                  <Header
-                    mode='tertiary'
-                  >
+                  <Header mode='tertiary'>
                     {new Date(date).toLocaleDateString()}
                   </Header>
                 }
@@ -138,7 +136,9 @@ const Notifications: FC<{ id: string }> = ({ id }) => {
                 <Card mode='shadow'>
                   <Div>
                     {/*//@ts-ignore типы React не совсем совместимы с Preact*/}
-                    <Title level='3'>{title}</Title>
+                    <Title level='3' Component='h3'>
+                      {title}
+                    </Title>
                     {/*//@ts-ignore типы React не совсем совместимы с Preact*/}
                     <Text>{text}</Text>
                   </Div>

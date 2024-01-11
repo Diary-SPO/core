@@ -16,15 +16,17 @@ const HelpAccordion: FC<IHelpAccordion> = ({ id, title, detail }) => {
     <Accordion
       key={id}
       expanded={openId === id}
-      onToggle={(e) => e.target.open && setOpenId(id)}
+      onChange={(e) => (e ? setOpenId(id) : setOpenId(null))}
     >
       <Accordion.Summary>{title}</Accordion.Summary>
-      <Div style={infoStyle}>
-        {/*//@ts-ignore типы React не совсем совместимы с Preact */}
-        <Text>{detail}</Text>
-      </Div>
+      <Accordion.Content>
+        <Div style={infoStyle}>
+          {/*//@ts-ignore типы React не совсем совместимы с Preact */}
+          <Text>{detail}</Text>
+        </Div>
+      </Accordion.Content>
     </Accordion>
-  );
+  )
 }
 
 export default HelpAccordion

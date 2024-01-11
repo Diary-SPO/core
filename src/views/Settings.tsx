@@ -105,13 +105,11 @@ const Settings: FunctionalComponent<ISettings> = ({ id }) => {
         //@ts-ignore типы React не совсем совместимы с Preact
         {
           title: 'Отмена',
-          autoClose: true,
           mode: 'cancel'
         },
         //@ts-ignore типы React не совсем совместимы с Preact
         {
           title: 'Выйти',
-          autoClose: true,
           mode: 'destructive',
           action: () => handleLogOut()
         }
@@ -161,7 +159,9 @@ const Settings: FunctionalComponent<ISettings> = ({ id }) => {
               <Header
                 mode='secondary'
                 //@ts-ignore типы React не совсем совместимы с Preact
-                aside={<Subhead>Хранится в LocalStorage</Subhead>}
+                aside={
+                  <Subhead Component='h5'>Хранится в LocalStorage</Subhead>
+                }
               >
                 Кеш
               </Header>

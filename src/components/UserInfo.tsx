@@ -88,7 +88,12 @@ const UserInfo = () => {
       <Gradient mode='tint' style={styles}>
         <Avatar size={96} src={winxAva} />
         {/*//@ts-ignore типы React не совсем совместимы с Preact*/}
-        <Title style={{ marginBottom: 8, marginTop: 20 }} level='2' weight='2'>
+        <Title
+          style={{ marginBottom: 8, marginTop: 20 }}
+          level='2'
+          weight='2'
+          Component='h2'
+        >
           {userData.name}
         </Title>
         {/*//@ts-ignore типы React не совсем совместимы с Preact*/}

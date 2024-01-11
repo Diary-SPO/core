@@ -12,14 +12,18 @@ const SubjectCard: FunctionalComponent<ISubjectCard> = ({ subject }) => (
     <Card mode='shadow'>
       <Div>
         {/*// @ts-ignore*/}
-        <Title level='3'>{subject.name}</Title>
+        <Title level='3' Component='h3'>
+          {subject.name}
+        </Title>
         <InfoRow header='Тип аттестации'>
           {/*// @ts-ignore*/}
-          <Subhead>{Examinations[subject.examinationType]}</Subhead>
+          <Subhead Component='h5'>
+            {Examinations[subject.examinationType]}
+          </Subhead>
         </InfoRow>
         <InfoRow header='Оценки'>
           {/*// @ts-ignore*/}
-          <Subhead>
+          <Subhead Component='h5'>
             {/*// TODO: перенести в функцию*/}
             {subject.marks[subject.id] &&
             Object.keys(subject.marks[subject.id]).length > 0
