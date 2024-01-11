@@ -13,7 +13,6 @@ import {
   Panel,
   Placeholder,
   Spinner,
-  Subhead,
   Text,
   Title
 } from '@vkontakte/vkui'
@@ -107,7 +106,6 @@ const Notifications: FC<{ id: string }> = ({ id }) => {
               isForEmployees,
               isForParents,
               isForStudents,
-              deleteInDays,
               text
             }) => (
               <Group
@@ -132,10 +130,6 @@ const Notifications: FC<{ id: string }> = ({ id }) => {
                 header={
                   <Header
                     mode='tertiary'
-                    aside={
-                      //@ts-ignore типы React не совсем совместимы с Preact
-                      <Subhead>Удалится через {deleteInDays} дней</Subhead>
-                    }
                   >
                     {new Date(date).toLocaleDateString()}
                   </Header>

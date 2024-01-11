@@ -15,7 +15,7 @@ const HelpAccordion: FC<IHelpAccordion> = ({ id, title, detail }) => {
   return (
     <Accordion
       key={id}
-      open={openId === id}
+      expanded={openId === id}
       onToggle={(e) => e.target.open && setOpenId(id)}
     >
       <Accordion.Summary>{title}</Accordion.Summary>
@@ -24,7 +24,7 @@ const HelpAccordion: FC<IHelpAccordion> = ({ id, title, detail }) => {
         <Text>{detail}</Text>
       </Div>
     </Accordion>
-  )
+  );
 }
 
 export default HelpAccordion
