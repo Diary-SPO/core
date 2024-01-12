@@ -35,6 +35,7 @@ const Schedule: FC<{ id: string }> = ({ id }) => {
   const cachedDate = new Date(localStorage.getItem('currentDate'))
   const currentDate =
     cachedDate && cachedDate.getFullYear() >= 2023 ? cachedDate : newDate
+  const [endDate, setEndDate] = useState<Date>(endOfWeek(currentDate))
 
   const scrollPosition = useScrollPosition()
   const showToTopButton = scrollPosition > 700
@@ -44,12 +45,11 @@ const Schedule: FC<{ id: string }> = ({ id }) => {
 
   const [lessonsState, setLessons] = useState<Day[] | null>()
   const [startDate, setStartDate] = useState<Date>(startOfWeek(currentDate))
-
-  const [endDate, setEndDate] = useState<Date>(endOfWeek(currentDate))
-  const [isLoading, setIsLoading] = useState<boolean>(false)
-  const [isError, setIsError] = useState<boolean>(false)
   const [marksData, setMarksData] = useState<PerformanceCurrent | null>(null)
+
+  const [isLoading, setIsLoading] = useState<boolean>(false)
   const [isMarksLoading, setIsMarksLoading] = useState<boolean>(false)
+  const [isError, setIsError] = useState<boolean>(false)
 
   const [rateSnackbar, handleRateLimitExceeded] = useRateLimitExceeded()
   const [snackbar, showSnackbar] = useSnackbar()
@@ -107,7 +107,7 @@ const Schedule: FC<{ id: string }> = ({ id }) => {
         showSnackbar
       )
 
-      if (typeof marks !== 'number') {
+      if (typeof marks !== 'number' && !(marks instanceof Response)) {
         setMarksData(marks)
         localStorage.setItem('savedMarks', JSON.stringify(marks))
       }
@@ -155,7 +155,6 @@ const Schedule: FC<{ id: string }> = ({ id }) => {
       return
     }
 
-    console.log('handleGetLesson')
     await handleGetLesson(startDate, endDate)
   }
 
@@ -228,8 +227,8 @@ const Schedule: FC<{ id: string }> = ({ id }) => {
               )}
             </Group>
           </Suspense>
+          {isError && <ErrorPlaceholder onClick={handleReloadData} />}
         </PullToRefresh>
-        {isError && <ErrorPlaceholder onClick={handleReloadData} />}
         {showToTopButton && <ScrollToTop />}
         {snackbar}
         {rateSnackbar}

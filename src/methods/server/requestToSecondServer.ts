@@ -16,12 +16,8 @@ const requestToSecondServer = async <T>(
     body
   })
 
-  if (secondServerResponse.status === 429) {
-    return secondServerResponse.status
-  }
-
   if (!secondServerResponse.ok) {
-    return secondServerResponse.status
+    return secondServerResponse
   }
 
   return (await secondServerResponse.json()) as T

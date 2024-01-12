@@ -10,9 +10,10 @@ import { useState } from 'preact/hooks'
 import { FC, useEffect } from 'react'
 import { useDebouncedChangeWeek } from '../../hooks'
 import { SnackbarData } from '../../hooks/useSnackbar.tsx'
+import { ServerResponse } from '../../types'
 
 interface ScheduleAsideButtonsProps {
-  handleGetLesson: (start: Date, end: Date) => Promise<number | Day[]>
+  handleGetLesson: (start: Date, end: Date) => ServerResponse<Day[]>
   showSnackbar: (data: SnackbarData) => void
   getError: () => void
   startDate: Date

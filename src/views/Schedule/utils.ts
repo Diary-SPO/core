@@ -18,7 +18,6 @@ export const isNeedToGetNewData = (): boolean => {
 
   const currentTime = Date.now()
   const timeSinceLastRequest = currentTime - Number(getLastRequestTime)
-  console.error(timeSinceLastRequest)
-  console.warn(timeSinceLastRequest > THIRD_SEC)
+
   return timeSinceLastRequest > THIRD_SEC
 }
