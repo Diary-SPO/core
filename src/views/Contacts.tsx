@@ -13,7 +13,7 @@ import {
   SimpleCell
 } from '@vkontakte/vkui'
 import { FC } from 'preact/compat'
-import scffsAva from '../assets/ava.jpg'
+
 import winxAva from '../assets/winx48.webp'
 
 const Contacts: FC<{ id: string }> = ({ id }) => (
@@ -33,17 +33,6 @@ const Contacts: FC<{ id: string }> = ({ id }) => (
         </Card>
       </Group>
       <Group header={<Header mode='tertiary'>Контакты</Header>}>
-        <SimpleCell
-          before={
-            <Avatar size={48} fallbackIcon={<Icon28Users />} src={scffsAva} />
-          }
-          subtitle='Разработчик | Любые вопросы'
-          style={{ borderRadius: '5px !important' }}
-        >
-          <Link target='_blank' href='https://vk.com/scffs'>
-            Семён Окулов
-          </Link>
-        </SimpleCell>
         <SimpleCell
           before={
             <Avatar size={48} fallbackIcon={<Icon28Users />} src={winxAva} />

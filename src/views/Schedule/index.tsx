@@ -32,7 +32,9 @@ const ScheduleGroup = lazy(() => import('../../components/ScheduleGroup.tsx'))
 
 const Schedule: FC<{ id: string }> = ({ id }) => {
   const newDate = new Date()
-  const currentDate = new Date(localStorage.getItem('currentDate')) ?? newDate
+  const cachedDate = new Date(localStorage.getItem('currentDate'))
+  const currentDate =
+    cachedDate && cachedDate.getFullYear() >= 2023 ? cachedDate : newDate
 
   const scrollPosition = useScrollPosition()
   const showToTopButton = scrollPosition > 700
@@ -54,7 +56,7 @@ const Schedule: FC<{ id: string }> = ({ id }) => {
   const handleGetLesson = useCallback(
     async (start: Date, end: Date) => {
       setIsLoading(true)
-      localStorage.setItem('currentDate', start.toString())
+
       try {
         const data = await getLessons(start, end)
 
@@ -70,6 +72,7 @@ const Schedule: FC<{ id: string }> = ({ id }) => {
         )
 
         localStorage.setItem('savedLessons', JSON.stringify(data))
+        localStorage.setItem('currentDate', startDate.toString())
         setLessons(data as Day[])
         return data
       } catch (e) {

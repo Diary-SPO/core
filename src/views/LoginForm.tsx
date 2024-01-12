@@ -71,7 +71,8 @@ const LoginForm: FC<{ id: string }> = ({ id }) => {
     setStateAction?.(value)
   }
 
-  const handleLogin = async () => {
+  const handleLogin = async (e: ChangeEvent<HTMLFormElement>) => {
+    e.preventDefault()
     if (!loginPattern.test(login)) {
       setIsDataInvalid(true)
       return
@@ -159,7 +160,7 @@ const LoginForm: FC<{ id: string }> = ({ id }) => {
             Проверьте правильность логина и пароля
           </FormStatus>
         )}
-        <form method='post'>
+        <form method='post' onSubmit={handleLogin}>
           {/*//@ts-ignore типы React не совсем совместимы с Preact*/}
           <FormItem
             required
@@ -207,10 +208,12 @@ const LoginForm: FC<{ id: string }> = ({ id }) => {
           </FormItem>
           {/*//@ts-ignore типы React не совсем совместимы с Preact*/}
           <FormItem>
+            {/*//@ts-ignore типы React не совсем совместимы с Preact*/}
             <Button
+              type='submit'
               size='l'
               stretched
-              onClick={() => handleLogin()}
+              onClick={handleLogin}
               disabled={
                 !password || !login || !loginPattern.test(login) || isLoading
               }
