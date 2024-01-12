@@ -13,16 +13,16 @@ const AuthProvider = ({ children }: { children: VNode }) => {
   const cookieValue = localStorage.getItem('token')
 
   useLayoutEffect(() => {
-    const onRoute = () => {
+    const onRoute = async () => {
       if (!cookieValue) {
-        routeNavigator.replace('/')
+        await routeNavigator.replace('/')
       } else if (cookieValue && panel === MAIN_SETTINGS) {
-        routeNavigator.replace(`/${VIEW_SCHEDULE}`)
+        await routeNavigator.replace(`/${VIEW_SCHEDULE}`)
       }
     }
 
     onRoute()
-  }, [activeView, panel])
+  }, [activeView, panel, window.location])
 
   return children
 }
