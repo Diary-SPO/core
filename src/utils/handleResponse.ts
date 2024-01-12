@@ -16,7 +16,7 @@ const HTTP_STATUSES = {
   INTERNAL: 500
 } as const
 
-export const handleResponse = <T>(
+export const handleResponse = <T extends object>(
   response: T,
   errorCallback: () => void,
   limitExceededCallback: () => void,
@@ -24,12 +24,13 @@ export const handleResponse = <T>(
   showSnackbar?: (snackbarData: SnackbarData) => void
 ): void => {
   console.info(response)
+
   /**
    * Если нам пришел ответ от сервера с ошибкой
    *
-   * P.S. В "хорошем" ответе нет поля status, а толкьо нужные данные
+   * P.S. В "хорошем" ответе нет поля status, а только нужные данные
    */
-  if (!(response instanceof Response) || !('status' in response)) {
+  if (!(response instanceof Response) && !('status' in response)) {
     return
   }
 
@@ -42,7 +43,7 @@ export const handleResponse = <T>(
         fill: 'var(--vkui--color_icon_negative)'
       })
 
-      showSnackbar({
+      showSnackbar?.({
         icon: errorIcon,
         title: 'Ошибка при попытке сделать запрос',
         subtitle: 'Попробуйте обновить страницу или перезайти в аккаунт'

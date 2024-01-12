@@ -85,7 +85,9 @@ describe('Тесты базовых утилит', () => {
     const showSnackbarMock = vitest.fn()
 
     it('должна вызывать showSnackbar и колбэки при response равном 418', () => {
-      const response = 418
+      const response = {
+        status: 418
+      }
 
       handleResponse(
         response,
@@ -107,7 +109,9 @@ describe('Тесты базовых утилит', () => {
     })
 
     it('должна вызывать limitExceededCallback, errorCallback и loadingCallback при response равном 429', () => {
-      const response = 429
+      const response = {
+        status: 429
+      }
 
       handleResponse(
         response,
@@ -126,7 +130,9 @@ describe('Тесты базовых утилит', () => {
     })
 
     it('не должна вызывать коллбеки при положительном ответе от сервера', () => {
-      const response = 200
+      const response = {
+        data: 'cool data'
+      }
 
       handleResponse(
         response,
