@@ -12,13 +12,14 @@ import { Group, Panel, PanelSpinner, PullToRefresh } from '@vkontakte/vkui'
 import { FC } from 'preact/compat'
 import { useEffect, useState } from 'preact/hooks'
 import { THIRD_SEC } from '../config/constants.ts'
-import { useSnackbar } from '../hooks'
+import { useRateLimitExceeded, useSnackbar } from '../hooks'
 import { getPerformance } from '../methods'
-import { ServerResponse } from '../types'
 
 const Marks: FC<{ id: string }> = ({ id }) => {
   const [isLoading, setIsLoading] = useState<boolean>(false)
+
   const [snackbar, showSnackbar] = useSnackbar()
+  const [rateSnackbar, handleRateLimitExceeded] = useRateLimitExceeded()
 
   const [marksForSubject, setMarksForSubject] =
     useState<PerformanceCurrent | null>(null)
@@ -41,84 +42,69 @@ const Marks: FC<{ id: string }> = ({ id }) => {
     }
   }
 
-  const fetchMarks = async (
-    isHandle?: boolean
-  ): ServerResponse<PerformanceCurrent | undefined> => {
-    setIsLoading(true)
-    try {
-      const lastFetchTime = localStorage.getItem('lastFetchTime')
+  const fetchMarks = async (isHandle?: boolean) => {
+    const lastFetchTime = localStorage.getItem('lastFetchTime')
+    const savedMarks = localStorage.getItem('savedMarks')
 
-      if (
-        !lastFetchTime ||
+    /** Проверяем есть ли кеш и не нужно ли его обновить **/
+    if (
+      savedMarks &&
+      (lastFetchTime ||
         Date.now() - Number(lastFetchTime) >= THIRD_SEC ||
-        isHandle
-      ) {
-        const marks = await getPerformance()
+        !isHandle)
+    ) {
+      const marks = savedMarks ? JSON.parse(savedMarks) : null
+      saveStatisticsData(marks)
 
-        handleResponse(
-          marks,
-          () => {
-            setIsLoading(false)
-            saveStatisticsData(marks as PerformanceCurrent)
-          },
-          () => {
-            showSnackbar({
-              icon: (
-                <Icon28ErrorCircleOutline fill='var(--vkui--color_icon_negative)' />
-              ),
-              title: 'Ошибка при попытке сделать запрос',
-              subtitle: 'Сообщите нам об этом'
-            })
-            setIsLoading(false)
-          },
-          setIsLoading,
-          showSnackbar
-        )
-        localStorage.setItem('savedMarks', JSON.stringify(marks))
-        localStorage.setItem('lastFetchTime', String(Date.now()))
-        setMarksForSubject(marks as PerformanceCurrent)
-        saveStatisticsData(marks as PerformanceCurrent)
-        setIsLoading(false)
-        return marks
-      }
-      setIsLoading(false)
       showSnackbar({
         title: 'Оценки взяты из кеша',
         onActionClick: () => fetchMarks(true),
         action: 'Загрузить новые',
         icon: <Icon28InfoCircle fill='var(--vkui--color_background_accent)' />
       })
-      const savedMarks = localStorage.getItem('savedMarks')
-      const marks = savedMarks ? JSON.parse(savedMarks) : null
-      saveStatisticsData(marks)
-      return marks ?? undefined
-    } catch (error) {
-      setIsLoading(false)
-      showSnackbar({
-        icon: (
-          <Icon28ErrorCircleOutline fill='var(--vkui--color_icon_negative)' />
-        ),
-        title: 'Ошибка при попытке загрузить оценки',
-        action: 'Попробовать снова',
-        onActionClick: () => fetchMarks(true)
-      })
-      console.error('Ошибка при получении оценок:', error)
       return
     }
-  }
 
-  const fetchData = async () => {
     try {
-      const marks = await fetchMarks()
+      setIsLoading(true)
+      const marks = await getPerformance()
 
-      setMarksForSubject(marks as unknown as PerformanceCurrent)
+      handleResponse(
+        marks,
+        () => {
+          setIsLoading(false)
+          showSnackbar({
+            icon: (
+              <Icon28ErrorCircleOutline fill='var(--vkui--color_icon_negative)' />
+            ),
+            title: 'Ошибка при попытке загрузить оценки',
+            action: 'Попробовать снова',
+            onActionClick: () => fetchMarks(true)
+          })
+        },
+        handleRateLimitExceeded,
+        setIsLoading,
+        showSnackbar
+      )
+
+      if (!('daysWithMarksForSubject' in marks)) {
+        localStorage.removeItem('savedMarks')
+        return
+      }
+
+      localStorage.setItem('savedMarks', JSON.stringify(marks))
+      localStorage.setItem('lastFetchTime', String(Date.now()))
+      setMarksForSubject(marks)
+      saveStatisticsData(marks)
     } catch (error) {
-      console.error('Ошибка при получении данных:', error)
+      console.error('Ошибка при получении оценок:', error)
+    } finally {
+      setIsLoading(false)
     }
   }
 
   useEffect(() => {
-    fetchData()
+    fetchMarks()
   }, [])
 
   return (
@@ -151,6 +137,7 @@ const Marks: FC<{ id: string }> = ({ id }) => {
         )}
       </PullToRefresh>
       {snackbar}
+      {rateSnackbar}
     </Panel>
   )
 }

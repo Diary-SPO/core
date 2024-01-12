@@ -10,7 +10,7 @@ import {
   Placeholder
 } from '@vkontakte/vkui'
 import { FC, lazy } from 'preact/compat'
-import { useCallback, useEffect, useState } from 'preact/hooks'
+import { useEffect, useState } from 'preact/hooks'
 import { useRateLimitExceeded } from '../hooks'
 import { getAttestation } from '../methods'
 
@@ -28,7 +28,7 @@ const Attestation: FC<IAttestation> = ({ id }) => {
   const [attestationData, setAttestationData] =
     useState<AttestationResponse | null>(null)
 
-  const getUserAttestation = useCallback(async () => {
+  const getUserAttestation = async () => {
     setIsLoading(true)
     setIsError(false)
     try {
@@ -57,7 +57,7 @@ const Attestation: FC<IAttestation> = ({ id }) => {
     } finally {
       setIsLoading(false)
     }
-  }, [])
+  }
 
   useEffect(() => {
     getUserAttestation()

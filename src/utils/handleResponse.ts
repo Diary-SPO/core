@@ -7,6 +7,15 @@ import { SnackbarData } from '../hooks/useSnackbar'
  * Принимает response и выполняет соответствующие коллбэки в зависимости от полученного ответа.
  */
 
+const HTTP_STATUSES = {
+  /** Ошибка авторизации */
+  TEAPOT: 418,
+  /** Rate limit */
+  RATE_LIMIT: 429,
+  /** Internal Server Error **/
+  INTERNAL: 500
+} as const
+
 export const handleResponse = <T>(
   response: T,
   errorCallback: () => void,
@@ -14,6 +23,7 @@ export const handleResponse = <T>(
   loadingCallback: (isLoading: boolean) => void,
   showSnackbar?: (snackbarData: SnackbarData) => void
 ): void => {
+  console.info(response)
   /**
    * Если нам пришел ответ от сервера с ошибкой
    *
@@ -23,27 +33,24 @@ export const handleResponse = <T>(
     return
   }
 
-  /** Ошибка авторизации */
-  if (response.status === 418) {
-    const errorIcon = createElement(Icon28ErrorCircleOutline, {
-      fill: 'var(--vkui--color_icon_negative)'
-    })
+  switch (response.status) {
+    case HTTP_STATUSES.RATE_LIMIT:
+      limitExceededCallback()
+      break
+    case HTTP_STATUSES.TEAPOT: {
+      const errorIcon = createElement(Icon28ErrorCircleOutline, {
+        fill: 'var(--vkui--color_icon_negative)'
+      })
 
-    if (showSnackbar) {
       showSnackbar({
         icon: errorIcon,
         title: 'Ошибка при попытке сделать запрос',
-        subtitle: 'Попробуйте обновить страницу или обновите куки в настройках'
+        subtitle: 'Попробуйте обновить страницу или перезайти в аккаунт'
       })
+      break
     }
   }
 
-  /** Rate limit */
-  if (response.status === 429) {
-    limitExceededCallback()
-  }
-
-  /** Любая другая ошибка (500 и тд) **/
   loadingCallback(false)
   errorCallback()
 }
