@@ -18,6 +18,7 @@ const HelpAccordion: FC<IHelpAccordion> = ({ id, title, detail }) => {
       expanded={openId === id}
       onChange={(e) => (e ? setOpenId(id) : setOpenId(null))}
     >
+      {/*//@ts-ignore типы React не совсем совместимы с Preact */}
       <Accordion.Summary>{title}</Accordion.Summary>
       <Accordion.Content>
         <Div style={infoStyle}>

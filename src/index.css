@@ -26,3 +26,16 @@
 .lessonCard > div {
   display: none !important;
 }
+
+._HorizontalCell--size-s_1k356_36 ._HorizontalCell__image_1k356_5 {
+     padding-block: unset;
+     padding-inline: unset;
+}
+
+._HorizontalCell_1k356_1:first-child::before, ._HorizontalCell_1k356_1:last-child::after {
+    content: unset;
+}
+
+.recentMarks {
+    padding-inline: 5px;
+}

@@ -12,7 +12,9 @@ const LessonGrades: FunctionalComponent<{
   lessonGrades: ILessonGrades
 }> = ({ day, lessonGrades }) => (
   <div key={day}>
-    <Header mode='secondary'>{day}</Header>
+    <Header mode='secondary' className='recentMarks'>
+      {day}
+    </Header>
     <div style={{ display: 'flex' }}>
       {Object.entries(lessonGrades).map(([lessonName, grades]) => (
         <div style={{ display: 'flex' }} key={`${day}_${lessonName}`}>
@@ -26,8 +28,6 @@ const LessonGrades: FunctionalComponent<{
                 bottom={truncateString(lessonName, 18)}
                 style={{ maxWidth: 90 }}
                 mark={grade || 'Н'}
-                useMargin={false}
-                size='l'
               />
             </HorizontalCell>
           ))}
