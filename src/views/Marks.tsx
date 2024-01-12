@@ -31,10 +31,9 @@ const Marks: FC<{ id: string }> = ({ id }) => {
     null
   )
 
-  const saveStatisticsData = (marks: PerformanceCurrent | null) => {
-    if (!marks) return
-
+  const saveStatisticsData = (marks: PerformanceCurrent) => {
     const data = formatStatisticsData(marks)
+    
     if (data) {
       setTotalNumberOfMarks(data.totalNumberOfMarks)
       setAverageMark(data.averageMark)
