@@ -79,7 +79,7 @@ const LoginForm: FC<{ id: string }> = ({ id }) => {
     }
 
     const passwordHashed = new Hashes.SHA256().b64(password)
-    const response = await makeRequest<Response & ResponseLogin>(
+    const response = await makeRequest<ResponseLogin>(
       '/login/',
       'POST',
       JSON.stringify({
@@ -89,12 +89,10 @@ const LoginForm: FC<{ id: string }> = ({ id }) => {
       })
     )
 
-    console.log(response)
-
     try {
       setIsLoading(true)
 
-      if (response === 401) {
+      if (Number(response) === 401) {
         setIsLoading(false)
         setIsDataInvalid(true)
         // TODO: 401 error msg

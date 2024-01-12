@@ -4,7 +4,6 @@ import {
 } from '@vkontakte/vk-mini-apps-router'
 import { VNode } from 'preact'
 import { useLayoutEffect } from 'react'
-import { MAIN_SETTINGS, VIEW_SCHEDULE } from './routes'
 
 const AuthProvider = ({ children }: { children: VNode }) => {
   const routeNavigator = useRouteNavigator()
@@ -15,14 +14,13 @@ const AuthProvider = ({ children }: { children: VNode }) => {
   useLayoutEffect(() => {
     const onRoute = async () => {
       if (!cookieValue) {
+        console.log('aaaaaa')
         await routeNavigator.replace('/')
-      } else if (cookieValue && panel === MAIN_SETTINGS) {
-        await routeNavigator.replace(`/${VIEW_SCHEDULE}`)
       }
     }
 
     onRoute()
-  }, [activeView, panel, window.location])
+  }, [activeView, panel, window.location, window.history.length])
 
   return children
 }
