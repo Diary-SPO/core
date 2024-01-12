@@ -12,7 +12,7 @@ const MarksList: FC<IMarksList> = ({ marks }) => (
     {marks.map(({ date, marks: markValues, absenceType }) => (
       <div
         key={`${date}_${absenceType}`}
-        style={{ display: 'flex', gap: 10, marginLeft: 10 }}
+        style={{ display: 'flex', gap: 5, marginLeft: 10 }}
       >
         {markValues.length && !absenceType ? (
           markValues.map((mark, k) => (
