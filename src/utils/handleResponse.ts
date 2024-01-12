@@ -37,7 +37,7 @@ export const handleResponse = <T>(
       })
     }
   }
-  
+
   /** Rate limit */
   if (response.status === 429) {
     limitExceededCallback()
