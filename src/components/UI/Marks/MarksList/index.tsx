@@ -8,14 +8,11 @@ interface IMarksList {
 
 const MarksList: FC<IMarksList> = ({ marks }) => (
   <div style={{ display: 'flex' }}>
-    {marks.map(({ date, marks: markValues, absenceType }) => {
-      console.log(markValues)
-      return (
-        <div key={`${date}_${absenceType}`} style={styles}>
-          {renderMarksOrAbsence(markValues, absenceType)}
-        </div>
-      )
-    })}
+    {marks.map(({ date, marks: markValues, absenceType }) => (
+      <div key={`${date}_${absenceType}`} style={styles}>
+        {renderMarksOrAbsence(markValues, absenceType)}
+      </div>
+    ))}
   </div>
 )
 
