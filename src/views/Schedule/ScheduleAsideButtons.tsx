@@ -49,8 +49,8 @@ const ScheduleAsideButtons: FC<ScheduleAsideButtonsProps> = ({
 
   /** Для обновления текущей недели **/
   useEffect(() => {
-    const startWeek = startOfWeek(newDate)
-    const startOfCurrWeek = startOfWeek(startDate)
+    const startWeek = startOfWeek(startDate)
+    const startOfCurrWeek = startOfWeek(newDate)
 
     const startWeekStr = startWeek.toLocaleString('default', {
       month: 'short',
@@ -70,6 +70,7 @@ const ScheduleAsideButtons: FC<ScheduleAsideButtonsProps> = ({
     }
 
     localStorage.setItem('isCurrent', JSON.stringify(false))
+    localStorage.setItem('currentDate', startDate.toString())
     setIsCurrent(false)
   }, [startDate])
 

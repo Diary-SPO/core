@@ -44,6 +44,7 @@ const Schedule: FC<{ id: string }> = ({ id }) => {
 
   const [lessonsState, setLessons] = useState<Day[] | null>()
   const [startDate, setStartDate] = useState<Date>(startOfWeek(currentDate))
+
   const [endDate, setEndDate] = useState<Date>(endOfWeek(currentDate))
   const [isLoading, setIsLoading] = useState<boolean>(false)
   const [isError, setIsError] = useState<boolean>(false)
@@ -56,6 +57,7 @@ const Schedule: FC<{ id: string }> = ({ id }) => {
   const handleGetLesson = useCallback(
     async (start: Date, end: Date) => {
       setIsLoading(true)
+      localStorage.setItem('currentDate', startDate.toString())
 
       try {
         const data = await getLessons(start, end)
@@ -72,7 +74,6 @@ const Schedule: FC<{ id: string }> = ({ id }) => {
         )
 
         localStorage.setItem('savedLessons', JSON.stringify(data))
-        localStorage.setItem('currentDate', startDate.toString())
         setLessons(data as Day[])
         return data
       } catch (e) {
