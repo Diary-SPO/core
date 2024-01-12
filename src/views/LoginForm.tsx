@@ -159,7 +159,7 @@ const LoginForm: FC<{ id: string }> = ({ id }) => {
             Проверьте правильность логина и пароля
           </FormStatus>
         )}
-        <form>
+        <form method='post'>
           {/*//@ts-ignore типы React не совсем совместимы с Preact*/}
           <FormItem
             required
