@@ -11,11 +11,10 @@ import { Icon28ErrorCircleOutline, Icon28InfoCircle } from '@vkontakte/icons'
 import { Group, Panel, PanelSpinner, PullToRefresh } from '@vkontakte/vkui'
 import { FC } from 'preact/compat'
 import { useEffect, useState } from 'preact/hooks'
+import { THIRD_SEC } from '../config/constants.ts'
 import { useSnackbar } from '../hooks'
 import { getPerformance } from '../methods'
 import { ServerResponse } from '../types'
-
-const THIRD_SEC = 30 * 1000
 
 const Marks: FC<{ id: string }> = ({ id }) => {
   const [isLoading, setIsLoading] = useState<boolean>(false)

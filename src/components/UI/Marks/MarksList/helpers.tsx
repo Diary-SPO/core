@@ -21,6 +21,6 @@ export const renderMarksOrAbsence = (
 
 export const styles: CSSProperties = {
   display: 'flex',
-  gap: 5,
-  marginLeft: 10
+  gap: 8,
+  marginLeft: 8
 }

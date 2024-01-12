@@ -15,7 +15,7 @@ import {
   View
 } from '@vkontakte/vkui'
 import { endOfWeek, startOfWeek } from '@vkontakte/vkui/dist/lib/date'
-import { FC, lazy, useCallback, useEffect, useState } from 'preact/compat'
+import { FC, lazy, useEffect, useMemo, useState } from 'preact/compat'
 import {
   useRateLimitExceeded,
   useScrollPosition,
@@ -25,7 +25,7 @@ import { getLessons, getPerformance } from '../../methods'
 import ErrorPlaceholder from './ErrorPlaceholder.tsx'
 import ScheduleAsideButtons from './ScheduleAsideButtons.tsx'
 import ScrollToTop from './ScrollToTop.tsx'
-import { getWeekString } from './utils.ts'
+import {getWeekString, isNeedToGetNewData} from './utils.ts'
 
 const MarksByDay = lazy(() => import('../../components/UI/MarksByDay'))
 const ScheduleGroup = lazy(() => import('../../components/ScheduleGroup.tsx'))
@@ -54,54 +54,52 @@ const Schedule: FC<{ id: string }> = ({ id }) => {
   const [rateSnackbar, handleRateLimitExceeded] = useRateLimitExceeded()
   const [snackbar, showSnackbar] = useSnackbar()
 
-  const handleGetLesson = useCallback(
-    async (start: Date, end: Date) => {
-      setIsLoading(true)
-      localStorage.setItem('currentDate', startDate.toString())
+  const handleGetLesson = async (start: Date, end: Date) => {
+    setIsLoading(true)
+    localStorage.setItem('currentDate', startDate.toString())
 
-      try {
-        const data = await getLessons(start, end)
+    try {
+      const data = await getLessons(start, end)
 
-        handleResponse(
-          data,
-          () => {
-            setIsLoading(false)
-            setIsMarksLoading(false)
-          },
-          handleRateLimitExceeded,
-          setIsLoading,
-          showSnackbar
-        )
+      handleResponse(
+        data,
+        () => {
+          setIsLoading(false)
+          setIsError(true)
+        },
+        handleRateLimitExceeded,
+        setIsLoading,
+        showSnackbar
+      )
 
-        localStorage.setItem('savedLessons', JSON.stringify(data))
-        setLessons(data as Day[])
-        return data
-      } catch (e) {
-        console.error('handleGetLesson', e)
-      } finally {
-        setIsLoading(false)
-      }
-    },
-    [startDate, endDate]
-  )
+      localStorage.setItem('savedLessons', JSON.stringify(data))
+      setLessons(data as Day[])
+      return data
+    } catch (e) {
+      console.error('handleGetLesson', e)
+    } finally {
+      setIsLoading(false)
+    }
+  }
 
-  const fetchMarksData = async () => {
+  const fetchMarksData = async (isHandle?: boolean) => {
     const savedMarks = localStorage.getItem('savedMarks')
 
     setIsMarksLoading(true)
 
-    if (savedMarks) {
+    if (savedMarks && !isNeedToGetNewData() && !isHandle) {
       setMarksData(JSON.parse(savedMarks) as PerformanceCurrent)
       return setIsMarksLoading(false)
     }
 
     try {
+      console.log('savedMarks')
       const marks = await getPerformance()
 
       handleResponse(
         marks,
         () => {
-          setIsLoading(false)
+          setIsError(true)
           setIsMarksLoading(false)
         },
         handleRateLimitExceeded,
@@ -127,67 +125,42 @@ const Schedule: FC<{ id: string }> = ({ id }) => {
   }
 
   const getError = () =>
-    showSnackbar({
-      title: 'Ошибка при попытке получить расписание',
-      action: 'Повторить',
-      onActionClick: handleReloadData
-    })
+    useMemo(
+      () =>
+        showSnackbar({
+          title: 'Ошибка при попытке получить новые данные',
+          action: 'Повторить',
+          onActionClick: handleReloadData
+        }),
+      []
+    )
 
-  const handleReloadData = useCallback(async () => {
-    setIsMarksLoading(true)
-    setIsError(false)
-    const newEndDate = new Date(endDate)
-    newEndDate.setDate(newEndDate.getDate() + 7)
+  /** Используется при ручном обновлении страницы */
+  const handleReloadData = () => {
+    gettedLessons(true)
+    fetchMarksData(true)
+  }
 
-    try {
-      await handleGetLesson(startDate, endDate)
-      await fetchMarksData()
-    } catch (error) {
-      setIsError(true)
+  const gettedLessons = async (isHandle?: boolean) => {
+    const savedLessons = localStorage.getItem('savedLessons')
+
+    if (savedLessons && !isNeedToGetNewData() && !isHandle) {
       showSnackbar({
-        title: 'Ошибка при попытке получить новые данные',
-        action: 'Повторить',
-        onActionClick: handleReloadData
+        layout: 'vertical',
+        action: 'Загрузить новые',
+        onActionClick: handleReloadData,
+        title: 'Данные взяты из кеша'
       })
-      console.error(error)
-    } finally {
-      setIsLoading(false)
-      setIsMarksLoading(false)
+      setLessons(JSON.parse(savedLessons) as Day[])
+      return
     }
-  }, [startDate, endDate])
+
+    console.log('handleGetLesson')
+    await handleGetLesson(startDate, endDate)
+  }
 
   /** Для получения расписания при маунте */
   useEffect(() => {
-    const savedLessons = localStorage.getItem('savedLessons')
-    const getLastRequestTime = localStorage.getItem('lastRequestTime')
-    const currentTime = Date.now()
-    const lastRequestTime = getLastRequestTime
-      ? parseInt(getLastRequestTime, 10)
-      : 0
-    const timeSinceLastRequest = currentTime - lastRequestTime
-
-    const gettedLessons = async () => {
-      setIsLoading(true)
-      setIsError(false)
-
-      if (savedLessons || timeSinceLastRequest < 30000) {
-        showSnackbar({
-          layout: 'vertical',
-          action: 'Загрузить новые',
-          onActionClick: handleReloadData,
-          title: 'Данные взяты из кеша'
-        })
-        setIsLoading(false)
-        return
-      }
-
-      await handleGetLesson(startDate, endDate)
-    }
-
-    if (savedLessons) {
-      setLessons(JSON.parse(savedLessons) as Day[])
-    }
-
     gettedLessons()
   }, [])
 
