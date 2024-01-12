@@ -42,6 +42,14 @@ const Marks: FC<{ id: string }> = ({ id }) => {
     }
   }
 
+  const saveData = (marks: PerformanceCurrent) => {
+    saveStatisticsData(marks)
+    setMarksForSubject(marks)
+
+    localStorage.setItem('lastFetchTime', String(Date.now()))
+    localStorage.setItem('savedMarks', JSON.stringify(marks))
+  }
+
   const fetchMarks = async (isHandle?: boolean) => {
     const lastFetchTime = localStorage.getItem('lastFetchTime')
     const savedMarks = localStorage.getItem('savedMarks')
@@ -49,12 +57,12 @@ const Marks: FC<{ id: string }> = ({ id }) => {
     /** Проверяем есть ли кеш и не нужно ли его обновить **/
     if (
       savedMarks &&
-      (lastFetchTime ||
-        Date.now() - Number(lastFetchTime) >= THIRD_SEC ||
-        !isHandle)
+      (lastFetchTime || Date.now() - Number(lastFetchTime) >= THIRD_SEC) &&
+      !isHandle
     ) {
       const marks = savedMarks ? JSON.parse(savedMarks) : null
-      saveStatisticsData(marks)
+
+      saveData(marks)
 
       showSnackbar({
         title: 'Оценки взяты из кеша',
@@ -92,10 +100,7 @@ const Marks: FC<{ id: string }> = ({ id }) => {
         return
       }
 
-      localStorage.setItem('savedMarks', JSON.stringify(marks))
-      localStorage.setItem('lastFetchTime', String(Date.now()))
-      setMarksForSubject(marks)
-      saveStatisticsData(marks)
+      saveData(marks)
     } catch (error) {
       console.error('Ошибка при получении оценок:', error)
     } finally {
