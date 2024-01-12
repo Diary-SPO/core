@@ -32,23 +32,12 @@ const makeRequest = async <T>(
     // }
 
     if (!response.ok) {
-      // If the response status is not OK, proceed with the second server request
       return requestToSecondServer(route, token, method, body)
     }
 
     return (await response.json()) as T
   } catch (err) {
     console.error(err)
-
-    if (err.name === 'AbortError') {
-      // Handle timeout error
-      return requestToSecondServer(route, token, method, body)
-    }
-    // Handle other errors without rethrowing
-    console.error(
-      'Error occurred, but continuing with second server request:',
-      err
-    )
     return requestToSecondServer(route, token, method, body)
   }
 }

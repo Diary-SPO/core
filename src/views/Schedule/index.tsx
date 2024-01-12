@@ -25,7 +25,7 @@ import { getLessons, getPerformance } from '../../methods'
 import ErrorPlaceholder from './ErrorPlaceholder.tsx'
 import ScheduleAsideButtons from './ScheduleAsideButtons.tsx'
 import ScrollToTop from './ScrollToTop.tsx'
-import {getWeekString, isNeedToGetNewData} from './utils.ts'
+import { getWeekString, isNeedToGetNewData } from './utils.ts'
 
 const MarksByDay = lazy(() => import('../../components/UI/MarksByDay'))
 const ScheduleGroup = lazy(() => import('../../components/ScheduleGroup.tsx'))
