@@ -134,7 +134,7 @@ const Schedule: FC<{ id: string }> = ({ id }) => {
     setIsError(false)
     const newEndDate = new Date(endDate)
     newEndDate.setDate(newEndDate.getDate() + 7)
-    console.log(startDate)
+
     try {
       await handleGetLesson(startDate, endDate)
       await fetchMarksData()
