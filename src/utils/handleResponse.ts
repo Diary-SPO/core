@@ -14,10 +14,16 @@ export const handleResponse = <T>(
   loadingCallback: (isLoading: boolean) => void,
   showSnackbar?: (snackbarData: SnackbarData) => void
 ): void => {
+  /**
+   * Если нам пришел ответ от сервера с ошибкой
+   *
+   * P.S. В "хорошем" ответе нет поля status, а толкьо нужные данные
+   */
   if (!(response instanceof Response) || !('status' in response)) {
     return
   }
 
+  /** Ошибка авторизации */
   if (response.status === 418) {
     const errorIcon = createElement(Icon28ErrorCircleOutline, {
       fill: 'var(--vkui--color_icon_negative)'
@@ -31,11 +37,13 @@ export const handleResponse = <T>(
       })
     }
   }
-
+  
+  /** Rate limit */
   if (response.status === 429) {
     limitExceededCallback()
   }
 
+  /** Любая другая ошибка (500 и тд) **/
   loadingCallback(false)
   errorCallback()
 }
