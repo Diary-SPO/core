@@ -1,4 +1,4 @@
-import {AbsenceTypes, Gradebook, LessonType,} from '@diary-spo/shared'
+import { AbsenceTypes, Gradebook, LessonType } from '@diary-spo/shared'
 import { FC } from 'react'
 import SubtitleWithBorder from '../SubtitleWithBorder'
 import TimeRemaining from '../TimeRemaining'

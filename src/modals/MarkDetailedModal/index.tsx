@@ -1,5 +1,5 @@
 import { Mark } from '@components'
-import { LessonType, LessonWorkType } from '@diary-spo/shared'
+import { LessonWorkType } from '@diary-spo/shared'
 import { setDefaultMark } from '@utils'
 import {
   Group,
@@ -30,8 +30,7 @@ const MarkDetailedModal = ({ id }: { id: string }) => {
           after={<Mark size='s' mark={setDefaultMark(modalData.data)} />}
         >
           <InfoRow header='Тип оценки'>
-            {
-              LessonWorkType[modalData.data.type] ??
+            {LessonWorkType[modalData.data.type] ??
               (modalData.data.isRequired && !modalData.data.mark && 'Долг') ??
               'Неизвестен'}
           </InfoRow>

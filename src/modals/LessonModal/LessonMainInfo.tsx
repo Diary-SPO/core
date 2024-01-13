@@ -1,5 +1,5 @@
 import { ExplanationTooltip } from '@components'
-import {LessonType} from '@diary-spo/shared'
+import { LessonType } from '@diary-spo/shared'
 import { textToLink } from '@utils'
 import { Group, Header, InfoRow, SimpleCell } from '@vkontakte/vkui'
 import { useMemo } from 'preact/compat'
