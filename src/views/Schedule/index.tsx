@@ -1,7 +1,6 @@
 import { PanelHeaderWithBack, Suspense } from '@components'
-import { Day, PerformanceCurrent } from '@diary-spo/shared'
+import { Day } from '@diary-spo/shared'
 import { handleResponse } from '@utils'
-import { Icon28ErrorCircleOutline } from '@vkontakte/icons'
 import {
   useActiveVkuiLocation,
   useRouteNavigator

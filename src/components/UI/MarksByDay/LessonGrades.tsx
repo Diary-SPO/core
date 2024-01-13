@@ -59,7 +59,7 @@ const LessonGrades: FunctionalComponent<LessonGradesProps> = ({
             >
               <Mark
                 bottom={truncateString(lessonName, 18)}
-                style={{ maxWidth: 90 }}
+                style={{ maxWidth: 85 }}
                 mark={setDefaultMark(task)}
               />
             </HorizontalCell>
