@@ -191,7 +191,10 @@ const Schedule: FC<{ id: string }> = ({ id }) => {
               {isMarksLoading ? (
                 <PanelSpinner />
               ) : (
-                <MarksByDay performanceData={marksData} lessonsState={lessonsState} />
+                <MarksByDay
+                  performanceData={marksData}
+                  lessonsState={lessonsState}
+                />
               )}
             </Group>
           </Suspense>

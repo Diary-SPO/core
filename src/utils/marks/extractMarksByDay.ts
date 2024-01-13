@@ -12,14 +12,15 @@ export const extractMarksByDay = (
   performanceData: PerformanceCurrent | null
 ): IMarksByDay => {
   const marksByDay: IMarksByDay = {}
-  for (const subject of performanceData?.daysWithMarksForSubject || []) {
-    for (const markData of subject?.daysWithMarks || []) {
+  for (const subject of performanceData?.daysWithMarksForSubject) {
+    for (const markData of subject?.daysWithMarks) {
       const day = new Date(markData.day).toLocaleDateString('ru')
       const lessonName = subject.subjectName
 
       const validGrades = markData.markValues.filter(
         (gradeText) => Grade[gradeText] !== undefined
       )
+
       const grades = validGrades.map((gradeText) => Number(Grade[gradeText]))
 
       if (grades.length > 0) {
