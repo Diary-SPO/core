@@ -28,6 +28,7 @@ const LoginForm: FC<{ id: string }> = ({ id }) => {
   const [password, setPassword] = useState<string>('')
   const [isDataInvalid, setIsDataInvalid] = useState<boolean>(false)
   const [isLoading, setIsLoading] = useState<boolean>(false)
+
   const [snackbar, showSnackbar] = useSnackbar()
 
   const createErrorSnackbar = () =>
@@ -39,13 +40,15 @@ const LoginForm: FC<{ id: string }> = ({ id }) => {
       title: 'Ошибка при попытке авторизации'
     })
 
+  // useEffect(() => {
+  //   if ()
+  // }, [])
+
   useEffect(() => {
     const storageToken = localStorage.getItem('token')
-    setIsLoading(true)
+
     const getUserCookie = async () => {
       if (!storageToken) {
-        await routeNavigator.replace('/')
-        setIsLoading(false)
         showSnackbar({
           icon: (
             <Icon28ErrorCircleOutline fill='var(--vkui--color_icon_negative)' />
@@ -126,7 +129,6 @@ const LoginForm: FC<{ id: string }> = ({ id }) => {
 
       await routeNavigator.replace(`/${VIEW_SCHEDULE}`)
     } catch (e) {
-      setIsLoading(false)
       console.error(e)
     } finally {
       setIsLoading(false)
