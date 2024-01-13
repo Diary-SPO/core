@@ -33,6 +33,8 @@ const LessonModal: FC<ILessonModal> = ({ id }) => {
         lessonTimePlaceInfo: newLessonTimePlaceInfo
       } = setLessonDetails(modal)
 
+      console.log(newLessonData)
+
       setLessonData(newLessonData)
       setLessonMainInfo(newLessonMainInfo)
       setLessonTimePlaceInfo(newLessonTimePlaceInfo)

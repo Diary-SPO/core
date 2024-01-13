@@ -1,4 +1,4 @@
-import { PerformanceCurrent } from '@diary-spo/shared'
+import {Day, PerformanceCurrent} from '@diary-spo/shared'
 import { extractMarksByDay, sortByDay } from '@utils'
 import { HorizontalScroll } from '@vkontakte/vkui'
 import { FunctionalComponent } from 'preact'
@@ -7,6 +7,7 @@ import LessonGrades, { ILessonGrades } from './LessonGrades'
 
 interface IPerformanceCurrent {
   performanceData: PerformanceCurrent | null
+  lessonsState: Day[]
 }
 
 export interface IMarksByDay {
@@ -14,11 +15,14 @@ export interface IMarksByDay {
 }
 
 const MarksByDay: FunctionalComponent<IPerformanceCurrent> = ({
-  performanceData
+  performanceData,
+    lessonsState
 }) => {
   const marksByDay = extractMarksByDay(performanceData)
   const sortedMarksByDay = sortByDay(marksByDay)
-
+  console.warn(lessonsState)
+  const day = new Date(lessonsState[0].date).toLocaleDateString('ru')
+  console.warn(day)
   return (
     <HorizontalScroll
       showArrows

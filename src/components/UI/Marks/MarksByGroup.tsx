@@ -23,6 +23,7 @@ const MarksByGroup: FC<IMarksByGroup> = ({ marksForSubject }) => {
   }
 
   const subjectMarksMap = createSubjectMarksMap(marksForSubject)
+
   return (
     <Group
       mode='plain'
