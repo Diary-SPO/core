@@ -93,7 +93,6 @@ const Schedule: FC<{ id: string }> = ({ id }) => {
     }
 
     try {
-      console.log('savedMarks')
       const marks = await getPerformance()
 
       handleResponse(

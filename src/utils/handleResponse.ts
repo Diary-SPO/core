@@ -23,7 +23,7 @@ export const handleResponse = <T extends object>(
   loadingCallback: (isLoading: boolean) => void,
   showSnackbar?: (snackbarData: SnackbarData) => void
 ): void => {
-  console.info(response)
+  console.log('%c[handleResponse]', 'color: green', response)
 
   /**
    * Если нам пришел ответ от сервера с ошибкой
