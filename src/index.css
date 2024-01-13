@@ -12,14 +12,8 @@
     width: 100%;
 }
 
-/* Не рисуем лишние отступы из VKUI */
-._HorizontalCell--size-s_1k356_36 ._HorizontalCell__image_1k356_5 {
-     padding-block: unset;
-     padding-inline: unset;
-}
-
 .recentMarks {
-    padding-inline: 5px;
+    padding-inline: 10px;
 }
 
 .marksWrapper > div::before, .marksWrapper > div::after {

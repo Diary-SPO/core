@@ -7,7 +7,7 @@ import Mark from '../Mark'
 export interface ILessonGrades {
   [lessonName: string]: number[]
 }
-const marksGap: CSSProperties = { display: 'flex', gap: 5 }
+const marksGap: CSSProperties = { display: 'flex'}
 
 const LessonGrades: FunctionalComponent<{
   day: string
@@ -32,7 +32,7 @@ const LessonGrades: FunctionalComponent<{
             >
               <Mark
                 bottom={truncateString(lessonName, 18)}
-                style={{ maxWidth: 90 }}
+                style={{ maxWidth: 80 }}
                 mark={grade || 'Н'}
               />
             </HorizontalCell>
