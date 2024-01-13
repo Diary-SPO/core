@@ -39,7 +39,7 @@ const LessonGrade: FC<ILessonGrade> = ({ tasks, absenceType }) => {
       {hasTasks && <LessonTasks tasks={tasks} />}
       {absenceType && (
         <SimpleCell after={mark}>
-          {AbsenceTypesDescription[absenceType]}
+          {AbsenceTypesDescription[AbsenceTypes[absenceType]]}
         </SimpleCell>
       )}
     </Group>

@@ -1,22 +1,18 @@
 import {
-  formatDate,
   getTimeRemaining,
   handleResponse,
   isToday,
   logOut,
   setLessonDetails,
-  sortByDay,
   textToLink,
   truncateString
 } from '@utils'
 import { describe, expect, it, vitest } from 'vitest'
-import { IMarksByDay } from '../../src/components'
 import {
   expectedLessonDetailsInvalid,
   expectedLessonDetailsValid,
   mockLesson,
   mockLessonInvalid,
-  mockMarksByDay,
   mockTextWithLinks
 } from './mocs'
 
@@ -218,24 +214,6 @@ describe('Тесты базовых утилит', () => {
       const result = setLessonDetails(mockLessonInvalid)
 
       expect(result).toEqual(expectedLessonDetailsInvalid)
-    })
-  })
-
-  /** sortByDay **/
-  describe('sortByDay', () => {
-    it('должна отсортировать оценки по датам', () => {
-      const result = sortByDay(mockMarksByDay)
-
-      const sortedDays = Object.keys(mockMarksByDay).sort(
-        (a, b) => formatDate(b).getTime() - formatDate(a).getTime()
-      )
-
-      const sortedMarksByDay: IMarksByDay = {}
-      sortedDays.forEach((day) => {
-        sortedMarksByDay[day] = mockMarksByDay[day]
-      })
-
-      expect(result).toEqual(sortedMarksByDay)
     })
   })
 

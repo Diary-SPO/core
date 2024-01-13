@@ -9,10 +9,6 @@ export const getLessons = async (
 ): ServerResponse<Day[]> => {
   const id = localStorage.getItem('id')
 
-  if (!id) {
-    return 418
-  }
-
   const formattedStartDate = formatDateForRequest(startDate)
   const formattedEndDate = formatDateForRequest(endDate)
 

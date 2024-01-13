@@ -21,7 +21,7 @@ import {
   useScrollPosition,
   useSnackbar
 } from '../../hooks'
-import { getLessons, getPerformance } from '../../methods'
+import { getLessons } from '../../methods'
 import ErrorPlaceholder from './ErrorPlaceholder.tsx'
 import ScheduleAsideButtons from './ScheduleAsideButtons.tsx'
 import ScrollToTop from './ScrollToTop.tsx'
@@ -45,10 +45,8 @@ const Schedule: FC<{ id: string }> = ({ id }) => {
 
   const [lessonsState, setLessons] = useState<Day[] | null>()
   const [startDate, setStartDate] = useState<Date>(startOfWeek(currentDate))
-  const [marksData, setMarksData] = useState<PerformanceCurrent | null>(null)
 
   const [isLoading, setIsLoading] = useState<boolean>(false)
-  const [isMarksLoading, setIsMarksLoading] = useState<boolean>(false)
   const [isError, setIsError] = useState<boolean>(false)
 
   const [rateSnackbar, handleRateLimitExceeded] = useRateLimitExceeded()
@@ -82,46 +80,46 @@ const Schedule: FC<{ id: string }> = ({ id }) => {
     }
   }
 
-  const fetchMarksData = async (isHandle?: boolean) => {
-    const savedMarks = localStorage.getItem('savedMarks')
-
-    setIsMarksLoading(true)
-
-    if (savedMarks && !isNeedToGetNewData() && !isHandle) {
-      setMarksData(JSON.parse(savedMarks) as PerformanceCurrent)
-      return setIsMarksLoading(false)
-    }
-
-    try {
-      const marks = await getPerformance()
-
-      handleResponse(
-        marks,
-        () => {
-          setIsError(true)
-          setIsMarksLoading(false)
-        },
-        handleRateLimitExceeded,
-        setIsLoading,
-        showSnackbar
-      )
-
-      if (typeof marks !== 'number' && !(marks instanceof Response)) {
-        setMarksData(marks)
-        localStorage.setItem('savedMarks', JSON.stringify(marks))
-      }
-    } catch (error) {
-      console.error(error)
-      showSnackbar({
-        title: 'Ошибка при попытке получить оценки',
-        action: 'Повторить',
-        icon: <Icon28ErrorCircleOutline />,
-        onActionClick: fetchMarksData
-      })
-    } finally {
-      setIsMarksLoading(false)
-    }
-  }
+  // const fetchMarksData = async (isHandle?: boolean) => {
+  //   const savedMarks = localStorage.getItem('savedMarks')
+  //
+  //   setIsMarksLoading(true)
+  //
+  //   if (savedMarks && !isNeedToGetNewData() && !isHandle) {
+  //     setMarksData(JSON.parse(savedMarks) as PerformanceCurrent)
+  //     return setIsMarksLoading(false)
+  //   }
+  //
+  //   try {
+  //     const marks = await getPerformance()
+  //
+  //     handleResponse(
+  //       marks,
+  //       () => {
+  //         setIsError(true)
+  //         setIsMarksLoading(false)
+  //       },
+  //       handleRateLimitExceeded,
+  //       setIsLoading,
+  //       showSnackbar
+  //     )
+  //
+  //     if (typeof marks !== 'number' && !(marks instanceof Response)) {
+  //       setMarksData(marks)
+  //       localStorage.setItem('savedMarks', JSON.stringify(marks))
+  //     }
+  //   } catch (error) {
+  //     console.error(error)
+  //     showSnackbar({
+  //       title: 'Ошибка при попытке получить оценки',
+  //       action: 'Повторить',
+  //       icon: <Icon28ErrorCircleOutline />,
+  //       onActionClick: fetchMarksData
+  //     })
+  //   } finally {
+  //     setIsMarksLoading(false)
+  //   }
+  // }
 
   const getError = () =>
     useMemo(
@@ -137,7 +135,7 @@ const Schedule: FC<{ id: string }> = ({ id }) => {
   /** Используется при ручном обновлении страницы */
   const handleReloadData = () => {
     gettedLessons(true)
-    fetchMarksData(true)
+    // fetchMarksData(true)
   }
 
   const gettedLessons = async (isHandle?: boolean) => {
@@ -162,13 +160,18 @@ const Schedule: FC<{ id: string }> = ({ id }) => {
     gettedLessons()
   }, [])
 
-  /** Для получения оценок при маунте */
-  useEffect(() => {
-    fetchMarksData()
-  }, [])
+  // /** Для получения оценок при маунте */
+  // useEffect(() => {
+  //   fetchMarksData()
+  // }, [])
 
   const weekString = getWeekString(startDate, endDate)
-  const isNoMarks = !marksData?.daysWithMarksForSubject.length
+  console.log(lessonsState)
+  const isNoMarks = !lessonsState?.some((day) =>
+    day.lessons?.some((lesson) =>
+      lesson.gradebook?.tasks?.some((task) => task.mark)
+    )
+  )
 
   return (
     <View
@@ -184,17 +187,15 @@ const Schedule: FC<{ id: string }> = ({ id }) => {
             <Group
               header={
                 <Header mode='secondary'>
-                  Недавние оценки {isNoMarks && 'отсутствуют'}
+                  Оценки за неделю {isNoMarks && 'отсутствуют'}
                 </Header>
               }
             >
-              {isMarksLoading ? (
+              {/* ex isMarksLoading */}
+              {isLoading ? (
                 <PanelSpinner />
               ) : (
-                <MarksByDay
-                  performanceData={marksData}
-                  lessonsState={lessonsState}
-                />
+                <MarksByDay lessonsState={lessonsState} />
               )}
             </Group>
           </Suspense>

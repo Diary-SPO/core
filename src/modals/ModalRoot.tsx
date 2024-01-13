@@ -4,8 +4,10 @@ import {
 } from '@vkontakte/vk-mini-apps-router'
 import { ModalRoot as VKUIModalRoot } from '@vkontakte/vkui'
 import LessonModal from './LessonModal'
+import MarkDetailedModal from './MarkDetailedModal'
 
 export const MODAL_PAGE_LESSON = 'lesson'
+export const MODAL_PAGE_MARK = 'mark'
 
 const ModalRoot = () => {
   const routeNavigator = useRouteNavigator()
@@ -17,6 +19,7 @@ const ModalRoot = () => {
       onClose={() => routeNavigator.hideModal()}
     >
       <LessonModal id={MODAL_PAGE_LESSON} />
+      <MarkDetailedModal id={MODAL_PAGE_MARK} />
     </VKUIModalRoot>
   )
 }
