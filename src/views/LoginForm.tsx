@@ -40,10 +40,6 @@ const LoginForm: FC<{ id: string }> = ({ id }) => {
       title: 'Ошибка при попытке авторизации'
     })
 
-  // useEffect(() => {
-  //   if ()
-  // }, [])
-
   useEffect(() => {
     const storageToken = localStorage.getItem('token')
 
@@ -103,14 +99,7 @@ const LoginForm: FC<{ id: string }> = ({ id }) => {
       }
 
       if (typeof response === 'number') {
-        showSnackbar({
-          icon: (
-            <Icon28ErrorCircleOutline fill='var(--vkui--color_icon_negative)' />
-          ),
-          title: 'Ошибка при попытке сделать запрос',
-          subtitle:
-            'Попробуйте обновить страницу или обновите куки в настройках'
-        })
+        createErrorSnackbar()
         // TODO: 500 error msg
         return
       }
