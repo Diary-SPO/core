@@ -3,7 +3,7 @@
   "formatter": {
     "indentStyle": "space",
     "indentWidth": 2,
-    "ignore": ["node_modules", "yarn.lock", "coverage"]
+    "ignore": ["node_modules", "yarn.lock", "coverage", "dist"]
   },
   "javascript": {
     "formatter": {
@@ -24,6 +24,6 @@
         "noArrayIndexKey": "off"
       }
     },
-    "ignore": ["node_modules", "yarn.lock", "coverage"]
+    "ignore": ["node_modules", "yarn.lock", "coverage", "dist"]
   }
 }

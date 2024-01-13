@@ -19,14 +19,12 @@ import {
   Panel,
   PanelHeader,
   Platform,
-  ScreenSpinner,
   SplitCol,
   SplitLayout,
   useAdaptivityConditionalRender,
   usePlatform
 } from '@vkontakte/vkui'
 import { lazy } from 'preact/compat'
-import { useEffect, useState } from 'preact/hooks'
 import {
   MAIN_SETTINGS,
   VIEW_ATTESTATION,
@@ -42,10 +40,8 @@ const ModalRoot = lazy(() => import('./modals/ModalRoot'))
 const Epic = lazy(() => import('./components/UI/Epic'))
 
 const App = () => {
-  const [isLoading, setIsLoading] = useState<boolean>(false)
-
   const routeNavigator = useRouteNavigator()
-  const { view: activeView, panel } = useActiveVkuiLocation()
+  const { panel } = useActiveVkuiLocation()
   const { viewWidth } = useAdaptivityConditionalRender()
   const platform = usePlatform()
   const routerPopout = usePopout()
@@ -53,20 +49,6 @@ const App = () => {
   const isVKCOM = platform === Platform.VKCOM
 
   const cookieValue = localStorage.getItem('token')
-
-  useEffect(() => {
-    const onRoute = () => {
-      if (!cookieValue) {
-        routeNavigator.replace('/')
-      } else if (cookieValue && panel === MAIN_SETTINGS) {
-        routeNavigator.replace(`/${VIEW_SCHEDULE}`)
-      }
-
-      setIsLoading(false)
-    }
-
-    onRoute()
-  }, [activeView, window.location])
 
   const onStoryChange = async (currentView: Pages) => {
     if (cookieValue) {
@@ -147,12 +129,11 @@ const App = () => {
             </Panel>
           </SplitCol>
         )}
-        <Suspense id='Epic'>
-          {isLoading && <ScreenSpinner size='large' />}
-          <SplitCol width='100%' maxWidth='700px' stretchedOnMobile autoSpaced>
+        <SplitCol width='100%' maxWidth='700px' stretchedOnMobile autoSpaced>
+          <Suspense id='Epic'>
             <Epic onStoryChange={onStoryChange} />
-          </SplitCol>
-        </Suspense>
+          </Suspense>
+        </SplitCol>
       </SplitLayout>
     </AppRoot>
   )

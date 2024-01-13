@@ -3,7 +3,7 @@ import {
   useRouteNavigator
 } from '@vkontakte/vk-mini-apps-router'
 import { VNode } from 'preact'
-import { useLayoutEffect } from 'react'
+import { useLayoutEffect } from 'preact/hooks'
 
 const AuthProvider = ({ children }: { children: VNode }) => {
   const routeNavigator = useRouteNavigator()
@@ -20,7 +20,7 @@ const AuthProvider = ({ children }: { children: VNode }) => {
     }
 
     onRoute()
-  }, [activeView, panel, window.location, window.history.length])
+  }, [activeView, panel])
 
   return children
 }
