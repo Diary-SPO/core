@@ -23,6 +23,11 @@ const LessonCell: FC<ILessonCell> = ({
   handleLessonClick
 }) => {
   const { name, endTime, startTime, timetable, gradebook } = lesson
+
+  if (!name) {
+    return
+  }
+
   // TODO: перенести в функцию
   const lessonTime = startTime
     ? `${startTime} — ${endTime}, каб. ${
@@ -37,41 +42,45 @@ const LessonCell: FC<ILessonCell> = ({
     : 'Не указан'
 
   return (
-    name && (
-      <SimpleCell
-        className='lesson'
-        onClick={() =>
-          handleLessonClick(name, endTime, startTime, timetable, gradebook)
-        }
-        key={startTime}
-        subtitle={
-          !name || (
-            <div style={{ width: '100%' }}>
-              <LessonSubtitle
-                gradebook={gradebook}
-                lessonDate={lessonDate}
-                startTime={startTime}
-                endTime={endTime}
-              />
-              <div>{lessonTime}</div>
-              <div>
-                <div>{teacherInfo}</div>
-              </div>
-              <div style={{ marginTop: 10, display: 'flex', gap: 5 }}>
-                {gradebook?.tasks?.map(
-                  (task, index) =>
-                    (task.isRequired || setDefaultMark(task)) && (
-                      <Mark mark={setDefaultMark(task)} size='s' key={index} />
-                    )
-                )}
-              </div>
+    // @ts-ignore Типы не совместимы
+    <SimpleCell
+      className='lesson'
+      onClick={() =>
+        handleLessonClick(name, endTime, startTime, timetable, gradebook)
+      }
+      key={startTime}
+      subtitle={
+        <div>
+          <div
+            style={{
+              width: '100%',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'space-between'
+            }}
+          >
+            <LessonSubtitle
+              gradebook={gradebook}
+              lessonDate={lessonDate}
+              startTime={startTime}
+              endTime={endTime}
+            />
+            <div style={{ display: 'flex', gap: 5 }}>
+              {gradebook?.tasks?.map(
+                (task, index) =>
+                  (task.isRequired || setDefaultMark(task)) && (
+                    <Mark mark={setDefaultMark(task)} size='s' key={index} />
+                  )
+              )}
             </div>
-          )
-        }
-      >
-        {name}
-      </SimpleCell>
-    )
+          </div>
+          <div>{lessonTime}</div>
+          <div>{teacherInfo}</div>
+        </div>
+      }
+    >
+      {name}
+    </SimpleCell>
   )
 }
 

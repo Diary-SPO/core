@@ -8,6 +8,10 @@
   display: none !important;
 }
 
+.lesson > div > div > span {
+    width: 100%;
+}
+
 /* Не рисуем лишние отступы из VKUI */
 ._HorizontalCell--size-s_1k356_36 ._HorizontalCell__image_1k356_5 {
      padding-block: unset;
