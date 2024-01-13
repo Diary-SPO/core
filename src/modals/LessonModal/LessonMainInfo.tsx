@@ -1,5 +1,5 @@
 import { ExplanationTooltip } from '@components'
-import { LessonWorkType } from '@diary-spo/shared'
+import {LessonType} from '@diary-spo/shared'
 import { textToLink } from '@utils'
 import { Group, Header, InfoRow, SimpleCell } from '@vkontakte/vkui'
 import { useMemo } from 'preact/compat'
@@ -31,7 +31,7 @@ const LessonMainInfo: FC<{ lessonMainInfo: Partial<ILessonMainInfo> }> = ({
     ? lessonMainInfo.themes.map((theme) => textToLink(theme))
     : 'Не указана'
 
-  const lessonType = LessonWorkType[lessonMainInfo.lessonType] ?? 'Не указан'
+  const lessonType = LessonType[lessonMainInfo.lessonType] ?? 'Не указан'
 
   return (
     <Group header={header}>

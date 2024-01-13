@@ -291,10 +291,10 @@
   resolved "https://registry.yarnpkg.com/@biomejs/cli-win32-x64/-/cli-win32-x64-1.4.1.tgz#dd8ee6e14a5d74cbeb2eb9824a43c61bb5c460e4"
   integrity sha512-88fR2CQxQ4YLs2BUDuywWYQpUKgU3A3sTezANFc/4LGKQFFLV2yX+F7QAdZVkMHfA+RD9Xg178HomM/6mnTNPA==
 
-"@diary-spo/shared@^1.8.6":
-  version "1.8.6"
-  resolved "https://registry.yarnpkg.com/@diary-spo/shared/-/shared-1.8.6.tgz#968e4bf44480076b7203e33bde1f430fa9370326"
-  integrity sha512-YoKUn1klNLNPxlWFHkrG74wLXGSlx0NO7/Qa5CR1IDpAKd7cMQnj9E3nP2wZ3AmPffMcWXW8UbUB5OJ7c1+CMQ==
+"@diary-spo/shared@1.8.8":
+  version "1.8.8"
+  resolved "https://registry.yarnpkg.com/@diary-spo/shared/-/shared-1.8.8.tgz#ed1e636f2a7ccf6ceaaf13af1f390a8ad818cd39"
+  integrity sha512-YqgXt3JQTMJVUWRiVqZjmndHun2mRwfx2U04vyAjb8rw04QRqBQok4xaoi4nv6pA1QW0uO3cbzQ2oUweqtli7A==
 
 "@diary-spo/types@latest":
   version "1.0.0"

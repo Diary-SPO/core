@@ -1,4 +1,4 @@
-import { AbsenceTypes, Gradebook, LessonWorkType } from '@diary-spo/shared'
+import {AbsenceTypes, Gradebook, LessonType,} from '@diary-spo/shared'
 import { FC } from 'react'
 import SubtitleWithBorder from '../SubtitleWithBorder'
 import TimeRemaining from '../TimeRemaining'
@@ -20,7 +20,7 @@ const LessonSubtitle: FC<ILessonSubtitle> = ({
     <div style={{ display: 'flex', alignItems: 'center' }}>
       {gradebook?.lessonType && (
         <SubtitleWithBorder style={{ margin: '5px 5px 5px 0px' }}>
-          {LessonWorkType[gradebook?.lessonType]}
+          {LessonType[gradebook?.lessonType]}
         </SubtitleWithBorder>
       )}
       {gradebook?.absenceType && (
