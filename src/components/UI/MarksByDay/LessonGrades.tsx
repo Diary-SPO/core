@@ -5,9 +5,7 @@ import { Header, HorizontalCell } from '@vkontakte/vkui'
 import { FunctionalComponent } from 'preact'
 import { CSSProperties } from 'preact/compat'
 import { useCallback } from 'preact/hooks'
-import {
-  MODAL_PAGE_MARK
-} from '../../../modals/ModalRoot.tsx'
+import { MODAL_PAGE_MARK } from '../../../modals/ModalRoot.tsx'
 import useMarkModal from '../../../store/useMarkModal.ts'
 import Mark from '../Mark'
 import { MarkDetailed } from './index.tsx'

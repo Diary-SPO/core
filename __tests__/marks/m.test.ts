@@ -12,7 +12,7 @@ import {
   expectedMapData,
   expectedMapDataWithoutMarks,
   mockData,
-  mockDataWithoutMarks,
+  mockDataWithoutMarks
 } from './mocks'
 
 describe('calculateAverageMark', () => {

@@ -11,7 +11,14 @@ interface ModalProps {
 const modalStore = createStore<ModalProps>({
   initialState: {
     lessonName: 'sat',
-    data: 'asd'
+    data: {
+      topic: '',
+      mark: '',
+      type: '',
+      isRequired: false,
+      id: 1,
+      attachments: []
+    }
   }
 })
 
