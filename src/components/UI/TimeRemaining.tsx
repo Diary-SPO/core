@@ -46,9 +46,10 @@ const TimeRemaining: FunctionComponent<ITimeRemaining> = ({
 
   const isRed = parseInt(timeRemainingText, 10) < 30
   const currentColor = isRed ? VKUI_RED_BG : VKUI_VIOLET
+
   const styles: CSSProperties = {
     ...timeRemainingStyles,
-    border: isRed ? `1px solid${currentColor}` : `1px solid${currentColor}`,
+    border: `1px solid ${currentColor}`,
     color: currentColor
   }
 
