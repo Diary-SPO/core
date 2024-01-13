@@ -11,6 +11,7 @@ import { Icon28ErrorCircleOutline, Icon28InfoCircle } from '@vkontakte/icons'
 import { Group, Panel, PanelSpinner, PullToRefresh } from '@vkontakte/vkui'
 import { FC } from 'preact/compat'
 import { useEffect, useState } from 'preact/hooks'
+import { VKUI_ACCENT_BG, VKUI_RED } from '../config/colors.ts'
 import { THIRD_SEC } from '../config/constants.ts'
 import { useRateLimitExceeded, useSnackbar } from '../hooks'
 import { getPerformance } from '../methods'
@@ -67,7 +68,7 @@ const Marks: FC<{ id: string }> = ({ id }) => {
         title: 'Оценки взяты из кеша',
         onActionClick: () => fetchMarks(true),
         action: 'Загрузить новые',
-        icon: <Icon28InfoCircle fill='var(--vkui--color_background_accent)' />
+        icon: <Icon28InfoCircle fill={VKUI_ACCENT_BG} />
       })
       return
     }
@@ -81,9 +82,7 @@ const Marks: FC<{ id: string }> = ({ id }) => {
         () => {
           setIsLoading(false)
           showSnackbar({
-            icon: (
-              <Icon28ErrorCircleOutline fill='var(--vkui--color_icon_negative)' />
-            ),
+            icon: <Icon28ErrorCircleOutline fill={VKUI_RED} />,
             title: 'Ошибка при попытке загрузить оценки',
             action: 'Попробовать снова',
             onActionClick: () => fetchMarks(true)

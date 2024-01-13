@@ -18,6 +18,7 @@ import {
 } from '@vkontakte/vkui'
 import { FC } from 'preact/compat'
 import { useEffect, useState } from 'preact/hooks'
+import { VKUI_RED } from '../config/colors.ts'
 import { useSnackbar } from '../hooks'
 import { getAds } from '../methods'
 
@@ -66,9 +67,7 @@ const Notifications: FC<{ id: string }> = ({ id }) => {
     } catch (error) {
       setLoading(false)
       showSnackbar({
-        icon: (
-          <Icon28ErrorCircleOutline fill='var(--vkui--color_icon_negative)' />
-        ),
+        icon: <Icon28ErrorCircleOutline fill={VKUI_RED} />,
         title: 'Ошибка при попытке загрузить объявления',
         action: 'Попробовать снова',
         onActionClick: () => fetchAds(true)

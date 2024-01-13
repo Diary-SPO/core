@@ -1,6 +1,7 @@
 import { convertStringToTime, getTimeRemaining } from '@utils'
 import { FunctionComponent } from 'preact'
 import { CSSProperties } from 'preact/compat'
+import { VKUI_RED_BG, VKUI_VIOLET } from '../../config/colors.ts'
 
 interface ITimeRemaining {
   lessonDate: Date
@@ -44,15 +45,11 @@ const TimeRemaining: FunctionComponent<ITimeRemaining> = ({
   }
 
   const isRed = parseInt(timeRemainingText, 10) < 30
-
+  const currentColor = isRed ? VKUI_RED_BG : VKUI_VIOLET
   const styles: CSSProperties = {
     ...timeRemainingStyles,
-    border: isRed
-      ? '1px solid var(--vkui--color_background_negative)'
-      : '1px solid var(--vkui--color_accent_violet)',
-    color: isRed
-      ? 'var(--vkui--color_background_negative)'
-      : 'var(--vkui--color_accent_violet)'
+    border: isRed ? `1px solid${currentColor}` : `1px solid${currentColor}`,
+    color: currentColor
   }
 
   return <div style={styles}>{timeRemainingText}</div>

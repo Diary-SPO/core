@@ -16,6 +16,7 @@ import {
 import Hashes from 'jshashes'
 import { ChangeEvent, FC } from 'preact/compat'
 import { useEffect, useState } from 'preact/hooks'
+import { VKUI_RED } from '../config/colors.ts'
 import { useSnackbar } from '../hooks'
 import makeRequest from '../methods/server/makeRequest'
 import { VIEW_SCHEDULE } from '../routes'
@@ -33,9 +34,7 @@ const LoginForm: FC<{ id: string }> = ({ id }) => {
 
   const createErrorSnackbar = () =>
     showSnackbar({
-      icon: (
-        <Icon28ErrorCircleOutline fill='var(--vkui--color_icon_negative)' />
-      ),
+      icon: <Icon28ErrorCircleOutline fill={VKUI_RED} />,
       subtitle: 'Попробуйте заного или сообщите об ошибке',
       title: 'Ошибка при попытке авторизации'
     })
@@ -46,9 +45,7 @@ const LoginForm: FC<{ id: string }> = ({ id }) => {
     const getUserCookie = async () => {
       if (!storageToken) {
         showSnackbar({
-          icon: (
-            <Icon28ErrorCircleOutline fill='var(--vkui--color_icon_negative)' />
-          ),
+          icon: <Icon28ErrorCircleOutline fill={VKUI_RED} />,
           subtitle: 'Заполни форму и войди в дневник',
           title: 'О вас нет данных, ты кто такой?'
         })

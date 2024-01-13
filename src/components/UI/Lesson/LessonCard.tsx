@@ -5,6 +5,7 @@ import { Card, Group, Placeholder } from '@vkontakte/vkui'
 import { useMemo } from 'preact/compat'
 import { useCallback } from 'preact/hooks'
 import { FC, memo } from 'react'
+import { VKUI_ACCENT_BG } from '../../../config/colors.ts'
 import { MODAL_PAGE_LESSON } from '../../../modals/ModalRoot'
 import useModal from '../../../store/useModal'
 import LessonCell from './LessonCell'
@@ -55,12 +56,10 @@ const LessonCard: FC<ILessonCard> = ({ lesson }) => {
   const isLessonToday = isToday(lessonDate)
 
   const displayDayStyles = {
-    color: isLessonToday ? 'var(--vkui--color_background_accent)' : undefined,
+    color: isLessonToday ? VKUI_ACCENT_BG : undefined,
     padding: '3px 5px',
     borderRadius: '5px',
-    border: `1px solid ${
-      isLessonToday ? 'var(--vkui--color_background_accent)' : '#888888'
-    }`
+    border: `1px solid ${isLessonToday ? VKUI_ACCENT_BG : '#888888'}`
   }
 
   const dayEnded = currentDate > lessonDate

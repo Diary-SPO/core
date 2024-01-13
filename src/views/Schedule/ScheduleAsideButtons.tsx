@@ -67,7 +67,9 @@ const ScheduleAsideButtons: FC<ScheduleAsideButtonsProps> = ({
 
     if (startWeekStr === startOfCurrWeekStr) {
       localStorage.setItem('isCurrent', JSON.stringify(true))
-      return setIsCurrent(true)
+      localStorage.setItem('currentDate', startDate.toString())
+      setIsCurrent(true)
+      return
     }
 
     localStorage.setItem('isCurrent', JSON.stringify(false))
