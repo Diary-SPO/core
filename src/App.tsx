@@ -74,7 +74,7 @@ const App = () => {
       <SplitLayout
         popout={routerPopout}
         modal={modals}
-        header={!isVKCOM && <PanelHeader separator={false} />}
+        header={!isVKCOM && <PanelHeader delimiter='none' />}
         style={{ justifyContent: 'center' }}
       >
         {viewWidth.tabletPlus && panel !== MAIN_SETTINGS && (
