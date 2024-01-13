@@ -1,11 +1,13 @@
 import { truncateString } from '@utils'
 import { Header, HorizontalCell } from '@vkontakte/vkui'
 import { FunctionalComponent } from 'preact'
+import { CSSProperties } from 'preact/compat'
 import Mark from '../Mark'
 
 export interface ILessonGrades {
   [lessonName: string]: number[]
 }
+const marksGap: CSSProperties = { display: 'flex', gap: 5 }
 
 const LessonGrades: FunctionalComponent<{
   day: string
@@ -15,11 +17,15 @@ const LessonGrades: FunctionalComponent<{
     <Header mode='secondary' className='recentMarks'>
       {day}
     </Header>
-    <div style={{ display: 'flex' }}>
+    <div style={marksGap}>
       {Object.entries(lessonGrades).map(([lessonName, grades]) => (
-        <div style={{ display: 'flex' }} key={`${day}_${lessonName}`}>
+        <div
+          className='marksWrapper'
+          style={marksGap}
+          key={`${day}_${lessonName}`}
+        >
           {grades.map((grade, gradeIndex) => (
-            // @ts-ignore
+            // @ts-ignore Типы не совместимы
             <HorizontalCell
               style={{ maxWidth: 'unset' }}
               key={`${day}_${lessonName}_${gradeIndex}`}

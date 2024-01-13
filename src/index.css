@@ -1,41 +1,23 @@
-._HorizontalCell__content_1q642_21 {
-  word-break: unset !important;
-}
-
-._SimpleCell__subtitle_rmh19_48,
-._SimpleCell__extraSubtitle_rmh19_49
- {
-  width: 100%;
-}
-
-@media (max-width: 767.9px) {
-  ._Tappable--sizeX-none_49f5u_121 {
-    border-radius: 8px !important;
-  }
-}
-._HorizontalCell_1q642_1:first-child::before,
-._HorizontalCell_1q642_1:last-child::after {
-  content: none !important;
-}
-
 /* Для PC / Tablet */
 .lessonCard > section {
   padding-bottom: 10px !important;
 }
 
+/* Не рисуем лишний блок из VKUI */
 .lessonCard > div {
   display: none !important;
 }
 
+/* Не рисуем лишние отступы из VKUI */
 ._HorizontalCell--size-s_1k356_36 ._HorizontalCell__image_1k356_5 {
      padding-block: unset;
      padding-inline: unset;
 }
 
-._HorizontalCell_1k356_1:first-child::before, ._HorizontalCell_1k356_1:last-child::after {
-    content: unset;
-}
-
 .recentMarks {
     padding-inline: 5px;
+}
+
+.marksWrapper > div::before, .marksWrapper > div::after {
+    content: none !important;
 }

@@ -25,7 +25,7 @@ const MarksByDay: FunctionalComponent<IPerformanceCurrent> = ({
       getScrollToLeft={(i) => i - 120}
       getScrollToRight={(i) => i + 120}
     >
-      <div style={{ display: 'flex', gap: 10 }}>
+      <div style={{ marginLeft: 10, display: 'flex', gap: 10 }}>
         {Object.entries(sortedMarksByDay).map(([day, lessonGrades]) => (
           <LessonGrades day={day} lessonGrades={lessonGrades} />
         ))}
