@@ -15,6 +15,8 @@ import {
 import {
   AppRoot,
   Cell,
+  Div,
+  FormStatus,
   Group,
   Panel,
   PanelHeader,
@@ -64,6 +66,8 @@ const App = () => {
   }
 
   const modals = <ModalRoot />
+  /** @beta BETA ONLY */
+  const isPCOrTablet = window.innerWidth > 760
 
   return (
     <AppRoot safeAreaInsets={vkBridgeInsets}>
@@ -131,6 +135,17 @@ const App = () => {
         )}
         <SplitCol width='100%' maxWidth='700px' stretchedOnMobile autoSpaced>
           <Suspense id='Epic'>
+            {/** @beta BETA ONLY */}
+            {isPCOrTablet && (
+              <Div>
+                <FormStatus
+                  style={{ marginTop: 60, marginBottom: -60 }}
+                  header='Дневник СПО Beta'
+                >
+                  Самые новые возможности и баги только тут, удачи!
+                </FormStatus>
+              </Div>
+            )}
             <Epic onStoryChange={onStoryChange} />
           </Suspense>
         </SplitCol>

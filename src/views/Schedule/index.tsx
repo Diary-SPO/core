@@ -6,6 +6,7 @@ import {
   useRouteNavigator
 } from '@vkontakte/vk-mini-apps-router'
 import {
+  Div,
   Group,
   Header,
   Panel,
@@ -182,54 +183,56 @@ const Schedule: FC<{ id: string }> = ({ id }) => {
       <Panel nav={id}>
         <PanelHeaderWithBack title='Главная' />
         <PullToRefresh onRefresh={handleReloadData} isFetching={isLoading}>
-          <Suspense id='MarksByDay'>
-            <Group
-              header={
-                <Header mode='secondary'>
-                  Оценки за неделю {isNoMarks && 'отсутствуют'}
-                </Header>
-              }
-            >
-              {/* ex isMarksLoading */}
-              {isLoading ? (
-                <PanelSpinner />
-              ) : (
-                <MarksByDay lessonsState={lessonsState} />
-              )}
-            </Group>
-          </Suspense>
-          <Suspense id='ScheduleGroup' mode='screen'>
-            <Group
-              header={
-                <Header
-                  aside={
-                    <ScheduleAsideButtons
-                      handleGetLesson={handleGetLesson}
-                      getError={getError}
-                      showSnackbar={showSnackbar}
-                      endDate={endDate}
-                      setIsLoading={setIsLoading}
-                      startDate={startDate}
-                      setLessons={setLessons}
-                      setEndDate={setEndDate}
-                      setStartDate={setStartDate}
-                    />
-                  }
-                  mode='secondary'
-                  style='align-items: center;'
-                >
-                  {weekString}
-                </Header>
-              }
-            >
-              {isLoading ? (
-                <PanelSpinner size='regular' />
-              ) : (
-                <ScheduleGroup lessonsState={lessonsState} />
-              )}
-            </Group>
-          </Suspense>
-          {isError && <ErrorPlaceholder onClick={handleReloadData} />}
+          <Div>
+            <Suspense id='MarksByDay'>
+              <Group
+                header={
+                  <Header mode='secondary'>
+                    Оценки за неделю {isNoMarks && 'отсутствуют'}
+                  </Header>
+                }
+              >
+                {/* ex isMarksLoading */}
+                {isLoading ? (
+                  <PanelSpinner />
+                ) : (
+                  <MarksByDay lessonsState={lessonsState} />
+                )}
+              </Group>
+            </Suspense>
+            <Suspense id='ScheduleGroup' mode='screen'>
+              <Group
+                header={
+                  <Header
+                    aside={
+                      <ScheduleAsideButtons
+                        handleGetLesson={handleGetLesson}
+                        getError={getError}
+                        showSnackbar={showSnackbar}
+                        endDate={endDate}
+                        setIsLoading={setIsLoading}
+                        startDate={startDate}
+                        setLessons={setLessons}
+                        setEndDate={setEndDate}
+                        setStartDate={setStartDate}
+                      />
+                    }
+                    mode='secondary'
+                    style='align-items: center;'
+                  >
+                    {weekString}
+                  </Header>
+                }
+              >
+                {isLoading ? (
+                  <PanelSpinner size='regular' />
+                ) : (
+                  <ScheduleGroup lessonsState={lessonsState} />
+                )}
+              </Group>
+            </Suspense>
+            {isError && <ErrorPlaceholder onClick={handleReloadData} />}
+          </Div>
         </PullToRefresh>
         {showToTopButton && <ScrollToTop />}
         {snackbar}
