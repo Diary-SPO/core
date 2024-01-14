@@ -15,7 +15,6 @@ import {
   mockLessonInvalid,
   mockTextWithLinks
 } from './mocs'
-import {setLessonDetails} from "../../src/app/AppWrapper/App/ModalRoot/modals/LessonModal/helpers";
 
 describe('Тесты базовых утилит', () => {
   /** isToday **/
