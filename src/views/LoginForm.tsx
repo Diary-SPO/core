@@ -18,7 +18,7 @@ import Hashes from 'jshashes'
 import { ChangeEvent, FC } from 'preact/compat'
 import { useEffect, useState } from 'preact/hooks'
 import { useSnackbar } from '../hooks'
-import makeRequest from '../methods/server/makeRequest'
+import { makeRequest } from '../methods'
 import { VIEW_SCHEDULE } from '../routes'
 import { loginPattern } from '../types'
 

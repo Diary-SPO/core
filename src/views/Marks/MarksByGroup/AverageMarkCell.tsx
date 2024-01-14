@@ -1,10 +1,10 @@
-import { calculateAverageMark } from '@utils'
 import {
   Icon20IncognitoOutline,
   Icon20StatisticsOutline
 } from '@vkontakte/icons'
 import { MiniInfoCell } from '@vkontakte/vkui'
 import { FC } from 'react'
+import { calculateAverageMark } from './helpers.tsx'
 
 interface IAverageMarkCell {
   marks: string[]

@@ -1,7 +1,7 @@
 import { PanelHeaderWithBack, Suspense } from '@components'
 import { THIRD_SEC, VKUI_ACCENT_BG, VKUI_RED } from '@config'
 import { PerformanceCurrent } from '@diary-spo/shared'
-import { formatStatisticsData, handleResponse } from '@utils'
+import { handleResponse } from '@utils'
 import { Icon28ErrorCircleOutline, Icon28InfoCircle } from '@vkontakte/icons'
 import { Group, Panel, PanelSpinner, PullToRefresh } from '@vkontakte/vkui'
 import { FC } from 'preact/compat'
@@ -11,6 +11,7 @@ import { getPerformance } from '../../methods'
 import MarksByGroup from './MarksByGroup'
 import Summary from './Summary.tsx'
 import UserInfo from './UserInfo.tsx'
+import { formatStatisticsData } from './helpers.ts'
 
 const Marks: FC<{ id: string }> = ({ id }) => {
   const [isLoading, setIsLoading] = useState<boolean>(false)

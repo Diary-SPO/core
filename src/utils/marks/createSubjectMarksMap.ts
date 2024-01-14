@@ -66,6 +66,8 @@ export interface SubjectMarksMap {
  *   ]
  */
 
+// TODO: remove
+
 export const createSubjectMarksMap = (
   marksForSubject: PerformanceCurrent
 ): SubjectMarksMap => {
