@@ -4,10 +4,10 @@ import {
   formatDate,
   formatDateForRequest,
   formatLessonDate,
-  formatLessonName,
   formatStatisticsData
 } from '@utils'
 import { describe, expect, it } from 'vitest'
+import {formatLessonName} from "../../src/app/AppWrapper/App/ModalRoot/modals/LessonModal/helpers";
 
 describe('Тесты утилит для форматирования', () => {
   /** convertStringToTime **/

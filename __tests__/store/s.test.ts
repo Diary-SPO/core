@@ -1,5 +1,5 @@
+import { createStore } from '@store'
 import { describe, expect, it } from 'vitest'
-import createStore from '../../src/store'
 
 describe('store', () => {
   it('устанавляет начальное состояние', () => {

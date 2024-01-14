@@ -125,6 +125,7 @@ const Settings: FunctionalComponent<ISettings> = ({ id }) => {
     <Panel nav={id}>
       <PanelHeaderWithBack title='Настройки' />
       <Group header={<Header mode='secondary'>Действия</Header>}>
+        {/*// @ts-ignore Типы не совместимы */}
         <CellButton
           Component='label'
           //@ts-ignore типы React не совсем совместимы с Preact
@@ -134,6 +135,7 @@ const Settings: FunctionalComponent<ISettings> = ({ id }) => {
         >
           Показывать тех. инфрмацию
         </CellButton>
+        {/*// @ts-ignore Типы не совместимы */}
         <CellButton
           before={<Icon28DoorArrowRightOutline />}
           onClick={() => routeNavigator.showPopout(logOutPopup)}
@@ -141,6 +143,7 @@ const Settings: FunctionalComponent<ISettings> = ({ id }) => {
           Выйти
         </CellButton>
         {isHomeScreenSupported && (
+          // @ts-ignore Типы не совместимы
           <CellButton
             before={<Icon28HomeArrowDownOutline />}
             onClick={addToHomeScreen}
@@ -160,6 +163,7 @@ const Settings: FunctionalComponent<ISettings> = ({ id }) => {
                 mode='secondary'
                 //@ts-ignore типы React не совсем совместимы с Preact
                 aside={
+                  // @ts-ignore Типы не совместимы */
                   <Subhead Component='h5'>Хранится в LocalStorage</Subhead>
                 }
               >
@@ -168,6 +172,7 @@ const Settings: FunctionalComponent<ISettings> = ({ id }) => {
             }
           >
             {cacheData.map((item) => (
+              /*// @ts-ignore Типы не совместимы */
               <SimpleCell key={item.key}>
                 <InfoRow header={item.key}>{item.value.slice(0, 30)}</InfoRow>
               </SimpleCell>

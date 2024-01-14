@@ -16,19 +16,14 @@ import {
 } from '@vkontakte/vkui'
 import { endOfWeek, startOfWeek } from '@vkontakte/vkui/dist/lib/date'
 import { FC, lazy, useEffect, useMemo, useState } from 'preact/compat'
-import {
-  useRateLimitExceeded,
-  useScrollPosition,
-  useSnackbar
-} from '../../hooks'
+import { useRateLimitExceeded, useSnackbar } from '../../hooks'
 import { getLessons } from '../../methods'
 import ErrorPlaceholder from './ErrorPlaceholder.tsx'
 import ScheduleAsideButtons from './ScheduleAsideButtons.tsx'
-import ScrollToTop from './ScrollToTop.tsx'
 import { getWeekString, isNeedToGetNewData } from './utils.ts'
 
-const MarksByDay = lazy(() => import('../../components/UI/MarksByDay'))
-const ScheduleGroup = lazy(() => import('../../components/ScheduleGroup.tsx'))
+const MarksByDay = lazy(() => import('./MarksByDay'))
+const ScheduleGroup = lazy(() => import('./ScheduleGroup'))
 
 const Schedule: FC<{ id: string }> = ({ id }) => {
   const newDate = new Date()
@@ -36,9 +31,6 @@ const Schedule: FC<{ id: string }> = ({ id }) => {
   const currentDate =
     cachedDate && cachedDate.getFullYear() >= 2023 ? cachedDate : newDate
   const [endDate, setEndDate] = useState<Date>(endOfWeek(currentDate))
-
-  const scrollPosition = useScrollPosition()
-  const showToTopButton = scrollPosition > 700
 
   const { panel: activePanel, panelsHistory } = useActiveVkuiLocation()
   const routeNavigator = useRouteNavigator()
@@ -166,7 +158,7 @@ const Schedule: FC<{ id: string }> = ({ id }) => {
   // }, [])
 
   const weekString = getWeekString(startDate, endDate)
-  console.log(lessonsState)
+
   const isNoMarks = !lessonsState?.some((day) =>
     day.lessons?.some((lesson) =>
       lesson.gradebook?.tasks?.some((task) => task.mark)
@@ -234,7 +226,6 @@ const Schedule: FC<{ id: string }> = ({ id }) => {
             {isError && <ErrorPlaceholder onClick={handleReloadData} />}
           </Div>
         </PullToRefresh>
-        {showToTopButton && <ScrollToTop />}
         {snackbar}
         {rateSnackbar}
       </Panel>
