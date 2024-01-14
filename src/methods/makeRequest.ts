@@ -1,5 +1,5 @@
-import { BASE_URL } from '../../config'
-import { ServerResponse } from '../../types'
+import { BASE_URL } from '@config'
+import { ServerResponse } from '../types'
 import requestToSecondServer from './requestToSecondServer.ts'
 
 const makeRequest = async <T>(

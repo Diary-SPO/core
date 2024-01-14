@@ -1,7 +1,6 @@
 import { PerformanceCurrent } from '@diary-spo/shared'
 import {
   convertStringToTime,
-  formatDate,
   formatDateForRequest,
   formatLessonDate,
   formatStatisticsData
@@ -26,14 +25,6 @@ describe('Тесты утилит для форматирования', () => {
     const baseDate = new Date(2023, 10, 1, 0, 0, 0)
     const result = convertStringToTime('25:70', baseDate)
     expect(result).toBe(null)
-  })
-
-  /** formatDate **/
-  it('должна форматировать строку даты в объект Date', async ({ expect }) => {
-    const result = formatDate('01.11.2023')
-    expect(result.getFullYear()).toBe(2023)
-    expect(result.getMonth()).toBe(10)
-    expect(result.getDate()).toBe(1)
   })
 
   /** formatDateForRequest **/

@@ -17,7 +17,6 @@ export const formatStatisticsData = (marks: PerformanceCurrent) => {
     (marksArray: TextMark[], subject) => {
       if (subject.daysWithMarks) {
         for (const day of subject.daysWithMarks) {
-          // @ts-ignore
           marksArray.push(...day.markValues)
         }
       }

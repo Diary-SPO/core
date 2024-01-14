@@ -1,6 +1,5 @@
-import { Grade, Task, TextMark } from '@diary-spo/shared'
-
-export type ReturnedMark = TextMark | 'Н' | 'ДЗ' | 'О' | 'Д' | number
+import { Grade, Task } from '@diary-spo/shared'
+import { ReturnedMark } from '../../types'
 
 /**
  * Функция 'setDefaultMark' устанавливает значение оценки по умолчанию на основе задачи.

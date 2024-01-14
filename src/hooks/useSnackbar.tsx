@@ -1,8 +1,8 @@
+import { VKUI_ACCENT_BG } from '@config'
 import { Icon28InfoCircleOutline } from '@vkontakte/icons'
 import { Snackbar, SnackbarProps } from '@vkontakte/vkui'
 import { CSSProperties, ReactNode } from 'preact/compat'
 import { useCallback, useState } from 'preact/hooks'
-import { VKUI_ACCENT_BG } from '../config/colors.ts'
 
 /**
  * Функция 'useSnackbar' управляет отображением Snackbar'а для уведомлений.

@@ -1,6 +1,7 @@
-import { SubtitleWithBorder, TimeRemaining } from '@components'
+import { SubtitleWithBorder } from '@components'
 import { AbsenceTypes, Gradebook, LessonType } from '@diary-spo/shared'
 import { FC } from 'react'
+import TimeRemaining from './TimeRemaining.tsx'
 
 interface ILessonSubtitle {
   gradebook: Gradebook | undefined
