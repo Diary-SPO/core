@@ -160,9 +160,11 @@ const Notifications: FC<{ id: string }> = ({ id }) => {
               header='Ошибка при загрузке'
               action={
                 <ButtonGroup mode='vertical' align='center'>
+                  {/*// @ts-ignore Типы не совместимы */}
                   <Button size='s' onClick={() => fetchAds(true)}>
                     Попробовать снова
                   </Button>
+                  {/*// @ts-ignore Типы не совместимы */}
                   <Link href='https://vk.me/dnevnik_spo' target='_blank'>
                     Сообщить о проблеме
                   </Link>

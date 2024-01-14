@@ -3,11 +3,11 @@ import {
   handleResponse,
   isToday,
   logOut,
-  setLessonDetails,
   textToLink,
   truncateString
 } from '@utils'
 import { describe, expect, it, vitest } from 'vitest'
+import { setLessonDetails } from '../../src/app/AppWrapper/App/ModalRoot/modals/LessonModal/helpers'
 import {
   expectedLessonDetailsInvalid,
   expectedLessonDetailsValid,

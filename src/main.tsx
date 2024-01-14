@@ -3,7 +3,7 @@ import '@vkontakte/vkui/dist/vkui.css'
 import { render } from 'preact'
 
 import vkBridge from '@vkontakte/vk-bridge'
-import AppWrapper from './AppWrapper.tsx'
+import AppWrapper from './app/AppWrapper'
 import './index.css'
 
 vkBridge.send('VKWebAppInit')

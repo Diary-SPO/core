@@ -128,6 +128,7 @@ describe('setDefaultMark', () => {
       attachments: [],
       id: 0,
       isRequired: false,
+      // FIXME: is there a Home type?
       type: 'Home',
       mark: null
     }

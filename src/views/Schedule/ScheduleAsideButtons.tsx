@@ -8,9 +8,9 @@ import { Button, ButtonGroup, IconButton } from '@vkontakte/vkui'
 import { endOfWeek, startOfWeek } from '@vkontakte/vkui/dist/lib/date'
 import { useState } from 'preact/hooks'
 import { FC, useEffect } from 'react'
-import { useDebouncedChangeWeek } from '../../hooks'
 import { SnackbarData } from '../../hooks/useSnackbar.tsx'
 import { ServerResponse } from '../../types'
+import useDebouncedChangeWeek from './hooks/useDebouncedChangeWeek.tsx'
 
 interface ScheduleAsideButtonsProps {
   handleGetLesson: (start: Date, end: Date) => ServerResponse<Day[]>

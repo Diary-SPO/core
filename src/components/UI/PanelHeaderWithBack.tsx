@@ -18,6 +18,7 @@ const PanelHeaderWithBack: FunctionalComponent<{ title: string }> = ({
     <PanelHeader
       before={
         !isLoginForm && (
+          // @ts-ignore Типы не совместимы
           <PanelHeaderBack onClick={() => routeNavigator.back()} />
         )
       }

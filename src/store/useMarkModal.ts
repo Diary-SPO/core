@@ -1,6 +1,6 @@
 import { Task } from '@diary-spo/shared'
 import { useSyncExternalStore } from 'react'
-import createStore from './index'
+import { createStore } from './index.ts'
 
 interface ModalProps {
   data: Task
