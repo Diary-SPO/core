@@ -1,13 +1,12 @@
 import { PerformanceCurrent } from '@diary-spo/shared'
 import {
   convertStringToTime,
-  // formatDate,
   formatDateForRequest,
+  formatLessonDate,
   formatStatisticsData
 } from '@utils'
 import { describe, expect, it } from 'vitest'
 import { formatLessonName } from '../../src/app/AppWrapper/App/ModalRoot/modals/LessonModal/helpers'
-import { formatLessonDate } from '../../src/views/Schedule/ScheduleGroup/LessonCard/helpers.ts'
 
 describe('Тесты утилит для форматирования', () => {
   /** convertStringToTime **/
@@ -27,14 +26,6 @@ describe('Тесты утилит для форматирования', () => {
     const result = convertStringToTime('25:70', baseDate)
     expect(result).toBe(null)
   })
-
-  // /** formatDate **/
-  // it('должна форматировать строку даты в объект Date', async ({ expect }) => {
-  //   const result = formatDate('01.11.2023')
-  //   expect(result.getFullYear()).toBe(2023)
-  //   expect(result.getMonth()).toBe(10)
-  //   expect(result.getDate()).toBe(1)
-  // })
 
   /** formatDateForRequest **/
   it('должна форматировать объект Date в строку', async ({ expect }) => {
