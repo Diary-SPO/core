@@ -1,7 +1,7 @@
+import { VKUI_RED_BG, VKUI_VIOLET } from '@config'
 import { convertStringToTime, getTimeRemaining } from '@utils'
 import { FunctionComponent } from 'preact'
 import { CSSProperties } from 'preact/compat'
-import { VKUI_RED_BG, VKUI_VIOLET } from '../../config/colors.ts'
 
 interface ITimeRemaining {
   lessonDate: Date

@@ -1,8 +1,8 @@
+import { VKUI_RED } from '@config'
 import { Icon28ErrorCircleOutline } from '@vkontakte/icons'
 import { Snackbar } from '@vkontakte/vkui'
 import { ReactNode } from 'preact/compat'
 import { useCallback, useState } from 'preact/hooks'
-import { VKUI_RED } from '../config/colors.ts'
 
 /**
  * Функция 'useRateLimitExceeded' обрабатывает случай превышения лимита запросов.
