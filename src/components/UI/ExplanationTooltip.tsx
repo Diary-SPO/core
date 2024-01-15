@@ -3,7 +3,7 @@ import { Popover, Subhead, Text } from '@vkontakte/vkui'
 import { CSSProperties, FC } from 'preact/compat'
 
 interface ITooltipText {
-  text: string
+  text?: string
   tooltipContent: string
 }
 

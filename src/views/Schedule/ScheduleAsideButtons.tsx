@@ -136,18 +136,19 @@ const ScheduleAsideButtons: FC<ScheduleAsideButtonsProps> = ({
       >
         <Icon16ArrowLeftOutline />
       </IconButton>
-      {/*// @ts-ignore Типы React не совместимы с Preact*/}
-      <Button
-        size='s'
-        mode='secondary'
-        onClick={() => getCurrentWeek()}
-        disabled={isCurrent}
-      >
-        <ExplanationTooltip
-          tooltipContent='Вернёт вас на текущую неделю'
-          text='Домой'
-        />
-      </Button>
+      <div style={{ display: 'flex', alignItems: 'center' }}>
+        {/*// @ts-ignore Типы React не совместимы с Preact*/}
+        <Button
+          size='m'
+          mode='secondary'
+          onClick={() => getCurrentWeek()}
+          disabled={isCurrent}
+        >
+          Домой
+        </Button>
+        <ExplanationTooltip tooltipContent='Вернёт вас на текущую неделю' />
+      </div>
+
       {/*// @ts-ignore Типы React не совместимы с Preact*/}
       <IconButton
         aria-label='Next'
