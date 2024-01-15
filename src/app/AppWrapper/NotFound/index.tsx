@@ -37,6 +37,7 @@ const NotFound: FC = () => {
   const vkBridgeInsets = useInsets() || undefined
   return (
     <ConfigProvider
+      hasCustomPanelHeaderAfter={false}
       appearance={vkBridgeAppearance}
       isWebView={vkBridge.isWebView()}
       platform={platform}

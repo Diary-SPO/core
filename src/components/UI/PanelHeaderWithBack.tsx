@@ -3,12 +3,13 @@ import {
   useRouteNavigator
 } from '@vkontakte/vk-mini-apps-router'
 import { PanelHeader, PanelHeaderBack } from '@vkontakte/vkui'
-import { FunctionalComponent } from 'preact'
+import { FunctionalComponent, VNode } from 'preact'
 import { MAIN_SETTINGS } from '../../routes'
 
-const PanelHeaderWithBack: FunctionalComponent<{ title: string }> = ({
-  title
-}) => {
+const PanelHeaderWithBack: FunctionalComponent<{
+  title?: string
+  children?: VNode
+}> = ({ title, children }) => {
   const routeNavigator = useRouteNavigator()
   const { panel } = useActiveVkuiLocation()
 
@@ -24,6 +25,7 @@ const PanelHeaderWithBack: FunctionalComponent<{ title: string }> = ({
       }
     >
       {title}
+      {children}
     </PanelHeader>
   )
 }

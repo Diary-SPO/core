@@ -25,6 +25,7 @@ const AppWrapper = () => {
       <RouterProvider router={router} notFound={<NotFoundCorrect />}>
         <Suspense id='app' mode='screen'>
           <ConfigProvider
+            hasCustomPanelHeaderAfter={false}
             appearance={vkBridgeAppearance}
             platform={platform}
             isWebView={vkBridge.isWebView()}

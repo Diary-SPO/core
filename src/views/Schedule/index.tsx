@@ -6,10 +6,11 @@ import {
   useRouteNavigator
 } from '@vkontakte/vk-mini-apps-router'
 import {
+  Cell,
   Div,
   Group,
-  Header,
-  Panel,
+  Header, List,
+  Panel, PanelHeaderContext,
   PanelSpinner,
   PullToRefresh,
   View
@@ -20,7 +21,9 @@ import { useRateLimitExceeded, useSnackbar } from '../../hooks'
 import { getLessons } from '../../methods'
 import ErrorPlaceholder from './ErrorPlaceholder.tsx'
 import ScheduleAsideButtons from './ScheduleAsideButtons.tsx'
+import Tabs, { DefaultInPanel } from './Tabs'
 import { getWeekString, isNeedToGetNewData } from './utils.ts'
+import {Icon24Done, Icon28SettingsOutline, Icon28UsersOutline} from "@vkontakte/icons";
 
 const MarksByDay = lazy(() => import('./MarksByDay'))
 const ScheduleGroup = lazy(() => import('./ScheduleGroup'))
@@ -37,7 +40,7 @@ const Schedule: FC<{ id: string }> = ({ id }) => {
 
   const [lessonsState, setLessons] = useState<Day[] | null>()
   const [startDate, setStartDate] = useState<Date>(startOfWeek(currentDate))
-
+  console.log(lessonsState)
   const [isLoading, setIsLoading] = useState<boolean>(false)
   const [isError, setIsError] = useState<boolean>(false)
 
@@ -72,46 +75,10 @@ const Schedule: FC<{ id: string }> = ({ id }) => {
     }
   }
 
-  // const fetchMarksData = async (isHandle?: boolean) => {
-  //   const savedMarks = localStorage.getItem('savedMarks')
-  //
-  //   setIsMarksLoading(true)
-  //
-  //   if (savedMarks && !isNeedToGetNewData() && !isHandle) {
-  //     setMarksData(JSON.parse(savedMarks) as PerformanceCurrent)
-  //     return setIsMarksLoading(false)
-  //   }
-  //
-  //   try {
-  //     const marks = await getPerformance()
-  //
-  //     handleResponse(
-  //       marks,
-  //       () => {
-  //         setIsError(true)
-  //         setIsMarksLoading(false)
-  //       },
-  //       handleRateLimitExceeded,
-  //       setIsLoading,
-  //       showSnackbar
-  //     )
-  //
-  //     if (typeof marks !== 'number' && !(marks instanceof Response)) {
-  //       setMarksData(marks)
-  //       localStorage.setItem('savedMarks', JSON.stringify(marks))
-  //     }
-  //   } catch (error) {
-  //     console.error(error)
-  //     showSnackbar({
-  //       title: 'Ошибка при попытке получить оценки',
-  //       action: 'Повторить',
-  //       icon: <Icon28ErrorCircleOutline />,
-  //       onActionClick: fetchMarksData
-  //     })
-  //   } finally {
-  //     setIsMarksLoading(false)
-  //   }
-  // }
+  /** Используется при ручном обновлении страницы */
+  const handleReloadData = async () => {
+    await gettedLessons(true)
+  }
 
   const getError = () =>
     useMemo(
@@ -123,12 +90,6 @@ const Schedule: FC<{ id: string }> = ({ id }) => {
         }),
       []
     )
-
-  /** Используется при ручном обновлении страницы */
-  const handleReloadData = () => {
-    gettedLessons(true)
-    // fetchMarksData(true)
-  }
 
   const gettedLessons = async (isHandle?: boolean) => {
     const savedLessons = localStorage.getItem('savedLessons')
@@ -152,11 +113,6 @@ const Schedule: FC<{ id: string }> = ({ id }) => {
     gettedLessons()
   }, [])
 
-  // /** Для получения оценок при маунте */
-  // useEffect(() => {
-  //   fetchMarksData()
-  // }, [])
-
   const weekString = getWeekString(startDate, endDate)
 
   const isNoMarks = !lessonsState?.some((day) =>
@@ -164,7 +120,9 @@ const Schedule: FC<{ id: string }> = ({ id }) => {
       lesson.gradebook?.tasks?.some((task) => task.mark)
     )
   )
-
+  const [menuOpened, setMenuOpened] = useState(false)
+  const [selected, setSelected] = useState('news')
+  const [mode, setMode] = useState('all');
   return (
     <View
       id={id}
@@ -173,18 +131,41 @@ const Schedule: FC<{ id: string }> = ({ id }) => {
       onSwipeBack={() => routeNavigator.back()}
     >
       <Panel nav={id}>
-        <PanelHeaderWithBack title='Главная' />
+        <PanelHeaderWithBack>
+          <DefaultInPanel
+              selected={selected}
+              setSelected={setSelected}
+              menuOpened={menuOpened}
+              onMenuClick={(opened) => {
+                setMenuOpened((prevState) => (opened ? !prevState : false));
+              }}
+          />
+        </PanelHeaderWithBack>
         <PullToRefresh onRefresh={handleReloadData} isFetching={isLoading}>
           <Div>
             <Suspense id='MarksByDay'>
-              <Group
-                header={
-                  <Header mode='secondary'>
-                    Оценки за неделю {isNoMarks && 'отсутствуют'}
-                  </Header>
-                }
-              >
-                {/* ex isMarksLoading */}
+              <Group>
+                <PanelHeaderContext style={{width: 705}} opened={true} onClose={() => setMenuOpened(false)}>
+                  <List>
+                    <Cell
+                        before={<Icon28UsersOutline />}
+                        after={mode === 'all' && <Icon24Done fill="var(--vkui--color_icon_accent)" />}
+                        onClick={() => setMode('all')}
+                    >
+                      Communities
+                    </Cell>
+                    <Cell
+                        before={<Icon28SettingsOutline />}
+                        after={mode === 'managed' && <Icon24Done fill="var(--vkui--color_icon_accent)" />}
+                        onClick={() => setMode('managed')}
+                    >
+                      Managed Communities
+                    </Cell>
+                  </List>
+                </PanelHeaderContext>
+                <Header mode='secondary'>
+                  Оценки за неделю {isNoMarks && 'отсутствуют'}
+                </Header>
                 {isLoading ? (
                   <PanelSpinner />
                 ) : (
