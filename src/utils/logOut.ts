@@ -5,5 +5,4 @@
 
 export const logOut = async () => {
   localStorage.clear()
-  window.location.reload()
 }

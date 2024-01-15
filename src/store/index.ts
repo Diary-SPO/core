@@ -17,7 +17,7 @@ export interface TStore<T> {
   initialState: T
 }
 
-const createStore = <T>({ initialState }: TStore<T>) => {
+export const createStore = <T>({ initialState }: TStore<T>) => {
   type State = T
   type ListenerCallback = () => void
 
@@ -39,8 +39,6 @@ const createStore = <T>({ initialState }: TStore<T>) => {
 
   return store
 }
-
-export default createStore
 
 /**
  * === Как это работает в React ===

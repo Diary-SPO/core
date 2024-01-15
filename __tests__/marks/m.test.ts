@@ -2,7 +2,6 @@ import { Task } from '@diary-spo/shared'
 import {
   calculateAverageMark,
   createSubjectMarksMap,
-  extractMarksByDay,
   getBackgroundColor,
   getSize,
   setDefaultMark
@@ -10,14 +9,10 @@ import {
 import { describe, expect, it } from 'vitest'
 
 import {
-  expectedExtractByDayData,
-  expectedInvalidExtractByDayData,
   expectedMapData,
   expectedMapDataWithoutMarks,
-  invalidPerformanceMockData,
   mockData,
-  mockDataWithoutMarks,
-  performanceMockData
+  mockDataWithoutMarks
 } from './mocks'
 
 describe('calculateAverageMark', () => {
@@ -133,6 +128,7 @@ describe('setDefaultMark', () => {
       attachments: [],
       id: 0,
       isRequired: false,
+      // FIXME: is there a Home type?
       type: 'Home',
       mark: null
     }
@@ -178,28 +174,5 @@ describe('setDefaultMark', () => {
 
     const mark = setDefaultMark(task)
     expect(mark).toBeUndefined()
-  })
-})
-
-describe('extractMarksByDay', () => {
-  it('возвращает пустой объект при отсутствии данных об оценках', () => {
-    const marksByDay = extractMarksByDay(null)
-    expect(marksByDay).toEqual({})
-  })
-
-  it('возвращает структуру с оценками, организованными по дням для каждого урока', () => {
-    const performanceData = performanceMockData
-    const expectedMarksByDay = expectedExtractByDayData
-
-    const marksByDay = extractMarksByDay(performanceData)
-    expect(marksByDay).toEqual(expectedMarksByDay)
-  })
-
-  it('обрабатывает случай невалидных оценок и возвращает пустые данные для этих дней', () => {
-    const performanceData = invalidPerformanceMockData
-    const expectedMarksByDay = expectedInvalidExtractByDayData
-
-    const marksByDay = extractMarksByDay(performanceData)
-    expect(marksByDay).toEqual(expectedMarksByDay)
   })
 })

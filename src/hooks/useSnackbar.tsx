@@ -1,3 +1,4 @@
+import { VKUI_ACCENT_BG } from '@config'
 import { Icon28InfoCircleOutline } from '@vkontakte/icons'
 import { Snackbar, SnackbarProps } from '@vkontakte/vkui'
 import { CSSProperties, ReactNode } from 'preact/compat'
@@ -37,12 +38,11 @@ const useSnackbar = (): [
 
     setSnackbar(
       <Snackbar
+        offsetY={45}
         layout={snackbarData.layout || 'vertical'}
         onClose={() => setSnackbar(null)}
         before={
-          snackbarData.icon || (
-            <Icon28InfoCircleOutline fill='var(--vkui--color_background_accent)' />
-          )
+          snackbarData.icon || <Icon28InfoCircleOutline fill={VKUI_ACCENT_BG} />
         }
         action={snackbarData.action}
         onActionClick={snackbarData.onActionClick}

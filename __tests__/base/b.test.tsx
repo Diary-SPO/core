@@ -1,22 +1,18 @@
 import {
-  formatDate,
   getTimeRemaining,
   handleResponse,
   isToday,
   logOut,
-  setLessonDetails,
-  sortByDay,
   textToLink,
   truncateString
 } from '@utils'
 import { describe, expect, it, vitest } from 'vitest'
-import { IMarksByDay } from '../../src/components'
+import { setLessonDetails } from '../../src/app/AppWrapper/App/ModalRoot/modals/LessonModal/helpers'
 import {
   expectedLessonDetailsInvalid,
   expectedLessonDetailsValid,
   mockLesson,
   mockLessonInvalid,
-  mockMarksByDay,
   mockTextWithLinks
 } from './mocs'
 
@@ -85,7 +81,9 @@ describe('Тесты базовых утилит', () => {
     const showSnackbarMock = vitest.fn()
 
     it('должна вызывать showSnackbar и колбэки при response равном 418', () => {
-      const response = 418
+      const response = {
+        status: 418
+      }
 
       handleResponse(
         response,
@@ -107,7 +105,9 @@ describe('Тесты базовых утилит', () => {
     })
 
     it('должна вызывать limitExceededCallback, errorCallback и loadingCallback при response равном 429', () => {
-      const response = 429
+      const response = {
+        status: 429
+      }
 
       handleResponse(
         response,
@@ -126,7 +126,9 @@ describe('Тесты базовых утилит', () => {
     })
 
     it('не должна вызывать коллбеки при положительном ответе от сервера', () => {
-      const response = 200
+      const response = {
+        data: 'cool data'
+      }
 
       handleResponse(
         response,
@@ -212,24 +214,6 @@ describe('Тесты базовых утилит', () => {
       const result = setLessonDetails(mockLessonInvalid)
 
       expect(result).toEqual(expectedLessonDetailsInvalid)
-    })
-  })
-
-  /** sortByDay **/
-  describe('sortByDay', () => {
-    it('должна отсортировать оценки по датам', () => {
-      const result = sortByDay(mockMarksByDay)
-
-      const sortedDays = Object.keys(mockMarksByDay).sort(
-        (a, b) => formatDate(b).getTime() - formatDate(a).getTime()
-      )
-
-      const sortedMarksByDay: IMarksByDay = {}
-      sortedDays.forEach((day) => {
-        sortedMarksByDay[day] = mockMarksByDay[day]
-      })
-
-      expect(result).toEqual(sortedMarksByDay)
     })
   })
 

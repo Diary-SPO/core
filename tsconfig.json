@@ -26,9 +26,11 @@
       "react": ["./node_modules/preact/compat/"],
       "react-dom": ["./node_modules/preact/compat/"],
       "@utils": ["./src/utils"],
-      "@components": ["./src/components"]
+      "@components": ["./src/components"],
+      "@config": ["./src/config"],
+      "@store": ["./src/store"],
     }
   },
-  "include": ["src"],
+  "include": ["src", "__tests__"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }

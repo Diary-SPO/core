@@ -1,4 +1,5 @@
 import { PanelHeaderWithBack } from '@components'
+import { VKUI_RED } from '@config'
 import { ResponseLogin } from '@diary-spo/types'
 import {
   Icon28DoorArrowLeftOutline,
@@ -8,7 +9,6 @@ import { useRouteNavigator } from '@vkontakte/vk-mini-apps-router'
 import {
   Button,
   FormItem,
-  FormLayout,
   FormStatus,
   Group,
   Input,
@@ -18,7 +18,7 @@ import Hashes from 'jshashes'
 import { ChangeEvent, FC } from 'preact/compat'
 import { useEffect, useState } from 'preact/hooks'
 import { useSnackbar } from '../hooks'
-import makeRequest from '../methods/server/makeRequest'
+import { makeRequest } from '../methods'
 import { VIEW_SCHEDULE } from '../routes'
 import { loginPattern } from '../types'
 
@@ -29,28 +29,23 @@ const LoginForm: FC<{ id: string }> = ({ id }) => {
   const [password, setPassword] = useState<string>('')
   const [isDataInvalid, setIsDataInvalid] = useState<boolean>(false)
   const [isLoading, setIsLoading] = useState<boolean>(false)
+
   const [snackbar, showSnackbar] = useSnackbar()
 
   const createErrorSnackbar = () =>
     showSnackbar({
-      icon: (
-        <Icon28ErrorCircleOutline fill='var(--vkui--color_icon_negative)' />
-      ),
+      icon: <Icon28ErrorCircleOutline fill={VKUI_RED} />,
       subtitle: 'Попробуйте заного или сообщите об ошибке',
       title: 'Ошибка при попытке авторизации'
     })
 
   useEffect(() => {
     const storageToken = localStorage.getItem('token')
-    setIsLoading(true)
+
     const getUserCookie = async () => {
       if (!storageToken) {
-        await routeNavigator.replace('/')
-        setIsLoading(false)
         showSnackbar({
-          icon: (
-            <Icon28ErrorCircleOutline fill='var(--vkui--color_icon_negative)' />
-          ),
+          icon: <Icon28ErrorCircleOutline fill={VKUI_RED} />,
           subtitle: 'Заполни форму и войди в дневник',
           title: 'О вас нет данных, ты кто такой?'
         })
@@ -72,14 +67,15 @@ const LoginForm: FC<{ id: string }> = ({ id }) => {
     setStateAction?.(value)
   }
 
-  const handleLogin = async () => {
+  const handleLogin = async (e: ChangeEvent<HTMLFormElement>) => {
+    e.preventDefault()
     if (!loginPattern.test(login)) {
       setIsDataInvalid(true)
       return
     }
 
     const passwordHashed = new Hashes.SHA256().b64(password)
-    const response = await makeRequest<Response & ResponseLogin>(
+    const response = await makeRequest<ResponseLogin>(
       '/login/',
       'POST',
       JSON.stringify({
@@ -89,27 +85,20 @@ const LoginForm: FC<{ id: string }> = ({ id }) => {
       })
     )
 
-    console.log(response)
-
     try {
       setIsLoading(true)
 
-      if (response === 401) {
+      if (Number(response) === 401) {
         setIsLoading(false)
         setIsDataInvalid(true)
-        throw new Error('401')
+        // TODO: 401 error msg
+        return
       }
 
       if (typeof response === 'number') {
-        showSnackbar({
-          icon: (
-            <Icon28ErrorCircleOutline fill='var(--vkui--color_icon_negative)' />
-          ),
-          title: 'Ошибка при попытке сделать запрос',
-          subtitle:
-            'Попробуйте обновить страницу или обновите куки в настройках'
-        })
-        throw new Error('500')
+        createErrorSnackbar()
+        // TODO: 500 error msg
+        return
       }
 
       const dataResp = response as ResponseLogin
@@ -126,7 +115,6 @@ const LoginForm: FC<{ id: string }> = ({ id }) => {
 
       await routeNavigator.replace(`/${VIEW_SCHEDULE}`)
     } catch (e) {
-      setIsLoading(false)
       console.error(e)
     } finally {
       setIsLoading(false)
@@ -158,7 +146,7 @@ const LoginForm: FC<{ id: string }> = ({ id }) => {
             Проверьте правильность логина и пароля
           </FormStatus>
         )}
-        <FormLayout>
+        <form method='post' onSubmit={handleLogin}>
           {/*//@ts-ignore типы React не совсем совместимы с Preact*/}
           <FormItem
             required
@@ -206,10 +194,12 @@ const LoginForm: FC<{ id: string }> = ({ id }) => {
           </FormItem>
           {/*//@ts-ignore типы React не совсем совместимы с Preact*/}
           <FormItem>
+            {/*//@ts-ignore типы React не совсем совместимы с Preact*/}
             <Button
+              type='submit'
               size='l'
               stretched
-              onClick={() => handleLogin()}
+              onClick={handleLogin}
               disabled={
                 !password || !login || !loginPattern.test(login) || isLoading
               }
@@ -218,7 +208,7 @@ const LoginForm: FC<{ id: string }> = ({ id }) => {
               {isLoading ? 'Пытаюсь войти...' : 'Войти'}
             </Button>
           </FormItem>
-        </FormLayout>
+        </form>
         {snackbar}
       </Group>
     </Panel>

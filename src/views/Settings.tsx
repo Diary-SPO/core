@@ -1,3 +1,4 @@
+import { PanelHeaderWithBack } from '@components'
 import { logOut } from '@utils'
 import {
   Icon28DoorArrowRightOutline,
@@ -19,7 +20,6 @@ import {
 } from '@vkontakte/vkui'
 import { FunctionalComponent } from 'preact'
 import { useEffect, useRef, useState } from 'preact/hooks'
-import PanelHeaderWithBack from '../components/UI/PanelHeaderWithBack'
 import { useSnackbar } from '../hooks'
 import { Storage } from '../types'
 
@@ -105,13 +105,11 @@ const Settings: FunctionalComponent<ISettings> = ({ id }) => {
         //@ts-ignore типы React не совсем совместимы с Preact
         {
           title: 'Отмена',
-          autoClose: true,
           mode: 'cancel'
         },
         //@ts-ignore типы React не совсем совместимы с Preact
         {
           title: 'Выйти',
-          autoClose: true,
           mode: 'destructive',
           action: () => handleLogOut()
         }
@@ -127,6 +125,7 @@ const Settings: FunctionalComponent<ISettings> = ({ id }) => {
     <Panel nav={id}>
       <PanelHeaderWithBack title='Настройки' />
       <Group header={<Header mode='secondary'>Действия</Header>}>
+        {/*// @ts-ignore Типы не совместимы */}
         <CellButton
           Component='label'
           //@ts-ignore типы React не совсем совместимы с Preact
@@ -136,6 +135,7 @@ const Settings: FunctionalComponent<ISettings> = ({ id }) => {
         >
           Показывать тех. инфрмацию
         </CellButton>
+        {/*// @ts-ignore Типы не совместимы */}
         <CellButton
           before={<Icon28DoorArrowRightOutline />}
           onClick={() => routeNavigator.showPopout(logOutPopup)}
@@ -143,6 +143,7 @@ const Settings: FunctionalComponent<ISettings> = ({ id }) => {
           Выйти
         </CellButton>
         {isHomeScreenSupported && (
+          // @ts-ignore Типы не совместимы
           <CellButton
             before={<Icon28HomeArrowDownOutline />}
             onClick={addToHomeScreen}
@@ -161,13 +162,17 @@ const Settings: FunctionalComponent<ISettings> = ({ id }) => {
               <Header
                 mode='secondary'
                 //@ts-ignore типы React не совсем совместимы с Preact
-                aside={<Subhead>Хранится в LocalStorage</Subhead>}
+                aside={
+                  // @ts-ignore Типы не совместимы */
+                  <Subhead Component='h5'>Хранится в LocalStorage</Subhead>
+                }
               >
                 Кеш
               </Header>
             }
           >
             {cacheData.map((item) => (
+              /*// @ts-ignore Типы не совместимы */
               <SimpleCell key={item.key}>
                 <InfoRow header={item.key}>{item.value.slice(0, 30)}</InfoRow>
               </SimpleCell>

@@ -66,6 +66,8 @@ export interface SubjectMarksMap {
  *   ]
  */
 
+// TODO: remove
+
 export const createSubjectMarksMap = (
   marksForSubject: PerformanceCurrent
 ): SubjectMarksMap => {
@@ -78,16 +80,14 @@ export const createSubjectMarksMap = (
       subjectMarksMap[subjectName] = []
     }
 
-    if (daysWithMarks) {
-      for (const dayWithMark of daysWithMarks) {
-        const mappedMarks = {
-          date: new Date(dayWithMark.day).toLocaleDateString(),
-          marks: dayWithMark.markValues,
-          absenceType: dayWithMark.absenceType
-        }
-
-        subjectMarksMap[subjectName].push(mappedMarks)
+    for (const dayWithMark of daysWithMarks) {
+      const mappedMarks = {
+        date: new Date(dayWithMark.day).toLocaleDateString(),
+        marks: dayWithMark.markValues,
+        absenceType: dayWithMark.absenceType
       }
+
+      subjectMarksMap[subjectName].push(mappedMarks)
     }
   }
 
