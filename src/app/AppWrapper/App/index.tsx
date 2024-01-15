@@ -1,4 +1,5 @@
 import { Suspense } from '@components'
+import {MODE,Mode } from "@config";
 import {
   Icon28BookSpreadOutline,
   Icon28EducationOutline,
@@ -66,7 +67,9 @@ const App = () => {
   }
 
   const modals = <ModalRoot />
+
   /** @beta BETA ONLY */
+  const isDev = MODE === Mode.DEV
   const isPCOrTablet = window.innerWidth > 760
 
   return (
@@ -142,7 +145,7 @@ const App = () => {
         <SplitCol width='100%' maxWidth='700px' stretchedOnMobile autoSpaced>
           <Suspense id='Epic'>
             {/** @beta BETA ONLY */}
-            {isPCOrTablet && (
+            {isDev && isPCOrTablet && (
               <Div>
                 <FormStatus
                   style={{ marginTop: 60, marginBottom: -60 }}

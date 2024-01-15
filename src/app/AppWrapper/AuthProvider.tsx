@@ -1,3 +1,4 @@
+import { MODE, Mode } from '@config'
 import {
   useActiveVkuiLocation,
   useRouteNavigator
@@ -32,12 +33,13 @@ const AuthProvider = ({ children }: { children: VNode }) => {
   }, [activeView, panel])
 
   /** @beta BETA ONLY */
+  const isDev = MODE === Mode.DEV
   const isMobile = window.innerWidth < 760
 
   return (
     <>
       {/** @beta BETA ONLY */}
-      {isMobile && (
+      {isDev && isMobile && (
         <Div>
           <FormStatus style={{ marginTop: 60 }} header='Дневник СПО Beta'>
             Самые новые возможности и баги только тут, удачи!
