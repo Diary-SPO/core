@@ -1,4 +1,5 @@
 import { Mark } from '@components'
+import { MODAL_PAGE_MARK } from '@config'
 import { Task } from '@diary-spo/shared'
 import { setDefaultMark, truncateString } from '@utils'
 import { useRouteNavigator } from '@vkontakte/vk-mini-apps-router'
@@ -6,7 +7,6 @@ import { Header, HorizontalCell } from '@vkontakte/vkui'
 import { FunctionalComponent } from 'preact'
 import { CSSProperties } from 'preact/compat'
 import { useCallback } from 'preact/hooks'
-import { MODAL_PAGE_MARK } from '../../../config/constants.ts'
 import useMarkModal from '../../../store/useMarkModal.ts'
 import { LessonGradesProps } from './types.ts'
 

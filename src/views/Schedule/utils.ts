@@ -1,4 +1,4 @@
-import { THIRD_SEC } from '../../config/constants.ts'
+import { THIRD_SEC } from '@config'
 
 export const getWeekString = (startDate: Date, endDate: Date) => {
   return `

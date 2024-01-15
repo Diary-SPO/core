@@ -1,15 +1,14 @@
+import { MODAL_PAGE_LESSON, VKUI_ACCENT_BG } from '@config'
 import { Day, Gradebook, Timetable } from '@diary-spo/shared'
-import { formatLessonDate, isToday } from '@utils'
 import { useRouteNavigator } from '@vkontakte/vk-mini-apps-router'
 import { Card, Group, Placeholder } from '@vkontakte/vkui'
 import { useMemo } from 'preact/compat'
 import { useCallback } from 'preact/hooks'
 import { FC, memo } from 'react'
 import useModal from '../../../../app/AppWrapper/App/ModalRoot/modals/LessonModal/hooks/useModal.tsx'
-import { VKUI_ACCENT_BG } from '../../../../config/colors.ts'
-import { MODAL_PAGE_LESSON } from '../../../../config/constants.ts'
 import LessonCell from './LessonCell'
 import LessonHeader from './LessonHeader.tsx'
+import { formatLessonDate, isToday } from './helpers.ts'
 
 interface ILessonCard {
   lesson: Day

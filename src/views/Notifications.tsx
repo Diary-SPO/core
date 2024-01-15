@@ -1,4 +1,5 @@
 import { PanelHeaderWithBack, SubtitleWithBorder } from '@components'
+import { VKUI_RED } from '@config'
 import { NotificationsResponse } from '@diary-spo/shared'
 import { handleResponse } from '@utils'
 import { Icon28ErrorCircleOutline } from '@vkontakte/icons'
@@ -18,7 +19,6 @@ import {
 } from '@vkontakte/vkui'
 import { FC } from 'preact/compat'
 import { useEffect, useState } from 'preact/hooks'
-import { VKUI_RED } from '../config/colors.ts'
 import { useSnackbar } from '../hooks'
 import { getAds } from '../methods'
 

@@ -1,6 +1,7 @@
-import { ReturnedMark, getBackgroundColor, getSize } from '@utils'
 import { Footnote } from '@vkontakte/vkui'
 import { CSSProperties, FC, HTMLAttributes, useMemo } from 'preact/compat'
+import { ReturnedMark } from '../../../types'
+import { getBackgroundColor, getSize } from './helpers.ts'
 
 export type Sizes = 'l' | 's'
 

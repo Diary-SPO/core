@@ -1,7 +1,7 @@
 import { Day } from '@diary-spo/shared'
-import { formatDateForRequest } from '@utils'
 import { ServerResponse } from '../../types'
-import makeRequest from './makeRequest'
+import makeRequest from '../makeRequest'
+import { formatDateForRequest } from './helpers.ts'
 
 export const getLessons = async (
   startDate: Date,
