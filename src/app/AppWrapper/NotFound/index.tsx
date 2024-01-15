@@ -23,7 +23,7 @@ export const notFoundStyle: CSSProperties = {
 export const text: CSSProperties = {
   padding: '0px 8px',
   fontFamily: 'Roboto, sans-serif',
-  fontSize: 80,
+  fontSize: 40,
   color: 'rgb(63, 138, 224)',
   background: 'rgba(63, 138, 224, 0.08)',
   borderRadius: 8,
