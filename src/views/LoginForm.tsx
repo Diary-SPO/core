@@ -91,18 +91,16 @@ const LoginForm: FC<{ id: string }> = ({ id }) => {
       if (Number(response) === 401) {
         setIsLoading(false)
         setIsDataInvalid(true)
-        // TODO: 401 error msg
         return
       }
 
-      if (typeof response === 'number') {
+      if (response instanceof Response ||typeof response === 'number') {
         createErrorSnackbar()
-        // TODO: 500 error msg
         return
       }
 
-      const dataResp = response as ResponseLogin
-      if (!String(dataResp.token)) {
+      const dataResp = response
+      if (!dataResp.token) {
         createErrorSnackbar()
       }
 
