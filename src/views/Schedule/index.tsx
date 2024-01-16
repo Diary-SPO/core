@@ -91,7 +91,6 @@ const Schedule: FC<{ id: string }> = ({ id }) => {
   /** Используется при ручном обновлении страницы */
   const handleReloadData = () => {
     gettedLessons(true)
-    // fetchMarksData(true)
   }
 
   const gettedLessons = async (isHandle?: boolean) => {

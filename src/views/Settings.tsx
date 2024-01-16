@@ -133,7 +133,7 @@ const Settings: FunctionalComponent<ISettings> = ({ id }) => {
           onChange={() => setIsSwitchChecked(!isSwitchChecked)}
           before={<Icon28IncognitoOutline />}
         >
-          Показывать тех. инфрмацию
+          Показывать тех. информацию
         </CellButton>
         {/*// @ts-ignore Типы не совместимы */}
         <CellButton
@@ -154,30 +154,26 @@ const Settings: FunctionalComponent<ISettings> = ({ id }) => {
       </Group>
       {isSwitchChecked && (
         <Group
-          header={<Header mode='secondary'>Техническая информация</Header>}
-        >
-          <Group
-            header={
+          header={
+            //@ts-ignore типы React не совсем совместимы с Preact
+            <Header
+              mode='secondary'
               //@ts-ignore типы React не совсем совместимы с Preact
-              <Header
-                mode='secondary'
-                //@ts-ignore типы React не совсем совместимы с Preact
-                aside={
-                  // @ts-ignore Типы не совместимы */
-                  <Subhead Component='h5'>Хранится в LocalStorage</Subhead>
-                }
-              >
-                Кеш
-              </Header>
-            }
-          >
-            {cacheData.map((item) => (
-              /*// @ts-ignore Типы не совместимы */
-              <SimpleCell key={item.key}>
-                <InfoRow header={item.key}>{item.value.slice(0, 30)}</InfoRow>
-              </SimpleCell>
-            ))}
-          </Group>
+              aside={
+                // @ts-ignore Типы не совместимы */
+                <Subhead Component='h5'>Хранится в LocalStorage</Subhead>
+              }
+            >
+              Кеш
+            </Header>
+          }
+        >
+          {cacheData.map((item) => (
+            /*// @ts-ignore Типы не совместимы */
+            <SimpleCell key={item.key}>
+              <InfoRow header={item.key}>{item.value.slice(0, 30)}</InfoRow>
+            </SimpleCell>
+          ))}
         </Group>
       )}
       {snackbar}
