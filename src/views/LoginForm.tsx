@@ -94,7 +94,7 @@ const LoginForm: FC<{ id: string }> = ({ id }) => {
         return
       }
 
-      if (response instanceof Response ||typeof response === 'number') {
+      if (response instanceof Response || typeof response === 'number') {
         createErrorSnackbar()
         return
       }
