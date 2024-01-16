@@ -77,47 +77,6 @@ const Schedule: FC<{ id: string }> = ({ id }) => {
     }
   }
 
-  // const fetchMarksData = async (isHandle?: boolean) => {
-  //   const savedMarks = localStorage.getItem('savedMarks')
-  //
-  //   setIsMarksLoading(true)
-  //
-  //   if (savedMarks && !isNeedToGetNewData() && !isHandle) {
-  //     setMarksData(JSON.parse(savedMarks) as PerformanceCurrent)
-  //     return setIsMarksLoading(false)
-  //   }
-  //
-  //   try {
-  //     const marks = await getPerformance()
-  //
-  //     handleResponse(
-  //       marks,
-  //       () => {
-  //         setIsError(true)
-  //         setIsMarksLoading(false)
-  //       },
-  //       handleRateLimitExceeded,
-  //       setIsLoading,
-  //       showSnackbar
-  //     )
-  //
-  //     if (typeof marks !== 'number' && !(marks instanceof Response)) {
-  //       setMarksData(marks)
-  //       localStorage.setItem('savedMarks', JSON.stringify(marks))
-  //     }
-  //   } catch (error) {
-  //     console.error(error)
-  //     showSnackbar({
-  //       title: 'Ошибка при попытке получить оценки',
-  //       action: 'Повторить',
-  //       icon: <Icon28ErrorCircleOutline />,
-  //       onActionClick: fetchMarksData
-  //     })
-  //   } finally {
-  //     setIsMarksLoading(false)
-  //   }
-  // }
-
   const getError = () =>
     useMemo(
       () =>
@@ -152,15 +111,10 @@ const Schedule: FC<{ id: string }> = ({ id }) => {
     await handleGetLesson(startDate, endDate)
   }
 
-  /** Для получения расписания при маунте */
+  /** Для получения расписания и оценок при маунте */
   useEffect(() => {
     gettedLessons()
   }, [])
-
-  // /** Для получения оценок при маунте */
-  // useEffect(() => {
-  //   fetchMarksData()
-  // }, [])
 
   const weekString = getWeekString(startDate, endDate)
 
@@ -168,6 +122,26 @@ const Schedule: FC<{ id: string }> = ({ id }) => {
     day.lessons?.some((lesson) =>
       lesson.gradebook?.tasks?.some((task) => task.mark)
     )
+  )
+
+  const ScheduleGroupAside = (
+    <ScheduleAsideButtons
+      handleGetLesson={handleGetLesson}
+      showSnackbar={showSnackbar}
+      endDate={endDate}
+      startDate={startDate}
+      setEndDate={setEndDate}
+      setStartDate={setStartDate}
+    />
+  )
+
+  const shouldShowSpinner = isLoading && <PanelSpinner />
+
+  const MarksByDayOrLoading = shouldShowSpinner || (
+    <MarksByDay lessonsState={lessonsState} />
+  )
+  const ScheduleOrLoading = shouldShowSpinner || (
+    <ScheduleGroup lessonsState={lessonsState} />
   )
 
   return (
@@ -189,28 +163,14 @@ const Schedule: FC<{ id: string }> = ({ id }) => {
                   </Header>
                 }
               >
-                {/* ex isMarksLoading */}
-                {isLoading ? (
-                  <PanelSpinner />
-                ) : (
-                  <MarksByDay lessonsState={lessonsState} />
-                )}
+                {MarksByDayOrLoading}
               </Group>
             </Suspense>
             <Suspense id='ScheduleGroup' mode='screen'>
               <Group
                 header={
                   <Header
-                    aside={
-                      <ScheduleAsideButtons
-                        handleGetLesson={handleGetLesson}
-                        showSnackbar={showSnackbar}
-                        endDate={endDate}
-                        startDate={startDate}
-                        setEndDate={setEndDate}
-                        setStartDate={setStartDate}
-                      />
-                    }
+                    aside={ScheduleGroupAside}
                     mode='secondary'
                     style='align-items: center;'
                   >
@@ -218,11 +178,7 @@ const Schedule: FC<{ id: string }> = ({ id }) => {
                   </Header>
                 }
               >
-                {isLoading ? (
-                  <PanelSpinner size='regular' />
-                ) : (
-                  <ScheduleGroup lessonsState={lessonsState} />
-                )}
+                {ScheduleOrLoading}
               </Group>
             </Suspense>
             {isError && <ErrorPlaceholder onClick={handleReloadData} />}
