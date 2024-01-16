@@ -63,8 +63,13 @@ const Schedule: FC<{ id: string }> = ({ id }) => {
       )
 
       localStorage.setItem('savedLessons', JSON.stringify(data))
-      setLessons(data as Day[])
-      return data
+
+      if (data instanceof Response) {
+        getError()
+        return
+      }
+
+      setLessons(data)
     } catch (e) {
       console.error('handleGetLesson', e)
     } finally {
@@ -199,12 +204,9 @@ const Schedule: FC<{ id: string }> = ({ id }) => {
                     aside={
                       <ScheduleAsideButtons
                         handleGetLesson={handleGetLesson}
-                        getError={getError}
                         showSnackbar={showSnackbar}
                         endDate={endDate}
-                        setIsLoading={setIsLoading}
                         startDate={startDate}
-                        setLessons={setLessons}
                         setEndDate={setEndDate}
                         setStartDate={setStartDate}
                       />
