@@ -1,4 +1,5 @@
 import { Suspense } from '@components'
+import {IS_DEV, MODE, Mode} from '@config'
 import {
   Icon28BookSpreadOutline,
   Icon28EducationOutline,
@@ -142,7 +143,7 @@ const App = () => {
         <SplitCol width='100%' maxWidth='700px' stretchedOnMobile autoSpaced>
           <Suspense id='Epic'>
             {/** @beta BETA ONLY */}
-            {isPCOrTablet && (
+            {IS_DEV && isPCOrTablet && (
               <Div>
                 <FormStatus
                   style={{ marginTop: 60, marginBottom: -60 }}

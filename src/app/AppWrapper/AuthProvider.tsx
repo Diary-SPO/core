@@ -6,6 +6,7 @@ import { Div, FormStatus } from '@vkontakte/vkui'
 import { VNode } from 'preact'
 import { useLayoutEffect } from 'preact/hooks'
 import { MAIN_SETTINGS, PAGE_SCHEDULE } from '../../routes'
+import {IS_DEV} from "@config";
 
 const AuthProvider = ({ children }: { children: VNode }) => {
   const routeNavigator = useRouteNavigator()
@@ -37,7 +38,7 @@ const AuthProvider = ({ children }: { children: VNode }) => {
   return (
     <>
       {/** @beta BETA ONLY */}
-      {isMobile && (
+      {IS_DEV && isMobile && (
         <Div>
           <FormStatus style={{ marginTop: 60 }} header='Дневник СПО Beta'>
             Самые новые возможности и баги только тут, удачи!
