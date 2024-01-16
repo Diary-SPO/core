@@ -1,3 +1,4 @@
+import { IS_DEV } from '@config'
 import {
   useActiveVkuiLocation,
   useRouteNavigator
@@ -6,7 +7,6 @@ import { Div, FormStatus } from '@vkontakte/vkui'
 import { VNode } from 'preact'
 import { useLayoutEffect } from 'preact/hooks'
 import { MAIN_SETTINGS, PAGE_SCHEDULE } from '../../routes'
-import {IS_DEV} from "@config";
 
 const AuthProvider = ({ children }: { children: VNode }) => {
   const routeNavigator = useRouteNavigator()

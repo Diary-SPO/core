@@ -1,5 +1,5 @@
 import { Suspense } from '@components'
-import {IS_DEV, MODE, Mode} from '@config'
+import { IS_DEV, MODE, Mode } from '@config'
 import {
   Icon28BookSpreadOutline,
   Icon28EducationOutline,
