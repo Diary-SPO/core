@@ -1,0 +1,1 @@
+import{ap as t}from"./@vkontakte/icons--BuEI7th.js";import{c as a}from"./index-tTg0hP7h.js";const e=a({initialState:{lessonName:"sat",data:{topic:"",mark:"",type:"",isRequired:!1,id:1,attachments:[]}}}),s=()=>({modalData:t(e.subscribe,e.getState),setData:t=>e.setState(t)});export{s as u};
