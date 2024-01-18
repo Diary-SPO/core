@@ -1,1 +1,0 @@
-import{G as e}from"./types-EM5xGM47.js";const t=t=>t.isRequired&&!t.mark?"Д":"Home"!==t.type||t.mark?e[t.mark]:"ДЗ",s=({initialState:e})=>{const t={state:e,setState:e=>{t.state=e,t.listeners.forEach((e=>e()))},getState:()=>t.state,listeners:new Set,subscribe:e=>(t.listeners.add(e),()=>{t.listeners.delete(e)})};return t};export{s as c,t as s};

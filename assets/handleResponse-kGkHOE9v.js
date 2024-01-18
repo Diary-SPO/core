@@ -1,0 +1,1 @@
+import{y as i,W as o}from"./@vkontakte/icons-HJ4wZ9QE.js";const t=(t,n,r,e,s)=>{if(418===t){const t=i(o,{fill:"var(--vkui--color_icon_negative)"});return s&&s({icon:t,title:"Ошибка при попытке сделать запрос",subtitle:"Попробуйте обновить страницу или обновите куки в настройках"}),e(!1),void n()}if(429===t)return r(),n(),void e(!1)};export{t as h};
