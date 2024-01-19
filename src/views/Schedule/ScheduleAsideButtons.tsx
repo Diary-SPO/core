@@ -19,6 +19,12 @@ interface ScheduleAsideButtonsProps {
   setEndDate: (endWeek: Date) => void
 }
 
+const localeOptions: { year: 'numeric'; month: 'short'; day: 'numeric' } = {
+  month: 'short',
+  day: 'numeric',
+  year: 'numeric'
+}
+
 const ScheduleAsideButtons: FC<ScheduleAsideButtonsProps> = ({
   handleGetLesson,
   startDate,
@@ -45,17 +51,12 @@ const ScheduleAsideButtons: FC<ScheduleAsideButtonsProps> = ({
     const startWeek = startOfWeek(startDate)
     const startOfCurrWeek = startOfWeek(newDate)
 
-    const startWeekStr = startWeek.toLocaleString('default', {
-      month: 'short',
-      day: 'numeric',
-      year: 'numeric'
-    })
+    const startWeekStr = startWeek.toLocaleString('default', localeOptions)
 
-    const startOfCurrWeekStr = startOfCurrWeek.toLocaleString('default', {
-      month: 'short',
-      day: 'numeric',
-      year: 'numeric'
-    })
+    const startOfCurrWeekStr = startOfCurrWeek.toLocaleString(
+      'default',
+      localeOptions
+    )
 
     if (startWeekStr === startOfCurrWeekStr) {
       localStorage.setItem('isCurrent', JSON.stringify(true))
@@ -74,17 +75,12 @@ const ScheduleAsideButtons: FC<ScheduleAsideButtonsProps> = ({
     const startOfCurrWeek = startOfWeek(startDate)
     const endWeek = endOfWeek(newDate)
 
-    const startWeekStr = startWeek.toLocaleString('default', {
-      month: 'short',
-      day: 'numeric',
-      year: 'numeric'
-    })
+    const startWeekStr = startWeek.toLocaleString('default', localeOptions)
 
-    const startOfCurrWeekStr = startOfCurrWeek.toLocaleString('default', {
-      month: 'short',
-      day: 'numeric',
-      year: 'numeric'
-    })
+    const startOfCurrWeekStr = startOfCurrWeek.toLocaleString(
+      'default',
+      localeOptions
+    )
 
     if (startWeekStr === startOfCurrWeekStr) {
       showSnackbar({
