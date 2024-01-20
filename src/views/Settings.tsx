@@ -68,8 +68,7 @@ const Settings: FunctionalComponent<ISettings> = ({ id }) => {
   const handleLogOut = () => {
     showSnackbar({
       title: 'Выход',
-      //@ts-ignore типы React не совсем совместимы с Preact
-      icon: (
+      before: (
         //@ts-ignore типы React не совсем совместимы с Preact
         <Icon28DoorArrowRightOutline color='var(--vkui--color_background_accent_themed)' />
       ),
@@ -102,12 +101,10 @@ const Settings: FunctionalComponent<ISettings> = ({ id }) => {
   const logOutPopup = (
     <Alert
       actions={[
-        //@ts-ignore типы React не совсем совместимы с Preact
         {
           title: 'Отмена',
           mode: 'cancel'
         },
-        //@ts-ignore типы React не совсем совместимы с Preact
         {
           title: 'Выйти',
           mode: 'destructive',

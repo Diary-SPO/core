@@ -34,8 +34,8 @@ const LoginForm: FC<{ id: string }> = ({ id }) => {
 
   const createErrorSnackbar = () =>
     showSnackbar({
-      icon: <Icon28ErrorCircleOutline fill={VKUI_RED} />,
-      subtitle: 'Попробуйте заного или сообщите об ошибке',
+      before: <Icon28ErrorCircleOutline fill={VKUI_RED} />,
+      subtitle: 'Попробуйте заново или сообщите об ошибке',
       title: 'Ошибка при попытке авторизации'
     })
 
@@ -45,7 +45,7 @@ const LoginForm: FC<{ id: string }> = ({ id }) => {
     const getUserCookie = async () => {
       if (!storageToken) {
         showSnackbar({
-          icon: <Icon28ErrorCircleOutline fill={VKUI_RED} />,
+          before: <Icon28ErrorCircleOutline fill={VKUI_RED} />,
           subtitle: 'Заполни форму и войди в дневник',
           title: 'О вас нет данных, ты кто такой?'
         })
@@ -221,6 +221,7 @@ const saveData = (basePath: ResponseLogin) => {
   )} ${String(basePath.middleName)}`
   const org = String(basePath.organization?.abbreviation)
   const city = String(basePath.organization?.addressSettlement)
+  // FIXME
   // @ts-expect-error ошибка в типах
   const group = String(basePath?.groupName)
 

@@ -62,14 +62,13 @@ const Schedule: FC<{ id: string }> = ({ id }) => {
         showSnackbar
       )
 
-      localStorage.setItem('savedLessons', JSON.stringify(data))
-
       if (data instanceof Response) {
         getError()
         return
       }
 
       setLessons(data)
+      localStorage.setItem('savedLessons', JSON.stringify(data))
     } catch (e) {
       console.error('handleGetLesson', e)
     } finally {
@@ -143,6 +142,12 @@ const Schedule: FC<{ id: string }> = ({ id }) => {
     <ScheduleGroup lessonsState={lessonsState} />
   )
 
+  const MarksHeader = (
+    <Header mode='secondary'>
+      Оценки за неделю {isNoMarks && 'отсутствуют'}
+    </Header>
+  )
+
   return (
     <View
       id={id}
@@ -155,15 +160,7 @@ const Schedule: FC<{ id: string }> = ({ id }) => {
         <PullToRefresh onRefresh={handleReloadData} isFetching={isLoading}>
           <Div>
             <Suspense id='MarksByDay'>
-              <Group
-                header={
-                  <Header mode='secondary'>
-                    Оценки за неделю {isNoMarks && 'отсутствуют'}
-                  </Header>
-                }
-              >
-                {MarksByDayOrLoading}
-              </Group>
+              <Group header={MarksHeader}>{MarksByDayOrLoading}</Group>
             </Suspense>
             <Suspense id='ScheduleGroup' mode='screen'>
               <Group

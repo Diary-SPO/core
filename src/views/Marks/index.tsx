@@ -65,7 +65,7 @@ const Marks: FC<{ id: string }> = ({ id }) => {
         title: 'Оценки взяты из кеша',
         onActionClick: () => fetchMarks(true),
         action: 'Загрузить новые',
-        icon: <Icon28InfoCircle fill={VKUI_ACCENT_BG} />
+        before: <Icon28InfoCircle fill={VKUI_ACCENT_BG} />
       })
       return
     }
@@ -79,7 +79,7 @@ const Marks: FC<{ id: string }> = ({ id }) => {
         () => {
           setIsLoading(false)
           showSnackbar({
-            icon: <Icon28ErrorCircleOutline fill={VKUI_RED} />,
+            before: <Icon28ErrorCircleOutline fill={VKUI_RED} />,
             title: 'Ошибка при попытке загрузить оценки',
             action: 'Попробовать снова',
             onActionClick: () => fetchMarks(true)

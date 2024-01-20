@@ -17,11 +17,11 @@
     "checkAll": "biome check . --apply-unsafe"
   },
   "dependencies": {
-    "@vkontakte/icons": "2.90.0",
+    "@vkontakte/icons": "2.95.0",
     "@vkontakte/vk-bridge": "^2.13.0",
     "@vkontakte/vk-bridge-react": "^1.0.0",
     "@vkontakte/vk-mini-apps-router": "^1.4.2",
-    "@vkontakte/vkui": "^6.0.0",
+    "@vkontakte/vkui": "6.0.0",
     "jshashes": "^1.0.8",
     "preact": "^10.19.2",
     "react": "npm:@preact/compat",
@@ -29,7 +29,7 @@
   },
   "devDependencies": {
     "@babel/eslint-parser": "^7.23.3",
-    "@biomejs/biome": "1.4.1",
+    "@biomejs/biome": "1.5.2",
     "@diary-spo/shared": "1.8.8",
     "@diary-spo/types": "latest",
     "@preact/preset-vite": "^2.8.1",
