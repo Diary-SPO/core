@@ -31,13 +31,17 @@ const makeRequest = async <T>(
       return response
     }
 
+    console.info('%c [makeRequest]', 'color: blueviolet', response)
+
+    /** В случае другой ошибки пытаемся получить ответ от второго сервера **/
     if (!response.ok) {
       return requestToSecondServer(route, token, method, body)
     }
 
     return (await response.json()) as T
   } catch (err) {
-    console.error(err)
+    console.info('%c [makeRequest]', 'color: blueviolet', err)
+    /** В случае ошибки пытаемся получить ответ от второго сервера **/
     return requestToSecondServer(route, token, method, body)
   }
 }
