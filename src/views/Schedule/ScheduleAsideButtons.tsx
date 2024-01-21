@@ -1,5 +1,4 @@
 import { ExplanationTooltip } from '@components'
-import { Day } from '@diary-spo/shared'
 import {
   Icon16ArrowLeftOutline,
   Icon16ArrowRightOutline
@@ -9,29 +8,28 @@ import { endOfWeek, startOfWeek } from '@vkontakte/vkui/dist/lib/date'
 import { useState } from 'preact/hooks'
 import { FC, useEffect } from 'react'
 import { SnackbarData } from '../../hooks/useSnackbar.tsx'
-import { ServerResponse } from '../../types'
 import useDebouncedChangeWeek from './hooks/useDebouncedChangeWeek.tsx'
 
 interface ScheduleAsideButtonsProps {
-  handleGetLesson: (start: Date, end: Date) => ServerResponse<Day[]>
+  handleGetLesson: (start: Date, end: Date) => void
   showSnackbar: (data: SnackbarData) => void
-  getError: () => void
   startDate: Date
   endDate: Date
-  setIsLoading: (value: boolean) => void
-  setLessons: (data: Day[]) => void // (data: Day[])
   setStartDate: (startWeek: Date) => void
   setEndDate: (endWeek: Date) => void
+}
+
+const localeOptions: { year: 'numeric'; month: 'short'; day: 'numeric' } = {
+  month: 'short',
+  day: 'numeric',
+  year: 'numeric'
 }
 
 const ScheduleAsideButtons: FC<ScheduleAsideButtonsProps> = ({
   handleGetLesson,
   startDate,
   endDate,
-  getError,
   showSnackbar,
-  setLessons,
-  setIsLoading,
   setStartDate,
   setEndDate
 }) => {
@@ -53,17 +51,12 @@ const ScheduleAsideButtons: FC<ScheduleAsideButtonsProps> = ({
     const startWeek = startOfWeek(startDate)
     const startOfCurrWeek = startOfWeek(newDate)
 
-    const startWeekStr = startWeek.toLocaleString('default', {
-      month: 'short',
-      day: 'numeric',
-      year: 'numeric'
-    })
+    const startWeekStr = startWeek.toLocaleString('default', localeOptions)
 
-    const startOfCurrWeekStr = startOfCurrWeek.toLocaleString('default', {
-      month: 'short',
-      day: 'numeric',
-      year: 'numeric'
-    })
+    const startOfCurrWeekStr = startOfCurrWeek.toLocaleString(
+      'default',
+      localeOptions
+    )
 
     if (startWeekStr === startOfCurrWeekStr) {
       localStorage.setItem('isCurrent', JSON.stringify(true))
@@ -82,17 +75,12 @@ const ScheduleAsideButtons: FC<ScheduleAsideButtonsProps> = ({
     const startOfCurrWeek = startOfWeek(startDate)
     const endWeek = endOfWeek(newDate)
 
-    const startWeekStr = startWeek.toLocaleString('default', {
-      month: 'short',
-      day: 'numeric',
-      year: 'numeric'
-    })
+    const startWeekStr = startWeek.toLocaleString('default', localeOptions)
 
-    const startOfCurrWeekStr = startOfCurrWeek.toLocaleString('default', {
-      month: 'short',
-      day: 'numeric',
-      year: 'numeric'
-    })
+    const startOfCurrWeekStr = startOfCurrWeek.toLocaleString(
+      'default',
+      localeOptions
+    )
 
     if (startWeekStr === startOfCurrWeekStr) {
       showSnackbar({
@@ -103,10 +91,8 @@ const ScheduleAsideButtons: FC<ScheduleAsideButtonsProps> = ({
       return
     }
 
-    setIsLoading(true)
     try {
-      const data = await handleGetLesson(startWeek, endWeek)
-      setLessons(data as Day[])
+      handleGetLesson(startWeek, endWeek)
       setStartDate(startWeek)
       setEndDate(endWeek)
 
@@ -114,9 +100,6 @@ const ScheduleAsideButtons: FC<ScheduleAsideButtonsProps> = ({
       setIsCurrent(true)
     } catch (e) {
       console.error(e)
-      getError()
-    } finally {
-      setIsLoading(false)
     }
   }
 

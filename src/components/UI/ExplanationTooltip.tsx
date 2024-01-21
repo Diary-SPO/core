@@ -1,5 +1,5 @@
 import { Icon16HelpOutline } from '@vkontakte/icons'
-import { Popover, Subhead, Text } from '@vkontakte/vkui'
+import { Popover, Subhead } from '@vkontakte/vkui'
 import { CSSProperties, FC } from 'preact/compat'
 
 interface ITooltipText {
@@ -29,12 +29,12 @@ const ExplanationTooltip: FC<ITooltipText> = ({ text, tooltipContent }) => {
 
   return (
     //@ts-ignore типы React не совсем совместимы с Preact
-    <Text>
+    <div style={{ cursor: 'pointer' }}>
       {text}
       <Popover style={{ maxWidth: 220 }} action='hover' content={textTooltip}>
         <Icon16HelpOutline style={style} />
       </Popover>
-    </Text>
+    </div>
   )
 }
 

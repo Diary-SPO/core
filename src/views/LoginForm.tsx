@@ -1,6 +1,7 @@
 import { PanelHeaderWithBack } from '@components'
 import { VKUI_RED } from '@config'
 import { ResponseLogin } from '@diary-spo/types'
+import { handleResponse } from '@utils'
 import {
   Icon28DoorArrowLeftOutline,
   Icon28ErrorCircleOutline
@@ -32,20 +33,21 @@ const LoginForm: FC<{ id: string }> = ({ id }) => {
 
   const [snackbar, showSnackbar] = useSnackbar()
 
+  /** Вызывается только при неизвестной ошибке **/
   const createErrorSnackbar = () =>
     showSnackbar({
-      icon: <Icon28ErrorCircleOutline fill={VKUI_RED} />,
-      subtitle: 'Попробуйте заного или сообщите об ошибке',
+      before: <Icon28ErrorCircleOutline fill={VKUI_RED} />,
+      subtitle: 'Сообщите нам о проблема',
       title: 'Ошибка при попытке авторизации'
     })
 
   useEffect(() => {
-    const storageToken = localStorage.getItem('token')
-
     const getUserCookie = async () => {
+      const storageToken = localStorage.getItem('token')
+
       if (!storageToken) {
         showSnackbar({
-          icon: <Icon28ErrorCircleOutline fill={VKUI_RED} />,
+          before: <Icon28ErrorCircleOutline fill={VKUI_RED} />,
           subtitle: 'Заполни форму и войди в дневник',
           title: 'О вас нет данных, ты кто такой?'
         })
@@ -63,6 +65,7 @@ const LoginForm: FC<{ id: string }> = ({ id }) => {
       password: setPassword
     }[name]
     setIsDataInvalid(false)
+    setIsLoading(false)
 
     setStateAction?.(value)
   }
@@ -71,10 +74,13 @@ const LoginForm: FC<{ id: string }> = ({ id }) => {
     e.preventDefault()
     if (!loginPattern.test(login)) {
       setIsDataInvalid(true)
+      setIsLoading(false)
       return
     }
 
     const passwordHashed = new Hashes.SHA256().b64(password)
+
+    setIsLoading(true)
     const response = await makeRequest<ResponseLogin>(
       '/login/',
       'POST',
@@ -85,40 +91,30 @@ const LoginForm: FC<{ id: string }> = ({ id }) => {
       })
     )
 
-    try {
-      setIsLoading(true)
+    const data = handleResponse(
+      response,
+      () => setIsDataInvalid(true),
+      undefined,
+      setIsLoading
+    )
 
-      if (Number(response) === 401) {
-        setIsLoading(false)
-        setIsDataInvalid(true)
-        // TODO: 401 error msg
-        return
-      }
-
-      if (typeof response === 'number') {
-        createErrorSnackbar()
-        // TODO: 500 error msg
-        return
-      }
-
-      const dataResp = response as ResponseLogin
-      if (!String(dataResp.token)) {
-        createErrorSnackbar()
-      }
-
-      saveData(dataResp)
-
-      showSnackbar({
-        title: 'Вхожу',
-        subtitle: 'Подождите немного'
-      })
-
-      await routeNavigator.replace(`/${VIEW_SCHEDULE}`)
-    } catch (e) {
-      console.error(e)
-    } finally {
-      setIsLoading(false)
+    if (!data) {
+      return
     }
+
+    if (!data.token) {
+      createErrorSnackbar()
+      return
+    }
+
+    saveData(data)
+
+    showSnackbar({
+      title: 'Вхожу',
+      subtitle: 'Подождите немного'
+    })
+
+    await routeNavigator.replace(`/${VIEW_SCHEDULE}`)
   }
 
   const isLoginEmpty = login === ''
@@ -223,6 +219,7 @@ const saveData = (basePath: ResponseLogin) => {
   )} ${String(basePath.middleName)}`
   const org = String(basePath.organization?.abbreviation)
   const city = String(basePath.organization?.addressSettlement)
+  // FIXME
   // @ts-expect-error ошибка в типах
   const group = String(basePath?.groupName)
 

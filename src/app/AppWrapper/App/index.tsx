@@ -1,4 +1,5 @@
 import { Suspense } from '@components'
+import { IS_DEV } from '@config'
 import {
   Icon28BookSpreadOutline,
   Icon28EducationOutline,
@@ -26,7 +27,7 @@ import {
   useAdaptivityConditionalRender,
   usePlatform
 } from '@vkontakte/vkui'
-import { lazy } from 'preact/compat'
+import { FC, lazy } from 'preact/compat'
 import {
   MAIN_SETTINGS,
   VIEW_ATTESTATION,
@@ -41,7 +42,7 @@ import { Pages } from '../../../types'
 const ModalRoot = lazy(() => import('./ModalRoot'))
 const Epic = lazy(() => import('./Epic'))
 
-const App = () => {
+const App: FC = () => {
   const routeNavigator = useRouteNavigator()
   const { panel } = useActiveVkuiLocation()
   const { viewWidth } = useAdaptivityConditionalRender()
@@ -68,6 +69,16 @@ const App = () => {
   const modals = <ModalRoot />
   /** @beta BETA ONLY */
   const isPCOrTablet = window.innerWidth > 760
+  const BetaBanner = IS_DEV && isPCOrTablet && (
+    <Div>
+      <FormStatus
+        style={{ marginTop: 60, marginBottom: -60 }}
+        header='Дневник СПО Beta'
+      >
+        Самые новые возможности и баги только тут, удачи!
+      </FormStatus>
+    </Div>
+  )
 
   return (
     <AppRoot safeAreaInsets={vkBridgeInsets}>
@@ -142,16 +153,7 @@ const App = () => {
         <SplitCol width='100%' maxWidth='700px' stretchedOnMobile autoSpaced>
           <Suspense id='Epic'>
             {/** @beta BETA ONLY */}
-            {isPCOrTablet && (
-              <Div>
-                <FormStatus
-                  style={{ marginTop: 60, marginBottom: -60 }}
-                  header='Дневник СПО Beta'
-                >
-                  Самые новые возможности и баги только тут, удачи!
-                </FormStatus>
-              </Div>
-            )}
+            {BetaBanner}
             <Epic onStoryChange={onStoryChange} />
           </Suspense>
         </SplitCol>

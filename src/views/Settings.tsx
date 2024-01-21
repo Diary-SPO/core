@@ -68,8 +68,7 @@ const Settings: FunctionalComponent<ISettings> = ({ id }) => {
   const handleLogOut = () => {
     showSnackbar({
       title: 'Выход',
-      //@ts-ignore типы React не совсем совместимы с Preact
-      icon: (
+      before: (
         //@ts-ignore типы React не совсем совместимы с Preact
         <Icon28DoorArrowRightOutline color='var(--vkui--color_background_accent_themed)' />
       ),
@@ -102,12 +101,10 @@ const Settings: FunctionalComponent<ISettings> = ({ id }) => {
   const logOutPopup = (
     <Alert
       actions={[
-        //@ts-ignore типы React не совсем совместимы с Preact
         {
           title: 'Отмена',
           mode: 'cancel'
         },
-        //@ts-ignore типы React не совсем совместимы с Preact
         {
           title: 'Выйти',
           mode: 'destructive',
@@ -133,7 +130,7 @@ const Settings: FunctionalComponent<ISettings> = ({ id }) => {
           onChange={() => setIsSwitchChecked(!isSwitchChecked)}
           before={<Icon28IncognitoOutline />}
         >
-          Показывать тех. инфрмацию
+          Показывать тех. информацию
         </CellButton>
         {/*// @ts-ignore Типы не совместимы */}
         <CellButton
@@ -154,30 +151,26 @@ const Settings: FunctionalComponent<ISettings> = ({ id }) => {
       </Group>
       {isSwitchChecked && (
         <Group
-          header={<Header mode='secondary'>Техническая информация</Header>}
-        >
-          <Group
-            header={
+          header={
+            //@ts-ignore типы React не совсем совместимы с Preact
+            <Header
+              mode='secondary'
               //@ts-ignore типы React не совсем совместимы с Preact
-              <Header
-                mode='secondary'
-                //@ts-ignore типы React не совсем совместимы с Preact
-                aside={
-                  // @ts-ignore Типы не совместимы */
-                  <Subhead Component='h5'>Хранится в LocalStorage</Subhead>
-                }
-              >
-                Кеш
-              </Header>
-            }
-          >
-            {cacheData.map((item) => (
-              /*// @ts-ignore Типы не совместимы */
-              <SimpleCell key={item.key}>
-                <InfoRow header={item.key}>{item.value.slice(0, 30)}</InfoRow>
-              </SimpleCell>
-            ))}
-          </Group>
+              aside={
+                // @ts-ignore Типы не совместимы */
+                <Subhead Component='h5'>Хранится в LocalStorage</Subhead>
+              }
+            >
+              Кеш
+            </Header>
+          }
+        >
+          {cacheData.map((item) => (
+            /*// @ts-ignore Типы не совместимы */
+            <SimpleCell key={item.key}>
+              <InfoRow header={item.key}>{item.value.slice(0, 30)}</InfoRow>
+            </SimpleCell>
+          ))}
         </Group>
       )}
       {snackbar}

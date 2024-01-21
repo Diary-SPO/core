@@ -26,18 +26,21 @@ const MarksByDay = lazy(() => import('./MarksByDay'))
 const ScheduleGroup = lazy(() => import('./ScheduleGroup'))
 
 const Schedule: FC<{ id: string }> = ({ id }) => {
+  /** Управление данными **/
   const newDate = new Date()
   const cachedDate = new Date(localStorage.getItem('currentDate'))
   const currentDate =
     cachedDate && cachedDate.getFullYear() >= 2023 ? cachedDate : newDate
+
   const [endDate, setEndDate] = useState<Date>(endOfWeek(currentDate))
-
-  const { panel: activePanel, panelsHistory } = useActiveVkuiLocation()
-  const routeNavigator = useRouteNavigator()
-
   const [lessonsState, setLessons] = useState<Day[] | null>()
   const [startDate, setStartDate] = useState<Date>(startOfWeek(currentDate))
 
+  /** Навигация **/
+  const { panel: activePanel, panelsHistory } = useActiveVkuiLocation()
+  const routeNavigator = useRouteNavigator()
+
+  /** Для асинхронных действий **/
   const [isLoading, setIsLoading] = useState<boolean>(false)
   const [isError, setIsError] = useState<boolean>(false)
 
@@ -62,56 +65,19 @@ const Schedule: FC<{ id: string }> = ({ id }) => {
         showSnackbar
       )
 
+      if (data instanceof Response) {
+        getError()
+        return
+      }
+
+      setLessons(data)
       localStorage.setItem('savedLessons', JSON.stringify(data))
-      setLessons(data as Day[])
-      return data
     } catch (e) {
       console.error('handleGetLesson', e)
     } finally {
       setIsLoading(false)
     }
   }
-
-  // const fetchMarksData = async (isHandle?: boolean) => {
-  //   const savedMarks = localStorage.getItem('savedMarks')
-  //
-  //   setIsMarksLoading(true)
-  //
-  //   if (savedMarks && !isNeedToGetNewData() && !isHandle) {
-  //     setMarksData(JSON.parse(savedMarks) as PerformanceCurrent)
-  //     return setIsMarksLoading(false)
-  //   }
-  //
-  //   try {
-  //     const marks = await getPerformance()
-  //
-  //     handleResponse(
-  //       marks,
-  //       () => {
-  //         setIsError(true)
-  //         setIsMarksLoading(false)
-  //       },
-  //       handleRateLimitExceeded,
-  //       setIsLoading,
-  //       showSnackbar
-  //     )
-  //
-  //     if (typeof marks !== 'number' && !(marks instanceof Response)) {
-  //       setMarksData(marks)
-  //       localStorage.setItem('savedMarks', JSON.stringify(marks))
-  //     }
-  //   } catch (error) {
-  //     console.error(error)
-  //     showSnackbar({
-  //       title: 'Ошибка при попытке получить оценки',
-  //       action: 'Повторить',
-  //       icon: <Icon28ErrorCircleOutline />,
-  //       onActionClick: fetchMarksData
-  //     })
-  //   } finally {
-  //     setIsMarksLoading(false)
-  //   }
-  // }
 
   const getError = () =>
     useMemo(
@@ -127,7 +93,6 @@ const Schedule: FC<{ id: string }> = ({ id }) => {
   /** Используется при ручном обновлении страницы */
   const handleReloadData = () => {
     gettedLessons(true)
-    // fetchMarksData(true)
   }
 
   const gettedLessons = async (isHandle?: boolean) => {
@@ -147,15 +112,10 @@ const Schedule: FC<{ id: string }> = ({ id }) => {
     await handleGetLesson(startDate, endDate)
   }
 
-  /** Для получения расписания при маунте */
+  /** Для получения расписания и оценок при маунте */
   useEffect(() => {
     gettedLessons()
   }, [])
-
-  // /** Для получения оценок при маунте */
-  // useEffect(() => {
-  //   fetchMarksData()
-  // }, [])
 
   const weekString = getWeekString(startDate, endDate)
 
@@ -163,6 +123,32 @@ const Schedule: FC<{ id: string }> = ({ id }) => {
     day.lessons?.some((lesson) =>
       lesson.gradebook?.tasks?.some((task) => task.mark)
     )
+  )
+
+  const ScheduleGroupAside = (
+    <ScheduleAsideButtons
+      handleGetLesson={handleGetLesson}
+      showSnackbar={showSnackbar}
+      endDate={endDate}
+      startDate={startDate}
+      setEndDate={setEndDate}
+      setStartDate={setStartDate}
+    />
+  )
+
+  const shouldShowSpinner = isLoading && <PanelSpinner />
+
+  const MarksByDayOrLoading = shouldShowSpinner || (
+    <MarksByDay lessonsState={lessonsState} />
+  )
+  const ScheduleOrLoading = shouldShowSpinner || (
+    <ScheduleGroup lessonsState={lessonsState} />
+  )
+
+  const MarksHeader = (
+    <Header mode='secondary'>
+      Оценки за неделю {isNoMarks && 'отсутствуют'}
+    </Header>
   )
 
   return (
@@ -177,38 +163,13 @@ const Schedule: FC<{ id: string }> = ({ id }) => {
         <PullToRefresh onRefresh={handleReloadData} isFetching={isLoading}>
           <Div>
             <Suspense id='MarksByDay'>
-              <Group
-                header={
-                  <Header mode='secondary'>
-                    Оценки за неделю {isNoMarks && 'отсутствуют'}
-                  </Header>
-                }
-              >
-                {/* ex isMarksLoading */}
-                {isLoading ? (
-                  <PanelSpinner />
-                ) : (
-                  <MarksByDay lessonsState={lessonsState} />
-                )}
-              </Group>
+              <Group header={MarksHeader}>{MarksByDayOrLoading}</Group>
             </Suspense>
             <Suspense id='ScheduleGroup' mode='screen'>
               <Group
                 header={
                   <Header
-                    aside={
-                      <ScheduleAsideButtons
-                        handleGetLesson={handleGetLesson}
-                        getError={getError}
-                        showSnackbar={showSnackbar}
-                        endDate={endDate}
-                        setIsLoading={setIsLoading}
-                        startDate={startDate}
-                        setLessons={setLessons}
-                        setEndDate={setEndDate}
-                        setStartDate={setStartDate}
-                      />
-                    }
+                    aside={ScheduleGroupAside}
                     mode='secondary'
                     style='align-items: center;'
                   >
@@ -216,11 +177,7 @@ const Schedule: FC<{ id: string }> = ({ id }) => {
                   </Header>
                 }
               >
-                {isLoading ? (
-                  <PanelSpinner size='regular' />
-                ) : (
-                  <ScheduleGroup lessonsState={lessonsState} />
-                )}
+                {ScheduleOrLoading}
               </Group>
             </Suspense>
             {isError && <ErrorPlaceholder onClick={handleReloadData} />}

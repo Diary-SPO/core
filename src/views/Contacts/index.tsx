@@ -22,18 +22,18 @@ const Contacts: FC<{ id: string }> = ({ id }) => (
   <Panel nav={id}>
     <PanelHeaderWithBack title='Помощь' />
     <Div>
-      <Group header={<Header mode='tertiary'>FAQ</Header>}>
-        <Card mode='shadow'>
-          {helpData.map(({ detail, title, id: dataId }) => (
-            <HelpAccordion
-              key={dataId}
-              id={dataId}
-              detail={detail}
-              title={title}
-            />
-          ))}
-        </Card>
-      </Group>
+      {/*<Group header={<Header mode='tertiary'>FAQ</Header>}>*/}
+      {/*  <Card mode='shadow'>*/}
+      {/*    {helpData.map(({ detail, title, id: dataId }) => (*/}
+      {/*      <HelpAccordion*/}
+      {/*        key={dataId}*/}
+      {/*        id={dataId}*/}
+      {/*        detail={detail}*/}
+      {/*        title={title}*/}
+      {/*      />*/}
+      {/*    ))}*/}
+      {/*  </Card>*/}
+      {/*</Group>*/}
       <Group header={<Header mode='tertiary'>Контакты</Header>}>
         {/*// @ts-ignore Типы не совместимы */}
         <SimpleCell

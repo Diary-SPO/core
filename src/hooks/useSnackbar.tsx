@@ -1,7 +1,7 @@
 import { VKUI_ACCENT_BG } from '@config'
 import { Icon28InfoCircleOutline } from '@vkontakte/icons'
 import { Snackbar, SnackbarProps } from '@vkontakte/vkui'
-import { CSSProperties, ReactNode } from 'preact/compat'
+import { ReactNode } from 'preact/compat'
 import { useCallback, useState } from 'preact/hooks'
 
 /**
@@ -12,17 +12,7 @@ import { useCallback, useState } from 'preact/hooks'
  * Если передан null в качестве 'snackbarData', закрывает Snackbar, в противном случае отображает новый Snackbar с заданными данными.
  */
 
-export interface SnackbarData {
-  layout?: SnackbarProps['layout']
-  icon?: ReactNode
-  action?: string
-  onActionClick?: () => void
-  onClose?: () => void
-  duration?: number
-  style?: CSSProperties
-  title: string
-  subtitle?: string
-}
+export type SnackbarData = Partial<SnackbarProps>
 
 const useSnackbar = (): [
   ReactNode | null,
@@ -42,7 +32,9 @@ const useSnackbar = (): [
         layout={snackbarData.layout || 'vertical'}
         onClose={() => setSnackbar(null)}
         before={
-          snackbarData.icon || <Icon28InfoCircleOutline fill={VKUI_ACCENT_BG} />
+          snackbarData.before || (
+            <Icon28InfoCircleOutline fill={VKUI_ACCENT_BG} />
+          )
         }
         action={snackbarData.action}
         onActionClick={snackbarData.onActionClick}

@@ -67,7 +67,7 @@ const Notifications: FC<{ id: string }> = ({ id }) => {
     } catch (error) {
       setLoading(false)
       showSnackbar({
-        icon: <Icon28ErrorCircleOutline fill={VKUI_RED} />,
+        before: <Icon28ErrorCircleOutline fill={VKUI_RED} />,
         title: 'Ошибка при попытке загрузить объявления',
         action: 'Попробовать снова',
         onActionClick: () => fetchAds(true)

@@ -1,3 +1,4 @@
+import { IS_DEV } from '@config'
 import {
   useActiveVkuiLocation,
   useRouteNavigator
@@ -37,7 +38,7 @@ const AuthProvider = ({ children }: { children: VNode }) => {
   return (
     <>
       {/** @beta BETA ONLY */}
-      {isMobile && (
+      {IS_DEV && isMobile && (
         <Div>
           <FormStatus style={{ marginTop: 60 }} header='Дневник СПО Beta'>
             Самые новые возможности и баги только тут, удачи!
