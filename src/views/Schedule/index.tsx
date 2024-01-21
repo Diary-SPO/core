@@ -26,18 +26,21 @@ const MarksByDay = lazy(() => import('./MarksByDay'))
 const ScheduleGroup = lazy(() => import('./ScheduleGroup'))
 
 const Schedule: FC<{ id: string }> = ({ id }) => {
+  /** Управление данными **/
   const newDate = new Date()
   const cachedDate = new Date(localStorage.getItem('currentDate'))
   const currentDate =
     cachedDate && cachedDate.getFullYear() >= 2023 ? cachedDate : newDate
+
   const [endDate, setEndDate] = useState<Date>(endOfWeek(currentDate))
-
-  const { panel: activePanel, panelsHistory } = useActiveVkuiLocation()
-  const routeNavigator = useRouteNavigator()
-
   const [lessonsState, setLessons] = useState<Day[] | null>()
   const [startDate, setStartDate] = useState<Date>(startOfWeek(currentDate))
 
+  /** Навигация **/
+  const { panel: activePanel, panelsHistory } = useActiveVkuiLocation()
+  const routeNavigator = useRouteNavigator()
+
+  /** Для асинхронных действий **/
   const [isLoading, setIsLoading] = useState<boolean>(false)
   const [isError, setIsError] = useState<boolean>(false)
 

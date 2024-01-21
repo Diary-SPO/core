@@ -20,9 +20,9 @@ export const handleResponse = <T extends object>(
   /**
    * Если нам пришел ответ от сервера с ошибкой
    *
-   * P.S. В "хорошем" ответе нет поля status, а только нужные данные
+   * P.S. В "хорошем" ответе нет поля statusText, а только нужные данные
    */
-  if (!(response instanceof Response) && !('status' in response)) {
+  if (!(response instanceof Response) || !('statusText' in response)) {
     return response
   }
 
