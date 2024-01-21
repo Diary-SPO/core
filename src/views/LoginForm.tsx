@@ -1,6 +1,7 @@
 import { PanelHeaderWithBack } from '@components'
 import { VKUI_RED } from '@config'
 import { ResponseLogin } from '@diary-spo/types'
+import { handleResponse } from '@utils'
 import {
   Icon28DoorArrowLeftOutline,
   Icon28ErrorCircleOutline
@@ -32,17 +33,18 @@ const LoginForm: FC<{ id: string }> = ({ id }) => {
 
   const [snackbar, showSnackbar] = useSnackbar()
 
+  /** Вызывается только при неизвестной ошибке **/
   const createErrorSnackbar = () =>
     showSnackbar({
       before: <Icon28ErrorCircleOutline fill={VKUI_RED} />,
-      subtitle: 'Попробуйте заново или сообщите об ошибке',
+      subtitle: 'Сообщите нам о проблема',
       title: 'Ошибка при попытке авторизации'
     })
 
   useEffect(() => {
-    const storageToken = localStorage.getItem('token')
-
     const getUserCookie = async () => {
+      const storageToken = localStorage.getItem('token')
+
       if (!storageToken) {
         showSnackbar({
           before: <Icon28ErrorCircleOutline fill={VKUI_RED} />,
@@ -63,6 +65,7 @@ const LoginForm: FC<{ id: string }> = ({ id }) => {
       password: setPassword
     }[name]
     setIsDataInvalid(false)
+    setIsLoading(false)
 
     setStateAction?.(value)
   }
@@ -71,10 +74,13 @@ const LoginForm: FC<{ id: string }> = ({ id }) => {
     e.preventDefault()
     if (!loginPattern.test(login)) {
       setIsDataInvalid(true)
+      setIsLoading(false)
       return
     }
 
     const passwordHashed = new Hashes.SHA256().b64(password)
+
+    setIsLoading(true)
     const response = await makeRequest<ResponseLogin>(
       '/login/',
       'POST',
@@ -85,38 +91,30 @@ const LoginForm: FC<{ id: string }> = ({ id }) => {
       })
     )
 
-    try {
-      setIsLoading(true)
+    const data = handleResponse(
+      response,
+      () => setIsDataInvalid(true),
+      undefined,
+      setIsLoading
+    )
 
-      if (Number(response) === 401) {
-        setIsLoading(false)
-        setIsDataInvalid(true)
-        return
-      }
-
-      if (response instanceof Response || typeof response === 'number') {
-        createErrorSnackbar()
-        return
-      }
-
-      const dataResp = response
-      if (!dataResp.token) {
-        createErrorSnackbar()
-      }
-
-      saveData(dataResp)
-
-      showSnackbar({
-        title: 'Вхожу',
-        subtitle: 'Подождите немного'
-      })
-
-      await routeNavigator.replace(`/${VIEW_SCHEDULE}`)
-    } catch (e) {
-      console.error(e)
-    } finally {
-      setIsLoading(false)
+    if (!data) {
+      return
     }
+
+    if (!data.token) {
+      createErrorSnackbar()
+      return
+    }
+
+    saveData(data)
+
+    showSnackbar({
+      title: 'Вхожу',
+      subtitle: 'Подождите немного'
+    })
+
+    await routeNavigator.replace(`/${VIEW_SCHEDULE}`)
   }
 
   const isLoginEmpty = login === ''

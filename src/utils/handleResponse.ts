@@ -8,21 +8,23 @@ import { SnackbarData } from '../hooks/useSnackbar'
  */
 
 const HTTP_STATUSES = {
-  /** Ошибка авторизации */
-  TEAPOT: 418,
-  /** Rate limit */
+  /** Ошибка авторизации **/
+  UNAUTHORIZED: 401,
+  /** Rate limit **/
   RATE_LIMIT: 429,
+  /** Неизвестная **/
+  TEAPOT: 520,
   /** Internal Server Error **/
   INTERNAL: 500
 } as const
 
 export const handleResponse = <T extends object>(
-  response: T,
-  errorCallback: () => void,
-  limitExceededCallback: () => void,
-  loadingCallback: (isLoading: boolean) => void,
+  response: Response | T,
+  errorCallback?: () => void,
+  limitExceededCallback?: () => void,
+  loadingCallback?: (isLoading: boolean) => void,
   showSnackbar?: (snackbarData: SnackbarData) => void
-): void => {
+): undefined | T => {
   console.log('%c[handleResponse]', 'color: green', response)
 
   /**
@@ -31,8 +33,10 @@ export const handleResponse = <T extends object>(
    * P.S. В "хорошем" ответе нет поля status, а только нужные данные
    */
   if (!(response instanceof Response) && !('status' in response)) {
-    return
+    return response
   }
+
+  console.log('%c[handleResponse]', 'color: violet', response.status)
 
   switch (response.status) {
     case HTTP_STATUSES.RATE_LIMIT:
@@ -44,14 +48,18 @@ export const handleResponse = <T extends object>(
       })
 
       showSnackbar?.({
-        icon: errorIcon,
+        before: errorIcon,
         title: 'Ошибка при попытке сделать запрос',
         subtitle: 'Попробуйте обновить страницу или перезайти в аккаунт'
       })
       break
     }
+    default: {
+      errorCallback()
+      break
+    }
   }
 
   loadingCallback(false)
-  errorCallback()
+  return
 }

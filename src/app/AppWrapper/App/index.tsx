@@ -79,7 +79,7 @@ const App: FC = () => {
       </FormStatus>
     </Div>
   )
-  
+
   return (
     <AppRoot safeAreaInsets={vkBridgeInsets}>
       <SplitLayout

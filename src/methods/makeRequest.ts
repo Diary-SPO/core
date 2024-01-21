@@ -26,6 +26,10 @@ const makeRequest = async <T>(
 
     clearTimeout(timeoutId)
 
+    if (response.status === 401) {
+      return response
+    }
+
     if (!response.ok) {
       return requestToSecondServer(route, token, method, body)
     }
