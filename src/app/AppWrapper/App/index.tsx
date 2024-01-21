@@ -85,7 +85,7 @@ const App: FC = () => {
       <SplitLayout
         popout={routerPopout}
         modal={modals}
-        header={!isVKCOM && <PanelHeader delimiter='none' />}
+        header={!isVKCOM && <PanelHeader separator={false} />}
         style={{ justifyContent: 'center' }}
       >
         {viewWidth.tabletPlus && panel !== MAIN_SETTINGS && (

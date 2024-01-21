@@ -1,5 +1,5 @@
 import { SECOND_SERVER_URL } from '@config'
-import { ServerResponse } from '../../types'
+import {ServerResponse} from "../types";
 
 const requestToSecondServer = async <T>(
   route: string,

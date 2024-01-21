@@ -101,10 +101,12 @@ const Settings: FunctionalComponent<ISettings> = ({ id }) => {
   const logOutPopup = (
     <Alert
       actions={[
+        // @ts-ignore
         {
           title: 'Отмена',
           mode: 'cancel'
         },
+        // @ts-ignore
         {
           title: 'Выйти',
           mode: 'destructive',
