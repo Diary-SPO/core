@@ -65,7 +65,7 @@ const Schedule: FC<{ id: string }> = ({ id }) => {
         showSnackbar
       )
 
-      if (data instanceof Response) {
+      if (data instanceof Response || 'error' in data) {
         getError()
         return
       }
@@ -119,11 +119,13 @@ const Schedule: FC<{ id: string }> = ({ id }) => {
 
   const weekString = getWeekString(startDate, endDate)
 
-  const isNoMarks = !lessonsState?.some((day) =>
-    day.lessons?.some((lesson) =>
-      lesson.gradebook?.tasks?.some((task) => task.mark)
+  const isNoMarks =
+    lessonsState?.length &&
+    !lessonsState?.some((day) =>
+      day.lessons?.some((lesson) =>
+        lesson.gradebook?.tasks?.some((task) => task.mark)
+      )
     )
-  )
 
   const ScheduleGroupAside = (
     <ScheduleAsideButtons

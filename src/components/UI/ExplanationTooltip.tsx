@@ -1,5 +1,5 @@
 import { Icon16HelpOutline } from '@vkontakte/icons'
-import { unstable_Popover as Popover, Subhead } from '@vkontakte/vkui'
+import { Subhead, unstable_Popover as Popover } from '@vkontakte/vkui'
 import { CSSProperties, FC } from 'preact/compat'
 
 interface ITooltipText {
