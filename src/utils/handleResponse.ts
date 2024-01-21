@@ -28,19 +28,27 @@ export const handleResponse = <T extends object>(
 
   console.log('%c[handleResponse]', 'color: violet', response.status)
 
+  const errorIcon = createElement(Icon28ErrorCircleOutline, {
+    fill: 'var(--vkui--color_icon_negative)'
+  })
+
   switch (response.status) {
     case HTTP_STATUSES.RATE_LIMIT:
       limitExceededCallback()
       break
-    case HTTP_STATUSES.TEAPOT: {
-      const errorIcon = createElement(Icon28ErrorCircleOutline, {
-        fill: 'var(--vkui--color_icon_negative)'
-      })
-
+    case HTTP_STATUSES.UNAUTHORIZED:
+      localStorage.clear()
       showSnackbar?.({
         before: errorIcon,
         title: 'Ошибка при попытке сделать запрос',
-        subtitle: 'Попробуйте обновить страницу или перезайти в аккаунт'
+        subtitle: 'Перезайдите в аккаунт'
+      })
+      break
+    case HTTP_STATUSES.TEAPOT: {
+      showSnackbar?.({
+        before: errorIcon,
+        title: 'Ошибка при попытке сделать запрос',
+        subtitle: 'Сообщите нам о проблеме'
       })
       break
     }
