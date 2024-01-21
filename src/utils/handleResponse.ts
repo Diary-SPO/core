@@ -1,22 +1,12 @@
 import { Icon28ErrorCircleOutline } from '@vkontakte/icons'
 import { createElement } from 'preact'
 import { SnackbarData } from '../hooks/useSnackbar'
+import { HTTP_STATUSES } from '../types'
 
 /**
  * Функция 'handleResponse' обрабатывает различные негативные сценарии ответа после запроса.
  * Принимает response и выполняет соответствующие коллбэки в зависимости от полученного ответа.
  */
-
-const HTTP_STATUSES = {
-  /** Ошибка авторизации **/
-  UNAUTHORIZED: 401,
-  /** Rate limit **/
-  RATE_LIMIT: 429,
-  /** Неизвестная **/
-  TEAPOT: 520,
-  /** Internal Server Error **/
-  INTERNAL: 500
-} as const
 
 export const handleResponse = <T extends object>(
   response: Response | T,

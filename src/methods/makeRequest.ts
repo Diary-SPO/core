@@ -1,5 +1,5 @@
 import { BASE_URL } from '@config'
-import { ServerResponse } from '../types'
+import { HTTP_STATUSES, ServerResponse } from '../types'
 import requestToSecondServer from './requestToSecondServer.ts'
 
 const makeRequest = async <T>(
@@ -26,7 +26,8 @@ const makeRequest = async <T>(
 
     clearTimeout(timeoutId)
 
-    if (response.status === 401) {
+    /** В случае ошибки авторизации мы не делаем запрос на второй сервер, а сразу возвращаем ответ **/
+    if (response.status === HTTP_STATUSES.UNAUTHORIZED) {
       return response
     }
 
