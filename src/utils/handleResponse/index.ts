@@ -1,7 +1,7 @@
 import { Icon28ErrorCircleOutline } from '@vkontakte/icons'
 import { createElement } from 'preact'
-import { SnackbarData } from '../hooks/useSnackbar'
-import { HTTP_STATUSES } from '../types'
+import { SnackbarData } from '../../hooks/useSnackbar.tsx'
+import { HTTP_STATUSES } from '../../types'
 
 /**
  * Функция 'handleResponse' обрабатывает различные негативные сценарии ответа после запроса.
@@ -23,6 +23,7 @@ export const handleResponse = <T extends object>(
    * P.S. В "хорошем" ответе нет поля statusText, а только нужные данные
    */
   if (!(response instanceof Response) || !('statusText' in response)) {
+    loadingCallback(false)
     return response
   }
 
@@ -38,11 +39,14 @@ export const handleResponse = <T extends object>(
       break
     case HTTP_STATUSES.UNAUTHORIZED:
       localStorage.clear()
-      showSnackbar?.({
-        before: errorIcon,
-        title: 'Ошибка при попытке сделать запрос',
-        subtitle: 'Перезайдите в аккаунт'
-      })
+      if (showSnackbar) {
+        showSnackbar?.({
+          before: errorIcon,
+          title: 'Ошибка при попытке сделать запрос',
+          subtitle: 'Перезайдите в аккаунт'
+        })
+      }
+
       break
     case HTTP_STATUSES.TEAPOT: {
       showSnackbar?.({

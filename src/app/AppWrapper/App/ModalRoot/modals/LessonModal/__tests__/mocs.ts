@@ -1,9 +1,4 @@
 import { Lesson } from '@diary-spo/shared'
-import { IMarksByDay } from '../../src/components'
-
-/** Переданные данные **/
-export const mockTextWithLinks =
-  'Check out this website: https://www.example.com.'
 
 export const mockLesson: Lesson = {
   name: 'Math',
@@ -36,17 +31,6 @@ export const mockLessonInvalid: Lesson = {
     themes: ['Theme 1', 'Theme 2']
   },
   tasks: undefined
-}
-
-export const mockMarksByDay: IMarksByDay = {
-  '2023-01-01': {
-    Math: [5, 5, 5],
-    Physics: [4, 5, 4]
-  },
-  '2023-01-02': {
-    English: [4, 5, 5],
-    Chemistry: [5, 5, 5]
-  }
 }
 
 /** Ожидаемые данные **/

@@ -1,12 +1,9 @@
+import { MODAL_PAGE_LESSON, MODAL_PAGE_MARK } from '@config'
 import {
   useActiveVkuiLocation,
   useRouteNavigator
 } from '@vkontakte/vk-mini-apps-router'
 import { ModalRoot as VKUIModalRoot } from '@vkontakte/vkui'
-import {
-  MODAL_PAGE_LESSON,
-  MODAL_PAGE_MARK
-} from '../../../../config/constants.ts'
 import LessonModal from './modals/LessonModal'
 import MarkDetailedModal from './modals/MarkDetailedModal'
 
