@@ -65,8 +65,6 @@ const Schedule: FC<{ id: string }> = ({ id }) => {
         showSnackbar
       )
 
-      console.log('error' in data)
-
       if (data instanceof Response || 'error' in data) {
         return
       }
