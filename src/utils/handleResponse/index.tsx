@@ -9,11 +9,17 @@ import { HTTP_STATUSES } from '../../types'
  */
 
 export const handleResponse = <T extends object>(
+  /** Ответ от сервера **/
   response: Response | T,
+  /** Функция, вызываемая при ошибке **/
   errorCallback?: () => void,
+  /** Функция, вызываемая достижении rate limit **/
   limitExceededCallback?: () => void,
+  /** Функция, вызываемая для отмены загрузки **/
   loadingCallback?: (isLoading: boolean) => void,
+  /** Функция, вызываемая для создания снекбара **/
   showSnackbar?: (snackbarData: SnackbarData) => void,
+  /** Надо ли вызывать errorCallback при 520 ошибке **/
   shouldCallErrorIfFatal = true
 ): undefined | T => {
   console.log('%c[handleResponse]', 'color: green', response)
@@ -62,7 +68,6 @@ export const handleResponse = <T extends object>(
   }
 
   if (shouldCallErrorIfFatal && errorCallback) {
-    console.log('test')
     errorCallback()
   }
 
