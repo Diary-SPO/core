@@ -45,19 +45,13 @@ const Notifications: FC<{ id: string }> = ({ id }) => {
     try {
       if (isHandle) {
         const ads = await getAds()
-        handleResponse(
-          ads,
-          handleError,
-          handleError,
-          setLoading,
-          showSnackbar
-        )
-        
+        handleResponse(ads, handleError, handleError, setLoading, showSnackbar)
+
         if ('error' in ads || ads instanceof Response) {
           return
         }
         console.log(ads)
-        
+
         updateCache(ads)
         setNotifications(ads)
       } else {
