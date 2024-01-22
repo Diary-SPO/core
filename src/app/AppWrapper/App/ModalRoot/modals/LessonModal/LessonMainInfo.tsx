@@ -1,13 +1,13 @@
 import { ExplanationTooltip } from '@components'
 import { LessonType } from '@diary-spo/shared'
+import { LessonTypeKeys } from '@diary-spo/shared/src/keys'
 import { textToLink } from '@utils'
 import { Group, Header, InfoRow, SimpleCell } from '@vkontakte/vkui'
-import { useMemo } from 'preact/compat'
 import { FC } from 'react'
 
 export interface ILessonMainInfo {
   name: string
-  lessonType: string
+  lessonType: LessonTypeKeys
   themes?: string[]
   teacherName: string
 }
@@ -15,16 +15,13 @@ export interface ILessonMainInfo {
 const LessonMainInfo: FC<{ lessonMainInfo: Partial<ILessonMainInfo> }> = ({
   lessonMainInfo
 }) => {
-  const header = useMemo(
-    () => (
-      <Header mode='tertiary'>
-        <ExplanationTooltip
-          text='Основная информация'
-          tooltipContent='Вся информация берется из оригинального дневника и отображается здесь'
-        />
-      </Header>
-    ),
-    []
+  const header = (
+    <Header mode='tertiary'>
+      <ExplanationTooltip
+        text='Основная информация'
+        tooltipContent='Вся информация берется из оригинального дневника и отображается здесь'
+      />
+    </Header>
   )
 
   const theme = lessonMainInfo.themes

@@ -33,8 +33,6 @@ const LessonModal: FC<ILessonModal> = ({ id }) => {
         lessonTimePlaceInfo: newLessonTimePlaceInfo
       } = setLessonDetails(modal)
 
-      // FIXME: fix it
-      // @ts-ignore
       setLessonData(newLessonData)
       setLessonMainInfo(newLessonMainInfo)
       setLessonTimePlaceInfo(newLessonTimePlaceInfo)
