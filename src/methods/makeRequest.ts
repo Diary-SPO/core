@@ -6,7 +6,7 @@ const makeRequest = async <T>(
   route: string,
   method: 'POST' | 'GET' = 'GET',
   body?: BodyInit
-): Promise<ServerResponse<T> | { error: boolean }> => {
+): Promise<ServerResponse<T>> => {
   const token = localStorage.getItem('token')
   const url = `${BASE_URL}${route}`
 

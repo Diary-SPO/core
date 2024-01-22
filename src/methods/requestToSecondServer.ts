@@ -6,7 +6,7 @@ const requestToSecondServer = async <T>(
   cookie: string,
   method: 'POST' | 'GET',
   body: BodyInit
-): Promise<ServerResponse<T> | { error: boolean }> => {
+): Promise<ServerResponse<T>> => {
   try {
     const secondServerResponse = await fetch(SECOND_SERVER_URL + route, {
       method: method,
@@ -24,11 +24,10 @@ const requestToSecondServer = async <T>(
     return (await secondServerResponse.json()) as T
   } catch (e) {
     console.warn('[SECOND SERVER]', e)
-    console.warn(
-      '[is failed to fetch]',
-      e.toString() === 'TypeError: Failed to fetch'
-    )
-    if (e.toString() === 'TypeError: Failed to fetch') {
+    const isFatalError = e.toString() === 'TypeError: Failed to fetch'
+
+    if (e.toString() === isFatalError) {
+      console.warn('[is failed to fetch]')
       return { error: true }
     }
   }
