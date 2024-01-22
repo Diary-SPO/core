@@ -31,6 +31,6 @@
       "@store": ["./src/store"],
     }
   },
-  "include": ["src", "__tests__"],
+  "include": ["src", "vite.config.ts"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }

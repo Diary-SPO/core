@@ -52,7 +52,6 @@ export const handleResponse = <T extends object>(
           subtitle: 'Перезайдите в аккаунт'
         })
       }
-
       break
     case HTTP_STATUSES.TEAPOT: {
       showSnackbar?.({
