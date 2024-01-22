@@ -86,7 +86,8 @@ const Marks: FC<{ id: string }> = ({ id }) => {
         },
         handleRateLimitExceeded,
         setIsLoading,
-        showSnackbar
+        showSnackbar,
+        false
       )
 
       if (!('daysWithMarksForSubject' in marks)) {

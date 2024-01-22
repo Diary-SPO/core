@@ -33,14 +33,6 @@ const LoginForm: FC<{ id: string }> = ({ id }) => {
 
   const [snackbar, showSnackbar] = useSnackbar()
 
-  /** Вызывается только при неизвестной ошибке **/
-  const createErrorSnackbar = () =>
-    showSnackbar({
-      before: <Icon28ErrorCircleOutline fill={VKUI_RED} />,
-      subtitle: 'Сообщите нам о проблеме',
-      title: 'Ошибка при попытке авторизации'
-    })
-
   useEffect(() => {
     const getUserCookie = async () => {
       const storageToken = localStorage.getItem('token')
@@ -95,11 +87,12 @@ const LoginForm: FC<{ id: string }> = ({ id }) => {
       response,
       () => setIsDataInvalid(true),
       undefined,
-      setIsLoading
+      setIsLoading,
+      showSnackbar,
+      false
     )
 
-    if ((!data || 'error' in data) || !data.token) {
-      createErrorSnackbar()
+    if (!data || !data.token) {
       return
     }
 

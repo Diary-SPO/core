@@ -47,7 +47,7 @@ const Notifications: FC<{ id: string }> = ({ id }) => {
         const ads = await getAds()
         handleResponse(ads, handleError, handleError, setLoading, showSnackbar)
 
-        if ('error' in ads || ads instanceof Response) {
+        if (ads instanceof Response) {
           return
         }
         console.log(ads)

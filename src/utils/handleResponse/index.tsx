@@ -13,7 +13,8 @@ export const handleResponse = <T extends object>(
   errorCallback?: () => void,
   limitExceededCallback?: () => void,
   loadingCallback?: (isLoading: boolean) => void,
-  showSnackbar?: (snackbarData: SnackbarData) => void
+  showSnackbar?: (snackbarData: SnackbarData) => void,
+  shouldCallErrorIfFatal = true
 ): undefined | T => {
   console.log('%c[handleResponse]', 'color: green', response)
 
@@ -22,12 +23,6 @@ export const handleResponse = <T extends object>(
    *
    * P.S. В "хорошем" ответе нет поля statusText, а только нужные данные
    */
-  if ('error' in response) {
-    loadingCallback(false)
-    errorCallback?.()
-    return
-  }
-
   if (!(response instanceof Response) || !('statusText' in response)) {
     loadingCallback(false)
 
@@ -66,7 +61,8 @@ export const handleResponse = <T extends object>(
     }
   }
 
-  if (errorCallback) {
+  if (shouldCallErrorIfFatal && errorCallback) {
+    console.log('test')
     errorCallback()
   }
 

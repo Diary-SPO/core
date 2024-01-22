@@ -13,9 +13,7 @@ export interface Storage {
   value: string
 }
 
-export type ServerResponse<T = unknown> = Promise<
-  T | Response | { error: boolean }
->
+export type ServerResponse<T = unknown> = Promise<T | Response>
 
 export const HTTP_STATUSES = {
   /** Ошибка авторизации **/

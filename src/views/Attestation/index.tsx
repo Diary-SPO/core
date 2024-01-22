@@ -39,7 +39,7 @@ const Attestation: FC<IAttestation> = ({ id }) => {
         setIsLoading
       )
 
-      if (data instanceof Response || 'error' in data) {
+      if (data instanceof Response) {
         return
       }
 

@@ -27,8 +27,10 @@ const requestToSecondServer = async <T>(
     const isFatalError = e.toString() === 'TypeError: Failed to fetch'
 
     if (isFatalError) {
-      console.warn('[is failed to fetch]')
-      return { error: true }
+      return new Response('', {
+        status: 520,
+        headers: { 'Content-Type': 'application/json' }
+      })
     }
   }
 }
