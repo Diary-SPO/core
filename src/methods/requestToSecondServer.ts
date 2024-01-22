@@ -26,7 +26,7 @@ const requestToSecondServer = async <T>(
     console.warn('[SECOND SERVER]', e)
     const isFatalError = e.toString() === 'TypeError: Failed to fetch'
 
-    if (e.toString() === isFatalError) {
+    if (isFatalError) {
       console.warn('[is failed to fetch]')
       return { error: true }
     }

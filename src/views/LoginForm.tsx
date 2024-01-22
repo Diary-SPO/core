@@ -37,7 +37,7 @@ const LoginForm: FC<{ id: string }> = ({ id }) => {
   const createErrorSnackbar = () =>
     showSnackbar({
       before: <Icon28ErrorCircleOutline fill={VKUI_RED} />,
-      subtitle: 'Сообщите нам о проблема',
+      subtitle: 'Сообщите нам о проблеме',
       title: 'Ошибка при попытке авторизации'
     })
 
@@ -98,11 +98,7 @@ const LoginForm: FC<{ id: string }> = ({ id }) => {
       setIsLoading
     )
 
-    if (!data || 'error' in data) {
-      return
-    }
-
-    if (!data.token) {
+    if ((!data || 'error' in data) || !data.token) {
       createErrorSnackbar()
       return
     }
