@@ -3,7 +3,7 @@ import { FC } from 'react'
 
 const ErrorPlaceholder: FC<{ onClick: () => void }> = ({ onClick }) => (
   <Placeholder
-    header={'Ошибка при загрузке'}
+    header='Ошибка при загрузке'
     action={
       <ButtonGroup mode='vertical' align='center'>
         {/*// @ts-ignore Типы не совместимы */}
