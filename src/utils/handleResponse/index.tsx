@@ -62,9 +62,12 @@ export const handleResponse = <T extends object>(
       break
     }
     default: {
-      errorCallback()
       break
     }
+  }
+
+  if (errorCallback) {
+    errorCallback()
   }
 
   loadingCallback(false)
