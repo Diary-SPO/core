@@ -47,7 +47,7 @@ const Attestation: FC<IAttestation> = ({ id }) => {
           setIsLoading(isLoading)
         }
       )
-
+      console.log(data)
       setAttestationData(data as AttestationResponse)
     } catch (error) {
       setIsError(true)

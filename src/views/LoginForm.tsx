@@ -98,7 +98,7 @@ const LoginForm: FC<{ id: string }> = ({ id }) => {
       setIsLoading
     )
 
-    if (!data) {
+    if (!data || 'error' in data) {
       return
     }
 

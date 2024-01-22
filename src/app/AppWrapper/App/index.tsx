@@ -27,7 +27,7 @@ import {
   useAdaptivityConditionalRender,
   usePlatform
 } from '@vkontakte/vkui'
-import { FC, lazy } from 'preact/compat'
+import { FC } from 'preact/compat'
 import {
   MAIN_SETTINGS,
   VIEW_ATTESTATION,
@@ -39,8 +39,8 @@ import {
 } from '../../../routes'
 import { Pages } from '../../../types'
 
-const ModalRoot = lazy(() => import('./ModalRoot'))
-const Epic = lazy(() => import('./Epic'))
+import Epic from './Epic'
+import ModalRoot from './ModalRoot'
 
 const App: FC = () => {
   const routeNavigator = useRouteNavigator()
@@ -85,7 +85,7 @@ const App: FC = () => {
       <SplitLayout
         popout={routerPopout}
         modal={modals}
-        header={!isVKCOM && <PanelHeader separator={false} />}
+        header={!isVKCOM && <PanelHeader delimiter='none' />}
         style={{ justifyContent: 'center' }}
       >
         {viewWidth.tabletPlus && panel !== MAIN_SETTINGS && (

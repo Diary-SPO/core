@@ -49,18 +49,19 @@ const Notifications: FC<{ id: string }> = ({ id }) => {
           ads,
           handleError,
           handleError,
-          () => {
-            setLoading(false)
-            setIsError(false)
-          },
+          setLoading,
           showSnackbar
         )
-        updateCache(ads as NotificationsResponse[])
-        setNotifications(ads as NotificationsResponse[])
+        
+        if ('error' in ads || ads instanceof Response) {
+          return
+        }
+        console.log(ads)
+        
+        updateCache(ads)
+        setNotifications(ads)
       } else {
-        const cachedAds = JSON.parse(localStorage.getItem('savedAds') || '') as
-          | NotificationsResponse[]
-          | null
+        const cachedAds = JSON.parse(localStorage.getItem('savedAds') || '')
         setNotifications(cachedAds)
       }
       setLoading(false)

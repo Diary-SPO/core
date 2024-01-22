@@ -23,6 +23,11 @@ const requestToSecondServer = async <T>(
 
     return (await secondServerResponse.json()) as T
   } catch (e) {
+    console.warn('[SECOND SERVER]', e)
+    console.warn(
+      '[is failed to fetch]',
+      e.toString() === 'TypeError: Failed to fetch'
+    )
     if (e.toString() === 'TypeError: Failed to fetch') {
       return { error: true }
     }

@@ -1,5 +1,5 @@
+import { VKUI_RED } from '@config'
 import { Icon28ErrorCircleOutline } from '@vkontakte/icons'
-import { createElement } from 'preact'
 import { SnackbarData } from '../../hooks/useSnackbar.tsx'
 import { HTTP_STATUSES } from '../../types'
 
@@ -22,16 +22,21 @@ export const handleResponse = <T extends object>(
    *
    * P.S. В "хорошем" ответе нет поля statusText, а только нужные данные
    */
+  if ('error' in response) {
+    loadingCallback(false)
+    errorCallback?.()
+    return
+  }
+
   if (!(response instanceof Response) || !('statusText' in response)) {
     loadingCallback(false)
+
     return response
   }
 
   console.log('%c[handleResponse]', 'color: violet', response.status)
 
-  const errorIcon = createElement(Icon28ErrorCircleOutline, {
-    fill: 'var(--vkui--color_icon_negative)'
-  })
+  const errorIcon = <Icon28ErrorCircleOutline fill={VKUI_RED} />
 
   switch (response.status) {
     case HTTP_STATUSES.RATE_LIMIT:
