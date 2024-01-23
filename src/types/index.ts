@@ -1,3 +1,5 @@
+import { TextMark } from '@diary-spo/shared'
+
 export type Pages =
   | 'schedule'
   | 'contacts'
@@ -11,6 +13,19 @@ export interface Storage {
   value: string
 }
 
-export type ServerResponse<T = unknown> = Promise<T | 418 | 429 | 401 | number>
+export type ServerResponse<T = unknown> = Promise<T | Response>
+
+export const HTTP_STATUSES = {
+  /** Ошибка авторизации **/
+  UNAUTHORIZED: 401,
+  /** Rate limit **/
+  RATE_LIMIT: 429,
+  /** Неизвестная **/
+  TEAPOT: 520,
+  /** Internal Server Error **/
+  INTERNAL: 500
+} as const
 
 export const loginPattern = /^[a-zA-Z0-9а-яА-ЯёЁ-]+$/
+
+export type ReturnedMark = TextMark | 'Н' | 'ДЗ' | 'О' | 'Д' | number

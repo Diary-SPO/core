@@ -1,26 +1,13 @@
 import { Day } from '@diary-spo/shared'
-import { formatDateForRequest } from '@utils'
 import { ServerResponse } from '../../types'
-import makeRequest from './makeRequest'
+import makeRequest from '../makeRequest'
+import { formatDateForRequest } from './helpers.ts'
 
 export const getLessons = async (
-  startDate?: Date,
-  endDate?: Date
+  startDate: Date,
+  endDate: Date
 ): ServerResponse<Day[]> => {
   const id = localStorage.getItem('id')
-
-  if (!id) {
-    return 418
-  }
-
-  if (!startDate) {
-    startDate = new Date()
-  }
-
-  if (!endDate) {
-    endDate = new Date()
-    endDate.setDate(endDate.getDate() + 7)
-  }
 
   const formattedStartDate = formatDateForRequest(startDate)
   const formattedEndDate = formatDateForRequest(endDate)

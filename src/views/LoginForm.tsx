@@ -1,5 +1,7 @@
 import { PanelHeaderWithBack } from '@components'
+import { VKUI_RED } from '@config'
 import { ResponseLogin } from '@diary-spo/types'
+import { handleResponse } from '@utils'
 import {
   Icon28DoorArrowLeftOutline,
   Icon28ErrorCircleOutline
@@ -8,7 +10,6 @@ import { useRouteNavigator } from '@vkontakte/vk-mini-apps-router'
 import {
   Button,
   FormItem,
-  FormLayout,
   FormStatus,
   Group,
   Input,
@@ -18,7 +19,7 @@ import Hashes from 'jshashes'
 import { ChangeEvent, FC } from 'preact/compat'
 import { useEffect, useState } from 'preact/hooks'
 import { useSnackbar } from '../hooks'
-import makeRequest from '../methods/server/makeRequest'
+import { makeRequest } from '../methods'
 import { VIEW_SCHEDULE } from '../routes'
 import { loginPattern } from '../types'
 
@@ -29,28 +30,16 @@ const LoginForm: FC<{ id: string }> = ({ id }) => {
   const [password, setPassword] = useState<string>('')
   const [isDataInvalid, setIsDataInvalid] = useState<boolean>(false)
   const [isLoading, setIsLoading] = useState<boolean>(false)
+
   const [snackbar, showSnackbar] = useSnackbar()
 
-  const createErrorSnackbar = () =>
-    showSnackbar({
-      icon: (
-        <Icon28ErrorCircleOutline fill='var(--vkui--color_icon_negative)' />
-      ),
-      subtitle: 'Попробуйте заного или сообщите об ошибке',
-      title: 'Ошибка при попытке авторизации'
-    })
-
   useEffect(() => {
-    const storageToken = localStorage.getItem('token')
-    setIsLoading(true)
     const getUserCookie = async () => {
+      const storageToken = localStorage.getItem('token')
+
       if (!storageToken) {
-        await routeNavigator.replace('/')
-        setIsLoading(false)
         showSnackbar({
-          icon: (
-            <Icon28ErrorCircleOutline fill='var(--vkui--color_icon_negative)' />
-          ),
+          before: <Icon28ErrorCircleOutline fill={VKUI_RED} />,
           subtitle: 'Заполни форму и войди в дневник',
           title: 'О вас нет данных, ты кто такой?'
         })
@@ -68,18 +57,23 @@ const LoginForm: FC<{ id: string }> = ({ id }) => {
       password: setPassword
     }[name]
     setIsDataInvalid(false)
+    setIsLoading(false)
 
     setStateAction?.(value)
   }
 
-  const handleLogin = async () => {
+  const handleLogin = async (e: ChangeEvent<HTMLFormElement>) => {
+    e.preventDefault()
     if (!loginPattern.test(login)) {
       setIsDataInvalid(true)
+      setIsLoading(false)
       return
     }
 
     const passwordHashed = new Hashes.SHA256().b64(password)
-    const response = await makeRequest<Response & ResponseLogin>(
+
+    setIsLoading(true)
+    const response = await makeRequest<ResponseLogin>(
       '/login/',
       'POST',
       JSON.stringify({
@@ -89,48 +83,27 @@ const LoginForm: FC<{ id: string }> = ({ id }) => {
       })
     )
 
-    console.log(response)
+    const data = handleResponse(
+      response,
+      () => setIsDataInvalid(true),
+      undefined,
+      setIsLoading,
+      showSnackbar,
+      false
+    )
 
-    try {
-      setIsLoading(true)
-
-      if (response === 401) {
-        setIsLoading(false)
-        setIsDataInvalid(true)
-        throw new Error('401')
-      }
-
-      if (typeof response === 'number') {
-        showSnackbar({
-          icon: (
-            <Icon28ErrorCircleOutline fill='var(--vkui--color_icon_negative)' />
-          ),
-          title: 'Ошибка при попытке сделать запрос',
-          subtitle:
-            'Попробуйте обновить страницу или обновите куки в настройках'
-        })
-        throw new Error('500')
-      }
-
-      const dataResp = response as ResponseLogin
-      if (!String(dataResp.token)) {
-        createErrorSnackbar()
-      }
-
-      saveData(dataResp)
-
-      showSnackbar({
-        title: 'Вхожу',
-        subtitle: 'Подождите немного'
-      })
-
-      await routeNavigator.replace(`/${VIEW_SCHEDULE}`)
-    } catch (e) {
-      setIsLoading(false)
-      console.error(e)
-    } finally {
-      setIsLoading(false)
+    if (!data || !data.token) {
+      return
     }
+
+    saveData(data)
+
+    showSnackbar({
+      title: 'Вхожу',
+      subtitle: 'Подождите немного'
+    })
+
+    await routeNavigator.replace(`/${VIEW_SCHEDULE}`)
   }
 
   const isLoginEmpty = login === ''
@@ -158,7 +131,7 @@ const LoginForm: FC<{ id: string }> = ({ id }) => {
             Проверьте правильность логина и пароля
           </FormStatus>
         )}
-        <FormLayout>
+        <form method='post' onSubmit={handleLogin}>
           {/*//@ts-ignore типы React не совсем совместимы с Preact*/}
           <FormItem
             required
@@ -206,10 +179,12 @@ const LoginForm: FC<{ id: string }> = ({ id }) => {
           </FormItem>
           {/*//@ts-ignore типы React не совсем совместимы с Preact*/}
           <FormItem>
+            {/*//@ts-ignore типы React не совсем совместимы с Preact*/}
             <Button
+              type='submit'
               size='l'
               stretched
-              onClick={() => handleLogin()}
+              onClick={handleLogin}
               disabled={
                 !password || !login || !loginPattern.test(login) || isLoading
               }
@@ -218,7 +193,7 @@ const LoginForm: FC<{ id: string }> = ({ id }) => {
               {isLoading ? 'Пытаюсь войти...' : 'Войти'}
             </Button>
           </FormItem>
-        </FormLayout>
+        </form>
         {snackbar}
       </Group>
     </Panel>
@@ -233,6 +208,7 @@ const saveData = (basePath: ResponseLogin) => {
   )} ${String(basePath.middleName)}`
   const org = String(basePath.organization?.abbreviation)
   const city = String(basePath.organization?.addressSettlement)
+  // FIXME
   // @ts-expect-error ошибка в типах
   const group = String(basePath?.groupName)
 

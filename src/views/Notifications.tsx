@@ -1,4 +1,5 @@
 import { PanelHeaderWithBack, SubtitleWithBorder } from '@components'
+import { VKUI_RED } from '@config'
 import { NotificationsResponse } from '@diary-spo/shared'
 import { handleResponse } from '@utils'
 import { Icon28ErrorCircleOutline } from '@vkontakte/icons'
@@ -13,7 +14,6 @@ import {
   Panel,
   Placeholder,
   Spinner,
-  Subhead,
   Text,
   Title
 } from '@vkontakte/vkui'
@@ -45,31 +45,24 @@ const Notifications: FC<{ id: string }> = ({ id }) => {
     try {
       if (isHandle) {
         const ads = await getAds()
-        handleResponse(
-          ads,
-          handleError,
-          handleError,
-          () => {
-            setLoading(false)
-            setIsError(false)
-          },
-          showSnackbar
-        )
-        updateCache(ads as NotificationsResponse[])
-        setNotifications(ads as NotificationsResponse[])
+        handleResponse(ads, handleError, handleError, setLoading, showSnackbar)
+
+        if (ads instanceof Response) {
+          return
+        }
+        console.log(ads)
+
+        updateCache(ads)
+        setNotifications(ads)
       } else {
-        const cachedAds = JSON.parse(localStorage.getItem('savedAds') || '') as
-          | NotificationsResponse[]
-          | null
+        const cachedAds = JSON.parse(localStorage.getItem('savedAds') || '')
         setNotifications(cachedAds)
       }
       setLoading(false)
     } catch (error) {
       setLoading(false)
       showSnackbar({
-        icon: (
-          <Icon28ErrorCircleOutline fill='var(--vkui--color_icon_negative)' />
-        ),
+        before: <Icon28ErrorCircleOutline fill={VKUI_RED} />,
         title: 'Ошибка при попытке загрузить объявления',
         action: 'Попробовать снова',
         onActionClick: () => fetchAds(true)
@@ -107,7 +100,6 @@ const Notifications: FC<{ id: string }> = ({ id }) => {
               isForEmployees,
               isForParents,
               isForStudents,
-              deleteInDays,
               text
             }) => (
               <Group
@@ -130,13 +122,7 @@ const Notifications: FC<{ id: string }> = ({ id }) => {
                   </div>
                 }
                 header={
-                  <Header
-                    mode='tertiary'
-                    aside={
-                      //@ts-ignore типы React не совсем совместимы с Preact
-                      <Subhead>Удалится через {deleteInDays} дней</Subhead>
-                    }
-                  >
+                  <Header mode='tertiary'>
                     {new Date(date).toLocaleDateString()}
                   </Header>
                 }
@@ -144,7 +130,9 @@ const Notifications: FC<{ id: string }> = ({ id }) => {
                 <Card mode='shadow'>
                   <Div>
                     {/*//@ts-ignore типы React не совсем совместимы с Preact*/}
-                    <Title level='3'>{title}</Title>
+                    <Title level='3' Component='h3'>
+                      {title}
+                    </Title>
                     {/*//@ts-ignore типы React не совсем совместимы с Preact*/}
                     <Text>{text}</Text>
                   </Div>
@@ -167,9 +155,11 @@ const Notifications: FC<{ id: string }> = ({ id }) => {
               header='Ошибка при загрузке'
               action={
                 <ButtonGroup mode='vertical' align='center'>
+                  {/*// @ts-ignore Типы не совместимы */}
                   <Button size='s' onClick={() => fetchAds(true)}>
                     Попробовать снова
                   </Button>
+                  {/*// @ts-ignore Типы не совместимы */}
                   <Link href='https://vk.me/dnevnik_spo' target='_blank'>
                     Сообщить о проблеме
                   </Link>

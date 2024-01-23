@@ -1,3 +1,4 @@
+import { VKUI_RED } from '@config'
 import { Icon28ErrorCircleOutline } from '@vkontakte/icons'
 import { Snackbar } from '@vkontakte/vkui'
 import { ReactNode } from 'preact/compat'
@@ -18,9 +19,7 @@ const useRateLimitExceeded = (): [ReactNode | null, () => void] => {
       <Snackbar
         layout='vertical'
         onClose={() => setRateSnackbar(null)}
-        before={
-          <Icon28ErrorCircleOutline fill='var(--vkui--color_icon_negative)' />
-        }
+        before={<Icon28ErrorCircleOutline fill={VKUI_RED} />}
         subtitle='Вы временно заблокированы. Если вы считаете, что это ошибка, то сообщите нам'
       >
         Слишком частые запросы
