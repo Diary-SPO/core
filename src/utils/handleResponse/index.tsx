@@ -1,5 +1,5 @@
+import { VKUI_RED } from '@config'
 import { Icon28ErrorCircleOutline } from '@vkontakte/icons'
-import { createElement } from 'preact'
 import { SnackbarData } from '../../hooks/useSnackbar.tsx'
 import { HTTP_STATUSES } from '../../types'
 
@@ -9,11 +9,18 @@ import { HTTP_STATUSES } from '../../types'
  */
 
 export const handleResponse = <T extends object>(
+  /** Ответ от сервера **/
   response: Response | T,
+  /** Функция, вызываемая при ошибке **/
   errorCallback?: () => void,
+  /** Функция, вызываемая достижении rate limit **/
   limitExceededCallback?: () => void,
+  /** Функция, вызываемая для отмены загрузки **/
   loadingCallback?: (isLoading: boolean) => void,
-  showSnackbar?: (snackbarData: SnackbarData) => void
+  /** Функция, вызываемая для создания снекбара **/
+  showSnackbar?: (snackbarData: SnackbarData) => void,
+  /** Надо ли вызывать errorCallback при 520 ошибке **/
+  shouldCallErrorIfFatal = true
 ): undefined | T => {
   console.log('%c[handleResponse]', 'color: green', response)
 
@@ -24,14 +31,13 @@ export const handleResponse = <T extends object>(
    */
   if (!(response instanceof Response) || !('statusText' in response)) {
     loadingCallback(false)
+
     return response
   }
 
   console.log('%c[handleResponse]', 'color: violet', response.status)
 
-  const errorIcon = createElement(Icon28ErrorCircleOutline, {
-    fill: 'var(--vkui--color_icon_negative)'
-  })
+  const errorIcon = <Icon28ErrorCircleOutline fill={VKUI_RED} />
 
   switch (response.status) {
     case HTTP_STATUSES.RATE_LIMIT:
@@ -46,7 +52,6 @@ export const handleResponse = <T extends object>(
           subtitle: 'Перезайдите в аккаунт'
         })
       }
-
       break
     case HTTP_STATUSES.TEAPOT: {
       showSnackbar?.({
@@ -57,9 +62,12 @@ export const handleResponse = <T extends object>(
       break
     }
     default: {
-      errorCallback()
       break
     }
+  }
+
+  if (shouldCallErrorIfFatal && errorCallback) {
+    errorCallback()
   }
 
   loadingCallback(false)

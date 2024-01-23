@@ -15,7 +15,7 @@ import {
   View
 } from '@vkontakte/vkui'
 import { endOfWeek, startOfWeek } from '@vkontakte/vkui/dist/lib/date'
-import { FC, lazy, useEffect, useMemo, useState } from 'preact/compat'
+import { FC, lazy, useEffect, useState } from 'preact/compat'
 import { useRateLimitExceeded, useSnackbar } from '../../hooks'
 import { getLessons } from '../../methods'
 import ErrorPlaceholder from './ErrorPlaceholder.tsx'
@@ -66,7 +66,6 @@ const Schedule: FC<{ id: string }> = ({ id }) => {
       )
 
       if (data instanceof Response) {
-        getError()
         return
       }
 
@@ -78,17 +77,6 @@ const Schedule: FC<{ id: string }> = ({ id }) => {
       setIsLoading(false)
     }
   }
-
-  const getError = () =>
-    useMemo(
-      () =>
-        showSnackbar({
-          title: 'Ошибка при попытке получить новые данные',
-          action: 'Повторить',
-          onActionClick: handleReloadData
-        }),
-      []
-    )
 
   /** Используется при ручном обновлении страницы */
   const handleReloadData = () => {
@@ -119,11 +107,13 @@ const Schedule: FC<{ id: string }> = ({ id }) => {
 
   const weekString = getWeekString(startDate, endDate)
 
-  const isNoMarks = !lessonsState?.some((day) =>
-    day.lessons?.some((lesson) =>
-      lesson.gradebook?.tasks?.some((task) => task.mark)
+  const isNoMarks =
+    lessonsState?.length &&
+    !lessonsState?.some((day) =>
+      day.lessons?.some((lesson) =>
+        lesson.gradebook?.tasks?.some((task) => task.mark)
+      )
     )
-  )
 
   const ScheduleGroupAside = (
     <ScheduleAsideButtons
@@ -160,6 +150,7 @@ const Schedule: FC<{ id: string }> = ({ id }) => {
     >
       <Panel nav={id}>
         <PanelHeaderWithBack title='Главная' />
+        {isError && <ErrorPlaceholder onClick={handleReloadData} />}
         <PullToRefresh onRefresh={handleReloadData} isFetching={isLoading}>
           <Div>
             <Suspense id='MarksByDay'>
@@ -180,7 +171,6 @@ const Schedule: FC<{ id: string }> = ({ id }) => {
                 {ScheduleOrLoading}
               </Group>
             </Suspense>
-            {isError && <ErrorPlaceholder onClick={handleReloadData} />}
           </Div>
         </PullToRefresh>
         {snackbar}

@@ -78,7 +78,7 @@ export const expectedLessonDetailsInvalid = {
     gradebook: {
       absenceType: 'IsAbsent',
       id: 0,
-      lessonType: 'Не задан',
+      lessonType: '',
       tasks: undefined,
       themes: ['Theme 1', 'Theme 2']
     },
@@ -100,7 +100,7 @@ export const expectedLessonDetailsInvalid = {
   },
   lessonMainInfo: {
     name: 'Math',
-    lessonType: 'Не задан',
+    lessonType: '',
     themes: ['Theme 1', 'Theme 2'],
     teacherName: 'Не указан'
   },

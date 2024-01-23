@@ -34,21 +34,16 @@ const Attestation: FC<IAttestation> = ({ id }) => {
 
       handleResponse(
         data,
-        () => {
-          setIsError(true)
-          setIsLoading(false)
-        },
-        () => {
-          useRateLimitExceeded()
-          setIsError(true)
-          setIsLoading(false)
-        },
-        (isLoading) => {
-          setIsLoading(isLoading)
-        }
+        () => setIsError(true),
+        useRateLimitExceeded,
+        setIsLoading
       )
 
-      setAttestationData(data as AttestationResponse)
+      if (data instanceof Response) {
+        return
+      }
+
+      setAttestationData(data)
     } catch (error) {
       setIsError(true)
       console.error('Плоха-плоха:', error)

@@ -42,7 +42,7 @@ export const setLessonDetails = (lesson: Lesson) => {
       gradebook: {
         absenceType: gradebook?.absenceType,
         id: gradebook?.id || 0,
-        lessonType: gradebook?.lessonType || 'Не задан',
+        lessonType: gradebook?.lessonType,
         tasks: tasksArray,
         themes: gradebook?.themes
       },
@@ -64,7 +64,7 @@ export const setLessonDetails = (lesson: Lesson) => {
     },
     lessonMainInfo: {
       name: formattedName,
-      lessonType: gradebook?.lessonType || 'Не задан',
+      lessonType: gradebook?.lessonType,
       themes: gradebook?.themes,
       teacherName: timetable?.teacher?.firstName
         ? `${timetable.teacher.lastName} ${timetable.teacher.firstName} ${timetable.teacher.middleName}`

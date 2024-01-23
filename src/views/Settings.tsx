@@ -103,10 +103,12 @@ const Settings: FunctionalComponent<ISettings> = ({ id }) => {
       actions={[
         {
           title: 'Отмена',
+          autoCloseDisabled: false,
           mode: 'cancel'
         },
         {
           title: 'Выйти',
+          autoCloseDisabled: false,
           mode: 'destructive',
           action: () => handleLogOut()
         }

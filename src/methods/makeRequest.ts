@@ -12,7 +12,6 @@ const makeRequest = async <T>(
 
   const controller = new AbortController()
   const timeoutId = setTimeout(() => controller.abort(), 3000)
-
   try {
     const response = await fetch(url, {
       method,
@@ -35,14 +34,14 @@ const makeRequest = async <T>(
 
     /** В случае другой ошибки пытаемся получить ответ от второго сервера **/
     if (!response.ok) {
-      return requestToSecondServer(route, token, method, body)
+      return requestToSecondServer<T>(route, token, method, body)
     }
 
     return (await response.json()) as T
   } catch (err) {
     console.info('%c [makeRequest]', 'color: blueviolet', err)
     /** В случае ошибки пытаемся получить ответ от второго сервера **/
-    return requestToSecondServer(route, token, method, body)
+    return requestToSecondServer<T>(route, token, method, body)
   }
 }
 

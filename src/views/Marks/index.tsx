@@ -77,7 +77,6 @@ const Marks: FC<{ id: string }> = ({ id }) => {
       handleResponse(
         marks,
         () => {
-          setIsLoading(false)
           showSnackbar({
             before: <Icon28ErrorCircleOutline fill={VKUI_RED} />,
             title: 'Ошибка при попытке загрузить оценки',
@@ -87,7 +86,8 @@ const Marks: FC<{ id: string }> = ({ id }) => {
         },
         handleRateLimitExceeded,
         setIsLoading,
-        showSnackbar
+        showSnackbar,
+        false
       )
 
       if (!('daysWithMarksForSubject' in marks)) {

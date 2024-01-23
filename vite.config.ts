@@ -40,11 +40,6 @@ export default defineConfig({
     },
     rollupOptions: {
       logLevel: 'debug',
-      output: {
-        manualChunks: {
-          '@vkontakte/icons': ['@vkontakte/icons']
-        }
-      }
     }
   }
 })

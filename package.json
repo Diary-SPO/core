@@ -20,12 +20,16 @@
     "@vkontakte/icons": "2.95.0",
     "@vkontakte/vk-bridge": "^2.13.0",
     "@vkontakte/vk-bridge-react": "^1.0.0",
-    "@vkontakte/vk-mini-apps-router": "^1.4.2",
+    "@vkontakte/vk-mini-apps-router": "1.4.2",
     "@vkontakte/vkui": "6.0.0",
     "jshashes": "^1.0.8",
-    "preact": "^10.19.2",
+    "preact": "^10.19.3",
     "react": "npm:@preact/compat",
     "react-dom": "npm:@preact/compat"
+  },
+  "peerDependencies": {
+    "react": "^18",
+    "react-dom": "^18.2.0"
   },
   "devDependencies": {
     "@babel/eslint-parser": "^7.23.3",
@@ -40,7 +44,7 @@
     "gh-pages": "^6.0.0",
     "jsdom": "^23.2.0",
     "typescript": "^5.2.2",
-    "vite": "^5.0.12",
+    "vite": "5.0.12",
     "vitest": "^1.2.1",
     "vitest-localstorage-mock": "^0.0.1"
   }

@@ -21,8 +21,7 @@ const LessonHeader: FC<ILessonHeader> = ({
       displayDay && <Footnote style={displayDayStyles}>{displayDay}</Footnote>
     }
   >
-    {lessonDayOfWeek && `${lessonDayOfWeek}. `}
-    {formattedLessonDate}
+    {lessonDayOfWeek} {formattedLessonDate}
   </Header>
 )
 

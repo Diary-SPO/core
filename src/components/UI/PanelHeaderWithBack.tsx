@@ -1,3 +1,4 @@
+import { IS_DEV } from '@config'
 import {
   useActiveVkuiLocation,
   useRouteNavigator
@@ -23,7 +24,7 @@ const PanelHeaderWithBack: FunctionalComponent<{ title: string }> = ({
         )
       }
     >
-      {title}
+      {title} {IS_DEV && '[Beta v2.0.1]'}
     </PanelHeader>
   )
 }
