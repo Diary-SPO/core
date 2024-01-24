@@ -1,6 +1,7 @@
 import { PanelHeaderWithBack } from '@components'
 import { VKUI_RED } from '@config'
 import { ResponseLogin } from '@diary-spo/types'
+import { useSnackbar } from '@hooks'
 import { Hashes } from '@libs'
 import { handleResponse } from '@utils'
 import {
@@ -18,7 +19,6 @@ import {
 } from '@vkontakte/vkui'
 import { ChangeEvent, FC } from 'preact/compat'
 import { useEffect, useState } from 'preact/hooks'
-import { useSnackbar } from '../hooks'
 import { makeRequest } from '../methods'
 import { VIEW_SCHEDULE } from '../routes'
 import { loginPattern } from '../types'
@@ -63,6 +63,8 @@ const LoginForm: FC<{ id: string }> = ({ id }) => {
   }
 
   const handleLogin = async (e: ChangeEvent<HTMLFormElement>) => {
+    setIsLoading(true)
+
     e.preventDefault()
     if (!loginPattern.test(login)) {
       setIsDataInvalid(true)
@@ -72,8 +74,6 @@ const LoginForm: FC<{ id: string }> = ({ id }) => {
 
     const passwordHashed2 = await Hashes.SHA256.b64(password)
 
-    console.error('passwordHashed2', passwordHashed2)
-    setIsLoading(true)
     const response = await makeRequest<ResponseLogin>(
       '/login/',
       'POST',
