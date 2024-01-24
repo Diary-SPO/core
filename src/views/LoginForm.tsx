@@ -1,6 +1,7 @@
 import { PanelHeaderWithBack } from '@components'
 import { VKUI_RED } from '@config'
 import { ResponseLogin } from '@diary-spo/types'
+import { Hashes } from '@libs'
 import { handleResponse } from '@utils'
 import {
   Icon28DoorArrowLeftOutline,
@@ -18,7 +19,6 @@ import {
 import { ChangeEvent, FC } from 'preact/compat'
 import { useEffect, useState } from 'preact/hooks'
 import { useSnackbar } from '../hooks'
-import { Hashes } from '../libs'
 import { makeRequest } from '../methods'
 import { VIEW_SCHEDULE } from '../routes'
 import { loginPattern } from '../types'

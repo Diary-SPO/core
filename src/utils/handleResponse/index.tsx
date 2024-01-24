@@ -1,6 +1,6 @@
 import { VKUI_RED } from '@config'
+import { SnackbarData } from '@hooks'
 import { Icon28ErrorCircleOutline } from '@vkontakte/icons'
-import { SnackbarData } from '../../hooks/useSnackbar.tsx'
 import { HTTP_STATUSES } from '../../types'
 
 /**

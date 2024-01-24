@@ -29,6 +29,8 @@
       "@components": ["./src/components"],
       "@config": ["./src/config"],
       "@store": ["./src/store"],
+      "@libs": ["./src/libs"],
+      "@hooks": ["./src/hooks"],
     }
   },
   "include": ["src"],

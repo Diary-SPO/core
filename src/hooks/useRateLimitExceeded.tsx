@@ -11,7 +11,7 @@ import { useCallback, useState } from 'preact/hooks'
  * Возвращает состояние rateSnackbar и функцию handleRateLimitExceeded для управления Snackbar'ом.
  */
 
-const useRateLimitExceeded = (): [ReactNode | null, () => void] => {
+export const useRateLimitExceeded = (): [ReactNode | null, () => void] => {
   const [rateSnackbar, setRateSnackbar] = useState<ReactNode | null>(null)
 
   const handleRateLimitExceeded = useCallback(() => {
@@ -29,5 +29,3 @@ const useRateLimitExceeded = (): [ReactNode | null, () => void] => {
 
   return [rateSnackbar, handleRateLimitExceeded]
 }
-
-export default useRateLimitExceeded

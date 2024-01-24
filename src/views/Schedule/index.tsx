@@ -1,5 +1,6 @@
 import { PanelHeaderWithBack, Suspense } from '@components'
 import { Day } from '@diary-spo/shared'
+import { useRateLimitExceeded, useSnackbar } from '@hooks'
 import { handleResponse } from '@utils'
 import {
   useActiveVkuiLocation,
@@ -16,7 +17,6 @@ import {
 } from '@vkontakte/vkui'
 import { endOfWeek, startOfWeek } from '@vkontakte/vkui/dist/lib/date'
 import { FC, lazy, useEffect, useState } from 'preact/compat'
-import { useRateLimitExceeded, useSnackbar } from '../../hooks'
 import { getLessons } from '../../methods'
 import ErrorPlaceholder from './ErrorPlaceholder.tsx'
 import ScheduleAsideButtons from './ScheduleAsideButtons.tsx'

@@ -1,6 +1,7 @@
 import { PanelHeaderWithBack, SubtitleWithBorder } from '@components'
 import { VKUI_RED } from '@config'
 import { NotificationsResponse } from '@diary-spo/shared'
+import { useSnackbar } from '@hooks'
 import { handleResponse } from '@utils'
 import { Icon28ErrorCircleOutline } from '@vkontakte/icons'
 import {
@@ -19,7 +20,6 @@ import {
 } from '@vkontakte/vkui'
 import { FC } from 'preact/compat'
 import { useEffect, useState } from 'preact/hooks'
-import { useSnackbar } from '../hooks'
 import { getAds } from '../methods'
 
 const Notifications: FC<{ id: string }> = ({ id }) => {
