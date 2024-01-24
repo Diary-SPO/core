@@ -15,10 +15,10 @@ import {
   Input,
   Panel
 } from '@vkontakte/vkui'
-import Hashes from 'jshashes'
 import { ChangeEvent, FC } from 'preact/compat'
 import { useEffect, useState } from 'preact/hooks'
 import { useSnackbar } from '../hooks'
+import { Hashes } from '../libs'
 import { makeRequest } from '../methods'
 import { VIEW_SCHEDULE } from '../routes'
 import { loginPattern } from '../types'
@@ -70,15 +70,16 @@ const LoginForm: FC<{ id: string }> = ({ id }) => {
       return
     }
 
-    const passwordHashed = new Hashes.SHA256().b64(password)
+    const passwordHashed2 = await Hashes.SHA256.b64(password)
 
+    console.error('passwordHashed2', passwordHashed2)
     setIsLoading(true)
     const response = await makeRequest<ResponseLogin>(
       '/login/',
       'POST',
       JSON.stringify({
         login,
-        password: passwordHashed,
+        password: passwordHashed2,
         isHash: true
       })
     )

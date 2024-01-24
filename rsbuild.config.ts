@@ -1,9 +1,27 @@
-import { pluginReact } from '@rsbuild/plugin-react';
+import { loadEnv } from '@rsbuild/core'
+import { pluginImageCompress } from '@rsbuild/plugin-image-compress'
+import { pluginReact } from '@rsbuild/plugin-react'
+
+const { publicVars } = loadEnv()
 
 export default {
-  plugins: [pluginReact()],
-  html: {
-    template: './index.html',
+  performance: {
+    removeMomentLocale: true,
+    chunkSplit: {
+      strategy: 'split-by-experience'
+    }
   },
-
-};
+  output: {
+    polyfill: 'usage'
+  },
+  analyzerMode: 'static',
+  openAnalyzer: false,
+  reportFilename: 'report-web.html',
+  source: {
+    define: publicVars
+  },
+  plugins: [pluginReact(), pluginImageCompress()],
+  html: {
+    template: './index.html'
+  }
+}

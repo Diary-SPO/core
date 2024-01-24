@@ -39,7 +39,7 @@ export default defineConfig({
       safari10: false
     },
     rollupOptions: {
-      logLevel: 'debug',
+      logLevel: 'debug'
     }
   }
 })

@@ -23,7 +23,6 @@
     "@vkontakte/vk-bridge-react": "^1.0.0",
     "@vkontakte/vk-mini-apps-router": "1.4.2",
     "@vkontakte/vkui": "6.0.0",
-    "jshashes": "^1.0.8",
     "preact": "^10.19.3",
     "react": "npm:@preact/compat",
     "react-dom": "npm:@preact/compat"
@@ -33,22 +32,18 @@
     "react-dom": "^18.2.0"
   },
   "devDependencies": {
-    "@babel/eslint-parser": "^7.23.3",
     "@biomejs/biome": "1.5.2",
     "@diary-spo/shared": "1.8.9",
     "@diary-spo/types": "latest",
-    "@preact/preset-vite": "^2.8.1",
-    "@rollup/plugin-terser": "^0.4.4",
     "@rsbuild/core": "^0.3.6",
+    "@rsbuild/plugin-image-compress": "^0.3.7",
     "@rsbuild/plugin-react": "^0.3.6",
     "@types/node": "^20.11.5",
     "@vitest/coverage-v8": "^1.2.1",
     "@vkontakte/vk-miniapps-deploy": "^0.1.6",
-    "dotenv": "^16.3.2",
     "gh-pages": "^6.0.0",
     "jsdom": "^23.2.0",
     "typescript": "^5.2.2",
-    "vite": "5.0.12",
     "vitest": "^1.2.1",
     "vitest-localstorage-mock": "^0.0.1"
   }
