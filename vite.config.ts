@@ -1,3 +1,10 @@
+/**
+ * В проекте мы используем rsbuild, но для тестов vitest
+ * И чтобы поддержать работу vitest мы не можем удалить этот конфиг
+ *
+ * NOTE: на саму сборку это никак не влияет и пользователь не получает лишние килобайты
+ **/
+
 import * as path from 'node:path'
 import preact from '@preact/preset-vite'
 import { defineConfig } from 'vite'
@@ -15,6 +22,7 @@ export default defineConfig({
     alias: [
       { find: /^@vkontakte\/vkui$/, replacement: '@vkontakte/vkui/dist/cssm' },
       { find: '@utils', replacement: path.resolve(__dirname, './src/utils') },
+      { find: '@hooks', replacement: path.resolve(__dirname, './src/hooks') },
       { find: '@config', replacement: path.resolve(__dirname, './src/config') },
       { find: '@store', replacement: path.resolve(__dirname, './src/store') },
       {
@@ -22,24 +30,5 @@ export default defineConfig({
         replacement: path.resolve(__dirname, 'src/components')
       }
     ]
-  },
-  build: {
-    sourcemap: false,
-    target: 'es2017',
-    assetsInlineLimit: 0,
-    minify: 'terser',
-    terserOptions: {
-      compress: {
-        drop_console: true,
-        dead_code: true
-      },
-      toplevel: true,
-      keep_classnames: false,
-      keep_fnames: false,
-      safari10: false
-    },
-    rollupOptions: {
-      logLevel: 'debug'
-    }
   }
 })
