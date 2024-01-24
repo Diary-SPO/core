@@ -4,10 +4,10 @@
   "version": "7.0.0",
   "type": "module",
   "scripts": {
-    "dev": "rsbuild dev --open",
+    "dev": "rsbuild dev --env-mode development",
     "build": "rsbuild build",
-    "preview": "rsbuild preview",
-    "build:web": "tsc && vite build",
+    "preview": "rsbuild preview --env-mode production",
+    "serve": "yarn build && yarn preview",
     "predeploy": "tsc && vite build",
     "deploy:gh": "gh-pages -d dist",
     "deploy:vk": "vk-miniapps-deploy",

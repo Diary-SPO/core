@@ -34,3 +34,5 @@ coverage
 
 /target
 /Cargo.lock
+
+./.env.production
