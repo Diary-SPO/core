@@ -90,7 +90,8 @@ const LoginForm: FC<{ id: string }> = ({ id }) => {
       undefined,
       setIsLoading,
       showSnackbar,
-      false
+      false,
+      true
     )
 
     if (!data || !data.token) {
