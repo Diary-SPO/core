@@ -5,6 +5,9 @@ import { pluginReact } from '@rsbuild/plugin-react'
 const { publicVars } = loadEnv()
 
 export default {
+  dev: {
+    hmr: true,
+  },
   performance: {
     removeMomentLocale: true,
     chunkSplit: {
