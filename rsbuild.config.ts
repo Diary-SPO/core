@@ -18,7 +18,7 @@ export default {
   },
   output: {
     outputStructure: 'nested',
-    polyfill: 'off',
+    polyfill: 'off'
   },
   analyzerMode: 'static',
   openAnalyzer: true,
