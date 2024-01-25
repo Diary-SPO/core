@@ -9,16 +9,19 @@ export default {
     hmr: true
   },
   performance: {
+    profile: true,
+    removeConsole: true,
     removeMomentLocale: true,
     chunkSplit: {
       strategy: 'split-by-experience'
     }
   },
   output: {
-    polyfill: 'usage'
+    outputStructure: 'nested',
+    polyfill: 'off',
   },
   analyzerMode: 'static',
-  openAnalyzer: false,
+  openAnalyzer: true,
   reportFilename: 'report-web.html',
   source: {
     define: publicVars
