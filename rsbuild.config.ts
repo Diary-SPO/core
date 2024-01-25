@@ -6,7 +6,7 @@ const { publicVars } = loadEnv()
 
 export default {
   dev: {
-    hmr: true,
+    hmr: true
   },
   performance: {
     removeMomentLocale: true,

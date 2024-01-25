@@ -48,7 +48,7 @@ export const handleResponse = <T extends object>(
     case HTTP_STATUSES.UNAUTHORIZED:
       if (shouldCallErrorIfUnauth) {
         errorCallback()
-        return
+        break
       }
 
       localStorage.clear()
@@ -59,18 +59,19 @@ export const handleResponse = <T extends object>(
       })
       break
     case HTTP_STATUSES.TEAPOT: {
+      if (shouldCallErrorIfFatal) {
+        errorCallback()
+      }
+
       showSnackbar?.({
         before: errorIcon,
         title: 'Ошибка при попытке сделать запрос',
         subtitle: 'Сообщите нам о проблеме'
       })
-
-      if (shouldCallErrorIfFatal) {
-        errorCallback()
-      }
       break
     }
     default: {
+      errorCallback()
       break
     }
   }
