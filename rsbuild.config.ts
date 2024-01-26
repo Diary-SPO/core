@@ -1,15 +1,10 @@
 import { loadEnv } from '@rsbuild/core'
-import { pluginImageCompress } from '@rsbuild/plugin-image-compress'
-import { pluginReact } from '@rsbuild/plugin-react'
+import { pluginPreact } from '@rsbuild/plugin-preact'
 
 const { publicVars } = loadEnv()
 
 export default {
-  dev: {
-    hmr: true
-  },
   performance: {
-    profile: true,
     removeConsole: true,
     removeMomentLocale: true,
     chunkSplit: {
@@ -17,16 +12,12 @@ export default {
     }
   },
   output: {
-    outputStructure: 'nested',
     polyfill: 'off'
   },
-  analyzerMode: 'static',
-  openAnalyzer: true,
-  reportFilename: 'report-web.html',
   source: {
     define: publicVars
   },
-  plugins: [pluginReact(), pluginImageCompress()],
+  plugins: [pluginPreact()],
   html: {
     template: './index.html'
   }
