@@ -1,17 +1,21 @@
 import { loadEnv } from '@rsbuild/core'
 import { pluginPreact } from '@rsbuild/plugin-preact'
+import { IS_DEV } from './src/config'
 
 const { publicVars } = loadEnv()
 
 export default {
   performance: {
     chunkSplit: {
-      strategy: 'split-by-experience'
+      strategy: IS_DEV ? 'all-in-one' : 'split-by-experience'
     },
     removeConsole: true,
     removeMomentLocale: true
   },
   output: {
+    sourceMap: {
+      js: false
+    },
     polyfill: 'off'
   },
   source: {

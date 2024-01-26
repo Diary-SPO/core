@@ -1,4 +1,4 @@
-name: "size"
+name: Size Limit
 on:
   pull_request:
     branches:
@@ -17,4 +17,4 @@ jobs:
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           package_manager: yarn
-          script: yarn size-limit
+          script: yarn size-limit --env-mode development
