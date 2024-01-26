@@ -3,7 +3,7 @@ import { pluginPreact } from '@rsbuild/plugin-preact'
 import { IS_DEV } from './src/config'
 
 const { publicVars } = loadEnv()
-
+console.log(IS_DEV)
 export default {
   performance: {
     chunkSplit: {
