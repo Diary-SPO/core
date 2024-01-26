@@ -6,7 +6,8 @@ const { publicVars } = loadEnv()
 export default {
   performance: {
     chunkSplit: {
-      strategy: 'split-by-module'
+      // strategy: 'split-by-module'
+      strategy: 'split-by-experience'
     },
     removeConsole: true,
     removeMomentLocale: true
