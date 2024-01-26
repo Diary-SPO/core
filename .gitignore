@@ -26,6 +26,8 @@ dist-ssr
 
 
 .env
+.env.production
+.env.**
 /build.zip
 
 coverage

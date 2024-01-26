@@ -1,4 +1,4 @@
-import { IS_DEV } from '@config'
+import { BETA_VERSION, IS_DEV } from '@config'
 import {
   useActiveVkuiLocation,
   useRouteNavigator
@@ -24,7 +24,7 @@ const PanelHeaderWithBack: FunctionalComponent<{ title: string }> = ({
         )
       }
     >
-      {title} {IS_DEV && '[Beta v2.0.1]'}
+      {title} {IS_DEV && `[Beta ${BETA_VERSION}]`}
     </PanelHeader>
   )
 }

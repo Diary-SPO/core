@@ -5,6 +5,7 @@ import { Card, Group, Placeholder } from '@vkontakte/vkui'
 import { useMemo } from 'preact/compat'
 import { useCallback } from 'preact/hooks'
 import { FC, memo } from 'react'
+// TODO: fix this path
 import useModal from '../../../../app/AppWrapper/App/ModalRoot/modals/LessonModal/hooks/useModal.tsx'
 import LessonCell from './LessonCell'
 import LessonHeader from './LessonHeader.tsx'
@@ -51,6 +52,10 @@ const LessonCard: FC<ILessonCard> = ({ lesson }) => {
   const lessonDayOfWeek = lessonDate.toLocaleString('default', {
     weekday: 'long'
   })
+
+  if (lessonDayOfWeek === 'воскресенье') {
+    return
+  }
 
   const isLessonToday = isToday(lessonDate)
 

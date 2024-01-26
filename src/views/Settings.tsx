@@ -1,4 +1,5 @@
 import { PanelHeaderWithBack } from '@components'
+import { useSnackbar } from '@hooks'
 import { logOut } from '@utils'
 import {
   Icon28DoorArrowRightOutline,
@@ -20,7 +21,6 @@ import {
 } from '@vkontakte/vkui'
 import { FunctionalComponent } from 'preact'
 import { useEffect, useRef, useState } from 'preact/hooks'
-import { useSnackbar } from '../hooks'
 import { Storage } from '../types'
 
 interface ISettings {

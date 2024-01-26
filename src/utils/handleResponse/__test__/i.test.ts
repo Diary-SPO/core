@@ -32,7 +32,6 @@ describe('handleResponse', () => {
   })
 
   it('should handle unauthorized error', () => {
-    // const localStorageClearSpy = vitest.spyOn(localStorage, 'clear');
     const showSnackbarMock = vitest.fn()
     const loadingCallback = vitest.fn()
     const result = handleResponse(
@@ -42,8 +41,28 @@ describe('handleResponse', () => {
       loadingCallback,
       showSnackbarMock
     )
-    // expect(localStorageClearSpy).toHaveBeenCalled();
+
     expect(showSnackbarMock).toHaveBeenCalled()
+    expect(loadingCallback).toHaveBeenCalled()
+    expect(result).toBeUndefined()
+  })
+
+  it('should handle unauthorized error with error cb', () => {
+    const errorCallback = vitest.fn()
+    const showSnackbarMock = vitest.fn()
+    const loadingCallback = vitest.fn()
+    const result = handleResponse(
+      new Response('', { status: HTTP_STATUSES.UNAUTHORIZED }),
+      errorCallback,
+      undefined,
+      loadingCallback,
+      showSnackbarMock,
+      undefined,
+      true
+    )
+
+    expect(errorCallback).toHaveBeenCalled()
+    expect(showSnackbarMock).not.toHaveBeenCalled()
     expect(loadingCallback).toHaveBeenCalled()
     expect(result).toBeUndefined()
   })
@@ -56,8 +75,26 @@ describe('handleResponse', () => {
       undefined,
       undefined,
       loadingCallback,
+      showSnackbarMock,
+      false
+    )
+    expect(showSnackbarMock).toHaveBeenCalled()
+    expect(loadingCallback).toHaveBeenCalled()
+    expect(result).toBeUndefined()
+  })
+
+  it('should handle teapot error with error cb', () => {
+    const errorCallback = vitest.fn()
+    const showSnackbarMock = vitest.fn()
+    const loadingCallback = vitest.fn()
+    const result = handleResponse(
+      new Response('', { status: HTTP_STATUSES.TEAPOT }),
+      errorCallback,
+      undefined,
+      loadingCallback,
       showSnackbarMock
     )
+    expect(errorCallback).toHaveBeenCalled()
     expect(showSnackbarMock).toHaveBeenCalled()
     expect(loadingCallback).toHaveBeenCalled()
     expect(result).toBeUndefined()

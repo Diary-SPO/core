@@ -1,6 +1,6 @@
 import { VKUI_RED } from '@config'
+import { SnackbarData } from '@hooks'
 import { Icon28ErrorCircleOutline } from '@vkontakte/icons'
-import { SnackbarData } from '../../hooks/useSnackbar.tsx'
 import { HTTP_STATUSES } from '../../types'
 
 /**
@@ -20,7 +20,9 @@ export const handleResponse = <T extends object>(
   /** Функция, вызываемая для создания снекбара **/
   showSnackbar?: (snackbarData: SnackbarData) => void,
   /** Надо ли вызывать errorCallback при 520 ошибке **/
-  shouldCallErrorIfFatal = true
+  shouldCallErrorIfFatal = true,
+  /** Надо ли вызывать errorCallback при 401 ошибке **/
+  shouldCallErrorIfUnauth = false
 ): undefined | T => {
   console.log('%c[handleResponse]', 'color: green', response)
 
@@ -44,16 +46,23 @@ export const handleResponse = <T extends object>(
       limitExceededCallback()
       break
     case HTTP_STATUSES.UNAUTHORIZED:
-      localStorage.clear()
-      if (showSnackbar) {
-        showSnackbar?.({
-          before: errorIcon,
-          title: 'Ошибка при попытке сделать запрос',
-          subtitle: 'Перезайдите в аккаунт'
-        })
+      if (shouldCallErrorIfUnauth) {
+        errorCallback()
+        break
       }
+
+      localStorage.clear()
+      showSnackbar?.({
+        before: errorIcon,
+        title: 'Ошибка при попытке сделать запрос',
+        subtitle: 'Перезайдите в аккаунт'
+      })
       break
     case HTTP_STATUSES.TEAPOT: {
+      if (shouldCallErrorIfFatal) {
+        errorCallback()
+      }
+
       showSnackbar?.({
         before: errorIcon,
         title: 'Ошибка при попытке сделать запрос',
@@ -62,12 +71,9 @@ export const handleResponse = <T extends object>(
       break
     }
     default: {
+      errorCallback()
       break
     }
-  }
-
-  if (shouldCallErrorIfFatal && errorCallback) {
-    errorCallback()
   }
 
   loadingCallback(false)

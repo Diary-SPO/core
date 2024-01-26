@@ -14,7 +14,7 @@ import { useCallback, useState } from 'preact/hooks'
 
 export type SnackbarData = Partial<SnackbarProps>
 
-const useSnackbar = (): [
+export const useSnackbar = (): [
   ReactNode | null,
   (snackbarData: SnackbarData | null) => void
 ] => {
@@ -51,5 +51,3 @@ const useSnackbar = (): [
 
   return [snackbar, showSnackbar]
 }
-
-export default useSnackbar
