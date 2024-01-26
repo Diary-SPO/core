@@ -38,6 +38,7 @@
     "@preact/preset-vite": "^2.8.1",
     "@rsbuild/core": "^0.3.8",
     "@rsbuild/plugin-preact": "^0.3.8",
+    "@size-limit/preset-app": "^11.0.2",
     "@types/node": "^20.11.5",
     "@vitest/coverage-v8": "^1.2.1",
     "@vkontakte/vk-miniapps-deploy": "^0.1.6",
