@@ -1,7 +1,7 @@
-import {loadEnv} from '@rsbuild/core'
-import {pluginPreact} from '@rsbuild/plugin-preact'
+import { loadEnv } from '@rsbuild/core'
+import { pluginPreact } from '@rsbuild/plugin-preact'
 
-const {publicVars} = loadEnv()
+const { publicVars } = loadEnv()
 
 export default {
     performance: {
