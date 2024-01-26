@@ -10,8 +10,8 @@ const makeRequest = async <T>(
 
   const controller = new AbortController()
 
-  for (let num in BASE_URLS) {
-    const url = `${BASE_URLS[num]}${route}`
+  for (const BASE_URL of BASE_URLS) {
+    const url = `${BASE_URL}${route}`
     const timeoutId = setTimeout(() => controller.abort(), 3000)
     try {
       const response = await fetch(url, {
