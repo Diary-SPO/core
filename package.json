@@ -51,7 +51,7 @@
   },
   "size-limit": [
     {
-      "path": "dist",
+      "path": "dist/static",
       "limit": "1 MB"
     }
   ]
