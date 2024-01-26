@@ -11,9 +11,9 @@
     "@jridgewell/trace-mapping" "^0.3.9"
 
 "@asamuzakjp/dom-selector@^2.0.1":
-  version "2.0.1"
-  resolved "https://registry.yarnpkg.com/@asamuzakjp/dom-selector/-/dom-selector-2.0.1.tgz#26dd05c504faa95a200a780f192fc9ca9feaa67e"
-  integrity sha512-QJAJffmCiymkv6YyQ7voyQb5caCth6jzZsQncYCpHXrJ7RqdYG5y43+is8mnFcYubdOkr7cn1+na9BdFMxqw7w==
+  version "2.0.2"
+  resolved "https://registry.yarnpkg.com/@asamuzakjp/dom-selector/-/dom-selector-2.0.2.tgz#160f601d9a465bbdf641410afdc527f37325506e"
+  integrity sha512-x1KXOatwofR6ZAYzXRBL5wrdV0vwNxlTCK9NCuLqAzQYARqGcvFwiJA6A1ERuh+dgeA4Dxm3JBYictIes+SqUQ==
   dependencies:
     bidi-js "^1.0.3"
     css-tree "^2.3.1"
@@ -526,84 +526,6 @@
     "@module-federation/runtime" "0.0.8"
     "@module-federation/sdk" "0.0.8"
 
-"@napi-rs/image-android-arm-eabi@1.7.0":
-  version "1.7.0"
-  resolved "https://registry.yarnpkg.com/@napi-rs/image-android-arm-eabi/-/image-android-arm-eabi-1.7.0.tgz#cc0a09aef43e4b529e9116d6305c683a936b26de"
-  integrity sha512-lpyqxaIYUrdk096xoJjvPGin5jY1Ehor0RxryqDvowGUhVU3TDgolsjjuFPEki3cfvV6zzAm7bWUkmxIci2zaw==
-
-"@napi-rs/image-android-arm64@1.7.0":
-  version "1.7.0"
-  resolved "https://registry.yarnpkg.com/@napi-rs/image-android-arm64/-/image-android-arm64-1.7.0.tgz#57d38856946348eeabf1b907a09610be83573523"
-  integrity sha512-ojzi1ORsFZ53upLh0YVF1J8Qxvq+V2s6Xwbi4p4+ZLgk3MMd9ephERxxNExOf3/nyj4k+izEz6C/RbJwnSJXpw==
-
-"@napi-rs/image-darwin-arm64@1.7.0":
-  version "1.7.0"
-  resolved "https://registry.yarnpkg.com/@napi-rs/image-darwin-arm64/-/image-darwin-arm64-1.7.0.tgz#972e8e6443e7e84b0f66c3b71dc7dfb350e8a10a"
-  integrity sha512-SadObhsP0E/og6FGDzwafWFEwePSkdEKmwh7ssWePopwN2PfTnIyQq4MfVE/iSLgHfiHgQwwwssY6j815P8YwA==
-
-"@napi-rs/image-darwin-x64@1.7.0":
-  version "1.7.0"
-  resolved "https://registry.yarnpkg.com/@napi-rs/image-darwin-x64/-/image-darwin-x64-1.7.0.tgz#dfd58c53b3b0c50d35805ff6d50d75e811c87b3a"
-  integrity sha512-lbUpy3deqxsbGMZRRwkSAMs4uWN+f8RER4BI7kwVK9rjUwvmnI+JMC+TCD03j+AMviANhsR/umDjSTS4HAbKdQ==
-
-"@napi-rs/image-freebsd-x64@1.7.0":
-  version "1.7.0"
-  resolved "https://registry.yarnpkg.com/@napi-rs/image-freebsd-x64/-/image-freebsd-x64-1.7.0.tgz#02c508296beca1acdd532ce23844c20ecd9e783f"
-  integrity sha512-DCFov4Ibk7pNUI30dBAR2SqtBSKTEtlsqkOJGWRiqGlTSqt7xPR3YcdM3N8JYN1lFHCN2SoJnInV3/p3yiKVLQ==
-
-"@napi-rs/image-linux-arm-gnueabihf@1.7.0":
-  version "1.7.0"
-  resolved "https://registry.yarnpkg.com/@napi-rs/image-linux-arm-gnueabihf/-/image-linux-arm-gnueabihf-1.7.0.tgz#c3a6c978fa89874d92abbace684ca63bf356314a"
-  integrity sha512-392foWTx3vIsBs5lNDZt0H0qn/x3PLR92GCbY1SWNtbE11+D47IDxHauLqcU/18IVule9nODFZ6KLLhuLjdqJA==
-
-"@napi-rs/image-linux-arm64-gnu@1.7.0":
-  version "1.7.0"
-  resolved "https://registry.yarnpkg.com/@napi-rs/image-linux-arm64-gnu/-/image-linux-arm64-gnu-1.7.0.tgz#4fee6e9a95fd85e5bf891ee0f462fa3e894c2a23"
-  integrity sha512-oYTCK6VsyywMPjcOJh5hk8vTA7i2coekXnkfHErBbyKm7v5F+3pdOXrhmKQHYojENHT/LkWWKlkr0jF8QB4U3w==
-
-"@napi-rs/image-linux-arm64-musl@1.7.0":
-  version "1.7.0"
-  resolved "https://registry.yarnpkg.com/@napi-rs/image-linux-arm64-musl/-/image-linux-arm64-musl-1.7.0.tgz#4be9b48ad8d9336540bc80952964c305fee840d2"
-  integrity sha512-x3Z3YmhdMut2ULdXSjxAihp3rGcTvxUG5bhHMVc7bfezhGOViqfPJ5Qknra8egEZpXe6C0PKkBcIBm7hSlaubg==
-
-"@napi-rs/image-linux-x64-gnu@1.7.0":
-  version "1.7.0"
-  resolved "https://registry.yarnpkg.com/@napi-rs/image-linux-x64-gnu/-/image-linux-x64-gnu-1.7.0.tgz#a528578a6e46a6ba2a3b2451c0c5412c4dae45c0"
-  integrity sha512-5+FEzLr7yNGljdXXPyMJLJAQG8z9c1rawFTnT4dUidFjtpP/C4AP923eWDeo7B2Zz2psT7A8hgXhK+uAqyj4WQ==
-
-"@napi-rs/image-linux-x64-musl@1.7.0":
-  version "1.7.0"
-  resolved "https://registry.yarnpkg.com/@napi-rs/image-linux-x64-musl/-/image-linux-x64-musl-1.7.0.tgz#592abcf1b0ff9e19f6e3026f9011e7ffe4d193a8"
-  integrity sha512-LhzaYQ/z3axPUDPZefdyvgHz1qQ3NF2oDUHHFkVgpWNLJ3wGxa4GpM5TD+/jJCOChACAGYcZPpx96XLJGKNZfQ==
-
-"@napi-rs/image-win32-ia32-msvc@1.7.0":
-  version "1.7.0"
-  resolved "https://registry.yarnpkg.com/@napi-rs/image-win32-ia32-msvc/-/image-win32-ia32-msvc-1.7.0.tgz#62ce6b1426656d093ee633c1236d2ce7b6ae66ea"
-  integrity sha512-taCxMQTssuZW2hviOzJxo1iji0cAwjXY9m7CkiAAM8KftVUxAbmDGkPyEGRyt43ftYJ/rXRMz1vEEz/gxiZ5rQ==
-
-"@napi-rs/image-win32-x64-msvc@1.7.0":
-  version "1.7.0"
-  resolved "https://registry.yarnpkg.com/@napi-rs/image-win32-x64-msvc/-/image-win32-x64-msvc-1.7.0.tgz#238b3f1d1e239335fd2253a6bf86325b0698a3a9"
-  integrity sha512-hfnpTipEv6mrvhaNHRHBdYoVPUPyWnJ5KDpPAabJbTcsVb4x2TUiVI54r5GzF8zQ0RJc5mGtWdu9KFvyEBVJkg==
-
-"@napi-rs/image@^1.7.0":
-  version "1.7.0"
-  resolved "https://registry.yarnpkg.com/@napi-rs/image/-/image-1.7.0.tgz#b66e8f406d5300c7e1fb5fb874ee0638dc38f9f8"
-  integrity sha512-UI8bJKz4MwYsf2toiyxodbXeyHNe9yxhXz0KJdiDgliYs7ObCiu7DatPA899yuNscOApkweKV6yx2ag1lpVbbw==
-  optionalDependencies:
-    "@napi-rs/image-android-arm-eabi" "1.7.0"
-    "@napi-rs/image-android-arm64" "1.7.0"
-    "@napi-rs/image-darwin-arm64" "1.7.0"
-    "@napi-rs/image-darwin-x64" "1.7.0"
-    "@napi-rs/image-freebsd-x64" "1.7.0"
-    "@napi-rs/image-linux-arm-gnueabihf" "1.7.0"
-    "@napi-rs/image-linux-arm64-gnu" "1.7.0"
-    "@napi-rs/image-linux-arm64-musl" "1.7.0"
-    "@napi-rs/image-linux-x64-gnu" "1.7.0"
-    "@napi-rs/image-linux-x64-musl" "1.7.0"
-    "@napi-rs/image-win32-ia32-msvc" "1.7.0"
-    "@napi-rs/image-win32-x64-msvc" "1.7.0"
-
 "@preact/preset-vite@^2.8.1":
   version "2.8.1"
   resolved "https://registry.yarnpkg.com/@preact/preset-vite/-/preset-vite-2.8.1.tgz#90720eaa266685bad8472bb9ba2b60b92c156b27"
@@ -736,15 +658,6 @@
     html-webpack-plugin "npm:html-rspack-plugin@5.5.7"
     postcss "^8.4.33"
 
-"@rsbuild/plugin-image-compress@^0.3.8":
-  version "0.3.8"
-  resolved "https://registry.yarnpkg.com/@rsbuild/plugin-image-compress/-/plugin-image-compress-0.3.8.tgz#7fb1c0a259fba442e0672760dcca600c7a5ffbc3"
-  integrity sha512-jRP2+pmCEBWJ3A8YhXYilABE1w5vMb/pQcHwc9QNv4xO0E37Z5KsOxcMUamdhH2qFac/bkt2XMiO2Fr1vbA3sw==
-  dependencies:
-    "@napi-rs/image" "^1.7.0"
-    "@rsbuild/shared" "0.3.8"
-    svgo "^3.2.0"
-
 "@rsbuild/plugin-preact@^0.3.8":
   version "0.3.8"
   resolved "https://registry.yarnpkg.com/@rsbuild/plugin-preact/-/plugin-preact-0.3.8.tgz#b14e036c7bfcfbb1a2da51ceff59858eabe4a446"
@@ -853,11 +766,6 @@
   integrity sha512-FaruWX6KdudYloq1AHD/4nU+UsMTdNE8CKyrseXWEcgjDAbvkwJg2QGPAnfIJLIWsjZOSPLOAykK6fuYp4vp4A==
   dependencies:
     tslib "^2.4.0"
-
-"@trysound/sax@0.2.0":
-  version "0.2.0"
-  resolved "https://registry.yarnpkg.com/@trysound/sax/-/sax-0.2.0.tgz#cccaab758af56761eb7bf37af6f03f326dd798ad"
-  integrity sha512-L7z9BgrNEcYyUYtF+HaEfiS5ebkh9jXqbszz7pC0hRBPaatV0XjSD3+eHrpqFemQfgwiFF0QPIarnIihIDn7OA==
 
 "@types/estree@1.0.5", "@types/estree@^1.0.0":
   version "1.0.5"
@@ -1269,11 +1177,6 @@ commander@^11.0.0:
   resolved "https://registry.yarnpkg.com/commander/-/commander-11.1.0.tgz#62fdce76006a68e5c1ab3314dc92e800eb83d906"
   integrity sha512-yPVavfyCcRhmorC7rWlkHn15b4wDVgVmBA7kV4QVBsF7kv/9TKJAbAXVTxvTnwP8HHKjRCJDClKbciiYS7p0DQ==
 
-commander@^7.2.0:
-  version "7.2.0"
-  resolved "https://registry.yarnpkg.com/commander/-/commander-7.2.0.tgz#a36cb57d0b501ce108e4d20559a150a391d97ab7"
-  integrity sha512-QrWXB+ZQSVPmIWIhtEO9H+gwHaMGYiF5ChvoJ+K9ZGHG/sVsa6yiesAD1GC/x46sET00Xlwo1u49RVVVzvcSkw==
-
 commondir@^1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/commondir/-/commondir-1.0.1.tgz#ddd800da0c66127393cca5950ea968a3aaf1253b"
@@ -1369,25 +1272,10 @@ css-tree@^2.3.1:
     mdn-data "2.0.30"
     source-map-js "^1.0.1"
 
-css-tree@~2.2.0:
-  version "2.2.1"
-  resolved "https://registry.yarnpkg.com/css-tree/-/css-tree-2.2.1.tgz#36115d382d60afd271e377f9c5f67d02bd48c032"
-  integrity sha512-OA0mILzGc1kCOCSJerOeqDxDQ4HOh+G8NbOJFOTgOCzpw7fCBubk0fEyxp8AgOL/jvLgYA/uV0cMbe43ElF1JA==
-  dependencies:
-    mdn-data "2.0.28"
-    source-map-js "^1.0.1"
-
 css-what@^6.1.0:
   version "6.1.0"
   resolved "https://registry.yarnpkg.com/css-what/-/css-what-6.1.0.tgz#fb5effcf76f1ddea2c81bdfaa4de44e79bac70f4"
   integrity sha512-HTUrgRJ7r4dsZKU6GjmpfRK1O76h97Z8MfS1G0FozR+oF2kG6Vfe8JE6zwrkbxigziPHinCJ+gCPjA9EaBDtRw==
-
-csso@^5.0.5:
-  version "5.0.5"
-  resolved "https://registry.yarnpkg.com/csso/-/csso-5.0.5.tgz#f9b7fe6cc6ac0b7d90781bb16d5e9874303e2ca6"
-  integrity sha512-0LrrStPOdJj+SPCCrGhzryycLjwcgUSHBtxNA8aIDxf0GLsRh1cKYhB00Gd1lDOS4yGH69+SNn13+TWbVHETFQ==
-  dependencies:
-    css-tree "~2.2.0"
 
 cssstyle@^4.0.1:
   version "4.0.1"
@@ -2076,11 +1964,6 @@ make-dir@^4.0.0:
   dependencies:
     semver "^7.5.3"
 
-mdn-data@2.0.28:
-  version "2.0.28"
-  resolved "https://registry.yarnpkg.com/mdn-data/-/mdn-data-2.0.28.tgz#5ec48e7bef120654539069e1ae4ddc81ca490eba"
-  integrity sha512-aylIc7Z9y4yzHYAJNuESG3hfhC+0Ibp/MAMiaOZgNv4pmEdFyfZhhhny4MNiAfWdBQ1RQ2mfDWmM1x8SvGyp8g==
-
 mdn-data@2.0.30:
   version "2.0.30"
   resolved "https://registry.yarnpkg.com/mdn-data/-/mdn-data-2.0.30.tgz#ce4df6f80af6cfbe218ecd5c552ba13c4dfa08cc"
@@ -2600,19 +2483,6 @@ supports-preserve-symlinks-flag@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/supports-preserve-symlinks-flag/-/supports-preserve-symlinks-flag-1.0.0.tgz#6eda4bd344a3c94aea376d4cc31bc77311039e09"
   integrity sha512-ot0WnXS9fgdkgIcePe6RHNk1WA8+muPa6cSjeR3V8K27q9BB1rTE3R1p7Hv0z1ZyAc8s6Vvv8DIyWf681MAt0w==
-
-svgo@^3.2.0:
-  version "3.2.0"
-  resolved "https://registry.yarnpkg.com/svgo/-/svgo-3.2.0.tgz#7a5dff2938d8c6096e00295c2390e8e652fa805d"
-  integrity sha512-4PP6CMW/V7l/GmKRKzsLR8xxjdHTV4IMvhTnpuHwwBazSIlw5W/5SmPjN8Dwyt7lKbSJrRDgp4t9ph0HgChFBQ==
-  dependencies:
-    "@trysound/sax" "0.2.0"
-    commander "^7.2.0"
-    css-select "^5.1.0"
-    css-tree "^2.3.1"
-    css-what "^6.1.0"
-    csso "^5.0.5"
-    picocolors "^1.0.0"
 
 symbol-tree@^3.2.4:
   version "3.2.4"

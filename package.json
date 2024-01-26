@@ -37,7 +37,6 @@
     "@diary-spo/types": "latest",
     "@preact/preset-vite": "^2.8.1",
     "@rsbuild/core": "^0.3.8",
-    "@rsbuild/plugin-image-compress": "^0.3.8",
     "@rsbuild/plugin-preact": "^0.3.8",
     "@types/node": "^20.11.5",
     "@vitest/coverage-v8": "^1.2.1",
