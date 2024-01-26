@@ -26,7 +26,7 @@ const makeRequest = async <T>(
 
       clearTimeout(timeoutId)
 
-      /** В случае ошибки авторизации мы не делаем запрос на второй сервер, а сразу возвращаем ответ **/
+      /** В случае ошибки авторизации мы не делаем запрос на другой сервер, а сразу возвращаем ответ **/
       if (response.status === HTTP_STATUSES.UNAUTHORIZED) {
         return response
       }
