@@ -53,6 +53,10 @@ const LessonCard: FC<ILessonCard> = ({ lesson }) => {
     weekday: 'long'
   })
 
+  if (lessonDayOfWeek === 'воскресенье') {
+    return
+  }
+
   const isLessonToday = isToday(lessonDate)
 
   const displayDayStyles = {
