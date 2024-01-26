@@ -1,5 +1,5 @@
 // import { AppRoot, Button, Div } from '@vkontakte/vkui'
-// import { notFoundStyle, text } from '../views/index.tsx'
+// import { notFoundStyle, text } from '../views/index.ts'
 //
 // const TechWorking = () => {
 //   return (

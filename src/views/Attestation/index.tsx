@@ -1,5 +1,6 @@
 import { PanelHeaderWithBack } from '@components'
 import { AttestationResponse } from '@diary-spo/shared'
+import { useRateLimitExceeded } from '@hooks'
 import { handleResponse } from '@utils'
 import {
   Button,
@@ -11,7 +12,6 @@ import {
 } from '@vkontakte/vkui'
 import { FC, lazy } from 'preact/compat'
 import { useEffect, useState } from 'preact/hooks'
-import { useRateLimitExceeded } from '../../hooks'
 import { getAttestation } from '../../methods'
 
 const SubjectList = lazy(() => import('./SubjectsList'))
