@@ -15,7 +15,8 @@
     "coverage": "vitest run --coverage",
     "lint": "biome lint . --apply",
     "format": "biome format . --write",
-    "checkAll": "biome check . --apply-unsafe"
+    "checkAll": "biome check . --apply-unsafe",
+    "size": "yarn build && size-limit"
   },
   "dependencies": {
     "@vkontakte/icons": "2.95.0",
