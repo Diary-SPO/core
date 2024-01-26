@@ -17,4 +17,4 @@ jobs:
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           package_manager: yarn
-          script: yarn size-limit --env-mode development
+          script: yarn size-limit
