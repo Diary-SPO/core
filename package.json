@@ -8,7 +8,7 @@
     "build": "rsbuild build",
     "preview": "rsbuild preview --env-mode production",
     "serve": "yarn build && yarn preview",
-    "predeploy": "tsc && vite build",
+    "predeploy": "yarn build",
     "deploy:gh": "gh-pages -d dist",
     "deploy:vk": "vk-miniapps-deploy --env-mode production",
     "test": "vitest",
