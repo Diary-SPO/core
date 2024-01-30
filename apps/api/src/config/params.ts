@@ -4,7 +4,7 @@ export const PARAMS_INIT: ParamsInit = {
   PORT: 3003,
   DATABASE_PORT: 5432,
   SERVER_URL: '',
-  DATABASE_HOST: '',
+  DATABASE_HOST: 'localhost',
   DATABASE_NAME: '',
   DATABASE_USERNAME: '',
   DATABASE_PASSWORD: '',
