@@ -17,12 +17,11 @@ export const removeScheduleForList = async (
   await createQueryBuilder<DBSchedule>(client)
     .from('schedule')
     .where(
-      `id NOT IN (${idListString})` +
-        ` and date = '${currDate}'` +
-        ` and "groupId" = ${groupId}` +
-        (subgroup
+      `id NOT IN (${idListString}) and date = '${currDate}' and "groupId" = ${groupId}${
+        subgroup
           ? ` and ("subjectName" NOT LIKE '%/%' or "subjectName" LIKE '%${subgroup}%')`
-          : '')
+          : ''
+      }`
     )
     .delete()
 }
