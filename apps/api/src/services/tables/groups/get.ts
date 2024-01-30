@@ -1,6 +1,6 @@
 import { client } from '@db'
 import createQueryBuilder from '@diary-spo/sql'
-import { Group } from '@diary-spo/types'
+import { Group } from '../types'
 
 export const getGroupInfo = async (groupId: number): Promise<Group | null> =>
   createQueryBuilder<Group>(client)

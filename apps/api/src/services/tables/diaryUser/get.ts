@@ -1,6 +1,6 @@
 import { client } from '@db'
 import createQueryBuilder from '@diary-spo/sql'
-import { DiaryUser } from '@diary-spo/types'
+import { DiaryUser } from '../types'
 
 export const getDiaryUser = async (userId: number): Promise<DiaryUser | null> =>
   await createQueryBuilder<DiaryUser>(client)

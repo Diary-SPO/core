@@ -1,10 +1,10 @@
 import { API_CODES, API_ERRORS, ApiError } from '@api'
 import { SERVER_URL } from '@config'
+import type { ResponseLogin } from '@db'
 import type { UserData } from '@diary-spo/shared'
-import type { ResponseLogin } from '@diary-spo/types'
 import { fetcher } from '@utils'
 import Hashes from 'jshashes'
-import { offlineAuth } from './authService/auth'
+import { offlineAuth } from './authService'
 import { handleResponse } from './authService/helpers'
 import { saveUserData } from './authService/saveUserData'
 

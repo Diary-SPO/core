@@ -1,4 +1,4 @@
-import { sequelize } from '../index'
+import { sequelize } from '@db'
 import { DataTypes } from 'sequelize'
 import { SPOModel } from './SPO'
 

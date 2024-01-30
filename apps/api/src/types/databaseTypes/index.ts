@@ -1,8 +1,7 @@
 import { Teacher } from '@diary-spo/shared'
 
 export interface DBTeacher extends Teacher {
-  id?: number
-  spoId: number
+  spoId?: number
 }
 
 export interface DBSchedule {

@@ -2,7 +2,6 @@ import { API_CODES, ApiError } from '@api'
 import { SERVER_URL } from '@config'
 import { DiaryUserModel, GroupsModel, SPOModel, generateToken } from '@db'
 import type { UserData } from '@diary-spo/shared'
-import { DiaryUser, Group, PersonResponse, SPO } from '@diary-spo/types'
 import { ResponseLoginFromDiaryUser } from '@types'
 import {
   ApiResponse,
@@ -11,6 +10,12 @@ import {
   fetcher,
   formatDate
 } from '@utils'
+import {
+  DiaryUser,
+  Group,
+  PersonResponse,
+  SPO
+} from '../../../services/tables/types'
 
 export const saveUserData = async (
   parsedRes: ApiResponse<UserData>,

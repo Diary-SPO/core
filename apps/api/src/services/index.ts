@@ -1,9 +1,9 @@
-export * from './initDBConnection'
+export * from './groups'
+export * from './gradebook'
+export * from './diaryUser'
+export * from './teacher'
+export * from './schedule'
+export * from './lessonType'
 
-// !!! TODO: Сделать миграции !!!
-export * from './models'
-//export * from './tables'
-export * from '@diary-spo/types'
-export * from './getCookieFromToken'
-export * from './lessons'
-export * from './generateToken'
+/** TS типы таблиц **/
+export * from './types'

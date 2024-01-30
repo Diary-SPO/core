@@ -1,8 +1,8 @@
 import { client } from '@db'
 import { Lesson } from '@diary-spo/shared'
 import createQueryBuilder from '@diary-spo/sql'
-import { GradebookDB, Schedule } from '@diary-spo/types'
 import { updateLessonType } from '../lessonType'
+import { GradebookDB, Schedule } from '../types'
 
 export const saveGradebook = async (
   schedule: Schedule,

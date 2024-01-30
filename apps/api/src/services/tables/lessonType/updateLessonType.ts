@@ -1,7 +1,7 @@
 import { client } from '@db'
 import createQueryBuilder from '@diary-spo/sql'
-import { DBLessonType } from '@diary-spo/types'
 import { protectInjection } from '../../../utils/protectInjection'
+import { DBLessonType } from '../types'
 
 export const updateLessonType = async (
   name: string

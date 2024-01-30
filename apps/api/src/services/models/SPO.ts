@@ -1,4 +1,4 @@
-import { sequelize } from '../index'
+import { sequelize } from '@db'
 import { DataTypes } from 'sequelize'
 
 export const SPOModel = sequelize.define(

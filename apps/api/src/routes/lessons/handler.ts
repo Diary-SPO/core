@@ -1,7 +1,8 @@
-import { getCookieFromToken, getLessonsService } from '@db'
+import { getCookieFromToken } from '@db'
 import type { Day } from '@diary-spo/shared'
 import { IContext } from '@types'
 import { formatDate } from '@utils'
+import { getLessonsService } from './lessonsService'
 
 const getLessons = async ({
   request,
