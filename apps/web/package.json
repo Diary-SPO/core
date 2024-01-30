@@ -14,7 +14,7 @@
     "lint": "biome lint . --apply",
     "format": "biome format . --write",
     "checkAll": "biome check . --apply-unsafe",
-    "size": "yarn build --env-mode development && size-limit"
+    "size": "bun run build --mode development && size-limit"
   },
   "dependencies": {
     "@vkontakte/icons": "2.95.0",
