@@ -1,9 +1,7 @@
-export * from './groups'
-export * from './gradebook'
-export * from './diaryUser'
-export * from './teacher'
-export * from './schedule'
-export * from './lessonType'
+export * from './initDBConnection'
 
-/** TS типы таблиц **/
-export * from './types'
+// !!! TODO: Сделать миграции !!!
+export * from './models'
+//export * from './tables'
+export * from './tables/types'
+export * from './helpers'

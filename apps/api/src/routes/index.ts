@@ -1,20 +1,30 @@
-import { Elysia, t } from 'elysia'
-import postAuth from './handler'
+import { Elysia } from 'elysia'
 
-const schema = {
-  body: t.Object({
-    login: t.String(),
-    password: t.String(),
-    isHash: t.Boolean()
-  })
-}
+import ads from './ads'
+import attestation from './attestation'
+import hello from './hello'
+import lessons from './lessons'
+import login from './login'
+import organization from './organization'
+import performanceCurrent from './performance.current'
 
-const performanceCurrent = new Elysia().guard(schema, (app) =>
-  app.post('/login', postAuth, {
-    detail: {
-      tags: ['Auth']
-    }
-  })
-)
+import { headersSchema } from '@utils'
+import { errorHandler } from './helpers'
 
-export default performanceCurrent
+const routes = new Elysia()
+  /** Роуты с проверкой на наличие secret поля **/
+  .guard(headersSchema, (app) =>
+    app
+      .use(organization)
+      .use(lessons)
+      .use(performanceCurrent)
+      .use(attestation)
+      .use(ads)
+  )
+  /** Роуты без проверки **/
+  .use(hello)
+  .use(login)
+  /** Обработка любых ошибок в кажом роуте **/
+  .onError(errorHandler)
+
+export default routes
