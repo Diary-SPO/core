@@ -8,6 +8,8 @@ pnpm-debug.log*
 lerna-debug.log*
 
 node_modules
+**/node_modules
+
 dist
 dist-ssr
 *.local
@@ -24,10 +26,11 @@ dist-ssr
 *.sln
 *.sw?
 
+**/.env
+**/.env.production
 
 .env
 .env.production
-.env.**
 /build.zip
 
 coverage
