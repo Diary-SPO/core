@@ -1,9 +1,0 @@
-{
-  "formatter": {
-    "ignore": ["./dist"]
-  },
-  "linter": {
-    "ignore": ["./dist"]
-  },
-  "extends": ["../../biome.json"]
-}

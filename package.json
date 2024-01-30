@@ -12,7 +12,6 @@
     "checkAll": "biome check . --apply-unsafe",
     "build:web": "cd apps/web && bun run build",
     "build:api": "cd apps/api && bun run build",
-    "build:shared": "cd apps/shared && bun run build",
     "size-limit:web": "cd apps/web && bun run size-limit"
   },
   "workspaces": [
