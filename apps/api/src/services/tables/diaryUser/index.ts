@@ -1,0 +1,1 @@
+export { getDiaryUser } from './get'

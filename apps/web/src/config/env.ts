@@ -1,0 +1,11 @@
+export const BASE_URLS = import.meta.env.VITE_SERVER_URLS?.split(',')
+export const MODE = import.meta.env.VITE_MODE
+
+export const BETA_VERSION = import.meta.env.VITE_BETA_VERSION
+
+export const Mode = {
+  DEV: 'dev',
+  PROD: 'prod'
+} as const
+
+export const IS_DEV = MODE === Mode.DEV

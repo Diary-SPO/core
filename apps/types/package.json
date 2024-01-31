@@ -1,0 +1,9 @@
+{
+  "name": "@diary-spo/types",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "devDependencies": {
+    "@diary-spo/shared": "workspace:*"
+  }
+}

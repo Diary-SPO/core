@@ -1,4 +1,4 @@
-name: Run Tests and Coverage
+name: Run Tests at Web and Api
 
 on:
   push:
@@ -6,40 +6,21 @@ on:
       - '*'
 
 jobs:
-  test:
+  Tests:
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
 
-      - name: Set up Node.js
-        uses: actions/setup-node@v4
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v1
         with:
-          node-version: '18'
+          bun-version: 'latest'
+
 
       - name: Install dependencies
-        run: yarn install
+        run: bun install
 
       - name: Run tests
-        run: yarn test
-
-  coverage:
-    runs-on: ubuntu-latest
-
-    needs: test
-
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v2
-
-      - name: Set up Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '18'
-
-      - name: Install dependencies
-        run: yarn install
-
-      - name: Run coverage
-        run: yarn coverage
+        run: bun test
