@@ -7,6 +7,9 @@
     "prepare": "husky install && bun format",
     "dev:api": "cd apps/api && bun dev",
     "dev:web": "cd apps/web && bun dev",
+    "dev:web:preview": "cd apps/web && bun preview",
+    "dev:api:serve": "cd apps/api && bun serve",
+    "dev:preview": "cd apps/web && bun preview",
     "lint": "biome lint . --apply",
     "format": "biome format . --write",
     "checkAll": "biome check . --apply-unsafe",
@@ -21,11 +24,11 @@
   "author": "scffs",
   "license": "MIT",
   "devDependencies": {
-    "@biomejs/biome": "1.5.3",
+    "@biomejs/biome": "^1.5.3",
     "@happy-dom/global-registrator": "^13.3.2",
     "bun": "latest",
     "bun-types": "latest",
-    "husky": "^8.0.3",
+    "husky": "^9.0.6",
     "lint-staged": "^15.1.0",
     "typescript": "latest"
   }
