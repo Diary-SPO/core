@@ -1,8 +1,7 @@
-import { client } from '@db'
 import { Lesson } from '@diary-spo/shared'
-import createQueryBuilder from '@diary-spo/sql'
 import { updateLessonType } from '../lessonType'
 import { GradebookDB, Schedule } from '../types'
+import { GradebookModel } from 'src/services/models'
 
 export const saveGradebook = async (
   schedule: Schedule,
@@ -12,7 +11,7 @@ export const saveGradebook = async (
     console.error(
       'Не удалось сохранить тип для gradebook: отсутствует lessonType!'
     )
-    return
+    return null
   }
 
   const lessonType = await updateLessonType(
@@ -21,15 +20,11 @@ export const saveGradebook = async (
 
   if (!lessonType) {
     console.error('Не удалось сохранить lessonType!')
-    return
+    return null
   }
 
-  return (
-    (
-      await createQueryBuilder<GradebookDB>(client).from('gradebook').insert({
-        scheduleId: schedule.id,
-        lessonTypeId: lessonType.id
-      })
-    )?.[0] ?? null
-  )
+  return await GradebookModel.create({
+    scheduleId: schedule.id,
+    lessonTypeId: lessonType.id
+  }) as unknown as GradebookDB
 }

@@ -1,27 +1,20 @@
-import { client } from '@db'
-import createQueryBuilder from '@diary-spo/sql'
-import { protectInjection } from '../../../utils/protectInjection'
+import { LessonTypeModel } from 'src/services/models'
 import { DBLessonType } from '../types'
 
 export const updateLessonType = async (
   name: string
 ): Promise<DBLessonType | null> => {
-  const updateLessonTypeQueryBuilder = createQueryBuilder<DBLessonType>(client)
-    .select('*')
-    .from('lessonType')
-    .where(`name = '${protectInjection(name)}'`)
-
-  const existingLessonType = await updateLessonTypeQueryBuilder.first()
+  const existingLessonType = await LessonTypeModel.findOne({
+    where: {
+      name
+    }
+  })
 
   if (existingLessonType) {
-    return existingLessonType
+    return existingLessonType as unknown as DBLessonType
   }
 
-  return (
-    (
-      await updateLessonTypeQueryBuilder.insert({
-        name
-      })
-    )?.[0] ?? null
-  )
+  return await LessonTypeModel.create({
+    name
+  }) as unknown as DBLessonType
 }

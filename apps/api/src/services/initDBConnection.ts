@@ -15,7 +15,12 @@ export const sequelize = new Sequelize({
   password: DATABASE_PASSWORD,
   host: DATABASE_HOST,
   port: DATABASE_PORT,
-  dialect: 'postgres'
+  dialect: 'postgres',
+  logging: (e) => {
+    if (e.indexOf('error') > -1) {
+      console.error(e)
+    }
+  }
 })
 
 try {

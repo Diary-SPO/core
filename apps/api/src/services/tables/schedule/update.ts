@@ -1,8 +1,6 @@
-import { client } from '@db'
-import createQueryBuilder from '@diary-spo/sql'
+import { ScheduleModel } from '@db'
 import { formatDate } from '@utils'
 import { DBSchedule } from '../../../types/databaseTypes'
-import { protectInjection } from '../../../utils/protectInjection'
 
 export const updateSchedule = async (
   schedule: DBSchedule
@@ -12,27 +10,24 @@ export const updateSchedule = async (
     console.error(
       'Хоть тип DBSchedule и допускает свойство id, но оно не должно быть передано при сохранении или обновлении!'
     )
-    return
+    return null
   }
 
-  const existingQueryBuilder = createQueryBuilder<DBSchedule>(client)
-    .select('*')
-    .from('schedule')
-    .where(
-      `"subjectName" = '${protectInjection(schedule.subjectName)}'` +
-        ` and date = '${protectInjection(formatDate(schedule.date))}'` +
-        ` and "startTime" = '${protectInjection(schedule.startTime)}'` +
-        ` and "endTime" = '${protectInjection(schedule.endTime)}'`
-    )
-
-  const scheduleExist = await existingQueryBuilder.first()
+  const scheduleExist = await ScheduleModel.findOne({
+    where: {
+      subjectName: schedule.subjectName,
+      date: formatDate(schedule.date),
+      startTime: schedule.startTime,
+      endTime: schedule.endTime
+    }
+  })
 
   if (scheduleExist) {
-    await existingQueryBuilder
-      .where(`id = ${scheduleExist.id}`)
-      .update(schedule)
-    return scheduleExist
+    await scheduleExist.update({
+      ...schedule
+    })
+    return scheduleExist as unknown as DBSchedule
   }
 
-  return (await existingQueryBuilder.insert(schedule))?.[0] ?? null
+  return await await ScheduleModel.create({...schedule}) as unknown as DBSchedule
 }

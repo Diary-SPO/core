@@ -1,8 +1,12 @@
+import { API_CODES, API_ERRORS, ApiError } from '@api'
 import { SERVER_URL } from '@config'
+import { DiaryUser, getDiaryUser, saveSchedule } from '@db'
 import { Day } from '@diary-spo/shared'
 import { HeadersWithCookie } from '@utils'
+import { removeScheduleForList } from 'src/services/tables/schedule/remove'
+import { DBSchedule } from 'src/types/databaseTypes'
 
-/*
+
 const save = async (days: Day[], userId: number): Promise<void> => {
   const userInfo: DiaryUser | null = await getDiaryUser(userId)
 
@@ -59,7 +63,7 @@ const save = async (days: Day[], userId: number): Promise<void> => {
     }
   }
 }
-*/
+
 
 export const getLessonsService = async (
   startDate: string,
@@ -75,13 +79,19 @@ export const getLessonsService = async (
 
   if (!response.ok) {
     // Получаем из базы
+    if (response.status === 403) {
+      throw new ApiError(
+        API_ERRORS.USER_NOT_PERMISSION,
+        API_CODES.FORBIDDEN
+      )
+    }
     return 'error'
   }
 
   // Сохраняем и отдаём
   const days: Day[] = await response.json()
-  /*save(days, id).catch((err) =>
+  save(days, id).catch((err) =>
     console.error(`Ошибка сохранения расписания: ${err}`)
-  )*/
+  )
   return days
 }

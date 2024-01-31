@@ -1,18 +1,21 @@
-import { client } from '@db'
 import { Lesson } from '@diary-spo/shared'
-import createQueryBuilder from '@diary-spo/sql'
 import { updateLessonType } from '../lessonType'
 import { GradebookDB, Schedule } from '../types'
 import { saveGradebook } from './save'
+import { GradebookModel } from 'src/services/models'
 
 export const updateGradebook = async (schedule: Schedule, lesson: Lesson) => {
-  const existGradebookQueryBuilder = createQueryBuilder<GradebookDB>(client)
+  /*const existGradebookQueryBuilder = createQueryBuilder<GradebookDB>(client)
     .select('*')
     .where(`"scheduleId" = ${schedule.id}`)
-    .from('gradebook')
+    .from('gradebook')*/
 
   let existGradebook: GradebookDB | null =
-    await existGradebookQueryBuilder.first()
+    await GradebookModel.findOne({
+      where: {
+        scheduleId: schedule.id
+      }
+    }) as unknown as GradebookDB
 
   if (!existGradebook) {
     existGradebook = await saveGradebook(schedule, lesson)
@@ -34,12 +37,9 @@ export const updateGradebook = async (schedule: Schedule, lesson: Lesson) => {
       return
     }
 
-    existGradebook =
-      (
-        await existGradebookQueryBuilder.update({
-          lessonTypeId: lessonType.id
-        })
-      )?.[0] ?? null
+    existGradebook = existGradebook.update({
+      lessonTypeId: lessonType.id
+    })
   }
 
   // Дальше нужно обновить темы, задания, типы задания, обязательность заданий

@@ -11,7 +11,7 @@ export const saveSchedule = async (
   date: string
 ): Promise<DBSchedule | null> => {
   if (!schedule?.name || !schedule?.timetable?.teacher) {
-    return
+    return null
   }
 
   const groupInfo = await getGroupInfo(groupId)
@@ -20,7 +20,7 @@ export const saveSchedule = async (
     console.error(
       'Ошибка получения/сохранения группы во время сохранения расписания в базе!'
     )
-    return
+    return null
   }
 
   // Тут будет лежать запись уже из нашей базы, с учителем, который пришёл от дневника
@@ -33,7 +33,7 @@ export const saveSchedule = async (
     console.error(
       'Ошибка сохранения/получения учителя при внесении занятия в базу!'
     )
-    return
+    return null
   }
 
   const actualSchedule = await updateSchedule({
