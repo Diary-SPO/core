@@ -7,7 +7,7 @@ import lessons from './lessons'
 import login from './login'
 import organization from './organization'
 import performanceCurrent from './performance.current'
-import finalMarks from "./finalMarks";
+import finalMarks from './finalMarks'
 
 import { headersSchema } from '@utils'
 import { errorHandler } from './helpers'
