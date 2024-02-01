@@ -1,5 +1,5 @@
-import { PanelHeaderWithBack, ErrorPlaceholder } from '@components'
-import { AttestationResponse } from '@diary-spo/shared'
+import { ErrorPlaceholder, PanelHeaderWithBack } from '@components'
+import { AcademicRecord, AttestationResponse } from '@diary-spo/shared'
 import { useRateLimitExceeded } from '@hooks'
 import { handleResponse } from '@utils'
 import { Group, HorizontalScroll, Panel, Tabs, TabsItem } from '@vkontakte/vkui'
@@ -18,10 +18,18 @@ interface IAttestation {
 const Attestation: FC<IAttestation> = ({ id }) => {
   const [isError, setIsError] = useState<boolean>(false)
   const [isDataLoading, setIsLoading] = useState<boolean>(false)
+
   const [attestationData, setAttestationData] =
     useState<AttestationResponse | null>(null)
+  const [finalMarksData, setFinalMarksData] = useState<AcademicRecord | null>(
+    null
+  )
 
+  const [selected, setSelected] = useState<'finalMarks' | 'attestation'>(
+    'attestation'
+  )
   const getUserAttestation = async () => {
+    if (selected !== 'attestation') return
     setIsLoading(true)
     setIsError(false)
     try {
@@ -49,7 +57,7 @@ const Attestation: FC<IAttestation> = ({ id }) => {
 
   useEffect(() => {
     getUserAttestation()
-  }, [])
+  }, [selected])
 
   const semesters: Record<string, AttestationResponse['subjects']> = {}
   let studentName: string | null = null
@@ -76,6 +84,8 @@ const Attestation: FC<IAttestation> = ({ id }) => {
   }
 
   const getUserFinalMarks = async () => {
+    if (selected !== 'finalMarks') return
+
     setIsLoading(true)
     setIsError(false)
     try {
@@ -93,7 +103,7 @@ const Attestation: FC<IAttestation> = ({ id }) => {
       }
 
       console.log(data)
-
+      setFinalMarksData(data)
       // setAttestationData(data)
     } catch (error) {
       setIsError(true)
@@ -105,11 +115,10 @@ const Attestation: FC<IAttestation> = ({ id }) => {
 
   useEffect(() => {
     getUserFinalMarks()
-  }, [])
+  }, [selected])
+  console.warn(finalMarksData)
+  console.warn(selected)
 
-  const [selected, setSelected] = useState<'finalMarks' | 'attestation'>(
-    'attestation'
-  )
   return (
     <Panel nav={id}>
       <PanelHeaderWithBack title='Аттестация' />
@@ -141,7 +150,7 @@ const Attestation: FC<IAttestation> = ({ id }) => {
           />
         )}
 
-        {selected === 'finalMarks' && <FinalMarks />}
+        {selected === 'finalMarks' && <FinalMarks data={finalMarksData} />}
 
         {isError && <ErrorPlaceholder onClick={getUserAttestation} />}
       </Group>

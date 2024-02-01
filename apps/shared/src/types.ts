@@ -140,7 +140,8 @@ export const Grade: Record<string, string | number> = {
   Three: 3,
   Two: 2,
   One: 1,
-  '': 'Д' // Empty grade as 'Д'
+  '': 'Д', // Empty grade as 'Д'
+  Success: 'Зч' // Empty grade as 'Д'
 }
 
 export const LessonType: Record<LessonTypeKeys, string> = {
@@ -304,7 +305,6 @@ export interface NotificationsResponse {
   deleteInDays: number
 }
 
-/** Ответ от services/students/<id>/attestation **/
 export interface AttestationMark {
   value?: 'Success' | string
 }
@@ -327,7 +327,8 @@ export interface AcademicYear {
   marks: AttestationMark
 }
 
+/** Ответ от services/students/<id>/attestation **/
 export interface AcademicRecord {
   academicYears: AcademicYear[]
-  subjects: Subject[]
+  subjects: AttestationSubject[]
 }

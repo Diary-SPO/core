@@ -4,7 +4,6 @@
   "version": "1.0.0",
   "description": "",
   "scripts": {
-    "prepare": "husky install && bun format",
     "dev:api": "cd apps/api && bun dev",
     "dev:web": "cd apps/web && bun dev",
     "dev:all": "concurrently \"bun dev:api\" \"bun dev:web\"",
@@ -15,7 +14,8 @@
     "checkAll": "biome check . --apply-unsafe",
     "build:web": "cd apps/web && bun run build",
     "build:api": "cd apps/api && bun run build",
-    "size-limit:web": "cd apps/web && bun run size-limit"
+    "size-limit:web": "cd apps/web && bun run size-limit",
+    "prepare": "husky install && bun format"
   },
   "workspaces": [
     "apps/*"
@@ -29,7 +29,7 @@
     "@happy-dom/global-registrator": "^13.3.2",
     "bun": "latest",
     "bun-types": "latest",
-    "husky": "^9.0.6",
+    "husky": "^8.0.0",
     "lint-staged": "^15.1.0",
     "typescript": "latest"
   }

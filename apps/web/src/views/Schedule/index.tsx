@@ -1,4 +1,4 @@
-import { PanelHeaderWithBack, Suspense, ErrorPlaceholder } from '@components'
+import { ErrorPlaceholder, PanelHeaderWithBack, Suspense } from '@components'
 import { Day } from '@diary-spo/shared'
 import { useRateLimitExceeded, useSnackbar } from '@hooks'
 import { handleResponse } from '@utils'

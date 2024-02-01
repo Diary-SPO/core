@@ -1,9 +1,9 @@
-import { AttestationResponse } from '@diary-spo/shared'
+import { AcademicRecord } from '@diary-spo/shared'
 import { ServerResponse } from '../../types'
 import makeRequest from '../makeRequest'
 
-export const getFinalMarks = async (): ServerResponse<AttestationResponse> => {
+export const getFinalMarks = async (): ServerResponse<AcademicRecord> => {
   const id = localStorage.getItem('id')
 
-  return makeRequest<AttestationResponse>(`/final.marks/${id}`)
+  return makeRequest<AcademicRecord>(`/final.marks/${id}`)
 }
