@@ -1,20 +1,15 @@
-import { PanelHeaderWithBack } from '@components'
+import { PanelHeaderWithBack, ErrorPlaceholder } from '@components'
 import { AttestationResponse } from '@diary-spo/shared'
 import { useRateLimitExceeded } from '@hooks'
 import { handleResponse } from '@utils'
-import {
-  Button,
-  ButtonGroup,
-  Div,
-  Link,
-  Panel,
-  Placeholder
-} from '@vkontakte/vkui'
+import { Group, HorizontalScroll, Panel, Tabs, TabsItem } from '@vkontakte/vkui'
 import { FC, lazy } from 'preact/compat'
 import { useEffect, useState } from 'preact/hooks'
 import { getAttestation } from '../../methods'
+import { getFinalMarks } from '../../methods/server/getFinalMarks.ts'
 
 const SubjectList = lazy(() => import('./SubjectsList'))
+const FinalMarks = lazy(() => import('./FinalMarks'))
 
 interface IAttestation {
   id: string
@@ -80,39 +75,86 @@ const Attestation: FC<IAttestation> = ({ id }) => {
     }
   }
 
+  const getUserFinalMarks = async () => {
+    setIsLoading(true)
+    setIsError(false)
+    try {
+      const data = await getFinalMarks()
+
+      handleResponse(
+        data,
+        () => setIsError(true),
+        useRateLimitExceeded,
+        setIsLoading
+      )
+
+      if (data instanceof Response) {
+        return
+      }
+
+      console.log(data)
+
+      // setAttestationData(data)
+    } catch (error) {
+      setIsError(true)
+      console.error('Плоха-плоха:', error)
+    } finally {
+      setIsLoading(false)
+    }
+  }
+
+  useEffect(() => {
+    getUserFinalMarks()
+  }, [])
+
+  const [selected, setSelected] = useState<'finalMarks' | 'attestation'>(
+    'attestation'
+  )
   return (
     <Panel nav={id}>
       <PanelHeaderWithBack title='Аттестация' />
-      <Div>
-        <SubjectList
-          isDataLoading={isDataLoading}
-          // @ts-ignore
-          semesters={semesters}
-          studentName={studentName}
-          year={year}
-        />
+      <Group>
+        <Tabs withScrollToSelectedTab scrollBehaviorToSelectedTab='center'>
+          <HorizontalScroll arrowSize='m'>
+            <TabsItem
+              selected={selected === 'attestation'}
+              onClick={() => setSelected('attestation')}
+            >
+              Ведомость
+            </TabsItem>
+            <TabsItem
+              selected={selected === 'finalMarks'}
+              onClick={() => setSelected('finalMarks')}
+            >
+              Итоговые оценки
+            </TabsItem>
+          </HorizontalScroll>
+        </Tabs>
+
+        {selected === 'attestation' && (
+          <SubjectList
+            isDataLoading={isDataLoading}
+            // @ts-ignore
+            semesters={semesters}
+            studentName={studentName}
+            year={year}
+          />
+        )}
+
+        {selected === 'finalMarks' && <FinalMarks />}
+
         {isError && <ErrorPlaceholder onClick={getUserAttestation} />}
-      </Div>
+      </Group>
     </Panel>
   )
 }
 
-const ErrorPlaceholder = ({ onClick }: { onClick: () => void }) => (
-  <Placeholder
-    header='Ошибка при загрузке'
-    action={
-      <ButtonGroup mode='vertical' align='center'>
-        {/*// @ts-ignore Типы не совместимы */}
-        <Button size='s' onClick={onClick}>
-          Попробовать снова
-        </Button>
-        {/*// @ts-ignore Типы не совместимы */}
-        <Link href='https://vk.me/dnevnik_spo' target='_blank'>
-          Сообщить о проблеме
-        </Link>
-      </ButtonGroup>
-    }
-  />
-)
+// const Scrollable = () => {
+//   const [selected, setSelected] = useState('news')
+//
+//   return (
+//
+//   )
+// }
 
 export default Attestation

@@ -7,9 +7,15 @@
     "prepare": "husky install && bun format",
     "dev:api": "cd apps/api && bun dev",
     "dev:web": "cd apps/web && bun dev",
+<<<<<<< HEAD
     "dev:web:preview": "cd apps/web && bun preview",
     "dev:api:serve": "cd apps/api && bun serve",
     "dev:preview": "cd apps/web && bun preview",
+=======
+    "dev:all": "concurrently \"bun dev:api\" \"bun dev:web\"",
+    "dev:web:preview": "cd apps/web && bun preview",
+    "dev:api:serve": "cd apps/api && bun serve",
+>>>>>>> aae76c2 (wip)
     "lint": "biome lint . --apply",
     "format": "biome format . --write",
     "checkAll": "biome check . --apply-unsafe",
@@ -25,6 +31,10 @@
   "license": "MIT",
   "devDependencies": {
     "@biomejs/biome": "^1.5.3",
+<<<<<<< HEAD
+=======
+    "concurrently": "^8.2.2",
+>>>>>>> aae76c2 (wip)
     "@happy-dom/global-registrator": "^13.3.2",
     "bun": "latest",
     "bun-types": "latest",

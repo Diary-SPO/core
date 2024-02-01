@@ -1,7 +1,7 @@
 import { Button, ButtonGroup, Link, Placeholder } from '@vkontakte/vkui'
 import { FC } from 'react'
 
-const ErrorPlaceholder: FC<{ onClick: () => void }> = ({ onClick }) => (
+export const ErrorPlaceholder: FC<{ onClick: () => void }> = ({ onClick }) => (
   <Placeholder
     header='Ошибка при загрузке'
     action={
@@ -18,5 +18,3 @@ const ErrorPlaceholder: FC<{ onClick: () => void }> = ({ onClick }) => (
     }
   />
 )
-
-export default ErrorPlaceholder

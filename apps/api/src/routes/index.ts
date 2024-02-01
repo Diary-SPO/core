@@ -7,6 +7,7 @@ import lessons from './lessons'
 import login from './login'
 import organization from './organization'
 import performanceCurrent from './performance.current'
+import finalMarks from "./finalMarks";
 
 import { headersSchema } from '@utils'
 import { errorHandler } from './helpers'
@@ -20,6 +21,7 @@ const routes = new Elysia()
       .use(performanceCurrent)
       .use(attestation)
       .use(ads)
+      .use(finalMarks)
   )
   /** Роуты без проверки **/
   .use(hello)

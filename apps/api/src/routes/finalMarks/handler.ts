@@ -1,21 +1,22 @@
 import { SERVER_URL } from '@config'
-import type { AttestationResponse } from '@diary-spo/shared'
+import type { NotificationsResponse } from '@diary-spo/shared'
 import { ContextWithID } from '@types'
 import { HeadersWithCookie } from '@utils'
 import { getCookieFromToken } from '@db'
 
-const getAttestation = async ({
+const getFinalMarks = async ({
   request,
   params
-}: ContextWithID): Promise<AttestationResponse | string> => {
-  const { id } = params
+}: ContextWithID): Promise<NotificationsResponse | string> => {
   const secret = await getCookieFromToken(request.headers.toJSON().secret)
-  const path = `${SERVER_URL}/services/reports/curator/group-attestation-for-student/${id}`
+  const { id } = params
+  const path = `${SERVER_URL}/services/students/${id}/attestation`
+
   const response = await fetch(path, {
     headers: HeadersWithCookie(secret)
   })
 
-  return response.json()
+  return await response.json()
 }
 
-export default getAttestation
+export default getFinalMarks
