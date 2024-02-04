@@ -3,13 +3,13 @@ import { AcademicRecord, AttestationResponse } from '@diary-spo/shared'
 import { useRateLimitExceeded } from '@hooks'
 import { handleResponse } from '@utils'
 import { Group, HorizontalScroll, Panel, Tabs, TabsItem } from '@vkontakte/vkui'
-import { FC, lazy } from 'preact/compat'
+import { FC } from 'preact/compat'
 import { useEffect, useState } from 'preact/hooks'
 import { getAttestation } from '../../methods'
 import { getFinalMarks } from '../../methods/server/getFinalMarks.ts'
 
-const SubjectList = lazy(() => import('./SubjectsList'))
-const FinalMarks = lazy(() => import('./FinalMarks'))
+import SubjectList from './SubjectsList'
+import FinalMarks from './FinalMarks'
 
 interface IAttestation {
   id: string
@@ -55,10 +55,6 @@ const Attestation: FC<IAttestation> = ({ id }) => {
     }
   }
 
-  useEffect(() => {
-    getUserAttestation()
-  }, [selected])
-
   const semesters: Record<string, AttestationResponse['subjects']> = {}
   let studentName: string | null = null
   let year: number | null = null
@@ -102,9 +98,7 @@ const Attestation: FC<IAttestation> = ({ id }) => {
         return
       }
 
-      console.log(data)
       setFinalMarksData(data)
-      // setAttestationData(data)
     } catch (error) {
       setIsError(true)
       console.error('Плоха-плоха:', error)
@@ -114,10 +108,12 @@ const Attestation: FC<IAttestation> = ({ id }) => {
   }
 
   useEffect(() => {
+    console.warn(selected)
+    getUserAttestation()
     getUserFinalMarks()
   }, [selected])
+
   console.warn(finalMarksData)
-  console.warn(selected)
 
   return (
     <Panel nav={id}>
@@ -126,12 +122,14 @@ const Attestation: FC<IAttestation> = ({ id }) => {
         <Tabs withScrollToSelectedTab scrollBehaviorToSelectedTab='center'>
           <HorizontalScroll arrowSize='m'>
             <TabsItem
+              disabled={selected === 'attestation'}
               selected={selected === 'attestation'}
               onClick={() => setSelected('attestation')}
             >
               Ведомость
             </TabsItem>
             <TabsItem
+              disabled={selected === 'finalMarks'}
               selected={selected === 'finalMarks'}
               onClick={() => setSelected('finalMarks')}
             >
@@ -140,7 +138,7 @@ const Attestation: FC<IAttestation> = ({ id }) => {
           </HorizontalScroll>
         </Tabs>
 
-        {selected === 'attestation' && (
+        {selected === 'attestation' ? (
           <SubjectList
             isDataLoading={isDataLoading}
             // @ts-ignore
@@ -148,22 +146,14 @@ const Attestation: FC<IAttestation> = ({ id }) => {
             studentName={studentName}
             year={year}
           />
+        ) : (
+          <FinalMarks data={finalMarksData} />
         )}
-
-        {selected === 'finalMarks' && <FinalMarks data={finalMarksData} />}
 
         {isError && <ErrorPlaceholder onClick={getUserAttestation} />}
       </Group>
     </Panel>
   )
 }
-
-// const Scrollable = () => {
-//   const [selected, setSelected] = useState('news')
-//
-//   return (
-//
-//   )
-// }
 
 export default Attestation
