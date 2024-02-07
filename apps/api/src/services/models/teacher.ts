@@ -1,5 +1,6 @@
-import { SPOModel, sequelize } from '@db'
+import { sequelize } from '@db'
 import { DataTypes, Model, Optional } from 'sequelize'
+import { SPOModel } from './SPO'
 
 export type TeacherModelType = {
   id: number

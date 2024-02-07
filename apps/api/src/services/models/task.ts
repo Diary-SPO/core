@@ -1,5 +1,7 @@
-import { GradebookModel, TaskTypeModel, sequelize } from '@db'
+import { sequelize } from '@db'
 import { DataTypes, Model, Optional } from 'sequelize'
+import { GradebookModel } from './gradebook'
+import { TaskTypeModel } from './taskType'
 
 export type TaskModelType = {
   id: number

@@ -1,5 +1,7 @@
-import { DiaryUserModel, TaskModel, sequelize } from '@db'
+import { sequelize } from '@db'
 import { DataTypes, Model, Optional } from 'sequelize'
+import { DiaryUserModel } from './diaryUser'
+import { TaskModel } from './task'
 
 export type MarkModelType = {
   id: number

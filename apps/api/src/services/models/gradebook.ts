@@ -1,5 +1,7 @@
-import { LessonTypeModel, ScheduleModel, sequelize } from '@db'
+import { sequelize } from '@db'
 import { DataTypes, Model, Optional } from 'sequelize'
+import { LessonTypeModel } from './lessonType'
+import { ScheduleModel } from './schedule'
 
 export type GradebookModelType = {
   id: number
