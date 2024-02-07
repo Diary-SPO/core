@@ -1,9 +1,9 @@
-import { DiaryUserModel } from '@db'
+import { DiaryUserModel, IDiaryUserModel } from '@db'
 import { DiaryUser } from '../types'
 
-export const getDiaryUser = async (userId: number): Promise<DiaryUser | null> =>
+export const getDiaryUser = async (userId: number): Promise<IDiaryUserModel | null> =>
   await DiaryUserModel.findOne({
     where: {
       id: userId
     }
-  }) as unknown as DiaryUser // TODO! Временное решение
+  })

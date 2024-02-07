@@ -1,17 +1,17 @@
-import { TeacherModel } from '@db'
+import { ITeacherModel, TeacherModel } from '@db'
 import type { Teacher } from '@diary-spo/shared'
 import { DBTeacher } from '../../../types/databaseTypes'
 export const saveTeacher = async (
   teacher: Teacher,
   spoId: number
-): Promise<DBTeacher> => {
-  const teacherExist: DBTeacher | null = await TeacherModel.findOne({
+): Promise<ITeacherModel> => {
+  const teacherExist = await TeacherModel.findOne({
     where: {
       firstName: teacher.firstName,
       lastName: teacher.lastName,
       middleName: teacher.middleName
     }
-  }) as unknown as DBTeacher
+  })
 
   if (teacherExist) {
     return teacherExist
@@ -24,5 +24,5 @@ export const saveTeacher = async (
     lastName: teacher.lastName,
     middleName: teacher.middleName,
     spoId
-  }) as unknown as DBTeacher
+  })
 }

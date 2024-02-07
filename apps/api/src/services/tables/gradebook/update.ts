@@ -1,21 +1,16 @@
 import { Lesson } from '@diary-spo/shared'
 import { updateLessonType } from '../lessonType'
-import { GradebookDB, Schedule } from '../types'
 import { saveGradebook } from './save'
-import { GradebookModel } from 'src/services/models'
+import { GradebookModel, IGradebookModel, ILessonTypeModel, IScheduleModel } from 'src/services/models'
 
-export const updateGradebook = async (schedule: Schedule, lesson: Lesson) => {
-  /*const existGradebookQueryBuilder = createQueryBuilder<GradebookDB>(client)
-    .select('*')
-    .where(`"scheduleId" = ${schedule.id}`)
-    .from('gradebook')*/
+export const updateGradebook = async (schedule: IScheduleModel, lesson: Lesson) => {
 
-  let existGradebook: GradebookDB | null =
+  let existGradebook: IGradebookModel | null =
     await GradebookModel.findOne({
       where: {
         scheduleId: schedule.id
       }
-    }) as unknown as GradebookDB
+    })
 
   if (!existGradebook) {
     existGradebook = await saveGradebook(schedule, lesson)
@@ -25,7 +20,7 @@ export const updateGradebook = async (schedule: Schedule, lesson: Lesson) => {
       console.error(
         'Не удалось сохранить тип для gradebook при обновлении: отсутствует lessonType!'
       )
-      return
+      return null
     }
 
     const lessonType = await updateLessonType(
@@ -34,10 +29,11 @@ export const updateGradebook = async (schedule: Schedule, lesson: Lesson) => {
 
     if (!lessonType) {
       console.error('Не удалось сохранить lessonType!')
-      return
+      return null
     }
 
-    existGradebook = existGradebook.update({
+    // Зачем-то сохраняли раньше... Возможно для дальнейшей обработки. Пока-что уберу, чтобы не жаловался на отсутствие await
+    /*existGradebook =*/ existGradebook.update({
       lessonTypeId: lessonType.id
     })
   }

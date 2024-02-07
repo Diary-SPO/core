@@ -1,12 +1,11 @@
 import { Lesson } from '@diary-spo/shared'
 import { updateLessonType } from '../lessonType'
-import { GradebookDB, Schedule } from '../types'
-import { GradebookModel } from 'src/services/models'
+import { GradebookModel, IGradebookModel, IScheduleModel } from 'src/services/models'
 
 export const saveGradebook = async (
-  schedule: Schedule,
+  schedule: IScheduleModel,
   lesson: Lesson
-): Promise<GradebookDB | null> => {
+): Promise<IGradebookModel | null> => {
   if (!lesson.gradebook?.lessonType) {
     console.error(
       'Не удалось сохранить тип для gradebook: отсутствует lessonType!'
@@ -26,5 +25,5 @@ export const saveGradebook = async (
   return await GradebookModel.create({
     scheduleId: schedule.id,
     lessonTypeId: lessonType.id
-  }) as unknown as GradebookDB
+  })
 }

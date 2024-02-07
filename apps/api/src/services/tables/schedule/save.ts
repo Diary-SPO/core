@@ -1,15 +1,16 @@
 import type { Lesson } from '@diary-spo/shared'
-import { DBSchedule, DBTeacher } from '../../../types/databaseTypes'
+import { DBTeacher } from '../../../types/databaseTypes'
 import { updateGradebook } from '../gradebook'
 import { getGroupInfo } from '../groups'
 import { saveTeacher } from '../teacher'
 import { updateSchedule } from './update'
+import { IScheduleModel } from 'src/services/models'
 
 export const saveSchedule = async (
   schedule: Lesson,
   groupId: number,
   date: string
-): Promise<DBSchedule | null> => {
+): Promise<IScheduleModel | null> => {
   if (!schedule?.name || !schedule?.timetable?.teacher) {
     return null
   }

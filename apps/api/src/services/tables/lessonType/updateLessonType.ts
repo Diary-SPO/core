@@ -1,9 +1,8 @@
-import { LessonTypeModel } from 'src/services/models'
-import { DBLessonType } from '../types'
+import { ILessonTypeModel, LessonTypeModel } from 'src/services/models'
 
 export const updateLessonType = async (
   name: string
-): Promise<DBLessonType | null> => {
+): Promise<ILessonTypeModel | null> => {
   const existingLessonType = await LessonTypeModel.findOne({
     where: {
       name
@@ -11,10 +10,10 @@ export const updateLessonType = async (
   })
 
   if (existingLessonType) {
-    return existingLessonType as unknown as DBLessonType
+    return existingLessonType
   }
 
   return await LessonTypeModel.create({
     name
-  }) as unknown as DBLessonType
+  })
 }

@@ -1,10 +1,10 @@
-import { ScheduleModel } from '@db'
+import { IScheduleModel, ScheduleModel } from '@db'
 import { formatDate } from '@utils'
 import { DBSchedule } from '../../../types/databaseTypes'
 
 export const updateSchedule = async (
   schedule: DBSchedule
-): Promise<DBSchedule | null> => {
+): Promise<IScheduleModel | null> => {
   // Проверяем входные параметры
   if (schedule?.id) {
     console.error(
@@ -26,8 +26,8 @@ export const updateSchedule = async (
     await scheduleExist.update({
       ...schedule
     })
-    return scheduleExist as unknown as DBSchedule
+    return scheduleExist
   }
 
-  return await await ScheduleModel.create({...schedule}) as unknown as DBSchedule
+  return ScheduleModel.create({...schedule})
 }

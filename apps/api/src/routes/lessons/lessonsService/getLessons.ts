@@ -8,7 +8,7 @@ import { DBSchedule } from 'src/types/databaseTypes'
 
 
 const save = async (days: Day[], userId: number): Promise<void> => {
-  const userInfo: DiaryUser | null = await getDiaryUser(userId)
+  const userInfo = await getDiaryUser(userId)
 
   if (!userInfo) {
     console.error(`Error get info for user: userId=${userId}`)
@@ -79,7 +79,7 @@ export const getLessonsService = async (
 
   if (!response.ok) {
     // Получаем из базы
-    if (response.status === 403) {
+    if (response.status === API_CODES.FORBIDDEN) {
       throw new ApiError(
         API_ERRORS.USER_NOT_PERMISSION,
         API_CODES.FORBIDDEN
