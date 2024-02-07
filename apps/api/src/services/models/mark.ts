@@ -2,12 +2,13 @@ import { sequelize } from '@db'
 import { DataTypes, Model, Optional } from 'sequelize'
 import { DiaryUserModel } from './diaryUser'
 import { TaskModel } from './task'
+import { MarkKeys } from '@diary-spo/shared'
 
 export type MarkModelType = {
   id: number
   diaryUserId: number
   taskId: number
-  value: 'Five' | 'Four' | 'Three' | 'Two' | ''
+  value: MarkKeys
 }
 
 export type IMarkModelType = Model<
