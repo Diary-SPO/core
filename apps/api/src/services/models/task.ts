@@ -8,7 +8,8 @@ export type TaskModelType = {
   topic: string
 }
 
-export type ITaskModel = Model<TaskModelType, Optional<TaskModelType, 'id'>> & TaskModelType
+export type ITaskModel = Model<TaskModelType, Optional<TaskModelType, 'id'>> &
+  TaskModelType
 
 export const TaskModel = sequelize.define<ITaskModel>(
   'task',
@@ -19,24 +20,24 @@ export const TaskModel = sequelize.define<ITaskModel>(
       primaryKey: true
     },
     gradebookId: {
-        type: DataTypes.INTEGER,
-        allowNull: false,
-        references: {
-            model: GradebookModel,
-            key: 'id'
-        }
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      references: {
+        model: GradebookModel,
+        key: 'id'
+      }
     },
     taskTypeId: {
-        type: DataTypes.INTEGER,
-        allowNull: false,
-        references: {
-            model: TaskTypeModel,
-            key: 'id'
-        }
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      references: {
+        model: TaskTypeModel,
+        key: 'id'
+      }
     },
     topic: {
-        type: DataTypes.TEXT,
-        allowNull: false
+      type: DataTypes.TEXT,
+      allowNull: false
     }
   },
   {

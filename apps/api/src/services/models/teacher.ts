@@ -9,7 +9,11 @@ export type TeacherModelType = {
   middleName: string
 }
 
-export type ITeacherModel = Model<TeacherModelType, Optional<TeacherModelType, 'id'>> & TeacherModelType
+export type ITeacherModel = Model<
+  TeacherModelType,
+  Optional<TeacherModelType, 'id'>
+> &
+  TeacherModelType
 
 export const TeacherModel = sequelize.define<ITeacherModel>(
   'teacher',

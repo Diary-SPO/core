@@ -14,7 +14,8 @@ export type SPOModelType = {
   directorName: string
 }
 
-export type ISPOModel = Model<SPOModelType, Optional<SPOModelType, 'id'>> & SPOModelType
+export type ISPOModel = Model<SPOModelType, Optional<SPOModelType, 'id'>> &
+  SPOModelType
 
 export const SPOModel = sequelize.define<ISPOModel>(
   'SPO',

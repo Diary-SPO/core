@@ -1,12 +1,12 @@
-import { ENCRYPT_KEY, SERVER_URL } from '@config'
-import { AuthModel, DiaryUserModel } from '@db'
+import { SERVER_URL } from '@config'
+import { IDiaryUserModel } from '@db'
 import { type UserData } from '@diary-spo/shared'
 import { cookieExtractor, fetcher, formatDate, logger } from '@utils'
-import { Model, Sequelize } from 'sequelize'
-import { type DiaryUser } from '../../../services/tables/types'
 
 const log = logger('cookie updater')
-export const updateUserCookie = async (user: DiaryUser): Promise<void> => {
+export const updateUserCookie = async (
+  user: IDiaryUserModel
+): Promise<void> => {
   const userInfo = `'${user.login}' [${user.id}]`
   console.log('Обновляю cookie пользователя', userInfo)
 

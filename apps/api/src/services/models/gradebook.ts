@@ -7,7 +7,11 @@ export type GradebookModelType = {
   lessonTypeId: number
 }
 
-export type IGradebookModel = Model<GradebookModelType, Optional<GradebookModelType, 'id'>> & GradebookModelType
+export type IGradebookModel = Model<
+  GradebookModelType,
+  Optional<GradebookModelType, 'id'>
+> &
+  GradebookModelType
 
 export const GradebookModel = sequelize.define<IGradebookModel>(
   'gradebook',
@@ -18,20 +22,20 @@ export const GradebookModel = sequelize.define<IGradebookModel>(
       primaryKey: true
     },
     scheduleId: {
-        type: DataTypes.INTEGER,
-        allowNull: false,
-        references: {
-            model: ScheduleModel,
-            key: 'id'
-        }
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      references: {
+        model: ScheduleModel,
+        key: 'id'
+      }
     },
     lessonTypeId: {
-        type: DataTypes.INTEGER,
-        allowNull: false,
-        references: {
-            model: LessonTypeModel,
-            key: 'id'
-        }
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      references: {
+        model: LessonTypeModel,
+        key: 'id'
+      }
     }
   },
   {

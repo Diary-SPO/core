@@ -1,6 +1,6 @@
+import { Op } from 'sequelize'
 import { ScheduleModel } from 'src/services/models'
 import { DBSchedule } from '../../../types/databaseTypes'
-import { Op } from 'sequelize'
 
 export const removeScheduleForList = async (
   scheduleList: DBSchedule[],
@@ -12,17 +12,17 @@ export const removeScheduleForList = async (
     .map((schedule) => {
       return schedule.id
     })
-    .join(',').split(',') // Тут что-то не то написал, исправить! TODO!
-
+    .join(',')
+    .split(',') // Тут что-то не то написал, исправить! TODO!
 
   // TODO! Работает правильно, но запрос не тот, который я хотел. Для красоты лучше переделать (рефакторинг)
-  /** Этот же запрос на SQL (случай отсутствия subgroup, т.е. раного false): 
-   * DELETE FROM "schedule" WHERE 
+  /** Этот же запрос на SQL (случай отсутствия subgroup, т.е. раного false):
+   * DELETE FROM "schedule" WHERE
    * (
-   *  ("subjectName" NOT LIKE '%' OR "subjectName" LIKE '%false%') 
+   *  ("subjectName" NOT LIKE '%' OR "subjectName" LIKE '%false%')
    *  AND "id" NOT IN ('188', '189', '190', '173')
    *  AND "date" = '2024-01-10' AND "groupId" = 104
-   * ) 
+   * )
    */
   await ScheduleModel.destroy({
     where: {
@@ -42,9 +42,9 @@ export const removeScheduleForList = async (
             subjectName: {
               [Op.like]: `%${subgroup}%`
             }
-          },
+          }
         ]
-      },
+      }
     }
   })
 }

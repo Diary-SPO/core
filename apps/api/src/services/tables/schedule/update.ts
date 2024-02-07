@@ -29,5 +29,5 @@ export const updateSchedule = async (
     return scheduleExist
   }
 
-  return ScheduleModel.create({...schedule})
+  return ScheduleModel.create({ ...schedule })
 }

@@ -6,7 +6,11 @@ export type LessonTypeModelType = {
   name: string
 }
 
-export type ILessonTypeModel = Model<LessonTypeModelType, Optional<LessonTypeModelType, 'id'>> & LessonTypeModelType
+export type ILessonTypeModel = Model<
+  LessonTypeModelType,
+  Optional<LessonTypeModelType, 'id'>
+> &
+  LessonTypeModelType
 
 export const LessonTypeModel = sequelize.define<ILessonTypeModel>(
   'lessonType',
@@ -17,8 +21,8 @@ export const LessonTypeModel = sequelize.define<ILessonTypeModel>(
       primaryKey: true
     },
     name: {
-        type: DataTypes.STRING(25),
-        allowNull: false
+      type: DataTypes.STRING(25),
+      allowNull: false
     }
   },
   {

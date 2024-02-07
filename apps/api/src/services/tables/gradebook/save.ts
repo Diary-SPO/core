@@ -1,6 +1,10 @@
 import { Lesson } from '@diary-spo/shared'
+import {
+  GradebookModel,
+  IGradebookModel,
+  IScheduleModel
+} from 'src/services/models'
 import { updateLessonType } from '../lessonType'
-import { GradebookModel, IGradebookModel, IScheduleModel } from 'src/services/models'
 
 export const saveGradebook = async (
   schedule: IScheduleModel,

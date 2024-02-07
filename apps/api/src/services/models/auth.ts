@@ -9,7 +9,8 @@ export type AuthModelType = {
   lastUsedDate: string
 }
 
-export type IAuthModel = Model<AuthModelType, Optional<AuthModelType, 'id'>> & AuthModelType
+export type IAuthModel = Model<AuthModelType, Optional<AuthModelType, 'id'>> &
+  AuthModelType
 
 export const AuthModel = sequelize.define<IAuthModel>(
   'auth',

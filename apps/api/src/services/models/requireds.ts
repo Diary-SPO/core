@@ -8,7 +8,11 @@ export type RequiredsModelType = {
   isRequired: boolean
 }
 
-export type IRequiredsModel = Model<RequiredsModelType, Optional<RequiredsModelType, 'id'>> & RequiredsModelType
+export type IRequiredsModel = Model<
+  RequiredsModelType,
+  Optional<RequiredsModelType, 'id'>
+> &
+  RequiredsModelType
 
 export const RequiredsModel = sequelize.define<IRequiredsModel>(
   'requireds',
@@ -19,24 +23,24 @@ export const RequiredsModel = sequelize.define<IRequiredsModel>(
       primaryKey: true
     },
     diaryUserId: {
-        type: DataTypes.INTEGER,
-        allowNull: false,
-        references: {
-            model: DiaryUserModel,
-            key: 'id'
-        }
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      references: {
+        model: DiaryUserModel,
+        key: 'id'
+      }
     },
     taskId: {
-        type: DataTypes.INTEGER,
-        allowNull: false,
-        references: {
-            model: TaskModel,
-            key: 'id'
-        }
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      references: {
+        model: TaskModel,
+        key: 'id'
+      }
     },
     isRequired: {
-        type: DataTypes.BOOLEAN,
-        allowNull: false
+      type: DataTypes.BOOLEAN,
+      allowNull: false
     }
   },
   {

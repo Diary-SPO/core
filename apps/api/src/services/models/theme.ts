@@ -7,7 +7,11 @@ export type ThemeModelType = {
   description: string
 }
 
-export type IThemeModelType = Model<ThemeModelType, Optional<ThemeModelType, 'id'>> & ThemeModelType
+export type IThemeModelType = Model<
+  ThemeModelType,
+  Optional<ThemeModelType, 'id'>
+> &
+  ThemeModelType
 
 export const ThemeModel = sequelize.define<IThemeModelType>(
   'theme',
@@ -18,16 +22,16 @@ export const ThemeModel = sequelize.define<IThemeModelType>(
       primaryKey: true
     },
     gradebookId: {
-        type: DataTypes.INTEGER,
-        allowNull: false,
-        references: {
-            model: GradebookModel,
-            key: 'id'
-        }
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      references: {
+        model: GradebookModel,
+        key: 'id'
+      }
     },
     description: {
-        type: DataTypes.TEXT,
-        allowNull: false
+      type: DataTypes.TEXT,
+      allowNull: false
     }
   },
   {

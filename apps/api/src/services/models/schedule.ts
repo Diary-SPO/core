@@ -13,7 +13,11 @@ export type ScheduleModelType = {
   endTime: string
 }
 
-export type IScheduleModel = Model<ScheduleModelType, Optional<ScheduleModelType, 'id'>> & ScheduleModelType
+export type IScheduleModel = Model<
+  ScheduleModelType,
+  Optional<ScheduleModelType, 'id'>
+> &
+  ScheduleModelType
 
 export const ScheduleModel = sequelize.define<IScheduleModel>(
   'schedule',
@@ -24,44 +28,44 @@ export const ScheduleModel = sequelize.define<IScheduleModel>(
       primaryKey: true
     },
     groupId: {
-        type: DataTypes.INTEGER,
-        allowNull: false,
-        references: {
-            model: GroupsModel,
-            key: 'id'
-        }
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      references: {
+        model: GroupsModel,
+        key: 'id'
+      }
     },
     teacherId: {
-        type: DataTypes.INTEGER,
-        allowNull: true,
-        references: {
-            model: TeacherModel,
-            key: 'id'
-        }
+      type: DataTypes.INTEGER,
+      allowNull: true,
+      references: {
+        model: TeacherModel,
+        key: 'id'
+      }
     },
     classroomBuilding: {
-        type: DataTypes.STRING(3),
-        allowNull: true
+      type: DataTypes.STRING(3),
+      allowNull: true
     },
     classroomName: {
-        type: DataTypes.STRING(7),
-        allowNull: true
+      type: DataTypes.STRING(7),
+      allowNull: true
     },
     subjectName: {
-        type: DataTypes.STRING(85),
-        allowNull: false
+      type: DataTypes.STRING(85),
+      allowNull: false
     },
     date: {
-        type: DataTypes.STRING(10),
-        allowNull: false
+      type: DataTypes.STRING(10),
+      allowNull: false
     },
     startTime: {
-        type: DataTypes.STRING(5),
-        allowNull: false
+      type: DataTypes.STRING(5),
+      allowNull: false
     },
     endTime: {
-        type: DataTypes.STRING(5),
-        allowNull: false
+      type: DataTypes.STRING(5),
+      allowNull: false
     }
   },
   {

@@ -1,16 +1,22 @@
 import { Lesson } from '@diary-spo/shared'
+import {
+  GradebookModel,
+  IGradebookModel,
+  ILessonTypeModel,
+  IScheduleModel
+} from 'src/services/models'
 import { updateLessonType } from '../lessonType'
 import { saveGradebook } from './save'
-import { GradebookModel, IGradebookModel, ILessonTypeModel, IScheduleModel } from 'src/services/models'
 
-export const updateGradebook = async (schedule: IScheduleModel, lesson: Lesson) => {
-
-  let existGradebook: IGradebookModel | null =
-    await GradebookModel.findOne({
-      where: {
-        scheduleId: schedule.id
-      }
-    })
+export const updateGradebook = async (
+  schedule: IScheduleModel,
+  lesson: Lesson
+) => {
+  let existGradebook: IGradebookModel | null = await GradebookModel.findOne({
+    where: {
+      scheduleId: schedule.id
+    }
+  })
 
   if (!existGradebook) {
     existGradebook = await saveGradebook(schedule, lesson)

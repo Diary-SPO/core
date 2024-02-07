@@ -6,7 +6,6 @@ import { HeadersWithCookie } from '@utils'
 import { removeScheduleForList } from 'src/services/tables/schedule/remove'
 import { DBSchedule } from 'src/types/databaseTypes'
 
-
 const save = async (days: Day[], userId: number): Promise<void> => {
   const userInfo = await getDiaryUser(userId)
 
@@ -64,7 +63,6 @@ const save = async (days: Day[], userId: number): Promise<void> => {
   }
 }
 
-
 export const getLessonsService = async (
   startDate: string,
   endDate: string,
@@ -80,10 +78,7 @@ export const getLessonsService = async (
   if (!response.ok) {
     // Получаем из базы
     if (response.status === API_CODES.FORBIDDEN) {
-      throw new ApiError(
-        API_ERRORS.USER_NOT_PERMISSION,
-        API_CODES.FORBIDDEN
-      )
+      throw new ApiError(API_ERRORS.USER_NOT_PERMISSION, API_CODES.FORBIDDEN)
     }
     return 'error'
   }

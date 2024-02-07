@@ -19,7 +19,11 @@ export type DiaryUserModelType = {
   cookieLastDateUpdate: string
 }
 
-export type IDiaryUserModel = Model<DiaryUserModelType, Optional<DiaryUserModelType, 'id'>> & DiaryUserModelType
+export type IDiaryUserModel = Model<
+  DiaryUserModelType,
+  Optional<DiaryUserModelType, 'id'>
+> &
+  DiaryUserModelType
 
 export const DiaryUserModel = sequelize.define<IDiaryUserModel>(
   'diaryUser',

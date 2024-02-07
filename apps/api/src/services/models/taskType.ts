@@ -6,8 +6,11 @@ export type TaskTypeModelType = {
   name: string
 }
 
-export type ITaskTypeModel = Model<TaskTypeModelType, Optional<TaskTypeModelType, 'id'>> & TaskTypeModelType
-
+export type ITaskTypeModel = Model<
+  TaskTypeModelType,
+  Optional<TaskTypeModelType, 'id'>
+> &
+  TaskTypeModelType
 
 export const TaskTypeModel = sequelize.define<ITaskTypeModel>(
   'taskType',
@@ -18,8 +21,8 @@ export const TaskTypeModel = sequelize.define<ITaskTypeModel>(
       primaryKey: true
     },
     name: {
-        type: DataTypes.STRING(25),
-        allowNull: false
+      type: DataTypes.STRING(25),
+      allowNull: false
     }
   },
   {
