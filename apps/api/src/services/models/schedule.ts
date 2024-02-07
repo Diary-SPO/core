@@ -1,7 +1,8 @@
 import { sequelize } from '@db'
-import { DataTypes, Model, Optional } from 'sequelize'
+import { DataTypes } from 'sequelize'
 import { GroupsModel } from './groups'
 import { TeacherModel } from './teacher'
+import { IModelPrototype } from './types'
 
 export type ScheduleModelType = {
   id: number
@@ -15,11 +16,7 @@ export type ScheduleModelType = {
   endTime: string
 }
 
-export type IScheduleModel = Model<
-  ScheduleModelType,
-  Optional<ScheduleModelType, 'id'>
-> &
-  ScheduleModelType
+export type IScheduleModel = IModelPrototype<ScheduleModelType, 'id'>
 
 export const ScheduleModel = sequelize.define<IScheduleModel>(
   'schedule',

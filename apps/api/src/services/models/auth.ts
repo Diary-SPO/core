@@ -1,6 +1,7 @@
 import { sequelize } from '@db'
 import { DataTypes, Model, Optional } from 'sequelize'
 import { DiaryUserModel } from './diaryUser'
+import { IModelPrototype } from './types'
 
 export type AuthModelType = {
   id: number
@@ -9,8 +10,7 @@ export type AuthModelType = {
   lastUsedDate: string
 }
 
-export type IAuthModel = Model<AuthModelType, Optional<AuthModelType, 'id'>> &
-  AuthModelType
+export type IAuthModel = IModelPrototype<AuthModelType, 'id'>
 
 export const AuthModel = sequelize.define<IAuthModel>(
   'auth',

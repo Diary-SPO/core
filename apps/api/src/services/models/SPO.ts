@@ -1,5 +1,6 @@
 import { sequelize } from '@db'
-import { DataTypes, Model, Optional } from 'sequelize'
+import { DataTypes } from 'sequelize'
+import { IModelPrototype } from './types'
 
 export type SPOModelType = {
   id: number
@@ -14,8 +15,7 @@ export type SPOModelType = {
   directorName: string
 }
 
-export type ISPOModel = Model<SPOModelType, Optional<SPOModelType, 'id'>> &
-  SPOModelType
+export type ISPOModel = IModelPrototype<SPOModelType, 'id'>
 
 export const SPOModel = sequelize.define<ISPOModel>(
   'SPO',

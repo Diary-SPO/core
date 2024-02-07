@@ -1,6 +1,7 @@
 import { sequelize } from '@db'
-import { DataTypes, Model, Optional } from 'sequelize'
+import { DataTypes } from 'sequelize'
 import { SPOModel } from './SPO'
+import { IModelPrototype } from './types'
 
 export type TeacherModelType = {
   id: number
@@ -10,11 +11,7 @@ export type TeacherModelType = {
   middleName: string
 }
 
-export type ITeacherModel = Model<
-  TeacherModelType,
-  Optional<TeacherModelType, 'id'>
-> &
-  TeacherModelType
+export type ITeacherModel = IModelPrototype<TeacherModelType, 'id'>
 
 export const TeacherModel = sequelize.define<ITeacherModel>(
   'teacher',

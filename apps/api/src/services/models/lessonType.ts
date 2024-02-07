@@ -1,16 +1,13 @@
 import { sequelize } from '@db'
-import { DataTypes, Model, Optional } from 'sequelize'
+import { DataTypes } from 'sequelize'
+import { IModelPrototype } from './types'
 
 export type LessonTypeModelType = {
   id: number
   name: string
 }
 
-export type ILessonTypeModel = Model<
-  LessonTypeModelType,
-  Optional<LessonTypeModelType, 'id'>
-> &
-  LessonTypeModelType
+export type ILessonTypeModel = IModelPrototype<LessonTypeModelType, 'id'>
 
 export const LessonTypeModel = sequelize.define<ILessonTypeModel>(
   'lessonType',

@@ -2,6 +2,7 @@ import { sequelize } from '@db'
 import { DataTypes, Model, Optional } from 'sequelize'
 import { LessonTypeModel } from './lessonType'
 import { ScheduleModel } from './schedule'
+import { IModelPrototype } from './types'
 
 export type GradebookModelType = {
   id: number
@@ -9,11 +10,7 @@ export type GradebookModelType = {
   lessonTypeId: number
 }
 
-export type IGradebookModel = Model<
-  GradebookModelType,
-  Optional<GradebookModelType, 'id'>
-> &
-  GradebookModelType
+export type IGradebookModel = IModelPrototype<GradebookModelType, 'id'>
 
 export const GradebookModel = sequelize.define<IGradebookModel>(
   'gradebook',

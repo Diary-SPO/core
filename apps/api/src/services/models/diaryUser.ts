@@ -4,6 +4,7 @@ import { decrypt, encrypt } from '@diary-spo/sql'
 import { formatDate } from '@utils'
 import { DataTypes, Model, Optional } from 'sequelize'
 import { GroupsModel } from './groups'
+import { IModelPrototype } from './types'
 
 export type DiaryUserModelType = {
   id: number
@@ -19,11 +20,7 @@ export type DiaryUserModelType = {
   cookieLastDateUpdate: string
 }
 
-export type IDiaryUserModel = Model<
-  DiaryUserModelType,
-  Optional<DiaryUserModelType, 'id'>
-> &
-  DiaryUserModelType
+export type IDiaryUserModel = IModelPrototype<DiaryUserModelType, 'id'>
 
 export const DiaryUserModel = sequelize.define<IDiaryUserModel>(
   'diaryUser',
