@@ -1,7 +1,16 @@
 import { DiaryUserModel, TaskModel, sequelize } from '@db'
-import { DataTypes } from 'sequelize'
+import { DataTypes, Model, Optional } from 'sequelize'
 
-export const RequiredsModel = sequelize.define(
+export type RequiredsModelType = {
+  id: number
+  diaryUserId: number
+  taskId: number
+  isRequired: boolean
+}
+
+export type IRequiredsModel = Model<RequiredsModelType, Optional<RequiredsModelType, 'id'>> & RequiredsModelType
+
+export const RequiredsModel = sequelize.define<IRequiredsModel>(
   'requireds',
   {
     id: {

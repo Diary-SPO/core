@@ -1,7 +1,16 @@
 import { DiaryUserModel, TaskModel, sequelize } from '@db'
-import { DataTypes } from 'sequelize'
+import { DataTypes, Model, Optional } from 'sequelize'
 
-export const MarkModel = sequelize.define(
+export type MarkModelType = {
+  id: number
+  diaryUserId: number
+  taskId: number
+  value: 'Five' | 'Four' | 'Three' | 'Two' | ''
+}
+
+export type IMarkModelType = Model<MarkModelType, Optional<MarkModelType, 'id'>> & MarkModelType
+
+export const MarkModel = sequelize.define<IMarkModelType>(
   'mark',
   {
     id: {

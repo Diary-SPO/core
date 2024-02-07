@@ -1,7 +1,17 @@
 import { SPOModel, sequelize } from '@db'
-import { DataTypes } from 'sequelize'
+import { DataTypes, Model, Optional } from 'sequelize'
 
-export const TeacherModel = sequelize.define(
+export type TeacherModelType = {
+  id: number
+  spoId: number
+  firstName: string
+  lastName: string
+  middleName: string
+}
+
+export type ITeacherModel = Model<TeacherModelType, Optional<TeacherModelType, 'id'>> & TeacherModelType
+
+export const TeacherModel = sequelize.define<ITeacherModel>(
   'teacher',
   {
     id: {

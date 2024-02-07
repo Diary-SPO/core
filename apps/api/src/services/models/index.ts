@@ -1,4 +1,3 @@
-import { LessonType } from '@diary-spo/shared'
 import { SPOModel } from './SPO'
 import { AuthModel } from './auth'
 import { DiaryUserModel } from './diaryUser'

@@ -2,11 +2,26 @@ import { ENCRYPT_KEY } from '@config'
 import { sequelize } from '@db'
 import { decrypt, encrypt } from '@diary-spo/sql'
 import { formatDate } from '@utils'
-import { DataTypes } from 'sequelize'
+import { DataTypes, Model, Optional } from 'sequelize'
 import { GroupsModel } from './groups'
 
-// FIXME: че ему надо первым параметром отдать?
-export const DiaryUserModel = sequelize.define(
+export type DiaryUserModelType = {
+  id: number
+  groupId: number
+  login: string
+  password: string
+  phone: string
+  birthday: string
+  firstName: string
+  lastName: string
+  middleName: string
+  cookie: string
+  cookieLastDateUpdate: string
+}
+
+export type IDiaryUserModel = Model<DiaryUserModelType, Optional<DiaryUserModelType, 'id'>> & DiaryUserModelType
+
+export const DiaryUserModel = sequelize.define<IDiaryUserModel>(
   'diaryUser',
   {
     id: {
@@ -33,8 +48,8 @@ export const DiaryUserModel = sequelize.define(
       allowNull: false,
       comment:
         'Зашифрованный хеш пароля от аккаунта пользователя в Сетевом городе',
-      set(value) {
-        this.setDataValue('password', encrypt(value as string, ENCRYPT_KEY))
+      set(value: string) {
+        this.setDataValue('password', encrypt(value, ENCRYPT_KEY))
       },
       get() {
         return decrypt(this.getDataValue('password'), ENCRYPT_KEY)

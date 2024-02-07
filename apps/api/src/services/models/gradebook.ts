@@ -1,7 +1,15 @@
 import { LessonTypeModel, ScheduleModel, sequelize } from '@db'
-import { DataTypes } from 'sequelize'
+import { DataTypes, Model, Optional } from 'sequelize'
 
-export const GradebookModel = sequelize.define(
+export type GradebookModelType = {
+  id: number
+  scheduleId: number
+  lessonTypeId: number
+}
+
+export type IGradebookModel = Model<GradebookModelType, Optional<GradebookModelType, 'id'>> & GradebookModelType
+
+export const GradebookModel = sequelize.define<IGradebookModel>(
   'gradebook',
   {
     id: {

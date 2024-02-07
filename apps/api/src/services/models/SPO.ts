@@ -1,7 +1,22 @@
 import { sequelize } from '@db'
-import { DataTypes } from 'sequelize'
+import { DataTypes, Model, Optional } from 'sequelize'
 
-export const SPOModel = sequelize.define(
+export type SPOModelType = {
+  id: number
+  abbreviation: string
+  name: string
+  shortName: string
+  actualAddress: string
+  email: string
+  site: string
+  phone: string
+  type: string
+  directorName: string
+}
+
+export type ISPOModel = Model<SPOModelType, Optional<SPOModelType, 'id'>> & SPOModelType
+
+export const SPOModel = sequelize.define<ISPOModel>(
   'SPO',
   {
     id: {

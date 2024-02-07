@@ -1,7 +1,21 @@
 import { GroupsModel, TeacherModel, sequelize } from '@db'
-import { DataTypes } from 'sequelize'
+import { DataTypes, Model, Optional } from 'sequelize'
 
-export const ScheduleModel = sequelize.define(
+export type ScheduleModelType = {
+  id: number
+  groupId: number
+  teacherId: number
+  classroomBuilding: string
+  classroomName: string
+  subjectName: string
+  date: string
+  startTime: string
+  endTime: string
+}
+
+export type IScheduleModel = Model<ScheduleModelType, Optional<ScheduleModelType, 'id'>> & ScheduleModelType
+
+export const ScheduleModel = sequelize.define<IScheduleModel>(
   'schedule',
   {
     id: {

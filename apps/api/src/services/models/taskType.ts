@@ -1,7 +1,15 @@
 import { sequelize } from '@db'
-import { DataTypes } from 'sequelize'
+import { DataTypes, Model, Optional } from 'sequelize'
 
-export const TaskTypeModel = sequelize.define(
+export type TaskTypeModelType = {
+  id: number
+  name: string
+}
+
+export type ITaskTypeModel = Model<TaskTypeModelType, Optional<TaskTypeModelType, 'id'>> & TaskTypeModelType
+
+
+export const TaskTypeModel = sequelize.define<ITaskTypeModel>(
   'taskType',
   {
     id: {

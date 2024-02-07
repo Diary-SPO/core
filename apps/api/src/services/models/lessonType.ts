@@ -1,7 +1,14 @@
 import { sequelize } from '@db'
-import { DataTypes } from 'sequelize'
+import { DataTypes, Model, Optional } from 'sequelize'
 
-export const LessonTypeModel = sequelize.define(
+export type LessonTypeModelType = {
+  id: number
+  name: string
+}
+
+export type ILessonTypeModel = Model<LessonTypeModelType, Optional<LessonTypeModelType, 'id'>> & LessonTypeModelType
+
+export const LessonTypeModel = sequelize.define<ILessonTypeModel>(
   'lessonType',
   {
     id: {

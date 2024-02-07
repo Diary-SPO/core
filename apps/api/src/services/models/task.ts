@@ -1,7 +1,16 @@
 import { GradebookModel, TaskTypeModel, sequelize } from '@db'
-import { DataTypes } from 'sequelize'
+import { DataTypes, Model, Optional } from 'sequelize'
 
-export const TaskModel = sequelize.define(
+export type TaskModelType = {
+  id: number
+  gradebookId: number
+  taskTypeId: number
+  topic: string
+}
+
+export type ITaskModel = Model<TaskModelType, Optional<TaskModelType, 'id'>> & TaskModelType
+
+export const TaskModel = sequelize.define<ITaskModel>(
   'task',
   {
     id: {

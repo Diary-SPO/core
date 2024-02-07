@@ -1,7 +1,15 @@
 import { GradebookModel, sequelize } from '@db'
-import { DataTypes } from 'sequelize'
+import { DataTypes, Model, Optional } from 'sequelize'
 
-export const ThemeModel = sequelize.define(
+export type ThemeModelType = {
+  id: number
+  gradebookId: number
+  description: string
+}
+
+export type IThemeModelType = Model<ThemeModelType, Optional<ThemeModelType, 'id'>> & ThemeModelType
+
+export const ThemeModel = sequelize.define<IThemeModelType>(
   'theme',
   {
     id: {

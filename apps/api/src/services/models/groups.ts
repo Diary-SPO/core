@@ -1,8 +1,17 @@
 import { sequelize } from '@db'
-import { DataTypes } from 'sequelize'
 import { SPOModel } from './SPO'
+import { DataTypes, Model, Optional } from 'sequelize'
 
-export const GroupsModel = sequelize.define(
+export type GroupsModelType = {
+  id: number
+  spoId: number
+  groupName: string
+  diaryGroupId: number
+}
+
+export type IGroupsModel = Model<GroupsModelType, Optional<GroupsModelType, 'id'>> & GroupsModelType
+
+export const GroupsModel = sequelize.define<IGroupsModel>(
   'groups',
   {
     id: {

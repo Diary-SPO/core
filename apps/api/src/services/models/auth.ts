@@ -1,8 +1,17 @@
 import { sequelize } from '@db'
-import { DataTypes } from 'sequelize'
+import { DataTypes, Model, Optional } from 'sequelize'
 import { DiaryUserModel } from './diaryUser'
 
-export const AuthModel = sequelize.define(
+export type AuthModelType = {
+  id: number
+  idDiaryUser: number
+  token: string
+  lastUsedDate: string
+}
+
+export type IAuthModel = Model<AuthModelType, Optional<AuthModelType, 'id'>> & AuthModelType
+
+export const AuthModel = sequelize.define<IAuthModel>(
   'auth',
   {
     id: {
