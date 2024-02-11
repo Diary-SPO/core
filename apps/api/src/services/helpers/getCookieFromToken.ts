@@ -1,9 +1,5 @@
 import { ApiError } from '@api'
-import { formatDate } from '@utils'
 import { AuthModel, DiaryUserModel } from '../models'
-import { CookieInfoFromDatabase } from '../tables'
-import { maxDateInactive } from 'src/srcWorker/cookieUpdater/submodules/maxDateInactive'
-import { MAX_NOT_UPDATE_TOKEN_IN_DAYS } from 'src/srcWorker/cookieUpdater/config'
 import { caching } from 'cache-manager'
 
 const memoryCache = await caching('memory', {
