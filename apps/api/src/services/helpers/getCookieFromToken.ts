@@ -1,6 +1,6 @@
 import { ApiError } from '@api'
-import { AuthModel, DiaryUserModel } from '../models'
 import { caching } from 'cache-manager'
+import { AuthModel, DiaryUserModel } from '../models'
 
 const memoryCache = await caching('memory', {
   max: 1000,
