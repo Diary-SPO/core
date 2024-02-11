@@ -161,4 +161,5 @@ export interface CookieInfoFromDatabase {
   token: string
   lastUsedDate: string
   cookie: string
+  cookieLastDateUpdate: string
 }

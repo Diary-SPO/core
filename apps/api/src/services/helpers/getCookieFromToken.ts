@@ -2,19 +2,21 @@ import { ApiError } from '@api'
 import { formatDate } from '@utils'
 import { AuthModel, DiaryUserModel } from '../models'
 import { CookieInfoFromDatabase } from '../tables'
+import { maxDateInactive } from 'src/srcWorker/cookieUpdater/submodules/maxDateInactive'
+import { MAX_NOT_UPDATE_TOKEN_IN_DAYS } from 'src/srcWorker/cookieUpdater/config'
 
 type TokenType = {
   cookie: string
   lastUsedDate: string
   addedSeconds: number // количество секунд с добавления
+  cookieLastDateUpdate: string
 }
 
 type CacheTokensCookie = Record<string, TokenType>
 
 const cacheTokensCookie: CacheTokensCookie = {}
-let nearestExpiringToken = null // Ближайшая старая запись в кеше. Бережём ядро, не занимаем ненужными операциями
-const maxTokenLifeTimeCache = 60 * 5 // 5 минут
 const maxElementsFromCache = 1000 // Максимум токенов, хранящихся в памяти
+const maxTokenLife = 30 // 30 секунд
 
 /**
  * Возвращает куку при предъявлении токена
@@ -24,8 +26,17 @@ const maxElementsFromCache = 1000 // Максимум токенов, храня
 export const getCookieFromToken = async (token: string): Promise<string> => {
   const getCacheFromCookie = cacheGetter(token)
 
-  if (getCacheFromCookie) {
+  // Если есть в кеше и дата истечения куки не подошла к пороговому значению, то обновляем и отдаём
+  if (getCacheFromCookie 
+    // Если по второму или тертьему условию не пройдёт, то просто извлечёт актуальную информацю и перезапишет
+    && cacheTokensCookie[token].addedSeconds + maxTokenLife >= new Date().getTime() / 1000
+    && cacheTokensCookie[token].cookieLastDateUpdate > formatDate(maxDateInactive(MAX_NOT_UPDATE_TOKEN_IN_DAYS).toISOString())
+    ) {
     updaterDateFromToken(token) // Обновляем дату последнего использования куки, если нужно
+      .catch((err) => {
+        console.log(err.toString())
+      })
+    taskScheduler()
       .catch((err) => {
         console.log(err.toString())
       })
@@ -47,14 +58,15 @@ export const getCookieFromToken = async (token: string): Promise<string> => {
   }
 
   const authData: CookieInfoFromDatabase = {
-    id: DiaryUserAuth.dataValues.id,
-    idDiaryUser: DiaryUserAuth.dataValues.diaryUser.id,
-    token: DiaryUserAuth.dataValues.token,
-    lastUsedDate: DiaryUserAuth.dataValues.lastUsedDate,
-    cookie: DiaryUserAuth.dataValues.diaryUser.cookie
+    id: DiaryUserAuth.id,
+    idDiaryUser: DiaryUserAuth.diaryUser.id,
+    token: DiaryUserAuth.token,
+    lastUsedDate: DiaryUserAuth.lastUsedDate,
+    cookie: DiaryUserAuth.diaryUser.cookie,
+    cookieLastDateUpdate: DiaryUserAuth.diaryUser.cookieLastDateUpdate
   }
 
-  taskScheduler(authData) // Запускает обслуживание кеширования токенов + сохраняет текущий токен в кэше
+  saveToken(authData) // Запускает обслуживание кеширования токенов + сохраняет текущий токен в кэше
     .catch((err) => {
       console.log(err.toString())
     })
@@ -68,11 +80,10 @@ export const getCookieFromToken = async (token: string): Promise<string> => {
 }
 
 /**
- * Кеширует куку по токену и очищает кеш, если он слишком большой
- * @param saveData
+ * Очищает кеш, если он слишком большой
  * @returns {void}
  */
-const taskScheduler = async (
+const saveToken = async (
   saveData: CookieInfoFromDatabase
 ): Promise<void> => {
   // Добавляем/обновляем информацию в кэше
@@ -80,39 +91,33 @@ const taskScheduler = async (
   cacheTokensCookie[saveData.token] = {
     cookie: saveData.cookie,
     lastUsedDate: saveData.lastUsedDate,
-    addedSeconds: expiring
+    addedSeconds: expiring,
+    cookieLastDateUpdate: saveData.cookieLastDateUpdate
   }
 
-  if (!expiring) {
-    nearestExpiringToken = expiring + maxTokenLifeTimeCache
-  }
+  taskScheduler()
+}
 
-  // Если кеш разросся слишком сильно, то нужно обработать
-  const actualLengthCache = Object.keys(cacheTokensCookie).length // Сохраняем, чтобы не пересчитывать
-  if (actualLengthCache > maxElementsFromCache) {
+/**
+ * Кеширует куку по токену и очищает кеш, если он слишком большой
+ * @param saveData
+ * @returns {void}
+ */
+const taskScheduler = async (): Promise<void> => {
+  // Если кеш разросся слишком сильно, то нужно обработать (удаляем "неактивные")
+  const actualLengthCache = Object.keys(cacheTokensCookie).length // Количество токенов в кеше
+  if (actualLengthCache >= maxElementsFromCache) {
     const actualSeconds = new Date().getTime() / 1000
-    if (expiring >= actualSeconds) {
-      return
-    }
 
-    let newNearestExpiringToken = Number.MAX_VALUE
     // ВОТ ТУТ ПРОВЕРИТЬ ИТЕРАЦИЮ, ПЕРЕДЕЛАЛ !
     for (const token of cacheTokensCookie) {
+      // Если максимальное время существования токена истекло, удаляем его
       const currAddedSeconds = cacheTokensCookie[token].addedSeconds
-      if (currAddedSeconds < actualSeconds) {
-        delete cacheTokensCookie[token]
+      if (currAddedSeconds + maxTokenLife >= actualSeconds) {
         return
       }
-
-      if (
-        currAddedSeconds < newNearestExpiringToken ||
-        !newNearestExpiringToken
-      ) {
-        newNearestExpiringToken = currAddedSeconds
-      }
+      delete cacheTokensCookie[token]
     }
-
-    nearestExpiringToken = newNearestExpiringToken
   }
 }
 
