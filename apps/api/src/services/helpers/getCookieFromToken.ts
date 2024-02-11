@@ -6,7 +6,7 @@ const memoryCache = await caching('memory', {
   max: 1000,
   ttl: 30 * 1000 /*milliseconds*/,
   refreshThreshold: 10 * 1000 /* как часто проверять в фоновом режиме */
-});
+})
 
 /**
  * Возвращает куку при предъявлении токена
