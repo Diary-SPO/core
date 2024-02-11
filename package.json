@@ -28,5 +28,8 @@
     "husky": "^8.0.3",
     "lint-staged": "^15.1.0",
     "typescript": "latest"
+  },
+  "dependencies": {
+    "cache-manager": "^5.4.0"
   }
 }
