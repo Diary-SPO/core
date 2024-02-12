@@ -160,7 +160,7 @@ const Notifications: FC<{ id: string }> = ({ id }) => {
                     Попробовать снова
                   </Button>
                   {/*// @ts-ignore Типы не совместимы */}
-                  <Link href='https://vk.me/dnevnik_spo' target='_blank'>
+                  <Link href='https://vk.me/diary_spo' target='_blank'>
                     Сообщить о проблеме
                   </Link>
                 </ButtonGroup>
