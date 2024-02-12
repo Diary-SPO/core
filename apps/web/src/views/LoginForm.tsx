@@ -124,28 +124,35 @@ const LoginForm: FC<{ id: string }> = ({ id }) => {
         ? 'Пароль введён'
         : 'Введите корректный пароль'
 
+  const Banner = isDataInvalid ? (
+    <FormStatus header='Некорректные данные' mode='error'>
+      Проверьте правильность логина и пароля
+    </FormStatus>
+  ) : (
+    <FormStatus header='Нам можно доверять' mode='default'>
+      Мы бережно передаем ваши данные и храним в зашифрованном виде
+    </FormStatus>
+  )
+  const status = isLoginEmpty
+    ? 'default'
+    : loginPattern.test(login)
+      ? 'valid'
+      : 'error'
+  const isDisabled =
+    !password || !login || !loginPattern.test(login) || isLoading
+
   return (
     <Panel nav={id}>
       <PanelHeaderWithBack title='Авторизация' />
       <Group>
-        {isDataInvalid && (
-          <FormStatus header='Некорректные данные' mode='error'>
-            Проверьте правильность логина и пароля
-          </FormStatus>
-        )}
+        {Banner}
         <form method='post' onSubmit={handleLogin}>
           {/*//@ts-ignore типы React не совсем совместимы с Preact*/}
           <FormItem
             required
             htmlFor='userLogin'
             top='Логин'
-            status={
-              isLoginEmpty
-                ? 'default'
-                : loginPattern.test(login)
-                  ? 'valid'
-                  : 'error'
-            }
+            status={status}
             bottom={isLoginEmpty || loginTopText}
             bottomId='login-type'
           >
@@ -187,9 +194,7 @@ const LoginForm: FC<{ id: string }> = ({ id }) => {
               size='l'
               stretched
               onClick={handleLogin}
-              disabled={
-                !password || !login || !loginPattern.test(login) || isLoading
-              }
+              disabled={isDisabled}
               before={<Icon28DoorArrowLeftOutline />}
             >
               {isLoading ? 'Пытаюсь войти...' : 'Войти'}

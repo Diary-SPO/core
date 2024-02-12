@@ -17,6 +17,7 @@ const SubjectGroup: FunctionalComponent<ISubjectGroup> = ({
   year
 }) => (
   <Group
+    mode='plain'
     key={semesterKey}
     header={
       <Header

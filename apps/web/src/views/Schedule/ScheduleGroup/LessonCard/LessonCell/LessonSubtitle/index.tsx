@@ -1,9 +1,11 @@
 import { SubtitleWithBorder } from '@components'
 import { AbsenceTypes, Gradebook, LessonType } from '@diary-spo/shared'
-import { FC } from 'react'
+import { FC } from 'preact/compat'
 import TimeRemaining from './TimeRemaining.tsx'
+import { isDistant } from '@utils'
 
 interface ILessonSubtitle {
+  cabinetName: string
   gradebook: Gradebook | undefined
   lessonDate: Date
   startTime: string | undefined
@@ -11,15 +13,21 @@ interface ILessonSubtitle {
 }
 
 const LessonSubtitle: FC<ILessonSubtitle> = ({
+  cabinetName,
   gradebook,
   lessonDate,
   startTime,
   endTime
 }) => (
   <div>
-    <div style={{ display: 'flex', alignItems: 'center' }}>
+    <div
+      style={{ display: 'flex', alignItems: 'center', gap: 5, marginBottom: 5 }}
+    >
+      {isDistant(cabinetName) && (
+        <SubtitleWithBorder color='red'> ДО</SubtitleWithBorder>
+      )}
       {gradebook?.lessonType && (
-        <SubtitleWithBorder style={{ margin: '5px 5px 5px 0px' }}>
+        <SubtitleWithBorder>
           {LessonType[gradebook?.lessonType]}
         </SubtitleWithBorder>
       )}

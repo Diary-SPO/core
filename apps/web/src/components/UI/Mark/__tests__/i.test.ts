@@ -2,36 +2,37 @@ import { describe, expect, it } from 'bun:test'
 import { Task } from '@diary-spo/shared'
 import { setDefaultMark } from '@utils'
 import { getBackgroundColor, getSize } from '../helpers.ts'
+import { GRAY, GREEN, ORANGE, RED, VIOLET } from '@config'
 
 describe('getBackgroundColor', () => {
   it('возвращает цвет для числовой оценки', () => {
     const color1 = getBackgroundColor(5)
-    expect(color1).toEqual('linear-gradient(135deg,#50c750,#32b332)')
+    expect(color1).toEqual(GREEN)
 
     const color2 = getBackgroundColor(3)
-    expect(color2).toEqual('#F59802')
+    expect(color2).toEqual(ORANGE)
 
     const color3 = getBackgroundColor(1)
-    expect(color3).toEqual('#DA0A35')
+    expect(color3).toEqual(RED)
   })
 
   it('возвращает цвет для строковой оценки', () => {
     const color1 = getBackgroundColor('ДЗ')
-    expect(color1).toEqual('#4966CF')
+    expect(color1).toEqual(VIOLET)
 
     const color2 = getBackgroundColor('О')
-    expect(color2).toEqual('#ffb060')
+    expect(color2).toEqual(ORANGE)
 
     const color3 = getBackgroundColor('Н')
-    expect(color3).toEqual('#DA0A35')
+    expect(color3).toEqual(RED)
 
     const color4 = getBackgroundColor('invalid')
-    expect(color4).toEqual('#959595')
+    expect(color4).toEqual(GRAY)
   })
 
   it('возвращает корректные цвета для числовых оценок выше 5', () => {
     const color = getBackgroundColor(6)
-    expect(color).toEqual('var(--vkui--color_accent_purple)')
+    expect(color).toEqual(VIOLET)
   })
 })
 

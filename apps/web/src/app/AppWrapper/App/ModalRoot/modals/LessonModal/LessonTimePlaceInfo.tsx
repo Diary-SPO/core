@@ -2,6 +2,7 @@ import { ExplanationTooltip } from '@components'
 import { Group, Header, InfoRow, SimpleCell } from '@vkontakte/vkui'
 import { useMemo } from 'preact/compat'
 import { FC } from 'react'
+import { isDistant } from '@utils'
 
 export interface ILessonTimePlaceInfo {
   classroomName?: string
@@ -42,10 +43,9 @@ const LessonTimePlaceInfo: FC<{
     []
   )
 
-  const className =
-    Number(lessonTimePlaceInfo.classroomName) === 0
-      ? homeStudyTooltip
-      : lessonTimePlaceInfo.classroomName
+  const className = isDistant(lessonTimePlaceInfo.classroomName)
+    ? homeStudyTooltip
+    : lessonTimePlaceInfo.classroomName
 
   return (
     <Group header={<Header mode='tertiary'>Куда бежать</Header>}>
