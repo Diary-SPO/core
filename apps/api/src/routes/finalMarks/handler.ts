@@ -16,7 +16,7 @@ const getFinalMarks = async ({
     headers: HeadersWithCookie(secret)
   })
 
-  return await response.json()
+  return response.json()
 }
 
 export default getFinalMarks
