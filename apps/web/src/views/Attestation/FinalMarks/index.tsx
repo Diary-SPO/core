@@ -16,7 +16,7 @@ const FinalMarks: FC<Props> = ({ data }) => {
   const uniqueKeys = collectUniqueKeys(subjectMatrix)
 
   return (
-    <div style={{ height: '90vh', overflowX: 'auto' }}>
+    <div style={{ height: '80vh', overflowX: 'auto' }}>
       <Table subjectMatrix={subjectMatrix} uniqueKeys={uniqueKeys} />
     </div>
   )

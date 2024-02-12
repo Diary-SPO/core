@@ -1,5 +1,6 @@
 import { Sizes } from '@components'
 import { ReturnedMark } from '../../../types'
+import { GRAY, GREEN, ORANGE, RED, VIOLET } from '@config'
 
 /**
  * Функция 'getSize' возвращает размер текста для оценки в зависимости от размера
@@ -27,26 +28,26 @@ export const getBackgroundColor = (score?: ReturnedMark): string => {
   if (Number.isNaN(numberScore)) {
     switch (score) {
       case 'ДЗ':
-        return '#4966CF'
+        return VIOLET
       case 'О':
-        return '#ffb060'
+        return ORANGE
       case 'Н':
       case 'Д':
-        return '#DA0A35'
+        return RED
       default:
-        return '#959595'
+        return GRAY
     }
   }
 
   if (numberScore > 5) {
-    return 'var(--vkui--color_accent_purple)'
+    return VIOLET
   }
   if (numberScore >= 4) {
-    return 'linear-gradient(135deg,#50c750,#32b332)'
+    return GREEN
   }
   if (numberScore >= 3) {
-    return '#F59802'
+    return ORANGE
   }
 
-  return '#DA0A35'
+  return RED
 }
