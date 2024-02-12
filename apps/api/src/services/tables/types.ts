@@ -150,15 +150,3 @@ export interface ResponseLogin extends Person {
   groupName: string
   token: string
 }
-
-/**
- * Информация о куках из базы.
- * Не является структурой таблицы.
- */
-export interface CookieInfoFromDatabase {
-  id: number
-  idDiaryUser: number
-  token: string
-  lastUsedDate: string
-  cookie: string
-}
