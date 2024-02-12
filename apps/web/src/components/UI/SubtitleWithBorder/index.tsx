@@ -2,8 +2,7 @@ import { FunctionComponent } from 'preact'
 import {
   CSSProperties,
   HTMLAttributes,
-  ReactNode,
-  useMemo
+  ReactNode
 } from 'preact/compat'
 import { colors, defaultColor } from './styles'
 
