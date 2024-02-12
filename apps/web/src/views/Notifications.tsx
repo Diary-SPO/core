@@ -22,6 +22,11 @@ import { FC } from 'preact/compat'
 import { useEffect, useState } from 'preact/hooks'
 import { getAds } from '../methods'
 
+const updateCache = (ads: NotificationsResponse[]) => {
+  localStorage.setItem('savedAds', JSON.stringify(ads))
+  localStorage.setItem('lastFetchTime', String(Date.now()))
+}
+
 const Notifications: FC<{ id: string }> = ({ id }) => {
   const [notifications, setNotifications] = useState<
     NotificationsResponse[] | null
@@ -29,11 +34,6 @@ const Notifications: FC<{ id: string }> = ({ id }) => {
   const [isLoading, setLoading] = useState<boolean>(false)
   const [isError, setIsError] = useState<boolean>(false)
   const [snackbar, showSnackbar] = useSnackbar()
-
-  const updateCache = (ads: NotificationsResponse[]) => {
-    localStorage.setItem('savedAds', JSON.stringify(ads))
-    localStorage.setItem('lastFetchTime', String(Date.now()))
-  }
 
   const handleError = () => {
     setLoading(false)
@@ -43,24 +43,21 @@ const Notifications: FC<{ id: string }> = ({ id }) => {
   const fetchAds = async (isHandle?: boolean) => {
     setLoading(true)
     try {
-      if (isHandle) {
-        const ads = await getAds()
-        handleResponse(ads, handleError, handleError, setLoading, showSnackbar)
-
-        if (ads instanceof Response) {
-          return
-        }
-        console.log(ads)
-
-        updateCache(ads)
-        setNotifications(ads)
-      } else {
+      if (!isHandle) {
         const cachedAds = JSON.parse(localStorage.getItem('savedAds') || '')
         setNotifications(cachedAds)
       }
-      setLoading(false)
+
+      const ads = await getAds()
+      handleResponse(ads, handleError, handleError, setLoading, showSnackbar)
+
+      if (ads instanceof Response) {
+        return
+      }
+
+      updateCache(ads)
+      setNotifications(ads)
     } catch (error) {
-      setLoading(false)
       showSnackbar({
         before: <Icon28ErrorCircleOutline fill={VKUI_RED} />,
         title: 'Ошибка при попытке загрузить объявления',
@@ -68,22 +65,25 @@ const Notifications: FC<{ id: string }> = ({ id }) => {
         onActionClick: () => fetchAds(true)
       })
       console.error('Ошибка при получении объявлений:', error)
+    } finally {
+      setLoading(false)
     }
   }
 
   useEffect(() => {
     const cachedAds = localStorage.getItem('savedAds')
 
-    if (cachedAds) {
-      setNotifications(JSON.parse(cachedAds) as NotificationsResponse[])
-      showSnackbar({
-        title: 'Данные взяты из кеша',
-        action: 'Загрузить новые',
-        onActionClick: () => fetchAds(true)
-      })
-    } else {
+    if (!cachedAds) {
       fetchAds(true)
+      return
     }
+
+    setNotifications(JSON.parse(cachedAds) as NotificationsResponse[])
+    showSnackbar({
+      title: 'Данные взяты из кеша',
+      action: 'Загрузить новые',
+      onActionClick: () => fetchAds(true)
+    })
   }, [])
 
   return (
