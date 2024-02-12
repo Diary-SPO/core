@@ -1,33 +1,35 @@
+import { GREEN, ORANGE, RED } from '@config'
+
 export const colors = {
   red: {
-    background: '#DA0A35',
-    border: '1px solid #DA0A35',
+    background: RED,
+    border: `1px solid ${RED}`,
     color: 'white'
   },
   green: {
-    background: 'green',
-    border: '1px solid green',
+    background: GREEN,
+    border: `1px solid ${GREEN}`,
     color: 'white'
   },
   'green-outline': {
     color: 'green',
     borderRadius: '5px',
-    border: '1px solid green'
+    border: `1px solid ${GREEN}`
   },
   'yellow-outline': {
     borderRadius: '5px',
-    border: '1px solid #ffb060',
+    border: `1px solid ${ORANGE}`,
     color: '#ffb060'
   },
   'red-outline': {
     borderRadius: '5px',
-    border: '1px solid #DA0A35',
+    border: `1px solid ${RED}`,
     color: '#DA0A35'
   },
   yellow: {
-    backgroundColor: '#ffb060',
+    background: ORANGE,
     borderRadius: '5px',
-    border: '1px solid #ffb060',
+    border: `1px solid ${ORANGE}`,
     color: 'white'
   }
 }

@@ -3,7 +3,6 @@ import {
   CSSProperties,
   HTMLAttributes,
   ReactNode,
-  memo,
   useMemo
 } from 'preact/compat'
 import { colors, defaultColor } from './styles'
@@ -44,14 +43,11 @@ const SubtitleWithBorder: FunctionComponent<ISubtitleWithBorder> = ({
     ...style
   }
 
-  return useMemo(
-    () => (
-      <div {...props} style={styles}>
-        {children}
-      </div>
-    ),
-    [color, children]
+  return (
+    <div {...props} style={styles}>
+      {children}
+    </div>
   )
 }
 
-export default memo(SubtitleWithBorder)
+export default SubtitleWithBorder
