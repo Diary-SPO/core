@@ -14,7 +14,7 @@
     "lint": "biome lint . --apply",
     "format": "biome format . --write",
     "checkAll": "biome check . --apply-unsafe",
-    "size": "bun run build --mode development && size-limit"
+    "size": "bun run build && size-limit"
   },
   "dependencies": {
     "@vkontakte/icons": "2.95.0",
@@ -36,18 +36,8 @@
   },
   "size-limit": [
     {
-      "name": "CSS",
-      "path": "dist/static/css",
-      "limit": "1 MB"
-    },
-    {
-      "name": "JS",
-      "path": "dist/static/js",
-      "limit": "1 MB"
-    },
-    {
-      "name": "Images",
-      "path": "dist/static/image",
+      "name": "All web",
+      "path": "dist/assets",
       "limit": "1 MB"
     }
   ],
