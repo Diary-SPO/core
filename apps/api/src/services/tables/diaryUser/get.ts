@@ -1,5 +1,4 @@
 import { DiaryUserModel, IDiaryUserModel } from '@db'
-import { DiaryUser } from '../types'
 
 export const getDiaryUser = async (
   userId: number

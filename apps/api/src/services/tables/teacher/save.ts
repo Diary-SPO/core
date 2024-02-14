@@ -1,6 +1,5 @@
 import { ITeacherModel, TeacherModel } from '@db'
 import type { Teacher } from '@diary-spo/shared'
-import { DBTeacher } from '../../../types/databaseTypes'
 export const saveTeacher = async (
   teacher: Teacher,
   spoId: number
@@ -23,6 +22,7 @@ export const saveTeacher = async (
     firstName: teacher.firstName,
     lastName: teacher.lastName,
     middleName: teacher.middleName,
-    spoId
+    spoId,
+    idFromDiary: teacher.id
   })
 }

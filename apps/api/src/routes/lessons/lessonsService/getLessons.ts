@@ -1,6 +1,6 @@
 import { API_CODES, API_ERRORS, ApiError } from '@api'
 import { SERVER_URL } from '@config'
-import { DiaryUser, getDiaryUser, saveSchedule } from '@db'
+import { getDiaryUser, saveSchedule } from '@db'
 import { Day } from '@diary-spo/shared'
 import { HeadersWithCookie } from '@utils'
 import { removeScheduleForList } from 'src/services/tables/schedule/remove'
