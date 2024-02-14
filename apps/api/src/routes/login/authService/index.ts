@@ -1,6 +1,6 @@
 import { API_CODES, ApiError } from '@api'
 import { ENCRYPT_KEY } from '@config'
-import { DiaryUserModel, GroupsModel, SPOModel, generateToken } from '@db'
+import { DiaryUserModel, GroupModel, SPOModel, generateToken } from '@db'
 import { type ResponseLogin } from '@db'
 import { encrypt } from '@diary-spo/sql'
 import { ResponseLoginFromDiaryUser } from '@types'
@@ -23,7 +23,7 @@ export const offlineAuth = async (
       password: encrypt(password, ENCRYPT_KEY)
     },
     include: {
-      model: GroupsModel,
+      model: GroupModel,
       required: true,
       include: [
         {

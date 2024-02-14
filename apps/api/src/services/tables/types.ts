@@ -22,7 +22,7 @@ export interface DiaryUser
 export interface Group {
   id?: number
   groupName: string
-  diaryGroupId: number
+  idFromDiary: number
   spoId?: number
 }
 

@@ -3,24 +3,31 @@ import { DataTypes } from 'sequelize'
 import { SPOModel } from './SPO'
 import { IModelPrototype } from './types'
 
-export type TeacherModelType = {
+export type ClassroomModelType = {
   id: number
+  building: string
+  name: string
   spoId: number
-  firstName: string
-  lastName: string
-  middleName: string
   idFromDiary: number
 }
 
-export type ITeacherModel = IModelPrototype<TeacherModelType, 'id'>
+export type IClassroomModelType = IModelPrototype<ClassroomModelType, 'id'>
 
-export const TeacherModel = sequelize.define<ITeacherModel>(
-  'teacher',
+export const ClassroomModel = sequelize.define<IClassroomModelType>(
+  'classroom',
   {
     id: {
       type: DataTypes.INTEGER,
-      autoIncrement: true,
-      primaryKey: true
+      primaryKey: true,
+      autoIncrement: true
+    },
+    building: {
+      type: DataTypes.STRING,
+      allowNull: false
+    },
+    name: {
+      type: DataTypes.STRING(35),
+      allowNull: false
     },
     spoId: {
       type: DataTypes.INTEGER,
@@ -29,18 +36,6 @@ export const TeacherModel = sequelize.define<ITeacherModel>(
         model: SPOModel,
         key: 'id'
       }
-    },
-    firstName: {
-      type: DataTypes.STRING(45),
-      allowNull: false
-    },
-    lastName: {
-      type: DataTypes.STRING(45),
-      allowNull: false
-    },
-    middleName: {
-      type: DataTypes.STRING(45),
-      allowNull: false
     },
     idFromDiary: {
       type: DataTypes.INTEGER,

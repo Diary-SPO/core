@@ -1,6 +1,6 @@
 import { API_CODES, ApiError } from '@api'
 import { SERVER_URL } from '@config'
-import { DiaryUserModel, GroupsModel, SPOModel, generateToken } from '@db'
+import { DiaryUserModel, GroupModel, SPOModel, generateToken } from '@db'
 import type { UserData } from '@diary-spo/shared'
 import { ResponseLoginFromDiaryUser } from '@types'
 import {
@@ -15,7 +15,7 @@ import {
   Group,
   PersonResponse,
   SPO
-} from '../../../services/tables/types'
+} from '@db'
 
 export const saveUserData = async (
   parsedRes: ApiResponse<UserData>,
@@ -70,7 +70,7 @@ export const saveUserData = async (
 
     const regGroup: Group = {
       groupName: student.groupName,
-      diaryGroupId: student.groupId
+      idFromDiary: student.groupId
     }
 
     // Определяем СПО
@@ -90,9 +90,9 @@ export const saveUserData = async (
     regSPO.id = SPORecord.dataValues.id
 
     // Определяем группу
-    const [groupRecord, groupCreated] = await GroupsModel.findOrCreate({
+    const [groupRecord, groupCreated] = await GroupModel.findOrCreate({
       where: {
-        diaryGroupId: regGroup.diaryGroupId
+        idFromDiary: regGroup.idFromDiary
       },
       defaults: {
         ...regGroup,

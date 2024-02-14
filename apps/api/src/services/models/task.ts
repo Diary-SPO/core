@@ -9,6 +9,7 @@ export type TaskModelType = {
   gradebookId: number
   taskTypeId: number
   topic: string
+  idFromDiary: number
 }
 
 export type ITaskModel = IModelPrototype<TaskModelType, 'id'>
@@ -39,6 +40,10 @@ export const TaskModel = sequelize.define<ITaskModel>(
     },
     topic: {
       type: DataTypes.TEXT,
+      allowNull: false
+    },
+    idFromDiary: {
+      type: DataTypes.INTEGER,
       allowNull: false
     }
   },

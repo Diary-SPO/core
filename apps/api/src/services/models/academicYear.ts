@@ -1,44 +1,49 @@
 import { sequelize } from '@db'
 import { DataTypes } from 'sequelize'
-import { DiaryUserModel } from './diaryUser'
-import { TaskModel } from './task'
+import { GroupModel } from './group'
+import { TermTypeModel } from './termType'
 import { IModelPrototype } from './types'
 
-export type RequiredsModelType = {
+export type AcademicYearModelType = {
   id: number
-  diaryUserId: number
-  taskId: number
-  isRequired: boolean
+  termTypeId: number
+  number: number
+  groupId: number
+  idFromDiary: number
 }
 
-export type IRequiredsModel = IModelPrototype<RequiredsModelType, 'id'>
+export type IAcademicYearModel = IModelPrototype<AcademicYearModelType, 'id'>
 
-export const RequiredsModel = sequelize.define<IRequiredsModel>(
-  'requireds',
+export const AcademicYearModel = sequelize.define<IAcademicYearModel>(
+  'academicYear',
   {
     id: {
       type: DataTypes.INTEGER,
       autoIncrement: true,
       primaryKey: true
     },
-    diaryUserId: {
+    termTypeId: {
       type: DataTypes.INTEGER,
       allowNull: false,
       references: {
-        model: DiaryUserModel,
+        model: TermTypeModel,
         key: 'id'
       }
     },
-    taskId: {
+    number: {
+      type: DataTypes.INTEGER,
+      allowNull: false
+    },
+    groupId: {
       type: DataTypes.INTEGER,
       allowNull: false,
       references: {
-        model: TaskModel,
+        model: GroupModel,
         key: 'id'
       }
     },
-    isRequired: {
-      type: DataTypes.BOOLEAN,
+    idFromDiary: {
+      type: DataTypes.INTEGER,
       allowNull: false
     }
   },

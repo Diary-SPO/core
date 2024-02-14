@@ -5,3 +5,5 @@ export type IModelPrototype<T extends object, K extends keyof T> = Model<
   Optional<T, K>
 > &
   T
+
+export type IModelPrototypeNoId<T extends object> = Model<T> & T

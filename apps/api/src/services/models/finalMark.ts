@@ -1,36 +1,35 @@
-import { sequelize } from '@db'
+import { DiaryUserModel, sequelize } from '@db'
 import { DataTypes } from 'sequelize'
-import { DiaryUserModel } from './diaryUser'
 import { MarkValueModel } from './markValue'
-import { TaskModel } from './task'
+import { SubjectModel } from './subject'
 import { IModelPrototypeNoId } from './types'
 
-export type MarkModelType = {
+export type FinalMarkModelType = {
+  subjectId: number
   diaryUserId: number
-  taskId: number
   markValueId: number
 }
 
-export type IMarkModelType = IModelPrototypeNoId<MarkModelType>
+export type IFinalMarkModel = IModelPrototypeNoId<FinalMarkModelType>
 
-export const MarkModel = sequelize.define<IMarkModelType>(
-  'mark',
+export const FinalMarkModel = sequelize.define<IFinalMarkModel>(
+  'finalMark',
   {
-    diaryUserId: {
+    subjectId: {
       type: DataTypes.INTEGER,
-      primaryKey: true,
       allowNull: false,
+      primaryKey: true,
       references: {
-        model: DiaryUserModel,
+        model: SubjectModel,
         key: 'id'
       }
     },
-    taskId: {
+    diaryUserId: {
       type: DataTypes.INTEGER,
-      primaryKey: true,
       allowNull: false,
+      primaryKey: true,
       references: {
-        model: TaskModel,
+        model: DiaryUserModel,
         key: 'id'
       }
     },
