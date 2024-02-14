@@ -1,11 +1,5 @@
 import { FunctionComponent } from 'preact'
-import {
-  CSSProperties,
-  HTMLAttributes,
-  ReactNode,
-  memo,
-  useMemo
-} from 'preact/compat'
+import { CSSProperties, HTMLAttributes, ReactNode } from 'preact/compat'
 import { colors, defaultColor } from './styles'
 
 type SubtitleColors =
@@ -44,14 +38,11 @@ const SubtitleWithBorder: FunctionComponent<ISubtitleWithBorder> = ({
     ...style
   }
 
-  return useMemo(
-    () => (
-      <div {...props} style={styles}>
-        {children}
-      </div>
-    ),
-    [color, children]
+  return (
+    <div {...props} style={styles}>
+      {children}
+    </div>
   )
 }
 
-export default memo(SubtitleWithBorder)
+export default SubtitleWithBorder

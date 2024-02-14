@@ -1,8 +1,8 @@
 import { Mark } from '@components'
 import { Gradebook, Lesson, Timetable } from '@diary-spo/shared'
-import { setDefaultMark } from '@utils'
+import { isDistant, setDefaultMark } from '@utils'
 import { SimpleCell } from '@vkontakte/vkui'
-import { FC } from 'react'
+import { FC } from 'preact/compat'
 import LessonSubtitle from './LessonSubtitle'
 
 interface ILessonCell {
@@ -28,10 +28,9 @@ const LessonCell: FC<ILessonCell> = ({
     return
   }
 
-  // TODO: перенести в функцию
   const lessonTime = startTime
     ? `${startTime} — ${endTime}, каб. ${
-        Number(timetable?.classroom?.name) === 0
+        isDistant(timetable?.classroom?.name)
           ? 'ДО'
           : timetable?.classroom?.name
       }`
@@ -60,6 +59,7 @@ const LessonCell: FC<ILessonCell> = ({
             }}
           >
             <LessonSubtitle
+              cabinetName={timetable?.classroom?.name}
               gradebook={gradebook}
               lessonDate={lessonDate}
               startTime={startTime}

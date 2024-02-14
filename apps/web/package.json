@@ -5,16 +5,15 @@
   "type": "module",
   "scripts": {
     "dev": "bunx --bun vite --mode development",
-    "build": "bunx --bun vite build --mode production",
-    "preview": "bunx --bun vite preview --mode production",
-    "serve": "bun run build && bun preview",
-    "predeploy": "bun run build",
+    "build": "NODE_ENV=production bunx --bun vite build --mode production",
+    "preview": "bunx --bun vite preview",
+    "serve": "bun run build --mode production && bun preview",
+    "predeploy": "bun run build --env-file=.env.production",
     "deploy:gh": "gh-pages -d dist",
-    "deploy:vk": "vk-miniapps-deploy --env-mode production",
+    "deploy:vk": "vk-miniapps-deploy",
     "lint": "biome lint . --apply",
     "format": "biome format . --write",
-    "checkAll": "biome check . --apply-unsafe",
-    "size": "bun run build --mode development && size-limit"
+    "checkAll": "biome check . --apply-unsafe"
   },
   "dependencies": {
     "@vkontakte/icons": "2.95.0",
@@ -22,9 +21,7 @@
     "@vkontakte/vk-bridge-react": "^1.0.0",
     "@vkontakte/vk-mini-apps-router": "1.4.2",
     "@vkontakte/vkui": "6.0.0",
-    "preact": "^10.19.3",
-    "react": "npm:@preact/compat",
-    "react-dom": "npm:@preact/compat"
+    "preact": "^10.19.3"
   },
   "devDependencies": {
     "@diary-spo/shared": "workspace:*",
@@ -33,26 +30,8 @@
     "@size-limit/preset-app": "^11.0.2",
     "@types/jsdom": "^21.1.6",
     "@vkontakte/vk-miniapps-deploy": "^0.1.6",
-    "gh-pages": "^6.0.0",
-    "size-limit": "^11.0.2"
+    "gh-pages": "^6.0.0"
   },
-  "size-limit": [
-    {
-      "name": "CSS",
-      "path": "dist/static/css",
-      "limit": "1 MB"
-    },
-    {
-      "name": "JS",
-      "path": "dist/static/js",
-      "limit": "1 MB"
-    },
-    {
-      "name": "Images",
-      "path": "dist/static/image",
-      "limit": "1 MB"
-    }
-  ],
   "browserslist": {
     "production": [">0.2%", "not dead", "not op_mini all"],
     "development": [

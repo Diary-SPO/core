@@ -142,6 +142,7 @@ export const Grade: Record<MarkKeys, string | number> = {
   Three: 3,
   Two: 2,
   One: 1,
+  Success: 'Зч',
   '': 'Д' // Empty grade as 'Д'
 }
 
@@ -276,8 +277,8 @@ export type ExaminationType = keyof typeof Examinations
 export type TermType = 'Semester'
 
 export interface Subject {
-  examinationType: ExaminationType
-  marks: Record<string, number>
+  examinationType?: ExaminationType
+  marks: Record<string, number | string>
   name: string
   id: number
 }
@@ -285,11 +286,11 @@ export interface Subject {
 export interface AttestationResponse {
   termType: TermType
   termNumber: number
-  year: number
-  students: Person[]
+  year?: number
+  students?: Person[]
   subjects: Subject[]
-  profModules: unknown[]
-  courseWorks: unknown[]
+  profModules?: unknown[]
+  courseWorks?: unknown[]
   departmentName: string
 }
 
@@ -304,4 +305,32 @@ export interface NotificationsResponse {
   isForParents: boolean
   shouldDeleteNews: boolean
   deleteInDays: number
+}
+
+export interface AttestationMark {
+  value?: 'Success' | string
+}
+
+export type AttestationTerm = {
+  isActive: boolean
+  number: number
+  id: number
+}
+
+export interface AttestationSubject extends Subject {
+  finalMark: AttestationMark
+}
+
+export interface AcademicYear {
+  id: number
+  TermType: TermType
+  terms: AttestationTerm[]
+  number: number
+  marks: AttestationMark
+}
+
+/** Ответ от services/students/<id>/attestation **/
+export interface AcademicRecord {
+  academicYears: AcademicYear[]
+  subjects: AttestationSubject[]
 }
