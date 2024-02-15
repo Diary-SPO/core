@@ -195,12 +195,14 @@ export interface Task {
 
 export type Teacher = Person
 
+export interface Classroom {
+  building: string
+  id: number
+  name: string
+}
+
 export interface Timetable {
-  classroom: {
-    building: string
-    id: number
-    name: string
-  }
+  classroom: Classroom
   teacher?: Teacher
 }
 
