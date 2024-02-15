@@ -10,12 +10,7 @@ import {
   fetcher,
   formatDate
 } from '@utils'
-import {
-  DiaryUser,
-  Group,
-  PersonResponse,
-  SPO
-} from '@db'
+import { DiaryUser, Group, PersonResponse, SPO } from '@db'
 
 export const saveUserData = async (
   parsedRes: ApiResponse<UserData>,
