@@ -10,9 +10,7 @@
       "@routes": ["src/routes"],
       "@utils": ["src/utils"],
       "@db": ["src/services"],
-      "@diary-spo/types": ["src/services/types"],
       "@api": ["src/ApiError"],
-      "@services": ["src/services"],
     } /* Specify a set of entries that re-map imports to additional lookup locations. */,
     "types": [
       "bun-types"

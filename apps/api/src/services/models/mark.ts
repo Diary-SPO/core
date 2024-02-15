@@ -1,29 +1,24 @@
 import { sequelize } from '@db'
-import { MarkKeys } from '@diary-spo/shared'
 import { DataTypes } from 'sequelize'
 import { DiaryUserModel } from './diaryUser'
+import { MarkValueModel } from './markValue'
 import { TaskModel } from './task'
-import { IModelPrototype } from './types'
+import { IModelPrototypeNoId } from './types'
 
 export type MarkModelType = {
-  id: number
   diaryUserId: number
   taskId: number
-  value: MarkKeys
+  markValueId: number
 }
 
-export type IMarkModelType = IModelPrototype<MarkModelType, 'id'>
+export type IMarkModelType = IModelPrototypeNoId<MarkModelType>
 
 export const MarkModel = sequelize.define<IMarkModelType>(
   'mark',
   {
-    id: {
-      type: DataTypes.INTEGER,
-      autoIncrement: true,
-      primaryKey: true
-    },
     diaryUserId: {
       type: DataTypes.INTEGER,
+      primaryKey: true,
       allowNull: false,
       references: {
         model: DiaryUserModel,
@@ -32,15 +27,20 @@ export const MarkModel = sequelize.define<IMarkModelType>(
     },
     taskId: {
       type: DataTypes.INTEGER,
+      primaryKey: true,
       allowNull: false,
       references: {
         model: TaskModel,
         key: 'id'
       }
     },
-    value: {
-      type: DataTypes.ENUM('Five', 'Four', 'Three', 'Two', ''),
-      allowNull: false
+    markValueId: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      references: {
+        model: MarkValueModel,
+        key: 'id'
+      }
     }
   },
   {

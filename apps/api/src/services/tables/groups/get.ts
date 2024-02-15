@@ -1,9 +1,9 @@
-import { GroupsModel, IGroupsModel } from 'src/services/models'
+import { GroupModel, IGroupModel } from 'src/services/models'
 
 export const getGroupInfo = async (
   groupId: number
-): Promise<IGroupsModel | null> =>
-  await GroupsModel.findOne({
+): Promise<IGroupModel | null> =>
+  await GroupModel.findOne({
     where: {
       id: groupId
     }

@@ -12,3 +12,4 @@ export {
   ExplanationTooltip
 }
 export type { Sizes }
+export * from './ErrorPlaceholder.tsx'

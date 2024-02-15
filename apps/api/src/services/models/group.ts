@@ -1,19 +1,19 @@
 import { sequelize } from '@db'
-import { DataTypes, Model, Optional } from 'sequelize'
+import { DataTypes } from 'sequelize'
 import { SPOModel } from './SPO'
 import { IModelPrototype } from './types'
 
-export type GroupsModelType = {
+export type GroupModelType = {
   id: number
   spoId: number
   groupName: string
-  diaryGroupId: number
+  idFromDiary: number
 }
 
-export type IGroupsModel = IModelPrototype<GroupsModelType, 'id'>
+export type IGroupModel = IModelPrototype<GroupModelType, 'id'>
 
-export const GroupsModel = sequelize.define<IGroupsModel>(
-  'groups',
+export const GroupModel = sequelize.define<IGroupModel>(
+  'group',
   {
     id: {
       type: DataTypes.INTEGER,
@@ -32,7 +32,7 @@ export const GroupsModel = sequelize.define<IGroupsModel>(
       type: DataTypes.STRING(31),
       allowNull: false
     },
-    diaryGroupId: {
+    idFromDiary: {
       type: DataTypes.INTEGER,
       allowNull: false
     }

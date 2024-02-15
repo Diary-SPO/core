@@ -1,4 +1,4 @@
-import { logger } from '../../utils/logger'
+import { logger } from '@utils'
 import { checkInterval } from '../utils/checkInterval'
 import { INTERVAL_RUN } from './config'
 import { removeNotUsedTokens } from './modules/removeNotUsedTokens'

@@ -2,7 +2,6 @@ import { Lesson } from '@diary-spo/shared'
 import {
   GradebookModel,
   IGradebookModel,
-  ILessonTypeModel,
   IScheduleModel
 } from 'src/services/models'
 import { updateLessonType } from '../lessonType'
@@ -19,7 +18,7 @@ export const updateGradebook = async (
   })
 
   if (!existGradebook) {
-    existGradebook = await saveGradebook(schedule, lesson)
+    /*existGradebook =*/ await saveGradebook(schedule, lesson)
   } else {
     // Повторяется в gradebook/save. Нужно вынести
     if (!lesson.gradebook?.lessonType) {

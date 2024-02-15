@@ -1,4 +1,4 @@
-import { PanelHeaderWithBack, Suspense } from '@components'
+import { ErrorPlaceholder, PanelHeaderWithBack, Suspense } from '@components'
 import { Day } from '@diary-spo/shared'
 import { useRateLimitExceeded, useSnackbar } from '@hooks'
 import { handleResponse } from '@utils'
@@ -18,7 +18,6 @@ import {
 import { endOfWeek, startOfWeek } from '@vkontakte/vkui/dist/lib/date'
 import { FC, lazy, useEffect, useState } from 'preact/compat'
 import { getLessons } from '../../methods'
-import ErrorPlaceholder from './ErrorPlaceholder.tsx'
 import ScheduleAsideButtons from './ScheduleAsideButtons.tsx'
 import { getWeekString, isNeedToGetNewData } from './utils.ts'
 

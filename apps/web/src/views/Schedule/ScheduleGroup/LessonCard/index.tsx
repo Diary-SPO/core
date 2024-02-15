@@ -85,7 +85,7 @@ const LessonCard: FC<ILessonCard> = ({ lesson }) => {
       ))
     }
     return <Placeholder>Пар нет</Placeholder>
-  }, [lesson.lessons, lessonDate, handleLessonClick])
+  }, [lesson.lessons, lessonDate])
 
   return (
     <Card className='lessonCard' key={lesson.date}>

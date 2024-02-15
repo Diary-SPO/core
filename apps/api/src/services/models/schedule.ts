@@ -1,6 +1,8 @@
 import { sequelize } from '@db'
 import { DataTypes } from 'sequelize'
-import { GroupsModel } from './groups'
+import { ClassroomModel } from './classroom'
+import { GroupModel } from './group'
+import { SubjectModel } from './subject'
 import { TeacherModel } from './teacher'
 import { IModelPrototype } from './types'
 
@@ -8,12 +10,11 @@ export type ScheduleModelType = {
   id: number
   groupId: number
   teacherId: number
-  classroomBuilding: string
-  classroomName: string
-  subjectName: string
+  subjectId: number
   date: string
   startTime: string
   endTime: string
+  classroomId: number
 }
 
 export type IScheduleModel = IModelPrototype<ScheduleModelType, 'id'>
@@ -30,7 +31,7 @@ export const ScheduleModel = sequelize.define<IScheduleModel>(
       type: DataTypes.INTEGER,
       allowNull: false,
       references: {
-        model: GroupsModel,
+        model: GroupModel,
         key: 'id'
       }
     },
@@ -42,20 +43,16 @@ export const ScheduleModel = sequelize.define<IScheduleModel>(
         key: 'id'
       }
     },
-    classroomBuilding: {
-      type: DataTypes.STRING(3),
-      allowNull: true
-    },
-    classroomName: {
-      type: DataTypes.STRING(7),
-      allowNull: true
-    },
-    subjectName: {
-      type: DataTypes.STRING(85),
-      allowNull: false
+    subjectId: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      references: {
+        model: SubjectModel,
+        key: 'id'
+      }
     },
     date: {
-      type: DataTypes.STRING(10),
+      type: DataTypes.DATE,
       allowNull: false
     },
     startTime: {
@@ -65,6 +62,14 @@ export const ScheduleModel = sequelize.define<IScheduleModel>(
     endTime: {
       type: DataTypes.STRING(5),
       allowNull: false
+    },
+    classroomId: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      references: {
+        model: ClassroomModel,
+        key: 'id'
+      }
     }
   },
   {

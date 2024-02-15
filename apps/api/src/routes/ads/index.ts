@@ -1,4 +1,4 @@
-import { Elysia, t } from 'elysia'
+import { Elysia } from 'elysia'
 import getAds from './handler'
 
 const ads = new Elysia().get('/ads', getAds, {

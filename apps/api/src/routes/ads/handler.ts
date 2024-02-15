@@ -2,7 +2,7 @@ import { SERVER_URL } from '@config'
 import type { NotificationsResponse } from '@diary-spo/shared'
 import { ContextWithID } from '@types'
 import { HeadersWithCookie } from '@utils'
-import { getCookieFromToken } from '../../services/helpers/getCookieFromToken'
+import { getCookieFromToken } from '@db'
 
 const getAds = async ({
   request

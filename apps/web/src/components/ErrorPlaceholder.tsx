@@ -1,7 +1,7 @@
 import { Button, ButtonGroup, Link, Placeholder } from '@vkontakte/vkui'
 import { FC } from 'react'
 
-const ErrorPlaceholder: FC<{ onClick: () => void }> = ({ onClick }) => (
+export const ErrorPlaceholder: FC<{ onClick: () => void }> = ({ onClick }) => (
   <Placeholder
     header='Ошибка при загрузке'
     action={
@@ -11,12 +11,10 @@ const ErrorPlaceholder: FC<{ onClick: () => void }> = ({ onClick }) => (
           Попробовать снова
         </Button>
         {/*// @ts-ignore Типы не совместимы */}
-        <Link href='https://vk.me/dnevnik_spo' target='_blank'>
+        <Link href='https://vk.me/diary_spo' target='_blank'>
           Сообщить о проблеме
         </Link>
       </ButtonGroup>
     }
   />
 )
-
-export default ErrorPlaceholder

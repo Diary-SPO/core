@@ -2,6 +2,7 @@ import { Elysia } from 'elysia'
 
 import ads from './ads'
 import attestation from './attestation'
+import finalMarks from './finalMarks'
 import hello from './hello'
 import lessons from './lessons'
 import login from './login'
@@ -20,6 +21,7 @@ const routes = new Elysia()
       .use(performanceCurrent)
       .use(attestation)
       .use(ads)
+      .use(finalMarks)
   )
   /** Роуты без проверки **/
   .use(hello)

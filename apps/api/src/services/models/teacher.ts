@@ -9,6 +9,7 @@ export type TeacherModelType = {
   firstName: string
   lastName: string
   middleName: string
+  idFromDiary: number
 }
 
 export type ITeacherModel = IModelPrototype<TeacherModelType, 'id'>
@@ -39,6 +40,10 @@ export const TeacherModel = sequelize.define<ITeacherModel>(
     },
     middleName: {
       type: DataTypes.STRING(45),
+      allowNull: false
+    },
+    idFromDiary: {
+      type: DataTypes.INTEGER,
       allowNull: false
     }
   },
