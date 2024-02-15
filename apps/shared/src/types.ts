@@ -134,14 +134,13 @@ export const LessonWorkType: Record<LessonWorkTypeKeys, string> = {
   '': 'Не указано'
 }
 
-export type MarkKeys = 'Five' | 'Four' | 'Three' | 'Two' | 'One' | ''
+export type MarkKeys = 'Five' | 'Four' | 'Three' | 'Two' | 'Success' | ''
 
 export const Grade: Record<MarkKeys, string | number> = {
   Five: 5,
   Four: 4,
   Three: 3,
   Two: 2,
-  One: 1,
   Success: 'Зч',
   '': 'Д' // Empty grade as 'Д'
 }

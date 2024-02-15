@@ -1,9 +1,9 @@
 import { Mark } from '@components'
 import { VIOLET } from '@config'
-import { SubjectMatrix, TableProps } from './types.ts'
 import { Grade } from '@diary-spo/shared'
 import { FC, useState } from 'preact/compat'
 import { StateUpdater } from 'preact/hooks'
+import { SubjectMatrix, TableProps } from './types.ts'
 
 const bgColor = 'rgba(240,240,240,0.05)'
 const cellStyle = (isSelected: boolean, isHovered: boolean) => ({

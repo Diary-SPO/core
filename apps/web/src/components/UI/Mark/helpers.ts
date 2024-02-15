@@ -1,6 +1,6 @@
 import { Sizes } from '@components'
-import { ReturnedMark } from '../../../types'
 import { GRAY, GREEN, ORANGE, RED, VIOLET } from '@config'
+import { ReturnedMark } from '../../../types'
 
 /**
  * Функция 'getSize' возвращает размер текста для оценки в зависимости от размера

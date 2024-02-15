@@ -1,5 +1,5 @@
-import { FC } from 'preact/compat'
 import { AcademicRecord } from '@diary-spo/shared'
+import { FC } from 'preact/compat'
 import { Table } from './Table.tsx'
 import { buildSubjectMatrix, collectUniqueKeys } from './utils.ts'
 

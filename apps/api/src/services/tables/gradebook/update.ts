@@ -11,7 +11,7 @@ export const updateGradebook = async (
   schedule: IScheduleModel,
   lesson: Lesson
 ) => {
-  let existGradebook: IGradebookModel | null = await GradebookModel.findOne({
+  const existGradebook: IGradebookModel | null = await GradebookModel.findOne({
     where: {
       scheduleId: schedule.id
     }
