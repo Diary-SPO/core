@@ -119,7 +119,6 @@ export const Table: FC<TableProps> = ({ subjectMatrix }) => {
                   })
                 }
               >
-                {console.log('finalMark', finalMark)}
                 {finalMark ? (
                   <Mark
                     color={finalMark === 'Зч' ? VIOLET : undefined}
