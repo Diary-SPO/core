@@ -1,11 +1,10 @@
 import { Mark } from '@components'
 import { VIOLET } from '@config'
-import { Grade } from '@diary-spo/shared'
 import { FC, useState } from 'preact/compat'
-import { StateUpdater } from 'preact/hooks'
-import { SubjectMatrix, TableProps } from './types.ts'
+import { SubjectMatrix } from './types.ts'
 
 const bgColor = 'rgba(240,240,240,0.05)'
+
 const cellStyle = (isSelected: boolean, isHovered: boolean) => ({
   padding: '10px',
   border: '1px solid #ddd',
@@ -18,6 +17,10 @@ interface Cell {
 }
 
 type Nullable<T> = T | null
+
+interface TableProps {
+  subjectMatrix: SubjectMatrix
+}
 
 export const Table: FC<TableProps> = ({ subjectMatrix }) => {
   const [hoveredCell, setHoveredCell] = useState<Nullable<Cell>>(null)
@@ -56,68 +59,78 @@ export const Table: FC<TableProps> = ({ subjectMatrix }) => {
         </tr>
       </thead>
       <tbody>
-        {subjectMatrix.map((subjectData, rowIndex) => (
-          <tr key={subjectData.subjectName + rowIndex}>
-            <td
-              style={cellStyle(
-                selectedCell?.row === rowIndex,
-                hoveredCell?.row === rowIndex
-              )}
-              onClick={() => setSelectedCell({ row: rowIndex, col: -1 })}
-            >
-              {subjectData.subjectName}
-            </td>
-            {subjectData.terms.map((term, colIndex) => (
+        {subjectMatrix.map((subjectData, rowIndex) => {
+          const finalMark = subjectData.finalMark
+            ? subjectData.finalMark
+            : undefined
+          const subjectName = subjectData.subjectName
+
+          return (
+            <tr key={subjectName + rowIndex}>
               <td
-                key={`${subjectData.subjectName}-${term.course}-${term.semester}`}
+                style={cellStyle(
+                  selectedCell?.row === rowIndex,
+                  hoveredCell?.row === rowIndex
+                )}
+                onClick={() => setSelectedCell({ row: rowIndex, col: -1 })}
+              >
+                {subjectName}
+              </td>
+              {subjectData.terms.map((term, colIndex) => {
+                const mark = term.mark
+                return (
+                  <td
+                    key={`${subjectName}-${term.course}-${term.semester}`}
+                    style={cellStyle(
+                      selectedCell?.row === rowIndex ||
+                        selectedCell?.col === colIndex,
+                      hoveredCell?.row === rowIndex ||
+                        hoveredCell?.col === colIndex
+                    )}
+                    onMouseEnter={() =>
+                      setHoveredCell({ row: rowIndex, col: colIndex })
+                    }
+                    onMouseLeave={() => setHoveredCell(null)}
+                    onClick={() =>
+                      setSelectedCell({ row: rowIndex, col: colIndex })
+                    }
+                  >
+                    {mark && (
+                      <Mark
+                        color={mark === 'Зч' ? VIOLET : undefined}
+                        mark={mark}
+                        size='s'
+                      />
+                    )}
+                  </td>
+                )
+              })}
+              <td
                 style={cellStyle(
                   selectedCell?.row === rowIndex ||
-                    selectedCell?.col === colIndex,
-                  hoveredCell?.row === rowIndex || hoveredCell?.col === colIndex
+                    selectedCell?.col === subjectData.terms.length,
+                  hoveredCell?.row === rowIndex ||
+                    hoveredCell?.col === subjectData.terms.length
                 )}
-                onMouseEnter={() =>
-                  setHoveredCell({ row: rowIndex, col: colIndex })
-                }
-                onMouseLeave={() => setHoveredCell(null)}
                 onClick={() =>
-                  setSelectedCell({ row: rowIndex, col: colIndex })
+                  setSelectedCell({
+                    row: rowIndex,
+                    col: subjectData.terms.length
+                  })
                 }
               >
-                {term.mark && (
+                {console.log('finalMark', finalMark)}
+                {finalMark ? (
                   <Mark
-                    color={term.mark === 'Зч' ? VIOLET : undefined}
-                    mark={term.mark}
+                    color={finalMark === 'Зч' ? VIOLET : undefined}
+                    mark={finalMark}
                     size='s'
                   />
-                )}
+                ) : undefined}
               </td>
-            ))}
-            <td
-              style={cellStyle(
-                selectedCell?.row === rowIndex ||
-                  selectedCell?.col === subjectData.terms.length,
-                hoveredCell?.row === rowIndex ||
-                  hoveredCell?.col === subjectData.terms.length
-              )}
-              onClick={() =>
-                setSelectedCell({
-                  row: rowIndex,
-                  col: subjectData.terms.length
-                })
-              }
-            >
-              {subjectData.finalMark && (
-                <Mark
-                  color={
-                    Grade[subjectData.finalMark] === 'Зч' ? VIOLET : undefined
-                  }
-                  mark={Grade[subjectData.finalMark]}
-                  size='s'
-                />
-              )}
-            </td>
-          </tr>
-        ))}
+            </tr>
+          )
+        })}
       </tbody>
     </table>
   )

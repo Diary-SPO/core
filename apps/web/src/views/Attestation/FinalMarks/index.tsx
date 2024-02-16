@@ -22,4 +22,3 @@ const FinalMarks: FC<Props> = ({ data }) => {
 }
 
 export default FinalMarks
-// const uniqueKeys = collectUniqueKeys(subjectMatrix)
