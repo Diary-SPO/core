@@ -1,9 +1,15 @@
 import { API_CODES, ApiError } from '@api'
 import { ENCRYPT_KEY } from '@config'
-import { DiaryUserModel, GroupModel, SPOModel, generateToken } from '@db'
+import { DiaryUserModel, GroupModel, SPOModel, generateToken, IDiaryUserModel, IGroupModel, ISPOModel } from '@db'
 import { type ResponseLogin } from '@db'
 import { encrypt } from '@diary-spo/sql'
 import { ResponseLoginFromDiaryUser } from '@types'
+
+type DiaryUserAuthInfo = IDiaryUserModel & {
+  group: IGroupModel & {
+    SPO: ISPOModel
+  }
+}
 
 /**
  * Оффлайн авторизация через базу данных.
@@ -17,7 +23,7 @@ export const offlineAuth = async (
   password: string
 ): Promise<ResponseLogin | null> => {
   /** Пробуем войти "оффлайн", если пользователь есть в базе (в случае, если упал основной дневник) **/
-  const diaryUserRecord = await DiaryUserModel.findOne({
+  const diaryUserRecord = (await DiaryUserModel.findOne({
     where: {
       login,
       password: encrypt(password, ENCRYPT_KEY)
@@ -32,7 +38,7 @@ export const offlineAuth = async (
         }
       ]
     }
-  })
+  })) as DiaryUserAuthInfo
 
   if (!diaryUserRecord) {
     throw new ApiError(
@@ -41,14 +47,16 @@ export const offlineAuth = async (
     )
   }
 
-  //console.log(diaryUserRecord.dataValues.group.dataValues.SPO.dataValues.abbreviation)
-
-  const diaryUserData = diaryUserRecord.dataValues
-  const groupData = diaryUserData.group.dataValues
-  const spoData = groupData.SPO.dataValues
+  const groupData = diaryUserRecord.group
+  const spoData = groupData.SPO
 
   // Если пользователь найден, генерируем токен и отдаём
-  diaryUserData.token = await generateToken(diaryUserData.id)
+  const token = await generateToken(diaryUserRecord.id)
 
-  return ResponseLoginFromDiaryUser(diaryUserData, groupData, spoData)
+  return ResponseLoginFromDiaryUser(
+    diaryUserRecord,
+    spoData,
+    groupData as IGroupModel, // Т.к. выше нахимичили свой тип, то явно указываем то, что ожидается
+    token
+  )
 }

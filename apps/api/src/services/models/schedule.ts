@@ -11,7 +11,7 @@ export type ScheduleModelType = {
   groupId: number
   teacherId: number
   subjectId: number
-  date: string
+  date: Date
   startTime: string
   endTime: string
   classroomId: number

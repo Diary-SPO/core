@@ -13,6 +13,7 @@ export type SPOModelType = {
   phone: string
   type: string
   directorName: string
+  organizationId: string
 }
 
 export type ISPOModel = IModelPrototype<SPOModelType, 'id'>
@@ -60,6 +61,11 @@ export const SPOModel = sequelize.define<ISPOModel>(
     directorName: {
       type: DataTypes.STRING(85),
       allowNull: false
+    },
+    organizationId: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      unique: true
     }
   },
   {

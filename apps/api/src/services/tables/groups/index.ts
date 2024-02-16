@@ -1,1 +1,0 @@
-export { getGroupInfo } from './get'
