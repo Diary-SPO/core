@@ -42,9 +42,12 @@ export const saveUserData = async (
 
     const person = detailedInfo.data.person
 
-    const spoAddress = SPO.actualAddress.length > 5 ? SPO.actualAddress 
-    : SPO.legalAddress.length > 5 ? SPO.legalAddress
-    : SPO.address.mailAddress
+    const spoAddress =
+      SPO.actualAddress.length > 5
+        ? SPO.actualAddress
+        : SPO.legalAddress.length > 5
+          ? SPO.legalAddress
+          : SPO.address.mailAddress
 
     const regSPO = await saveOrGetSPO({
       abbreviation: SPO.abbreviation,
@@ -60,7 +63,7 @@ export const saveUserData = async (
     })
 
     const regGroup = await saveOrGetGroup(
-      student.groupId, 
+      student.groupId,
       student.groupName,
       regSPO.id
     )

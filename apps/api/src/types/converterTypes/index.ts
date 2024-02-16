@@ -1,4 +1,9 @@
-import type { IDiaryUserModel, IGroupModel, ISPOModel, ResponseLogin } from '@db'
+import type {
+  IDiaryUserModel,
+  IGroupModel,
+  ISPOModel,
+  ResponseLogin
+} from '@db'
 
 export function ResponseLoginFromDiaryUser(
   diaryUser: IDiaryUserModel,

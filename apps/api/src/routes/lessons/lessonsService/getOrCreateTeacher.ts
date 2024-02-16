@@ -1,3 +1,1 @@
-const getOrCreateTeacher = async (): Promise<void> => {
-    
-}
+const getOrCreateTeacher = async (): Promise<void> => {}

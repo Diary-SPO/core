@@ -1,7 +1,7 @@
 import { AcademicRecord } from '@diary-spo/shared'
 import { FC } from 'preact/compat'
 import { Table } from './Table.tsx'
-import { buildSubjectMatrix, collectUniqueKeys } from './utils.ts'
+import { buildSubjectMatrix } from './utils.ts'
 
 interface Props {
   data: AcademicRecord
@@ -13,13 +13,13 @@ const FinalMarks: FC<Props> = ({ data }) => {
   }
 
   const subjectMatrix = buildSubjectMatrix(data)
-  const uniqueKeys = collectUniqueKeys(subjectMatrix)
-
+  console.log('subjectMatrix', subjectMatrix)
   return (
     <div style={{ height: '80vh', overflowX: 'auto' }}>
-      <Table subjectMatrix={subjectMatrix} uniqueKeys={uniqueKeys} />
+      <Table subjectMatrix={subjectMatrix} />
     </div>
   )
 }
 
 export default FinalMarks
+// const uniqueKeys = collectUniqueKeys(subjectMatrix)
