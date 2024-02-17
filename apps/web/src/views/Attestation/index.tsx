@@ -108,12 +108,9 @@ const Attestation: FC<IAttestation> = ({ id }) => {
   }
 
   useEffect(() => {
-    console.warn(selected)
     getUserAttestation()
     getUserFinalMarks()
   }, [selected])
-
-  console.warn(finalMarksData)
 
   return (
     <Panel nav={id}>

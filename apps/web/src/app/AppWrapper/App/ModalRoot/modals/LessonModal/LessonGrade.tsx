@@ -33,7 +33,7 @@ const LessonGrade: FC<ILessonGrade> = ({ tasks, absenceType }) => {
 
   return (
     <Group header={header}>
-      {hasTasks ? <LessonTasks tasks={tasks} /> : undefined}
+      {hasTasks && <LessonTasks tasks={tasks} />}
       {absenceType && (
         // @ts-ignore Типы не совместимы
         <SimpleCell after={mark}>
