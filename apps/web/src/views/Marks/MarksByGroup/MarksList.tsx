@@ -1,5 +1,5 @@
 import { SubjectMarksMap } from '@utils'
-import { FC } from 'react'
+import { FC } from 'preact/compat'
 import { renderMarksOrAbsence, styles } from './helpers'
 
 interface IMarksList {

@@ -3,7 +3,7 @@ import { LessonType } from '@diary-spo/shared'
 import { LessonTypeKeys } from '@diary-spo/shared/src/keys'
 import { textToLink } from '@utils'
 import { Group, Header, InfoRow, SimpleCell } from '@vkontakte/vkui'
-import { FC } from 'react'
+import { FC } from 'preact/compat'
 
 export interface ILessonMainInfo {
   name: string

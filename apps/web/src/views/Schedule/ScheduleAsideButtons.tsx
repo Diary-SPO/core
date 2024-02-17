@@ -6,8 +6,7 @@ import {
 } from '@vkontakte/icons'
 import { Button, ButtonGroup, IconButton } from '@vkontakte/vkui'
 import { endOfWeek, startOfWeek } from '@vkontakte/vkui/dist/lib/date'
-import { useState } from 'preact/hooks'
-import { FC, useEffect } from 'react'
+import { FC, useEffect, useState } from 'preact/compat'
 import useDebouncedChangeWeek from './hooks/useDebouncedChangeWeek.tsx'
 
 interface ScheduleAsideButtonsProps {

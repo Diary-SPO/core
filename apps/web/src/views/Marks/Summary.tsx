@@ -2,8 +2,7 @@ import { Mark } from '@components'
 import { VIOLET } from '@config'
 import { Icon20EducationOutline, Icon28BrainOutline } from '@vkontakte/icons'
 import { Group, Header, MiniInfoCell } from '@vkontakte/vkui'
-import { FC } from 'preact/compat'
-import React from 'preact/compat'
+import { FC, Fragment } from 'preact/compat'
 
 interface ISummary {
   totalNumberOfMarks: number | null
@@ -22,7 +21,7 @@ const Summary: FC<ISummary> = ({
     }
   >
     {!markCounts ? undefined : (
-      <React.Fragment>
+      <Fragment>
         <MiniInfoCell
           before={<Icon20EducationOutline style={{ marginTop: 4 }} />}
           after={<Mark color={VIOLET} size='s' mark={totalNumberOfMarks} />}
@@ -63,7 +62,7 @@ const Summary: FC<ISummary> = ({
             )}
           </div>
         )}
-      </React.Fragment>
+      </Fragment>
     )}
   </Group>
 )

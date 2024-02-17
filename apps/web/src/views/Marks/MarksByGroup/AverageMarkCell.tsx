@@ -3,7 +3,7 @@ import {
   Icon20StatisticsOutline
 } from '@vkontakte/icons'
 import { MiniInfoCell } from '@vkontakte/vkui'
-import { FC } from 'react'
+import { FC } from 'preact/compat'
 import { calculateAverageMark } from './helpers.tsx'
 
 interface IAverageMarkCell {
