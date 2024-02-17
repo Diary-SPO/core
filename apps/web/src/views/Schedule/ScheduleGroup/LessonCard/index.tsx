@@ -1,4 +1,4 @@
-import { MODAL_PAGE_LESSON, VKUI_ACCENT_BG } from '@config'
+import { GRAY, MODAL_PAGE_LESSON, VKUI_ACCENT_BG } from '@config'
 import { Day, Gradebook, Timetable } from '@diary-spo/shared'
 import { useLessonModal } from '@store'
 import { useRouteNavigator } from '@vkontakte/vk-mini-apps-router'
@@ -60,7 +60,7 @@ const LessonCard: FC<ILessonCard> = ({ lesson }) => {
     color: isLessonToday ? VKUI_ACCENT_BG : undefined,
     padding: '3px 5px',
     borderRadius: '5px',
-    border: `1px solid ${isLessonToday ? VKUI_ACCENT_BG : '#888888'}`
+    border: `1px solid ${isLessonToday ? VKUI_ACCENT_BG : GRAY}`
   }
 
   const dayEnded = currentDate > lessonDate

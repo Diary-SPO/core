@@ -42,6 +42,7 @@ const LessonGrades: FunctionalComponent<LessonGradesProps> = ({
             style={marksGap}
             key={`${lessonName}_${task.id}`}
           >
+            {/*@ts-ignore Типы не совместимы*/}
             <HorizontalCell
               onClick={() => handleMarkClick(task, lessonName)}
               style={{ maxWidth: 'unset' }}
