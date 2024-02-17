@@ -11,9 +11,9 @@ import {
   fetcher,
   formatDate
 } from '@utils'
+import { saveOrGetDiaryUser } from './saveOrGetDiaryUser'
 import { saveOrGetGroup } from './saveOrGetGroup'
 import { saveOrGetSPO } from './saveOrGetSPO'
-import { saveOrGetDiaryUser } from './saveOrGetDiaryUser'
 
 export const saveUserData = async (
   parsedRes: ApiResponse<UserData>,

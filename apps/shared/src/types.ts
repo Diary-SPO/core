@@ -136,7 +136,7 @@ export const LessonWorkType: Record<LessonWorkTypeKeys, string> = {
 
 export type MarkKeys = 'Five' | 'Four' | 'Three' | 'Two' | 'Success' | ''
 
-export const Grade: Record<MarkKeys, string | number> = {
+export const Grade: Record<MarkKeys, 'Д' | 'Зч' | number> = {
   Five: 5,
   Four: 4,
   Three: 3,
@@ -176,10 +176,7 @@ export const AbsenceTypesDescription: Record<
   О: 'Опоздание'
 }
 
-export type GradeKeys = keyof typeof Grade
-
-export type TextMark = GradeKeys
-export type TMark = (typeof Grade)[GradeKeys]
+export type TMark = (typeof Grade)[MarkKeys]
 export type TLesson = keyof typeof LessonWorkType
 export type LessonTypes = keyof typeof LessonType
 export type AbsenceType = keyof typeof AbsenceTypes
@@ -188,7 +185,7 @@ export interface Task {
   attachments: []
   id: number
   isRequired: boolean
-  mark: TextMark
+  mark: MarkKeys
   topic?: string
   type: TLesson
 }
@@ -245,7 +242,7 @@ export interface AuthData {
 export interface DayWithMarks {
   day: Date
   absenceType?: AbsenceType
-  markValues: TextMark[]
+  markValues: MarkKeys[]
 }
 
 export interface DayWithMarksForSubject {
@@ -309,7 +306,7 @@ export interface NotificationsResponse {
 }
 
 export interface AttestationMark {
-  value?: 'Success' | string
+  value?: MarkKeys
 }
 
 export type AttestationTerm = {
@@ -318,8 +315,9 @@ export type AttestationTerm = {
   id: number
 }
 
-export interface AttestationSubject extends Subject {
+export interface AttestationSubject extends Omit<Subject, 'marks'> {
   finalMark: AttestationMark
+  marks: Record<number, { value: MarkKeys }>
 }
 
 export interface AcademicYear {

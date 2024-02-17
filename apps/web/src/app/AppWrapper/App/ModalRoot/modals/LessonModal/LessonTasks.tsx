@@ -2,14 +2,14 @@ import { Mark } from '@components'
 import { Lesson, LessonWorkType } from '@diary-spo/shared'
 import { setDefaultMark } from '@utils'
 import { InfoRow, Separator, SimpleCell, Spacing, Text } from '@vkontakte/vkui'
-import React, { FC, memo } from 'react'
+import { FC, Fragment, memo } from 'preact/compat'
 
 interface ILessonTasks {
   tasks: Lesson['gradebook']['tasks']
 }
 
 const renderTask = (task: Lesson['gradebook']['tasks'][0], index: number) => (
-  <React.Fragment key={`${task?.topic}_${index}`}>
+  <Fragment key={`${task?.topic}_${index}`}>
     {/*// @ts-ignore Типы не совместимы*/}
     <SimpleCell multiline after={<Mark mark={setDefaultMark(task)} size='s' />}>
       <InfoRow header='Тип работы'>{LessonWorkType[task.type]}</InfoRow>
@@ -21,7 +21,7 @@ const renderTask = (task: Lesson['gradebook']['tasks'][0], index: number) => (
     <Spacing size={16}>
       <Separator />
     </Spacing>
-  </React.Fragment>
+  </Fragment>
 )
 
 const LessonTasks: FC<ILessonTasks> = memo(({ tasks }) => (

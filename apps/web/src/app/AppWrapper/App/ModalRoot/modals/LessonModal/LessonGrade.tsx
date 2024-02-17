@@ -14,7 +14,7 @@ interface ILessonGrade {
 }
 
 const LessonGrade: FC<ILessonGrade> = ({ tasks, absenceType }) => {
-  const hasTasks = tasks?.length
+  const hasTasks = Boolean(tasks?.length)
 
   if (!hasTasks && !absenceType) {
     return
@@ -33,7 +33,7 @@ const LessonGrade: FC<ILessonGrade> = ({ tasks, absenceType }) => {
 
   return (
     <Group header={header}>
-      {hasTasks && <LessonTasks tasks={tasks} />}
+      {hasTasks ? <LessonTasks tasks={tasks} /> : undefined}
       {absenceType && (
         // @ts-ignore Типы не совместимы
         <SimpleCell after={mark}>

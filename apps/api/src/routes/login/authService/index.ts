@@ -3,11 +3,11 @@ import { ENCRYPT_KEY } from '@config'
 import {
   DiaryUserModel,
   GroupModel,
-  SPOModel,
-  generateToken,
   IDiaryUserModel,
   IGroupModel,
-  ISPOModel
+  ISPOModel,
+  SPOModel,
+  generateToken
 } from '@db'
 import { type ResponseLogin } from '@db'
 import { encrypt } from '@diary-spo/sql'
