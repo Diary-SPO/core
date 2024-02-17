@@ -1,21 +1,27 @@
-import { Sizes } from '@components'
 import { ReturnedMark } from '../../../types'
 import { GRAY, GREEN, ORANGE, RED, VIOLET } from '@config'
+import { Sizes } from '@components'
 
-/**
- * Функция 'getSize' возвращает размер текста для оценки в зависимости от размера
- * */
+export type Sizes = 'l' | 's'
 
-export const getSize = (size: Sizes) => {
-  switch (size) {
-    case 's':
-      return '1rem'
-    case 'l':
-      return '3rem'
-    default:
-      return
-  }
+type R = Record<Sizes, string>
+
+export const sizes: R = {
+  l: '10px 29px',
+  s: '5px 10px'
 }
+
+export const fontSizes: R = {
+  l: '3rem',
+  s: '1rem'
+}
+
+export const borders: R = {
+  l: '10px',
+  s: '5px'
+}
+
+const textScores: Record<ReturnedMark, string> = {}
 
 /**
  * Функция getBackgroundColor возвращает цвет в зависимости от переданной оценки (score).
