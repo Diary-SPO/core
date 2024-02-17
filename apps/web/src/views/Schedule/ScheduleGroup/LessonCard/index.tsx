@@ -1,12 +1,9 @@
 import { MODAL_PAGE_LESSON, VKUI_ACCENT_BG } from '@config'
 import { Day, Gradebook, Timetable } from '@diary-spo/shared'
+import { useLessonModal } from '@store'
 import { useRouteNavigator } from '@vkontakte/vk-mini-apps-router'
 import { Card, Group, Placeholder } from '@vkontakte/vkui'
-import { useMemo } from 'preact/compat'
-import { useCallback } from 'preact/hooks'
-import { FC, memo } from 'react'
-// TODO: fix this path
-import useModal from '../../../../app/AppWrapper/App/ModalRoot/modals/LessonModal/hooks/useModal.tsx'
+import { FC, memo, useCallback, useMemo } from 'preact/compat'
 import LessonCell from './LessonCell'
 import LessonHeader from './LessonHeader.tsx'
 import { formatLessonDate, isToday } from './helpers.ts'
@@ -17,7 +14,7 @@ interface ILessonCard {
 
 const LessonCard: FC<ILessonCard> = ({ lesson }) => {
   const routeNavigator = useRouteNavigator()
-  const { setData } = useModal()
+  const { setData } = useLessonModal()
 
   const handleLessonClick = useCallback(
     (
