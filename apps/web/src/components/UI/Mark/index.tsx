@@ -2,10 +2,10 @@ import { Footnote } from '@vkontakte/vkui'
 import { CSSProperties, FC, HTMLAttributes, useMemo } from 'preact/compat'
 import { ReturnedMark } from '../../../types'
 import {
+  Sizes,
   borders,
   fontSizes,
   getBackgroundColor,
-  Sizes,
   sizes
 } from './helpers.ts'
 

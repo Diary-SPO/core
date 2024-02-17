@@ -1,8 +1,8 @@
 import { SubtitleWithBorder } from '@components'
 import { AbsenceTypes, Gradebook, LessonType } from '@diary-spo/shared'
+import { isDistant } from '@utils'
 import { FC } from 'preact/compat'
 import TimeRemaining from './TimeRemaining.tsx'
-import { isDistant } from '@utils'
 
 interface ILessonSubtitle {
   cabinetName: string

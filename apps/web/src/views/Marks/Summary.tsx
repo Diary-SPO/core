@@ -1,9 +1,9 @@
 import { Mark } from '@components'
+import { VIOLET } from '@config'
 import { Icon20EducationOutline, Icon28BrainOutline } from '@vkontakte/icons'
 import { Group, Header, MiniInfoCell } from '@vkontakte/vkui'
 import { FC } from 'preact/compat'
 import React from 'preact/compat'
-import { VIOLET } from '@config'
 
 interface ISummary {
   totalNumberOfMarks: number | null

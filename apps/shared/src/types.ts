@@ -142,7 +142,7 @@ export const Grade: Record<string, string | number> = {
   One: 1,
   Success: 'Зч',
   '': 'Д' // Empty grade as 'Д'
-}
+} as const
 
 export const LessonType: Record<LessonTypeKeys, string> = {
   Lecture: 'Лекция',

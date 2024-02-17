@@ -1,8 +1,8 @@
 import { describe, expect, it } from 'bun:test'
+import { GRAY, GREEN, ORANGE, RED, VIOLET } from '@config'
 import { Task } from '@diary-spo/shared'
 import { setDefaultMark } from '@utils'
 import { getBackgroundColor } from '../helpers.ts'
-import { GRAY, GREEN, ORANGE, RED, VIOLET } from '@config'
 
 describe('getBackgroundColor', () => {
   it('возвращает цвет для числовой оценки', () => {

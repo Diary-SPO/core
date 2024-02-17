@@ -8,8 +8,8 @@ import { useEffect, useState } from 'preact/hooks'
 import { getAttestation } from '../../methods'
 import { getFinalMarks } from '../../methods/server/getFinalMarks.ts'
 
-import SubjectList from './SubjectsList'
 import FinalMarks from './FinalMarks'
+import SubjectList from './SubjectsList'
 
 interface IAttestation {
   id: string

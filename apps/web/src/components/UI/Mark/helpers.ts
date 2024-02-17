@@ -1,6 +1,6 @@
-import { ReturnedMark } from '../../../types'
-import { GRAY, GREEN, ORANGE, RED, VIOLET } from '@config'
 import { Sizes } from '@components'
+import { GRAY, GREEN, ORANGE, RED, VIOLET } from '@config'
+import { ReturnedMark } from '../../../types'
 
 export type Sizes = 'l' | 's'
 
@@ -21,8 +21,6 @@ export const borders: R = {
   s: '5px'
 }
 
-const textScores: Record<ReturnedMark, string> = {}
-
 /**
  * Функция getBackgroundColor возвращает цвет в зависимости от переданной оценки (score).
  * При этом оценка может быть строкой в случае, если это ДЗ / Долг / Опоздание / Н-ка.
@@ -33,6 +31,7 @@ export const getBackgroundColor = (score?: ReturnedMark): string => {
 
   if (Number.isNaN(numberScore)) {
     switch (score) {
+      case 'Зч':
       case 'ДЗ':
         return VIOLET
       case 'О':

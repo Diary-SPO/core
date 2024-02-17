@@ -19,7 +19,7 @@ export const buildSubjectMatrix = (data: AcademicRecord): SubjectMatrix => {
         }
       })
     })
-    subjectMatrix[subject.name]['ИТОГ'] = subject.finalMark.value || ''
+    subjectMatrix[subject.name].ИТОГ = subject.finalMark.value || ''
   })
 
   return subjectMatrix
