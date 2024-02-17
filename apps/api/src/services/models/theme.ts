@@ -1,29 +1,34 @@
 import { sequelize } from '@db'
 import { DataTypes } from 'sequelize'
-import { SPOModel } from './SPO'
+import { GradebookModel } from './gradebook'
+import { IModelPrototype } from './types'
 
-export const GroupsModel = sequelize.define(
-  'groups',
+export type ThemeModelType = {
+  id: number
+  gradebookId: number
+  description: string
+}
+
+export type IThemeModelType = IModelPrototype<ThemeModelType, 'id'>
+
+export const ThemeModel = sequelize.define<IThemeModelType>(
+  'theme',
   {
     id: {
       type: DataTypes.INTEGER,
       autoIncrement: true,
       primaryKey: true
     },
-    spoId: {
+    gradebookId: {
       type: DataTypes.INTEGER,
       allowNull: false,
       references: {
-        model: SPOModel,
+        model: GradebookModel,
         key: 'id'
       }
     },
-    groupName: {
-      type: DataTypes.STRING(31),
-      allowNull: false
-    },
-    diaryGroupId: {
-      type: DataTypes.INTEGER,
+    description: {
+      type: DataTypes.TEXT,
       allowNull: false
     }
   },

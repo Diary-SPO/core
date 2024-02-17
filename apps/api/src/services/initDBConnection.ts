@@ -8,6 +8,7 @@ import {
 import { error } from '@utils'
 import { exit } from 'process'
 import { Sequelize } from 'sequelize'
+import { errorLogger } from 'src/utils/errorLogger'
 
 export const sequelize = new Sequelize({
   database: DATABASE_NAME,
@@ -15,7 +16,8 @@ export const sequelize = new Sequelize({
   password: DATABASE_PASSWORD,
   host: DATABASE_HOST,
   port: DATABASE_PORT,
-  dialect: 'postgres'
+  dialect: 'postgres',
+  logging: errorLogger
 })
 
 try {

@@ -1,36 +1,28 @@
-import { AcademicRecord } from '@diary-spo/shared'
-import { SubjectMatrix } from './types.ts'
+import { AcademicRecord, Grade } from '@diary-spo/shared'
+import { SubjectData, SubjectMatrix, Term } from './types.ts'
 
 export const buildSubjectMatrix = (data: AcademicRecord): SubjectMatrix => {
-  const subjectMatrix: SubjectMatrix = {}
+  const subjectMatrix: SubjectMatrix = []
 
   data.subjects.forEach((subject) => {
-    subjectMatrix[subject.name] = {}
+    const subjectData: SubjectData = {
+      subjectName: subject.name,
+      terms: [],
+      finalMark: Grade[subject.finalMark.value] || ''
+    }
     data.academicYears.forEach((year) => {
       year.terms.forEach((term) => {
-        const key = `${year.number} курс\n${
-          term.number === 1 ? '1 сем.' : '2 сем.'
-        }`
-
-        if (!subjectMatrix[subject.name][key]) {
-          subjectMatrix[subject.name][key] = subject.marks[term.id.toString()]
-            ? subject.marks[term.id.toString()]?.value || '.'
-            : ''
+        const mark = subject.marks[term.id.toString()]
+        const termData: Term = {
+          course: year.number,
+          semester: term.number,
+          mark: mark ? Grade[mark?.value] || '.' : ''
         }
+        subjectData.terms.push(termData)
       })
     })
-    subjectMatrix[subject.name].ИТОГ = subject.finalMark.value || ''
+    subjectMatrix.push(subjectData)
   })
 
   return subjectMatrix
-}
-
-export const collectUniqueKeys = (subjectMatrix: SubjectMatrix): string[] => {
-  return Array.from(
-    new Set(
-      Object.keys(subjectMatrix).flatMap((subjectName) =>
-        Object.keys(subjectMatrix[subjectName])
-      )
-    )
-  )
 }

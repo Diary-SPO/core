@@ -1,8 +1,13 @@
-export interface TableProps {
-  subjectMatrix: SubjectMatrix
-  uniqueKeys: string[]
+export interface Term {
+  course: number
+  semester: number
+  mark: string
 }
 
-export interface SubjectMatrix {
-  [subjectName: string]: Record<string, string>
+export interface SubjectData {
+  subjectName: string
+  terms: Term[]
+  finalMark: string
 }
+
+export interface SubjectMatrix extends Array<SubjectData> {}

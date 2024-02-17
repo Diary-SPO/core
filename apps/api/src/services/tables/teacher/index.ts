@@ -1,1 +1,0 @@
-export { saveTeacher } from './save'

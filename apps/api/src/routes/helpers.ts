@@ -34,6 +34,19 @@ export const errorHandler: ErrorHandler = ({
     }
   }
 
+  /** У пользователя недостаточно прав (для Сетевого города) **/
+  if (
+    Number(code) === API_CODES.FORBIDDEN &&
+    error.message === API_ERRORS.USER_NOT_PERMISSION
+  ) {
+    set.status = API_CODES.FORBIDDEN
+    return {
+      message: API_ERRORS.USER_NOT_PERMISSION,
+      code: API_CODES.FORBIDDEN,
+      path
+    }
+  }
+
   /** Не валидные данные для авторизации **/
   if (Number(code) === API_CODES.UNAUTHORIZED) {
     set.status = API_CODES.UNAUTHORIZED

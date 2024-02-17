@@ -3,10 +3,28 @@ import { sequelize } from '@db'
 import { decrypt, encrypt } from '@diary-spo/sql'
 import { formatDate } from '@utils'
 import { DataTypes } from 'sequelize'
-import { GroupsModel } from './groups'
+import { GroupModel } from './group'
+import { IModelPrototype } from './types'
 
-// FIXME: че ему надо первым параметром отдать?
-export const DiaryUserModel = sequelize.define(
+export type DiaryUserModelType = {
+  id: number
+  groupId: number
+  login: string
+  password: string
+  phone?: string
+  birthday: string
+  firstName: string
+  lastName: string
+  middleName?: string
+  cookie: string
+  cookieLastDateUpdate: string
+  isAdmin: boolean
+  idFromDiary: number
+}
+
+export type IDiaryUserModel = IModelPrototype<DiaryUserModelType, 'id'>
+
+export const DiaryUserModel = sequelize.define<IDiaryUserModel>(
   'diaryUser',
   {
     id: {
@@ -19,7 +37,7 @@ export const DiaryUserModel = sequelize.define(
       allowNull: false,
       comment: 'id группы пользователя. Берётся из базы',
       references: {
-        model: GroupsModel,
+        model: GroupModel,
         key: 'id'
       }
     },
@@ -33,8 +51,8 @@ export const DiaryUserModel = sequelize.define(
       allowNull: false,
       comment:
         'Зашифрованный хеш пароля от аккаунта пользователя в Сетевом городе',
-      set(value) {
-        this.setDataValue('password', encrypt(value as string, ENCRYPT_KEY))
+      set(value: string) {
+        this.setDataValue('password', encrypt(value, ENCRYPT_KEY))
       },
       get() {
         return decrypt(this.getDataValue('password'), ENCRYPT_KEY)
@@ -79,11 +97,22 @@ export const DiaryUserModel = sequelize.define(
       }
     },
     cookieLastDateUpdate: {
-      type: DataTypes.STRING(10),
+      type: DataTypes.DATE,
       allowNull: false,
       defaultValue: formatDate(new Date().toISOString()), // Текущая дата по умолчанию
       comment:
-        'Последняя дата обновления куки пользователя. Нужно обновлять, в теории, не реже, чем каждые 14 денй'
+        'Последняя дата обновления куки пользователя. Нужно обновлять, в теории, не реже, чем каждые 14 дней'
+    },
+    isAdmin: {
+      type: DataTypes.BOOLEAN,
+      allowNull: false,
+      defaultValue: false,
+      comment: 'Признак администратора'
+    },
+    idFromDiary: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      comment: 'id пользователя из дневника'
     }
   },
   {

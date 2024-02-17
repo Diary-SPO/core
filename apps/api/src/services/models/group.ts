@@ -1,40 +1,39 @@
 import { sequelize } from '@db'
 import { DataTypes } from 'sequelize'
-import { DiaryUserModel } from './diaryUser'
+import { SPOModel } from './SPO'
 import { IModelPrototype } from './types'
 
-export type AuthModelType = {
+export type GroupModelType = {
   id: number
-  idDiaryUser: number
-  token: string
-  lastUsedDate: string
+  spoId: number
+  groupName: string
+  idFromDiary: number
 }
 
-export type IAuthModel = IModelPrototype<AuthModelType, 'id'>
+export type IGroupModel = IModelPrototype<GroupModelType, 'id'>
 
-export const AuthModel = sequelize.define<IAuthModel>(
-  'auth',
+export const GroupModel = sequelize.define<IGroupModel>(
+  'group',
   {
     id: {
       type: DataTypes.INTEGER,
       autoIncrement: true,
       primaryKey: true
     },
-    idDiaryUser: {
+    spoId: {
       type: DataTypes.INTEGER,
       allowNull: false,
       references: {
-        model: DiaryUserModel,
+        model: SPOModel,
         key: 'id'
       }
     },
-    token: {
-      type: DataTypes.STRING(24),
-      allowNull: false,
-      unique: true
+    groupName: {
+      type: DataTypes.STRING(31),
+      allowNull: false
     },
-    lastUsedDate: {
-      type: DataTypes.STRING(10),
+    idFromDiary: {
+      type: DataTypes.INTEGER,
       allowNull: false
     }
   },

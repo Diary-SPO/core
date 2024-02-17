@@ -1,7 +1,24 @@
 import { sequelize } from '@db'
 import { DataTypes } from 'sequelize'
+import { IModelPrototype } from './types'
 
-export const SPOModel = sequelize.define(
+export type SPOModelType = {
+  id: number
+  abbreviation: string
+  name: string
+  shortName: string
+  actualAddress: string
+  email: string
+  site: string
+  phone: string
+  type: string
+  directorName: string
+  organizationId: string
+}
+
+export type ISPOModel = IModelPrototype<SPOModelType, 'id'>
+
+export const SPOModel = sequelize.define<ISPOModel>(
   'SPO',
   {
     id: {
@@ -44,6 +61,11 @@ export const SPOModel = sequelize.define(
     directorName: {
       type: DataTypes.STRING(85),
       allowNull: false
+    },
+    organizationId: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      unique: true
     }
   },
   {

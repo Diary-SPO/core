@@ -1,5 +1,5 @@
 export const getGitCommitHash = async (): Promise<string | null> => {
-  let stdout
+  let stdout: Buffer | string
   try {
     // Крутая деструкция объекта
     ;({ stdout } = Bun.spawnSync({

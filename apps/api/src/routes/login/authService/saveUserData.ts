@@ -1,6 +1,7 @@
 import { API_CODES, ApiError } from '@api'
 import { SERVER_URL } from '@config'
-import { DiaryUserModel, GroupsModel, SPOModel, generateToken } from '@db'
+import { DiaryUserModel, GroupModel, SPOModel, generateToken } from '@db'
+import { DiaryUser, Group, PersonResponse, SPO } from '@db'
 import type { UserData } from '@diary-spo/shared'
 import { ResponseLoginFromDiaryUser } from '@types'
 import {
@@ -10,12 +11,9 @@ import {
   fetcher,
   formatDate
 } from '@utils'
-import {
-  DiaryUser,
-  Group,
-  PersonResponse,
-  SPO
-} from '../../../services/tables/types'
+import { saveOrGetGroup } from './saveOrGetGroup'
+import { saveOrGetSPO } from './saveOrGetSPO'
+import { saveOrGetDiaryUser } from './saveOrGetDiaryUser'
 
 export const saveUserData = async (
   parsedRes: ApiResponse<UserData>,
@@ -42,98 +40,54 @@ export const saveUserData = async (
       )
     }
 
-    const regData: DiaryUser = {
-      id: student.id,
-      groupId: student.groupId,
-      login,
-      password,
-      phone: detailedInfo.data.person.phone,
-      birthday: detailedInfo.data.person.birthday,
-      firstName: detailedInfo.data.person.firstName,
-      lastName: detailedInfo.data.person.lastName,
-      middleName: detailedInfo.data.person.middleName,
-      cookie,
-      cookieLastDateUpdate: formatDate(new Date().toISOString())
-    }
+    const person = detailedInfo.data.person
 
-    const regSPO: SPO = {
+    const spoAddress =
+      SPO.actualAddress.length > 5
+        ? SPO.actualAddress
+        : SPO.legalAddress.length > 5
+          ? SPO.legalAddress
+          : SPO.address.mailAddress
+
+    const regSPO = await saveOrGetSPO({
       abbreviation: SPO.abbreviation,
       name: SPO.name,
       shortName: SPO.shortName,
-      actualAddress: SPO.actualAddress,
+      actualAddress: spoAddress,
       email: SPO.email,
       site: SPO.site,
       phone: SPO.phone,
       type: SPO.type,
-      directorName: SPO.directorName
-    }
-
-    const regGroup: Group = {
-      groupName: student.groupName,
-      diaryGroupId: student.groupId
-    }
-
-    // Определяем СПО
-    const [SPORecord, SPOCreated] = await SPOModel.findOrCreate({
-      where: {
-        abbreviation: regSPO.abbreviation
-      },
-      defaults: {
-        ...regSPO
-      }
+      directorName: SPO.directorName,
+      organizationId: SPO.organizationId
     })
 
-    if (!SPOCreated) {
-      SPORecord.update({ ...regSPO })
-    }
+    const regGroup = await saveOrGetGroup(
+      student.groupId,
+      student.groupName,
+      regSPO.id
+    )
 
-    regSPO.id = SPORecord.dataValues.id
-
-    // Определяем группу
-    const [groupRecord, groupCreated] = await GroupsModel.findOrCreate({
-      where: {
-        diaryGroupId: regGroup.diaryGroupId
-      },
-      defaults: {
-        ...regGroup,
-        spoId: SPORecord.dataValues.id
-      }
+    const regDiaryUser = await saveOrGetDiaryUser({
+      groupId: regGroup.id,
+      login,
+      password,
+      phone: person.phone,
+      birthday: person.birthday,
+      firstName: person.firstName,
+      lastName: person.lastName,
+      middleName: person.middleName,
+      cookie,
+      cookieLastDateUpdate: formatDate(new Date().toISOString()),
+      isAdmin: false,
+      idFromDiary: student.id
     })
-
-    if (!groupCreated) {
-      groupRecord.update({
-        ...regGroup,
-        spoId: SPORecord.dataValues.id
-      })
-    }
-
-    regData.groupId = groupRecord.dataValues.id
-
-    // Определяем пользователя
-    const [diaryUserRecord, diaryUserCreated] =
-      await DiaryUserModel.findOrCreate({
-        where: {
-          id: regData.id
-        },
-        defaults: {
-          ...regData,
-          groupId: groupRecord.dataValues.id
-        }
-      })
-
-    if (!diaryUserCreated) {
-      diaryUserRecord.update({
-        ...regData,
-        groupId: groupRecord.dataValues.id
-      })
-    }
 
     // Генерируем токен
-    // FIXME: there is no token in model
-    regData.token = await generateToken(regData.id)
+    const token = await generateToken(regDiaryUser.id)
 
     // Убираем все "приватные" поля из ответа
-    return ResponseLoginFromDiaryUser(regData, regSPO, regGroup)
+    return ResponseLoginFromDiaryUser(regDiaryUser, regSPO, regGroup, token)
   } catch (err) {
     error(err)
     throw new Error('Ошибка на этапе работы с базой: ')
