@@ -1,6 +1,9 @@
 import { sequelize } from '@db'
 import { DataTypes } from 'sequelize'
+import {ScheduleModel} from './schedule'
+import {DiaryUserModel} from './diaryUser'
 import { IModelPrototypeNoId } from './types'
+import { SubgroupModel } from './subgroup'
 
 export type ScheduleSubgroupModelType = {
   scheduleId: number
@@ -17,7 +20,7 @@ export const ScheduleSubgroupModel = sequelize.define<IScheduleSubgroupModelType
       type: DataTypes.INTEGER,
       primaryKey: true,
       references: {
-        model:'schedule',
+        model: ScheduleModel,
         key: 'id'
       }
     },
@@ -25,7 +28,7 @@ export const ScheduleSubgroupModel = sequelize.define<IScheduleSubgroupModelType
       type: DataTypes.INTEGER,
       primaryKey: true,
       references: {
-        model:'diaryUser',
+        model: DiaryUserModel,
         key: 'id'
       }
     },
@@ -33,7 +36,7 @@ export const ScheduleSubgroupModel = sequelize.define<IScheduleSubgroupModelType
       type: DataTypes.INTEGER,
       primaryKey: true,
       references: {
-        model:'subgroup',
+        model: SubgroupModel,
         key: 'id'
       }
     }

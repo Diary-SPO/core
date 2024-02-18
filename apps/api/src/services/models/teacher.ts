@@ -8,7 +8,7 @@ export type TeacherModelType = {
   spoId: number
   firstName: string
   lastName: string
-  middleName: string | undefined
+  middleName?: string | undefined
   idFromDiary: number
 }
 

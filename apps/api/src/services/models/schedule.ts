@@ -9,8 +9,8 @@ import { IModelPrototype } from './types'
 export type ScheduleModelType = {
   id: number
   groupId: number
-  teacherId: number
-  subjectId: number
+  teacherId: number | null
+  subjectId: number | null
   date: Date
   startTime: string
   endTime: string
@@ -45,7 +45,7 @@ export const ScheduleModel = sequelize.define<IScheduleModel>(
     },
     subjectId: {
       type: DataTypes.INTEGER,
-      allowNull: false,
+      allowNull: true,
       references: {
         model: SubjectModel,
         key: 'id'

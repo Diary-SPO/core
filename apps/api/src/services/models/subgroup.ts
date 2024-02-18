@@ -1,6 +1,7 @@
 import { sequelize } from '@db'
 import { DataTypes } from 'sequelize'
 import { IModelPrototype } from './types'
+import {GroupModel} from './group'
 
 export type SubgroupModelType = {
   id: number
@@ -26,7 +27,7 @@ export const SubgroupModel = sequelize.define<ISubgroupModelType>(
       type: DataTypes.INTEGER,
       allowNull: false,
       references: {
-        model: 'group',
+        model: GroupModel,
         key: 'id'
       }
     }

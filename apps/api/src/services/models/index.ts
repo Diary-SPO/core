@@ -80,6 +80,14 @@ ScheduleModel.belongsTo(GroupModel, {
   foreignKey: 'groupId'
 })
 
+// Teacher <-->> Schedule
+TeacherModel.hasMany(ScheduleModel, {
+  foreignKey: 'id'
+})
+ScheduleModel.belongsTo(TeacherModel, {
+  foreignKey: 'teacherId'
+})
+
 // Group <-->> AcademicYear
 GroupModel.hasMany(AcademicYearModel, {
   foreignKey: 'id'
@@ -274,25 +282,13 @@ SubgroupModel.belongsTo(GroupModel, {
 
 
 // Subgroup <-->> scheduleSubgroup
-SubgroupModel.hasMany(ScheduleSubgroupModel, {
-  foreignKey: 'id'
-})
-ScheduleSubgroupModel.belongsTo(SubgroupModel, {
-  foreignKey:'subgroupId'
-})
+SubgroupModel.hasMany(ScheduleSubgroupModel)
+ScheduleSubgroupModel.belongsTo(SubgroupModel)
 
 // DiaryUser <-->> scheduleSubgroup
-DiaryUserModel.hasMany(ScheduleSubgroupModel, {
-  foreignKey: 'id'
-})
-ScheduleSubgroupModel.belongsTo(DiaryUserModel, {
-  foreignKey: 'diaryUserId'
-})
+DiaryUserModel.hasMany(ScheduleSubgroupModel)
+ScheduleSubgroupModel.belongsTo(DiaryUserModel)
 
 // Schedule <-->> ScheduleSubgroup
-ScheduleModel.hasMany(ScheduleSubgroupModel, {
-  foreignKey: 'id'
-})
-ScheduleSubgroupModel.belongsTo(ScheduleModel, {
-  foreignKey:'scheduleId'
-})
+ScheduleModel.hasMany(ScheduleSubgroupModel)
+ScheduleSubgroupModel.belongsTo(ScheduleModel)
