@@ -13,6 +13,8 @@ import { MarkModel } from './mark'
 import { MarkValueModel } from './markValue'
 import { RequiredModel } from './required'
 import { ScheduleModel } from './schedule'
+import { ScheduleSubgroupModel } from './scheduleSubgroup'
+import { SubgroupModel } from './subgroup'
 import { SubjectModel } from './subject'
 import { TaskModel } from './task'
 import { TaskTypeModel } from './taskType'
@@ -260,4 +262,37 @@ AbsenceTypeModel.hasMany(GradebookModel, {
 })
 GradebookModel.belongsTo(AbsenceTypeModel, {
   foreignKey: 'absenceTypeId'
+})
+
+// Group <-->> Subgroup
+GroupModel.hasMany(SubgroupModel, {
+  foreignKey: 'id'
+})
+SubgroupModel.belongsTo(GroupModel, {
+  foreignKey: 'groupId'
+})
+
+
+// Subgroup <-->> scheduleSubgroup
+SubgroupModel.hasMany(ScheduleSubgroupModel, {
+  foreignKey: 'id'
+})
+ScheduleSubgroupModel.belongsTo(SubgroupModel, {
+  foreignKey:'subgroupId'
+})
+
+// DiaryUser <-->> scheduleSubgroup
+DiaryUserModel.hasMany(ScheduleSubgroupModel, {
+  foreignKey: 'id'
+})
+ScheduleSubgroupModel.belongsTo(DiaryUserModel, {
+  foreignKey: 'diaryUserId'
+})
+
+// Schedule <-->> ScheduleSubgroup
+ScheduleModel.hasMany(ScheduleSubgroupModel, {
+  foreignKey: 'id'
+})
+ScheduleSubgroupModel.belongsTo(ScheduleModel, {
+  foreignKey:'scheduleId'
 })
