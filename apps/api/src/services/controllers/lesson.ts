@@ -6,6 +6,7 @@ import { SubgroupSaveOrGet } from "./subgroup";
 import { ScheduleModel } from "../models";
 import { ScheduleSubgroupSafeSave } from "./scheduleSubgroup";
 import { IUserInfo } from "./diaryUser";
+import { GradebookSaveOrGet } from "./gradebook";
 
 export const LessonSave = async (lesson: Lesson, user: IUserInfo, date: Date) => {
   if (Object.keys(lesson).length <= 2) {
@@ -59,5 +60,11 @@ export const LessonSave = async (lesson: Lesson, user: IUserInfo, date: Date) =>
 
   if (subgroupId) {
     await ScheduleSubgroupSafeSave(schedule.id, user.id, subgroupId)
+  }
+
+  if (lesson.gradebook) {
+    GradebookSaveOrGet(schedule.id, lesson.gradebook, user).catch((err) => {
+      throw new Error(`[${new Date().toISOString()}] => Ошибка сохранения в функции GradebookSaveOrGet(). Подробнее:`, err)
+    })
   }
 }

@@ -1,12 +1,11 @@
 import { Day, Lesson } from "@diary-spo/shared";
-import { diaryUserGetFromId } from "./diaryUser";
+import { IUserInfo, diaryUserGetFromId } from "./diaryUser";
 import { ApiError } from "@api";
 import { LessonSave } from "./lesson";
-import { IScheduleModel, ScheduleModel, TeacherModel } from "../models";
-import { ScheduleSubgroupModel } from "../models/scheduleSubgroup";
-import { SubgroupModel } from "../models/subgroup";
-import { SubjectModel } from "../models/subject";
-import { where } from "sequelize";
+import { IScheduleModel, ITeacherModel, ScheduleModel, ScheduleModelType, TeacherModel, TeacherModelType } from "../models";
+import { IScheduleSubgroupModelType, ScheduleSubgroupModel, ScheduleSubgroupModelType } from "../models/scheduleSubgroup";
+import { ISubgroupModelType, SubgroupModel, SubgroupModelType } from "../models/subgroup";
+import { ISubjectModelType, SubjectModel, SubjectModelType } from "../models/subject";
 
 export const ScheduleSave = async (day: Day, userId: number) => {
   const lessons = day.lessons ?? []
@@ -15,16 +14,36 @@ export const ScheduleSave = async (day: Day, userId: number) => {
   if (!user) {
     throw new ApiError("User not found", 403)
   }
-  
+
+  // Удаляем устаревшее расписание
+  deleteOldLessons(lessons, day.date, user)
+
+  for (const lesson of lessons) {
+    await LessonSave(lesson, user, day.date).catch(
+      (err) => console.log("[Ошибка сохранения занятия]", new Date().toISOString(), "=>", err.message)
+    )
+  }
+}
+
+type IAllLessonInfo = IScheduleModel & {
+  scheduleSubgroups: IScheduleSubgroupModelType[] & {
+    subgroup: ISubgroupModelType
+  },
+  subject: ISubjectModelType,
+  teacher: ITeacherModel,
+}
+
+const deleteOldLessons = async (lessons: Lesson[], date: Date, user:IUserInfo) => {
   const dbLessons = await ScheduleModel.findAll({
     where: {
-      date: day.date,
+      date: date,
       groupId: user.groupId
     },
     include:[
       {
         model: ScheduleSubgroupModel, // scheduleSubgroups
         include: {
+          // @ts-ignore
           model: SubgroupModel
         },
         where: {
@@ -38,9 +57,8 @@ export const ScheduleSave = async (day: Day, userId: number) => {
         model: TeacherModel
       }
     ],
-  })
+  }) as IAllLessonInfo[]
 
-  // Удаляем устаревшее расписание
   for (const dbLesson of dbLessons) {
     let locatedInside = false
     for (const lesson of lessons) {
@@ -66,11 +84,5 @@ export const ScheduleSave = async (day: Day, userId: number) => {
       console.log("Удаляю устаревшее расписание! " + dbLesson.id)
       dbLesson.destroy()
     }
-  }
-
-  for (const lesson of lessons) {
-    await LessonSave(lesson, user, day.date).catch(
-      (err) => console.log("[Ошибка сохранения занятия]", new Date().toISOString(), "=>", err.message)
-    )
   }
 }

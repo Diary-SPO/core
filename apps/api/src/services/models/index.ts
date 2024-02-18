@@ -176,22 +176,6 @@ MarkModel.belongsTo(DiaryUserModel, {
   foreignKey: 'diaryUserId'
 })
 
-// Task <-->> Required
-TaskModel.hasMany(RequiredModel, {
-  foreignKey: 'id'
-})
-RequiredModel.belongsTo(TaskModel, {
-  foreignKey: 'taskId'
-})
-
-// DiaryUser <-->> Required
-DiaryUserModel.hasMany(RequiredModel, {
-  foreignKey: 'id'
-})
-RequiredModel.belongsTo(DiaryUserModel, {
-  foreignKey: 'diaryUserId'
-})
-
 // Classroom <-->> Schedule
 ClassroomModel.hasMany(ScheduleModel, {
   foreignKey: 'id'

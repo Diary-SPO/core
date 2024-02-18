@@ -18,7 +18,13 @@ export const sequelize = new Sequelize({
   port: DATABASE_PORT,
   dialect: 'postgres',
   logging: errorLogger,
-  logQueryParameters: true
+  logQueryParameters: true,
+  pool: {
+    max: 30,
+    min: 1,
+    acquire: 30000, // К-ство миллисекунд, прежде чем выбросить ошибку
+    idle: 10000 // К-ство миллисекунд, прежде чем освободить "неактивное" соединение (время ожидания)
+  }
 })
 
 try {
