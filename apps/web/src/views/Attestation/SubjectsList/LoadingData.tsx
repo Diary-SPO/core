@@ -1,5 +1,5 @@
 import { Div, Group, Header, Spinner } from '@vkontakte/vkui'
-import { useMemo } from 'react'
+import { useMemo } from 'preact/compat'
 
 const LoadingData = () =>
   useMemo(

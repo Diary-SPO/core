@@ -66,6 +66,7 @@ const App: FC = () => {
   const modals = <ModalRoot />
 
   return (
+    // @ts-ignore Типы не совместимы
     <AppRoot safeAreaInsets={vkBridgeInsets}>
       <SplitLayout
         popout={routerPopout}

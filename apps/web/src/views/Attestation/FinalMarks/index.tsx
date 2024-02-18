@@ -13,7 +13,7 @@ const FinalMarks: FC<Props> = ({ data }) => {
   }
 
   const subjectMatrix = buildSubjectMatrix(data)
-  console.log('subjectMatrix', subjectMatrix)
+
   return (
     <div style={{ height: '80vh', overflowX: 'auto' }}>
       <Table subjectMatrix={subjectMatrix} />

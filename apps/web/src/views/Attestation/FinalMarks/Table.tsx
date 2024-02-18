@@ -95,13 +95,7 @@ export const Table: FC<TableProps> = ({ subjectMatrix }) => {
                       setSelectedCell({ row: rowIndex, col: colIndex })
                     }
                   >
-                    {mark && (
-                      <Mark
-                        color={mark === 'Зч' ? VIOLET : undefined}
-                        mark={mark}
-                        size='s'
-                      />
-                    )}
+                    {mark && <Mark mark={mark} size='s' />}
                   </td>
                 )
               })}

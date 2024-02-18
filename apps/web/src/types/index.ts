@@ -28,4 +28,4 @@ export const HTTP_STATUSES = {
 
 export const loginPattern = /^[a-zA-Z0-9а-яА-ЯёЁ-]+$/
 
-export type ReturnedMark = TextMark | 'Н' | 'ДЗ' | 'О' | 'Д' | number
+export type ReturnedMark = TextMark | 'Н' | 'ДЗ' | 'О' | 'Зч' | 'Д' | number

@@ -1,6 +1,6 @@
 import { Task } from '@diary-spo/shared'
-import { useSyncExternalStore } from 'react'
-import { createStore } from './index.ts'
+import { useSyncExternalStore } from 'preact/compat'
+import { createStore } from '../store'
 
 interface ModalProps {
   data: Task
@@ -22,7 +22,7 @@ const modalStore = createStore<ModalProps>({
   }
 })
 
-const useMarkModal = () => {
+export const useMarkModal = () => {
   const modal = useSyncExternalStore(modalStore.subscribe, modalStore.getState)
 
   return {
@@ -30,5 +30,3 @@ const useMarkModal = () => {
     setData: (data: ModalProps) => modalStore.setState(data)
   }
 }
-
-export default useMarkModal

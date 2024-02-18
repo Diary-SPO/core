@@ -1,5 +1,5 @@
 import { Button, ButtonGroup, Link, Placeholder } from '@vkontakte/vkui'
-import { FC } from 'react'
+import { FC } from 'preact/compat'
 
 export const ErrorPlaceholder: FC<{ onClick: () => void }> = ({ onClick }) => (
   <Placeholder

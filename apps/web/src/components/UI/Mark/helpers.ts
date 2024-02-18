@@ -2,19 +2,23 @@ import { Sizes } from '@components'
 import { GRAY, GREEN, ORANGE, RED, VIOLET } from '@config'
 import { ReturnedMark } from '../../../types'
 
-/**
- * Функция 'getSize' возвращает размер текста для оценки в зависимости от размера
- * */
+export type Sizes = 'l' | 's'
 
-export const getSize = (size: Sizes) => {
-  switch (size) {
-    case 's':
-      return '1rem'
-    case 'l':
-      return '3rem'
-    default:
-      return
-  }
+type R = Record<Sizes, string>
+
+export const sizes: R = {
+  l: '10px 29px',
+  s: '5px 10px'
+}
+
+export const fontSizes: R = {
+  l: '3rem',
+  s: '1rem'
+}
+
+export const borders: R = {
+  l: '10px',
+  s: '5px'
 }
 
 /**
@@ -27,6 +31,7 @@ export const getBackgroundColor = (score?: ReturnedMark): string => {
 
   if (Number.isNaN(numberScore)) {
     switch (score) {
+      case 'Зч':
       case 'ДЗ':
         return VIOLET
       case 'О':

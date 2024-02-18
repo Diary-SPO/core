@@ -2,7 +2,7 @@ import { describe, expect, it } from 'bun:test'
 import { GRAY, GREEN, ORANGE, RED, VIOLET } from '@config'
 import { Task } from '@diary-spo/shared'
 import { setDefaultMark } from '@utils'
-import { getBackgroundColor, getSize } from '../helpers.ts'
+import { getBackgroundColor } from '../helpers.ts'
 
 describe('getBackgroundColor', () => {
   it('возвращает цвет для числовой оценки', () => {
@@ -33,24 +33,6 @@ describe('getBackgroundColor', () => {
   it('возвращает корректные цвета для числовых оценок выше 5', () => {
     const color = getBackgroundColor(6)
     expect(color).toEqual(VIOLET)
-  })
-})
-
-describe('getSize', () => {
-  it('возвращает размер', () => {
-    const s = getSize('s')
-    expect(s).toEqual('1rem')
-
-    const l = getSize('l')
-    expect(l).toEqual('3rem')
-
-    /**
-     * В коде мы не передаём "неправильный" параметр
-     * Но лучше покрыть тестом этот случай
-     */
-    // @ts-expect-error
-    const invalid = getSize('invalid size')
-    expect(invalid).toBeUndefined()
   })
 })
 
