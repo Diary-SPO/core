@@ -26,6 +26,7 @@ import {
 import { IUserInfo, diaryUserGetFromId } from './diaryUser'
 import { LessonSave } from './lesson'
 import { ClassroomModel, IClassroomModelType } from '../models/classroom'
+import { Op } from 'sequelize'
 
 export const ScheduleSave = async (day: Day, userId: number) => {
   const lessons = day.lessons ?? []
@@ -117,4 +118,21 @@ const deleteOldLessons = async (
       dbLesson.destroy()
     }
   }
+}
+
+export const ScheduleGetFromDB = async (startDate: string, endDate: string) => {
+  const schedules = await ScheduleModel.findAll({
+    where: {
+      date: {
+        [Op.between]: [startDate, endDate]
+      }
+    }
+  })
+  const formatSchedules: Day[] = []
+
+  for (const schedule in schedules) {
+    
+  }
+
+  return formatSchedules
 }

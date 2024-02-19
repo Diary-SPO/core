@@ -2,7 +2,7 @@ import { API_CODES, API_ERRORS, ApiError } from '@api'
 import { SERVER_URL } from '@config'
 import { Day } from '@diary-spo/shared'
 import { HeadersWithCookie } from '@utils'
-import { ScheduleSave } from 'src/services/controllers/schedule'
+import { ScheduleGetFromDB, ScheduleSave } from 'src/services/controllers/schedule'
 
 export const getLessonsService = async (
   startDate: string,
@@ -22,7 +22,7 @@ export const getLessonsService = async (
 
   if (!response.ok) {
     // Получаем из базы
-    return 'error'
+    return await ScheduleGetFromDB(startDate, endDate) as unknown as Day[]
   }
 
   // Сохраняем и отдаём
