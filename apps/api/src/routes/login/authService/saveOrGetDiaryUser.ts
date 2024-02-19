@@ -16,7 +16,8 @@ export const saveOrGetDiaryUser = async (
   if (!isCreat) {
     // Без await, т.к. обновляем "в фоне"
     record.update({
-      ...data
+      ...data,
+      isAdmin: record.isAdmin
     })
   }
 
