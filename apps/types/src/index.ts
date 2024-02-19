@@ -1,5 +1,4 @@
-import { Organization, type Teacher } from '@diary-spo/shared'
-import { Person } from '@diary-spo/shared/src/base'
+import { Organization, Person, type Teacher } from '@diary-spo/shared'
 
 /**
  * Структура таблицы, хранящей студента
@@ -148,7 +147,7 @@ export interface Auth {
 /**
  * Структура ответа на запрос авторизации (/login)
  */
-export interface ResponseLogin extends Person {
+export type ResponseLogin = Person & {
   spoId?: number
   groupId: number
   organization: {
@@ -156,7 +155,7 @@ export interface ResponseLogin extends Person {
     addressSettlement: string
   }
   login: string
-  phone: string
+  phone?: string
   birthday: string
   groupName: string
   token: string

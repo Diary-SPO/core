@@ -264,7 +264,6 @@ SubgroupModel.belongsTo(GroupModel, {
   foreignKey: 'groupId'
 })
 
-
 // Subgroup <-->> scheduleSubgroup
 SubgroupModel.hasMany(ScheduleSubgroupModel)
 ScheduleSubgroupModel.belongsTo(SubgroupModel)

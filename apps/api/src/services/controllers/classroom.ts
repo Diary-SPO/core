@@ -1,8 +1,10 @@
-import { checkSameKeys } from "../helpers/checkDataForObject"
-import { ClassroomModel, ClassroomModelType } from "../models/classroom"
-import { Optional } from "sequelize"
+import { Optional } from 'sequelize'
+import { checkSameKeys } from '../helpers/checkDataForObject'
+import { ClassroomModel, ClassroomModelType } from '../models/classroom'
 
-export const ClassroomSave = async (classroom: Optional<ClassroomModelType, 'id'>) => {
+export const ClassroomSave = async (
+  classroom: Optional<ClassroomModelType, 'id'>
+) => {
   const [record, isCreated] = await ClassroomModel.findOrCreate({
     where: {
       idFromDiary: classroom.idFromDiary,
@@ -12,7 +14,11 @@ export const ClassroomSave = async (classroom: Optional<ClassroomModelType, 'id'
       ...classroom
     }
   }).catch(() => {
-    throw new Error(`[${new Date().toISOString()}] => Ошибка сохранения Classroom. Входные данные: ${JSON.stringify(classroom)}`)
+    throw new Error(
+      `[${new Date().toISOString()}] => Ошибка сохранения Classroom. Входные данные: ${JSON.stringify(
+        classroom
+      )}`
+    )
   })
 
   if (!isCreated && checkSameKeys(classroom, record)) {

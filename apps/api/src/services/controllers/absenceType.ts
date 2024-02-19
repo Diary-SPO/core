@@ -1,4 +1,4 @@
-import { AbsenceTypeModel } from "../models/absenceType"
+import { AbsenceTypeModel } from '../models/absenceType'
 
 export const AbsenceTypeSaveOrGet = async (name: string) => {
   const [record] = await AbsenceTypeModel.findOrCreate({

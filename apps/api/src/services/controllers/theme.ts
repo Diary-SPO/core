@@ -1,6 +1,9 @@
-import { ThemeModel } from "../models"
+import { ThemeModel } from '../models'
 
-export const ThemesSaveOrGet = async (gradebookId: number, themes: string[]) => {
+export const ThemesSaveOrGet = async (
+  gradebookId: number,
+  themes: string[]
+) => {
   const themesDB = await ThemeModel.findAll({
     where: {
       gradebookId

@@ -1,9 +1,11 @@
-import { Optional } from "sequelize";
-import { TeacherModel, TeacherModelType } from "../models";
-import { checkSameKeys } from "../helpers/checkDataForObject";
+import { Optional } from 'sequelize'
+import { checkSameKeys } from '../helpers/checkDataForObject'
+import { TeacherModel, TeacherModelType } from '../models'
 
-export const TeacherSaveOrGet = async (teacher: Optional<TeacherModelType, 'id'>) => {
-  let [record, isCreated] = await TeacherModel.findOrCreate({
+export const TeacherSaveOrGet = async (
+  teacher: Optional<TeacherModelType, 'id'>
+) => {
+  const [record, isCreated] = await TeacherModel.findOrCreate({
     where: {
       spoId: teacher.spoId,
       idFromDiary: teacher.idFromDiary
@@ -12,7 +14,11 @@ export const TeacherSaveOrGet = async (teacher: Optional<TeacherModelType, 'id'>
       ...teacher
     }
   }).catch(() => {
-    throw new Error(`[${new Date().toISOString()}] => Ошибка сохранения Teacher. Входные данные: ${JSON.stringify(teacher)}`)
+    throw new Error(
+      `[${new Date().toISOString()}] => Ошибка сохранения Teacher. Входные данные: ${JSON.stringify(
+        teacher
+      )}`
+    )
   })
 
   if (!isCreated && checkSameKeys(teacher, record)) {

@@ -1,8 +1,8 @@
 import { API_CODES, ApiError } from '@api'
 import { SERVER_URL } from '@config'
-import { DiaryUserModel, GroupModel, SPOModel, generateToken } from '@db'
-import { DiaryUser, Group, PersonResponse, SPO } from '@db'
+import { generateToken } from '@db'
 import type { UserData } from '@diary-spo/shared'
+import { PersonResponse } from '@diary-spo/types/src'
 import { ResponseLoginFromDiaryUser } from '@types'
 import {
   ApiResponse,

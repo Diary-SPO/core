@@ -1,5 +1,4 @@
-import { TaskTypeModel } from "../models"
-
+import { TaskTypeModel } from '../models'
 
 export const TaskTypeSaveOrGet = async (name: string) => {
   const [record] = await TaskTypeModel.findOrCreate({

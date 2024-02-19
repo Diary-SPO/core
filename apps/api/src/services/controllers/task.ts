@@ -1,10 +1,14 @@
-import { Task } from "@diary-spo/shared"
-import { IUserInfo } from "./diaryUser"
-import { TaskModel } from "../models"
-import { TaskTypeSaveOrGet } from "./taskType"
-import { RequiredSaveOrGet } from "./required"
+import { Task } from '@diary-spo/shared'
+import { TaskModel } from '../models'
+import { IUserInfo } from './diaryUser'
+import { RequiredSaveOrGet } from './required'
+import { TaskTypeSaveOrGet } from './taskType'
 
-export const TasksSaveOrGet = async (gradebookId: number, tasks: Task[], userInfo: IUserInfo) => {
+export const TasksSaveOrGet = async (
+  gradebookId: number,
+  tasks: Task[],
+  userInfo: IUserInfo
+) => {
   const tasksDB = await TaskModel.findAll({
     where: {
       gradebookId

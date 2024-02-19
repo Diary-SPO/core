@@ -1,7 +1,11 @@
-import { IUserInfo } from "./diaryUser"
-import { RequiredModel } from "../models"
+import { RequiredModel } from '../models'
+import { IUserInfo } from './diaryUser'
 
-export const RequiredSaveOrGet = async (taskId: number, isRequired: boolean, userInfo: IUserInfo) => {
+export const RequiredSaveOrGet = async (
+  taskId: number,
+  isRequired: boolean,
+  userInfo: IUserInfo
+) => {
   const data = {
     taskId,
     diaryUserId: userInfo.id,
@@ -18,7 +22,7 @@ export const RequiredSaveOrGet = async (taskId: number, isRequired: boolean, use
     }
   })
 
-  if (!isCreated && record.isRequired != isRequired) {
+  if (!isCreated && record.isRequired !== isRequired) {
     return await record.update({
       ...data
     })

@@ -11,7 +11,7 @@ interface IScheduleGroup {
 const ScheduleGroup: FunctionComponent<IScheduleGroup> = ({ lessonsState }) => (
   <CardGrid style={{ overflowY: 'auto' }} size='l' spaced>
     {lessonsState?.length &&
-      lessonsState?.map((lesson, index) => (
+      lessonsState.map((lesson, index) => (
         <LessonCard key={`${lesson.date}_${index}`} lesson={lesson} />
       ))}
   </CardGrid>

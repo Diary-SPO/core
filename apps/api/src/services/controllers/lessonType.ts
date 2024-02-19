@@ -1,4 +1,4 @@
-import { LessonTypeModel } from "../models"
+import { LessonTypeModel } from '../models'
 
 export const LessonTypeSaveOrGet = async (name: string) => {
   const [record] = await LessonTypeModel.findOrCreate({

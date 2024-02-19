@@ -1,4 +1,4 @@
-import { ScheduleSubgroupModel } from "../models/scheduleSubgroup"
+import { ScheduleSubgroupModel } from '../models/scheduleSubgroup'
 
 export const ScheduleSubgroupSafeSave = async (
   scheduleId: number,
@@ -23,7 +23,11 @@ export const ScheduleSubgroupSafeSave = async (
       subgroupId: subgroupId
     }
   }).catch(() => {
-    throw new Error(`[${new Date().toISOString()}] => Ошибка сохранения ScheduleSubgroup. Входные данные: ${JSON.stringify(where)}`)
+    throw new Error(
+      `[${new Date().toISOString()}] => Ошибка сохранения ScheduleSubgroup. Входные данные: ${JSON.stringify(
+        where
+      )}`
+    )
   })
 
   return record
