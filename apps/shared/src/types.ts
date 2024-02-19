@@ -4,6 +4,7 @@ import { Person } from './base.ts'
 import {
   AbsenceTypesDescriptionKeys,
   AbsenceTypesKeys,
+  AdditionalMarks,
   ExaminationKeys,
   LessonTypeKeys,
   LessonWorkTypeKeys
@@ -136,7 +137,7 @@ export const LessonWorkType: Record<LessonWorkTypeKeys, string> = {
 
 export type MarkKeys = 'Five' | 'Four' | 'Three' | 'Two' | 'Success' | ''
 
-export const Grade: Record<MarkKeys, 'Д' | 'Зч' | number> = {
+export const Grade: Record<MarkKeys, AdditionalMarks | number> = {
   Five: 5,
   Four: 4,
   Three: 3,
@@ -163,7 +164,10 @@ export const LessonType: Record<LessonTypeKeys, string> = {
   '': 'Не указан'
 }
 
-export const AbsenceTypes: Record<AbsenceTypesKeys, string> = {
+export const AbsenceTypes: Record<
+  AbsenceTypesKeys,
+  AbsenceTypesDescriptionKeys
+> = {
   IsAbsent: 'Н',
   IsLate: 'О'
 }

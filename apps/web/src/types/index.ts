@@ -1,4 +1,8 @@
-import { TextMark } from '@diary-spo/shared'
+import {
+  AbsenceTypesDescriptionKeys,
+  AdditionalMarks,
+  MarkKeys
+} from '@diary-spo/shared'
 
 export type Pages =
   | 'schedule'
@@ -28,4 +32,9 @@ export const HTTP_STATUSES = {
 
 export const loginPattern = /^[a-zA-Z0-9а-яА-ЯёЁ-]+$/
 
-export type ReturnedMark = TextMark | 'Н' | 'ДЗ' | 'О' | 'Зч' | 'Д' | number
+export type ReturnedMark =
+  | MarkKeys
+  | AbsenceTypesDescriptionKeys
+  | AdditionalMarks
+  | 'ДЗ'
+  | number

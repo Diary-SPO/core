@@ -4,12 +4,14 @@ import { isDistant } from '@utils'
 import { FC } from 'preact/compat'
 import TimeRemaining from './TimeRemaining.tsx'
 
+import './index.css'
+
 interface ILessonSubtitle {
   cabinetName: string
-  gradebook: Gradebook | undefined
+  gradebook?: Gradebook
   lessonDate: Date
-  startTime: string | undefined
-  endTime: string | undefined
+  startTime?: string
+  endTime?: string
 }
 
 const LessonSubtitle: FC<ILessonSubtitle> = ({
@@ -20,9 +22,7 @@ const LessonSubtitle: FC<ILessonSubtitle> = ({
   endTime
 }) => (
   <div>
-    <div
-      style={{ display: 'flex', alignItems: 'center', gap: 5, marginBottom: 5 }}
-    >
+    <div className='lessonSubtitle'>
       {isDistant(cabinetName) && (
         <SubtitleWithBorder color='red'> ДО</SubtitleWithBorder>
       )}

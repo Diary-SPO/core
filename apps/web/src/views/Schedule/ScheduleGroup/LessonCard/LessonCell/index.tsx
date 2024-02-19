@@ -50,14 +50,7 @@ const LessonCell: FC<ILessonCell> = ({
       key={startTime}
       subtitle={
         <div>
-          <div
-            style={{
-              width: '100%',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'space-between'
-            }}
-          >
+          <div className='lessonSubtitle'>
             <LessonSubtitle
               cabinetName={timetable?.classroom?.name}
               gradebook={gradebook}
@@ -65,7 +58,7 @@ const LessonCell: FC<ILessonCell> = ({
               startTime={startTime}
               endTime={endTime}
             />
-            <div style={{ display: 'flex', gap: 5 }}>
+            <div className='lessonMarks'>
               {gradebook?.tasks?.map(
                 (task, index) =>
                   (task.isRequired || setDefaultMark(task)) && (

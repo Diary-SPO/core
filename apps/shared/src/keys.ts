@@ -33,4 +33,5 @@ export type LessonTypeKeys =
 export type AbsenceTypesKeys = 'IsAbsent' | 'IsLate'
 
 export type AbsenceTypesDescriptionKeys = 'Н' | 'О'
+export type AdditionalMarks = 'Д' | 'Зч'
 export type ExaminationKeys = 'DifferentiatedTest' | 'Test' | 'Exam' | 'Other'

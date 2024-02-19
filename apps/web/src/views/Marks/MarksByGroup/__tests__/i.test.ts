@@ -7,6 +7,7 @@ import {
   mockData,
   mockDataWithoutMarks
 } from './mocks.ts'
+import { MarkKeys } from '@diary-spo/shared'
 
 describe('calculateAverageMark', () => {
   it('возвращает null при пустом массиве оценок', () => {
@@ -15,19 +16,22 @@ describe('calculateAverageMark', () => {
   })
 
   it('возвращает null при массиве с невалидными оценками', () => {
-    const average = calculateAverageMark(['Invalid', 'Unknown'])
+    const average = calculateAverageMark([
+      'Invalid',
+      'Unknown'
+    ] as unknown as MarkKeys[])
     expect(average).toEqual(null)
   })
 
   it('вычисляет средний балл для массива валидных оценок', () => {
-    const validMarks = ['Five', 'Four', 'Three', 'Two', 'One']
+    const validMarks: MarkKeys[] = ['Five', 'Four', 'Three', 'Two']
     const average = calculateAverageMark(validMarks)
-    expect(average).toEqual(3)
+    expect(average).toEqual(3.5)
   })
 
   it('вычисляет средний балл для массива с некоторыми невалидными оценками', () => {
     const mixedMarks = ['Five', 'Invalid', 'Four', 'Unknown', 'Three']
-    const average = calculateAverageMark(mixedMarks)
+    const average = calculateAverageMark(mixedMarks as MarkKeys[])
     expect(average).toEqual(4)
   })
 })

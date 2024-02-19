@@ -1,0 +1,12 @@
+.lessonSubtitle {
+    padding: 300px;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.lessonMarks {
+    display: flex;
+    gap: 5px;
+}
