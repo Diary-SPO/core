@@ -4,6 +4,8 @@ import { Icon20EducationOutline, Icon28BrainOutline } from '@vkontakte/icons'
 import { Group, Header, MiniInfoCell } from '@vkontakte/vkui'
 import { FC, Fragment } from 'preact/compat'
 
+import './index.css'
+
 interface ISummary {
   totalNumberOfMarks: number | null
   averageMark: number | null
@@ -14,16 +16,22 @@ const Summary: FC<ISummary> = ({
   markCounts,
   totalNumberOfMarks,
   averageMark
-}) => (
-  <Group
-    header={
-      <Header mode='tertiary'>Статистика {!markCounts && 'отсутствует'}</Header>
-    }
-  >
-    {!markCounts ? undefined : (
+}) => {
+  if (!markCounts) {
+    return
+  }
+
+  return (
+    <Group
+      header={
+        <Header mode='tertiary'>
+          Статистика {!markCounts && 'отсутствует'}
+        </Header>
+      }
+    >
       <Fragment>
         <MiniInfoCell
-          before={<Icon20EducationOutline style={{ marginTop: 4 }} />}
+          before={<Icon20EducationOutline className='icon' />}
           after={<Mark color={VIOLET} size='s' mark={totalNumberOfMarks} />}
         >
           Суммарное количество оценок:
@@ -41,14 +49,7 @@ const Summary: FC<ISummary> = ({
           Общий средний балл:
         </MiniInfoCell>
         {markCounts && (
-          <div
-            style={{
-              display: 'flex',
-              flexDirection: 'row-reverse',
-              justifyContent: 'space-around',
-              gap: 5
-            }}
-          >
+          <div className='marksCount'>
             {[2, 3, 4, 5].map(
               (mark) =>
                 markCounts[mark] > 0 && (
@@ -63,8 +64,8 @@ const Summary: FC<ISummary> = ({
           </div>
         )}
       </Fragment>
-    )}
-  </Group>
-)
+    </Group>
+  )
+}
 
 export default Summary

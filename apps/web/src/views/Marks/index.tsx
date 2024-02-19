@@ -9,8 +9,8 @@ import { FC } from 'preact/compat'
 import { useEffect, useState } from 'preact/hooks'
 import { getPerformance } from '../../methods'
 import MarksByGroup from './MarksByGroup'
-import Summary from './Summary.tsx'
-import UserInfo from './UserInfo.tsx'
+import Summary from './Summary'
+import UserInfo from './UserInfo'
 import { formatStatisticsData } from './helpers.ts'
 
 const Marks: FC<{ id: string }> = ({ id }) => {

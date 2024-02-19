@@ -1,7 +1,7 @@
 import { AcademicRecord } from '@diary-spo/shared'
 import { FC } from 'preact/compat'
-import { Table } from './Table.tsx'
-import { buildSubjectMatrix } from './utils.ts'
+import { Table } from './Table'
+import { buildSubjectMatrix } from './Table/utils.ts'
 
 interface Props {
   data: AcademicRecord

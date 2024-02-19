@@ -5,9 +5,10 @@ import {
 import { MiniInfoCell } from '@vkontakte/vkui'
 import { FC } from 'preact/compat'
 import { calculateAverageMark } from './helpers.tsx'
+import { MarkKeys } from '@diary-spo/shared'
 
 interface IAverageMarkCell {
-  marks: string[]
+  marks: MarkKeys[]
 }
 
 const NoMarks = (

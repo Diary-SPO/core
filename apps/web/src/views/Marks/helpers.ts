@@ -1,4 +1,4 @@
-import { Grade, PerformanceCurrent, TextMark } from '@diary-spo/shared'
+import { Grade, PerformanceCurrent, MarkKeys } from '@diary-spo/shared'
 
 /**
  * Функция 'formatStatisticsData' обрабатывает данные оценок, вычисляя статистику на их основе.
@@ -13,8 +13,8 @@ export const formatStatisticsData = (marks: PerformanceCurrent) => {
     return null
   }
 
-  const allMarks: TextMark[] = marks.daysWithMarksForSubject.reduce(
-    (marksArray: TextMark[], subject) => {
+  const allMarks: MarkKeys[] = marks.daysWithMarksForSubject.reduce(
+    (marksArray: MarkKeys[], subject) => {
       if (subject.daysWithMarks) {
         for (const day of subject.daysWithMarks) {
           marksArray.push(...day.markValues)

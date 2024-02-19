@@ -37,4 +37,5 @@ export type ReturnedMark =
   | AbsenceTypesDescriptionKeys
   | AdditionalMarks
   | 'ДЗ'
+  | '.'
   | number

@@ -12,6 +12,7 @@ const infoStyle = { color: 'var(--vkui--color_text_subhead)' }
 
 const HelpAccordion: FC<IHelpAccordion> = ({ id, title, detail }) => {
   const [openId, setOpenId] = useState<number | null>(null)
+
   return (
     <Accordion
       key={id}
@@ -20,6 +21,7 @@ const HelpAccordion: FC<IHelpAccordion> = ({ id, title, detail }) => {
     >
       {/*//@ts-ignore типы React не совсем совместимы с Preact */}
       <Accordion.Summary>{title}</Accordion.Summary>
+      {/*//@ts-ignore типы React не совсем совместимы с Preact */}
       <Accordion.Content>
         <Div style={infoStyle}>
           {/*//@ts-ignore типы React не совсем совместимы с Preact */}

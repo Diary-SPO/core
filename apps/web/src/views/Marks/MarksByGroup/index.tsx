@@ -14,14 +14,10 @@ import AverageMarkCell from './AverageMarkCell.tsx'
 import MarksList from './MarksList.tsx'
 
 interface IMarksByGroup {
-  marksForSubject: PerformanceCurrent | null
+  marksForSubject: PerformanceCurrent
 }
 
 const MarksByGroup: FC<IMarksByGroup> = ({ marksForSubject }) => {
-  if (!marksForSubject?.daysWithMarksForSubject.length) {
-    return
-  }
-
   const subjectMarksMap = createSubjectMarksMap(marksForSubject)
 
   return (

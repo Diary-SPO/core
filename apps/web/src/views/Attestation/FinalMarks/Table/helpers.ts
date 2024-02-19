@@ -7,5 +7,6 @@ export const getMark = (value: MarkKeys): TermMark => {
   if (grade === 'Д') {
     return
   }
+
   return grade || '.'
 }

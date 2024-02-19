@@ -10,19 +10,10 @@ import {
   Text,
   Title
 } from '@vkontakte/vkui'
-import { CSSProperties, useEffect, useState } from 'preact/compat'
+import { useEffect, useState } from 'preact/compat'
+import { winxAva } from '../../../images/config.ts'
 
-import { winxAva } from '../../images/config.ts'
-
-const styles: CSSProperties = {
-  margin: 0,
-  display: 'flex',
-  flexDirection: 'column',
-  alignItems: 'center',
-  justifyContent: 'center',
-  textAlign: 'center',
-  padding: 32
-}
+import './index.css'
 
 interface UserData {
   city: string
@@ -91,27 +82,15 @@ const UserInfo = () => {
 
   return (
     <Group mode='plain' header={header}>
-      <Gradient mode='tint' style={styles}>
+      <Gradient mode='tint' className='userInfo__Wrapper'>
         {/*// @ts-ignore типы не совместимы*/}
         <Avatar size={96} src={winxAva} />
         {/*//@ts-ignore типы React не совсем совместимы с Preact*/}
-        <Title
-          style={{ marginBottom: 8, marginTop: 20 }}
-          level='2'
-          weight='2'
-          Component='h2'
-        >
+        <Title className='userInfo__Title' level='2' weight='2' Component='h2'>
           {userData.name}
         </Title>
         {/*//@ts-ignore типы React не совсем совместимы с Preact*/}
-        <Text
-          style={{
-            marginBottom: 24,
-            color: 'var(--vkui--color_text_secondary)'
-          }}
-        >
-          Студент ({userData.group})
-        </Text>
+        <Text className='userInfo__Text'>Студент ({userData.group})</Text>
       </Gradient>
       <Group
         mode='plain'

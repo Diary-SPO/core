@@ -1,17 +1,18 @@
-import { PanelHeaderWithBack, SubtitleWithBorder } from '@components'
+import {
+  ErrorPlaceholder,
+  PanelHeaderWithBack,
+  SubtitleWithBorder
+} from '@components'
 import { VKUI_RED } from '@config'
 import { NotificationsResponse } from '@diary-spo/shared'
 import { useSnackbar } from '@hooks'
 import { handleResponse } from '@utils'
 import { Icon28ErrorCircleOutline } from '@vkontakte/icons'
 import {
-  Button,
-  ButtonGroup,
   Card,
   Div,
   Group,
   Header,
-  Link,
   Panel,
   Placeholder,
   Spinner,
@@ -86,93 +87,73 @@ const Notifications: FC<{ id: string }> = ({ id }) => {
     })
   }, [])
 
+  if (!notifications?.length) {
+    return <Placeholder header='Объявлений нет' />
+  }
+
+  if (isLoading) {
+    return (
+      <Div>
+        <Spinner />
+      </Div>
+    )
+  }
+
   return (
     <Panel nav={id}>
       <PanelHeaderWithBack title='Объявления' />
       <Div>
-        {notifications &&
-          notifications?.length > 0 &&
-          notifications?.map(
-            ({
-              title,
-              id: _id,
-              date,
-              isForEmployees,
-              isForParents,
-              isForStudents,
-              text
-            }) => (
-              <Group
-                key={_id}
-                description={
-                  <div style={{ display: 'flex', gap: 10 }}>
-                    {isForEmployees && (
-                      <SubtitleWithBorder>Для работников</SubtitleWithBorder>
-                    )}
-                    {isForParents && (
-                      <SubtitleWithBorder color='yellow-outline'>
-                        Для родителей
-                      </SubtitleWithBorder>
-                    )}
-                    {isForStudents && (
-                      <SubtitleWithBorder color='green-outline'>
-                        Для студентов
-                      </SubtitleWithBorder>
-                    )}
-                  </div>
-                }
-                header={
-                  <Header mode='tertiary'>
-                    {new Date(date).toLocaleDateString()}
-                  </Header>
-                }
-              >
-                <Card mode='shadow'>
-                  <Div>
-                    {/*//@ts-ignore типы React не совсем совместимы с Preact*/}
-                    <Title level='3' Component='h3'>
-                      {title}
-                    </Title>
-                    {/*//@ts-ignore типы React не совсем совместимы с Preact*/}
-                    <Text>{text}</Text>
-                  </Div>
-                </Card>
-              </Group>
-            )
-          )}
-
-        <Div>
-          {isLoading && (
-            <Div>
-              <Spinner />
-            </Div>
-          )}
-        </Div>
-
-        <Div>
-          {isError && (
-            <Placeholder
-              header='Ошибка при загрузке'
-              action={
-                <ButtonGroup mode='vertical' align='center'>
-                  {/*// @ts-ignore Типы не совместимы */}
-                  <Button size='s' onClick={() => fetchAds(true)}>
-                    Попробовать снова
-                  </Button>
-                  {/*// @ts-ignore Типы не совместимы */}
-                  <Link href='https://vk.me/diary_spo' target='_blank'>
-                    Сообщить о проблеме
-                  </Link>
-                </ButtonGroup>
+        {notifications?.map(
+          ({
+            title,
+            id: _id,
+            date,
+            isForEmployees,
+            isForParents,
+            isForStudents,
+            text
+          }) => (
+            <Group
+              key={_id}
+              description={
+                <div style={{ display: 'flex', gap: 10 }}>
+                  {isForEmployees && (
+                    <SubtitleWithBorder>Для работников</SubtitleWithBorder>
+                  )}
+                  {isForParents && (
+                    <SubtitleWithBorder color='yellow-outline'>
+                      Для родителей
+                    </SubtitleWithBorder>
+                  )}
+                  {isForStudents && (
+                    <SubtitleWithBorder color='green-outline'>
+                      Для студентов
+                    </SubtitleWithBorder>
+                  )}
+                </div>
               }
-            />
-          )}
-        </Div>
+              header={
+                <Header mode='tertiary'>
+                  {new Date(date).toLocaleDateString()}
+                </Header>
+              }
+            >
+              <Card mode='shadow'>
+                <Div>
+                  {/*//@ts-ignore типы React не совсем совместимы с Preact*/}
+                  <Title level='3' Component='h3'>
+                    {title}
+                  </Title>
+                  {/*//@ts-ignore типы React не совсем совместимы с Preact*/}
+                  <Text>{text}</Text>
+                </Div>
+              </Card>
+            </Group>
+          )
+        )}
 
         <Div>
-          {notifications && notifications?.length < 1 && (
-            <Placeholder header='Объявлений нет' />
-          )}
+          {isError && <ErrorPlaceholder onClick={() => fetchAds(true)} />}
         </Div>
       </Div>
       {snackbar}
