@@ -40,7 +40,7 @@ export const TeacherModel = sequelize.define<ITeacherModel>(
     },
     middleName: {
       type: DataTypes.STRING(45),
-      allowNull: false
+      allowNull: true
     },
     idFromDiary: {
       type: DataTypes.INTEGER,

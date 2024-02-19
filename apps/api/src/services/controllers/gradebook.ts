@@ -4,6 +4,7 @@ import { IUserInfo } from './diaryUser'
 import { LessonTypeSaveOrGet } from './lessonType'
 import { TasksSaveOrGet } from './task'
 import { ThemesSaveOrGet } from './theme'
+import { AbsenceTypeSaveOrGet } from './absenceType'
 
 export const GradebookSaveOrGet = async (
   scheduleId: number,
@@ -12,7 +13,7 @@ export const GradebookSaveOrGet = async (
 ) => {
   const lessonTypeId = (await LessonTypeSaveOrGet(gradebook.lessonType)).id
   const absenceTypeId = gradebook.absenceType
-    ? (await LessonTypeSaveOrGet(gradebook.absenceType)).id
+    ? (await AbsenceTypeSaveOrGet(gradebook.absenceType)).id
     : undefined
 
   const dataToSave = {
@@ -21,7 +22,7 @@ export const GradebookSaveOrGet = async (
     absenceTypeId,
     idFromDiary: gradebook.id
   }
-
+  
   const [record, isCreated] = await GradebookModel.findOrCreate({
     where: {
       scheduleId
@@ -38,10 +39,14 @@ export const GradebookSaveOrGet = async (
   }
 
   if (gradebook.themes) {
-    ThemesSaveOrGet(record.id, gradebook.themes)
+    ThemesSaveOrGet(record.id, gradebook.themes).catch(
+      () => console.log(`[${new Date().toISOString()}] => Ошибка сохранения тем`)
+    )
   }
 
   if (gradebook.tasks) {
-    TasksSaveOrGet(record.id, gradebook.tasks, userInfo)
+    TasksSaveOrGet(record.id, gradebook.tasks, userInfo).catch(
+      () => console.log(`[${new Date().toISOString()}] => Ошибка сохранения задач (тасков)`)
+    )
   }
 }

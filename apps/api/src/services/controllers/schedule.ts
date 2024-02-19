@@ -25,6 +25,7 @@ import {
 } from '../models/subject'
 import { IUserInfo, diaryUserGetFromId } from './diaryUser'
 import { LessonSave } from './lesson'
+import { ClassroomModel, IClassroomModelType } from '../models/classroom'
 
 export const ScheduleSave = async (day: Day, userId: number) => {
   const lessons = day.lessons ?? []
@@ -55,6 +56,7 @@ type IAllLessonInfo = IScheduleModel & {
   }
   subject: ISubjectModelType
   teacher: ITeacherModel
+  classroom: IClassroomModelType
 }
 
 const deleteOldLessons = async (
@@ -73,9 +75,6 @@ const deleteOldLessons = async (
         include: {
           // @ts-ignore
           model: SubgroupModel
-        },
-        where: {
-          diaryUserId: user.id
         }
       },
       {
@@ -83,6 +82,9 @@ const deleteOldLessons = async (
       },
       {
         model: TeacherModel
+      },
+      {
+        model: ClassroomModel
       }
     ]
   })) as IAllLessonInfo[]
@@ -96,16 +98,17 @@ const deleteOldLessons = async (
           locatedInSubgroups = true
         }
       }
-      if (!dbLesson.scheduleSubgroups) {
-        locatedInSubgroups = false
+      if (dbLesson.scheduleSubgroups.length == 0) {
+        locatedInSubgroups = true
       }
       if (
         ((lesson.name === dbLesson.subject.name ?? '') &&
           lesson.timetable.teacher?.id === dbLesson.teacher.idFromDiary &&
           lesson.startTime === dbLesson.startTime &&
-          lesson.endTime === dbLesson.endTime) ||
+          lesson.endTime === dbLesson.endTime &&
+          lesson.timetable.classroom.name === dbLesson.classroom.name ||
         !locatedInSubgroups
-      ) {
+      )){
         locatedInside = true
       }
     }

@@ -42,12 +42,12 @@ export const DiaryUserModel = sequelize.define<IDiaryUserModel>(
       }
     },
     login: {
-      type: DataTypes.STRING(30),
+      type: DataTypes.STRING(45),
       allowNull: false,
       comment: 'Логин пользователя в Сетевом городе'
     },
     password: {
-      type: DataTypes.STRING(90),
+      type: DataTypes.STRING,
       allowNull: false,
       comment:
         'Зашифрованный хеш пароля от аккаунта пользователя в Сетевом городе',
@@ -59,7 +59,7 @@ export const DiaryUserModel = sequelize.define<IDiaryUserModel>(
       }
     },
     phone: {
-      type: DataTypes.STRING(25),
+      type: DataTypes.STRING(45),
       allowNull: true,
       defaultValue: null,
       comment: 'Номер телефона пользователя из Сетевого города'
