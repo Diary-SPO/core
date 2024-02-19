@@ -2,7 +2,7 @@ import { API_CODES, ApiError } from '@api'
 import { SERVER_URL } from '@config'
 import { generateToken } from '@db'
 import type { UserData } from '@diary-spo/shared'
-import { PersonResponse } from '@diary-spo/types/src'
+import { PersonResponse } from '@diary-spo/types'
 import { ResponseLoginFromDiaryUser } from '@types'
 import {
   ApiResponse,

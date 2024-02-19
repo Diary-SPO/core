@@ -7,6 +7,6 @@
     "@diary-spo/shared": "workspace:*"
   },
   "exports": {
-    ".": "./src/index.ts"
+    ".": "./index.ts"
   }
 }
