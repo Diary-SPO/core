@@ -87,16 +87,16 @@ const Notifications: FC<{ id: string }> = ({ id }) => {
     })
   }, [])
 
-  if (!notifications?.length) {
-    return <Placeholder header='Объявлений нет' />
-  }
-
   if (isLoading) {
     return (
       <Div>
         <Spinner />
       </Div>
     )
+  }
+
+  if (!notifications?.length) {
+    return <Placeholder header='Объявлений нет' />
   }
 
   return (

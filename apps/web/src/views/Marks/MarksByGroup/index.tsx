@@ -18,6 +18,10 @@ interface IMarksByGroup {
 }
 
 const MarksByGroup: FC<IMarksByGroup> = ({ marksForSubject }) => {
+  if (!marksForSubject) {
+    return
+  }
+
   const subjectMarksMap = createSubjectMarksMap(marksForSubject)
 
   return (

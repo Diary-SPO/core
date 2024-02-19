@@ -144,7 +144,7 @@ const Attestation: FC<IAttestation> = ({ id }) => {
             year={year}
           />
         ) : (
-          <FinalMarks data={finalMarksData} />
+          <FinalMarks isDataLoading={isDataLoading} data={finalMarksData} />
         )}
 
         {isError && <ErrorPlaceholder onClick={getUserAttestation} />}

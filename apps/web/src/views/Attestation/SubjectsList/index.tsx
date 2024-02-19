@@ -15,19 +15,24 @@ const SubjectList: FunctionalComponent<ISubjectList> = ({
   studentName,
   year,
   isDataLoading
-}) => (
-  <div>
-    {isDataLoading && <LoadingData />}
-    {Object.keys(semesters).map((semesterKey) => (
-      <SubjectGroup
-        key={semesterKey}
-        semesterKey={semesterKey}
-        subjects={semesters[semesterKey]}
-        studentName={studentName}
-        year={year}
-      />
-    ))}
-  </div>
-)
+}) => {
+  if (isDataLoading) {
+    return <LoadingData />
+  }
+
+  return (
+    <div>
+      {Object.keys(semesters).map((semesterKey) => (
+        <SubjectGroup
+          key={semesterKey}
+          semesterKey={semesterKey}
+          subjects={semesters[semesterKey]}
+          studentName={studentName}
+          year={year}
+        />
+      ))}
+    </div>
+  )
+}
 
 export default SubjectList
