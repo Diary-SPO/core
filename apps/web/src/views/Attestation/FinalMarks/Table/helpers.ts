@@ -8,5 +8,5 @@ export const getMark = (value: MarkKeys): TermMark => {
     return
   }
 
-  return grade || '.'
+  return grade || ''
 }

@@ -38,6 +38,7 @@ export const getBackgroundColor = (score?: ReturnedMark): string => {
         return ORANGE
       case 'Н':
       case 'Д':
+      case '.':
         return RED
       default:
         return GRAY
