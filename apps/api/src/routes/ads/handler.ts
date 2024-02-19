@@ -7,10 +7,10 @@ import { HeadersWithCookie } from '@utils'
 const getAds = async ({
   request
 }: ContextWithID): Promise<NotificationsResponse | string> => {
-  const secret = await getCookieFromToken(request.headers.toJSON().secret)
+  const authData = await getCookieFromToken(request.headers.toJSON().secret)
   const path = `${SERVER_URL}/services/people/organization/news/last/10`
   const response = await fetch(path, {
-    headers: HeadersWithCookie(secret)
+    headers: HeadersWithCookie(authData.cookie)
   })
 
   return await response.json()

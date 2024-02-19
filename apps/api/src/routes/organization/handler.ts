@@ -7,10 +7,10 @@ import type { Context } from 'elysia'
 const getOrganization = async ({
   request
 }: Context): Promise<Organization | string> => {
-  const secret = await getCookieFromToken(request.headers.toJSON().secret)
+  const authData = await getCookieFromToken(request.headers.toJSON().secret)
   const path = `${SERVER_URL}/services/people/organization`
   const response = await fetch(path, {
-    headers: HeadersWithCookie(secret)
+    headers: HeadersWithCookie(authData.cookie)
   })
 
   return await response.json()

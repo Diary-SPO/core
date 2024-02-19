@@ -5,15 +5,13 @@ import { ContextWithID } from '@types'
 import { HeadersWithCookie } from '@utils'
 
 const getFinalMarks = async ({
-  request,
-  params
+  request
 }: ContextWithID): Promise<NotificationsResponse | string> => {
-  const secret = await getCookieFromToken(request.headers.toJSON().secret)
-  const { id } = params
-  const path = `${SERVER_URL}/services/students/${id}/attestation`
+  const authData = await getCookieFromToken(request.headers.toJSON().secret)
+  const path = `${SERVER_URL}/services/students/${authData.idFromDiary}/attestation`
 
   const response = await fetch(path, {
-    headers: HeadersWithCookie(secret)
+    headers: HeadersWithCookie(authData.cookie)
   })
 
   return response.json()

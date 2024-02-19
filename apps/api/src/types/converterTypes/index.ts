@@ -8,7 +8,7 @@ export function ResponseLoginFromDiaryUser(
   token: string
 ): ResponseLogin {
   return {
-    id: diaryUser.idFromDiary,
+    id: diaryUser.id,
     groupId: diaryUser.groupId,
     groupName: group.groupName,
     organization: {

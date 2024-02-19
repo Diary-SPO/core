@@ -8,14 +8,14 @@ const getLessons = async ({
   request,
   params
 }: IContext): Promise<Day[] | string> => {
-  const { id, startDate, endDate } = params
+  const { startDate, endDate } = params
 
   const formattedStartDate = formatDate(startDate)
   const formattedEndDate = formatDate(endDate)
 
-  const secret = await getCookieFromToken(request.headers.toJSON().secret)
+  const authData = await getCookieFromToken(request.headers.toJSON().secret)
 
-  return getLessonsService(formattedStartDate, formattedEndDate, id, secret)
+  return getLessonsService(formattedStartDate, formattedEndDate, authData.idFromDiary, authData.cookie)
 }
 
 export default getLessons

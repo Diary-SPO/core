@@ -8,11 +8,10 @@ const getPerformanceCurrent = async ({
   request,
   params
 }: ContextWithID): Promise<PerformanceCurrent | string> => {
-  const { id } = params
-  const secret = await getCookieFromToken(request.headers.toJSON().secret)
-  const path = `${SERVER_URL}/services/reports/current/performance/${id}`
+  const authData = await getCookieFromToken(request.headers.toJSON().secret)
+  const path = `${SERVER_URL}/services/reports/current/performance/${authData.idFromDiary}`
   const response = await fetch(path, {
-    headers: HeadersWithCookie(secret)
+    headers: HeadersWithCookie(authData.cookie)
   })
 
   return await response.json()
