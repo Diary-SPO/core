@@ -15,7 +15,12 @@ const getLessons = async ({
 
   const authData = await getCookieFromToken(request.headers.toJSON().secret)
 
-  return getLessonsService(formattedStartDate, formattedEndDate, authData.idFromDiary, authData.cookie)
+  return getLessonsService(
+    formattedStartDate,
+    formattedEndDate,
+    authData.idFromDiary,
+    authData.cookie
+  )
 }
 
 export default getLessons

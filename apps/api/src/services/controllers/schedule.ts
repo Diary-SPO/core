@@ -107,9 +107,9 @@ const deleteOldLessons = async (
           lesson.timetable.teacher?.id === dbLesson.teacher.idFromDiary &&
           lesson.startTime === dbLesson.startTime &&
           lesson.endTime === dbLesson.endTime &&
-          lesson.timetable.classroom.name === dbLesson.classroom.name ||
+          lesson.timetable.classroom.name === dbLesson.classroom.name) ||
         !locatedInSubgroups
-      )){
+      ) {
         locatedInside = true
       }
     }
@@ -131,7 +131,6 @@ export const ScheduleGetFromDB = async (startDate: string, endDate: string) => {
   const formatSchedules: Day[] = []
 
   for (const schedule in schedules) {
-    
   }
 
   return formatSchedules

@@ -22,7 +22,7 @@ export const GradebookSaveOrGet = async (
     absenceTypeId,
     idFromDiary: gradebook.id
   }
-  
+
   const [record, isCreated] = await GradebookModel.findOrCreate({
     where: {
       scheduleId
@@ -39,14 +39,16 @@ export const GradebookSaveOrGet = async (
   }
 
   if (gradebook.themes) {
-    ThemesSaveOrGet(record.id, gradebook.themes).catch(
-      () => console.log(`[${new Date().toISOString()}] => Ошибка сохранения тем`)
+    ThemesSaveOrGet(record.id, gradebook.themes).catch(() =>
+      console.log(`[${new Date().toISOString()}] => Ошибка сохранения тем`)
     )
   }
 
   if (gradebook.tasks) {
-    TasksSaveOrGet(record.id, gradebook.tasks, userInfo).catch(
-      () => console.log(`[${new Date().toISOString()}] => Ошибка сохранения задач (тасков)`)
+    TasksSaveOrGet(record.id, gradebook.tasks, userInfo).catch(() =>
+      console.log(
+        `[${new Date().toISOString()}] => Ошибка сохранения задач (тасков)`
+      )
     )
   }
 }

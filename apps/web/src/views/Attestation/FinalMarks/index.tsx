@@ -1,8 +1,10 @@
 import { AcademicRecord } from '@diary-spo/shared'
 import { FC } from 'preact/compat'
 import { Table } from './Table'
-import { buildSubjectMatrix } from './Table/utils.ts'
+import { buildSubjectMatrix } from './Table/buildSubjectMatrix.ts'
 import { ScreenSpinner } from '@vkontakte/vkui'
+
+import './index.css'
 
 interface Props {
   data: AcademicRecord
@@ -15,13 +17,13 @@ const FinalMarks: FC<Props> = ({ isDataLoading, data }) => {
   }
 
   if (!data) {
-    return null
+    return
   }
 
   const subjectMatrix = buildSubjectMatrix(data)
 
   return (
-    <div style={{ height: '80vh', overflowX: 'auto' }}>
+    <div className='tableWrapper'>
       <Table subjectMatrix={subjectMatrix} />
     </div>
   )

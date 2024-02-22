@@ -10,3 +10,11 @@ export const getMark = (value: MarkKeys): TermMark => {
 
   return grade || ''
 }
+
+const bgColor = 'rgba(240,240,240,0.05)'
+
+export const cellStyle = (isSelected: boolean, isHovered: boolean) => ({
+  padding: '10px',
+  border: '1px solid #ddd',
+  backgroundColor: isSelected ? bgColor : isHovered ? bgColor : 'inherit'
+})
