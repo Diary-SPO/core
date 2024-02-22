@@ -2,9 +2,11 @@ import { Mark } from '@components'
 import { VIOLET } from '@config'
 import { FC, useState } from 'preact/compat'
 import { Cell, TableProps } from './types.ts'
-import { cellStyle } from './helpers.ts'
+import { buildSubjectMatrix, cellStyle } from './utils'
 
-export const Table: FC<TableProps> = ({ subjectMatrix }) => {
+export const Table: FC<TableProps> = ({ data }) => {
+  const subjectMatrix = buildSubjectMatrix(data)
+
   const [hoveredCell, setHoveredCell] = useState<Cell>(null)
   const [selectedCell, setSelectedCell] = useState<Cell>(null)
 

@@ -5,11 +5,11 @@ import { handleResponse } from '@utils'
 import { Group, HorizontalScroll, Panel, Tabs, TabsItem } from '@vkontakte/vkui'
 import { FC } from 'preact/compat'
 import { useEffect, useState } from 'preact/hooks'
-import { getAttestation } from '../../methods'
-import { getFinalMarks } from '../../methods/server/getFinalMarks.ts'
+import { getFinalMarks, getAttestation } from '../../methods'
 
 import FinalMarks from './FinalMarks'
 import SubjectList from './SubjectsList'
+import { Nullable } from '@types'
 
 interface IAttestation {
   id: string
@@ -20,18 +20,19 @@ const Attestation: FC<IAttestation> = ({ id }) => {
   const [isDataLoading, setIsLoading] = useState<boolean>(false)
 
   const [attestationData, setAttestationData] =
-    useState<AttestationResponse | null>(null)
-  const [finalMarksData, setFinalMarksData] = useState<AcademicRecord | null>(
-    null
-  )
-
+    useState<Nullable<AttestationResponse>>(null)
+  const [finalMarksData, setFinalMarksData] =
+    useState<Nullable<AcademicRecord>>(null)
   const [selected, setSelected] = useState<'finalMarks' | 'attestation'>(
     'attestation'
   )
+
   const getUserAttestation = async () => {
     if (selected !== 'attestation') return
+
     setIsLoading(true)
     setIsError(false)
+
     try {
       const data = await getAttestation()
 
@@ -48,7 +49,6 @@ const Attestation: FC<IAttestation> = ({ id }) => {
 
       setAttestationData(data)
     } catch (error) {
-      setIsError(true)
       console.error('Плоха-плоха:', error)
     } finally {
       setIsLoading(false)
@@ -138,7 +138,6 @@ const Attestation: FC<IAttestation> = ({ id }) => {
         {selected === 'attestation' ? (
           <SubjectList
             isDataLoading={isDataLoading}
-            // @ts-ignore
             semesters={semesters}
             studentName={studentName}
             year={year}

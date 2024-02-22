@@ -1,3 +1,15 @@
+import { Nullable } from '@types'
+import { AcademicRecord } from '@diary-spo/shared'
+
+export type Cell = Nullable<{
+  row: number
+  col: number
+}>
+
+export interface TableProps {
+  data: AcademicRecord
+}
+
 export type TermMark = 'Зч' | '.' | '' | number
 
 export interface Term {
@@ -13,14 +25,3 @@ export interface SubjectData {
 }
 
 export type SubjectMatrix = Array<SubjectData>
-
-export type Nullable<T> = T | null
-
-export type Cell = Nullable<{
-  row: number
-  col: number
-}>
-
-export interface TableProps {
-  subjectMatrix: SubjectMatrix
-}

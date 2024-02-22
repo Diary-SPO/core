@@ -1,7 +1,33 @@
-import { AcademicRecord } from '@diary-spo/shared'
-import { getMark } from './helpers.ts'
-import { SubjectData, SubjectMatrix, Term } from './types.ts'
+import { AcademicRecord, Grade, MarkKeys } from '@diary-spo/shared'
+import { SubjectData, SubjectMatrix, Term, TermMark } from '../types.ts'
 
+/**
+ * Стили для таблицы
+ */
+const bgColor = 'rgba(240,240,240,0.05)'
+
+export const cellStyle = (isSelected: boolean, isHovered: boolean) => ({
+  padding: '10px',
+  border: '1px solid #ddd',
+  backgroundColor: isSelected ? bgColor : isHovered ? bgColor : 'inherit'
+})
+
+/**
+ * Получает корректную оценку
+ */
+export const getMark = (value: MarkKeys): TermMark => {
+  const grade = Grade[value]
+
+  if (grade === 'Д') {
+    return
+  }
+
+  return grade || ''
+}
+
+/**
+ * Преобразует данные для рендера в таблице
+ */
 export const buildSubjectMatrix = (data: AcademicRecord): SubjectMatrix => {
   const subjectMatrix: SubjectMatrix = []
 
