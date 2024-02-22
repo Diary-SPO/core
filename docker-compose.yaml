@@ -1,0 +1,35 @@
+services:
+  database:
+    image: postgres:12.3-alpine
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_USER: postgres
+      POSTGRES_DB: diary
+    volumes:
+      - ./apps/api/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d
+    ports:
+      - 5432:5432
+  api:
+    build:
+      context: ./
+    depends_on:
+      - database
+    environment:
+      - DATABASE_HOST=database
+      - DATABASE_NAME=diary
+      - DATABASE_USERNAME=postgres
+      - DATABASE_PASSWORD=postgres
+      - ENCRYPT_KEY=MySuperPassword!MySuperPassword!
+    ports:
+      - 3003:3003
+    develop:
+      watch:
+        - path: ./apps/api/package.json
+          action: rebuild
+        - path: ./apps/api
+          target: /usr/src/app
+          action: sync
+
+#volumes:
+  #database:
