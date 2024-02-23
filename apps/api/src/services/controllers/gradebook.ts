@@ -1,13 +1,12 @@
 import { Gradebook } from '@diary-spo/shared'
 import { GradebookModel } from '../models'
+import { AbsenceTypeSaveOrGet } from './absenceType'
 import { IUserInfo } from './diaryUser'
 import { LessonTypeSaveOrGet } from './lessonType'
 import { TasksSaveOrGet } from './task'
 import { ThemesSaveOrGet } from './theme'
-import { AbsenceTypeSaveOrGet } from './absenceType'
 
 export const GradebookSaveOrGet = async (
-  scheduleId: number,
   gradebook: Gradebook,
   userInfo: IUserInfo
 ) => {
@@ -17,15 +16,14 @@ export const GradebookSaveOrGet = async (
     : undefined
 
   const dataToSave = {
-    scheduleId,
     lessonTypeId,
     absenceTypeId,
     idFromDiary: gradebook.id
   }
-  
+
   const [record, isCreated] = await GradebookModel.findOrCreate({
     where: {
-      scheduleId
+      idFromDiary: gradebook.id
     },
     defaults: {
       ...dataToSave
@@ -39,14 +37,18 @@ export const GradebookSaveOrGet = async (
   }
 
   if (gradebook.themes) {
-    ThemesSaveOrGet(record.id, gradebook.themes).catch(
-      () => console.log(`[${new Date().toISOString()}] => Ошибка сохранения тем`)
+    ThemesSaveOrGet(record.id, gradebook.themes).catch(() =>
+      console.log(`[${new Date().toISOString()}] => Ошибка сохранения тем`)
     )
   }
 
   if (gradebook.tasks) {
-    TasksSaveOrGet(record.id, gradebook.tasks, userInfo).catch(
-      () => console.log(`[${new Date().toISOString()}] => Ошибка сохранения задач (тасков)`)
+    TasksSaveOrGet(record.id, gradebook.tasks, userInfo).catch(() =>
+      console.log(
+        `[${new Date().toISOString()}] => Ошибка сохранения задач (тасков)`
+      )
     )
   }
+
+  return record
 }

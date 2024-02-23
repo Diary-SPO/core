@@ -58,6 +58,18 @@ export const LessonSave = async (
       ).id
     : null
 
+  // TODO: Удалять в воркере не привязанные градебуки ,либо как-то обрабатывать
+  let gradebookId = null
+  if (lesson.gradebook) {
+    gradebookId = GradebookSaveOrGet(lesson.gradebook, user).catch((err) => {
+      throw new Error(
+        `[${new Date().toISOString()}] => Ошибка сохранения в функции GradebookSaveOrGet(). Подробнее:`,
+        err
+      )
+    })
+    gradebookId = (await gradebookId).id
+  }
+
   const scheduleWhere = {
     groupId,
     teacherId,
@@ -65,7 +77,8 @@ export const LessonSave = async (
     classroomId,
     date: new Date(date),
     startTime: lesson.startTime,
-    endTime: lesson.endTime
+    endTime: lesson.endTime,
+    gradebookId
   }
   const [schedule] = await ScheduleModel.findOrCreate({
     where: {
@@ -78,14 +91,5 @@ export const LessonSave = async (
 
   if (subgroupId) {
     await ScheduleSubgroupSafeSave(schedule.id, user.id, subgroupId)
-  }
-
-  if (lesson.gradebook) {
-    GradebookSaveOrGet(schedule.id, lesson.gradebook, user).catch((err) => {
-      throw new Error(
-        `[${new Date().toISOString()}] => Ошибка сохранения в функции GradebookSaveOrGet(). Подробнее:`,
-        err
-      )
-    })
   }
 }

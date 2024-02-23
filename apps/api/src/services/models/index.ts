@@ -120,12 +120,12 @@ ExaminationTypeModel.belongsTo(TermSubjectModel, {
   foreignKey: 'termSubjectId'
 })
 
-// Schedule <-->> Gradebook
-ScheduleModel.hasMany(GradebookModel, {
+// Gradebook <-->> Schedule
+GradebookModel.hasMany(ScheduleModel, {
   foreignKey: 'id'
 })
-GradebookModel.belongsTo(ScheduleModel, {
-  foreignKey: 'scheduleId'
+ScheduleModel.belongsTo(GradebookModel, {
+  foreignKey: 'gradebookId'
 })
 
 // LessonType <-->> Gradebook

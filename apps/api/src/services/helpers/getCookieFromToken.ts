@@ -1,6 +1,11 @@
 import { ApiError } from '@api'
 import { caching } from 'cache-manager'
-import { AuthModel, DiaryUserModel, AuthModelType, DiaryUserModelType } from '../models'
+import {
+  AuthModel,
+  AuthModelType,
+  DiaryUserModel,
+  DiaryUserModelType
+} from '../models'
 
 const memoryCache = await caching('memory', {
   max: 1000,
@@ -8,7 +13,7 @@ const memoryCache = await caching('memory', {
   refreshThreshold: 10 * 1000 /* как часто проверять в фоновом режиме */
 })
 
-type IUserAuthInfo = AuthModelType & {diaryUser: DiaryUserModelType}
+type IUserAuthInfo = AuthModelType & { diaryUser: DiaryUserModelType }
 type ICacheData = {
   cookie: string
   idFromDiary: number
@@ -19,14 +24,16 @@ type ICacheData = {
  * @param token
  * @returns {string} cookie
  */
-export const getCookieFromToken = async (token: string): Promise<ICacheData> => {
+export const getCookieFromToken = async (
+  token: string
+): Promise<ICacheData> => {
   const getCacheFromCookie = await cacheGetter(token)
 
   if (getCacheFromCookie) {
     return getCacheFromCookie
   }
 
-  const DiaryUserAuth = await AuthModel.findOne({
+  const DiaryUserAuth = (await AuthModel.findOne({
     where: {
       token
     },
@@ -34,7 +41,7 @@ export const getCookieFromToken = async (token: string): Promise<ICacheData> => 
       model: DiaryUserModel,
       required: true
     }
-  }) as IUserAuthInfo | null
+  })) as IUserAuthInfo | null
 
   if (!DiaryUserAuth) {
     throw new ApiError('INVALID_TOKEN', 401)
@@ -43,9 +50,9 @@ export const getCookieFromToken = async (token: string): Promise<ICacheData> => 
   const cookie = DiaryUserAuth.diaryUser.cookie
   const idFromDiary = DiaryUserAuth.diaryUser.idFromDiary
 
-  await memoryCache.set(token, {cookie, idFromDiary})
+  await memoryCache.set(token, { cookie, idFromDiary })
 
-  return {cookie, idFromDiary}
+  return { cookie, idFromDiary }
 }
 
 /**
