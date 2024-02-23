@@ -48,6 +48,10 @@ GroupModel.belongsTo(SPOModel, {
   foreignKey: 'spoId'
 })
 
+// Task <-->> Required
+TaskModel.hasMany(RequiredModel)
+RequiredModel.belongsTo(TaskModel)
+
 // Group <--->> DiaryUser
 GroupModel.hasMany(DiaryUserModel, {
   foreignKey: 'id'

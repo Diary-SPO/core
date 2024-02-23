@@ -10,11 +10,13 @@ export const ThemesSaveOrGet = async (
     }
   })
 
+  const localCopyThemes = Array.from(themes)
+
   for (const themeDB of themesDB) {
     let destroy = true
-    for (const theme of themes) {
-      if (theme === themeDB.description) {
-        themes.splice(themes.indexOf(theme), 1)
+    for (const theme of localCopyThemes) {
+      if (theme == themeDB.description) {
+        localCopyThemes.splice(localCopyThemes.indexOf(theme), 1)
         destroy = false
         break
       }
@@ -24,7 +26,7 @@ export const ThemesSaveOrGet = async (
     }
   }
 
-  for (const theme of themes) {
+  for (const theme of localCopyThemes) {
     await ThemeModel.create({
       gradebookId,
       description: theme

@@ -1,14 +1,25 @@
 import { ApiError } from '@api'
-import { Day, Lesson } from '@diary-spo/shared'
+import { AbsenceType, Day, Lesson } from '@diary-spo/shared'
 import { Op } from 'sequelize'
 import {
+  GradebookModel,
+  GradebookModelType,
   IScheduleModel,
   ITeacherModel,
+  LessonTypeModel,
+  LessonTypeModelType,
+  RequiredModel,
+  RequiredModelType,
   ScheduleModel,
   ScheduleModelType,
+  TaskModel,
+  TaskTypeModelType,
   TeacherModel,
-  TeacherModelType
+  TeacherModelType,
+  ThemeModel,
+  ThemeModelType
 } from '../models'
+import { AbsenceTypeModel, AbsenceTypeModelType } from '../models/absenceType'
 import { ClassroomModel, IClassroomModelType } from '../models/classroom'
 import {
   IScheduleSubgroupModelType,
@@ -26,6 +37,7 @@ import {
   SubjectModelType
 } from '../models/subject'
 import { IUserInfo, diaryUserGetFromId } from './diaryUser'
+import { GradebookSaveOrGet } from './gradebook'
 import { LessonSave } from './lesson'
 
 export const ScheduleSave = async (day: Day, userId: number) => {
@@ -51,13 +63,22 @@ export const ScheduleSave = async (day: Day, userId: number) => {
   }
 }
 
-type IAllLessonInfo = IScheduleModel & {
+export type IAllLessonInfo = IScheduleModel & {
   scheduleSubgroups: IScheduleSubgroupModelType[] & {
     subgroup: ISubgroupModelType
   }
   subject: ISubjectModelType
   teacher: ITeacherModel
   classroom: IClassroomModelType
+  gradebook: GradebookModelType & {
+    themes: ThemeModelType[]
+    lessonType: LessonTypeModelType
+    absenceType: AbsenceTypeModelType
+    tasks: TaskTypeModelType[] & {
+      taskType: TaskTypeModelType
+      requireds: RequiredModelType[]
+    }
+  }
 }
 
 const deleteOldLessons = async (
@@ -86,11 +107,32 @@ const deleteOldLessons = async (
       },
       {
         model: ClassroomModel
+      },
+      {
+        model: GradebookModel,
+        include: [
+          {
+            model: ThemeModel
+          },
+          {
+            model: LessonTypeModel
+          },
+          {
+            model: AbsenceTypeModel
+          },
+          {
+            model: TaskModel,
+            include: [
+              {
+                model: RequiredModel
+              }
+            ]
+          }
+        ]
       }
     ]
   })) as IAllLessonInfo[]
 
-  // TODO: проверять градебуки и прочее
   for (const dbLesson of dbLessons) {
     let locatedInside = false
     for (const lesson of lessons) {
@@ -112,10 +154,25 @@ const deleteOldLessons = async (
         !locatedInSubgroups
       ) {
         locatedInside = true
+        // Обновляем на актуальную информацию
+        if (lesson.gradebook) {
+          GradebookSaveOrGet(lesson.gradebook, user).catch((err) =>
+            console.log(
+              `[${new Date().toISOString()}] => ошибка сохранения градебука: ${err}`
+            )
+          )
+        }
       }
     }
     if (!locatedInside) {
       console.log(`Удаляю устаревшее расписание! ${dbLesson.id}`)
+      if (dbLesson.gradebookId) {
+        GradebookModel.destroy({
+          where: {
+            id: dbLesson.gradebookId
+          }
+        })
+      }
       dbLesson.destroy()
     }
   }

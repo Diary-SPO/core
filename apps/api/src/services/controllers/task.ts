@@ -15,11 +15,13 @@ export const TasksSaveOrGet = async (
     }
   })
 
+  const localCopyTasks = Array.from(tasks)
+
   for (const taskDB of tasksDB) {
     let destroy = true
-    for (const task of tasks) {
+    for (const task of localCopyTasks) {
       if (task.topic === taskDB.topic) {
-        tasks.splice(tasks.indexOf(task), 1)
+        localCopyTasks.splice(localCopyTasks.indexOf(task), 1)
         destroy = false
         await RequiredSaveOrGet(taskDB.id, task.isRequired, userInfo)
         break
@@ -30,7 +32,7 @@ export const TasksSaveOrGet = async (
     }
   }
 
-  for (const task of tasks) {
+  for (const task of localCopyTasks) {
     if (!task.topic) {
       continue
     }
