@@ -1,11 +1,11 @@
-import { AbsenceType, PerformanceCurrent, TextMark } from '@diary-spo/shared'
+import { AbsenceType, PerformanceCurrent, TMark } from '@diary-spo/shared'
 
 export interface SubjectMarksMap {
-  [subjectName: string]: {
+  [subjectName: string]: Array<{
     date: string
-    marks: TextMark[]
+    marks: TMark[]
     absenceType?: AbsenceType
-  }[]
+  }>
 }
 
 /**

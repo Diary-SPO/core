@@ -34,7 +34,7 @@ const Schedule: FC<Props> = ({ id }) => {
     cachedDate && cachedDate.getFullYear() >= 2023 ? cachedDate : newDate
 
   const [endDate, setEndDate] = useState<Date>(endOfWeek(currentDate))
-  const [lessonsState, setLessons] = useState<Nullable<Day[]>>()
+  const [lessonsState, setLessons] = useState<Nullable<Day[]>>(null)
   const [startDate, setStartDate] = useState<Date>(startOfWeek(currentDate))
 
   /** Навигация **/
@@ -101,7 +101,6 @@ const Schedule: FC<Props> = ({ id }) => {
     await handleGetLesson(startDate, endDate)
   }
 
-  /** Для получения расписания и оценок при маунте */
   useEffect(() => {
     gettedLessons()
   }, [])

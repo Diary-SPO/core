@@ -181,7 +181,11 @@ const deleteOldLessons = async (
   }
 }
 
-export const ScheduleGetFromDB = async (startDate: string, endDate: string, userId: number) => {
+export const ScheduleGetFromDB = async (
+  startDate: string,
+  endDate: string,
+  userId: number
+) => {
   const user = await diaryUserGetFromId(userId, true)
 
   if (!user) {
@@ -189,7 +193,7 @@ export const ScheduleGetFromDB = async (startDate: string, endDate: string, user
   }
 
   const formatSchedules = await sequelize.query(
-    /*sql*/`SELECT 
+    /*sql*/ `SELECT 
 	json_build_object(
     'date', s."date" ,
     'lessons', json_agg(
@@ -266,17 +270,24 @@ order by "date"
     }
   )
 
-  const days = (formatSchedules?.[0] as {data: any}[]).map((schedule) => schedule.data) ?? []
+  const days =
+    (formatSchedules?.[0] as { data: any }[]).map(
+      (schedule) => schedule.data
+    ) ?? []
   const formatDays = []
 
-  for (const day = new Date(startDate); day <= new Date(endDate); day.setDate(day.getDate() + 1)) {
+  for (
+    const day = new Date(startDate);
+    day <= new Date(endDate);
+    day.setDate(day.getDate() + 1)
+  ) {
     let isSearch = false
     for (const dayDB of days) {
       if (dayDB.date === day.toISOString().split('T')[0]) {
         formatDays.push(dayDB)
         isSearch = true
         break
-      } 
+      }
     }
     if (!isSearch) {
       formatDays.push({

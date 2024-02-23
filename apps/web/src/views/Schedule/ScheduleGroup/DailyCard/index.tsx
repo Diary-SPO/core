@@ -3,7 +3,7 @@ import { Day, Gradebook, Timetable } from '@diary-spo/shared'
 import { useLessonModal } from '@store'
 import { useRouteNavigator } from '@vkontakte/vk-mini-apps-router'
 import { Card, Group, Placeholder } from '@vkontakte/vkui'
-import {FC, memo, useCallback, useMemo} from 'preact/compat'
+import { FC, useCallback, useMemo } from 'preact/compat'
 import LessonCell from './LessonCell'
 import LessonHeader from './LessonHeader.tsx'
 import { formatLessonDate, isToday } from './helpers.ts'
@@ -25,7 +25,6 @@ const DailyCard: FC<IDailyCard> = ({ lesson }) => {
       gradebook: Gradebook | undefined
     ) => {
       const lessonId = lessonDate.toISOString()
-
       const modalData = {
         name,
         endTime,
@@ -37,7 +36,6 @@ const DailyCard: FC<IDailyCard> = ({ lesson }) => {
       }
 
       setData(modalData)
-
       routeNavigator.showModal(MODAL_PAGE_LESSON)
     },
     []
@@ -73,15 +71,14 @@ const DailyCard: FC<IDailyCard> = ({ lesson }) => {
   const lessons = useMemo(() => {
     console.log('Rendering lessons')
     return lesson.lessons.map((lesson) => (
-        <LessonCell
-            key={lesson.lessonId}
-            lessonDate={lessonDate}
-            lesson={lesson}
-            handleLessonClick={handleLessonClick}
-        />
+      <LessonCell
+        key={lesson.lessonId}
+        lessonDate={lessonDate}
+        lesson={lesson}
+        handleLessonClick={handleLessonClick}
+      />
     ))
-  }, [lessonDate]);
-
+  }, [lessonDate])
 
   return (
     <Card className='lessonCard' key={lesson.date}>
@@ -95,15 +92,10 @@ const DailyCard: FC<IDailyCard> = ({ lesson }) => {
           />
         }
       >
-        {lesson.lessons.length ? (
-            lessons
-        ) : (
-          <Placeholder>Пар нет</Placeholder>
-        )}
+        {lesson.lessons.length ? lessons : <Placeholder>Пар нет</Placeholder>}
       </Group>
     </Card>
   )
 }
 
-
-export default memo(DailyCard)
+export default DailyCard
