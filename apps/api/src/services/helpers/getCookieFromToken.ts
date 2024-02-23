@@ -2,8 +2,8 @@ import { ApiError } from '@api'
 import { caching } from 'cache-manager'
 import {
   AuthModel,
-  DiaryUserModel,
   AuthModelType,
+  DiaryUserModel,
   DiaryUserModelType
 } from '../models'
 

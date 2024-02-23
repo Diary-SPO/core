@@ -1,5 +1,6 @@
 import { ApiError } from '@api'
 import { Day, Lesson } from '@diary-spo/shared'
+import { Op } from 'sequelize'
 import {
   IScheduleModel,
   ITeacherModel,
@@ -8,6 +9,7 @@ import {
   TeacherModel,
   TeacherModelType
 } from '../models'
+import { ClassroomModel, IClassroomModelType } from '../models/classroom'
 import {
   IScheduleSubgroupModelType,
   ScheduleSubgroupModel,
@@ -25,8 +27,6 @@ import {
 } from '../models/subject'
 import { IUserInfo, diaryUserGetFromId } from './diaryUser'
 import { LessonSave } from './lesson'
-import { ClassroomModel, IClassroomModelType } from '../models/classroom'
-import { Op } from 'sequelize'
 
 export const ScheduleSave = async (day: Day, userId: number) => {
   const lessons = day.lessons ?? []
@@ -90,6 +90,7 @@ const deleteOldLessons = async (
     ]
   })) as IAllLessonInfo[]
 
+  // TODO: проверять градебуки и прочее
   for (const dbLesson of dbLessons) {
     let locatedInside = false
     for (const lesson of lessons) {
@@ -99,7 +100,7 @@ const deleteOldLessons = async (
           locatedInSubgroups = true
         }
       }
-      if (dbLesson.scheduleSubgroups.length == 0) {
+      if (dbLesson.scheduleSubgroups.length === 0) {
         locatedInSubgroups = true
       }
       if (

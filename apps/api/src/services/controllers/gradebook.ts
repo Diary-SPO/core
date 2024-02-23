@@ -1,13 +1,12 @@
 import { Gradebook } from '@diary-spo/shared'
 import { GradebookModel } from '../models'
+import { AbsenceTypeSaveOrGet } from './absenceType'
 import { IUserInfo } from './diaryUser'
 import { LessonTypeSaveOrGet } from './lessonType'
 import { TasksSaveOrGet } from './task'
 import { ThemesSaveOrGet } from './theme'
-import { AbsenceTypeSaveOrGet } from './absenceType'
 
 export const GradebookSaveOrGet = async (
-  scheduleId: number,
   gradebook: Gradebook,
   userInfo: IUserInfo
 ) => {
@@ -17,7 +16,6 @@ export const GradebookSaveOrGet = async (
     : undefined
 
   const dataToSave = {
-    scheduleId,
     lessonTypeId,
     absenceTypeId,
     idFromDiary: gradebook.id
@@ -25,7 +23,7 @@ export const GradebookSaveOrGet = async (
 
   const [record, isCreated] = await GradebookModel.findOrCreate({
     where: {
-      scheduleId
+      idFromDiary: gradebook.id
     },
     defaults: {
       ...dataToSave
@@ -51,4 +49,6 @@ export const GradebookSaveOrGet = async (
       )
     )
   }
+
+  return record
 }
