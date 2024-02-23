@@ -25,7 +25,7 @@ export const getLessonsService = async (
 
   if (!response.ok) {
     // Получаем из базы
-    return (await ScheduleGetFromDB(startDate, endDate)) as unknown as Day[]
+    return (await ScheduleGetFromDB(startDate, endDate, id)) as unknown as Day[]
   }
 
   // Сохраняем и отдаём

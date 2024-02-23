@@ -19,6 +19,7 @@ export const sequelize = new Sequelize({
   dialect: 'postgres',
   logging: errorLogger,
   logQueryParameters: true,
+  timezone: '00:00',
   pool: {
     max: 30,
     min: 1,

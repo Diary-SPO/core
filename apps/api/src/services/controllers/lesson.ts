@@ -16,6 +16,7 @@ export const LessonSave = async (
   if (Object.keys(lesson).length <= 2) {
     return
   }
+
   // Забираю переменные
   const splitName = lesson.name ? lesson.name.split('/') : null
   const subgroup =
@@ -58,7 +59,7 @@ export const LessonSave = async (
       ).id
     : null
 
-  // TODO: Удалять в воркере не привязанные градебуки ,либо как-то обрабатывать
+  // TODO: Удалять в воркере не привязанные градебуки, либо как-то обрабатывать
   let gradebookId = null
   if (lesson.gradebook) {
     gradebookId = GradebookSaveOrGet(lesson.gradebook, user).catch((err) => {
@@ -75,11 +76,12 @@ export const LessonSave = async (
     teacherId,
     subjectId,
     classroomId,
-    date: new Date(date),
+    date,
     startTime: lesson.startTime,
     endTime: lesson.endTime,
     gradebookId
   }
+  
   const [schedule] = await ScheduleModel.findOrCreate({
     where: {
       ...scheduleWhere
@@ -87,7 +89,7 @@ export const LessonSave = async (
     defaults: {
       ...scheduleWhere
     }
-  })
+  }).catch((err) => "ОШИБКА СОХРАНЕНИЯ SCHEDULE")
 
   if (subgroupId) {
     await ScheduleSubgroupSafeSave(schedule.id, user.id, subgroupId)
