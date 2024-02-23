@@ -19,7 +19,7 @@ export default defineConfig({
         replacement: path.resolve(__dirname, 'src/components')
       }
     ]
-  },
+  }
   // build: {
   //   sourcemap: false,
   //   target: 'es2017',
