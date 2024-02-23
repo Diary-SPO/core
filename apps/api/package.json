@@ -12,9 +12,9 @@
   },
   "dependencies": {
     "@diary-spo/sql": "^1.2.2",
-    "@elysiajs/cors": "^0.7.2",
+    "@elysiajs/cors": "^0.8.0",
     "elysia": "^0.8.5",
-    "elysia-compression": "^0.0.6",
+    "elysia-compression": "^0.0.7",
     "elysia-helmet": "^1.0.1",
     "jshashes": "^1.0.8",
     "pg": "^8.11.3",
@@ -26,7 +26,7 @@
   "devDependencies": {
     "@diary-spo/shared": "workspace:*",
     "@diary-spo/types": "workspace:*",
-    "@elysiajs/swagger": "^0.7.4",
+    "@elysiajs/swagger": "^0.8.5",
     "@types/pg": "^8.10.9"
   }
 }
