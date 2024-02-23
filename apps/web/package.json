@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "bunx --bun vite --mode development",
-    "build": "NODE_ENV=production bunx --bun vite build --mode production",
+    "build": "bunx --bun vite build --mode production",
     "preview": "bunx --bun vite preview",
     "serve": "bun run build --mode production && bun preview",
     "predeploy": "bun run build --env-file=.env.production",
