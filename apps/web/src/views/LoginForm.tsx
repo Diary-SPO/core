@@ -3,6 +3,7 @@ import { VKUI_RED } from '@config'
 import { ResponseLogin } from '@diary-spo/types'
 import { useSnackbar } from '@hooks'
 import { Hashes } from '@libs'
+import { loginPattern } from '@types'
 import { handleResponse } from '@utils'
 import {
   Icon28DoorArrowLeftOutline,
@@ -19,10 +20,9 @@ import {
 } from '@vkontakte/vkui'
 import { ChangeEvent, FC } from 'preact/compat'
 import { useEffect, useState } from 'preact/hooks'
-import { VIEW_SCHEDULE } from '../routes'
-import { loginPattern } from '@types'
-import { Props } from './types.ts'
 import { postLogin } from '../methods'
+import { VIEW_SCHEDULE } from '../routes'
+import { Props } from './types.ts'
 
 const LoginForm: FC<Props> = ({ id }) => {
   const routeNavigator = useRouteNavigator()

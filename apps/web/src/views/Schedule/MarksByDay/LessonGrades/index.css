@@ -1,3 +1,7 @@
 .flex {
-    gap: 8px;
+    display: flex;
+}
+
+.markWrapper {
+    max-width: 100px !important;
 }

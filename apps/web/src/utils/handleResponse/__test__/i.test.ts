@@ -1,6 +1,6 @@
 import { describe, expect, it, jest } from 'bun:test'
-import { handleResponse } from '@utils'
 import { HTTP_STATUSES } from '@types'
+import { handleResponse } from '@utils'
 
 /** handleResponse **/
 describe('handleResponse', () => {

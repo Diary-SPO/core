@@ -1,6 +1,6 @@
+import { ResponseLogin } from '@diary-spo/types'
 import { ServerResponse } from '@types'
 import makeRequest from '../makeRequest'
-import { ResponseLogin } from '@diary-spo/types'
 
 export const postLogin = async (
   login: string,
@@ -8,7 +8,7 @@ export const postLogin = async (
   isHash: boolean
 ): ServerResponse<ResponseLogin> => {
   return makeRequest<ResponseLogin>(
-    `'/login/'`,
+    '/login/',
     'POST',
     JSON.stringify({
       login,

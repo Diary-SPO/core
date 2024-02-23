@@ -1,5 +1,5 @@
-import { useCallback, useState } from 'preact/hooks'
 import { Nullable } from '@types'
+import { useCallback, useState } from 'preact/hooks'
 
 /**
  * Функция 'useDebouncedChangeWeek' обрабатывает изменения недели с задержкой.

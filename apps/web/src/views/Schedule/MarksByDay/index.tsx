@@ -1,8 +1,8 @@
 import { HorizontalScroll } from '@vkontakte/vkui'
 import { FunctionalComponent } from 'preact'
 import { memo } from 'preact/compat'
-import { IPerformanceCurrent } from './types.ts'
 import { transformData } from './helpers'
+import { IPerformanceCurrent } from './types.ts'
 
 import LessonGrades from './LessonGrades'
 

@@ -1,13 +1,13 @@
 import { describe, expect, it } from 'bun:test'
+import { MarkKeys } from '@diary-spo/shared'
 import { createSubjectMarksMap } from '@utils'
+import { calculateAverageMark } from '../index.ts'
 import {
   expectedMapData,
   expectedMapDataWithoutMarks,
   mockData,
   mockDataWithoutMarks
 } from './mocks.ts'
-import { MarkKeys } from '@diary-spo/shared'
-import { calculateAverageMark } from '../index.ts'
 
 describe('calculateAverageMark', () => {
   it('возвращает null при пустом массиве оценок', () => {

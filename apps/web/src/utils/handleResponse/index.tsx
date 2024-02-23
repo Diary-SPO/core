@@ -1,7 +1,7 @@
 import { VKUI_RED } from '@config'
 import { SnackbarData } from '@hooks'
-import { Icon28ErrorCircleOutline } from '@vkontakte/icons'
 import { HTTP_STATUSES } from '@types'
+import { Icon28ErrorCircleOutline } from '@vkontakte/icons'
 
 /**
  * Функция 'handleResponse' обрабатывает различные негативные сценарии ответа после запроса.
