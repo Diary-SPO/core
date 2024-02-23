@@ -1,10 +1,11 @@
 import { sequelize } from '@db'
 import { DataTypes } from 'sequelize'
 import { IModelPrototype } from './types'
+import { Grade, MarkKeys } from '@diary-spo/shared'
 
 export type MarkValueModelType = {
   id: number
-  value: string
+  value: MarkKeys
 }
 
 export type IMarkValueModelType = IModelPrototype<MarkValueModelType, 'id'>
@@ -18,7 +19,7 @@ export const MarkValueModel = sequelize.define<IMarkValueModelType>(
       autoIncrement: true
     },
     value: {
-      type: DataTypes.STRING(35),
+      type: DataTypes.ENUM(...Object.keys(Grade)),
       allowNull: false
     }
   },

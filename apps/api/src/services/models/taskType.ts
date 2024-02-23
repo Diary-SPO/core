@@ -1,10 +1,11 @@
 import { sequelize } from '@db'
 import { DataTypes } from 'sequelize'
 import { IModelPrototype } from './types'
+import { LessonWorkType, LessonWorkTypeKeys } from '@diary-spo/shared'
 
 export type TaskTypeModelType = {
   id: number
-  name: string
+  name: LessonWorkTypeKeys
 }
 
 export type ITaskTypeModel = IModelPrototype<TaskTypeModelType, 'id'>
@@ -18,7 +19,7 @@ export const TaskTypeModel = sequelize.define<ITaskTypeModel>(
       primaryKey: true
     },
     name: {
-      type: DataTypes.STRING(25),
+      type: DataTypes.STRING(...Object.keys(LessonWorkType)),
       allowNull: false
     }
   },

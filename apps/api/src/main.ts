@@ -5,6 +5,7 @@ import { helmet } from 'elysia-helmet'
 
 import routes from '@routes'
 import { compression } from 'elysia-compression'
+import { sequelize } from '@db'
 
 const port = Bun.env.PORT ?? 3003
 const app = new Elysia()
@@ -44,3 +45,5 @@ console.log(
 const workerURL = new URL('worker', import.meta.url).href
 new Worker(workerURL)
 console.log('Worker running!')
+
+// sequelize.sync({logging: true})

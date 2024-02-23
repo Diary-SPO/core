@@ -1,8 +1,8 @@
-import { sequelize } from '@db'
+import { sequelize, SPOModel } from '@db'
 import { DataTypes } from 'sequelize'
-import { SPOModel } from './SPO'
 import { IModelPrototype } from './types'
 
+// REMOVE IT
 export type ClassroomModelType = {
   id: number
   building: string
