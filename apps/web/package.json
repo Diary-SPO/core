@@ -21,7 +21,7 @@
     "@vkontakte/vk-bridge-react": "^1.0.0",
     "@vkontakte/vk-mini-apps-router": "1.4.3",
     "@vkontakte/vkui": "6.0.0",
-    "preact": "^10.19.3"
+    "preact": "^10.19.6"
   },
   "devDependencies": {
     "@diary-spo/shared": "workspace:*",
