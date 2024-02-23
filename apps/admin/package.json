@@ -1,0 +1,30 @@
+{
+  "name": "@diary-spo/admin",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "bunx --bun vite --mode development",
+    "preview": "bunx --bun vite preview",
+    "serve": "bun run build --mode production && bun preview",
+    "build": "bunx --bun vite build --mode production",
+    "test:unit": "vitest",
+    "build-only": "vite build",
+    "format": "prettier .  --write"
+  },
+  "dependencies": {
+    "pinia": "^2.1.7",
+    "vue": "^3.4.15",
+    "vue-router": "^4.2.5"
+  },
+  "devDependencies": {
+    "@types/jsdom": "^21.1.6",
+    "@vitejs/plugin-vue": "^5.0.3",
+    "@vitejs/plugin-vue-jsx": "^3.1.0",
+    "@vue/test-utils": "^2.4.4",
+    "@vue/tsconfig": "^0.5.1",
+    "jsdom": "^24.0.0",
+    "prettier": "^3.2.5",
+    "vitest": "^1.2.2"
+  }
+}
