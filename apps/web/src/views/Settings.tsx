@@ -21,13 +21,10 @@ import {
 } from '@vkontakte/vkui'
 import { FunctionalComponent } from 'preact'
 import { useEffect, useRef, useState } from 'preact/hooks'
-import { Storage } from '../types'
+import { Storage } from '@types'
+import { Props } from './types.ts'
 
-interface ISettings {
-  id: string
-}
-
-const Settings: FunctionalComponent<ISettings> = ({ id }) => {
+const Settings: FunctionalComponent<Props> = ({ id }) => {
   const routeNavigator = useRouteNavigator()
   const [cacheData, setCacheData] = useState<Storage[]>([])
   const [isHomeScreenSupported, setIsHomeScreenSupported] =

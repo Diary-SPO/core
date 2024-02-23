@@ -12,39 +12,41 @@ import MarksByGroup from './MarksByGroup'
 import Summary from './Summary'
 import UserInfo from './UserInfo'
 import { formatStatisticsData } from './helpers.ts'
+import { Nullable } from '@types'
+import { Props } from '../types.ts'
 
-const Marks: FC<{ id: string }> = ({ id }) => {
+const Marks: FC<Props> = ({ id }) => {
   const [isLoading, setIsLoading] = useState<boolean>(false)
 
   const [snackbar, showSnackbar] = useSnackbar()
   const [rateSnackbar, handleRateLimitExceeded] = useRateLimitExceeded()
 
   const [marksForSubject, setMarksForSubject] =
-    useState<PerformanceCurrent | null>(null)
-  const [totalNumberOfMarks, setTotalNumberOfMarks] = useState<number | null>(
-    null
-  )
-  const [averageMark, setAverageMark] = useState<number | null>(null)
-  const [markCounts, setMarkCounts] = useState<Record<number, number> | null>(
-    null
-  )
-
-  const saveStatisticsData = (marks: PerformanceCurrent) => {
-    const data = formatStatisticsData(marks)
-
-    if (data) {
-      setTotalNumberOfMarks(data.totalNumberOfMarks)
-      setAverageMark(data.averageMark)
-      setMarkCounts(data.markCounts)
-    }
-  }
+    useState<Nullable<PerformanceCurrent>>(null)
+  const [totalNumberOfMarks, setTotalNumberOfMarks] =
+    useState<Nullable<number>>(null)
+  const [averageMark, setAverageMark] = useState<Nullable<number>>(null)
+  const [markCounts, setMarkCounts] =
+    useState<Nullable<Record<number, number>>>(null)
 
   const saveData = (marks: PerformanceCurrent) => {
+    if (!marks.daysWithMarksForSubject.length) {
+      return
+    }
+
     saveStatisticsData(marks)
     setMarksForSubject(marks)
 
     localStorage.setItem('lastFetchTime', String(Date.now()))
     localStorage.setItem('savedMarks', JSON.stringify(marks))
+  }
+
+  const saveStatisticsData = (marks: PerformanceCurrent) => {
+    const data = formatStatisticsData(marks)
+
+    setTotalNumberOfMarks(data.totalNumberOfMarks)
+    setAverageMark(data.averageMark)
+    setMarkCounts(data.markCounts)
   }
 
   const fetchMarks = async (isHandle?: boolean) => {
@@ -96,8 +98,6 @@ const Marks: FC<{ id: string }> = ({ id }) => {
       }
 
       saveData(marks)
-    } catch (error) {
-      console.error('Ошибка при получении оценок:', error)
     } finally {
       setIsLoading(false)
     }

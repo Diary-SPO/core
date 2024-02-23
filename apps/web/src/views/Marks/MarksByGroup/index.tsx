@@ -10,8 +10,9 @@ import {
   Title
 } from '@vkontakte/vkui'
 import { FC } from 'preact/compat'
-import AverageMarkCell from './AverageMarkCell.tsx'
-import MarksList from './MarksList.tsx'
+
+import AverageMarkCell from './AverageMarkCell'
+import MarksList from './MarksList'
 
 interface IMarksByGroup {
   marksForSubject: PerformanceCurrent

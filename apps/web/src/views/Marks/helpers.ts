@@ -9,10 +9,6 @@ import { Grade, PerformanceCurrent, MarkKeys } from '@diary-spo/shared'
  */
 
 export const formatStatisticsData = (marks: PerformanceCurrent) => {
-  if (!marks.daysWithMarksForSubject.length) {
-    return null
-  }
-
   const allMarks: MarkKeys[] = marks.daysWithMarksForSubject.reduce(
     (marksArray: MarkKeys[], subject) => {
       if (subject.daysWithMarks) {

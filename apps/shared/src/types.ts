@@ -180,7 +180,7 @@ export const AbsenceTypesDescription: Record<
   О: 'Опоздание'
 }
 
-export type TMark = (typeof Grade)[MarkKeys]
+export type TMark = MarkKeys
 export type TLesson = keyof typeof LessonWorkType
 export type LessonTypes = keyof typeof LessonType
 export type AbsenceType = keyof typeof AbsenceTypes

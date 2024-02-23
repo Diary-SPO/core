@@ -1,12 +1,13 @@
 import { FunctionalComponent } from 'preact'
 import LoadingData from './LoadingData'
 import SubjectGroup from './SubjectGroup'
-import Subject from './types.ts'
+import { Nullable } from '@types'
+import { Subject } from '@diary-spo/shared'
 
 interface ISubjectList {
   semesters: Record<string, Subject[]>
-  studentName: string | null
-  year: number | null
+  studentName: Nullable<string>
+  year: Nullable<number>
   isDataLoading: boolean
 }
 

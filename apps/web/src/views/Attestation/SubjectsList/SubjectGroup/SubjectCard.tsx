@@ -1,7 +1,6 @@
-import { Examinations } from '@diary-spo/shared'
+import { Examinations, Subject } from '@diary-spo/shared'
 import { Card, CardGrid, Div, InfoRow, Subhead, Title } from '@vkontakte/vkui'
 import { FunctionalComponent } from 'preact'
-import Subject from '../types.ts'
 
 export interface ISubjectCard {
   subject: Subject

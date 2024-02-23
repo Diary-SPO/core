@@ -3,7 +3,7 @@ import { Day, Gradebook, Timetable } from '@diary-spo/shared'
 import { useLessonModal } from '@store'
 import { useRouteNavigator } from '@vkontakte/vk-mini-apps-router'
 import { Card, Group, Placeholder } from '@vkontakte/vkui'
-import { FC, memo, useCallback, useMemo } from 'preact/compat'
+import { FC, memo, useCallback } from 'preact/compat'
 import LessonCell from './LessonCell'
 import LessonHeader from './LessonHeader.tsx'
 import { formatLessonDate, isToday } from './helpers.ts'
@@ -24,8 +24,6 @@ const LessonCard: FC<ILessonCard> = ({ lesson }) => {
       timetable: Timetable,
       gradebook: Gradebook | undefined
     ) => {
-      routeNavigator.showModal(MODAL_PAGE_LESSON)
-
       const lessonId = lessonDate.toISOString()
 
       const modalData = {
@@ -39,6 +37,8 @@ const LessonCard: FC<ILessonCard> = ({ lesson }) => {
       }
 
       setData(modalData)
+
+      routeNavigator.showModal(MODAL_PAGE_LESSON)
     },
     []
   )
@@ -70,19 +70,20 @@ const LessonCard: FC<ILessonCard> = ({ lesson }) => {
       ? ' День завершён'
       : undefined
 
-  const lessonComponents = useMemo(() => {
-    if (lesson.lessons && lesson.lessons.length > 0) {
-      return lesson.lessons.map((lesson) => (
-        <LessonCell
-          key={lesson.lessonId}
-          lessonDate={lessonDate}
-          lesson={lesson}
-          handleLessonClick={handleLessonClick}
-        />
-      ))
+  const lessonComponents = () => {
+    if (!lesson.lessons.length) {
+      return <Placeholder>Пар нет</Placeholder>
     }
-    return <Placeholder>Пар нет</Placeholder>
-  }, [lesson.lessons, lessonDate])
+
+    return lesson.lessons.map((lesson) => (
+      <LessonCell
+        key={lesson.lessonId}
+        lessonDate={lessonDate}
+        lesson={lesson}
+        handleLessonClick={handleLessonClick}
+      />
+    ))
+  }
 
   return (
     <Card className='lessonCard' key={lesson.date}>

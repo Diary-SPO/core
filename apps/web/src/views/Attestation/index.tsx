@@ -5,35 +5,37 @@ import { handleResponse } from '@utils'
 import { Group, HorizontalScroll, Panel, Tabs, TabsItem } from '@vkontakte/vkui'
 import { FC } from 'preact/compat'
 import { useEffect, useState } from 'preact/hooks'
-import { getAttestation } from '../../methods'
-import { getFinalMarks } from '../../methods/server/getFinalMarks.ts'
+import { getFinalMarks, getAttestation } from '../../methods'
 
 import FinalMarks from './FinalMarks'
 import SubjectList from './SubjectsList'
+import { Nullable } from '@types'
+import { processAttestationData } from './helpers'
+import { Props } from '../types.ts'
 
-interface IAttestation {
-  id: string
-}
-
-const Attestation: FC<IAttestation> = ({ id }) => {
+const Attestation: FC<Props> = ({ id }) => {
   const [isError, setIsError] = useState<boolean>(false)
   const [isDataLoading, setIsLoading] = useState<boolean>(false)
 
   const [attestationData, setAttestationData] =
-    useState<AttestationResponse | null>(null)
-  const [finalMarksData, setFinalMarksData] = useState<AcademicRecord | null>(
-    null
-  )
-
+    useState<Nullable<AttestationResponse>>(null)
+  const [finalMarksData, setFinalMarksData] =
+    useState<Nullable<AcademicRecord>>(null)
   const [selected, setSelected] = useState<'finalMarks' | 'attestation'>(
     'attestation'
   )
-  const getUserAttestation = async () => {
-    if (selected !== 'attestation') return
+
+  const { semesters, studentName, year } =
+    processAttestationData(attestationData)
+
+  const fetchData = async <T extends object, U>(
+    fetchFunction: (...args: U[]) => Promise<T | Response>
+  ): Promise<T | undefined> => {
     setIsLoading(true)
     setIsError(false)
+
     try {
-      const data = await getAttestation()
+      const data = await fetchFunction()
 
       handleResponse(
         data,
@@ -46,70 +48,37 @@ const Attestation: FC<IAttestation> = ({ id }) => {
         return
       }
 
-      setAttestationData(data)
+      return data
     } catch (error) {
       setIsError(true)
-      console.error('Плоха-плоха:', error)
     } finally {
       setIsLoading(false)
     }
   }
 
-  const semesters: Record<string, AttestationResponse['subjects']> = {}
-  let studentName: string | null = null
-  let year: number | null = null
+  const setFetchedData = async () => {
+    if (selected === 'attestation') {
+      const attestation = await fetchData(getAttestation)
 
-  if (attestationData?.students) {
-    year = attestationData.year
-    studentName = `
-    ${attestationData.students[0].lastName}
-    ${attestationData.students[0].firstName.slice(0, 1)}.
-    ${attestationData.students[0].middleName.slice(0, 1)}.`
-  }
-
-  if (attestationData?.subjects) {
-    const semesterKey = `Семестр ${attestationData.termNumber}`
-
-    if (!semesters[semesterKey]) {
-      semesters[semesterKey] = []
-    }
-
-    for (const subject of attestationData.subjects) {
-      semesters[semesterKey].push(subject)
-    }
-  }
-
-  const getUserFinalMarks = async () => {
-    if (selected !== 'finalMarks') return
-
-    setIsLoading(true)
-    setIsError(false)
-    try {
-      const data = await getFinalMarks()
-
-      handleResponse(
-        data,
-        () => setIsError(true),
-        useRateLimitExceeded,
-        setIsLoading
-      )
-
-      if (data instanceof Response) {
+      if (!attestation.year) {
         return
       }
 
-      setFinalMarksData(data)
-    } catch (error) {
-      setIsError(true)
-      console.error('Плоха-плоха:', error)
-    } finally {
-      setIsLoading(false)
+      setAttestationData(attestation)
+      return
     }
+
+    const finalMarks = await fetchData(getFinalMarks)
+
+    if (!finalMarks.subjects.length) {
+      return
+    }
+
+    setFinalMarksData(finalMarks)
   }
 
   useEffect(() => {
-    getUserAttestation()
-    getUserFinalMarks()
+    setFetchedData()
   }, [selected])
 
   return (
@@ -138,7 +107,6 @@ const Attestation: FC<IAttestation> = ({ id }) => {
         {selected === 'attestation' ? (
           <SubjectList
             isDataLoading={isDataLoading}
-            // @ts-ignore
             semesters={semesters}
             studentName={studentName}
             year={year}
@@ -147,7 +115,7 @@ const Attestation: FC<IAttestation> = ({ id }) => {
           <FinalMarks isDataLoading={isDataLoading} data={finalMarksData} />
         )}
 
-        {isError && <ErrorPlaceholder onClick={getUserAttestation} />}
+        {isError && <ErrorPlaceholder />}
       </Group>
     </Panel>
   )

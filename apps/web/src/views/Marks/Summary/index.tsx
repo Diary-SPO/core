@@ -3,14 +3,9 @@ import { VIOLET } from '@config'
 import { Icon20EducationOutline, Icon28BrainOutline } from '@vkontakte/icons'
 import { Group, Header, MiniInfoCell } from '@vkontakte/vkui'
 import { FC, Fragment } from 'preact/compat'
+import { ISummary } from './types.ts'
 
 import './index.css'
-
-interface ISummary {
-  totalNumberOfMarks: number | null
-  averageMark: number | null
-  markCounts: Record<number, number> | null
-}
 
 const Summary: FC<ISummary> = ({
   markCounts,

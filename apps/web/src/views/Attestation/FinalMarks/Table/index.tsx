@@ -2,16 +2,11 @@ import { Mark } from '@components'
 import { VIOLET } from '@config'
 import { FC, useState } from 'preact/compat'
 import { Cell, TableProps } from './types.ts'
+import { buildSubjectMatrix, cellStyle } from './helpers'
 
-const bgColor = 'rgba(240,240,240,0.05)'
+export const Table: FC<TableProps> = ({ data }) => {
+  const subjectMatrix = buildSubjectMatrix(data)
 
-const cellStyle = (isSelected: boolean, isHovered: boolean) => ({
-  padding: '10px',
-  border: '1px solid #ddd',
-  backgroundColor: isSelected ? bgColor : isHovered ? bgColor : 'inherit'
-})
-
-export const Table: FC<TableProps> = ({ subjectMatrix }) => {
   const [hoveredCell, setHoveredCell] = useState<Cell>(null)
   const [selectedCell, setSelectedCell] = useState<Cell>(null)
 

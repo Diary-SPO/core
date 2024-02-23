@@ -3,9 +3,10 @@ import { CardGrid } from '@vkontakte/vkui'
 import { FunctionComponent } from 'preact'
 import { memo } from 'preact/compat'
 import LessonCard from './LessonCard'
+import { Nullable } from '@types'
 
 interface IScheduleGroup {
-  lessonsState?: Day[] | null
+  lessonsState?: Nullable<Day[]>
 }
 
 const ScheduleGroup: FunctionComponent<IScheduleGroup> = ({ lessonsState }) => (

@@ -3,11 +3,12 @@
  * Принимает строку времени в формате 'hh:mm' (timeString) и базовую дату (baseDate).
  * Возвращает объект Date, представляющий введенное время, или null в случае некорректного формата или значений.
  */
+import { Nullable } from '@types'
 
 export const convertStringToTime = (
   timeString: string,
   baseDate: Date
-): Date | null => {
+): Nullable<Date> => {
   const [hours, minutes] = timeString.split(':').map(Number)
 
   if (
@@ -38,7 +39,7 @@ export const getTimeRemaining = (
   currentDate: Date,
   endTime: Date,
   startDate: Date
-): string | null => {
+): Nullable<string> => {
   const timeToStart =
     (startDate.getTime() - currentDate.getTime()) / (1000 * 60)
 
