@@ -21,11 +21,12 @@ import { getLessons } from '../../methods'
 import ScheduleAsideButtons from './ScheduleAsideButtons.tsx'
 import { getWeekString, isNeedToGetNewData } from './utils.ts'
 import { Nullable } from '@types'
+import { Props } from '../types.ts'
 
 const MarksByDay = lazy(() => import('./MarksByDay'))
 const ScheduleGroup = lazy(() => import('./ScheduleGroup'))
 
-const Schedule: FC<{ id: string }> = ({ id }) => {
+const Schedule: FC<Props> = ({ id }) => {
   /** Управление данными **/
   const newDate = new Date()
   const cachedDate = new Date(localStorage.getItem('currentDate'))

@@ -11,12 +11,9 @@ import FinalMarks from './FinalMarks'
 import SubjectList from './SubjectsList'
 import { Nullable } from '@types'
 import { processAttestationData } from './utils'
+import { Props } from '../types.ts'
 
-interface IAttestation {
-  id: string
-}
-
-const Attestation: FC<IAttestation> = ({ id }) => {
+const Attestation: FC<Props> = ({ id }) => {
   const [isError, setIsError] = useState<boolean>(false)
   const [isDataLoading, setIsLoading] = useState<boolean>(false)
 

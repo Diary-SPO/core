@@ -13,8 +13,9 @@ import Summary from './Summary'
 import UserInfo from './UserInfo'
 import { formatStatisticsData } from './helpers.ts'
 import { Nullable } from '@types'
+import { Props } from '../types.ts'
 
-const Marks: FC<{ id: string }> = ({ id }) => {
+const Marks: FC<Props> = ({ id }) => {
   const [isLoading, setIsLoading] = useState<boolean>(false)
 
   const [snackbar, showSnackbar] = useSnackbar()
