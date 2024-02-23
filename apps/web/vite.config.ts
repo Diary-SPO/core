@@ -20,18 +20,19 @@ export default defineConfig({
       }
     ]
   },
-  build: {
-    sourcemap: false,
-    target: 'es2017',
-    assetsInlineLimit: 0,
-    rollupOptions: {
-      logLevel: 'debug',
-      output: {
-        generatedCode: {
-          preset: 'es2015',
-          arrowFunctions: false
-        }
-      }
-    }
-  }
+  // build: {
+  //   sourcemap: false,
+  //   target: 'es2017',
+  //   assetsInlineLimit: 0,
+  //   // minify: 'esbuild',
+  //   // rollupOptions: {
+  //   //   logLevel: 'debug',
+  //   //   output: {
+  //   //     generatedCode: {
+  //   //       preset: 'es2015',
+  //   //       arrowFunctions: false
+  //   //     }
+  //   //   }
+  //   // }
+  // }
 })
