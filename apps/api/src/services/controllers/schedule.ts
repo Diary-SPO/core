@@ -210,7 +210,7 @@ export const ScheduleGetFromDB = async (startDate: string, endDate: string, user
                     'topic', t.topic,
                     'id', t."idFromDiary",
                     'isRequired', r."isRequired",
-                    'mark', null,
+                    'mark', '',
                     'type', tt."name" 
                 )
               )
@@ -273,6 +273,8 @@ order by "date"
     let isSearch = false
     for (const dayDB of days) {
       if (dayDB.date === day.toISOString().split('T')[0]) {
+        // Сортируем по дате начала пары
+        dayDB.lessons.sort((a, b) => a.startTime > b.startTime? 1 : -1)
         formatDays.push(dayDB)
         isSearch = true
         break
