@@ -29,22 +29,24 @@ const Marks: FC<Props> = ({ id }) => {
   const [markCounts, setMarkCounts] =
     useState<Nullable<Record<number, number>>>(null)
 
-  const saveStatisticsData = (marks: PerformanceCurrent) => {
-    const data = formatStatisticsData(marks)
-
-    if (data) {
-      setTotalNumberOfMarks(data.totalNumberOfMarks)
-      setAverageMark(data.averageMark)
-      setMarkCounts(data.markCounts)
-    }
-  }
-
   const saveData = (marks: PerformanceCurrent) => {
+    if (!marks.daysWithMarksForSubject.length) {
+      return
+    }
+
     saveStatisticsData(marks)
     setMarksForSubject(marks)
 
     localStorage.setItem('lastFetchTime', String(Date.now()))
     localStorage.setItem('savedMarks', JSON.stringify(marks))
+  }
+
+  const saveStatisticsData = (marks: PerformanceCurrent) => {
+    const data = formatStatisticsData(marks)
+
+    setTotalNumberOfMarks(data.totalNumberOfMarks)
+    setAverageMark(data.averageMark)
+    setMarkCounts(data.markCounts)
   }
 
   const fetchMarks = async (isHandle?: boolean) => {
