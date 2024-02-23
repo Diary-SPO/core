@@ -10,6 +10,7 @@ import { getFinalMarks, getAttestation } from '../../methods'
 import FinalMarks from './FinalMarks'
 import SubjectList from './SubjectsList'
 import { Nullable } from '@types'
+import { processAttestationData } from './utils'
 
 interface IAttestation {
   id: string
@@ -27,14 +28,17 @@ const Attestation: FC<IAttestation> = ({ id }) => {
     'attestation'
   )
 
-  const getUserAttestation = async () => {
-    if (selected !== 'attestation') return
+  const { semesters, studentName, year } =
+    processAttestationData(attestationData)
 
+  const fetchData = async <T extends object, U>(
+    fetchFunction: (...args: U[]) => Promise<T | Response>
+  ): Promise<T | undefined> => {
     setIsLoading(true)
     setIsError(false)
 
     try {
-      const data = await getAttestation()
+      const data = await fetchFunction()
 
       handleResponse(
         data,
@@ -47,58 +51,7 @@ const Attestation: FC<IAttestation> = ({ id }) => {
         return
       }
 
-      setAttestationData(data)
-    } catch (error) {
-      console.error('Плоха-плоха:', error)
-    } finally {
-      setIsLoading(false)
-    }
-  }
-  // TODO: refactor this
-  const semesters: Record<string, AttestationResponse['subjects']> = {}
-  let studentName: Nullable<string> = null
-  let year: Nullable<number> = null
-
-  if (attestationData?.students) {
-    year = attestationData.year
-    studentName = `
-    ${attestationData.students[0].lastName}
-    ${attestationData.students[0].firstName.slice(0, 1)}.
-    ${attestationData.students[0].middleName.slice(0, 1)}.`
-  }
-
-  if (attestationData?.subjects) {
-    const semesterKey = `Семестр ${attestationData.termNumber}`
-
-    if (!semesters[semesterKey]) {
-      semesters[semesterKey] = []
-    }
-
-    for (const subject of attestationData.subjects) {
-      semesters[semesterKey].push(subject)
-    }
-  }
-
-  const getUserFinalMarks = async () => {
-    if (selected !== 'finalMarks') return
-
-    setIsLoading(true)
-    setIsError(false)
-    try {
-      const data = await getFinalMarks()
-
-      handleResponse(
-        data,
-        () => setIsError(true),
-        useRateLimitExceeded,
-        setIsLoading
-      )
-
-      if (data instanceof Response) {
-        return
-      }
-
-      setFinalMarksData(data)
+      return data
     } catch (error) {
       setIsError(true)
       console.error('Плоха-плоха:', error)
@@ -107,9 +60,29 @@ const Attestation: FC<IAttestation> = ({ id }) => {
     }
   }
 
+  const setFetchedData = async () => {
+    if (selected === 'attestation') {
+      const attestation = await fetchData(getAttestation)
+
+      if (!attestation.year) {
+        return
+      }
+
+      setAttestationData(attestation)
+      return
+    }
+
+    const finalMarks = await fetchData(getFinalMarks)
+
+    if (!finalMarks.subjects.length) {
+      return
+    }
+
+    setFinalMarksData(finalMarks)
+  }
+
   useEffect(() => {
-    getUserAttestation()
-    getUserFinalMarks()
+    setFetchedData()
   }, [selected])
 
   return (
@@ -146,7 +119,7 @@ const Attestation: FC<IAttestation> = ({ id }) => {
           <FinalMarks isDataLoading={isDataLoading} data={finalMarksData} />
         )}
 
-        {isError && <ErrorPlaceholder onClick={getUserAttestation} />}
+        {isError && <ErrorPlaceholder />}
       </Group>
     </Panel>
   )
