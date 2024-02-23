@@ -1,8 +1,8 @@
 import { Group, Header } from '@vkontakte/vkui'
 import { FunctionalComponent } from 'preact'
-import Subject from '../types.ts'
 import SubjectCard from './SubjectCard'
 import { Nullable } from '@types'
+import {Subject} from "@diary-spo/shared";
 
 export interface ISubjectGroup {
   semesterKey: string

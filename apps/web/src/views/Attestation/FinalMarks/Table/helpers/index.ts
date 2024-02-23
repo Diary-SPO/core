@@ -15,6 +15,7 @@ export const cellStyle = (isSelected: boolean, isHovered: boolean) => ({
 /**
  * Получает корректную оценку
  */
+// TODO: add tests
 export const getMark = (value: MarkKeys): TermMark => {
   const grade = Grade[value]
 
@@ -28,6 +29,7 @@ export const getMark = (value: MarkKeys): TermMark => {
 /**
  * Преобразует данные для рендера в таблице
  */
+// TODO: add tests
 export const buildSubjectMatrix = (data: AcademicRecord): SubjectMatrix => {
   const subjectMatrix: SubjectMatrix = []
 

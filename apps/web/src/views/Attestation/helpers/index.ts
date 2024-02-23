@@ -1,5 +1,6 @@
 import { AttestationResponse, Subject } from '@diary-spo/shared'
 
+// TODO: add tests
 export const processAttestationData = (data: AttestationResponse) => {
   const student = data.students[0]
 
