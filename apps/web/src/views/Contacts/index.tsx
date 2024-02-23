@@ -16,10 +16,10 @@ import { FC } from 'preact/compat'
 
 import { diaryAva, winxAva } from '../../images/config.ts'
 import HelpAccordion from './HelpAccordion.tsx'
+import { Props } from '../types.ts'
 import { helpData } from './data.ts'
 
 import './index.css'
-import { Props } from '../types.ts'
 
 const Contacts: FC<Props> = ({ id }) => (
   <Panel nav={id}>

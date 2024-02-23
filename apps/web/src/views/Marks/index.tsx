@@ -98,8 +98,6 @@ const Marks: FC<Props> = ({ id }) => {
       }
 
       saveData(marks)
-    } catch (error) {
-      console.error('Ошибка при получении оценок:', error)
     } finally {
       setIsLoading(false)
     }

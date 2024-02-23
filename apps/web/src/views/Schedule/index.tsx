@@ -72,8 +72,6 @@ const Schedule: FC<Props> = ({ id }) => {
 
       setLessons(data)
       localStorage.setItem('savedLessons', JSON.stringify(data))
-    } catch (e) {
-      console.error('handleGetLesson', e)
     } finally {
       setIsLoading(false)
     }

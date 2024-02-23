@@ -51,7 +51,6 @@ const Attestation: FC<Props> = ({ id }) => {
       return data
     } catch (error) {
       setIsError(true)
-      console.error('Плоха-плоха:', error)
     } finally {
       setIsLoading(false)
     }
