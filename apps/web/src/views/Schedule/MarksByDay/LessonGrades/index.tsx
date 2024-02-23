@@ -1,16 +1,16 @@
 import { Mark } from '@components'
 import { MODAL_PAGE_MARK } from '@config'
 import { Task } from '@diary-spo/shared'
-import { useMarkModal } from '@store'
-import { setDefaultMark, truncateString } from '@utils'
+
 import { useRouteNavigator } from '@vkontakte/vk-mini-apps-router'
 import { Header, HorizontalCell } from '@vkontakte/vkui'
-import { FunctionalComponent } from 'preact'
-import { CSSProperties } from 'preact/compat'
 import { useCallback } from 'preact/hooks'
-import { LessonGradesProps } from './types.ts'
+import { FunctionalComponent } from 'preact'
 
-const marksGap: CSSProperties = { display: 'flex' }
+import { useMarkModal } from '@store'
+import { setDefaultMark, truncateString } from '@utils'
+import { LessonGradesProps } from '../types.ts'
+import './index.css'
 
 const LessonGrades: FunctionalComponent<LessonGradesProps> = ({
   day,
@@ -22,6 +22,7 @@ const LessonGrades: FunctionalComponent<LessonGradesProps> = ({
 
   const routeNavigator = useRouteNavigator()
   const { setData } = useMarkModal()
+
   const handleMarkClick = useCallback(
     async (data: Task, lessonName: string) => {
       setData({ data, lessonName })
@@ -35,13 +36,9 @@ const LessonGrades: FunctionalComponent<LessonGradesProps> = ({
       <Header mode='secondary' className='recentMarks'>
         {day}
       </Header>
-      <div style={marksGap}>
+      <div className='flex'>
         {lessonGrades.map(({ lessonName, task }) => (
-          <div
-            className='marksWrapper'
-            style={marksGap}
-            key={`${lessonName}_${task.id}`}
-          >
+          <div className='marksWrapper flex' key={`${lessonName}_${task.id}`}>
             {/*@ts-ignore Типы не совместимы*/}
             <HorizontalCell
               onClick={() => handleMarkClick(task, lessonName)}

@@ -3,7 +3,7 @@ import { FC, ReactNode } from 'preact/compat'
 import { useState } from 'preact/hooks'
 import { Nullable } from '@types'
 
-export interface IHelpAccordion {
+interface IHelpAccordion {
   id: number
   title: string
   detail: ReactNode

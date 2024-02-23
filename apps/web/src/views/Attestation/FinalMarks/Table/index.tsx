@@ -2,7 +2,7 @@ import { Mark } from '@components'
 import { VIOLET } from '@config'
 import { FC, useState } from 'preact/compat'
 import { Cell, TableProps } from './types.ts'
-import { buildSubjectMatrix, cellStyle } from './utils'
+import { buildSubjectMatrix, cellStyle } from './helpers'
 
 export const Table: FC<TableProps> = ({ data }) => {
   const subjectMatrix = buildSubjectMatrix(data)

@@ -10,7 +10,7 @@ import { getFinalMarks, getAttestation } from '../../methods'
 import FinalMarks from './FinalMarks'
 import SubjectList from './SubjectsList'
 import { Nullable } from '@types'
-import { processAttestationData } from './utils'
+import { processAttestationData } from './helpers'
 import { Props } from '../types.ts'
 
 const Attestation: FC<Props> = ({ id }) => {

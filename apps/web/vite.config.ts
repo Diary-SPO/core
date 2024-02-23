@@ -8,7 +8,10 @@ export default defineConfig({
   resolve: {
     alias: [
       { find: /^@vkontakte\/vkui$/, replacement: '@vkontakte/vkui/dist/cssm' },
-      { find: '@utils', replacement: path.resolve(__dirname, './src/utils') },
+      {
+        find: '@helpers',
+        replacement: path.resolve(__dirname, './src/helpers')
+      },
       { find: '@config', replacement: path.resolve(__dirname, './src/config') },
       { find: '@store', replacement: path.resolve(__dirname, './src/store') },
       { find: '@hooks', replacement: path.resolve(__dirname, './src/hooks') },
