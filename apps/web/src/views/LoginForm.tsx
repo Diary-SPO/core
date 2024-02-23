@@ -19,11 +19,12 @@ import {
 } from '@vkontakte/vkui'
 import { ChangeEvent, FC } from 'preact/compat'
 import { useEffect, useState } from 'preact/hooks'
-import { makeRequest } from '../methods'
 import { VIEW_SCHEDULE } from '../routes'
-import { loginPattern } from '../types'
+import { loginPattern } from '@types'
+import { Props } from './types.ts'
+import { postLogin } from '../methods'
 
-const LoginForm: FC<{ id: string }> = ({ id }) => {
+const LoginForm: FC<Props> = ({ id }) => {
   const routeNavigator = useRouteNavigator()
 
   const [login, setLogin] = useState<string>('')
@@ -72,19 +73,11 @@ const LoginForm: FC<{ id: string }> = ({ id }) => {
       return
     }
 
-    const passwordHashed2 = await Hashes.SHA256.b64(password)
+    const passwordHashed = await Hashes.SHA256.b64(password)
 
-    const response = await makeRequest<ResponseLogin>(
-      '/login/',
-      'POST',
-      JSON.stringify({
-        login,
-        password: passwordHashed2,
-        isHash: true
-      })
-    )
+    const response = postLogin(login, passwordHashed, true)
 
-    const data = handleResponse(
+    const data = await handleResponse(
       response,
       () => setIsDataInvalid(true),
       undefined,
@@ -94,7 +87,7 @@ const LoginForm: FC<{ id: string }> = ({ id }) => {
       true
     )
 
-    if (!data || !data.token) {
+    if (data instanceof Response || !data.token) {
       return
     }
 

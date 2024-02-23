@@ -4,7 +4,7 @@ import {
 } from '@vkontakte/icons'
 import { MiniInfoCell } from '@vkontakte/vkui'
 import { FC } from 'preact/compat'
-import { calculateAverageMark } from './helpers.tsx'
+import { calculateAverageMark } from './helpers'
 import { MarkKeys } from '@diary-spo/shared'
 
 interface IAverageMarkCell {

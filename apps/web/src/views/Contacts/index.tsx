@@ -16,9 +16,12 @@ import { FC } from 'preact/compat'
 
 import { diaryAva, winxAva } from '../../images/config.ts'
 import HelpAccordion from './HelpAccordion.tsx'
+import { Props } from '../types.ts'
 import { helpData } from './data.ts'
 
-const Contacts: FC<{ id: string }> = ({ id }) => (
+import './index.css'
+
+const Contacts: FC<Props> = ({ id }) => (
   <Panel nav={id}>
     <PanelHeaderWithBack title='Помощь' />
     <Div>
@@ -62,15 +65,9 @@ const Contacts: FC<{ id: string }> = ({ id }) => (
           </Link>
         </SimpleCell>
       </Group>
-      <Footer
-        style={{
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center'
-        }}
-      >
+      <Footer className='footer'>
         {/*//@ts-ignore типы React не совсем совместимы с Preact*/}
-        <Footnote style={{ marginRight: 5 }}>made with</Footnote>
+        <Footnote className='footerSubheader'>made with</Footnote>
         <Icon28Hearts2Outline />
       </Footer>
     </Div>

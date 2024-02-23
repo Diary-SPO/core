@@ -1,6 +1,5 @@
 import { describe, expect, it } from 'bun:test'
 import { createSubjectMarksMap } from '@utils'
-import { calculateAverageMark } from '../helpers.tsx'
 import {
   expectedMapData,
   expectedMapDataWithoutMarks,
@@ -8,6 +7,7 @@ import {
   mockDataWithoutMarks
 } from './mocks.ts'
 import { MarkKeys } from '@diary-spo/shared'
+import { calculateAverageMark } from '../index.ts'
 
 describe('calculateAverageMark', () => {
   it('возвращает null при пустом массиве оценок', () => {
