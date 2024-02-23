@@ -5,13 +5,13 @@ import { handleResponse } from '@utils'
 import { Group, HorizontalScroll, Panel, Tabs, TabsItem } from '@vkontakte/vkui'
 import { FC } from 'preact/compat'
 import { useEffect, useState } from 'preact/hooks'
-import { getFinalMarks, getAttestation } from '../../methods'
+import { getAttestation, getFinalMarks } from '../../methods'
 
+import { Nullable } from '@types'
+import { Props } from '../types.ts'
 import FinalMarks from './FinalMarks'
 import SubjectList from './SubjectsList'
-import { Nullable } from '@types'
 import { processAttestationData } from './helpers'
-import { Props } from '../types.ts'
 
 const Attestation: FC<Props> = ({ id }) => {
   const [isError, setIsError] = useState<boolean>(false)

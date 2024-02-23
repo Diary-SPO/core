@@ -1,5 +1,5 @@
-import { Nullable } from '@types'
 import { AcademicRecord } from '@diary-spo/shared'
+import { Nullable } from '@types'
 
 export type Cell = Nullable<{
   row: number

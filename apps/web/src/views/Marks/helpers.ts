@@ -1,4 +1,4 @@
-import { Grade, PerformanceCurrent, MarkKeys } from '@diary-spo/shared'
+import { Grade, MarkKeys, PerformanceCurrent } from '@diary-spo/shared'
 
 /**
  * Функция 'formatStatisticsData' обрабатывает данные оценок, вычисляя статистику на их основе.

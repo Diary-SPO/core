@@ -2,6 +2,8 @@ import { SubjectMarksMap } from '@utils'
 import { FC } from 'preact/compat'
 import { renderMarksOrAbsence } from './helpers'
 
+import './index.css'
+
 interface IMarksList {
   marks: SubjectMarksMap[string]
 }

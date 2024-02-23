@@ -1,6 +1,7 @@
 import { ErrorPlaceholder, PanelHeaderWithBack, Suspense } from '@components'
 import { Day } from '@diary-spo/shared'
 import { useRateLimitExceeded, useSnackbar } from '@hooks'
+import { Nullable } from '@types'
 import { handleResponse } from '@utils'
 import {
   useActiveVkuiLocation,
@@ -18,10 +19,9 @@ import {
 import { endOfWeek, startOfWeek } from '@vkontakte/vkui/dist/lib/date'
 import { FC, lazy, useEffect, useState } from 'preact/compat'
 import { getLessons } from '../../methods'
+import { Props } from '../types.ts'
 import ScheduleAsideButtons from './ScheduleAsideButtons.tsx'
 import { getWeekString, isNeedToGetNewData } from './utils.ts'
-import { Nullable } from '@types'
-import { Props } from '../types.ts'
 
 const MarksByDay = lazy(() => import('./MarksByDay'))
 const ScheduleGroup = lazy(() => import('./ScheduleGroup'))
@@ -34,7 +34,7 @@ const Schedule: FC<Props> = ({ id }) => {
     cachedDate && cachedDate.getFullYear() >= 2023 ? cachedDate : newDate
 
   const [endDate, setEndDate] = useState<Date>(endOfWeek(currentDate))
-  const [lessonsState, setLessons] = useState<Nullable<Day[]>>()
+  const [lessonsState, setLessons] = useState<Nullable<Day[]>>(null)
   const [startDate, setStartDate] = useState<Date>(startOfWeek(currentDate))
 
   /** Навигация **/
@@ -50,6 +50,8 @@ const Schedule: FC<Props> = ({ id }) => {
 
   const handleGetLesson = async (start: Date, end: Date) => {
     setIsLoading(true)
+    setIsError(false)
+
     localStorage.setItem('currentDate', startDate.toString())
 
     try {
@@ -99,7 +101,6 @@ const Schedule: FC<Props> = ({ id }) => {
     await handleGetLesson(startDate, endDate)
   }
 
-  /** Для получения расписания и оценок при маунте */
   useEffect(() => {
     gettedLessons()
   }, [])

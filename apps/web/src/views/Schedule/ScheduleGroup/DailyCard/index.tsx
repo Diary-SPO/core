@@ -3,16 +3,16 @@ import { Day, Gradebook, Timetable } from '@diary-spo/shared'
 import { useLessonModal } from '@store'
 import { useRouteNavigator } from '@vkontakte/vk-mini-apps-router'
 import { Card, Group, Placeholder } from '@vkontakte/vkui'
-import { FC, memo, useCallback } from 'preact/compat'
+import { FC, useCallback, useMemo } from 'preact/compat'
 import LessonCell from './LessonCell'
 import LessonHeader from './LessonHeader.tsx'
 import { formatLessonDate, isToday } from './helpers.ts'
 
-interface ILessonCard {
+interface IDailyCard {
   lesson: Day
 }
 
-const LessonCard: FC<ILessonCard> = ({ lesson }) => {
+const DailyCard: FC<IDailyCard> = ({ lesson }) => {
   const routeNavigator = useRouteNavigator()
   const { setData } = useLessonModal()
 
@@ -25,7 +25,6 @@ const LessonCard: FC<ILessonCard> = ({ lesson }) => {
       gradebook: Gradebook | undefined
     ) => {
       const lessonId = lessonDate.toISOString()
-
       const modalData = {
         name,
         endTime,
@@ -37,7 +36,6 @@ const LessonCard: FC<ILessonCard> = ({ lesson }) => {
       }
 
       setData(modalData)
-
       routeNavigator.showModal(MODAL_PAGE_LESSON)
     },
     []
@@ -70,11 +68,8 @@ const LessonCard: FC<ILessonCard> = ({ lesson }) => {
       ? ' День завершён'
       : undefined
 
-  const lessonComponents = () => {
-    if (!lesson.lessons.length) {
-      return <Placeholder>Пар нет</Placeholder>
-    }
-
+  const lessons = useMemo(() => {
+    console.log('Rendering lessons')
     return lesson.lessons.map((lesson) => (
       <LessonCell
         key={lesson.lessonId}
@@ -83,7 +78,7 @@ const LessonCard: FC<ILessonCard> = ({ lesson }) => {
         handleLessonClick={handleLessonClick}
       />
     ))
-  }
+  }, [lessonDate])
 
   return (
     <Card className='lessonCard' key={lesson.date}>
@@ -97,10 +92,10 @@ const LessonCard: FC<ILessonCard> = ({ lesson }) => {
           />
         }
       >
-        {lessonComponents}
+        {lesson.lessons.length ? lessons : <Placeholder>Пар нет</Placeholder>}
       </Group>
     </Card>
   )
 }
 
-export default memo(LessonCard)
+export default DailyCard

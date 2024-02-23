@@ -1,5 +1,6 @@
 import { PanelHeaderWithBack } from '@components'
 import { useSnackbar } from '@hooks'
+import { Storage } from '@types'
 import { logOut } from '@utils'
 import {
   Icon28DoorArrowRightOutline,
@@ -21,7 +22,6 @@ import {
 } from '@vkontakte/vkui'
 import { FunctionalComponent } from 'preact'
 import { useEffect, useRef, useState } from 'preact/hooks'
-import { Storage } from '@types'
 import { Props } from './types.ts'
 
 const Settings: FunctionalComponent<Props> = ({ id }) => {

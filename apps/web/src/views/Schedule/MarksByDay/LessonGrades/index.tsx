@@ -4,12 +4,13 @@ import { Task } from '@diary-spo/shared'
 
 import { useRouteNavigator } from '@vkontakte/vk-mini-apps-router'
 import { Header, HorizontalCell } from '@vkontakte/vkui'
-import { useCallback } from 'preact/hooks'
 import { FunctionalComponent } from 'preact'
+import { useCallback } from 'preact/hooks'
 
 import { useMarkModal } from '@store'
 import { setDefaultMark, truncateString } from '@utils'
 import { LessonGradesProps } from '../types.ts'
+
 import './index.css'
 
 const LessonGrades: FunctionalComponent<LessonGradesProps> = ({
@@ -42,12 +43,13 @@ const LessonGrades: FunctionalComponent<LessonGradesProps> = ({
             {/*@ts-ignore Типы не совместимы*/}
             <HorizontalCell
               onClick={() => handleMarkClick(task, lessonName)}
-              style={{ maxWidth: 'unset' }}
+              className='markWrapper'
+              // style={{maxWidth: 'unset'}}
               key={`${lessonName}_${task.id}_${task.type}`}
             >
               <Mark
+                // className='markWrapper'
                 bottom={truncateString(lessonName, 18)}
-                style={{ maxWidth: 85 }}
                 mark={setDefaultMark(task)}
               />
             </HorizontalCell>

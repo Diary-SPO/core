@@ -1,3 +1,4 @@
+import { MarkKeys } from '@diary-spo/shared'
 import {
   Icon20IncognitoOutline,
   Icon20StatisticsOutline
@@ -5,7 +6,6 @@ import {
 import { MiniInfoCell } from '@vkontakte/vkui'
 import { FC } from 'preact/compat'
 import { calculateAverageMark } from './helpers'
-import { MarkKeys } from '@diary-spo/shared'
 
 interface IAverageMarkCell {
   marks: MarkKeys[]

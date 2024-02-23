@@ -1,8 +1,9 @@
 import { AttestationResponse, Subject } from '@diary-spo/shared'
+import { Nullable } from '@types'
 
 // TODO: add tests
-export const processAttestationData = (data: AttestationResponse) => {
-  const student = data.students[0]
+export const processAttestationData = (data: Nullable<AttestationResponse>) => {
+  const student = data?.students[0]
 
   const semesters: Record<string, Subject[]> = {}
   const studentName = `${student.lastName} ${student.firstName.slice(

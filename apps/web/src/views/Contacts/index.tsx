@@ -15,8 +15,8 @@ import {
 import { FC } from 'preact/compat'
 
 import { diaryAva, winxAva } from '../../images/config.ts'
-import HelpAccordion from './HelpAccordion.tsx'
 import { Props } from '../types.ts'
+import HelpAccordion from './HelpAccordion.tsx'
 import { helpData } from './data.ts'
 
 import './index.css'

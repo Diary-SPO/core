@@ -15,7 +15,7 @@ export const ThemesSaveOrGet = async (
   for (const themeDB of themesDB) {
     let destroy = true
     for (const theme of localCopyThemes) {
-      if (theme == themeDB.description) {
+      if (theme === themeDB.description) {
         localCopyThemes.splice(localCopyThemes.indexOf(theme), 1)
         destroy = false
         break

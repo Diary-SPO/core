@@ -1,7 +1,7 @@
+import { Nullable } from '@types'
 import { Accordion, Div, Text } from '@vkontakte/vkui'
 import { FC, ReactNode } from 'preact/compat'
 import { useState } from 'preact/hooks'
-import { Nullable } from '@types'
 
 interface IHelpAccordion {
   id: number

@@ -81,7 +81,7 @@ export const LessonSave = async (
     endTime: lesson.endTime,
     gradebookId
   }
-  
+
   const [schedule] = await ScheduleModel.findOrCreate({
     where: {
       ...scheduleWhere
@@ -89,7 +89,7 @@ export const LessonSave = async (
     defaults: {
       ...scheduleWhere
     }
-  }).catch((err) => "ОШИБКА СОХРАНЕНИЯ SCHEDULE")
+  }).catch((err) => 'ОШИБКА СОХРАНЕНИЯ SCHEDULE')
 
   if (subgroupId) {
     await ScheduleSubgroupSafeSave(schedule.id, user.id, subgroupId)

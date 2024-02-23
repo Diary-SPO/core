@@ -1,8 +1,8 @@
+import { Subject } from '@diary-spo/shared'
+import { Nullable } from '@types'
 import { FunctionalComponent } from 'preact'
 import LoadingData from './LoadingData'
 import SubjectGroup from './SubjectGroup'
-import { Nullable } from '@types'
-import { Subject } from '@diary-spo/shared'
 
 interface ISubjectList {
   semesters: Record<string, Subject[]>

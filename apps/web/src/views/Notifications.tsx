@@ -6,6 +6,7 @@ import {
 import { VKUI_RED } from '@config'
 import { NotificationsResponse } from '@diary-spo/shared'
 import { useSnackbar } from '@hooks'
+import { Nullable } from '@types'
 import { handleResponse } from '@utils'
 import { Icon28ErrorCircleOutline } from '@vkontakte/icons'
 import {
@@ -22,7 +23,6 @@ import {
 import { FC } from 'preact/compat'
 import { useEffect, useState } from 'preact/hooks'
 import { getAds } from '../methods'
-import { Nullable } from '@types'
 import { Props } from './types.ts'
 
 const updateCache = (ads: NotificationsResponse[]) => {
