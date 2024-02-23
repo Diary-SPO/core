@@ -1,6 +1,7 @@
 import { Accordion, Div, Text } from '@vkontakte/vkui'
 import { FC, ReactNode } from 'preact/compat'
 import { useState } from 'preact/hooks'
+import { Nullable } from '@types'
 
 export interface IHelpAccordion {
   id: number
@@ -11,7 +12,7 @@ export interface IHelpAccordion {
 const infoStyle = { color: 'var(--vkui--color_text_subhead)' }
 
 const HelpAccordion: FC<IHelpAccordion> = ({ id, title, detail }) => {
-  const [openId, setOpenId] = useState<number | null>(null)
+  const [openId, setOpenId] = useState<Nullable<number>>(null)
 
   return (
     <Accordion

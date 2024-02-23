@@ -3,6 +3,7 @@ import { Icon28InfoCircleOutline } from '@vkontakte/icons'
 import { Snackbar, SnackbarProps } from '@vkontakte/vkui'
 import { ReactNode } from 'preact/compat'
 import { useCallback, useState } from 'preact/hooks'
+import { Nullable } from '@types'
 
 /**
  * Функция 'useSnackbar' управляет отображением Snackbar'а для уведомлений.
@@ -15,12 +16,12 @@ import { useCallback, useState } from 'preact/hooks'
 export type SnackbarData = Partial<SnackbarProps>
 
 export const useSnackbar = (): [
-  ReactNode | null,
-  (snackbarData: SnackbarData | null) => void
+  Nullable<ReactNode>,
+  (snackbarData: Nullable<SnackbarData>) => void
 ] => {
-  const [snackbar, setSnackbar] = useState<ReactNode | null>(null)
+  const [snackbar, setSnackbar] = useState<Nullable<ReactNode>>(null)
 
-  const showSnackbar = useCallback((snackbarData: SnackbarData | null) => {
+  const showSnackbar = useCallback((snackbarData: Nullable<SnackbarData>) => {
     if (!snackbarData) {
       setSnackbar(null)
       return null

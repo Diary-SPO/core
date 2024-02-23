@@ -5,11 +5,12 @@ import { Group, Header, MiniInfoCell } from '@vkontakte/vkui'
 import { FC, Fragment } from 'preact/compat'
 
 import './index.css'
+import { Nullable } from '@types'
 
 interface ISummary {
-  totalNumberOfMarks: number | null
-  averageMark: number | null
-  markCounts: Record<number, number> | null
+  totalNumberOfMarks: Nullable<number>
+  averageMark: Nullable<number>
+  markCounts: Nullable<Record<number, number>>
 }
 
 const Summary: FC<ISummary> = ({

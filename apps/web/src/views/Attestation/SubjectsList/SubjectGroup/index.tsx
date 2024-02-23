@@ -2,12 +2,13 @@ import { Group, Header } from '@vkontakte/vkui'
 import { FunctionalComponent } from 'preact'
 import Subject from '../types.ts'
 import SubjectCard from './SubjectCard'
+import { Nullable } from '@types'
 
 export interface ISubjectGroup {
   semesterKey: string
   subjects: Subject[]
-  studentName: string | null
-  year: number | null
+  studentName: Nullable<string>
+  year: Nullable<number>
 }
 
 const SubjectGroup: FunctionalComponent<ISubjectGroup> = ({

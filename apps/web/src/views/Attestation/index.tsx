@@ -54,10 +54,10 @@ const Attestation: FC<IAttestation> = ({ id }) => {
       setIsLoading(false)
     }
   }
-
+  // TODO: refactor this
   const semesters: Record<string, AttestationResponse['subjects']> = {}
-  let studentName: string | null = null
-  let year: number | null = null
+  let studentName: Nullable<string> = null
+  let year: Nullable<number> = null
 
   if (attestationData?.students) {
     year = attestationData.year

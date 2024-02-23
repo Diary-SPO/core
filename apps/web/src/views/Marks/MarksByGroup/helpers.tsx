@@ -1,6 +1,7 @@
 import { Mark } from '@components'
 import { AbsenceType, AbsenceTypes, Grade, MarkKeys } from '@diary-spo/shared'
 import { CSSProperties, ReactNode } from 'preact/compat'
+import { Nullable } from '@types'
 
 export const renderMarksOrAbsence = (
   markValues: string[],
@@ -33,7 +34,7 @@ export const styles: CSSProperties = {
 
 export const calculateAverageMark = (
   marks: MarkKeys[] | undefined
-): number | null => {
+): Nullable<number> => {
   if (!marks || marks.length === 0) {
     return null
   }

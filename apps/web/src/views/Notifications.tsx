@@ -22,6 +22,7 @@ import {
 import { FC } from 'preact/compat'
 import { useEffect, useState } from 'preact/hooks'
 import { getAds } from '../methods'
+import { Nullable } from '@types'
 
 const updateCache = (ads: NotificationsResponse[]) => {
   localStorage.setItem('savedAds', JSON.stringify(ads))
@@ -29,9 +30,8 @@ const updateCache = (ads: NotificationsResponse[]) => {
 }
 
 const Notifications: FC<{ id: string }> = ({ id }) => {
-  const [notifications, setNotifications] = useState<
-    NotificationsResponse[] | null
-  >(null)
+  const [notifications, setNotifications] =
+    useState<Nullable<NotificationsResponse[]>>(null)
   const [isLoading, setLoading] = useState<boolean>(false)
   const [isError, setIsError] = useState<boolean>(false)
   const [snackbar, showSnackbar] = useSnackbar()

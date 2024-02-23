@@ -1,4 +1,5 @@
 import { useCallback, useState } from 'preact/hooks'
+import { Nullable } from '@types'
 
 /**
  * Функция 'useDebouncedChangeWeek' обрабатывает изменения недели с задержкой.
@@ -21,7 +22,7 @@ const useDebouncedChangeWeek = (
 ) => {
   const [clickCount, setClickCount] = useState<number>(0)
   // eslint-disable-next-line no-undef
-  const [timeoutId, setTimeoutId] = useState<NodeJS.Timeout | null>(null)
+  const [timeoutId, setTimeoutId] = useState<Nullable<NodeJS.Timeout>>(null)
 
   const debouncedChangeWeek = useCallback(
     (direction: 'prev' | 'next', sendToServerIfValid: SendToServerIfValid) => {

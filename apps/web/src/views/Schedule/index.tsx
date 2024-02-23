@@ -20,6 +20,7 @@ import { FC, lazy, useEffect, useState } from 'preact/compat'
 import { getLessons } from '../../methods'
 import ScheduleAsideButtons from './ScheduleAsideButtons.tsx'
 import { getWeekString, isNeedToGetNewData } from './utils.ts'
+import { Nullable } from '@types'
 
 const MarksByDay = lazy(() => import('./MarksByDay'))
 const ScheduleGroup = lazy(() => import('./ScheduleGroup'))
@@ -32,7 +33,7 @@ const Schedule: FC<{ id: string }> = ({ id }) => {
     cachedDate && cachedDate.getFullYear() >= 2023 ? cachedDate : newDate
 
   const [endDate, setEndDate] = useState<Date>(endOfWeek(currentDate))
-  const [lessonsState, setLessons] = useState<Day[] | null>()
+  const [lessonsState, setLessons] = useState<Nullable<Day[]>>()
   const [startDate, setStartDate] = useState<Date>(startOfWeek(currentDate))
 
   /** Навигация **/

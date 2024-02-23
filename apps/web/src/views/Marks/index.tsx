@@ -12,6 +12,7 @@ import MarksByGroup from './MarksByGroup'
 import Summary from './Summary'
 import UserInfo from './UserInfo'
 import { formatStatisticsData } from './helpers.ts'
+import { Nullable } from '@types'
 
 const Marks: FC<{ id: string }> = ({ id }) => {
   const [isLoading, setIsLoading] = useState<boolean>(false)
@@ -20,14 +21,12 @@ const Marks: FC<{ id: string }> = ({ id }) => {
   const [rateSnackbar, handleRateLimitExceeded] = useRateLimitExceeded()
 
   const [marksForSubject, setMarksForSubject] =
-    useState<PerformanceCurrent | null>(null)
-  const [totalNumberOfMarks, setTotalNumberOfMarks] = useState<number | null>(
-    null
-  )
-  const [averageMark, setAverageMark] = useState<number | null>(null)
-  const [markCounts, setMarkCounts] = useState<Record<number, number> | null>(
-    null
-  )
+    useState<Nullable<PerformanceCurrent>>(null)
+  const [totalNumberOfMarks, setTotalNumberOfMarks] =
+    useState<Nullable<number>>(null)
+  const [averageMark, setAverageMark] = useState<Nullable<number>>(null)
+  const [markCounts, setMarkCounts] =
+    useState<Nullable<Record<number, number>>>(null)
 
   const saveStatisticsData = (marks: PerformanceCurrent) => {
     const data = formatStatisticsData(marks)
