@@ -6,10 +6,10 @@ import {
   FormItem,
   FormField,
   FormMessage,
-} from '@/components/ui/form'
-import { useToast } from '@/components/ui/toast'
-import { Input } from '@/components/ui/input'
-import { Button } from '@/components/ui/button'
+  Input,
+  Button,
+  useToast,
+} from '@/components'
 import { GithubLogoIcon } from '@radix-icons/vue'
 const { toast } = useToast()
 
