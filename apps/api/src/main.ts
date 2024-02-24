@@ -3,9 +3,9 @@ import { swagger } from '@elysiajs/swagger'
 import { Elysia } from 'elysia'
 import { helmet } from 'elysia-helmet'
 
+import { sequelize } from '@db'
 import routes from '@routes'
 import { compression } from 'elysia-compression'
-import { sequelize } from '@db'
 
 const port = Bun.env.PORT ?? 3003
 const app = new Elysia()

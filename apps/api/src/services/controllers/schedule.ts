@@ -1,5 +1,6 @@
 import { ApiError } from '@api'
 import { Day, Lesson } from '@diary-spo/shared'
+import { sequelize } from '../initDBConnection'
 import {
   GradebookModel,
   GradebookModelType,
@@ -22,18 +23,11 @@ import {
   IScheduleSubgroupModelType,
   ScheduleSubgroupModel
 } from '../models/scheduleSubgroup'
-import {
-  ISubgroupModelType,
-  SubgroupModel
-} from '../models/subgroup'
-import {
-  ISubjectModelType,
-  SubjectModel
-} from '../models/subject'
+import { ISubgroupModelType, SubgroupModel } from '../models/subgroup'
+import { ISubjectModelType, SubjectModel } from '../models/subject'
 import { IUserInfo, diaryUserGetFromId } from './diaryUser'
 import { GradebookSaveOrGet } from './gradebook'
 import { LessonSave } from './lesson'
-import { sequelize } from '../initDBConnection'
 
 export const ScheduleSave = async (day: Day, userId: number) => {
   const lessons = day.lessons ?? []
@@ -183,7 +177,6 @@ export const ScheduleGetFromDB = async (
   if (!user) {
     return null
   }
-
   const formatSchedules = await sequelize.query(
     /*sql*/ `SELECT 
 	json_build_object(

@@ -1,7 +1,7 @@
 import { cache, enableCache, sequelize } from '@db'
+import { LessonWorkType, LessonWorkTypeKeys } from '@diary-spo/shared'
 import { DataTypes } from 'sequelize'
 import { IModelPrototype } from './types'
-import { LessonWorkType, LessonWorkTypeKeys } from '@diary-spo/shared'
 
 export type TaskTypeModelType = {
   id: number
@@ -31,4 +31,6 @@ const taskTypeModel = sequelize.define<ITaskTypeModel>(
   }
 )
 
-export const TaskTypeModel =  enableCache ? cache.init<ITaskTypeModel>(taskTypeModel) : taskTypeModel
+export const TaskTypeModel = enableCache
+  ? cache.init<ITaskTypeModel>(taskTypeModel)
+  : taskTypeModel

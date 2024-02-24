@@ -30,4 +30,6 @@ const termTypeModel = sequelize.define<ITermTypeModel>(
   }
 )
 
-export const TermTypeModel =  enableCache ? cache.init<ITermTypeModel>(termTypeModel) : termTypeModel
+export const TermTypeModel = enableCache
+  ? cache.init<ITermTypeModel>(termTypeModel)
+  : termTypeModel

@@ -30,4 +30,6 @@ const subjectModel = sequelize.define<ISubjectModelType>(
   }
 )
 
-export const SubjectModel =  enableCache ? cache.init<ISubjectModelType>(subjectModel) : subjectModel
+export const SubjectModel = enableCache
+  ? cache.init<ISubjectModelType>(subjectModel)
+  : subjectModel

@@ -1,7 +1,7 @@
 import { cache, enableCache, sequelize } from '@db'
 import { DataTypes } from 'sequelize'
-import { IModelPrototype } from './types'
 import { SPOModel } from './SPO'
+import { IModelPrototype } from './types'
 
 // REMOVE IT
 export type ClassroomModelType = {
@@ -51,4 +51,6 @@ const classroomModel = sequelize.define<IClassroomModelType>(
   }
 )
 
-export const ClassroomModel =  enableCache ? cache.init<IClassroomModelType>(classroomModel) : classroomModel
+export const ClassroomModel = enableCache
+  ? cache.init<IClassroomModelType>(classroomModel)
+  : classroomModel

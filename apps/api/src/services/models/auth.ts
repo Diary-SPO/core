@@ -34,7 +34,7 @@ export const AuthModel = sequelize.define<IAuthModel>(
       unique: true
     },
     lastUsedDate: {
-      type: DataTypes.STRING(10),
+      type: DataTypes.DATEONLY,
       allowNull: false
     }
   },

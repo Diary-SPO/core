@@ -91,9 +91,13 @@ export const LessonSave = async (
     }
   }).catch((err) => {
     throw new Error(
-      `[${new Date().toISOString()}] => Ошибка сохранения Schedule. Входные данные: ${JSON.stringify(scheduleWhere)}, ${err}`
+      `[${new Date().toISOString()}] => Ошибка сохранения Schedule. Входные данные: ${JSON.stringify(
+        scheduleWhere
+      )}, ${err}`
     )
   })
+
+  console.log(scheduleWhere.date, schedule.date)
 
   if (subgroupId && schedule) {
     await ScheduleSubgroupSafeSave(schedule.id, user.id, subgroupId)

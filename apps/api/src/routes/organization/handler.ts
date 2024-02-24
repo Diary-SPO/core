@@ -1,11 +1,17 @@
 import { API_CODES, API_ERRORS, ApiError } from '@api'
 import { SERVER_URL } from '@config'
-import { DiaryUserModel, GroupModel, SPOModel, SPOModelType, getCookieFromToken } from '@db'
+import {
+  DiaryUserModel,
+  GroupModel,
+  SPOModel,
+  SPOModelType,
+  getCookieFromToken
+} from '@db'
 import type { Organization } from '@diary-spo/shared'
 import { HeadersWithCookie } from '@utils'
 import type { Context } from 'elysia'
-import { checkSameKeys } from 'src/services/helpers/checkDataForObject'
 import { Optional } from 'sequelize'
+import { checkSameKeys } from 'src/services/helpers/checkDataForObject'
 
 const getOrganization = async ({
   request
@@ -14,20 +20,23 @@ const getOrganization = async ({
   const path = `${SERVER_URL}/services/people/organization`
   const response = await fetch(path, {
     headers: HeadersWithCookie(authData.cookie)
-  }).then(res => res.json())
+  }).then((res) => res.json())
 
   if (response) {
+    /* Хотелось бы красиво по убыванию...
+     * Но тогда будут не красиво "скакать" поля при разных ответах (от дневника и из базы)
+     */
     const saveData: Optional<SPOModelType, 'id'> = {
-      actualAddress: response.actualAddress,
       abbreviation: response.abbreviation,
-      shortName: response.shortName,
-      email: response.email,
-      phone: response.phone,
       name: response.name,
+      shortName: response.shortName,
+      actualAddress: response.actualAddress,
+      email: response.email,
       site: response.site,
-      organizationId: response.organizationId,
+      phone: response.phone,
       type: response.type,
-      directorName: response.directorName
+      directorName: response.directorName,
+      organizationId: response.organizationId
     }
 
     // Тут сохраняем в фоне, чтобы не задерживать
@@ -40,33 +49,44 @@ const getOrganization = async ({
       }
     }).then(() => {
       if (record && !checkSameKeys(saveData, record)) {
-        SPOModel.update({...saveData}, {
-          where: {
-            organizationId: response.organizationId
+        SPOModel.update(
+          { ...saveData },
+          {
+            where: {
+              organizationId: response.organizationId
+            }
           }
-        })
+        )
       }
     })
 
     // Отдаём данные
     return saveData
   }
-  
+
   // Если дневник не доступен
-  const localData = (await SPOModel.findOne({
+  const localData = (
+    await SPOModel.findOne({
       where: {
         id: (
           await GroupModel.findByPk(
-            (await DiaryUserModel.findByPk(authData.localUserId))?.groupId
-          ))?.spoId
+            (
+              await DiaryUserModel.findByPk(authData.localUserId)
+            )?.groupId
+          )
+        )?.spoId
       },
       attributes: {
         exclude: ['id']
       }
-  }))?.toJSON()
+    })
+  )?.toJSON()
 
-  if (!localData){
-    throw new ApiError(API_ERRORS.DATA_NOT_FOUND, API_CODES.INTERNAL_SERVER_ERROR)
+  if (!localData) {
+    throw new ApiError(
+      API_ERRORS.DATA_NOT_FOUND,
+      API_CODES.INTERNAL_SERVER_ERROR
+    )
   }
 
   return localData

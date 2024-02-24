@@ -20,7 +20,9 @@ export const sequelize = new Sequelize({
   dialect: 'postgres',
   logging: errorLogger,
   logQueryParameters: true,
-  timezone: '00:00',
+  dialectOptions: {
+    useUTC: false
+  },
   pool: {
     max: 30,
     min: 1,
@@ -31,13 +33,13 @@ export const sequelize = new Sequelize({
 
 // Кешируем всё то, что почти не обновляется
 export const cache = new SequelizeSimpleCache({
-  absenceType: {ttl: 0},
-  classroom: {ttl: 0},
-  taskType: {ttl: 0},
-  termType: {ttl: 0},
-  lessonType: {ttl: 0},
-  subject: {ttl: 0},
-  markValue: {ttl: 0},
+  absenceType: { ttl: 0 },
+  classroom: { ttl: 0 },
+  taskType: { ttl: 0 },
+  termType: { ttl: 0 },
+  lessonType: { ttl: 0 },
+  subject: { ttl: 0 },
+  markValue: { ttl: 0 }
 })
 // Включить кеширование ?
 export const enableCache = false

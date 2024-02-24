@@ -1,7 +1,7 @@
 import { cache, enableCache, sequelize } from '@db'
+import { Grade, MarkKeys } from '@diary-spo/shared'
 import { DataTypes } from 'sequelize'
 import { IModelPrototype } from './types'
-import { Grade, MarkKeys } from '@diary-spo/shared'
 
 export type MarkValueModelType = {
   id: number
@@ -40,4 +40,6 @@ const markValueModel = sequelize.define<IMarkValueModelType>(
   }
 )
 
-export const MarkValueModel =  enableCache ? cache.init<IMarkValueModelType>(markValueModel) : markValueModel
+export const MarkValueModel = enableCache
+  ? cache.init<IMarkValueModelType>(markValueModel)
+  : markValueModel

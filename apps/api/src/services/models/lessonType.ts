@@ -1,7 +1,7 @@
 import { cache, enableCache, sequelize } from '@db'
+import { LessonType, LessonTypeKeys } from '@diary-spo/shared'
 import { DataTypes } from 'sequelize'
 import { IModelPrototype } from './types'
-import { LessonType, LessonTypeKeys } from '@diary-spo/shared'
 
 export type LessonTypeModelType = {
   id: number
@@ -31,4 +31,6 @@ const lessonTypeModel = sequelize.define<ILessonTypeModel>(
   }
 )
 
-export const LessonTypeModel =  enableCache ? cache.init<ILessonTypeModel>(lessonTypeModel) : lessonTypeModel
+export const LessonTypeModel = enableCache
+  ? cache.init<ILessonTypeModel>(lessonTypeModel)
+  : lessonTypeModel
