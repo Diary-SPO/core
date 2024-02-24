@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { h } from 'vue'
+import { ref } from 'vue'
 import {
   FormControl,
   FormLabel,
@@ -12,8 +12,15 @@ import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import { GithubLogoIcon } from '@radix-icons/vue'
 const { toast } = useToast()
-async function onSubmit(values: any) {
-  console.log(values)
+
+const formValues = ref({
+  login: '',
+  password: '',
+})
+
+async function onSubmit() {
+  console.log(formValues.value.password)
+
   toast({
     title: 'Scheduled: Catch up',
     description: 'Friday, February 10, 2023 at 5:57 PM',
@@ -24,27 +31,35 @@ async function onSubmit(values: any) {
 
 <template>
   <Form class="space-y-2" @submit.prevent="onSubmit">
-    <FormField v-slot="{ componentField }" name="name">
+    <FormField name="login">
       <FormItem>
-        <FormLabel>Name</FormLabel>
+        <FormLabel>Логин</FormLabel>
         <FormControl>
-          <Input type="text" placeholder="Your name" v-bind="componentField" />
+          <Input
+            type="text"
+            placeholder="Введите логин"
+            v-model="formValues.login"
+          />
         </FormControl>
         <FormMessage />
       </FormItem>
     </FormField>
 
-    <FormField v-slot="{ componentField }" name="name">
+    <FormField name="password">
       <FormItem>
-        <FormLabel>Name</FormLabel>
+        <FormLabel>Пароль</FormLabel>
         <FormControl>
-          <Input type="text" placeholder="Your name" v-bind="componentField" />
+          <Input
+            type="text"
+            placeholder="Введите пароль"
+            v-model="formValues.password"
+          />
         </FormControl>
         <FormMessage />
       </FormItem>
     </FormField>
 
-    <Button class="w-full" type="submit" @click.prevent="onSubmit">Вход</Button>
+    <Button class="w-full" type="submit">Вход</Button>
   </Form>
 
   <div class="relative">
@@ -55,8 +70,8 @@ async function onSubmit(values: any) {
       <span class="bg-background px-2 text-muted-foreground"> Или </span>
     </div>
   </div>
+
   <Button variant="outline" type="button">
-    <!--    <LucideSpinner v-if="isLoading" class="mr-2 h-4 w-4 animate-spin" />-->
     <GithubLogoIcon class="mr-2" />
     GitHub
   </Button>
