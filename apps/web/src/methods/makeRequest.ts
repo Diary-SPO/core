@@ -1,5 +1,6 @@
 import { BASE_URLS } from '@config'
 import { HTTP_STATUSES, ServerResponse } from '@types'
+import axios, {AxiosResponse} from 'axios'
 
 const makeRequest = async <T>(
   route: string,
@@ -8,23 +9,20 @@ const makeRequest = async <T>(
 ): Promise<ServerResponse<T>> => {
   const token = localStorage.getItem('token')
 
-  const controller = new AbortController()
+  const headers = {
+    'Content-Type': 'application/json;charset=UTF-8',
+    secret: token
+  }
 
   for (const BASE_URL of BASE_URLS) {
-    const url = `${BASE_URL}${route}`
-    const timeoutId = setTimeout(() => controller.abort(), 3000)
     try {
-      const response = await fetch(url, {
+      const response = await axios({
         method,
-        headers: {
-          'Content-Type': 'application/json;charset=UTF-8',
-          secret: token
-        },
-        body,
-        signal: controller.signal
+        url: `${BASE_URL}${route}`,
+        headers,
+        data: body,
+        timeout: 3000
       })
-
-      clearTimeout(timeoutId)
 
       /** В случае ошибки авторизации мы не делаем запрос на другой сервер, а сразу возвращаем ответ **/
       if (response.status === HTTP_STATUSES.UNAUTHORIZED) {
@@ -33,23 +31,17 @@ const makeRequest = async <T>(
 
       console.info('%c [makeRequest]', 'color: blueviolet', response)
 
-      /** В случае другой ошибки пытаемся получить ответ от другого сервера **/
-      if (!response.ok) {
-        continue
-      }
-
-      return (await response.json()) as T
+      return (await response.data()) as T
     } catch (err) {
       console.info('%c [makeRequest]', 'color: blueviolet', err)
-      /** В случае ошибки пытаемся получить ответ от другого сервера в следующей итерации **/
     }
   }
 
-  /** Если ни один сервер небыл верно обработан (ни успешной авторизации, ни ошибки) **/
+  /** Если ни один сервер не был обработан верно **/
   return new Response('', {
     status: 520,
     headers: { 'Content-Type': 'application/json' }
-  })
+  }) as unknown as AxiosResponse
 }
 
 export default makeRequest

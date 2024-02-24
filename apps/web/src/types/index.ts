@@ -3,6 +3,7 @@ import {
   AdditionalMarks,
   MarkKeys
 } from '@diary-spo/shared'
+import { AxiosResponse } from 'axios'
 
 export type Pages =
   | 'schedule'
@@ -17,7 +18,9 @@ export interface Storage {
   value: string
 }
 
-export type ServerResponse<T = unknown> = Promise<T | Response>
+export type ServerResponse<T = unknown> = Promise<
+  T | AxiosResponse<any, any>
+>
 
 export const HTTP_STATUSES = {
   /** Ошибка авторизации **/

@@ -7,7 +7,7 @@ import { VKUI_RED } from '@config'
 import { NotificationsResponse } from '@diary-spo/shared'
 import { useSnackbar } from '@hooks'
 import { Nullable } from '@types'
-import { handleResponse } from '@utils'
+import {handleResponse, isApiError} from '@utils'
 import { Icon28ErrorCircleOutline } from '@vkontakte/icons'
 import {
   Card,
@@ -53,7 +53,7 @@ const Notifications: FC<Props> = ({ id }) => {
       const ads = await getAds()
       handleResponse(ads, handleError, handleError, setLoading, showSnackbar)
 
-      if (ads instanceof Response) {
+      if (isApiError(ads)) {
         return
       }
 

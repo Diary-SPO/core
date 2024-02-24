@@ -1,7 +1,7 @@
 import { ErrorPlaceholder, PanelHeaderWithBack } from '@components'
 import { AcademicRecord, AttestationResponse } from '@diary-spo/shared'
 import { useRateLimitExceeded } from '@hooks'
-import { handleResponse } from '@utils'
+import { handleResponse, isApiError } from '@utils'
 import { Group, HorizontalScroll, Panel, Tabs, TabsItem } from '@vkontakte/vkui'
 import { FC } from 'preact/compat'
 import { useEffect, useState } from 'preact/hooks'
@@ -45,7 +45,7 @@ const Attestation: FC<Props> = ({ id }) => {
       )
 
       if (data instanceof Response) {
-        return
+        return undefined
       }
 
       return data
@@ -60,7 +60,7 @@ const Attestation: FC<Props> = ({ id }) => {
     if (selected === 'attestation') {
       const attestation = await fetchData(getAttestation)
 
-      if (!attestation.year) {
+      if (isApiError(attestation) || !('year' in attestation)) {
         return
       }
 
@@ -70,7 +70,7 @@ const Attestation: FC<Props> = ({ id }) => {
 
     const finalMarks = await fetchData(getFinalMarks)
 
-    if (!finalMarks.subjects.length) {
+    if (isApiError(finalMarks) || !('subjects' in finalMarks)) {
       return
     }
 

@@ -1,5 +1,5 @@
 import { expect, it } from 'bun:test'
-import { formatDateForRequest } from '../helpers.ts'
+import { formatDateForRequest } from '../index.ts'
 
 /** formatDateForRequest **/
 it('должна форматировать объект Date в строку', () => {

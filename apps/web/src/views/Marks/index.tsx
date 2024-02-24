@@ -3,7 +3,7 @@ import { THIRD_SEC, VKUI_ACCENT_BG, VKUI_RED } from '@config'
 import { PerformanceCurrent } from '@diary-spo/shared'
 import { useRateLimitExceeded, useSnackbar } from '@hooks'
 import { Nullable } from '@types'
-import { handleResponse } from '@utils'
+import {handleResponse, isApiError} from '@utils'
 import { Icon28ErrorCircleOutline, Icon28InfoCircle } from '@vkontakte/icons'
 import { Group, Panel, PanelSpinner, PullToRefresh } from '@vkontakte/vkui'
 import { FC } from 'preact/compat'
@@ -92,7 +92,7 @@ const Marks: FC<Props> = ({ id }) => {
         false
       )
 
-      if (!('daysWithMarksForSubject' in marks)) {
+      if (isApiError(marks) || !('daysWithMarksForSubject' in marks)) {
         localStorage.removeItem('savedMarks')
         return
       }

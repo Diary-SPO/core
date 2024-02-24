@@ -2,7 +2,7 @@ import { ErrorPlaceholder, PanelHeaderWithBack, Suspense } from '@components'
 import { Day } from '@diary-spo/shared'
 import { useRateLimitExceeded, useSnackbar } from '@hooks'
 import { Nullable } from '@types'
-import { handleResponse } from '@utils'
+import {handleResponse, isApiError} from '@utils'
 import {
   useActiveVkuiLocation,
   useRouteNavigator
@@ -68,7 +68,7 @@ const Schedule: FC<Props> = ({ id }) => {
         showSnackbar
       )
 
-      if (data instanceof Response) {
+      if (isApiError(data)) {
         return
       }
 

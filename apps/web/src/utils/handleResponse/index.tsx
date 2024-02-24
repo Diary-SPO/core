@@ -2,6 +2,7 @@ import { VKUI_RED } from '@config'
 import { SnackbarData } from '@hooks'
 import { HTTP_STATUSES } from '@types'
 import { Icon28ErrorCircleOutline } from '@vkontakte/icons'
+import {isApiError} from "../isApiError";
 
 /**
  * Функция 'handleResponse' обрабатывает различные негативные сценарии ответа после запроса.
@@ -10,7 +11,7 @@ import { Icon28ErrorCircleOutline } from '@vkontakte/icons'
 
 export const handleResponse = <T extends object>(
   /** Ответ от сервера **/
-  response: Response | T,
+  response: T,
   /** Функция, вызываемая при ошибке **/
   errorCallback?: () => void,
   /** Функция, вызываемая достижении rate limit **/
@@ -23,7 +24,7 @@ export const handleResponse = <T extends object>(
   shouldCallErrorIfFatal = true,
   /** Надо ли вызывать errorCallback при 401 ошибке **/
   shouldCallErrorIfUnauth = false
-): undefined | T => {
+): T => {
   console.log('%c[handleResponse]', 'color: green', response)
 
   /**
@@ -31,7 +32,7 @@ export const handleResponse = <T extends object>(
    *
    * P.S. В "хорошем" ответе нет поля statusText, а только нужные данные
    */
-  if (!(response instanceof Response) || !('statusText' in response)) {
+  if (!(response instanceof Response) || !isApiError(response)) {
     loadingCallback(false)
 
     return response
