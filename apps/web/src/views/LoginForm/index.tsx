@@ -1,29 +1,28 @@
-import { ResponseLogin } from '@diary-spo/types'
 import {
   Icon28DoorArrowLeftOutline,
   Icon28ErrorCircleOutline
 } from '@vkontakte/icons'
 import { useRouteNavigator } from '@vkontakte/vk-mini-apps-router'
 import {
-  Button,
+  Button, Div,
   FormItem,
   FormStatus,
   Group,
-  Input,
+  Input, Link,
   Panel
 } from '@vkontakte/vkui'
 import { ChangeEvent, FC } from 'preact/compat'
 import { useEffect, useState } from 'preact/hooks'
 
-import { PanelHeaderWithBack } from '@components'
-import { VKUI_RED } from '@config'
-import { useSnackbar } from '@hooks'
 import { Hashes } from '@libs'
-import { loginPattern } from '@types'
-import {handleResponse, isApiError} from '@utils'
-import { postLogin } from '../methods'
-import { VIEW_SCHEDULE } from '../routes'
-import { Props } from './types.ts'
+import { PanelHeaderWithBack } from '@components'
+import {ADMIN_PAGE, VKUI_RED} from '@config'
+import { useSnackbar } from '@hooks'
+import { handleResponse, isApiError } from '@utils'
+import { postLogin } from '../../methods'
+import { VIEW_SCHEDULE } from '../../routes'
+import { Props } from '../types.ts'
+import { saveData, loginPattern } from './helpers'
 
 const LoginForm: FC<Props> = ({ id }) => {
   const routeNavigator = useRouteNavigator()
@@ -76,9 +75,9 @@ const LoginForm: FC<Props> = ({ id }) => {
 
     const passwordHashed = await Hashes.SHA256.b64(password)
 
-    const response = postLogin(login, passwordHashed, true)
+    const response = await postLogin(login, passwordHashed, true)
 
-    const data = await handleResponse(
+    const data = handleResponse(
       response,
       () => setIsDataInvalid(true),
       undefined,
@@ -127,6 +126,7 @@ const LoginForm: FC<Props> = ({ id }) => {
       Мы бережно передаем ваши данные и храним в зашифрованном виде
     </FormStatus>
   )
+
   const status = isLoginEmpty
     ? 'default'
     : loginPattern.test(login)
@@ -143,85 +143,67 @@ const LoginForm: FC<Props> = ({ id }) => {
         <form method='post' onSubmit={handleLogin}>
           {/*//@ts-ignore типы React не совсем совместимы с Preact*/}
           <FormItem
-            required
-            htmlFor='userLogin'
-            top='Логин'
-            status={status}
-            bottom={isLoginEmpty || loginTopText}
-            bottomId='login-type'
+              required
+              htmlFor='userLogin'
+              top='Логин'
+              status={status}
+              bottom={isLoginEmpty || loginTopText}
+              bottomId='login-type'
           >
             <Input
-              //@ts-ignore типы React не совсем совместимы с Preact
-              required
-              aria-labelledby='login-type'
-              id='userLogin'
-              type='text'
-              name='login'
-              placeholder='Введите логин'
-              value={login}
-              onChange={onChange}
+                //@ts-ignore типы React не совсем совместимы с Preact
+                required
+                aria-labelledby='login-type'
+                id='userLogin'
+                type='text'
+                name='login'
+                placeholder='Введите логин'
+                value={login}
+                onChange={onChange}
             />
           </FormItem>
           {/*//@ts-ignore типы React не совсем совместимы с Preact*/}
           <FormItem
-            top='Пароль'
-            htmlFor='pass'
-            status={
-              isPasswordEmpty ? 'default' : isPasswordValid ? 'valid' : 'error'
-            }
-            bottom={isPasswordEmpty || passwordTopText}
+              top='Пароль'
+              htmlFor='pass'
+              status={
+                isPasswordEmpty ? 'default' : isPasswordValid ? 'valid' : 'error'
+              }
+              bottom={isPasswordEmpty || passwordTopText}
           >
             <Input
-              //@ts-ignore типы React не совсем совместимы с Preact
-              name='password'
-              id='pass'
-              type='password'
-              placeholder='Введите пароль'
-              onChange={onChange}
+                //@ts-ignore типы React не совсем совместимы с Preact
+                name='password'
+                id='pass'
+                type='password'
+                placeholder='Введите пароль'
+                onChange={onChange}
             />
           </FormItem>
           {/*//@ts-ignore типы React не совсем совместимы с Preact*/}
           <FormItem>
             {/*//@ts-ignore типы React не совсем совместимы с Preact*/}
             <Button
-              type='submit'
-              size='l'
-              stretched
-              onClick={handleLogin}
-              disabled={isDisabled}
-              before={<Icon28DoorArrowLeftOutline />}
+                type='submit'
+                size='l'
+                stretched
+                onClick={handleLogin}
+                disabled={isDisabled}
+                before={<Icon28DoorArrowLeftOutline/>}
             >
               {isLoading ? 'Пытаюсь войти...' : 'Войти'}
             </Button>
+
           </FormItem>
+          <Div>
+            {/*//@ts-ignore Типы не совместимы*/}
+            <Link href={ADMIN_PAGE}>Портал администратора</Link>
+          </Div>
         </form>
         {snackbar}
       </Group>
     </Panel>
   )
-}
-
-const saveData = (basePath: ResponseLogin) => {
-  const userId = String(basePath.id)
-  const token = basePath.token
-  const name = `${String(basePath.lastName)} ${String(
-    basePath.firstName
-  )} ${String(basePath.middleName)}`
-  const org = String(basePath.organization?.abbreviation)
-  const city = String(basePath.organization?.addressSettlement)
-  const group = String(basePath?.groupName)
-
-  localStorage.setItem('id', userId)
-  localStorage.setItem('token', token)
-
-  const userData = {
-    name,
-    org,
-    city,
-    group
-  }
-
-  localStorage.setItem('data', JSON.stringify(userData))
 }
 
 export default LoginForm

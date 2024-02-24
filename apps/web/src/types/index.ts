@@ -31,8 +31,6 @@ export const HTTP_STATUSES = {
   INTERNAL: 500
 } as const
 
-export const loginPattern = /^[a-zA-Z0-9а-яА-ЯёЁ-]+$/
-
 export type ReturnedMark =
   | MarkKeys
   | AbsenceTypesDescriptionKeys

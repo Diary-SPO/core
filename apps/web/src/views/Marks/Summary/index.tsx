@@ -12,10 +12,6 @@ const Summary: FC<ISummary> = ({
   totalNumberOfMarks,
   averageMark
 }) => {
-  if (!markCounts) {
-    return
-  }
-
   return (
     <Group
       header={

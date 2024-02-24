@@ -32,9 +32,10 @@ export const handleResponse = <T extends object>(
    *
    * P.S. В "хорошем" ответе нет поля statusText, а только нужные данные
    */
-  if (!(response instanceof Response) || !isApiError(response)) {
+  if (!isApiError(response)) {
     loadingCallback(false)
-
+    console.log('good')
+    console.log(response)
     return response
   }
 
