@@ -7,7 +7,7 @@ import {
   FormField,
   FormMessage,
 } from '@/components/ui/form'
-import {useToast} from '@/components/ui/toast'
+import { useToast } from '@/components/ui/toast'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import { GithubLogoIcon } from '@radix-icons/vue'
@@ -17,7 +17,8 @@ async function onSubmit(values: any) {
   toast({
     title: 'Scheduled: Catch up',
     description: 'Friday, February 10, 2023 at 5:57 PM',
-  });
+    duration: 2000,
+  })
 }
 </script>
 
@@ -44,7 +45,6 @@ async function onSubmit(values: any) {
     </FormField>
 
     <Button class="w-full" type="submit" @click.prevent="onSubmit">Вход</Button>
-
   </Form>
 
   <div class="relative">
