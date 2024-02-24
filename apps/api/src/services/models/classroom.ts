@@ -1,8 +1,9 @@
 import { cache, enableCache, sequelize } from '@db'
 import { DataTypes } from 'sequelize'
-import { SPOModel } from './SPO'
 import { IModelPrototype } from './types'
+import { SPOModel } from './SPO'
 
+// REMOVE IT
 export type ClassroomModelType = {
   id: number
   building: string

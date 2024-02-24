@@ -277,7 +277,7 @@ order by "date"
     for (const dayDB of days) {
       if (dayDB.date === day.toISOString().split('T')[0]) {
         // Сортируем по дате начала пары
-        dayDB.lessons.sort((a, b) => a.startTime > b.startTime? 1 : -1)
+        dayDB.lessons.sort((a, b) => (a.startTime > b.startTime ? 1 : -1))
         formatDays.push(dayDB)
         isSearch = true
         break

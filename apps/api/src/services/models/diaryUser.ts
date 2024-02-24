@@ -6,6 +6,7 @@ import { DataTypes } from 'sequelize'
 import { GroupModel } from './group'
 import { IModelPrototype } from './types'
 
+// REMOVE IT
 export type DiaryUserModelType = {
   id: number
   groupId: number

@@ -1,10 +1,11 @@
 import { sequelize } from '@db'
 import { DataTypes } from 'sequelize'
 import { IModelPrototype } from './types'
+import { ExaminationKeys, Examinations } from '@diary-spo/shared'
 
 export type ExaminationTypeModelType = {
   id: number
-  name: string
+  name: ExaminationKeys
 }
 
 export type IExaminationTypeModel = IModelPrototype<
@@ -21,7 +22,7 @@ export const ExaminationTypeModel = sequelize.define<IExaminationTypeModel>(
       primaryKey: true
     },
     name: {
-      type: DataTypes.STRING,
+      type: DataTypes.ENUM(...Object.keys(Examinations)),
       allowNull: false
     }
   },
