@@ -1,24 +1,22 @@
 import { Subject } from '@diary-spo/shared'
-import { Nullable } from '@types'
 import { FunctionalComponent } from 'preact'
-import LoadingData from './LoadingData'
+
+import { Nullable } from '@types'
 import SubjectGroup from './SubjectGroup'
 
 interface ISubjectList {
   semesters: Record<string, Subject[]>
   studentName: Nullable<string>
   year: Nullable<number>
-  isDataLoading: boolean
 }
 
 const SubjectList: FunctionalComponent<ISubjectList> = ({
   semesters,
   studentName,
-  year,
-  isDataLoading
+  year
 }) => {
-  if (isDataLoading) {
-    return <LoadingData />
+  if (!semesters) {
+    return
   }
 
   return (

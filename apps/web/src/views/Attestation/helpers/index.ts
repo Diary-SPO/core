@@ -3,6 +3,10 @@ import { Nullable } from '@types'
 
 // TODO: add tests
 export const processAttestationData = (data: Nullable<AttestationResponse>) => {
+  if (!data) {
+    return
+  }
+
   const student = data?.students[0]
 
   const semesters: Record<string, Subject[]> = {}

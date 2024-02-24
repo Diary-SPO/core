@@ -1,17 +1,22 @@
 import { ErrorPlaceholder, PanelHeaderWithBack } from '@components'
 import { AcademicRecord, AttestationResponse } from '@diary-spo/shared'
-import { useRateLimitExceeded } from '@hooks'
-import { handleResponse, isApiError } from '@utils'
 import { Group, HorizontalScroll, Panel, Tabs, TabsItem } from '@vkontakte/vkui'
 import { FC } from 'preact/compat'
 import { useEffect, useState } from 'preact/hooks'
-import { getAttestation, getFinalMarks } from '../../methods'
 
+import { getAttestation, getFinalMarks } from '../../methods'
+import { handleResponse, isApiError } from '@utils'
+import { useRateLimitExceeded } from '@hooks'
 import { Nullable } from '@types'
 import { Props } from '../types.ts'
+import { processAttestationData } from './helpers'
+
 import FinalMarks from './FinalMarks'
 import SubjectList from './SubjectsList'
-import { processAttestationData } from './helpers'
+
+import LoadingData from './LoadingData.tsx'
+
+type Tabs = 'finalMarks' | 'attestation'
 
 const Attestation: FC<Props> = ({ id }) => {
   const [isError, setIsError] = useState<boolean>(false)
@@ -21,16 +26,13 @@ const Attestation: FC<Props> = ({ id }) => {
     useState<Nullable<AttestationResponse>>(null)
   const [finalMarksData, setFinalMarksData] =
     useState<Nullable<AcademicRecord>>(null)
-  const [selected, setSelected] = useState<'finalMarks' | 'attestation'>(
-    'attestation'
-  )
+  const [selected, setSelected] = useState<Tabs>('attestation')
 
-  const { semesters, studentName, year } =
-    processAttestationData(attestationData)
+  const data = processAttestationData(attestationData)
 
   const fetchData = async <T extends object, U>(
-    fetchFunction: (...args: U[]) => Promise<T | Response>
-  ): Promise<T | undefined> => {
+    fetchFunction: (...args: U[]) => Promise<T>
+  ): Promise<T> => {
     setIsLoading(true)
     setIsError(false)
 
@@ -44,12 +46,13 @@ const Attestation: FC<Props> = ({ id }) => {
         setIsLoading
       )
 
-      if (data instanceof Response) {
-        return undefined
+      if (isApiError(data)) {
+        setIsError(true)
+        return
       }
 
       return data
-    } catch (error) {
+    } catch {
       setIsError(true)
     } finally {
       setIsLoading(false)
@@ -106,14 +109,14 @@ const Attestation: FC<Props> = ({ id }) => {
 
         {selected === 'attestation' ? (
           <SubjectList
-            isDataLoading={isDataLoading}
-            semesters={semesters}
-            studentName={studentName}
-            year={year}
+            semesters={data?.semesters}
+            studentName={data?.studentName}
+            year={data?.year}
           />
         ) : (
-          <FinalMarks isDataLoading={isDataLoading} data={finalMarksData} />
+          <FinalMarks data={finalMarksData} />
         )}
+        {isDataLoading && <LoadingData />}
 
         {isError && <ErrorPlaceholder />}
       </Group>

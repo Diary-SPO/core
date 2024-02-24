@@ -2,7 +2,7 @@ import { VKUI_RED } from '@config'
 import { SnackbarData } from '@hooks'
 import { HTTP_STATUSES } from '@types'
 import { Icon28ErrorCircleOutline } from '@vkontakte/icons'
-import {isApiError} from "../isApiError";
+import { isApiError } from '../isApiError'
 
 /**
  * Функция 'handleResponse' обрабатывает различные негативные сценарии ответа после запроса.

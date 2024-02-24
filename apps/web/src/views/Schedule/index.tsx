@@ -2,7 +2,7 @@ import { ErrorPlaceholder, PanelHeaderWithBack, Suspense } from '@components'
 import { Day } from '@diary-spo/shared'
 import { useRateLimitExceeded, useSnackbar } from '@hooks'
 import { Nullable } from '@types'
-import {handleResponse, isApiError} from '@utils'
+import { handleResponse, isApiError } from '@utils'
 import {
   useActiveVkuiLocation,
   useRouteNavigator

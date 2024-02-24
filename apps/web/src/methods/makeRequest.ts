@@ -1,6 +1,6 @@
 import { BASE_URLS } from '@config'
 import { HTTP_STATUSES, ServerResponse } from '@types'
-import axios, {AxiosResponse} from 'axios'
+import axios, { AxiosResponse } from 'axios'
 
 const makeRequest = async <T>(
   route: string,

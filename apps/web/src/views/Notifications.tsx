@@ -7,7 +7,7 @@ import { VKUI_RED } from '@config'
 import { NotificationsResponse } from '@diary-spo/shared'
 import { useSnackbar } from '@hooks'
 import { Nullable } from '@types'
-import {handleResponse, isApiError} from '@utils'
+import { handleResponse, isApiError } from '@utils'
 import { Icon28ErrorCircleOutline } from '@vkontakte/icons'
 import {
   Card,
