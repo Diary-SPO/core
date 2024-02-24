@@ -1,15 +1,16 @@
-import { sequelize } from '@db'
+import { cache, enableCache, sequelize } from '@db'
+import { Grade, MarkKeys } from '@diary-spo/shared'
 import { DataTypes } from 'sequelize'
 import { IModelPrototype } from './types'
 
 export type MarkValueModelType = {
   id: number
-  value: string
+  value: MarkKeys
 }
 
 export type IMarkValueModelType = IModelPrototype<MarkValueModelType, 'id'>
 
-export const MarkValueModel = sequelize.define<IMarkValueModelType>(
+const markValueModel = sequelize.define<IMarkValueModelType>(
   'markValue',
   {
     id: {
@@ -18,8 +19,17 @@ export const MarkValueModel = sequelize.define<IMarkValueModelType>(
       autoIncrement: true
     },
     value: {
-      type: DataTypes.STRING(35),
-      allowNull: false
+      type: DataTypes.ENUM(...Object.keys(Grade)),
+      allowNull: false,
+      set(value: string) {
+        if (!Object.keys(Grade).includes(value)) {
+          console.warn(
+            `Предупреждение: значение ${value} не присутствует в перечислении Grade`
+          )
+        }
+
+        this.setDataValue('value', value as MarkKeys)
+      }
     }
   },
   {
@@ -29,3 +39,7 @@ export const MarkValueModel = sequelize.define<IMarkValueModelType>(
     updatedAt: false
   }
 )
+
+export const MarkValueModel = enableCache
+  ? cache.init<IMarkValueModelType>(markValueModel)
+  : markValueModel

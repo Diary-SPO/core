@@ -6,6 +6,7 @@ import { DataTypes } from 'sequelize'
 import { GroupModel } from './group'
 import { IModelPrototype } from './types'
 
+// REMOVE IT
 export type DiaryUserModelType = {
   id: number
   groupId: number
@@ -65,7 +66,7 @@ export const DiaryUserModel = sequelize.define<IDiaryUserModel>(
       comment: 'Номер телефона пользователя из Сетевого города'
     },
     birthday: {
-      type: DataTypes.DATE,
+      type: DataTypes.DATEONLY,
       allowNull: false,
       comment: 'Дата рождения пользователя из Сетевого города'
     },
@@ -97,7 +98,7 @@ export const DiaryUserModel = sequelize.define<IDiaryUserModel>(
       }
     },
     cookieLastDateUpdate: {
-      type: DataTypes.DATE,
+      type: DataTypes.DATEONLY,
       allowNull: false,
       defaultValue: formatDate(new Date().toISOString()), // Текущая дата по умолчанию
       comment:

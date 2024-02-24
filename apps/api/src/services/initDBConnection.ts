@@ -8,6 +8,7 @@ import {
 import { error } from '@utils'
 import { exit } from 'process'
 import { Sequelize } from 'sequelize'
+import SequelizeSimpleCache from 'sequelize-simple-cache'
 import { errorLogger } from 'src/utils/errorLogger'
 
 export const sequelize = new Sequelize({
@@ -19,7 +20,9 @@ export const sequelize = new Sequelize({
   dialect: 'postgres',
   logging: errorLogger,
   logQueryParameters: true,
-  timezone: '00:00',
+  dialectOptions: {
+    useUTC: false
+  },
   pool: {
     max: 30,
     min: 1,
@@ -27,6 +30,19 @@ export const sequelize = new Sequelize({
     idle: 10000 // К-ство миллисекунд, прежде чем освободить "неактивное" соединение (время ожидания)
   }
 })
+
+// Кешируем всё то, что почти не обновляется
+export const cache = new SequelizeSimpleCache({
+  absenceType: { ttl: 0 },
+  classroom: { ttl: 0 },
+  taskType: { ttl: 0 },
+  termType: { ttl: 0 },
+  lessonType: { ttl: 0 },
+  subject: { ttl: 0 },
+  markValue: { ttl: 0 }
+})
+// Включить кеширование ?
+export const enableCache = false
 
 try {
   await sequelize.authenticate()

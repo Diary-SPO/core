@@ -275,11 +275,11 @@ export const Examinations: Record<ExaminationKeys, string> = {
   Other: 'Др. форма контроля'
 }
 
-export type ExaminationType = keyof typeof Examinations
+// export type ExaminationType = keyof typeof Examinations
 export type TermType = 'Semester'
 
 export interface Subject {
-  examinationType?: ExaminationType
+  examinationType?: ExaminationKeys
   marks: Record<string, number | string>
   name: string
   id: number

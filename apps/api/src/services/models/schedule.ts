@@ -12,7 +12,7 @@ export type ScheduleModelType = {
   groupId: number
   teacherId: number | null
   subjectId: number | null
-  date: Date
+  date: Date | string
   startTime: string
   endTime: string
   classroomId: number
@@ -54,7 +54,7 @@ export const ScheduleModel = sequelize.define<IScheduleModel>(
       }
     },
     date: {
-      type: DataTypes.DATE,
+      type: DataTypes.DATEONLY,
       allowNull: false
     },
     startTime: {

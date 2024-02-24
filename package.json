@@ -32,5 +32,8 @@
     "husky": "^9.0.11",
     "lint-staged": "^15.1.0",
     "typescript": "latest"
+  },
+  "dependencies": {
+    "sequelize-simple-cache": "^1.3.4"
   }
 }

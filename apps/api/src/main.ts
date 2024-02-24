@@ -3,6 +3,7 @@ import { swagger } from '@elysiajs/swagger'
 import { Elysia } from 'elysia'
 import { helmet } from 'elysia-helmet'
 
+import { sequelize } from '@db'
 import routes from '@routes'
 import { compression } from 'elysia-compression'
 
@@ -44,3 +45,5 @@ console.log(
 const workerURL = new URL('worker', import.meta.url).href
 new Worker(workerURL)
 console.log('Worker running!')
+
+// sequelize.sync({logging: true})

@@ -1,15 +1,16 @@
-import { sequelize } from '@db'
+import { cache, enableCache, sequelize } from '@db'
+import { LessonType, LessonTypeKeys } from '@diary-spo/shared'
 import { DataTypes } from 'sequelize'
 import { IModelPrototype } from './types'
 
 export type LessonTypeModelType = {
   id: number
-  name: string
+  name: LessonTypeKeys
 }
 
 export type ILessonTypeModel = IModelPrototype<LessonTypeModelType, 'id'>
 
-export const LessonTypeModel = sequelize.define<ILessonTypeModel>(
+const lessonTypeModel = sequelize.define<ILessonTypeModel>(
   'lessonType',
   {
     id: {
@@ -18,7 +19,7 @@ export const LessonTypeModel = sequelize.define<ILessonTypeModel>(
       primaryKey: true
     },
     name: {
-      type: DataTypes.STRING(25),
+      type: DataTypes.ENUM(...Object.keys(LessonType)),
       allowNull: false
     }
   },
@@ -29,3 +30,7 @@ export const LessonTypeModel = sequelize.define<ILessonTypeModel>(
     updatedAt: false
   }
 )
+
+export const LessonTypeModel = enableCache
+  ? cache.init<ILessonTypeModel>(lessonTypeModel)
+  : lessonTypeModel

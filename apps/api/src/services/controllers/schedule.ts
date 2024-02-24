@@ -1,6 +1,6 @@
 import { ApiError } from '@api'
-import { AbsenceType, Day, Lesson } from '@diary-spo/shared'
-import { Op } from 'sequelize'
+import { Day, Lesson } from '@diary-spo/shared'
+import { sequelize } from '../initDBConnection'
 import {
   GradebookModel,
   GradebookModelType,
@@ -11,11 +11,9 @@ import {
   RequiredModel,
   RequiredModelType,
   ScheduleModel,
-  ScheduleModelType,
   TaskModel,
   TaskTypeModelType,
   TeacherModel,
-  TeacherModelType,
   ThemeModel,
   ThemeModelType
 } from '../models'
@@ -23,25 +21,13 @@ import { AbsenceTypeModel, AbsenceTypeModelType } from '../models/absenceType'
 import { ClassroomModel, IClassroomModelType } from '../models/classroom'
 import {
   IScheduleSubgroupModelType,
-  ScheduleSubgroupModel,
-  ScheduleSubgroupModelType
+  ScheduleSubgroupModel
 } from '../models/scheduleSubgroup'
-import {
-  ISubgroupModelType,
-  SubgroupModel,
-  SubgroupModelType
-} from '../models/subgroup'
-import {
-  ISubjectModelType,
-  SubjectModel,
-  SubjectModelType
-} from '../models/subject'
+import { ISubgroupModelType, SubgroupModel } from '../models/subgroup'
+import { ISubjectModelType, SubjectModel } from '../models/subject'
 import { IUserInfo, diaryUserGetFromId } from './diaryUser'
 import { GradebookSaveOrGet } from './gradebook'
 import { LessonSave } from './lesson'
-import { sequelize } from '../initDBConnection'
-import lessons from 'src/routes/lessons'
-import { formatDate } from '@utils'
 
 export const ScheduleSave = async (day: Day, userId: number) => {
   const lessons = day.lessons ?? []
@@ -191,7 +177,6 @@ export const ScheduleGetFromDB = async (
   if (!user) {
     return null
   }
-
   const formatSchedules = await sequelize.query(
     /*sql*/ `SELECT 
 	json_build_object(
@@ -285,7 +270,7 @@ order by "date"
     for (const dayDB of days) {
       if (dayDB.date === day.toISOString().split('T')[0]) {
         // Сортируем по дате начала пары
-        dayDB.lessons.sort((a, b) => a.startTime > b.startTime? 1 : -1)
+        dayDB.lessons.sort((a, b) => (a.startTime > b.startTime ? 1 : -1))
         formatDays.push(dayDB)
         isSearch = true
         break
