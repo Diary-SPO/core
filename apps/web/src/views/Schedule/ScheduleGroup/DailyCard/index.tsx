@@ -69,7 +69,6 @@ const DailyCard: FC<IDailyCard> = ({ lesson }) => {
       : undefined
 
   const lessons = useMemo(() => {
-    console.log('Rendering lessons')
     return lesson.lessons.map((lesson) => (
       <LessonCell
         key={lesson.lessonId}

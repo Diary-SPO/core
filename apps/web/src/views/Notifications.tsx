@@ -95,7 +95,6 @@ const Notifications: FC<Props> = ({ id }) => {
     )
   }
 
-
   const notificationsList = notifications?.map(
     ({
       title,
@@ -147,11 +146,11 @@ const Notifications: FC<Props> = ({ id }) => {
   return (
     <Panel nav={id}>
       <PanelHeaderWithBack title='Объявления' />
-      <Div>
-        {notificationsList}
-      </Div>
+      <Div>{notificationsList}</Div>
 
-      {!notifications?.length && !isError && <Placeholder header='Объявлений нет' />}
+      {!notifications?.length && !isError && (
+        <Placeholder header='Объявлений нет' />
+      )}
       {isError && <ErrorPlaceholder onClick={() => fetchAds(true)} />}
       {snackbar}
     </Panel>
