@@ -8,6 +8,7 @@ import lessons from './lessons'
 import login from './login'
 import organization from './organization'
 import performanceCurrent from './performance.current'
+import oauthGitHub from './oauth/github'
 
 import { headersSchema } from '@utils'
 import { errorHandler } from './helpers'
@@ -26,6 +27,7 @@ const routes = new Elysia()
   /** Роуты без проверки **/
   .use(hello)
   .use(login)
+  .use(oauthGitHub)
   /** Обработка любых ошибок в кажом роуте **/
   .onError(errorHandler)
 

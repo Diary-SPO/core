@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "@radix-icons/vue": "^1.0.0",
+    "@vkid/sdk": "^1.1.0",
     "@vueuse/core": "^10.8.0",
     "class-variance-authority": "^0.7.0",
     "lucide-vue-next": "^0.338.0",

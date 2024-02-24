@@ -1,6 +1,7 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { onMounted, ref } from 'vue'
 import {
+  Form,
   FormControl,
   FormLabel,
   FormItem,
@@ -11,7 +12,11 @@ import {
   useToast,
 } from '@/components'
 import { GithubLogoIcon } from '@radix-icons/vue'
+import { useFetch } from '@vueuse/core'
+import { SERVER_URL } from '@/config'
+import { getGitHubUrl } from '@/utils/oauth/github'
 const { toast } = useToast()
+// import * as VKID from '@vkid/sdk';
 
 const formValues = ref({
   login: '',
@@ -27,9 +32,45 @@ async function onSubmit() {
     duration: 2000,
   })
 }
+
+onMounted(async () => {
+  const urlParams = new URLSearchParams(window.location.search)
+  const code = urlParams.get('code')
+
+  if (code) {
+    const { data } = await useFetch(`${SERVER_URL}/oauth/github`, {
+      method: 'POST',
+      body: JSON.stringify({
+        code,
+      }),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+
+    localStorage.setItem('data', JSON.stringify(data))
+    window.location.search = ''
+  }
+})
+// VKID.Config.set({
+//   app: 234,
+//   redirectUrl: 'https://example.com',
+// });
+//
+// const authButton = document.createElement('button');
+// authButton.textContent = 'asd'
+// authButton.onclick = () => {
+//   VKID.Auth.login(); // После авторизации будет редирект на адрес, указанный в параметре redirect_uri
+// };
+
+// document.getElementById('test')?.appendChild(authButton);
 </script>
 
 <template>
+  <div
+    id="test"
+    style="z-index: 300; position: relative; width: 300px; height: 100px"
+  ></div>
   <Form class="space-y-2" @submit.prevent="onSubmit">
     <FormField name="login">
       <FormItem>
@@ -71,7 +112,7 @@ async function onSubmit() {
     </div>
   </div>
 
-  <Button variant="outline" type="button">
+  <Button :href="getGitHubUrl('/')" variant="outline" as="a">
     <GithubLogoIcon class="mr-2" />
     GitHub
   </Button>

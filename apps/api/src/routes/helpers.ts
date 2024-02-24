@@ -15,6 +15,7 @@ export const errorHandler: ErrorHandler = ({
   error,
   path
 }): ErrorResponse => {
+  errorLog(error)
   errorLog(error.message)
 
   /**

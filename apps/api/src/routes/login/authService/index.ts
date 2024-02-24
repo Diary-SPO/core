@@ -9,9 +9,9 @@ import {
   SPOModel,
   generateToken
 } from '@db'
-import { type ResponseLogin } from '@db'
 import { encrypt } from '@diary-spo/sql'
 import { ResponseLoginFromDiaryUser } from '@types'
+import { ResponseLogin } from '@diary-spo/types'
 
 type DiaryUserAuthInfo = IDiaryUserModel & {
   group: IGroupModel & {
