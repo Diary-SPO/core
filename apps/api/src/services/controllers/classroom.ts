@@ -21,7 +21,7 @@ export const ClassroomSave = async (
     )
   })
 
-  if (!isCreated && checkSameKeys(classroom, record)) {
+  if (!isCreated && !checkSameKeys(classroom, record)) {
     return await record.update({
       ...classroom
     })

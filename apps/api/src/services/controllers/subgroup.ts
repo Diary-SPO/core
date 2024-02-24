@@ -20,7 +20,7 @@ export const SubgroupSaveOrGet = async (
     )
   })
 
-  if (!isCreated && checkSameKeys(subgroup, record)) {
+  if (!isCreated && !checkSameKeys(subgroup, record)) {
     return await record.update({
       ...subgroup
     })

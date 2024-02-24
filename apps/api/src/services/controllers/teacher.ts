@@ -21,7 +21,7 @@ export const TeacherSaveOrGet = async (
     )
   })
 
-  if (!isCreated && checkSameKeys(teacher, record)) {
+  if (!isCreated && !checkSameKeys(teacher, record)) {
     return await record.update({
       ...teacher
     })

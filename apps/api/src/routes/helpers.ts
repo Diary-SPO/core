@@ -47,6 +47,19 @@ export const errorHandler: ErrorHandler = ({
     }
   }
 
+  /** Запрошенная информация не найдена **/
+  if (
+    Number(code) === API_CODES.INTERNAL_SERVER_ERROR &&
+    error.message === API_ERRORS.DATA_NOT_FOUND
+  ) {
+    set.status = API_CODES.INTERNAL_SERVER_ERROR
+    return {
+      message: API_ERRORS.DATA_NOT_FOUND,
+      code: API_CODES.INTERNAL_SERVER_ERROR,
+      path
+    }
+  }
+
   /** Не валидные данные для авторизации **/
   if (Number(code) === API_CODES.UNAUTHORIZED) {
     set.status = API_CODES.UNAUTHORIZED
