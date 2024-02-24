@@ -52,21 +52,20 @@ const Notifications: FC<Props> = ({ id }) => {
 
       const ads = await getAds()
       handleResponse(ads, handleError, handleError, setLoading, showSnackbar)
+      console.log(isApiError(ads))
 
       if (isApiError(ads)) {
+        showSnackbar({
+          before: <Icon28ErrorCircleOutline fill={VKUI_RED} />,
+          title: 'Ошибка при попытке загрузить объявления',
+          action: 'Попробовать снова',
+          onActionClick: () => fetchAds(true)
+        })
         return
       }
 
       updateCache(ads)
       setNotifications(ads)
-    } catch (error) {
-      showSnackbar({
-        before: <Icon28ErrorCircleOutline fill={VKUI_RED} />,
-        title: 'Ошибка при попытке загрузить объявления',
-        action: 'Попробовать снова',
-        onActionClick: () => fetchAds(true)
-      })
-      console.error('Ошибка при получении объявлений:', error)
     } finally {
       setLoading(false)
     }
@@ -96,67 +95,64 @@ const Notifications: FC<Props> = ({ id }) => {
     )
   }
 
-  if (!notifications?.length) {
-    return <Placeholder header='Объявлений нет' />
-  }
+
+  const notificationsList = notifications?.map(
+    ({
+      title,
+      id: _id,
+      date,
+      isForEmployees,
+      isForParents,
+      isForStudents,
+      text
+    }) => (
+      <Group
+        key={_id}
+        description={
+          <div style={{ display: 'flex', gap: 10 }}>
+            {isForEmployees && (
+              <SubtitleWithBorder>Для работников</SubtitleWithBorder>
+            )}
+
+            {isForParents && (
+              <SubtitleWithBorder color='yellow-outline'>
+                Для родителей
+              </SubtitleWithBorder>
+            )}
+            {isForStudents && (
+              <SubtitleWithBorder color='green-outline'>
+                Для студентов
+              </SubtitleWithBorder>
+            )}
+          </div>
+        }
+        header={
+          <Header mode='tertiary'>{new Date(date).toLocaleDateString()}</Header>
+        }
+      >
+        <Card mode='shadow'>
+          <Div>
+            {/*//@ts-ignore типы React не совсем совместимы с Preact*/}
+            <Title level='3' Component='h3'>
+              {title}
+            </Title>
+            {/*//@ts-ignore типы React не совсем совместимы с Preact*/}
+            <Text>{text}</Text>
+          </Div>
+        </Card>
+      </Group>
+    )
+  )
 
   return (
     <Panel nav={id}>
       <PanelHeaderWithBack title='Объявления' />
       <Div>
-        {notifications?.map(
-          ({
-            title,
-            id: _id,
-            date,
-            isForEmployees,
-            isForParents,
-            isForStudents,
-            text
-          }) => (
-            <Group
-              key={_id}
-              description={
-                <div style={{ display: 'flex', gap: 10 }}>
-                  {isForEmployees && (
-                    <SubtitleWithBorder>Для работников</SubtitleWithBorder>
-                  )}
-                  {isForParents && (
-                    <SubtitleWithBorder color='yellow-outline'>
-                      Для родителей
-                    </SubtitleWithBorder>
-                  )}
-                  {isForStudents && (
-                    <SubtitleWithBorder color='green-outline'>
-                      Для студентов
-                    </SubtitleWithBorder>
-                  )}
-                </div>
-              }
-              header={
-                <Header mode='tertiary'>
-                  {new Date(date).toLocaleDateString()}
-                </Header>
-              }
-            >
-              <Card mode='shadow'>
-                <Div>
-                  {/*//@ts-ignore типы React не совсем совместимы с Preact*/}
-                  <Title level='3' Component='h3'>
-                    {title}
-                  </Title>
-                  {/*//@ts-ignore типы React не совсем совместимы с Preact*/}
-                  <Text>{text}</Text>
-                </Div>
-              </Card>
-            </Group>
-          )
-        )}
-
-        <Div>
-          {isError && <ErrorPlaceholder onClick={() => fetchAds(true)} />}
-        </Div>
+        {notificationsList}
       </Div>
+
+      {!notifications?.length && !isError && <Placeholder header='Объявлений нет' />}
+      {isError && <ErrorPlaceholder onClick={() => fetchAds(true)} />}
       {snackbar}
     </Panel>
   )
