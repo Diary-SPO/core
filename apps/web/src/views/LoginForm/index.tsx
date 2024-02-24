@@ -4,11 +4,13 @@ import {
 } from '@vkontakte/icons'
 import { useRouteNavigator } from '@vkontakte/vk-mini-apps-router'
 import {
-  Button, Div,
+  Button,
+  Div,
   FormItem,
   FormStatus,
   Group,
-  Input, Link,
+  Input,
+  Link,
   Panel
 } from '@vkontakte/vkui'
 import { ChangeEvent, FC } from 'preact/compat'
@@ -16,7 +18,7 @@ import { useEffect, useState } from 'preact/hooks'
 
 import { Hashes } from '@libs'
 import { PanelHeaderWithBack } from '@components'
-import {ADMIN_PAGE, VKUI_RED} from '@config'
+import { ADMIN_PAGE, VKUI_RED } from '@config'
 import { useSnackbar } from '@hooks'
 import { handleResponse, isApiError } from '@utils'
 import { postLogin } from '../../methods'
@@ -143,57 +145,56 @@ const LoginForm: FC<Props> = ({ id }) => {
         <form method='post' onSubmit={handleLogin}>
           {/*//@ts-ignore типы React не совсем совместимы с Preact*/}
           <FormItem
-              required
-              htmlFor='userLogin'
-              top='Логин'
-              status={status}
-              bottom={isLoginEmpty || loginTopText}
-              bottomId='login-type'
+            required
+            htmlFor='userLogin'
+            top='Логин'
+            status={status}
+            bottom={isLoginEmpty || loginTopText}
+            bottomId='login-type'
           >
             <Input
-                //@ts-ignore типы React не совсем совместимы с Preact
-                required
-                aria-labelledby='login-type'
-                id='userLogin'
-                type='text'
-                name='login'
-                placeholder='Введите логин'
-                value={login}
-                onChange={onChange}
+              //@ts-ignore типы React не совсем совместимы с Preact
+              required
+              aria-labelledby='login-type'
+              id='userLogin'
+              type='text'
+              name='login'
+              placeholder='Введите логин'
+              value={login}
+              onChange={onChange}
             />
           </FormItem>
           {/*//@ts-ignore типы React не совсем совместимы с Preact*/}
           <FormItem
-              top='Пароль'
-              htmlFor='pass'
-              status={
-                isPasswordEmpty ? 'default' : isPasswordValid ? 'valid' : 'error'
-              }
-              bottom={isPasswordEmpty || passwordTopText}
+            top='Пароль'
+            htmlFor='pass'
+            status={
+              isPasswordEmpty ? 'default' : isPasswordValid ? 'valid' : 'error'
+            }
+            bottom={isPasswordEmpty || passwordTopText}
           >
             <Input
-                //@ts-ignore типы React не совсем совместимы с Preact
-                name='password'
-                id='pass'
-                type='password'
-                placeholder='Введите пароль'
-                onChange={onChange}
+              //@ts-ignore типы React не совсем совместимы с Preact
+              name='password'
+              id='pass'
+              type='password'
+              placeholder='Введите пароль'
+              onChange={onChange}
             />
           </FormItem>
           {/*//@ts-ignore типы React не совсем совместимы с Preact*/}
           <FormItem>
             {/*//@ts-ignore типы React не совсем совместимы с Preact*/}
             <Button
-                type='submit'
-                size='l'
-                stretched
-                onClick={handleLogin}
-                disabled={isDisabled}
-                before={<Icon28DoorArrowLeftOutline/>}
+              type='submit'
+              size='l'
+              stretched
+              onClick={handleLogin}
+              disabled={isDisabled}
+              before={<Icon28DoorArrowLeftOutline />}
             >
               {isLoading ? 'Пытаюсь войти...' : 'Войти'}
             </Button>
-
           </FormItem>
           <Div>
             {/*//@ts-ignore Типы не совместимы*/}
