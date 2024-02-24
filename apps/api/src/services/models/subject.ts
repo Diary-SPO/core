@@ -1,4 +1,4 @@
-import { sequelize } from '@db'
+import { cache, enableCache, sequelize } from '@db'
 import { DataTypes } from 'sequelize'
 import { IModelPrototype } from './types'
 
@@ -9,7 +9,7 @@ export type SubjectModelType = {
 
 export type ISubjectModelType = IModelPrototype<SubjectModelType, 'id'>
 
-export const SubjectModel = sequelize.define<ISubjectModelType>(
+const subjectModel = sequelize.define<ISubjectModelType>(
   'subject',
   {
     id: {
@@ -18,7 +18,7 @@ export const SubjectModel = sequelize.define<ISubjectModelType>(
       autoIncrement: true
     },
     name: {
-      type: DataTypes.STRING(35),
+      type: DataTypes.STRING,
       allowNull: false
     }
   },
@@ -29,3 +29,5 @@ export const SubjectModel = sequelize.define<ISubjectModelType>(
     updatedAt: false
   }
 )
+
+export const SubjectModel =  enableCache ? cache.init<ISubjectModelType>(subjectModel) : subjectModel

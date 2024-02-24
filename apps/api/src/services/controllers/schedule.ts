@@ -1,6 +1,5 @@
 import { ApiError } from '@api'
-import { AbsenceType, Day, Lesson } from '@diary-spo/shared'
-import { Op } from 'sequelize'
+import { Day, Lesson } from '@diary-spo/shared'
 import {
   GradebookModel,
   GradebookModelType,
@@ -11,11 +10,9 @@ import {
   RequiredModel,
   RequiredModelType,
   ScheduleModel,
-  ScheduleModelType,
   TaskModel,
   TaskTypeModelType,
   TeacherModel,
-  TeacherModelType,
   ThemeModel,
   ThemeModelType
 } from '../models'
@@ -23,25 +20,20 @@ import { AbsenceTypeModel, AbsenceTypeModelType } from '../models/absenceType'
 import { ClassroomModel, IClassroomModelType } from '../models/classroom'
 import {
   IScheduleSubgroupModelType,
-  ScheduleSubgroupModel,
-  ScheduleSubgroupModelType
+  ScheduleSubgroupModel
 } from '../models/scheduleSubgroup'
 import {
   ISubgroupModelType,
-  SubgroupModel,
-  SubgroupModelType
+  SubgroupModel
 } from '../models/subgroup'
 import {
   ISubjectModelType,
-  SubjectModel,
-  SubjectModelType
+  SubjectModel
 } from '../models/subject'
 import { IUserInfo, diaryUserGetFromId } from './diaryUser'
 import { GradebookSaveOrGet } from './gradebook'
 import { LessonSave } from './lesson'
 import { sequelize } from '../initDBConnection'
-import lessons from 'src/routes/lessons'
-import { formatDate } from '@utils'
 
 export const ScheduleSave = async (day: Day, userId: number) => {
   const lessons = day.lessons ?? []

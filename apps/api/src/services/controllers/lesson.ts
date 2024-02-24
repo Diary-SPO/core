@@ -91,7 +91,9 @@ export const LessonSave = async (
     }
   }).catch((err) => 'ОШИБКА СОХРАНЕНИЯ SCHEDULE')
 
-  if (subgroupId) {
+  if (subgroupId && schedule) {
     await ScheduleSubgroupSafeSave(schedule.id, user.id, subgroupId)
+  } else {
+    console.log("Не удалось сохранить в БД schedule :/")
   }
 }

@@ -1,4 +1,4 @@
-import { sequelize } from '@db'
+import { cache, enableCache, sequelize } from '@db'
 import { DataTypes } from 'sequelize'
 import { IModelPrototype } from './types'
 
@@ -9,7 +9,7 @@ export type TermTypeModelType = {
 
 export type ITermTypeModel = IModelPrototype<TermTypeModelType, 'id'>
 
-export const TermTypeModel = sequelize.define<ITermTypeModel>(
+const termTypeModel = sequelize.define<ITermTypeModel>(
   'termType',
   {
     id: {
@@ -29,3 +29,5 @@ export const TermTypeModel = sequelize.define<ITermTypeModel>(
     updatedAt: false
   }
 )
+
+export const TermTypeModel =  enableCache ? cache.init<ITermTypeModel>(termTypeModel) : termTypeModel

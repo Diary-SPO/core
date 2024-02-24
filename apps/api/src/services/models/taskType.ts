@@ -1,4 +1,4 @@
-import { sequelize } from '@db'
+import { cache, enableCache, sequelize } from '@db'
 import { DataTypes } from 'sequelize'
 import { IModelPrototype } from './types'
 
@@ -9,7 +9,7 @@ export type TaskTypeModelType = {
 
 export type ITaskTypeModel = IModelPrototype<TaskTypeModelType, 'id'>
 
-export const TaskTypeModel = sequelize.define<ITaskTypeModel>(
+const taskTypeModel = sequelize.define<ITaskTypeModel>(
   'taskType',
   {
     id: {
@@ -29,3 +29,5 @@ export const TaskTypeModel = sequelize.define<ITaskTypeModel>(
     updatedAt: false
   }
 )
+
+export const TaskTypeModel =  enableCache ? cache.init<ITaskTypeModel>(taskTypeModel) : taskTypeModel

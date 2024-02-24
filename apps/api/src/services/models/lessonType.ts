@@ -1,4 +1,4 @@
-import { sequelize } from '@db'
+import { cache, enableCache, sequelize } from '@db'
 import { DataTypes } from 'sequelize'
 import { IModelPrototype } from './types'
 
@@ -9,7 +9,7 @@ export type LessonTypeModelType = {
 
 export type ILessonTypeModel = IModelPrototype<LessonTypeModelType, 'id'>
 
-export const LessonTypeModel = sequelize.define<ILessonTypeModel>(
+const lessonTypeModel = sequelize.define<ILessonTypeModel>(
   'lessonType',
   {
     id: {
@@ -29,3 +29,5 @@ export const LessonTypeModel = sequelize.define<ILessonTypeModel>(
     updatedAt: false
   }
 )
+
+export const LessonTypeModel =  enableCache ? cache.init<ILessonTypeModel>(lessonTypeModel) : lessonTypeModel

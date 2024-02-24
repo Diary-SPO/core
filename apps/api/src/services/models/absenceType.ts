@@ -1,4 +1,4 @@
-import { sequelize } from '@db'
+import { cache, enableCache, sequelize } from '@db'
 import { DataTypes } from 'sequelize'
 import { IModelPrototype } from './types'
 
@@ -9,7 +9,7 @@ export type AbsenceTypeModelType = {
 
 export type IAbsenceTypeModel = IModelPrototype<AbsenceTypeModelType, 'id'>
 
-export const AbsenceTypeModel = sequelize.define<IAbsenceTypeModel>(
+const absenceTypeModel = sequelize.define<IAbsenceTypeModel>(
   'absenceType',
   {
     id: {
@@ -29,3 +29,5 @@ export const AbsenceTypeModel = sequelize.define<IAbsenceTypeModel>(
     updatedAt: false
   }
 )
+
+export const AbsenceTypeModel =  enableCache ? cache.init<IAbsenceTypeModel>(absenceTypeModel) : absenceTypeModel

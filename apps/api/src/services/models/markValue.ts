@@ -1,4 +1,4 @@
-import { sequelize } from '@db'
+import { cache, enableCache, sequelize } from '@db'
 import { DataTypes } from 'sequelize'
 import { IModelPrototype } from './types'
 
@@ -9,7 +9,7 @@ export type MarkValueModelType = {
 
 export type IMarkValueModelType = IModelPrototype<MarkValueModelType, 'id'>
 
-export const MarkValueModel = sequelize.define<IMarkValueModelType>(
+const markValueModel = sequelize.define<IMarkValueModelType>(
   'markValue',
   {
     id: {
@@ -29,3 +29,5 @@ export const MarkValueModel = sequelize.define<IMarkValueModelType>(
     updatedAt: false
   }
 )
+
+export const MarkValueModel =  enableCache ? cache.init<IMarkValueModelType>(markValueModel) : markValueModel
