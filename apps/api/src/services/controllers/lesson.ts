@@ -76,7 +76,7 @@ export const LessonSave = async (
     teacherId,
     subjectId,
     classroomId,
-    date,
+    date: new Date(date).toISOString().split('T')[0], // Т.к. БД обрабатывает даты и приводит к формату гггг-мм-дд, то на вход нужно обработать также
     startTime: lesson.startTime,
     endTime: lesson.endTime,
     gradebookId
@@ -89,11 +89,13 @@ export const LessonSave = async (
     defaults: {
       ...scheduleWhere
     }
-  }).catch((err) => 'ОШИБКА СОХРАНЕНИЯ SCHEDULE')
+  }).catch((err) => {
+    throw new Error(
+      `[${new Date().toISOString()}] => Ошибка сохранения Schedule. Входные данные: ${JSON.stringify(scheduleWhere)}, ${err}`
+    )
+  })
 
   if (subgroupId && schedule) {
     await ScheduleSubgroupSafeSave(schedule.id, user.id, subgroupId)
-  } else {
-    console.log("Не удалось сохранить в БД schedule :/")
   }
 }
