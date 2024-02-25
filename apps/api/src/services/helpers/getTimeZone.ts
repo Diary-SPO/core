@@ -23,17 +23,17 @@ export const getTimezone = (timeZone: string | null): string => {
 
   if (timeZone === null) {
     console.log(
-      `Часовая зона не передана в конфигурационном файле. Будет использоваться автоматическое определение (с инверсией).`,
+      'Часовая зона не передана в конфигурационном файле. Будет использоваться автоматическое определение (с инверсией).',
       `\nБудет использоваться: '${resultTimeZone}'.`
-      )
-      return resultTimeZone
+    )
+    return resultTimeZone
   }
 
   if (resultTimeZone !== timeZone) {
     console.log(
-      `Часовая зона из .env не совпадает с фактической часовой зоной сервера.`,
+      'Часовая зона из .env не совпадает с фактической часовой зоной сервера.',
       `\nОжидалось: '${resultTimeZone}', получено из .env:'${timeZone}'.\nБудет использоваться: '${timeZone}'.`
-      )
+    )
   }
   return timeZone
 }

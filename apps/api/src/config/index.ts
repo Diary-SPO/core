@@ -1,7 +1,7 @@
 import fs from 'fs'
+import { getTimezone } from 'src/services/helpers/getTimeZone'
 import { PARAMS_INIT } from './params'
 import checkEnvVariables from './utils'
-import { getTimezone } from 'src/services/helpers/getTimeZone'
 
 if (!fs.existsSync('.env')) {
   throw new Error(

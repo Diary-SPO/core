@@ -39,24 +39,24 @@ export const LessonSave = async (
     )?.id ?? null
   const teacherId = tr
     ? (
-      await TeacherSaveOrGet({
-        lastName: tr.lastName,
-        firstName: tr.firstName,
-        middleName: tr.middleName,
-        idFromDiary: tr.id,
-        spoId: user.group.spoId
-      })
-    ).id
+        await TeacherSaveOrGet({
+          lastName: tr.lastName,
+          firstName: tr.firstName,
+          middleName: tr.middleName,
+          idFromDiary: tr.id,
+          spoId: user.group.spoId
+        })
+      ).id
     : null
 
   const groupId = user.group.id
   const subgroupId = subgroup
     ? (
-      await SubgroupSaveOrGet({
-        groupId: user.group.id,
-        name: subgroup
-      })
-    ).id
+        await SubgroupSaveOrGet({
+          groupId: user.group.id,
+          name: subgroup
+        })
+      ).id
     : null
 
   // TODO: Удалять в воркере не привязанные градебуки, либо как-то обрабатывать
@@ -96,11 +96,12 @@ export const LessonSave = async (
     }
   } catch (err) {
     console.error(
-      `[${new Date().toUTCString()}] => Ошибка сохранения schedule. Входные данные: ${
-        JSON.stringify({...scheduleWhere, gradebookId})
-      }. Подробнее:`, err)
+      `[${new Date().toUTCString()}] => Ошибка сохранения schedule. Входные данные: ${JSON.stringify(
+        { ...scheduleWhere, gradebookId }
+      )}. Подробнее:`,
+      err
+    )
   }
-  
 
   if (subgroupId && schedule) {
     await ScheduleSubgroupSafeSave(schedule.id, user.id, subgroupId)
