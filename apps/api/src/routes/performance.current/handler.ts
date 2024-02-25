@@ -6,8 +6,7 @@ import { HeadersWithCookie } from '@utils'
 import { getCurrPerformance } from './service'
 
 const getPerformanceCurrent = async ({
-  request,
-  params
+  request
 }: ContextWithID): Promise<PerformanceCurrent | string> => {
   const authData = await getCookieFromToken(request.headers.toJSON().secret)
   return await getCurrPerformance(authData)
