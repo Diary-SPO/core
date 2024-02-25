@@ -1,6 +1,6 @@
 import { Optional } from 'sequelize'
 import { checkSameKeys } from '../helpers/checkDataForObject'
-import { TeacherModel, TeacherModelType } from '../models'
+import { TeacherModel, TeacherModelType } from '@db'
 
 export const TeacherSaveOrGet = async (
   teacher: Optional<TeacherModelType, 'id'>

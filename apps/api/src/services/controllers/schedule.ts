@@ -1,6 +1,6 @@
 import { ApiError } from '@api'
 import { Day, Lesson } from '@diary-spo/shared'
-import { sequelize } from '../initDBConnection'
+import { sequelize } from '@db'
 import {
   GradebookModel,
   GradebookModelType,
@@ -16,7 +16,7 @@ import {
   TeacherModel,
   ThemeModel,
   ThemeModelType
-} from '../models'
+} from '@db'
 import { AbsenceTypeModel, AbsenceTypeModelType } from '../models/absenceType'
 import { ClassroomModel, IClassroomModelType } from '../models/classroom'
 import {
@@ -25,13 +25,13 @@ import {
 } from '../models/scheduleSubgroup'
 import { ISubgroupModelType, SubgroupModel } from '../models/subgroup'
 import { ISubjectModelType, SubjectModel } from '../models/subject'
-import { IUserInfo, diaryUserGetFromId } from './diaryUser'
+import { IUserInfo, getUserById } from './diaryUser'
 import { GradebookSaveOrGet } from './gradebook'
 import { LessonSave } from './lesson'
 
 export const ScheduleSave = async (day: Day, userId: number) => {
   const lessons = day.lessons ?? []
-  const user = await diaryUserGetFromId(userId, true)
+  const user = await getUserById(userId, true)
 
   if (!user) {
     throw new ApiError('User not found', 403)
@@ -172,7 +172,7 @@ export const ScheduleGetFromDB = async (
   endDate: string,
   userId: number
 ) => {
-  const user = await diaryUserGetFromId(userId, true)
+  const user = await getUserById(userId, true)
 
   if (!user) {
     return null

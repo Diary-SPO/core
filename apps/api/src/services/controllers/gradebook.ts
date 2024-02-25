@@ -1,5 +1,5 @@
 import { Gradebook } from '@diary-spo/shared'
-import { GradebookModel, ScheduleModel } from '../models'
+import { GradebookModel, ScheduleModel } from '@db'
 import { AbsenceTypeSaveOrGet } from './absenceType'
 import { IUserInfo } from './diaryUser'
 import { LessonTypeSaveOrGet } from './lessonType'

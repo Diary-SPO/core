@@ -1,4 +1,4 @@
-import { ThemeModel } from '../models'
+import { ThemeModel } from '@db'
 
 export const ThemesSaveOrGet = async (
   gradebookId: number,

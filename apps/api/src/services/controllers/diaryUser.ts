@@ -3,16 +3,18 @@ import {
   DiaryUserModelType,
   GroupModel,
   GroupModelType
-} from '../models'
+} from '@db'
+
 export type IUserInfo = DiaryUserModelType & { group: GroupModelType }
 
-export const diaryUserGetFromId = async (id: number, getGroup = false) => {
-  const record = (await DiaryUserModel.findOne({
+export const getUserById = async (
+  id: number,
+  getGroup = false
+): Promise<IUserInfo | null> => {
+  return DiaryUserModel.findOne({
     where: {
       idFromDiary: id
     },
     include: getGroup ? GroupModel : undefined
-  })) as IUserInfo | null
-
-  return record
+  })
 }

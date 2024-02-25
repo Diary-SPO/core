@@ -1,6 +1,7 @@
+import { AbsenceTypesKeys } from '@diary-spo/shared'
 import { AbsenceTypeModel } from '../models/absenceType'
 
-export const AbsenceTypeSaveOrGet = async (name: string) => {
+export const AbsenceTypeSaveOrGet = async (name: AbsenceTypesKeys) => {
   const [record] = await AbsenceTypeModel.findOrCreate({
     where: {
       name

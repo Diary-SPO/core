@@ -1,6 +1,7 @@
-import { TaskTypeModel } from '../models'
+import { LessonWorkTypeKeys } from '@diary-spo/shared'
+import { TaskTypeModel } from '@db'
 
-export const TaskTypeSaveOrGet = async (name: string) => {
+export const TaskTypeSaveOrGet = async (name: LessonWorkTypeKeys) => {
   const [record] = await TaskTypeModel.findOrCreate({
     where: {
       name
