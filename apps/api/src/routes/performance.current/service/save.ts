@@ -1,11 +1,21 @@
-import { GradebookModel, ICacheData, MarkModel, ScheduleModel, TaskModel, sequelize } from "@db";
-import { PerformanceCurrent } from "@diary-spo/shared";
-import { Op, where } from "sequelize";
-import { getLessonsService } from "src/routes/lessons/lessonsService";
-import { ScheduleGetFromDB } from "src/services/controllers/schedule";
-import { MarkValueModel } from "src/services/models/markValue";
+import {
+  GradebookModel,
+  ICacheData,
+  MarkModel,
+  ScheduleModel,
+  TaskModel,
+  sequelize
+} from '@db'
+import { PerformanceCurrent } from '@diary-spo/shared'
+import { Op, where } from 'sequelize'
+import { getLessonsService } from 'src/routes/lessons/lessonsService'
+import { ScheduleGetFromDB } from 'src/services/controllers/schedule'
+import { MarkValueModel } from 'src/services/models/markValue'
 
-export const savePerformance = async (performance: PerformanceCurrent, userInfo: ICacheData) => {
+export const savePerformance = async (
+  performance: PerformanceCurrent,
+  userInfo: ICacheData
+) => {
   const subjectMarks = performance.daysWithMarksForSubject
   const idsToSave: number[] = [] // id оценок, которые не удаляем
 
@@ -40,16 +50,22 @@ export const savePerformance = async (performance: PerformanceCurrent, userInfo:
 
       // Если в базе те же данные, то пропускаем
       if (
-        dbMarks 
-        && dbMarks.length > 0 
-        && dbMarks[0].length > 0
-        && equils(dbMarks[0][0].res.markValues, day.markValues)) {
-          //console.log('skip', equils(dbMarks[0][0].res.markValues, day.markValues), dbMarks[0][0].res.markValues, day.markValues)
-          idsToSave.push(...dbMarks[0][0].res.tasks)
-          continue
+        dbMarks &&
+        dbMarks.length > 0 &&
+        dbMarks[0].length > 0 &&
+        equils(dbMarks[0][0].res.markValues, day.markValues)
+      ) {
+        //console.log('skip', equils(dbMarks[0][0].res.markValues, day.markValues), dbMarks[0][0].res.markValues, day.markValues)
+        idsToSave.push(...dbMarks[0][0].res.tasks)
+        continue
       }
 
-      const dateInfo = await getLessonsService(date, date, userInfo.idFromDiary, userInfo.cookie)
+      const dateInfo = await getLessonsService(
+        date,
+        date,
+        userInfo.idFromDiary,
+        userInfo.cookie
+      )
 
       if (typeof dateInfo === 'string' || dateInfo.length === 0) {
         continue
@@ -88,14 +104,14 @@ export const savePerformance = async (performance: PerformanceCurrent, userInfo:
               continue
             }
 
-            const [markValueFromDB] = (await MarkValueModel.findOrCreate({
+            const [markValueFromDB] = await MarkValueModel.findOrCreate({
               where: {
                 value: task.mark
               },
               defaults: {
                 value: task.mark
               }
-            }))
+            })
 
             if (!markValueFromDB) {
               continue
@@ -107,7 +123,7 @@ export const savePerformance = async (performance: PerformanceCurrent, userInfo:
               taskId: taskFromDB.id
             }
 
-            let [mark, isCreated] = await MarkModel.findOrCreate({
+            const [mark, isCreated] = await MarkModel.findOrCreate({
               where: {
                 ...markWhere
               },
@@ -117,15 +133,19 @@ export const savePerformance = async (performance: PerformanceCurrent, userInfo:
               }
             })
 
-            if (!isCreated && mark.markValueId != markValueFromDB.id) {
-              console.log(`[userId: ${userInfo.idFromDiary}] => Оценка по ${subjectName} изменена на ${task.mark}`)
+            if (!isCreated && mark.markValueId !== markValueFromDB.id) {
+              console.log(
+                `[userId: ${userInfo.idFromDiary}] => Оценка по ${subjectName} изменена на ${task.mark}`
+              )
               mark.update({
                 markValueId: markValueFromDB.id
               })
             }
 
             if (isCreated) {
-              console.log(`[userId: ${userInfo.idFromDiary}] => Новая оценка ${task.mark} по ${subjectName}`)
+              console.log(
+                `[userId: ${userInfo.idFromDiary}] => Новая оценка ${task.mark} по ${subjectName}`
+              )
             }
 
             idsToSave.push(mark.toJSON().taskId)
@@ -149,13 +169,13 @@ export const savePerformance = async (performance: PerformanceCurrent, userInfo:
   })
 }
 
-type IKeyCounter = {[key: string]: number}
+type IKeyCounter = { [key: string]: number }
 const equils = (a: string[], b: string[]) => {
   const aKeys: IKeyCounter = {}
   const bKeys: IKeyCounter = {}
   let equil = true
 
-  a.forEach(e => {
+  a.forEach((e) => {
     if (aKeys?.[e]) {
       aKeys[e]++
     } else {
@@ -163,7 +183,7 @@ const equils = (a: string[], b: string[]) => {
     }
   })
 
-  b.forEach(e => {
+  b.forEach((e) => {
     if (bKeys?.[e]) {
       bKeys[e]++
     } else {
@@ -171,8 +191,8 @@ const equils = (a: string[], b: string[]) => {
     }
   })
 
-  Object.keys(aKeys).forEach(k => {
-    if (aKeys[k] != bKeys[k]) {
+  Object.keys(aKeys).forEach((k) => {
+    if (aKeys[k] !== bKeys[k]) {
       equil = false
     }
   })

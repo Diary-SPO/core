@@ -1,7 +1,7 @@
-import { SERVER_URL } from "@config"
-import { ICacheData } from "@db"
-import { HeadersWithCookie } from "@utils"
-import { savePerformance } from "./save"
+import { SERVER_URL } from '@config'
+import { ICacheData } from '@db'
+import { HeadersWithCookie } from '@utils'
+import { savePerformance } from './save'
 
 export const getCurrPerformance = async (authData: ICacheData) => {
   const path = `${SERVER_URL}/services/reports/current/performance/${authData.idFromDiary}`

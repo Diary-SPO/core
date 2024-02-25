@@ -49,14 +49,16 @@ export const GradebookSaveOrGet = async (
 
   // Прикрепляем gradebook
   if (lessonId) {
-    ScheduleModel.update({
-      gradebookId: record.id
-    }, 
-    {
-      where: {
-        id: lessonId
+    ScheduleModel.update(
+      {
+        gradebookId: record.id
+      },
+      {
+        where: {
+          id: lessonId
+        }
       }
-    })
+    )
   }
 
   return record
