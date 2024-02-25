@@ -15,6 +15,7 @@ interface Params {
   cookie?: string
 }
 
+// TODO: use axios
 export const fetcher = async <T>({
   url,
   method = 'GET',

@@ -37,33 +37,24 @@ onMounted(async () => {
   const urlParams = new URLSearchParams(window.location.search)
   const code = urlParams.get('code')
 
-  if (code) {
-    const { data } = await useFetch(`${SERVER_URL}/oauth/github`, {
-      method: 'POST',
-      body: JSON.stringify({
-        code,
-      }),
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    })
-
-    localStorage.setItem('data', JSON.stringify(data))
-    window.location.search = ''
+  if (!code) {
+    return
   }
-})
-// VKID.Config.set({
-//   app: 234,
-//   redirectUrl: 'https://example.com',
-// });
-//
-// const authButton = document.createElement('button');
-// authButton.textContent = 'asd'
-// authButton.onclick = () => {
-//   VKID.Auth.login(); // После авторизации будет редирект на адрес, указанный в параметре redirect_uri
-// };
 
-// document.getElementById('test')?.appendChild(authButton);
+  const { data } = await useFetch(`${SERVER_URL}/oauth/github`, {
+    method: 'POST',
+    body: JSON.stringify({
+      code,
+    }),
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  })
+
+  localStorage.setItem('data', JSON.stringify(data))
+  window.location.search = ''
+})
+
 </script>
 
 <template>
