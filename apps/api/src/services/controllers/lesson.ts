@@ -39,24 +39,24 @@ export const LessonSave = async (
     )?.id ?? null
   const teacherId = tr
     ? (
-        await TeacherSaveOrGet({
-          lastName: tr.lastName,
-          firstName: tr.firstName,
-          middleName: tr.middleName,
-          idFromDiary: tr.id,
-          spoId: user.group.spoId
-        })
-      ).id
+      await TeacherSaveOrGet({
+        lastName: tr.lastName,
+        firstName: tr.firstName,
+        middleName: tr.middleName,
+        idFromDiary: tr.id,
+        spoId: user.group.spoId
+      })
+    ).id
     : null
 
   const groupId = user.group.id
   const subgroupId = subgroup
     ? (
-        await SubgroupSaveOrGet({
-          groupId: user.group.id,
-          name: subgroup
-        })
-      ).id
+      await SubgroupSaveOrGet({
+        groupId: user.group.id,
+        name: subgroup
+      })
+    ).id
     : null
 
   // TODO: Удалять в воркере не привязанные градебуки, либо как-то обрабатывать
@@ -76,28 +76,31 @@ export const LessonSave = async (
     teacherId,
     subjectId,
     classroomId,
-    date: new Date(date).toISOString().split('T')[0], // Т.к. БД обрабатывает даты и приводит к формату гггг-мм-дд, то на вход нужно обработать также
+    date: new Date(date).toUTCString(), // Т.к. БД обрабатывает даты и приводит к формату гггг-мм-дд, то на вход нужно обработать также
     startTime: lesson.startTime,
-    endTime: lesson.endTime,
-    gradebookId
+    endTime: lesson.endTime
   }
 
-  const [schedule] = await ScheduleModel.findOrCreate({
+  let schedule = await ScheduleModel.findOne({
     where: {
       ...scheduleWhere
-    },
-    defaults: {
-      ...scheduleWhere
     }
-  }).catch((err) => {
-    throw new Error(
-      `[${new Date().toISOString()}] => Ошибка сохранения Schedule. Входные данные: ${JSON.stringify(
-        scheduleWhere
-      )}, ${err}`
-    )
   })
 
-  console.log(scheduleWhere.date, schedule.date)
+  try {
+    if (!schedule) {
+      schedule = await ScheduleModel.create({
+        ...scheduleWhere,
+        gradebookId
+      })
+    }
+  } catch (err) {
+    console.error(
+      `[${new Date().toUTCString()}] => Ошибка сохранения schedule. Входные данные: ${
+        JSON.stringify({...scheduleWhere, gradebookId})
+      }. Подробнее:`, err)
+  }
+  
 
   if (subgroupId && schedule) {
     await ScheduleSubgroupSafeSave(schedule.id, user.id, subgroupId)

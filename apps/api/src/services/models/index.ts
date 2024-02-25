@@ -1,3 +1,4 @@
+import { forceSyncDatabase, sequelize } from '../initDBConnection'
 import { SPOModel } from './SPO'
 import { AbsenceTypeModel } from './absenceType'
 import { AcademicYearModel } from './academicYear'
@@ -279,3 +280,9 @@ ScheduleSubgroupModel.belongsTo(DiaryUserModel)
 // Schedule <-->> ScheduleSubgroup
 ScheduleModel.hasMany(ScheduleSubgroupModel)
 ScheduleSubgroupModel.belongsTo(ScheduleModel)
+
+if (forceSyncDatabase) {
+  sequelize.sync({
+    force: true
+  })
+}

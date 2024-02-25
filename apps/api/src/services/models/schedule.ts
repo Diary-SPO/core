@@ -54,7 +54,7 @@ export const ScheduleModel = sequelize.define<IScheduleModel>(
       }
     },
     date: {
-      type: DataTypes.DATEONLY,
+      type: DataTypes.DATE,
       allowNull: false
     },
     startTime: {

@@ -3,7 +3,8 @@ import {
   DATABASE_NAME,
   DATABASE_PASSWORD,
   DATABASE_PORT,
-  DATABASE_USERNAME
+  DATABASE_USERNAME,
+  TIMEZONE
 } from '@config'
 import { error } from '@utils'
 import { exit } from 'process'
@@ -20,9 +21,7 @@ export const sequelize = new Sequelize({
   dialect: 'postgres',
   logging: errorLogger,
   logQueryParameters: true,
-  dialectOptions: {
-    useUTC: false
-  },
+  timezone: TIMEZONE,
   pool: {
     max: 30,
     min: 1,
@@ -43,6 +42,8 @@ export const cache = new SequelizeSimpleCache({
 })
 // Включить кеширование ?
 export const enableCache = false
+// Синхронизовать таблицы ?
+export const forceSyncDatabase = false
 
 try {
   await sequelize.authenticate()
