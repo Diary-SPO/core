@@ -8,7 +8,7 @@ const schema = {
 }
 
 const oauthGitHub = new Elysia().guard(schema, (app) =>
-  app.get('/oauth', getGitHubAuth)
+  app.get('/oauth/github', getGitHubAuth)
 )
 
 export default oauthGitHub
