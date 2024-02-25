@@ -3,8 +3,7 @@ import { swagger } from '@elysiajs/swagger'
 import { Elysia } from 'elysia'
 import { helmet } from 'elysia-helmet'
 
-import { sequelize } from '@db'
-import routes from '@routes'
+import { routes, adminRoutes } from '@routes'
 import { compression } from 'elysia-compression'
 
 const port = Bun.env.PORT ?? 3003
@@ -20,11 +19,13 @@ const app = new Elysia()
       }
     })
   )
+
   .use(
     cors({
       origin: true
     })
   )
+  .use(adminRoutes)
   .use(
     compression({
       type: 'gzip',

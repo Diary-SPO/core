@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { RouterLink, RouterView } from 'vue-router'
 import { Toaster } from '@/components/ui/toast'
+import AuthProvider from '@/providers/AuthProvider.vue'
 </script>
 
 <template>
@@ -14,6 +15,8 @@ import { Toaster } from '@/components/ui/toast'
     </div>
   </header>
 
-  <RouterView />
-  <Toaster />
+  <AuthProvider>
+    <RouterView />
+    <Toaster />
+  </AuthProvider>
 </template>

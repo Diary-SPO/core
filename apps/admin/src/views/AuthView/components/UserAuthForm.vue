@@ -1,67 +1,80 @@
 <script setup lang="ts">
 import { onMounted, ref } from 'vue'
 import {
+  Button,
   Form,
   FormControl,
-  FormLabel,
-  FormItem,
   FormField,
+  FormItem,
+  FormLabel,
   FormMessage,
   Input,
-  Button,
   useToast,
 } from '@/components'
 import { GithubLogoIcon } from '@radix-icons/vue'
-import { useFetch } from '@vueuse/core'
 import { SERVER_URL } from '@/config'
 import { getGitHubUrl } from '@/utils/oauth/github'
+import { useLocalStorage } from '@vueuse/core'
+
 const { toast } = useToast()
-// import * as VKID from '@vkid/sdk';
 
 const formValues = ref({
   login: '',
   password: '',
 })
 
-async function onSubmit() {
+const onSubmit = () => {
   console.log(formValues.value.password)
-
-  toast({
-    title: 'Scheduled: Catch up',
-    description: 'Friday, February 10, 2023 at 5:57 PM',
-    duration: 2000,
-  })
 }
 
-onMounted(async () => {
+const getAuthParam = async () => {
   const urlParams = new URLSearchParams(window.location.search)
   const code = urlParams.get('code')
+  // const data = urlParams.get('code')
 
   if (!code) {
     return
   }
 
-  const { data } = await useFetch(`${SERVER_URL}/oauth/github`, {
-    method: 'POST',
-    body: JSON.stringify({
-      code,
-    }),
-    headers: {
-      'Content-Type': 'application/json',
-    },
-  })
+  try {
+    toast({
+      title: 'Вход через GitHub',
+      description: 'Пожалуйста, подождите',
+      duration: 1000,
+    })
 
-  localStorage.setItem('data', JSON.stringify(data))
-  window.location.search = ''
+    // const data = await fetch(`${SERVER_URL}/oauth/github`, {
+    //   method: 'POST',
+    //   body: JSON.stringify({
+    //     code,
+    //   }),
+    //   headers: {
+    //     'Content-Type': 'application/json',
+    //   },
+    // // })
+    // console.log('data 1', data)
+    // return data
+  } catch (e) {
+    console.log('AAAAAAAAAAAAAAAA')
+    console.log(e)
+
+    toast({
+      variant: 'destructive',
+      title: 'Ошибка входа',
+      description: 'Сообщите нам о проблеме',
+    })
+  }
+}
+
+onMounted(async () => {
+  const data = await getAuthParam()
+  useLocalStorage('data', JSON.stringify(data))
+
+  console.log('data', data)
 })
-
 </script>
 
 <template>
-  <div
-    id="test"
-    style="z-index: 300; position: relative; width: 300px; height: 100px"
-  ></div>
   <Form class="space-y-2" @submit.prevent="onSubmit">
     <FormField name="login">
       <FormItem>

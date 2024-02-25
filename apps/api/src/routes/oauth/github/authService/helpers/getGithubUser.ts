@@ -20,7 +20,7 @@ export const getGithubUser = async ({
 
     return data
   } catch (e) {
-    console.log(e)
+    console.log('OAuth error', e)
     throw new ApiError('OAuth GitHub Error getGithubUser', 520)
   }
 }

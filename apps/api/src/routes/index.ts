@@ -13,7 +13,7 @@ import oauthGitHub from './oauth/github'
 import { headersSchema } from '@utils'
 import { errorHandler } from './helpers'
 
-const routes = new Elysia()
+export const routes = new Elysia()
   /** Роуты с проверкой на наличие secret поля **/
   .guard(headersSchema, (app) =>
     app
@@ -27,8 +27,11 @@ const routes = new Elysia()
   /** Роуты без проверки **/
   .use(hello)
   .use(login)
+  /** Обработка любых ошибок в кажом роуте **/
+  .onError(errorHandler)
+
+export const adminRoutes = new Elysia()
   .use(oauthGitHub)
   /** Обработка любых ошибок в кажом роуте **/
   .onError(errorHandler)
 
-export default routes

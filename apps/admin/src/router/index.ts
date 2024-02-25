@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import HomeView from '../views/HomeView.vue'
+import { isAuthenticated } from '@/middlewares'
+import { beforeEach } from '@/router/beforeEach'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -7,7 +8,7 @@ const router = createRouter({
     {
       path: '/',
       name: 'home',
-      component: HomeView,
+      component: () => import('../views/HomeView.vue'),
     },
     {
       path: '/about',
@@ -21,5 +22,10 @@ const router = createRouter({
     },
   ],
 })
+
+router.beforeEach(beforeEach)
+
+// TODO: add 404 etc
+// router.onError()
 
 export default router

@@ -33,9 +33,10 @@ export const getGithubOathToken = async ({
       }
     )
 
-    return qs.parse(data) as GitHubOauthToken
+    // @ts-expect-error ругается на типы, но тут все ок
+    return qs.parse(data)
   } catch (e) {
-    console.log(e)
+    console.log('OAuth error', e)
     throw new ApiError('OAuth GitHub Error getGithubOathToken', 520)
   }
 }
