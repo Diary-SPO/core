@@ -14,10 +14,11 @@ const memoryCache = await caching('memory', {
 })
 
 type IUserAuthInfo = AuthModelType & { diaryUser: DiaryUserModelType }
-type ICacheData = {
+export type ICacheData = {
   cookie: string
   idFromDiary: number
   localUserId: number
+  groupId: number
 }
 
 /**
@@ -51,10 +52,11 @@ export const getCookieFromToken = async (
   const cookie = DiaryUserAuth.diaryUser.cookie
   const idFromDiary = DiaryUserAuth.diaryUser.idFromDiary
   const localUserId = DiaryUserAuth.idDiaryUser
+  const groupId = DiaryUserAuth.diaryUser.groupId
 
-  await memoryCache.set(token, { cookie, idFromDiary, localUserId })
+  await memoryCache.set(token, { cookie, idFromDiary, localUserId, groupId })
 
-  return { cookie, idFromDiary, localUserId }
+  return { cookie, idFromDiary, localUserId, groupId }
 }
 
 /**

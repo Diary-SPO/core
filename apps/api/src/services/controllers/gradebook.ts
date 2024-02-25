@@ -1,5 +1,5 @@
 import { Gradebook } from '@diary-spo/shared'
-import { GradebookModel } from '../models'
+import { GradebookModel, ScheduleModel } from '../models'
 import { AbsenceTypeSaveOrGet } from './absenceType'
 import { IUserInfo } from './diaryUser'
 import { LessonTypeSaveOrGet } from './lessonType'
@@ -8,7 +8,8 @@ import { ThemesSaveOrGet } from './theme'
 
 export const GradebookSaveOrGet = async (
   gradebook: Gradebook,
-  userInfo: IUserInfo
+  userInfo: IUserInfo,
+  lessonId: number | null
 ) => {
   const lessonTypeId = (await LessonTypeSaveOrGet(gradebook.lessonType)).id
   const absenceTypeId = gradebook.absenceType
@@ -45,6 +46,18 @@ export const GradebookSaveOrGet = async (
       `[${new Date().toISOString()}] => Ошибка сохранения задач (тасков)`
     )
   )
+
+  // Прикрепляем gradebook
+  if (lessonId) {
+    ScheduleModel.update({
+      gradebookId: record.id
+    }, 
+    {
+      where: {
+        id: lessonId
+      }
+    })
+  }
 
   return record
 }

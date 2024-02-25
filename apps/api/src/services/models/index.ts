@@ -126,12 +126,8 @@ ExaminationTypeModel.belongsTo(TermSubjectModel, {
 })
 
 // Gradebook <-->> Schedule
-GradebookModel.hasMany(ScheduleModel, {
-  foreignKey: 'id'
-})
-ScheduleModel.belongsTo(GradebookModel, {
-  foreignKey: 'gradebookId'
-})
+GradebookModel.hasMany(ScheduleModel)
+ScheduleModel.belongsTo(GradebookModel)
 
 // LessonType <-->> Gradebook
 LessonTypeModel.hasMany(GradebookModel, {
@@ -166,20 +162,12 @@ TaskModel.belongsTo(TaskTypeModel, {
 })
 
 // Task <-->> Mark
-TaskModel.hasMany(MarkModel, {
-  foreignKey: 'id'
-})
-MarkModel.belongsTo(TaskModel, {
-  foreignKey: 'taskId'
-})
+TaskModel.hasMany(MarkModel)
+MarkModel.belongsTo(TaskModel)
 
 // DiaryUser <-->> Mark
-DiaryUserModel.hasMany(MarkModel, {
-  foreignKey: 'id'
-})
-MarkModel.belongsTo(DiaryUserModel, {
-  foreignKey: 'diaryUserId'
-})
+DiaryUserModel.hasMany(MarkModel)
+MarkModel.belongsTo(DiaryUserModel)
 
 // Classroom <-->> Schedule
 ClassroomModel.hasMany(ScheduleModel, {
@@ -230,12 +218,8 @@ FinalMarkModel.belongsTo(SubjectModel, {
 })
 
 // MarkValue <-->> Mark
-MarkValueModel.hasMany(MarkModel, {
-  foreignKey: 'id'
-})
-MarkModel.belongsTo(MarkValueModel, {
-  foreignKey: 'markValueId'
-})
+MarkValueModel.hasMany(MarkModel)
+MarkModel.belongsTo(MarkValueModel)
 
 // MarkValue <-->> FinalMark
 MarkValueModel.hasMany(FinalMarkModel, {

@@ -1,5 +1,5 @@
 import fs from 'fs'
-import { getTimezone } from 'src/services/helpers/getTimeZone'
+import { getTimezone } from 'src/config/getTimeZone'
 import { PARAMS_INIT } from './params'
 import checkEnvVariables from './utils'
 

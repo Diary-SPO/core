@@ -145,7 +145,7 @@ const deleteOldLessons = async (
         locatedInside = true
         // Обновляем на актуальную информацию
         if (lesson.gradebook) {
-          GradebookSaveOrGet(lesson.gradebook, user).catch((err) =>
+          GradebookSaveOrGet(lesson.gradebook, user, dbLesson.id).catch((err) =>
             console.log(
               `[${new Date().toISOString()}] => ошибка сохранения градебука: ${err}`
             )
@@ -284,5 +284,5 @@ order by "date"
     }
   }
 
-  return formatDays
+  return formatDays as Day[]
 }
