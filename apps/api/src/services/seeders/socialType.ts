@@ -35,7 +35,7 @@ export const seedSocialType = async () => {
       description: "Если бот ответил Вам со словами, что ваша учётная запись успешно привязана"
       + ", то Вы можете пользоваться уведомлениями.",
       value: "",
-      toCopy: true,
+      toCopy: false,
       toLink: false
     }
   ])
