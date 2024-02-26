@@ -11,6 +11,7 @@ import performanceCurrent from './performance.current'
 
 import { headersSchema } from '@utils'
 import { errorHandler } from './helpers'
+import notificationsList from './notificationsList'
 
 const routes = new Elysia()
   /** Роуты с проверкой на наличие secret поля **/
@@ -22,6 +23,7 @@ const routes = new Elysia()
       .use(attestation)
       .use(ads)
       .use(finalMarks)
+      .use(notificationsList)
   )
   /** Роуты без проверки **/
   .use(hello)

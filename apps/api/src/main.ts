@@ -4,6 +4,7 @@ import routes from '@routes'
 import { Elysia } from 'elysia'
 import { compression } from 'elysia-compression'
 import { helmet } from 'elysia-helmet'
+import { seedDatabase } from './services/seeders'
 
 const port = Bun.env.PORT ?? 3003
 const app = new Elysia()
@@ -35,6 +36,9 @@ const app = new Elysia()
   .use(helmet())
   .use(routes)
   .listen(port)
+
+// Заполняем базу данных
+await seedDatabase()
 
 console.log(
   `Backend running at http://${app.server?.hostname}:${app.server?.port}`

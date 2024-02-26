@@ -12,9 +12,12 @@ import { GroupModel } from './group'
 import { LessonTypeModel } from './lessonType'
 import { MarkModel } from './mark'
 import { MarkValueModel } from './markValue'
+import { NotificationDetailedModel } from './notificationDetailed'
 import { RequiredModel } from './required'
 import { ScheduleModel } from './schedule'
 import { ScheduleSubgroupModel } from './scheduleSubgroup'
+import { SocialStepTypeModel } from './socialStepType'
+import { SocialTypeModel } from './socialType'
 import { SubgroupModel } from './subgroup'
 import { SubjectModel } from './subject'
 import { TaskModel } from './task'
@@ -264,6 +267,18 @@ ScheduleSubgroupModel.belongsTo(DiaryUserModel)
 // Schedule <-->> ScheduleSubgroup
 ScheduleModel.hasMany(ScheduleSubgroupModel)
 ScheduleSubgroupModel.belongsTo(ScheduleModel)
+
+// SocialType <-->> NotificationDetailed
+SocialTypeModel.hasMany(NotificationDetailedModel)
+NotificationDetailedModel.belongsTo(SocialTypeModel)
+
+// SocialType <-->> SocialStepType
+SocialTypeModel.hasMany(SocialStepTypeModel, { as: 'steps' })
+SocialStepTypeModel.belongsTo(SocialTypeModel)
+
+// DiaryUser <->> NotificationDetailed
+DiaryUserModel.hasMany(NotificationDetailedModel)
+NotificationDetailedModel.belongsTo(DiaryUserModel)
 
 if (forceSyncDatabase) {
   sequelize.sync({
