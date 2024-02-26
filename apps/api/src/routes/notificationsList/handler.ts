@@ -1,12 +1,12 @@
 import { getCookieFromToken } from '@db'
 import type { NotificationsResponse } from '@diary-spo/shared'
 import { ContextWithID } from '@types'
-import { NotificationDetailedModel } from 'src/services/models/notificationDetailed'
 import { SocialStepTypeModel } from 'src/services/models/socialStepType'
 import { SocialTypeModel } from 'src/services/models/socialType'
 import { INotificationsList } from './type'
 import { replaceWords } from './replaceWords'
 import { userActivated } from './userActivated'
+import { userSubscriptions } from './userSubscriptions'
 
 const notificationListHandler = async ({
   request
@@ -36,10 +36,9 @@ const notificationListHandler = async ({
     return []
   }
 
-  //socials = socials.toArray()
-
-  await replaceWords(socials, authData, secret)
+  replaceWords(socials, authData, secret)
   await userActivated(socials, authData)
+  //await userSubscriptions(socials, authData)
 
   return JSON.stringify(socials)
 }

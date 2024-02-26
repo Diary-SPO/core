@@ -19,7 +19,7 @@ export const sequelize = new Sequelize({
   host: DATABASE_HOST,
   port: DATABASE_PORT,
   dialect: 'postgres',
-  logging: errorLogger,
+  //logging: errorLogger,
   logQueryParameters: true,
   timezone: TIMEZONE,
   pool: {

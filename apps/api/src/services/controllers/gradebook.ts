@@ -9,7 +9,7 @@ import { ThemesSaveOrGet } from './theme'
 export const GradebookSaveOrGet = async (
   gradebook: Gradebook,
   userInfo: IUserInfo,
-  lessonId: number | null
+  lessonId?: number | null
 ) => {
   const lessonTypeId = (await LessonTypeSaveOrGet(gradebook.lessonType)).id
   const absenceTypeId = gradebook.absenceType

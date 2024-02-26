@@ -20,6 +20,8 @@ import { SocialStepTypeModel } from './socialStepType'
 import { SocialTypeModel } from './socialType'
 import { SubgroupModel } from './subgroup'
 import { SubjectModel } from './subject'
+import { SubscriptionModel } from './subscription'
+import { SubscriptionTypeModel } from './subscriptionType'
 import { TaskModel } from './task'
 import { TaskTypeModel } from './taskType'
 import { TeacherModel } from './teacher'
@@ -285,3 +287,11 @@ if (forceSyncDatabase) {
     force: true
   })
 }
+
+// SubscriptionType <-->> Subscription
+//SubscriptionTypeModel.hasMany(SubscriptionModel)
+//SubscriptionModel.belongsTo(SubscriptionTypeModel)
+
+// DiaryUser <-->> Subscription
+//DiaryUserModel.hasMany(SubscriptionModel)
+//SubscriptionModel.belongsTo(DiaryUserModel)
