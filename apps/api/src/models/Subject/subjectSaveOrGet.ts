@@ -1,4 +1,4 @@
-import {SubjectModel} from "./model";
+import { SubjectModel } from './model'
 
 export const subjectSaveOrGet = async (subjectName: string) => {
   const [record] = await SubjectModel.findOrCreate({

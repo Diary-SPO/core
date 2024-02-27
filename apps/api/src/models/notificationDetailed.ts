@@ -11,41 +11,45 @@ export type NotificationDetailedModelType = {
   value: string
 }
 
-export type INotificationDetailedModel = IModelPrototype<NotificationDetailedModelType, 'id'>
+export type INotificationDetailedModel = IModelPrototype<
+  NotificationDetailedModelType,
+  'id'
+>
 
-export const NotificationDetailedModel = sequelize.define<INotificationDetailedModel>(
-  'notificationDetailed',
-  {
-    id: {
-      type: DataTypes.INTEGER,
-      autoIncrement: true,
-      primaryKey: true
-    },
-    socialTypeId: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-      references: {
-        model: SocialTypeModel,
-        key: 'id'
+export const NotificationDetailedModel =
+  sequelize.define<INotificationDetailedModel>(
+    'notificationDetailed',
+    {
+      id: {
+        type: DataTypes.INTEGER,
+        autoIncrement: true,
+        primaryKey: true
+      },
+      socialTypeId: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        references: {
+          model: SocialTypeModel,
+          key: 'id'
+        }
+      },
+      diaryUserId: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        references: {
+          model: DiaryUserModel,
+          key: 'id'
+        }
+      },
+      value: {
+        type: DataTypes.STRING,
+        allowNull: false
       }
     },
-    diaryUserId: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-      references: {
-        model: DiaryUserModel,
-        key: 'id'
-      }
-    },
-    value: {
-      type: DataTypes.STRING,
-      allowNull: false
+    {
+      freezeTableName: true,
+      timestamps: false,
+      createdAt: false,
+      updatedAt: false
     }
-  },
-  {
-    freezeTableName: true,
-    timestamps: false,
-    createdAt: false,
-    updatedAt: false
-  }
-)
+  )

@@ -1,5 +1,9 @@
-import { DiaryUserModel, DiaryUserModelType, GroupModel, GroupModelType } from '@models'
-
+import {
+  DiaryUserModel,
+  DiaryUserModelType,
+  GroupModel,
+  GroupModelType
+} from '@models'
 
 export type IUserInfo = DiaryUserModelType & { group: GroupModelType }
 

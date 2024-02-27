@@ -15,20 +15,20 @@ export const SubscriptionModel = sequelize.define<ISubscriptionModel>(
   'subscription',
   {
     diaryUserId: {
-        type: DataTypes.INTEGER,
-        allowNull: false,
-        references: {
-            model: DiaryUserModel,
-            key: 'id'
-        }
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      references: {
+        model: DiaryUserModel,
+        key: 'id'
+      }
     },
     subscriptionTypeId: {
-        type: DataTypes.INTEGER,
-        allowNull: false,
-        references: {
-            model: SubscriptionTypeModel,
-            key: 'id'
-        }
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      references: {
+        model: SubscriptionTypeModel,
+        key: 'id'
+      }
     }
   },
   {

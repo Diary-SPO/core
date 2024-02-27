@@ -8,7 +8,10 @@ export type SubscriptionTypeModelType = {
   code: string
 }
 
-export type ISubscriptionTypeModel = IModelPrototype<SubscriptionTypeModelType, 'id'>
+export type ISubscriptionTypeModel = IModelPrototype<
+  SubscriptionTypeModelType,
+  'id'
+>
 
 export const SubscriptionTypeModel = sequelize.define<ISubscriptionTypeModel>(
   'subscriptionType',

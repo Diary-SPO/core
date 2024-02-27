@@ -2,10 +2,10 @@ import { Gradebook } from '@diary-spo/shared'
 import { LessonTypeSaveOrGet } from '../LessonType/lessonTypeSaveOrGet'
 import { tasksSaveOrGet } from '../Task'
 import { ThemesSaveOrGet } from '../Theme/themesSaveOrGet'
-import {IUserInfo} from "../DiaryUser";
-import {AbsenceTypeSaveOrGet} from "../AbsenceType";
-import { GradebookModel } from './model';
-import { ScheduleModel } from '../Schedule';
+import { IUserInfo } from '../DiaryUser'
+import { AbsenceTypeSaveOrGet } from '../AbsenceType'
+import { GradebookModel } from './model'
+import { ScheduleModel } from '../Schedule'
 
 export const gradebookSaveOrGet = async (
   gradebook: Gradebook,

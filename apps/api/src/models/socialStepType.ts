@@ -14,7 +14,10 @@ export type SocialStepTypeModelType = {
   toLink: boolean
 }
 
-export type ISocialStepTypeModel = IModelPrototype<SocialStepTypeModelType, 'id'>
+export type ISocialStepTypeModel = IModelPrototype<
+  SocialStepTypeModelType,
+  'id'
+>
 
 export const SocialStepTypeModel = sequelize.define<ISocialStepTypeModel>(
   'socialStepType',

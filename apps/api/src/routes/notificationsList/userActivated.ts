@@ -1,8 +1,11 @@
-import { ICacheData } from "@db";
-import { INotificationsList } from "./type";
-import { NotificationDetailedModel } from "src/services/models/notificationDetailed";
+import { ICacheData } from '@db'
+import { INotificationsList } from './type'
+import { NotificationDetailedModel } from 'src/services/models/notificationDetailed'
 
-export const userActivated = async (list: INotificationsList[], userInfo: ICacheData) => {
+export const userActivated = async (
+  list: INotificationsList[],
+  userInfo: ICacheData
+) => {
   for (const n of list) {
     const user = await NotificationDetailedModel.findOne({
       where: {

@@ -14,9 +14,8 @@ const notificationListHandler = async ({
   const secret = request.headers.toJSON().secret
   const authData = await getCookieFromToken(secret)
 
-  let socials = await SocialTypeModel.findAll({
-    include: 
-    [
+  let socials = (await SocialTypeModel.findAll({
+    include: [
       {
         model: SocialStepTypeModel,
         as: 'steps',
@@ -29,7 +28,7 @@ const notificationListHandler = async ({
       exclude: ['token']
     }
     // TODO: fix it
-  }) as INotificationsList[]
+  })) as INotificationsList[]
 
   socials = JSON.parse(JSON.stringify(socials))
 

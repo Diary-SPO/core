@@ -19,12 +19,15 @@ import {
 } from '@models'
 
 import { LessonSave } from '../../services/controllers/lesson'
-import {getUserById, IUserInfo} from "../DiaryUser";
-import {IScheduleSubgroupModelType, ScheduleSubgroupModel} from "../ScheduleSubgroup";
-import {ISubgroupModelType} from "../Subgroup";
-import {ISubjectModelType, SubjectModel} from "../Subject";
-import {ClassroomModel, IClassroomModelType} from "../Classroom";
-import {AbsenceTypeModel, AbsenceTypeModelType} from "../AbsenceType";
+import { getUserById, IUserInfo } from '../DiaryUser'
+import {
+  IScheduleSubgroupModelType,
+  ScheduleSubgroupModel
+} from '../ScheduleSubgroup'
+import { ISubgroupModelType } from '../Subgroup'
+import { ISubjectModelType, SubjectModel } from '../Subject'
+import { ClassroomModel, IClassroomModelType } from '../Classroom'
+import { AbsenceTypeModel, AbsenceTypeModelType } from '../AbsenceType'
 import { gradebookSaveOrGet } from '../Gradebook/gradebookSaveOrGet'
 
 export const ScheduleSave = async (day: Day, userId: number) => {

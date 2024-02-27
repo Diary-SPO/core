@@ -1,4 +1,4 @@
-import {  sequelize } from '@db'
+import { sequelize } from '@db'
 import { DataTypes } from 'sequelize'
 import { MarkValueModel } from '../MarkValue'
 import { SubjectModel } from '../Subject'
