@@ -1,14 +1,12 @@
 import { sequelize } from '@db'
 import { DataTypes } from 'sequelize'
-import {
-  TermModel,
-  SubjectModel,
-  MarkValueModel,
-  DiaryUserModel,
-  TeacherModel,
-  ExaminationTypeModel
-} from '@models'
 import { IModelPrototypeNoId } from '../types'
+import { TermModel } from '../Term'
+import { SubjectModel } from '../Subject'
+import { MarkValueModel } from '../MarkValue'
+import { DiaryUserModel } from '../DiaryUser'
+import { TeacherModel } from '../Teacher'
+import { ExaminationTypeModel } from '../Examination'
 
 export type TermSubjectModelType = {
   termId: number

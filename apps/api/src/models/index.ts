@@ -1,3 +1,4 @@
+export * from './relations'
 export * from './AbsenceType'
 export * from './AcademicYear'
 export * from './Auth'

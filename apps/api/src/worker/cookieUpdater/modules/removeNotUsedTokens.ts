@@ -1,4 +1,4 @@
-import { AuthModel } from '@db'
+import { AuthModel } from '@models'
 import { formatDate } from '@utils'
 import { Op } from 'sequelize'
 import { MAX_LIFE_TIME_INACTIVE_TOKEN_DAYS } from '../config'

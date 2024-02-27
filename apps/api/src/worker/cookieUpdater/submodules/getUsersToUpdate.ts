@@ -1,4 +1,4 @@
-import { DiaryUserModel, IDiaryUserModel } from '@db'
+import { DiaryUserModel, IDiaryUserModel } from '@models'
 import { formatDate } from '@utils'
 import { Op } from 'sequelize'
 import { MAX_NOT_UPDATE_TOKEN_IN_DAYS } from '../config'

@@ -10,6 +10,7 @@ import { error } from '@utils'
 import { exit } from 'process'
 import { Sequelize } from 'sequelize'
 import SequelizeSimpleCache from 'sequelize-simple-cache'
+import { errorLogger } from 'src/utils/errorLogger'
 
 export const sequelize = new Sequelize({
   database: DATABASE_NAME,
@@ -18,7 +19,7 @@ export const sequelize = new Sequelize({
   host: DATABASE_HOST,
   port: DATABASE_PORT,
   dialect: 'postgres',
-  //logging: errorLogger,
+  logging: errorLogger,
   logQueryParameters: true,
   timezone: TIMEZONE,
   pool: {
