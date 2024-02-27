@@ -90,8 +90,8 @@ export const DiaryUserModel = sequelize.define<IDiaryUserModel>(
       type: DataTypes.TEXT,
       allowNull: false,
       comment: 'Cookie от авторизации пользователя в Сетевом городе',
-      set(value) {
-        this.setDataValue('cookie', encrypt(value as string, ENCRYPT_KEY))
+      set(value: string) {
+        this.setDataValue('cookie', encrypt(value, ENCRYPT_KEY))
       },
       get() {
         return decrypt(this.getDataValue('cookie'), ENCRYPT_KEY)

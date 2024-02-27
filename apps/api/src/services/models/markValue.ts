@@ -21,14 +21,14 @@ const markValueModel = sequelize.define<IMarkValueModelType>(
     value: {
       type: DataTypes.ENUM(...Object.keys(Grade)),
       allowNull: false,
-      set(value: string) {
+      set(value: MarkKeys) {
         if (!Object.keys(Grade).includes(value)) {
           console.warn(
             `Предупреждение: значение ${value} не присутствует в перечислении Grade`
           )
         }
 
-        this.setDataValue('value', value as MarkKeys)
+        this.setDataValue('value', value)
       }
     }
   },

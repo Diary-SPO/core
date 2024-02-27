@@ -28,6 +28,7 @@ const notificationListHandler = async ({
     attributes: {
       exclude: ['token']
     }
+    // TODO: fix it
   }) as INotificationsList[]
 
   socials = JSON.parse(JSON.stringify(socials))

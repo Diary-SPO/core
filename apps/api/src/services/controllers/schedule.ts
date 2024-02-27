@@ -120,6 +120,7 @@ const deleteOldLessons = async (
         ]
       }
     ]
+    // TODO: fix it
   })) as IAllLessonInfo[]
 
   for (const dbLesson of dbLessons) {
@@ -256,6 +257,7 @@ order by "date"
   )
 
   const days =
+    // TODO: fix it
     (formatSchedules?.[0] as { data: any }[]).map(
       (schedule) => schedule.data
     ) ?? []
@@ -270,6 +272,7 @@ order by "date"
     for (const dayDB of days) {
       if (dayDB.date === day.toISOString().split('T')[0]) {
         // Сортируем по дате начала пары
+        // TODO: fix it
         dayDB.lessons.sort((a, b) => (a.startTime > b.startTime ? 1 : -1))
         formatDays.push(dayDB)
         isSearch = true
@@ -284,5 +287,6 @@ order by "date"
     }
   }
 
+  // TODO: fix it
   return formatDays as Day[]
 }

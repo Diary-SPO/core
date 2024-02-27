@@ -25,6 +25,7 @@ export const getLessonsService = async (
 
   if (!response.ok) {
     // Получаем из базы
+    // TODO: fix it
     return (await ScheduleGetFromDB(startDate, endDate, id)) as unknown as Day[]
   }
 

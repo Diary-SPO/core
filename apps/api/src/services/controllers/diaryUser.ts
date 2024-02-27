@@ -11,6 +11,7 @@ export const getUserById = async (
   id: number,
   getGroup = false
 ): Promise<IUserInfo | null> => {
+  // TODO: fix it
   return DiaryUserModel.findOne({
     where: {
       idFromDiary: id

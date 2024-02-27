@@ -43,6 +43,7 @@ export const getCookieFromToken = async (
       model: DiaryUserModel,
       required: true
     }
+    // TODO: fix it
   })) as IUserAuthInfo | null
 
   if (!DiaryUserAuth) {
