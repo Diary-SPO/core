@@ -3,7 +3,7 @@ import { GradebookModel, ScheduleModel } from '@db'
 import { AbsenceTypeSaveOrGet } from '../models/AbsenceType'
 import { IUserInfo } from '../models/DiaryUser'
 import { LessonTypeSaveOrGet } from './lessonType'
-import { TasksSaveOrGet } from './task'
+import { tasksSaveOrGet } from '../../models/TaskModel/tasksSaveOrGet'
 import { ThemesSaveOrGet } from './theme'
 
 export const GradebookSaveOrGet = async (
@@ -41,7 +41,7 @@ export const GradebookSaveOrGet = async (
     console.log(`[${new Date().toISOString()}] => Ошибка сохранения тем`)
   )
 
-  TasksSaveOrGet(record.id, gradebook?.tasks ?? [], userInfo).catch(() =>
+  tasksSaveOrGet(record.id, gradebook?.tasks ?? [], userInfo).catch(() =>
     console.log(
       `[${new Date().toISOString()}] => Ошибка сохранения задач (тасков)`
     )

@@ -1,10 +1,10 @@
 import { Task } from '@diary-spo/shared'
-import { TaskModel } from '@db'
-import { IUserInfo } from '../models/DiaryUser/getUserById'
-import { RequiredSaveOrGet } from './required'
-import { TaskTypeSaveOrGet } from './taskType'
+import { RequiredSaveOrGet } from '../../services/controllers/required'
+import { TaskTypeSaveOrGet } from '../../services/controllers/taskType'
+import { TaskModel } from '@models'
+import { IUserInfo } from '../DiaryUser'
 
-export const TasksSaveOrGet = async (
+export const tasksSaveOrGet = async (
   gradebookId: number,
   tasks: Task[],
   userInfo: IUserInfo

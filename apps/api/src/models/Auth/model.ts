@@ -1,7 +1,7 @@
 import { sequelize } from '@db'
 import { DataTypes } from 'sequelize'
-import { DiaryUserModel } from './DiaryUser/model'
-import { IModelPrototype } from './types'
+import { DiaryUserModel } from '../DiaryUser'
+import { IModelPrototype } from '../types'
 
 export type AuthModelType = {
   id: number
