@@ -1,7 +1,7 @@
 import { LessonTypeKeys } from '@diary-spo/shared'
-import { LessonTypeModel } from '@db'
+import { LessonTypeModel } from './model'
 
-export const LessonTypeSaveOrGet = async (name: LessonTypeKeys) => {
+export const lessonTypeSaveOrGet = async (name: LessonTypeKeys) => {
   const [record] = await LessonTypeModel.findOrCreate({
     where: {
       name

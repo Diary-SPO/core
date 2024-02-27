@@ -1,8 +1,8 @@
 import { Optional } from 'sequelize'
-import { checkSameKeys } from '../helpers/checkDataForObject'
-import { ClassroomModel, ClassroomModelType } from '../models/classroom'
+import { checkSameKeys } from '../../services/helpers/checkDataForObject'
+import {ClassroomModel, ClassroomModelType} from "./model";
 
-export const ClassroomSave = async (
+export const saveClassroom = async (
   classroom: Optional<ClassroomModelType, 'id'>
 ) => {
   const [record, isCreated] = await ClassroomModel.findOrCreate({

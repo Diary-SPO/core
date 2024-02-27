@@ -1,12 +1,13 @@
 import { Gradebook } from '@diary-spo/shared'
-import { GradebookModel, ScheduleModel } from '@db'
-import { AbsenceTypeSaveOrGet } from '../models/AbsenceType'
-import { IUserInfo } from '../models/DiaryUser'
-import { LessonTypeSaveOrGet } from './lessonType'
-import { tasksSaveOrGet } from '../../models/Task/tasksSaveOrGet'
-import { ThemesSaveOrGet } from './theme'
+import { LessonTypeSaveOrGet } from '../LessonType/lessonTypeSaveOrGet'
+import { tasksSaveOrGet } from '../Task'
+import { ThemesSaveOrGet } from '../Theme/themesSaveOrGet'
+import {IUserInfo} from "../DiaryUser";
+import {AbsenceTypeSaveOrGet} from "../AbsenceType";
+import { GradebookModel } from './model';
+import { ScheduleModel } from '../Schedule';
 
-export const GradebookSaveOrGet = async (
+export const gradebookSaveOrGet = async (
   gradebook: Gradebook,
   userInfo: IUserInfo,
   lessonId?: number | null

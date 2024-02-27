@@ -5,7 +5,7 @@ import { HeadersWithCookie } from '@utils'
 import {
   ScheduleGetFromDB,
   ScheduleSave
-} from 'src/services/controllers/schedule'
+} from '../../../models/Schedule/scheduleSave'
 
 export const getLessonsService = async (
   startDate: string,

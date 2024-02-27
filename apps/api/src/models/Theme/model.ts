@@ -1,7 +1,7 @@
 import { sequelize } from '@db'
 import { DataTypes } from 'sequelize'
-import { GradebookModel } from './Gradebook/model'
-import { IModelPrototype } from './types'
+import { GradebookModel } from '../Gradebook/model'
+import { IModelPrototype } from '../types'
 
 export type ThemeModelType = {
   id: number

@@ -16,18 +16,16 @@ import {
   TeacherModel,
   ThemeModel,
   ThemeModelType
-} from '@db'
-import { AbsenceTypeModel, AbsenceTypeModelType } from '../models/AbsenceType'
-import { ClassroomModel, IClassroomModelType } from '../models/classroom'
-import {
-  IScheduleSubgroupModelType,
-  ScheduleSubgroupModel
-} from '../models/scheduleSubgroup'
-import { ISubgroupModelType, SubgroupModel } from '../models/subgroup'
-import { ISubjectModelType, SubjectModel } from '../models/subject'
-import { IUserInfo, getUserById } from '../models/DiaryUser'
-import { GradebookSaveOrGet } from './gradebook'
-import { LessonSave } from './lesson'
+} from '@models'
+
+import { LessonSave } from '../../services/controllers/lesson'
+import {getUserById, IUserInfo} from "../DiaryUser";
+import {IScheduleSubgroupModelType, ScheduleSubgroupModel} from "../ScheduleSubgroup";
+import {ISubgroupModelType} from "../Subgroup";
+import {ISubjectModelType, SubjectModel} from "../Subject";
+import {ClassroomModel, IClassroomModelType} from "../Classroom";
+import {AbsenceTypeModel, AbsenceTypeModelType} from "../AbsenceType";
+import { gradebookSaveOrGet } from '../Gradebook/gradebookSaveOrGet'
 
 export const ScheduleSave = async (day: Day, userId: number) => {
   const lessons = day.lessons ?? []
@@ -146,7 +144,7 @@ const deleteOldLessons = async (
         locatedInside = true
         // Обновляем на актуальную информацию
         if (lesson.gradebook) {
-          GradebookSaveOrGet(lesson.gradebook, user, dbLesson.id).catch((err) =>
+          gradebookSaveOrGet(lesson.gradebook, user, dbLesson.id).catch((err) =>
             console.log(
               `[${new Date().toISOString()}] => ошибка сохранения градебука: ${err}`
             )

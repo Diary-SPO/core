@@ -1,6 +1,6 @@
-import { ScheduleSubgroupModel } from '../models/scheduleSubgroup'
+import { ScheduleSubgroupModel } from './model'
 
-export const ScheduleSubgroupSafeSave = async (
+export const scheduleSubgroupSafeSave = async (
   scheduleId: number,
   diaryUserId: number,
   subgroupId: number
