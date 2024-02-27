@@ -9,7 +9,7 @@ import {
 import { PerformanceCurrent } from '@diary-spo/shared'
 import { Op } from 'sequelize'
 import { MarkValueModel } from '../../../database/models/markValue'
-import {getLessonsService} from "../../lessons/lessonsService";
+import { getLessonsService } from '../../lessons/lessonsService'
 
 export const savePerformance = async (
   performance: PerformanceCurrent,
