@@ -1,10 +1,10 @@
-import { getCookieFromToken } from '@helpers'
 import type { NotificationsResponse } from '@diary-spo/shared'
-import { ContextWithID } from '@types'
+import { getCookieFromToken } from '@helpers'
 import { SocialStepTypeModel } from '@models'
 import { SocialTypeModel } from '@models'
-import { INotificationInfo, INotificationsList } from './type'
+import { ContextWithID } from '@types'
 import { replaceWords } from './replaceWords'
+import { INotificationInfo, INotificationsList } from './type'
 import { userActivated } from './userActivated'
 import { userSubscriptions } from './userSubscriptions'
 
@@ -32,7 +32,7 @@ const notificationListHandler = async ({
 
   socials = JSON.parse(JSON.stringify(socials))
 
-  let notificationsInfo: INotificationInfo = {
+  const notificationsInfo: INotificationInfo = {
     socials,
     notificationsStatuses: []
   }

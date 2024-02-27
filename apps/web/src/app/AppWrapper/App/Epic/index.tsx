@@ -1,3 +1,4 @@
+import { Pages } from '@types'
 import {
   useActiveVkuiLocation,
   useRouteNavigator
@@ -7,17 +8,14 @@ import { Epic as VKUIEpic } from '@vkontakte/vkui/dist/components/Epic/Epic'
 import { FC } from 'preact/compat'
 import {
   MAIN_SETTINGS,
-  VIEW_ATTESTATION,
   VIEW_CONTACTS,
   VIEW_MARKS,
   VIEW_NOTIFICATIONS,
   VIEW_SCHEDULE,
   VIEW_SETTINGS
 } from '../../../../routes'
-import { Pages } from '../../../../types'
 
 import {
-  Attestation,
   Contacts,
   LoginForm,
   Marks,
@@ -61,9 +59,6 @@ const Epic: FC<IEpic> = ({ onStoryChange }) => {
         </Suspense>
         <Suspense id={VIEW_MARKS} mode='screen'>
           <Marks id={VIEW_MARKS} />
-        </Suspense>
-        <Suspense id={VIEW_ATTESTATION} mode='screen'>
-          <Attestation id={VIEW_ATTESTATION} />
         </Suspense>
         <Suspense id={VIEW_NOTIFICATIONS} mode='screen'>
           <Notifications id={VIEW_NOTIFICATIONS} />

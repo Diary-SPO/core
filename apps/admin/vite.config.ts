@@ -4,8 +4,8 @@ import vue from '@vitejs/plugin-vue'
 import vueJsx from '@vitejs/plugin-vue-jsx'
 import { defineConfig } from 'vite'
 
-import tailwind from 'tailwindcss'
 import autoprefixer from 'autoprefixer'
+import tailwind from 'tailwindcss'
 
 // https://vitejs.dev/config/
 export default defineConfig({

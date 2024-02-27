@@ -1,22 +1,44 @@
-import { PanelHeaderWithBack, Suspense } from '@components'
+import { ErrorPlaceholder, PanelHeaderWithBack, Suspense } from '@components'
 import { THIRD_SEC, VKUI_ACCENT_BG, VKUI_RED } from '@config'
 import { PerformanceCurrent } from '@diary-spo/shared'
 import { useRateLimitExceeded, useSnackbar } from '@hooks'
 import { Nullable } from '@types'
 import { handleResponse, isApiError } from '@utils'
-import { Icon28ErrorCircleOutline, Icon28InfoCircle } from '@vkontakte/icons'
-import { Group, Panel, PanelSpinner, PullToRefresh } from '@vkontakte/vkui'
-import { FC } from 'preact/compat'
+import {
+  Icon28EducationOutline,
+  Icon28ErrorCircleOutline,
+  Icon28InfoCircle
+} from '@vkontakte/icons'
+import {
+  Div,
+  HorizontalScroll,
+  Panel,
+  PullToRefresh,
+  Spinner,
+  Tabs,
+  TabsItem
+} from '@vkontakte/vkui'
+import { FC, lazy } from 'preact/compat'
 import { useEffect, useState } from 'preact/hooks'
+
 import { getPerformance } from '../../methods'
+
 import { Props } from '../types.ts'
-import MarksByGroup from './MarksByGroup'
-import Summary from './Summary'
-import UserInfo from './UserInfo'
 import { formatStatisticsData } from './helpers.ts'
 
+import Summary from './Summary'
+import UserInfo from './UserInfo'
+
+const FinalMarks = lazy(() => import('./Tabs/FinalMarks'))
+const MarksByGroup = lazy(() => import('./Tabs/MarksByGroup'))
+const SubjectsList = lazy(() => import('./Tabs/SubjectsList'))
+
+type Tabs = 'current' | 'finalMarks' | 'attestation'
+
 const Marks: FC<Props> = ({ id }) => {
+  const [isSummaryLoading, setIsSummaryLoading] = useState<boolean>(false)
   const [isLoading, setIsLoading] = useState<boolean>(false)
+  const [isError, setIsError] = useState<boolean>(false)
 
   const [snackbar, showSnackbar] = useSnackbar()
   const [rateSnackbar, handleRateLimitExceeded] = useRateLimitExceeded()
@@ -50,16 +72,16 @@ const Marks: FC<Props> = ({ id }) => {
   }
 
   const fetchMarks = async (isHandle?: boolean) => {
-    const lastFetchTime = localStorage.getItem('lastFetchTime')
+    const lastFetchingTime = localStorage.getItem('lastFetchTime')
     const savedMarks = localStorage.getItem('savedMarks')
 
     /** Проверяем есть ли кеш и не нужно ли его обновить **/
     if (
       savedMarks &&
-      (lastFetchTime || Date.now() - Number(lastFetchTime) >= THIRD_SEC) &&
+      Date.now() - Number(lastFetchingTime) <= THIRD_SEC &&
       !isHandle
     ) {
-      const marks = savedMarks ? JSON.parse(savedMarks) : null
+      const marks = JSON.parse(savedMarks)
 
       saveData(marks)
 
@@ -69,11 +91,12 @@ const Marks: FC<Props> = ({ id }) => {
         action: 'Загрузить новые',
         before: <Icon28InfoCircle fill={VKUI_ACCENT_BG} />
       })
+
       return
     }
 
     try {
-      setIsLoading(true)
+      setIsSummaryLoading(true)
       const marks = await getPerformance()
 
       handleResponse(
@@ -87,7 +110,7 @@ const Marks: FC<Props> = ({ id }) => {
           })
         },
         handleRateLimitExceeded,
-        setIsLoading,
+        setIsSummaryLoading,
         showSnackbar,
         false
       )
@@ -99,7 +122,7 @@ const Marks: FC<Props> = ({ id }) => {
 
       saveData(marks)
     } finally {
-      setIsLoading(false)
+      setIsSummaryLoading(false)
     }
   }
 
@@ -107,18 +130,23 @@ const Marks: FC<Props> = ({ id }) => {
     fetchMarks()
   }, [])
 
+  const [selected, setSelected] = useState<Tabs>('current')
+
   return (
     <Panel nav={id}>
       <PanelHeaderWithBack title='Успеваемость' />
-      <PullToRefresh onRefresh={() => fetchMarks(true)} isFetching={isLoading}>
+      <PullToRefresh
+        onRefresh={() => fetchMarks(true)}
+        isFetching={isSummaryLoading}
+      >
         <Suspense id='UserInfo'>
           <UserInfo />
         </Suspense>
 
-        {isLoading ? (
-          <Group>
-            <PanelSpinner />
-          </Group>
+        {isSummaryLoading ? (
+          <Div>
+            <Spinner />
+          </Div>
         ) : (
           <Summary
             totalNumberOfMarks={totalNumberOfMarks}
@@ -126,16 +154,69 @@ const Marks: FC<Props> = ({ id }) => {
             markCounts={markCounts}
           />
         )}
-        {isLoading ? (
-          <Group>
-            <PanelSpinner />
-          </Group>
-        ) : (
-          <Suspense id='MarksByGroup'>
-            <MarksByGroup marksForSubject={marksForSubject} />
-          </Suspense>
-        )}
       </PullToRefresh>
+
+      <Tabs mode='accent'>
+        <HorizontalScroll arrowSize='l'>
+          <TabsItem
+            disabled={selected === 'current'}
+            selected={selected === 'current'}
+            onClick={() => setSelected('current')}
+          >
+            Текущие
+          </TabsItem>
+          <TabsItem
+            before={<Icon28EducationOutline />}
+            disabled={selected === 'finalMarks'}
+            selected={selected === 'finalMarks'}
+            onClick={() => setSelected('finalMarks')}
+          >
+            Итоговые
+          </TabsItem>
+          <TabsItem
+            disabled={selected === 'attestation'}
+            selected={selected === 'attestation'}
+            onClick={() => setSelected('attestation')}
+          >
+            Ведомость
+          </TabsItem>
+        </HorizontalScroll>
+      </Tabs>
+
+      {isLoading && (
+        <Div>
+          <Spinner />
+        </Div>
+      )}
+
+      {!isError && selected === 'current' && (
+        <Suspense id='MarksByGroup'>
+          <MarksByGroup marksForSubject={marksForSubject} />
+        </Suspense>
+      )}
+
+      {!isError && selected === 'finalMarks' && (
+        <Suspense id='FinalMarks'>
+          <FinalMarks
+            setIsError={setIsError}
+            isLoading={isLoading}
+            setIsLoading={setIsLoading}
+          />
+        </Suspense>
+      )}
+
+      {!isError && selected === 'attestation' && (
+        <Suspense id='AttestationTab'>
+          <SubjectsList
+            setIsError={setIsError}
+            isLoading={isLoading}
+            setIsLoading={setIsLoading}
+          />
+        </Suspense>
+      )}
+
+      {isError && <ErrorPlaceholder />}
+
       {snackbar}
       {rateSnackbar}
     </Panel>

@@ -1,8 +1,10 @@
 // TODO: refactor (разделить на разные функции, я думаю)
 import { ApiError } from '@api'
-import { Day, Lesson } from '@diary-spo/shared'
 import { sequelize } from '@db'
+import { Day, Lesson } from '@diary-spo/shared'
 import {
+  AbsenceTypeModel,
+  AbsenceTypeModelType,
   GradebookModel,
   GradebookModelType,
   IScheduleModel,
@@ -16,21 +18,19 @@ import {
   TaskTypeModelType,
   TeacherModel,
   ThemeModel,
-  gradebookSaveOrGet,
   ThemeModelType,
-  AbsenceTypeModel,
-  AbsenceTypeModelType
+  gradebookSaveOrGet
 } from '@models'
 
 import { LessonSave } from '@models'
-import { getUserById, IUserInfo } from '../DiaryUser'
+import { ClassroomModel, IClassroomModelType } from '../Classroom'
+import { IUserInfo, getUserById } from '../DiaryUser'
 import {
   IScheduleSubgroupModelType,
   ScheduleSubgroupModel
 } from '../ScheduleSubgroup'
 import { ISubgroupModelType, SubgroupModel } from '../Subgroup'
 import { ISubjectModelType, SubjectModel } from '../Subject'
-import { ClassroomModel, IClassroomModelType } from '../Classroom'
 
 export const ScheduleSave = async (day: Day, userId: number) => {
   const lessons = day.lessons ?? []

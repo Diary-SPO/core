@@ -1,4 +1,5 @@
 import { Suspense } from '@components'
+import { Pages } from '@types'
 import {
   Icon28BookSpreadOutline,
   Icon28EducationOutline,
@@ -27,14 +28,12 @@ import {
 import { FC } from 'preact/compat'
 import {
   MAIN_SETTINGS,
-  VIEW_ATTESTATION,
   VIEW_CONTACTS,
   VIEW_MARKS,
   VIEW_NOTIFICATIONS,
   VIEW_SCHEDULE,
   VIEW_SETTINGS
 } from '../../../routes'
-import { Pages } from '../../../types'
 
 import Epic from './Epic'
 import ModalRoot from './ModalRoot'
@@ -101,13 +100,13 @@ const App: FC = () => {
                   Успеваемость
                 </Cell>
                 {/*// @ts-ignore Типы не совместимы */}
-                <Cell
-                  onClick={() => onStoryChange(VIEW_ATTESTATION)}
-                  hovered={panel === VIEW_ATTESTATION}
-                  before={<Icon28EducationOutline />}
-                >
-                  Аттестация
-                </Cell>
+                {/*<Cell*/}
+                {/*  onClick={() => onStoryChange(VIEW_ATTESTATION)}*/}
+                {/*  hovered={panel === VIEW_ATTESTATION}*/}
+                {/*  before={<Icon28EducationOutline />}*/}
+                {/*>*/}
+                {/*  Аттестация*/}
+                {/*</Cell>*/}
                 {/*// @ts-ignore Типы не совместимы */}
                 <Cell
                   onClick={() => onStoryChange(VIEW_NOTIFICATIONS)}

@@ -10,7 +10,6 @@ export type Pages =
   | 'contacts'
   | 'marks'
   | 'settings'
-  | 'attestation'
   | 'notifications'
 
 export interface Storage {

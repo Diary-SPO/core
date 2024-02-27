@@ -1,9 +1,9 @@
 import { sequelize } from '@db'
 import { DataTypes } from 'sequelize'
-import { IModelPrototypeNoId } from '../types'
 import { DiaryUserModel } from '../DiaryUser'
-import { SubjectModel } from '../Subject'
 import { MarkValueModel } from '../MarkValue'
+import { SubjectModel } from '../Subject'
+import { IModelPrototypeNoId } from '../types'
 
 export type FinalMarkModelType = {
   subjectId: number

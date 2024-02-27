@@ -1,6 +1,6 @@
 import { SERVER_URL } from '@config'
-import { IDiaryUserModel } from '@models'
 import { type UserData } from '@diary-spo/shared'
+import { IDiaryUserModel } from '@models'
 import { cookieExtractor, fetcher, formatDate } from '@utils'
 import { logger } from '../../utils/logger'
 

@@ -13,7 +13,7 @@ export const replaceWords = (
         ?.replaceAll('{localId}', String(userInfo.localUserId))
         ?.replaceAll('{diaryId}', String(userInfo.idFromDiary))
       if (step.value === '') {
-        delete step.value
+        step.value = undefined
       }
     }
     social.steps.sort((a, b) => (a.step > b.step ? 1 : -1))

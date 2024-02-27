@@ -1,12 +1,12 @@
 import { Lesson } from '@diary-spo/shared'
 import {
-  subjectSaveOrGet,
-  saveClassroom,
   IUserInfo,
-  scheduleSubgroupSafeSave,
   TeacherSaveOrGet,
+  gradebookSaveOrGet,
+  saveClassroom,
+  scheduleSubgroupSafeSave,
   subgroupSaveOrGet,
-  gradebookSaveOrGet
+  subjectSaveOrGet
 } from '@models'
 import { ScheduleModel } from './model'
 

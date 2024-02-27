@@ -1,14 +1,14 @@
 import { sequelize } from '@db'
-import { ICacheData } from '@helpers'
 import { PerformanceCurrent } from '@diary-spo/shared'
-import { Op } from 'sequelize'
-import { 
-  MarkValueModel, 
+import { ICacheData } from '@helpers'
+import {
+  GradebookModel,
   MarkModel,
+  MarkValueModel,
   ScheduleModel,
-  TaskModel, 
-  GradebookModel
+  TaskModel
 } from '@models'
+import { Op } from 'sequelize'
 import { getLessonsService } from '../../lessons/lessonsService'
 
 export const savePerformance = async (

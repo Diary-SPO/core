@@ -1,5 +1,5 @@
-import { getCookieFromToken } from '@helpers'
 import type { PerformanceCurrent } from '@diary-spo/shared'
+import { getCookieFromToken } from '@helpers'
 import { ContextWithID } from '@types'
 import { getCurrPerformance } from './service'
 

@@ -7,6 +7,7 @@ import {
   Group,
   Header,
   HorizontalScroll,
+  Placeholder,
   Title
 } from '@vkontakte/vkui'
 import { FC } from 'preact/compat'
@@ -18,9 +19,9 @@ interface IMarksByGroup {
   marksForSubject: PerformanceCurrent
 }
 
-const MarksByGroup: FC<IMarksByGroup> = ({ marksForSubject }) => {
+export const MarksByGroup: FC<IMarksByGroup> = ({ marksForSubject }) => {
   if (!marksForSubject) {
-    return
+    return <Placeholder>Данных нет</Placeholder>
   }
 
   const subjectMarksMap = createSubjectMarksMap(marksForSubject)
@@ -39,9 +40,11 @@ const MarksByGroup: FC<IMarksByGroup> = ({ marksForSubject }) => {
                 {subjectName}
               </Title>
             </Div>
+
             <HorizontalScroll>
               <MarksList marks={subjectMarksMap[subjectName]} />
             </HorizontalScroll>
+
             <AverageMarkCell
               marks={subjectMarksMap[subjectName].flatMap(({ marks }) => marks)}
             />
