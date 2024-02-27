@@ -23,9 +23,9 @@ import { MarkValueModel } from './MarkValue'
 import { AbsenceTypeModel } from './AbsenceType'
 import { SubgroupModel } from './Subgroup'
 import { ScheduleSubgroupModel } from './ScheduleSubgroup'
-import { SocialTypeModel } from './socialType'
-import { NotificationDetailedModel } from './notificationDetailed'
-import { SocialStepTypeModel } from './socialStepType'
+import { SocialTypeModel } from './SocialType/model'
+import { NotificationDetailedModel } from './NotificationDetailed/model'
+import { SocialStepTypeModel } from './SocialStepType/model'
 import { forceSyncDatabase, sequelize } from '@db'
 
 // SPO <--->> Group

@@ -1,6 +1,6 @@
 import { sequelize } from '@db'
 import { DataTypes } from 'sequelize'
-import { IModelPrototype } from './types'
+import { IModelPrototype } from '../types'
 
 export type SocialTypeModelType = {
   id: number

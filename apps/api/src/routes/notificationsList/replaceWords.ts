@@ -1,4 +1,4 @@
-import { ICacheData } from '@db'
+import { ICacheData } from '@helpers'
 import { INotificationsList } from './type'
 
 export const replaceWords = (

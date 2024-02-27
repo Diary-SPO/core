@@ -1,12 +1,10 @@
 import { sequelize } from '@db'
 import { DataTypes } from 'sequelize'
-import {
-  ClassroomModel,
-  GradebookModel,
-  GroupModel,
-  SubjectModel,
-  TeacherModel
-} from '@models'
+import { ClassroomModel } from '../Classroom'
+import { GradebookModel } from '../Gradebook'
+import { GroupModel } from '../Group'
+import { SubjectModel } from '../Subject'
+import { TeacherModel } from '../Teacher'
 import { IModelPrototype } from '../types'
 
 export type ScheduleModelType = {

@@ -1,6 +1,6 @@
 import { error } from '@utils'
 import { sleep } from 'bun'
-import { cookieUpdater } from './worker'
+import { cookieUpdater } from './worker/cookieUpdater'
 
 async function runWorker(): Promise<void> {
   while (true) {
@@ -15,3 +15,4 @@ async function runWorker(): Promise<void> {
 }
 
 runWorker().catch((error) => console.error(error))
+console.log('===============', 'Worker running!', '===============')

@@ -1,4 +1,4 @@
-import { SubscriptionTypeModel } from '../models/subscriptionType'
+import { SubscriptionTypeModel } from '@models'
 
 export const seedSubscriptionType = async () => {
   await SubscriptionTypeModel.bulkCreate([

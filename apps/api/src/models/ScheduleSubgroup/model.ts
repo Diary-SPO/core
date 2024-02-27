@@ -1,7 +1,9 @@
 import { sequelize } from '@db'
 import { DataTypes } from 'sequelize'
-import { DiaryUserModel, ScheduleModel, SubgroupModel } from '@models'
 import { IModelPrototypeNoId } from '../types'
+import { DiaryUserModel } from '../DiaryUser'
+import { ScheduleModel } from '../Schedule'
+import { SubgroupModel } from '../Subgroup'
 
 export type ScheduleSubgroupModelType = {
   scheduleId: number

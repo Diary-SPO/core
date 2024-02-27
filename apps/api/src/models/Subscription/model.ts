@@ -1,8 +1,8 @@
 import { sequelize } from '@db'
 import { DataTypes } from 'sequelize'
-import { DiaryUserModel } from './DiaryUser'
-import { IModelPrototypeNoId } from './types'
-import { SubscriptionTypeModel } from './subscriptionType'
+import { DiaryUserModel } from '../DiaryUser'
+import { IModelPrototypeNoId } from '../types'
+import { SubscriptionTypeModel } from '../SubscriptionType/model'
 
 export type SubscriptionModelType = {
   diaryUserId: number

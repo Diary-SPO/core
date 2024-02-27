@@ -1,5 +1,5 @@
 import { SERVER_URL } from '@config'
-import { getCookieFromToken } from '@db'
+import { getCookieFromToken } from '@helpers'
 import type { AttestationResponse } from '@diary-spo/shared'
 import { ContextWithID } from '@types'
 import { HeadersWithCookie } from '@utils'

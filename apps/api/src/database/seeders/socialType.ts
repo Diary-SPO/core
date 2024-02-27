@@ -1,4 +1,4 @@
-import { SocialTypeModel } from '../models/socialType'
+import { SocialTypeModel } from '@models'
 import { seedSocialStepType } from './socialStepType'
 
 export const seedSocialType = async () => {

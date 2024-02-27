@@ -1,5 +1,5 @@
 import { SERVER_URL } from '@config'
-import { ICacheData } from '@db'
+import { ICacheData } from '@helpers'
 import { HeadersWithCookie } from '@utils'
 import { savePerformance } from './save'
 

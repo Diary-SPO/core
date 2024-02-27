@@ -10,7 +10,8 @@
       "@routes": ["src/routes"],
       "@utils": ["src/utils"],
       "@db": ["src/database"],
-      "@models": ["src/models"],
+      "@models": ["src/models/"],
+      "@helpers": ["src/helpers"],
       "@api": ["src/ApiError"],
     } ,
     "types": [

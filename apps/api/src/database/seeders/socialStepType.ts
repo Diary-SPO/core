@@ -1,7 +1,7 @@
 import {
   SocialStepTypeModel,
   SocialStepTypeModelType
-} from '../models/socialStepType'
+} from '@models'
 import { Optional } from 'sequelize'
 
 export const seedSocialStepType = async (

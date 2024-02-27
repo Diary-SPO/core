@@ -1,4 +1,4 @@
-import { getCookieFromToken } from '@db'
+import { getCookieFromToken } from '@helpers'
 import type { Day } from '@diary-spo/shared'
 import { IContext } from '@types'
 import { formatDate } from '@utils'

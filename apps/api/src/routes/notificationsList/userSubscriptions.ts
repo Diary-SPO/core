@@ -1,4 +1,4 @@
-import { ICacheData } from '@db'
+import { ICacheData } from '@helpers'
 import { INotificationsList } from './type'
 import { SubscriptionTypeModel } from '../../database/models/subscriptionType'
 import { SubscriptionModel } from '../../database/models/subscription'

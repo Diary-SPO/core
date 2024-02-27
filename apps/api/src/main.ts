@@ -46,4 +46,3 @@ console.log(
 
 const workerURL = new URL('worker', import.meta.url).href
 new Worker(workerURL)
-console.log('===============', 'Worker running!', '===============')

@@ -20,7 +20,7 @@ import {
   ThemeModelType
 } from '@models'
 
-import { LessonSave } from '../../database/controllers/lesson'
+import { LessonSave } from '@models'
 import { getUserById, IUserInfo } from '../DiaryUser'
 import {
   IScheduleSubgroupModelType,

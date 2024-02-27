@@ -1,7 +1,7 @@
 import { Gradebook } from '@diary-spo/shared'
 import { GradebookModel } from './model'
 import {
-  LessonTypeSaveOrGet,
+  lessonTypeSaveOrGet,
   AbsenceTypeSaveOrGet,
   ScheduleModel,
   IUserInfo,
@@ -14,7 +14,7 @@ export const gradebookSaveOrGet = async (
   userInfo: IUserInfo,
   lessonId?: number | null
 ) => {
-  const lessonTypeId = (await LessonTypeSaveOrGet(gradebook.lessonType)).id
+  const lessonTypeId = (await lessonTypeSaveOrGet(gradebook.lessonType)).id
   const absenceTypeId = gradebook.absenceType
     ? (await AbsenceTypeSaveOrGet(gradebook.absenceType)).id
     : undefined

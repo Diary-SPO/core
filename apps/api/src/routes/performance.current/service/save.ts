@@ -1,14 +1,14 @@
-import {
-  GradebookModel,
-  ICacheData,
-  MarkModel,
-  ScheduleModel,
-  TaskModel,
-  sequelize
-} from '@db'
+import { sequelize } from '@db'
+import { ICacheData } from '@helpers'
 import { PerformanceCurrent } from '@diary-spo/shared'
 import { Op } from 'sequelize'
-import { MarkValueModel } from '../../../database/models/markValue'
+import { 
+  MarkValueModel, 
+  MarkModel,
+  ScheduleModel,
+  TaskModel, 
+  GradebookModel
+} from '@models'
 import { getLessonsService } from '../../lessons/lessonsService'
 
 export const savePerformance = async (
