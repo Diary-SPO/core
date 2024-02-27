@@ -9,13 +9,11 @@ export const getUsersToUpdate = async (): Promise<IDiaryUserModel[] | null> => {
   const maxDate = maxDateInactive(MAX_NOT_UPDATE_TOKEN_IN_DAYS)
 
   // 2. Получаем список пользователей для обновления
-  const users = await DiaryUserModel.findAll({
+  return DiaryUserModel.findAll({
     where: {
       cookieLastDateUpdate: {
         [Op.lt]: formatDate(maxDate.toISOString())
       }
     }
   })
-
-  return users
 }

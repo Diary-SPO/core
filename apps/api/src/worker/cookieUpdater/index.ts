@@ -1,8 +1,8 @@
-import { logger } from '@utils'
 import { checkInterval } from '../utils/checkInterval'
 import { INTERVAL_RUN } from './config'
 import { removeNotUsedTokens } from './modules/removeNotUsedTokens'
 import { updaterCookies } from './modules/updaterCookies'
+import { logger } from '../utils/logger'
 
 let lastRunning: Date | null = null
 const log = logger('cookie updater')

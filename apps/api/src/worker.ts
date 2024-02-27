@@ -1,6 +1,6 @@
 import { error } from '@utils'
 import { sleep } from 'bun'
-import { cookieUpdater } from './srcWorker'
+import { cookieUpdater } from './worker'
 
 async function runWorker(): Promise<void> {
   while (true) {
