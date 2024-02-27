@@ -1,46 +1,46 @@
 import { sequelize } from '@db'
 import { DataTypes } from 'sequelize'
-import { GroupModel } from '@models'
-import { TermTypeModel } from '../TermType/model'
+import { GradebookModel } from '../Gradebook'
+import { TaskTypeModel } from '../TaskType'
 import { IModelPrototype } from '../types'
 
-export type AcademicYearModelType = {
+export type TaskModelType = {
   id: number
-  termTypeId: number
-  number: number
-  groupId: number
+  gradebookId: number
+  taskTypeId: number
+  topic: string
   idFromDiary: number
 }
 
-export type IAcademicYearModel = IModelPrototype<AcademicYearModelType, 'id'>
+export type ITaskModel = IModelPrototype<TaskModelType, 'id'>
 
-export const AcademicYearModel = sequelize.define<IAcademicYearModel>(
-  'academicYear',
+export const TaskModel = sequelize.define<ITaskModel>(
+  'task',
   {
     id: {
       type: DataTypes.INTEGER,
       autoIncrement: true,
       primaryKey: true
     },
-    termTypeId: {
+    gradebookId: {
       type: DataTypes.INTEGER,
       allowNull: false,
       references: {
-        model: TermTypeModel,
+        model: GradebookModel,
         key: 'id'
       }
     },
-    number: {
+    taskTypeId: {
       type: DataTypes.INTEGER,
+      allowNull: false,
+      references: {
+        model: TaskTypeModel,
+        key: 'id'
+      }
+    },
+    topic: {
+      type: DataTypes.TEXT,
       allowNull: false
-    },
-    groupId: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-      references: {
-        model: GroupModel,
-        key: 'id'
-      }
     },
     idFromDiary: {
       type: DataTypes.INTEGER,

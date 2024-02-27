@@ -3,7 +3,7 @@ import { GradebookModel, ScheduleModel } from '@db'
 import { AbsenceTypeSaveOrGet } from '../models/AbsenceType'
 import { IUserInfo } from '../models/DiaryUser'
 import { LessonTypeSaveOrGet } from './lessonType'
-import { tasksSaveOrGet } from '../../models/TaskModel/tasksSaveOrGet'
+import { tasksSaveOrGet } from '../../models/Task/tasksSaveOrGet'
 import { ThemesSaveOrGet } from './theme'
 
 export const GradebookSaveOrGet = async (

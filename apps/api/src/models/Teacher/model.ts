@@ -1,46 +1,46 @@
 import { sequelize } from '@db'
 import { DataTypes } from 'sequelize'
-import { GroupModel } from '@models'
-import { TermTypeModel } from '../TermType/model'
+import { SPOModel } from '../SPO'
 import { IModelPrototype } from '../types'
 
-export type AcademicYearModelType = {
+export type TeacherModelType = {
   id: number
-  termTypeId: number
-  number: number
-  groupId: number
+  spoId: number
+  firstName: string
+  lastName: string
+  middleName?: string
   idFromDiary: number
 }
 
-export type IAcademicYearModel = IModelPrototype<AcademicYearModelType, 'id'>
+export type ITeacherModel = IModelPrototype<TeacherModelType, 'id'>
 
-export const AcademicYearModel = sequelize.define<IAcademicYearModel>(
-  'academicYear',
+export const TeacherModel = sequelize.define<ITeacherModel>(
+  'teacher',
   {
     id: {
       type: DataTypes.INTEGER,
       autoIncrement: true,
       primaryKey: true
     },
-    termTypeId: {
+    spoId: {
       type: DataTypes.INTEGER,
       allowNull: false,
       references: {
-        model: TermTypeModel,
+        model: SPOModel,
         key: 'id'
       }
     },
-    number: {
-      type: DataTypes.INTEGER,
+    firstName: {
+      type: DataTypes.STRING(45),
       allowNull: false
     },
-    groupId: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-      references: {
-        model: GroupModel,
-        key: 'id'
-      }
+    lastName: {
+      type: DataTypes.STRING(45),
+      allowNull: false
+    },
+    middleName: {
+      type: DataTypes.STRING(45),
+      allowNull: true
     },
     idFromDiary: {
       type: DataTypes.INTEGER,

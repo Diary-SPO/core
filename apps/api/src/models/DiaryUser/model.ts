@@ -3,7 +3,7 @@ import { sequelize } from '@db'
 import { decrypt, encrypt } from '@diary-spo/sql'
 import { formatDate } from '@utils'
 import { DataTypes } from 'sequelize'
-import { GroupModel } from '../group'
+import { GroupModel } from '../Group'
 import { IModelPrototype } from '../types'
 
 // REMOVE IT
