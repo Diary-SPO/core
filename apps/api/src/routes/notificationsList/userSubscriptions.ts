@@ -1,7 +1,7 @@
 import { ICacheData } from '@helpers'
 import { INotificationsList } from './type'
-import { SubscriptionTypeModel } from '../../database/models/subscriptionType'
-import { SubscriptionModel } from '../../database/models/subscription'
+import { SubscriptionTypeModel } from '@models'
+import { SubscriptionModel } from '@models'
 
 export const userSubscriptions = async (
   list: INotificationsList[],

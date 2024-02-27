@@ -3,7 +3,10 @@ import {
   subjectSaveOrGet,
   saveClassroom,
   IUserInfo,
-  scheduleSubgroupSafeSave
+  scheduleSubgroupSafeSave,
+  TeacherSaveOrGet,
+  subgroupSaveOrGet,
+  gradebookSaveOrGet
 } from '@models'
 import { ScheduleModel } from './model'
 
@@ -51,7 +54,7 @@ export const LessonSave = async (
   const groupId = user.group.id
   const subgroupId = subgroup
     ? (
-        await SubgroupSaveOrGet({
+        await subgroupSaveOrGet({
           groupId: user.group.id,
           name: subgroup
         })
@@ -61,7 +64,7 @@ export const LessonSave = async (
   // TODO: Удалять в воркере не привязанные градебуки, либо как-то обрабатывать
   let gradebookId = null
   if (lesson.gradebook) {
-    gradebookId = GradebookSaveOrGet(lesson.gradebook, user).catch((err) => {
+    gradebookId = gradebookSaveOrGet(lesson.gradebook, user).catch((err) => {
       throw new Error(
         `[${new Date().toISOString()}] => Ошибка сохранения в функции GradebookSaveOrGet(). Подробнее:`,
         err

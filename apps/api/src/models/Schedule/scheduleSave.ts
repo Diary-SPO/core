@@ -17,7 +17,9 @@ import {
   TeacherModel,
   ThemeModel,
   gradebookSaveOrGet,
-  ThemeModelType
+  ThemeModelType,
+  AbsenceTypeModel,
+  AbsenceTypeModelType
 } from '@models'
 
 import { LessonSave } from '@models'
@@ -26,7 +28,7 @@ import {
   IScheduleSubgroupModelType,
   ScheduleSubgroupModel
 } from '../ScheduleSubgroup'
-import { ISubgroupModelType } from '../Subgroup'
+import { ISubgroupModelType, SubgroupModel } from '../Subgroup'
 import { ISubjectModelType, SubjectModel } from '../Subject'
 import { ClassroomModel, IClassroomModelType } from '../Classroom'
 

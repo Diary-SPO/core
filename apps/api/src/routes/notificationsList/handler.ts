@@ -38,7 +38,7 @@ const notificationListHandler = async ({
 
   replaceWords(socials, authData, secret)
   await userActivated(socials, authData)
-  //await userSubscriptions(socials, authData)
+  await userSubscriptions(socials, authData)
 
   return JSON.stringify(socials)
 }

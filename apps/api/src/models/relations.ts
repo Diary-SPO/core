@@ -1,32 +1,37 @@
-import { SPOModel } from './SPO'
-import { GroupModel } from './Group'
-import { TaskModel } from './Task'
-import { RequiredModel } from './Required'
-import { DiaryUserModel } from './DiaryUser'
-import { AuthModel } from './Auth'
-import { TeacherModel } from './Teacher'
-import { ScheduleModel } from './Schedule'
-import { AcademicYearModel } from './AcademicYear'
-import { TermModel } from './Term'
-import { TermSubjectModel } from './TermSubject'
-import { ExaminationTypeModel } from './Examination'
-import { GradebookModel } from './Gradebook'
-import { LessonTypeModel } from './LessonType'
-import { ThemeModel } from './Theme'
-import { TaskTypeModel } from './TaskType'
-import { MarkModel } from './Mark'
-import { ClassroomModel } from './Classroom'
-import { SubjectModel } from './Subject'
-import { TermTypeModel } from './TermType'
-import { FinalMarkModel } from './FinalMark'
-import { MarkValueModel } from './MarkValue'
-import { AbsenceTypeModel } from './AbsenceType'
-import { SubgroupModel } from './Subgroup'
-import { ScheduleSubgroupModel } from './ScheduleSubgroup'
-import { SocialTypeModel } from './SocialType/model'
-import { NotificationDetailedModel } from './NotificationDetailed/model'
-import { SocialStepTypeModel } from './SocialStepType/model'
 import { forceSyncDatabase, sequelize } from '@db'
+import { seedDatabase } from 'src/database/seeders'
+import { 
+  SPOModel,
+  GroupModel,
+  TaskModel,
+  RequiredModel,
+  DiaryUserModel,
+  AuthModel,
+  TeacherModel,
+  ScheduleModel,
+  AcademicYearModel,
+  TermModel,
+  TermSubjectModel,
+  ExaminationTypeModel,
+  GradebookModel,
+  LessonTypeModel,
+  ThemeModel,
+  TaskTypeModel,
+  MarkModel,
+  ClassroomModel,
+  SubjectModel,
+  TermTypeModel,
+  FinalMarkModel,
+  MarkValueModel,
+  AbsenceTypeModel,
+  SubgroupModel,
+  ScheduleSubgroupModel,
+  SocialTypeModel,
+  NotificationDetailedModel,
+  SocialStepTypeModel,
+  SubscriptionTypeModel,
+  SubscriptionModel
+ } from './import'
 
 // SPO <--->> Group
 SPOModel.hasMany(GroupModel, {
@@ -260,15 +265,9 @@ NotificationDetailedModel.belongsTo(SocialTypeModel)
 SocialTypeModel.hasMany(SocialStepTypeModel, { as: 'steps' })
 SocialStepTypeModel.belongsTo(SocialTypeModel)
 
-// DiaryUser <->> NotificationDetailed
+// DiaryUser <-->> NotificationDetailed
 DiaryUserModel.hasMany(NotificationDetailedModel)
 NotificationDetailedModel.belongsTo(DiaryUserModel)
-
-if (forceSyncDatabase) {
-  sequelize.sync({
-    force: true
-  })
-}
 
 // SubscriptionType <-->> Subscription
 //SubscriptionTypeModel.hasMany(SubscriptionModel)
@@ -277,3 +276,14 @@ if (forceSyncDatabase) {
 // DiaryUser <-->> Subscription
 //DiaryUserModel.hasMany(SubscriptionModel)
 //SubscriptionModel.belongsTo(DiaryUserModel)
+
+
+if (forceSyncDatabase) {
+  console.log('Syncing database...')
+  sequelize.sync({
+    force: true
+  })
+}
+
+// Заполняем базу данных
+await seedDatabase()

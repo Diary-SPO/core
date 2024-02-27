@@ -21,11 +21,11 @@ export const SocialTypeModel = sequelize.define<ISocialTypeModel>(
       primaryKey: true
     },
     name: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.STRING,
       allowNull: false
     },
     description: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.STRING,
       allowNull: false
     },
     token: {
