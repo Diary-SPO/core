@@ -50,15 +50,6 @@ const Tabbar: FC<ITabbar> = ({ onStoryChange, activeView }) => {
           <Icon28GraphOutline />
         </TabbarItem>
         {/*//@ts-ignore типы React не совсем совместимы с Preact*/}
-        {/*<TabbarItem*/}
-        {/*  onClick={() => onStoryChange(VIEW_ATTESTATION)}*/}
-        {/*  selected={activeView === VIEW_ATTESTATION}*/}
-        {/*  data-story={VIEW_ATTESTATION}*/}
-        {/*  text='Аттестация'*/}
-        {/*>*/}
-        {/*  <Icon28EducationOutline />*/}
-        {/*</TabbarItem>*/}
-        {/*//@ts-ignore типы React не совсем совместимы с Preact*/}
         <TabbarItem
           onClick={() => onStoryChange(VIEW_NOTIFICATIONS)}
           selected={activeView === VIEW_NOTIFICATIONS}

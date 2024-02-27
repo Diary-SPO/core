@@ -99,15 +99,7 @@ const App: FC = () => {
                 >
                   Успеваемость
                 </Cell>
-                {/*// @ts-ignore Типы не совместимы */}
-                {/*<Cell*/}
-                {/*  onClick={() => onStoryChange(VIEW_ATTESTATION)}*/}
-                {/*  hovered={panel === VIEW_ATTESTATION}*/}
-                {/*  before={<Icon28EducationOutline />}*/}
-                {/*>*/}
-                {/*  Аттестация*/}
-                {/*</Cell>*/}
-                {/*// @ts-ignore Типы не совместимы */}
+                {/*//@ts-ignore типы React не совсем совместимы с Preact*/}
                 <Cell
                   onClick={() => onStoryChange(VIEW_NOTIFICATIONS)}
                   hovered={panel === VIEW_NOTIFICATIONS}
