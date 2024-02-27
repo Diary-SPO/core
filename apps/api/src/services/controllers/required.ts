@@ -1,5 +1,5 @@
 import { RequiredModel } from '@db'
-import { IUserInfo } from './diaryUser'
+import { IUserInfo } from '../models/DiaryUser'
 
 export const RequiredSaveOrGet = async (
   taskId: number,

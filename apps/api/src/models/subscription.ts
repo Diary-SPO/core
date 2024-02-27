@@ -1,6 +1,6 @@
 import { sequelize } from '@db'
 import { DataTypes } from 'sequelize'
-import { DiaryUserModel } from './diaryUser'
+import { DiaryUserModel } from './DiaryUser/model'
 import { IModelPrototypeNoId } from './types'
 import { SubscriptionTypeModel } from './subscriptionType'
 

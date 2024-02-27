@@ -1,7 +1,7 @@
 import { cache, enableCache, sequelize } from '@db'
 import { AbsenceTypes, AbsenceTypesKeys } from '@diary-spo/shared'
 import { DataTypes } from 'sequelize'
-import { IModelPrototype } from './types'
+import { IModelPrototype } from '../types'
 
 export type AbsenceTypeModelType = {
   id: number

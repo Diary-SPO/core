@@ -17,7 +17,7 @@ import {
   ThemeModel,
   ThemeModelType
 } from '@db'
-import { AbsenceTypeModel, AbsenceTypeModelType } from '../models/absenceType'
+import { AbsenceTypeModel, AbsenceTypeModelType } from '../models/AbsenceType'
 import { ClassroomModel, IClassroomModelType } from '../models/classroom'
 import {
   IScheduleSubgroupModelType,
@@ -25,7 +25,7 @@ import {
 } from '../models/scheduleSubgroup'
 import { ISubgroupModelType, SubgroupModel } from '../models/subgroup'
 import { ISubjectModelType, SubjectModel } from '../models/subject'
-import { IUserInfo, getUserById } from './diaryUser'
+import { IUserInfo, getUserById } from '../models/DiaryUser'
 import { GradebookSaveOrGet } from './gradebook'
 import { LessonSave } from './lesson'
 

@@ -1,6 +1,6 @@
 import { sequelize } from '@db'
 import { DataTypes } from 'sequelize'
-import { AbsenceTypeModel } from './absenceType'
+import { AbsenceTypeModel } from './AbsenceType/model'
 import { LessonTypeModel } from './lessonType'
 import { IModelPrototype } from './types'
 

@@ -1,19 +1,20 @@
 import { sequelize } from '@db'
 import { DataTypes } from 'sequelize'
-import { DiaryUserModel } from './diaryUser'
+import { DiaryUserModel } from './DiaryUser/model'
+import { MarkValueModel } from './markValue'
 import { TaskModel } from './task'
 import { IModelPrototypeNoId } from './types'
 
-export type RequiredModelType = {
+export type MarkModelType = {
   diaryUserId: number
   taskId: number
-  isRequired: boolean
+  markValueId: number
 }
 
-export type IRequiredModel = IModelPrototypeNoId<RequiredModelType>
+export type IMarkModelType = IModelPrototypeNoId<MarkModelType>
 
-export const RequiredModel = sequelize.define<IRequiredModel>(
-  'required',
+export const MarkModel = sequelize.define<IMarkModelType>(
+  'mark',
   {
     diaryUserId: {
       type: DataTypes.INTEGER,
@@ -33,9 +34,13 @@ export const RequiredModel = sequelize.define<IRequiredModel>(
         key: 'id'
       }
     },
-    isRequired: {
-      type: DataTypes.BOOLEAN,
-      allowNull: false
+    markValueId: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      references: {
+        model: MarkValueModel,
+        key: 'id'
+      }
     }
   },
   {

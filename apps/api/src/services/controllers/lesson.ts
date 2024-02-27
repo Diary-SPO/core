@@ -1,7 +1,7 @@
 import { Lesson } from '@diary-spo/shared'
 import { ScheduleModel } from '@db'
 import { ClassroomSave } from './classroom'
-import { IUserInfo } from './diaryUser'
+import { IUserInfo } from '../models/DiaryUser/getUserById'
 import { GradebookSaveOrGet } from './gradebook'
 import { ScheduleSubgroupSafeSave } from './scheduleSubgroup'
 import { SubgroupSaveOrGet } from './subgroup'

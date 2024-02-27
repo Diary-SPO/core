@@ -10,6 +10,7 @@
       "@routes": ["src/routes"],
       "@utils": ["src/utils"],
       "@db": ["src/services"],
+      "@models": ["src/models"],
       "@api": ["src/ApiError"],
     } /* Specify a set of entries that re-map imports to additional lookup locations. */,
     "types": [
