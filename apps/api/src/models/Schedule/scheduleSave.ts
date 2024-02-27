@@ -180,7 +180,7 @@ export const ScheduleGetFromDB = async (
     return null
   }
   const formatSchedules = await sequelize.query(
-    /*sql*/ `SELECT 
+    /*crypto*/ `SELECT 
 	json_build_object(
     'date', s."date" ,
     'lessons', json_agg(
