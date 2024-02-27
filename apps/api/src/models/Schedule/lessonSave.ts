@@ -1,5 +1,10 @@
 import { Lesson } from '@diary-spo/shared'
-import { subjectSaveOrGet, saveClassroom, IUserInfo, scheduleSubgroupSafeSave } from '@models'
+import {
+  subjectSaveOrGet,
+  saveClassroom,
+  IUserInfo,
+  scheduleSubgroupSafeSave
+} from '@models'
 import { ScheduleModel } from './model'
 
 export const LessonSave = async (

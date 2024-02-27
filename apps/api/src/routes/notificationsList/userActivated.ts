@@ -1,6 +1,6 @@
 import { ICacheData } from '@db'
 import { INotificationsList } from './type'
-import { NotificationDetailedModel } from 'src/services/models/notificationDetailed'
+import { NotificationDetailedModel } from '../../database/models/notificationDetailed'
 
 export const userActivated = async (
   list: INotificationsList[],

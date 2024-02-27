@@ -11,6 +11,7 @@ import {
   fetcher,
   formatDate
 } from '@utils'
+// TODO: сделать папку с утилитами может
 import { saveOrGetDiaryUser } from './saveOrGetDiaryUser'
 import { saveOrGetGroup } from './saveOrGetGroup'
 import { saveOrGetSPO } from './saveOrGetSPO'

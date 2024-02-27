@@ -1,7 +1,7 @@
 import { API_CODES, ApiError } from '@api'
 import { formatDate } from '@utils'
 import { suid } from 'rand-token'
-import { AuthModel } from '../models'
+import { AuthModel } from '@models'
 
 /**
  * Генерирует токен и вставляет в базу
@@ -15,6 +15,7 @@ export const generateToken = async (idDiaryUser: number): Promise<string> => {
 
   const formattedDate = formatDate(new Date().toISOString())
 
+  // TODO: сделать метод рядом с моделью для создания и использовать тут
   await AuthModel.create({
     idDiaryUser,
     token,

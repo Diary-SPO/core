@@ -1,17 +1,10 @@
 import { API_CODES, ApiError } from '@api'
 import { ENCRYPT_KEY } from '@config'
-import {
-  DiaryUserModel,
-  GroupModel,
-  IDiaryUserModel,
-  IGroupModel,
-  ISPOModel,
-  SPOModel,
-  generateToken
-} from '@db'
+import { generateToken } from '@db'
 import { type ResponseLogin } from '@db'
 import { encrypt } from '@diary-spo/sql'
 import { ResponseLoginFromDiaryUser } from '@types'
+import { IDiaryUserModel, IGroupModel, ISPOModel } from '@models'
 
 type DiaryUserAuthInfo = IDiaryUserModel & {
   group: IGroupModel & {

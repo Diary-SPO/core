@@ -11,7 +11,7 @@ import type { Organization } from '@diary-spo/shared'
 import { HeadersWithCookie } from '@utils'
 import type { Context } from 'elysia'
 import { Optional } from 'sequelize'
-import { checkSameKeys } from 'src/services/helpers/checkDataForObject'
+import {checkSameKeys} from "../../helpers/checkDataForObject";
 
 const getOrganization = async ({
   request

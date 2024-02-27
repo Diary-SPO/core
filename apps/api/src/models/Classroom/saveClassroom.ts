@@ -1,5 +1,5 @@
 import { Optional } from 'sequelize'
-import { checkSameKeys } from '../../services/helpers/checkDataForObject'
+import { checkSameKeys } from '../../helpers'
 import { ClassroomModel, ClassroomModelType } from './model'
 
 export const saveClassroom = async (

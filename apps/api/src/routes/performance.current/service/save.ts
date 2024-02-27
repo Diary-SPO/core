@@ -7,10 +7,9 @@ import {
   sequelize
 } from '@db'
 import { PerformanceCurrent } from '@diary-spo/shared'
-import { Op, where } from 'sequelize'
-import { getLessonsService } from 'src/routes/lessons/lessonsService'
-import { ScheduleGetFromDB } from '../../../models/Schedule/scheduleSave'
-import { MarkValueModel } from 'src/services/models/markValue'
+import { Op } from 'sequelize'
+import { MarkValueModel } from '../../../database/models/markValue'
+import {getLessonsService} from "../../lessons/lessonsService";
 
 export const savePerformance = async (
   performance: PerformanceCurrent,
@@ -60,6 +59,7 @@ export const savePerformance = async (
         continue
       }
 
+      // FIXME: почему в одном сервисе используется другой?
       const dateInfo = await getLessonsService(
         date,
         date,

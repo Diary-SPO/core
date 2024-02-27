@@ -5,7 +5,7 @@ import {
   AuthModelType,
   DiaryUserModel,
   DiaryUserModelType
-} from '../models'
+} from '@models'
 
 const memoryCache = await caching('memory', {
   max: 1000,
@@ -35,6 +35,7 @@ export const getCookieFromToken = async (
     return getCacheFromCookie
   }
 
+  // TODO: сделать метод рядом с моделью для создания и использовать тут
   const DiaryUserAuth = (await AuthModel.findOne({
     where: {
       token

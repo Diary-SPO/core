@@ -4,7 +4,7 @@ import routes from '@routes'
 import { Elysia } from 'elysia'
 import { compression } from 'elysia-compression'
 import { helmet } from 'elysia-helmet'
-import { seedDatabase } from './services/seeders'
+import { seedDatabase } from './database/seeders'
 
 const port = Bun.env.PORT ?? 3003
 const app = new Elysia()
