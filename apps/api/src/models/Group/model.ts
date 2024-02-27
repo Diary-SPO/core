@@ -1,6 +1,6 @@
 import { sequelize } from '@db'
 import { DataTypes } from 'sequelize'
-import { SPOModel } from '../SPO/model'
+import { SPOModel } from '../SPO'
 import { IModelPrototype } from '../types'
 
 export type GroupModelType = {

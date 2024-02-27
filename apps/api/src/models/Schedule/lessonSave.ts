@@ -1,8 +1,6 @@
 import { Lesson } from '@diary-spo/shared'
-import { saveClassroom } from '../Classroom'
+import { subjectSaveOrGet, saveClassroom, IUserInfo, scheduleSubgroupSafeSave } from '@models'
 import { ScheduleModel } from './model'
-import { IUserInfo } from '../DiaryUser'
-import { subjectSaveOrGet } from '../Subject/subjectSaveOrGet'
 
 export const LessonSave = async (
   lesson: Lesson,
@@ -100,6 +98,6 @@ export const LessonSave = async (
   }
 
   if (subgroupId && schedule) {
-    await ScheduleSubgroupSafeSave(schedule.id, user.id, subgroupId)
+    await scheduleSubgroupSafeSave(schedule.id, user.id, subgroupId)
   }
 }

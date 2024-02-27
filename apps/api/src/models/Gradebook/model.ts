@@ -1,7 +1,6 @@
 import { sequelize } from '@db'
 import { DataTypes } from 'sequelize'
-import { AbsenceTypeModel } from '../AbsenceType'
-import { LessonTypeModel } from '../LessonType'
+import { LessonTypeModel, AbsenceTypeModel } from '@models'
 import { IModelPrototype } from '../types'
 
 export type GradebookModelType = {

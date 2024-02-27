@@ -1,8 +1,6 @@
 import { sequelize } from '@db'
 import { DataTypes } from 'sequelize'
-import { DiaryUserModel } from '../DiaryUser/model'
-import { ScheduleModel } from '../Schedule/model'
-import { SubgroupModel } from '../Subgroup/model'
+import { DiaryUserModel, ScheduleModel, SubgroupModel } from '@models'
 import { IModelPrototypeNoId } from '../types'
 
 export type ScheduleSubgroupModelType = {
