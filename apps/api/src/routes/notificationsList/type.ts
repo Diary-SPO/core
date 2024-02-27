@@ -1,8 +1,19 @@
-import { INotificationDetailedModel } from '../../database/models/notificationDetailed'
-import { ISocialStepTypeModel } from '../../database/models/socialStepType'
-import { ISocialTypeModel } from '../../database/models/socialType'
+import { INotificationDetailedModel } from '@models'
+import { ISocialStepTypeModel } from '@models'
+import { ISocialTypeModel } from '@models'
 
 export type INotificationsList = ISocialTypeModel & {
   steps: ISocialStepTypeModel[]
-  isSubscription: boolean | null
+  isSubscription: boolean
+}
+
+export type INotificationStatus = {
+  title: string
+  code: string
+  isSubscription: boolean
+}
+
+export type INotificationInfo = {
+  socials: INotificationsList[]
+  notificationsStatuses: INotificationStatus[]
 }

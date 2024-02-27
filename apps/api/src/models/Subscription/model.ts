@@ -7,6 +7,7 @@ import { SubscriptionTypeModel } from '../SubscriptionType/model'
 export type SubscriptionModelType = {
   diaryUserId: number
   subscriptionTypeId: number
+  value: boolean
 }
 
 export type ISubscriptionModel = IModelPrototypeNoId<SubscriptionModelType>
@@ -17,6 +18,7 @@ export const SubscriptionModel = sequelize.define<ISubscriptionModel>(
     diaryUserId: {
       type: DataTypes.INTEGER,
       allowNull: false,
+      primaryKey: true,
       references: {
         model: DiaryUserModel,
         key: 'id'
@@ -25,10 +27,15 @@ export const SubscriptionModel = sequelize.define<ISubscriptionModel>(
     subscriptionTypeId: {
       type: DataTypes.INTEGER,
       allowNull: false,
+      primaryKey: true,
       references: {
         model: SubscriptionTypeModel,
         key: 'id'
       }
+    },
+    value: {
+      type: DataTypes.BOOLEAN,
+      allowNull: false
     }
   },
   {

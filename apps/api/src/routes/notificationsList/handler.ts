@@ -3,7 +3,7 @@ import type { NotificationsResponse } from '@diary-spo/shared'
 import { ContextWithID } from '@types'
 import { SocialStepTypeModel } from '@models'
 import { SocialTypeModel } from '@models'
-import { INotificationsList } from './type'
+import { INotificationInfo, INotificationsList } from './type'
 import { replaceWords } from './replaceWords'
 import { userActivated } from './userActivated'
 import { userSubscriptions } from './userSubscriptions'
@@ -32,15 +32,20 @@ const notificationListHandler = async ({
 
   socials = JSON.parse(JSON.stringify(socials))
 
+  let notificationsInfo: INotificationInfo = {
+    socials,
+    notificationsStatuses: []
+  }
+
   if (!socials) {
     return []
   }
 
-  replaceWords(socials, authData, secret)
-  await userActivated(socials, authData)
-  await userSubscriptions(socials, authData)
+  replaceWords(notificationsInfo.socials, authData, secret)
+  await userActivated(notificationsInfo.socials, authData)
+  await userSubscriptions(notificationsInfo, authData)
 
-  return JSON.stringify(socials)
+  return JSON.stringify(notificationsInfo)
 }
 
 export default notificationListHandler

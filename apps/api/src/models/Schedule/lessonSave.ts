@@ -15,7 +15,7 @@ export const LessonSave = async (
   user: IUserInfo,
   date: Date
 ) => {
-  if (Object.keys(lesson).length <= 2) {
+  if (Object.keys(lesson).length <= 2 || !user.group) {
     return
   }
 

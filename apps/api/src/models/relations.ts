@@ -269,14 +269,13 @@ SocialStepTypeModel.belongsTo(SocialTypeModel)
 DiaryUserModel.hasMany(NotificationDetailedModel)
 NotificationDetailedModel.belongsTo(DiaryUserModel)
 
-// SubscriptionType <-->> Subscription
-//SubscriptionTypeModel.hasMany(SubscriptionModel)
-//SubscriptionModel.belongsTo(SubscriptionTypeModel)
-
 // DiaryUser <-->> Subscription
-//DiaryUserModel.hasMany(SubscriptionModel)
-//SubscriptionModel.belongsTo(DiaryUserModel)
+DiaryUserModel.hasMany(SubscriptionModel)
+SubscriptionModel.belongsTo(DiaryUserModel)
 
+// SubscriptionType <-->> Subscription
+SubscriptionTypeModel.hasMany(SubscriptionModel)
+SubscriptionModel.belongsTo(SubscriptionTypeModel)
 
 if (forceSyncDatabase) {
   console.log('Syncing database...')
