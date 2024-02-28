@@ -1,6 +1,6 @@
 import { ENCRYPT_KEY } from '@config'
 import { sequelize } from '@db'
-import { decrypt, encrypt } from '@diary-spo/sql'
+import { decrypt, encrypt } from '@diary-spo/crypto'
 import { formatDate } from '@utils'
 import { DataTypes } from 'sequelize'
 import { GroupModel } from '../Group'

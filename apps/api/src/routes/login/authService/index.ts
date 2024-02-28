@@ -1,6 +1,6 @@
 import { API_CODES, ApiError } from '@api'
 import { ENCRYPT_KEY } from '@config'
-import { encrypt } from '@diary-spo/sql'
+import { encrypt } from '@diary-spo/crypto'
 import { ResponseLogin } from '@diary-spo/types'
 import {
   DiaryUserModel,
