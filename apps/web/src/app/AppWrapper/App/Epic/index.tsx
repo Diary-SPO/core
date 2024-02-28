@@ -8,7 +8,6 @@ import { Epic as VKUIEpic } from '@vkontakte/vkui/dist/components/Epic/Epic'
 import { FC } from 'preact/compat'
 import {
   MAIN_SETTINGS,
-  VIEW_CONTACTS,
   VIEW_MARKS,
   VIEW_NOTIFICATIONS,
   VIEW_SCHEDULE,
@@ -17,7 +16,6 @@ import {
 
 import {
   Achievements,
-  Contacts,
   LoginForm,
   Notifications,
   Schedule,
@@ -62,9 +60,6 @@ const Epic: FC<IEpic> = ({ onStoryChange }) => {
         </Suspense>
         <Suspense id={VIEW_NOTIFICATIONS} mode='screen'>
           <Notifications id={VIEW_NOTIFICATIONS} />
-        </Suspense>
-        <Suspense id={VIEW_CONTACTS} mode='screen'>
-          <Contacts id={VIEW_CONTACTS} />
         </Suspense>
         <Suspense id={VIEW_SETTINGS} mode='screen'>
           <Settings id={VIEW_SETTINGS} />

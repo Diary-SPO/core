@@ -2,7 +2,6 @@ import { Pages } from '@types'
 import {
   Icon28BookSpreadOutline,
   Icon28GraphOutline,
-  Icon28HelpOutline,
   Icon28HomeOutline,
   Icon28SettingsOutline
 } from '@vkontakte/icons'
@@ -13,7 +12,6 @@ import {
 } from '@vkontakte/vkui'
 import { FC } from 'preact/compat'
 import {
-  VIEW_CONTACTS,
   VIEW_MARKS,
   VIEW_NOTIFICATIONS,
   VIEW_SCHEDULE,
@@ -57,15 +55,6 @@ const Tabbar: FC<ITabbar> = ({ onStoryChange, activeView }) => {
           text='Объявления'
         >
           <Icon28BookSpreadOutline />
-        </TabbarItem>
-        {/*//@ts-ignore типы React не совсем совместимы с Preact*/}
-        <TabbarItem
-          onClick={() => onStoryChange(VIEW_CONTACTS)}
-          selected={activeView === VIEW_CONTACTS}
-          data-story={VIEW_CONTACTS}
-          text='Помощь'
-        >
-          <Icon28HelpOutline />
         </TabbarItem>
         {/*//@ts-ignore типы React не совсем совместимы с Preact*/}
         <TabbarItem

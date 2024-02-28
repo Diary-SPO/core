@@ -30,8 +30,7 @@ const AppWrapper = () => {
           isWebView={vkBridge.isWebView()}
         >
           <AuthProvider>
-            <Suspense id='App'>
-              {' '}
+            <Suspense id='App' mode='screen'>
               <App />
             </Suspense>
           </AuthProvider>

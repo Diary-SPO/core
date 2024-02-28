@@ -2,7 +2,6 @@ import { Suspense } from '@components'
 import { Pages } from '@types'
 import {
   Icon28BookSpreadOutline,
-  Icon28EducationOutline,
   Icon28GraphOutline,
   Icon28HomeOutline,
   Icon28SettingsOutline
@@ -25,17 +24,16 @@ import {
   useAdaptivityConditionalRender,
   usePlatform
 } from '@vkontakte/vkui'
-import { FC } from 'preact/compat'
+import { FC, lazy } from 'preact/compat'
 import {
   MAIN_SETTINGS,
-  VIEW_CONTACTS,
   VIEW_MARKS,
   VIEW_NOTIFICATIONS,
   VIEW_SCHEDULE,
   VIEW_SETTINGS
 } from '../../../routes'
 
-import Epic from './Epic'
+const Epic = lazy(() => import('./Epic'))
 import ModalRoot from './ModalRoot'
 
 const App: FC = () => {
@@ -109,14 +107,6 @@ const App: FC = () => {
                 </Cell>
                 {/*// @ts-ignore Типы не совместимы */}
                 <Cell
-                  onClick={() => onStoryChange(VIEW_CONTACTS)}
-                  hovered={panel === VIEW_CONTACTS}
-                  before={<Icon28EducationOutline />}
-                >
-                  Помощь
-                </Cell>
-                {/*// @ts-ignore Типы не совместимы */}
-                <Cell
                   onClick={() => onStoryChange(VIEW_SETTINGS)}
                   hovered={panel === VIEW_SETTINGS}
                   before={<Icon28SettingsOutline />}
@@ -127,11 +117,11 @@ const App: FC = () => {
             </Panel>
           </SplitCol>
         )}
-        <SplitCol width='100%' maxWidth='700px' stretchedOnMobile autoSpaced>
-          <Suspense id='Epic'>
+        <Suspense id='Epic'>
+          <SplitCol width='100%' maxWidth='700px' stretchedOnMobile autoSpaced>
             <Epic onStoryChange={onStoryChange} />
-          </Suspense>
-        </SplitCol>
+          </SplitCol>
+        </Suspense>
       </SplitLayout>
     </AppRoot>
   )

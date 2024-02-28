@@ -5,12 +5,7 @@ import {
 } from '@diary-spo/shared'
 import { AxiosResponse } from 'axios'
 
-export type Pages =
-  | 'schedule'
-  | 'contacts'
-  | 'marks'
-  | 'settings'
-  | 'notifications'
+export type Pages = 'schedule' | 'marks' | 'settings' | 'notifications'
 
 export interface Storage {
   key: string

@@ -1,13 +1,11 @@
 import { RouteWithoutRoot } from '@vkontakte/vk-mini-apps-router'
 import {
   MAIN_SETTINGS,
-  PAGE_CONTACTS,
   PAGE_MAIN,
   PAGE_MARKS,
   PAGE_NOTIFICATIONS,
   PAGE_SCHEDULE,
   PAGE_SETTINGS,
-  VIEW_CONTACTS,
   VIEW_MARKS,
   VIEW_NOTIFICATIONS,
   VIEW_SCHEDULE,
@@ -23,11 +21,6 @@ export const routes: RouteWithoutRoot[] = [
   {
     path: PAGE_SCHEDULE,
     panel: VIEW_SCHEDULE,
-    view: VIEW_SCHEDULE
-  },
-  {
-    path: PAGE_CONTACTS,
-    panel: VIEW_CONTACTS,
     view: VIEW_SCHEDULE
   },
   {

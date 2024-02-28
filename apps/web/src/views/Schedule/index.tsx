@@ -18,11 +18,12 @@ import {
 } from '@vkontakte/vkui'
 import { endOfWeek, startOfWeek } from '@vkontakte/vkui/dist/lib/date'
 import { FC, lazy, useEffect, useState } from 'preact/compat'
+
 import { getLessons } from '../../methods'
 import { Props } from '../types.ts'
-import ScheduleAsideButtons from './ScheduleAsideButtons.tsx'
-import { getWeekString, isNeedToGetNewData } from './utils.ts'
+import { getWeekString, isNeedToGetNewData } from './utils'
 
+const ScheduleAsideButtons = lazy(() => import('./ScheduleAsideButtons'))
 const MarksByDay = lazy(() => import('./MarksByDay'))
 const ScheduleGroup = lazy(() => import('./ScheduleGroup'))
 
@@ -116,23 +117,29 @@ const Schedule: FC<Props> = ({ id }) => {
     )
 
   const ScheduleGroupAside = (
-    <ScheduleAsideButtons
-      handleGetLesson={handleGetLesson}
-      showSnackbar={showSnackbar}
-      endDate={endDate}
-      startDate={startDate}
-      setEndDate={setEndDate}
-      setStartDate={setStartDate}
-    />
+    <Suspense id='ScheduleAsideButtons'>
+      <ScheduleAsideButtons
+        handleGetLesson={handleGetLesson}
+        showSnackbar={showSnackbar}
+        endDate={endDate}
+        startDate={startDate}
+        setEndDate={setEndDate}
+        setStartDate={setStartDate}
+      />
+    </Suspense>
   )
 
   const shouldShowSpinner = isLoading && <PanelSpinner />
 
   const MarksByDayOrLoading = shouldShowSpinner || (
-    <MarksByDay lessonsState={lessonsState} />
+    <Suspense id='MarksByDay'>
+      <MarksByDay lessonsState={lessonsState} />
+    </Suspense>
   )
   const ScheduleOrLoading = shouldShowSpinner || (
-    <ScheduleGroup lessonsState={lessonsState} />
+    <Suspense id='ScheduleGroup'>
+      <ScheduleGroup lessonsState={lessonsState} />
+    </Suspense>
   )
 
   const MarksHeader = (
