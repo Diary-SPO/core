@@ -10,6 +10,7 @@ import {
   Text,
   Title
 } from '@vkontakte/vkui'
+import { FunctionComponent } from 'preact'
 import { useEffect, useState } from 'preact/compat'
 import { winxAva } from '../../../images/config.ts'
 
@@ -22,7 +23,7 @@ interface UserData {
   org: string
 }
 
-const UserInfo = () => {
+const UserInfo: FunctionComponent = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false)
   const [userData, setUserData] = useState<UserData>({
     name: '',

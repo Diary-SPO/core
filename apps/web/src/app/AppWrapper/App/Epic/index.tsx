@@ -16,9 +16,9 @@ import {
 } from '../../../../routes'
 
 import {
+  Achievements,
   Contacts,
   LoginForm,
-  Marks,
   Notifications,
   Schedule,
   Settings
@@ -58,7 +58,7 @@ const Epic: FC<IEpic> = ({ onStoryChange }) => {
           <Schedule id={VIEW_SCHEDULE} />
         </Suspense>
         <Suspense id={VIEW_MARKS} mode='screen'>
-          <Marks id={VIEW_MARKS} />
+          <Achievements id={VIEW_MARKS} />
         </Suspense>
         <Suspense id={VIEW_NOTIFICATIONS} mode='screen'>
           <Notifications id={VIEW_NOTIFICATIONS} />

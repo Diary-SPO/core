@@ -1,4 +1,4 @@
-import { PanelHeaderWithBack } from '@components'
+import { PanelHeaderWithBack, Suspense } from '@components'
 import { Icon28Hearts2Outline, Icon28Users } from '@vkontakte/icons'
 import {
   Avatar,
@@ -12,12 +12,13 @@ import {
   Panel,
   SimpleCell
 } from '@vkontakte/vkui'
-import { FC } from 'preact/compat'
+import { FC, lazy } from 'preact/compat'
 
 import { diaryAva, winxAva } from '../../images/config.ts'
 import { Props } from '../types.ts'
-import HelpAccordion from './HelpAccordion.tsx'
 import { helpData } from './data.ts'
+
+const HelpAccordion = lazy(() => import('./HelpAccordion'))
 
 import './index.css'
 
@@ -27,14 +28,16 @@ const Contacts: FC<Props> = ({ id }) => (
     <Div>
       <Group header={<Header mode='tertiary'>FAQ</Header>}>
         <Card mode='shadow'>
-          {helpData.map(({ detail, title, id: dataId }) => (
-            <HelpAccordion
-              key={dataId}
-              id={dataId}
-              detail={detail}
-              title={title}
-            />
-          ))}
+          <Suspense id='HelpAccordion'>
+            {helpData.map(({ detail, title, id: dataId }) => (
+              <HelpAccordion
+                key={dataId}
+                id={dataId}
+                detail={detail}
+                title={title}
+              />
+            ))}
+          </Suspense>
         </Card>
       </Group>
       <Group header={<Header mode='tertiary'>Контакты</Header>}>

@@ -44,15 +44,16 @@ const Notifications: FC<Props> = ({ id }) => {
 
   const fetchAds = async (isHandle?: boolean) => {
     setLoading(true)
-    try {
-      if (!isHandle) {
-        const cachedAds = JSON.parse(localStorage.getItem('savedAds') || '')
-        setNotifications(cachedAds)
-      }
+    const cachedAds = localStorage.getItem('savedAds')
 
+    if (!isHandle && cachedAds) {
+      setNotifications(JSON.parse(cachedAds))
+      return
+    }
+
+    try {
       const ads = await getAds()
       handleResponse(ads, handleError, handleError, setLoading, showSnackbar)
-      console.log(isApiError(ads))
 
       if (isApiError(ads)) {
         showSnackbar({

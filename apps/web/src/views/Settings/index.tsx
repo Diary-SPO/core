@@ -22,7 +22,7 @@ import {
 } from '@vkontakte/vkui'
 import { FunctionalComponent } from 'preact'
 import { useEffect, useRef, useState } from 'preact/hooks'
-import { Props } from './types.ts'
+import { Props } from '../types.ts'
 
 const Settings: FunctionalComponent<Props> = ({ id }) => {
   const routeNavigator = useRouteNavigator()

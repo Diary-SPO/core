@@ -7,7 +7,9 @@ import { handleResponse, isApiError } from '@utils'
 import {
   Icon28EducationOutline,
   Icon28ErrorCircleOutline,
-  Icon28InfoCircle
+  Icon28GridSquareOutline,
+  Icon28InfoCircle,
+  Icon28TextViewfinderOutline
 } from '@vkontakte/icons'
 import {
   Div,
@@ -26,16 +28,15 @@ import { getPerformance } from '../../methods'
 import { Props } from '../types.ts'
 import { formatStatisticsData } from './helpers.ts'
 
-import Summary from './Summary'
-import UserInfo from './UserInfo'
-
+const Summary = lazy(() => import('./Summary'))
+const UserInfo = lazy(() => import('./UserInfo'))
 const FinalMarks = lazy(() => import('./Tabs/FinalMarks'))
 const MarksByGroup = lazy(() => import('./Tabs/MarksByGroup'))
 const SubjectsList = lazy(() => import('./Tabs/SubjectsList'))
 
 type Tabs = 'current' | 'finalMarks' | 'attestation'
 
-const Marks: FC<Props> = ({ id }) => {
+const Achievements: FC<Props> = ({ id }) => {
   const [isSummaryLoading, setIsSummaryLoading] = useState<boolean>(false)
   const [isLoading, setIsLoading] = useState<boolean>(false)
   const [isError, setIsError] = useState<boolean>(false)
@@ -159,6 +160,7 @@ const Marks: FC<Props> = ({ id }) => {
       <Tabs mode='accent'>
         <HorizontalScroll arrowSize='l'>
           <TabsItem
+            before={<Icon28GridSquareOutline />}
             disabled={selected === 'current'}
             selected={selected === 'current'}
             onClick={() => setSelected('current')}
@@ -174,6 +176,7 @@ const Marks: FC<Props> = ({ id }) => {
             Итоговые
           </TabsItem>
           <TabsItem
+            before={<Icon28TextViewfinderOutline />}
             disabled={selected === 'attestation'}
             selected={selected === 'attestation'}
             onClick={() => setSelected('attestation')}
@@ -223,4 +226,4 @@ const Marks: FC<Props> = ({ id }) => {
   )
 }
 
-export default Marks
+export default Achievements
