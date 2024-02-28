@@ -1,6 +1,11 @@
 import { ICacheData } from '@helpers'
+import {
+  ISubscriptionModel,
+  ISubscriptionTypeModel,
+  SubscriptionModel,
+  SubscriptionTypeModel
+} from '@models'
 import { INotificationInfo } from './type'
-import { SubscriptionTypeModel, SubscriptionModel, ISubscriptionTypeModel, ISubscriptionModel } from '@models'
 
 type subscriptionsFromDB = ISubscriptionTypeModel & {
   subscriptions: ISubscriptionModel[]

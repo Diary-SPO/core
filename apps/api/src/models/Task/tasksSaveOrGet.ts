@@ -1,8 +1,8 @@
 import { Task } from '@diary-spo/shared'
-import { requiredSaveOrGet } from '../Required/requiredSaveOrGet'
-import { taskTypeSaveOrGet } from '../TaskType/taskTypeSaveOrGet'
 import { IUserInfo } from '@models'
 import { TaskModel } from '@models'
+import { requiredSaveOrGet } from '../Required/requiredSaveOrGet'
+import { taskTypeSaveOrGet } from '../TaskType/taskTypeSaveOrGet'
 
 export const tasksSaveOrGet = async (
   gradebookId: number,

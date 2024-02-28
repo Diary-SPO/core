@@ -1,9 +1,10 @@
 import type { NotificationsResponse } from '@diary-spo/shared'
-import { ContextWithID, INotificationInfo, INotificationsList } from '@types'
+import { getCookieFromToken } from '@helpers'
 import { SocialStepTypeModel, SocialTypeModel } from '@models'
+import { ContextWithID } from '@types'
+import { INotificationsList, INotificationInfo } from './type'
 import { userActivated } from './userActivated'
 import { userSubscriptions } from './userSubscriptions'
-import { getCookieFromToken } from '@helpers'}
 
 const notificationListHandler = async ({
   request
