@@ -10,6 +10,7 @@ export type INotificationsList = ISocialTypeModel & {
 export type INotificationStatus = {
   title: string
   code: string
+  description: string | null
   isSubscription: boolean
 }
 

@@ -6,6 +6,7 @@ export type SubscriptionTypeModelType = {
   id: number
   title: string
   code: string
+  description: string | null
 }
 
 export type ISubscriptionTypeModel = IModelPrototype<
@@ -28,6 +29,10 @@ export const SubscriptionTypeModel = sequelize.define<ISubscriptionTypeModel>(
     code: {
       type: DataTypes.STRING,
       allowNull: false
+    },
+    description: {
+      type: DataTypes.STRING,
+      allowNull: true
     }
   },
   {

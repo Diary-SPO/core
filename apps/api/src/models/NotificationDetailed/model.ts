@@ -2,7 +2,7 @@ import { sequelize } from '@db'
 import { DataTypes } from 'sequelize'
 import { IModelPrototype } from '../types'
 import { DiaryUserModel } from '../DiaryUser'
-import { SocialTypeModel } from '../SocialType/model'
+import { SocialTypeModel } from '../SocialType'
 
 export type NotificationDetailedModelType = {
   id: number

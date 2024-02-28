@@ -50,7 +50,7 @@ export const savePerformance = async (
       // Если в базе те же данные, то пропускаем
       if (
         dbMarks &&
-        dbMarks.length > 0 &&
+        dbMarks?.length > 0 &&
         dbMarks[0].length > 0 &&
         equils(dbMarks[0][0].res.markValues, day.markValues)
       ) {

@@ -1,5 +1,5 @@
 import { ICacheData } from '@helpers'
-import { INotificationInfo, INotificationsList } from './type'
+import { INotificationInfo } from './type'
 import { SubscriptionTypeModel, SubscriptionModel, ISubscriptionTypeModel, ISubscriptionModel } from '@models'
 
 type subscriptionsFromDB = ISubscriptionTypeModel & {subscriptions: ISubscriptionModel[]}
@@ -24,6 +24,7 @@ export const userSubscriptions = async (
     list.notificationsStatuses.push({
       title: subscriptionType.title,
       code: subscriptionType.code,
+      description: subscriptionType.description,
       isSubscription: isSubscription
     })
   }

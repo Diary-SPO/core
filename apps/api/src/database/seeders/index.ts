@@ -1,5 +1,4 @@
-import { SocialTypeModel } from '@models'
-import { SubscriptionTypeModel } from '@models'
+import { SocialTypeModel, SubscriptionTypeModel } from '@models'
 import { seedSocialType } from './socialType'
 import { seedSubscriptionType } from './subscriptionType'
 

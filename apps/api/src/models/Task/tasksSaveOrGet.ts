@@ -1,6 +1,6 @@
 import { Task } from '@diary-spo/shared'
-import { requiredSaveOrGet } from '../Required/requiredSaveOrGet'
-import { taskTypeSaveOrGet } from '../TaskType/taskTypeSaveOrGet'
+import { requiredSaveOrGet } from '../Required/'
+import { taskTypeSaveOrGet } from '../TaskType/'
 import { TaskModel } from '@models'
 import { IUserInfo } from '../DiaryUser'
 
