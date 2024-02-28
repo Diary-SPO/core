@@ -157,17 +157,21 @@ const deleteOldLessons = async (
         }
       }
     }
-    if (!locatedInside) {
-      console.log(`Удаляю устаревшее расписание! ${dbLesson.id}`)
-      if (dbLesson.gradebookId) {
-        GradebookModel.destroy({
-          where: {
-            id: dbLesson.gradebookId
-          }
-        })
-      }
-      dbLesson.destroy()
+
+    // Если не трогаем, то пропускаем цикл
+    if (locatedInside) {
+      continue
     }
+
+    console.log(`Удаляю устаревшее расписание! ${dbLesson.id}`)
+    if (dbLesson.gradebookId) {
+      GradebookModel.destroy({
+        where: {
+          id: dbLesson.gradebookId
+        }
+      })
+    }
+    dbLesson.destroy()
   }
 }
 

@@ -52,7 +52,7 @@ export const savePerformance = async (
         dbMarks &&
         dbMarks?.length > 0 &&
         dbMarks[0].length > 0 &&
-        equils(dbMarks[0][0].res.markValues, day.markValues)
+        equals(dbMarks[0][0].res.markValues, day.markValues)
       ) {
         //console.log('skip', equils(dbMarks[0][0].res.markValues, day.markValues), dbMarks[0][0].res.markValues, day.markValues)
         idsToSave.push(...dbMarks[0][0].res.tasks)
@@ -170,10 +170,10 @@ export const savePerformance = async (
 }
 
 type IKeyCounter = { [key: string]: number }
-const equils = (a: string[], b: string[]) => {
+const equals = (a: string[], b: string[]) => {
   const aKeys: IKeyCounter = {}
   const bKeys: IKeyCounter = {}
-  let equil = true
+  let equal = true
 
   a.forEach((e) => {
     if (aKeys?.[e]) {
@@ -193,9 +193,9 @@ const equils = (a: string[], b: string[]) => {
 
   Object.keys(aKeys).forEach((k) => {
     if (aKeys[k] !== bKeys[k]) {
-      equil = false
+      equal = false
     }
   })
 
-  return equil
+  return equal
 }

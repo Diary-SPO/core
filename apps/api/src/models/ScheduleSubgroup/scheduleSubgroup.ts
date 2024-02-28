@@ -1,3 +1,4 @@
+import { LogError } from 'src/LogError'
 import { ScheduleSubgroupModel } from './model'
 
 export const scheduleSubgroupSafeSave = async (
@@ -23,8 +24,8 @@ export const scheduleSubgroupSafeSave = async (
       subgroupId: subgroupId
     }
   }).catch(() => {
-    throw new Error(
-      `[${new Date().toISOString()}] => Ошибка сохранения ScheduleSubgroup. Входные данные: ${JSON.stringify(
+    throw new LogError(
+      `Ошибка сохранения ScheduleSubgroup. Входные данные: ${JSON.stringify(
         where
       )}`
     )

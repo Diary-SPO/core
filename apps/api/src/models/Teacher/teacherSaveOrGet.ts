@@ -1,6 +1,7 @@
 import { checkSameKeys } from '@helpers'
 import { TeacherModel, TeacherModelType } from '@models'
 import { Optional } from 'sequelize'
+import { LogError } from 'src/LogError'
 
 export const TeacherSaveOrGet = async (
   teacher: Optional<TeacherModelType, 'id'>
@@ -14,8 +15,8 @@ export const TeacherSaveOrGet = async (
       ...teacher
     }
   }).catch(() => {
-    throw new Error(
-      `[${new Date().toISOString()}] => Ошибка сохранения Teacher. Входные данные: ${JSON.stringify(
+    throw new LogError(
+      `Ошибка сохранения Teacher. Входные данные: ${JSON.stringify(
         teacher
       )}`
     )

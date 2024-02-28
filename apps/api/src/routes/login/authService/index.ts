@@ -4,10 +4,10 @@ import { encrypt } from '@diary-spo/sql'
 import { ResponseLogin } from '@diary-spo/types'
 import {
   DiaryUserModel,
+  GroupModel,
   IDiaryUserModel,
   IGroupModel,
   ISPOModel,
-  GroupModel,
   SPOModel
 } from '@models'
 import { ResponseLoginFromDiaryUser } from '@types'

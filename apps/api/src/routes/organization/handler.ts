@@ -43,16 +43,20 @@ const getOrganization = async ({
         exclude: ['id']
       }
     }).then(() => {
-      if (record && !checkSameKeys(saveData, record)) {
-        SPOModel.update(
-          { ...saveData },
-          {
-            where: {
-              organizationId: response.organizationId
-            }
-          }
-        )
+      if (!record || checkSameKeys(saveData, record)) {
+        return
       }
+
+      SPOModel.update(
+        { 
+          ...saveData 
+        },
+        {
+          where: {
+            organizationId: response.organizationId
+          }
+        }
+      )
     })
 
     // Отдаём данные

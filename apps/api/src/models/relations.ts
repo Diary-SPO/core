@@ -1,5 +1,4 @@
 import { forceSyncDatabase, sequelize } from '@db'
-import { seedDatabase } from 'src/database/seeders'
 import {
   AbsenceTypeModel,
   AcademicYearModel,

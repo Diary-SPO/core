@@ -23,7 +23,7 @@ export const requiredSaveOrGet = async (
   })
 
   if (!isCreated && record.isRequired !== isRequired) {
-    return await record.update({
+    return record.update({
       ...data
     })
   }

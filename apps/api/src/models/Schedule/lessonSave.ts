@@ -9,6 +9,7 @@ import {
   subjectSaveOrGet
 } from '@models'
 import { ScheduleModel } from './model'
+import { LogError } from 'src/LogError'
 
 export const LessonSave = async (
   lesson: Lesson,
@@ -65,9 +66,8 @@ export const LessonSave = async (
   let gradebookId = null
   if (lesson.gradebook) {
     gradebookId = gradebookSaveOrGet(lesson.gradebook, user).catch((err) => {
-      throw new Error(
-        `[${new Date().toISOString()}] => Ошибка сохранения в функции GradebookSaveOrGet(). Подробнее:`,
-        err
+      throw new LogError(
+        `Ошибка сохранения в функции GradebookSaveOrGet(). Подробнее: ${err}`
       )
     })
     gradebookId = (await gradebookId).id

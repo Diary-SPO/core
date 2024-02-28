@@ -1,6 +1,7 @@
 import { Optional } from 'sequelize'
 import { checkSameKeys } from '../../helpers'
 import { ClassroomModel, ClassroomModelType } from './model'
+import { LogError } from 'src/LogError'
 
 export const saveClassroom = async (
   classroom: Optional<ClassroomModelType, 'id'>
@@ -14,8 +15,8 @@ export const saveClassroom = async (
       ...classroom
     }
   }).catch(() => {
-    throw new Error(
-      `[${new Date().toISOString()}] => Ошибка сохранения Classroom. Входные данные: ${JSON.stringify(
+    throw new LogError(
+      `Ошибка сохранения Classroom. Входные данные: ${JSON.stringify(
         classroom
       )}`
     )

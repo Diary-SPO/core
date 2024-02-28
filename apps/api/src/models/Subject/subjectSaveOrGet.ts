@@ -1,3 +1,4 @@
+import { LogError } from 'src/LogError'
 import { SubjectModel } from './model'
 
 export const subjectSaveOrGet = async (subjectName: string) => {
@@ -9,8 +10,8 @@ export const subjectSaveOrGet = async (subjectName: string) => {
       name: subjectName
     }
   }).catch(() => {
-    throw new Error(
-      `[${new Date().toISOString()}] => Ошибка сохранения Subject. Входные данные: ${JSON.stringify(
+    throw new LogError(
+      `Ошибка сохранения Subject. Входные данные: ${JSON.stringify(
         subjectName
       )}`
     )

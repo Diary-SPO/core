@@ -7,6 +7,7 @@ import Hashes from 'jshashes'
 import { offlineAuth } from './authService'
 import { handleResponse } from './authService/helpers'
 import { saveUserData } from './authService/saveUserData'
+import { LogError } from 'src/LogError'
 
 interface AuthContext {
   body: {
@@ -47,7 +48,7 @@ const postAuth = async ({ body }: AuthContext): Promise<ResponseLogin> => {
 
         return authData
       } catch (e) {
-        throw new Error(
+        throw new LogError(
           `Authorization error: access to the diary was denied, and authorization through the database failed. Full: ${e}`
         )
       }

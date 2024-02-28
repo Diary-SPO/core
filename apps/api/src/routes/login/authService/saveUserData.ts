@@ -15,6 +15,7 @@ import {
 import { saveOrGetDiaryUser } from './saveOrGetDiaryUser'
 import { saveOrGetGroup } from './saveOrGetGroup'
 import { saveOrGetSPO } from './saveOrGetSPO'
+import { LogError } from 'src/LogError'
 
 export const saveUserData = async (
   parsedRes: ApiResponse<UserData>,
@@ -91,6 +92,6 @@ export const saveUserData = async (
     return ResponseLoginFromDiaryUser(regDiaryUser, regSPO, regGroup, token)
   } catch (err) {
     error(err)
-    throw new Error('Ошибка на этапе работы с базой: ')
+    throw new LogError('Ошибка на этапе работы с базой: ')
   }
 }
