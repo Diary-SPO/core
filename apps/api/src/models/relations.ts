@@ -13,17 +13,12 @@ import {
   LessonTypeModel,
   MarkModel,
   MarkValueModel,
-  NotificationDetailedModel,
   RequiredModel,
   SPOModel,
   ScheduleModel,
   ScheduleSubgroupModel,
-  SocialStepTypeModel,
-  SocialTypeModel,
   SubgroupModel,
   SubjectModel,
-  SubscriptionModel,
-  SubscriptionTypeModel,
   TaskModel,
   TaskTypeModel,
   TeacherModel,
@@ -257,32 +252,9 @@ ScheduleSubgroupModel.belongsTo(DiaryUserModel)
 ScheduleModel.hasMany(ScheduleSubgroupModel)
 ScheduleSubgroupModel.belongsTo(ScheduleModel)
 
-// SocialType <-->> NotificationDetailed
-SocialTypeModel.hasMany(NotificationDetailedModel)
-NotificationDetailedModel.belongsTo(SocialTypeModel)
-
-// SocialType <-->> SocialStepType
-SocialTypeModel.hasMany(SocialStepTypeModel, { as: 'steps' })
-SocialStepTypeModel.belongsTo(SocialTypeModel)
-
-// DiaryUser <-->> NotificationDetailed
-DiaryUserModel.hasMany(NotificationDetailedModel)
-NotificationDetailedModel.belongsTo(DiaryUserModel)
-
-// DiaryUser <-->> Subscription
-DiaryUserModel.hasMany(SubscriptionModel)
-SubscriptionModel.belongsTo(DiaryUserModel)
-
-// SubscriptionType <-->> Subscription
-SubscriptionTypeModel.hasMany(SubscriptionModel)
-SubscriptionModel.belongsTo(SubscriptionTypeModel)
-
 if (forceSyncDatabase) {
   console.log('Syncing database...')
   sequelize.sync({
     force: true
   })
 }
-
-// Заполняем базу данных
-await seedDatabase()
