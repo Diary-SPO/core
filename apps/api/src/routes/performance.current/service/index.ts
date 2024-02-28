@@ -11,6 +11,7 @@ export const getCurrPerformance = async (authData: ICacheData) => {
 
   if (!response.ok) {
     // Возвращаем из базы
+    return
   }
 
   const result = await response.json()

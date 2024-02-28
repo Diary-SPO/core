@@ -6,7 +6,9 @@ import {
   DiaryUserModel,
   IDiaryUserModel,
   IGroupModel,
-  ISPOModel
+  ISPOModel,
+  GroupModel,
+  SPOModel
 } from '@models'
 import { ResponseLoginFromDiaryUser } from '@types'
 import { generateToken } from '../../../helpers'
