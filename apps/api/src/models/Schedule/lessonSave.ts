@@ -105,7 +105,10 @@ export const LessonSave = async (
     )
   }
 
-  if (subgroupId && schedule) {
-    await scheduleSubgroupSafeSave(schedule.id, user.id, subgroupId)
+  if (!subgroupId || !schedule) {
+    return
   }
+
+  await scheduleSubgroupSafeSave(schedule.id, user.id, subgroupId)
+
 }
