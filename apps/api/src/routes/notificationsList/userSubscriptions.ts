@@ -2,13 +2,15 @@ import { ICacheData } from '@helpers'
 import { INotificationInfo } from './type'
 import { SubscriptionTypeModel, SubscriptionModel, ISubscriptionTypeModel, ISubscriptionModel } from '@models'
 
-type subscriptionsFromDB = ISubscriptionTypeModel & {subscriptions: ISubscriptionModel[]}
+type subscriptionsFromDB = ISubscriptionTypeModel & {
+  subscriptions: ISubscriptionModel[]
+}
 
 export const userSubscriptions = async (
   list: INotificationInfo,
   userInfo: ICacheData
 ) => {
-  const subscriptionTypes = await SubscriptionTypeModel.findAll({
+  const subscriptionTypes = (await SubscriptionTypeModel.findAll({
     include: {
       model: SubscriptionModel,
       where: {
@@ -17,7 +19,7 @@ export const userSubscriptions = async (
       required: false,
       limit: 1
     }
-  }) as subscriptionsFromDB[]
+  })) as subscriptionsFromDB[]
 
   for (const subscriptionType of subscriptionTypes) {
     const isSubscription = subscriptionType.subscriptions?.[0]?.value ?? false

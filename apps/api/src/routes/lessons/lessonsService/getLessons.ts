@@ -1,8 +1,8 @@
 import { API_CODES, API_ERRORS, ApiError } from '@api'
 import { SERVER_URL } from '@config'
 import { Day } from '@diary-spo/shared'
-import { HeadersWithCookie } from '@utils'
 import { ScheduleGetFromDB, ScheduleSave } from '@models'
+import { HeadersWithCookie } from '@utils'
 
 export const getLessonsService = async (
   startDate: string,

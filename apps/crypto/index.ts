@@ -1,5 +1,3 @@
-import { encrypt, decrypt } from './src/crypto'
+import { decrypt, encrypt } from './src/crypto'
 
 export { decrypt, encrypt }
-
-

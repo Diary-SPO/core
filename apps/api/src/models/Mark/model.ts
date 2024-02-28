@@ -1,8 +1,8 @@
 import { sequelize } from '@db'
 import { DataTypes } from 'sequelize'
-import { TaskModel } from '../Task'
-import { MarkValueModel } from '../MarkValue'
 import { DiaryUserModel } from '../DiaryUser'
+import { MarkValueModel } from '../MarkValue'
+import { TaskModel } from '../Task'
 import { IModelPrototypeNoId } from '../types'
 
 export type MarkModelType = {

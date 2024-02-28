@@ -1,6 +1,6 @@
 import { ICacheData } from '@helpers'
-import { INotificationsList } from './type'
 import { NotificationDetailedModel } from '@models'
+import { INotificationsList } from './type'
 
 export const userActivated = async (
   list: INotificationsList[],
@@ -14,7 +14,7 @@ export const userActivated = async (
       }
     })
 
-    let isSubscription = !!user
+    const isSubscription = !!user
 
     n.isSubscription = isSubscription
   }

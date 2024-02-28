@@ -1,7 +1,7 @@
 import { API_CODES, ApiError } from '@api'
+import { AuthModel } from '@models'
 import { formatDate } from '@utils'
 import { suid } from 'rand-token'
-import { AuthModel } from '@models'
 
 /**
  * Генерирует токен и вставляет в базу

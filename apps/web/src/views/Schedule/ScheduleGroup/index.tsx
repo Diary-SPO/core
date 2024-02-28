@@ -2,8 +2,8 @@ import { Day } from '@diary-spo/shared'
 import { Nullable } from '@types'
 import { CardGrid } from '@vkontakte/vkui'
 import { FunctionComponent } from 'preact'
-import DailyCard from './DailyCard'
 import { memo } from 'preact/compat'
+import DailyCard from './DailyCard'
 
 interface IScheduleGroup {
   lessonsState?: Nullable<Day[]>
