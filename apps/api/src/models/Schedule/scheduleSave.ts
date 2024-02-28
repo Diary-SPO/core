@@ -135,9 +135,9 @@ const deleteOldLessons = async (
           locatedInSubgroups = true
         }
       }
-      if (dbLesson.scheduleSubgroups.length === 0) {
-        locatedInSubgroups = true
-      }
+
+      locatedInSubgroups = dbLesson.scheduleSubgroups.length === 0
+
       if (
         ((lesson.name === dbLesson.subject.name ?? '') &&
           lesson.timetable.teacher?.id === dbLesson.teacher.idFromDiary &&
