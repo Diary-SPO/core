@@ -1,5 +1,6 @@
 import { BASE_URLS } from '@config'
-import { HTTP_STATUSES, ServerResponse } from '../types'
+import { HTTP_STATUSES, ServerResponse } from '@types'
+import axios, { AxiosError, AxiosResponse } from 'axios'
 
 const makeRequest = async <T>(
   route: string,
@@ -8,48 +9,43 @@ const makeRequest = async <T>(
 ): Promise<ServerResponse<T>> => {
   const token = localStorage.getItem('token')
 
-  const controller = new AbortController()
+  const headers = {
+    'Content-Type': 'application/json;charset=UTF-8',
+    secret: token
+  }
 
   for (const BASE_URL of BASE_URLS) {
-    const url = `${BASE_URL}${route}`
-    const timeoutId = setTimeout(() => controller.abort(), 3000)
     try {
-      const response = await fetch(url, {
+      const response = await axios<T>({
         method,
-        headers: {
-          'Content-Type': 'application/json;charset=UTF-8',
-          secret: token
-        },
-        body,
-        signal: controller.signal
+        url: `${BASE_URL}${route}`,
+        headers,
+        data: body,
+        timeout: 2000
       })
-
-      clearTimeout(timeoutId)
-
-      /** В случае ошибки авторизации мы не делаем запрос на другой сервер, а сразу возвращаем ответ **/
-      if (response.status === HTTP_STATUSES.UNAUTHORIZED) {
-        return response
-      }
 
       console.info('%c [makeRequest]', 'color: blueviolet', response)
 
-      /** В случае другой ошибки пытаемся получить ответ от другого сервера **/
-      if (!response.ok) {
-        continue
-      }
-
-      return (await response.json()) as T
+      return response.data
     } catch (err) {
       console.info('%c [makeRequest]', 'color: blueviolet', err)
-      /** В случае ошибки пытаемся получить ответ от другого сервера в следующей итерации **/
+
+      if (!(err instanceof AxiosError)) {
+        return
+      }
+
+      /** В случае ошибки авторизации мы не делаем запрос на другой сервер, а сразу возвращаем ответ **/
+      if (err?.response?.status === HTTP_STATUSES.UNAUTHORIZED) {
+        return err.response
+      }
     }
   }
 
-  /** Если ни один сервер небыл верно обработан (ни успешной авторизации, ни ошибки) **/
+  /** Если ни один сервер не был обработан верно **/
   return new Response('', {
     status: 520,
     headers: { 'Content-Type': 'application/json' }
-  })
+  }) as unknown as AxiosResponse
 }
 
 export default makeRequest

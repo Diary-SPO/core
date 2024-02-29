@@ -1,9 +1,13 @@
 import { Footnote } from '@vkontakte/vkui'
 import { CSSProperties, FC, HTMLAttributes, useMemo } from 'preact/compat'
 import { ReturnedMark } from '../../../types'
-import { getBackgroundColor, getSize } from './helpers.ts'
-
-export type Sizes = 'l' | 's'
+import {
+  Sizes,
+  borders,
+  fontSizes,
+  getBackgroundColor,
+  sizes
+} from './helpers.ts'
 
 interface IMark extends Omit<HTMLAttributes<HTMLDivElement>, 'size'> {
   mark?: ReturnedMark
@@ -15,22 +19,24 @@ interface IMark extends Omit<HTMLAttributes<HTMLDivElement>, 'size'> {
 
 const Mark: FC<IMark> = ({ mark, size = 'l', bottom, color, ...props }) => {
   const style: CSSProperties = {
-    padding: size === 'l' ? '10px 29px' : '5px 10px',
+    padding: sizes[size],
     background: color ?? getBackgroundColor(mark),
-    fontSize: getSize(size),
-    borderRadius: size === 'l' ? '10px' : '5px',
+    fontSize: fontSizes[size],
+    borderRadius: borders[size],
     color: 'white',
     display: 'inline-block'
   }
+
+  const Bottom = bottom && (
+    // @ts-ignore
+    <Footnote style={{ padding: 3 }}>{bottom}</Footnote>
+  )
 
   return useMemo(
     () => (
       <div {...props}>
         <div style={style}>{mark}</div>
-        {bottom && (
-          // @ts-ignore
-          <Footnote style={{ padding: 3 }}>{bottom}</Footnote>
-        )}
+        {Bottom}
       </div>
     ),
     [mark, bottom, size]

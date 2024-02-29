@@ -6,7 +6,8 @@
   "scripts": {
     "dev:api": "cd apps/api && bun dev",
     "dev:web": "cd apps/web && bun dev",
-    "dev:all": "concurrently \"bun dev:api\" \"bun dev:web\"",
+    "dev:admin": "cd apps/admin && bun dev",
+    "dev:all": "concurrently \"bun dev:api\" \"bun dev:web\" \"bun dev:admin\"",
     "dev:web:preview": "cd apps/web && bun preview",
     "dev:api:serve": "cd apps/api && bun serve",
     "lint": "biome lint . --apply",
@@ -14,7 +15,6 @@
     "checkAll": "biome check . --apply-unsafe",
     "build:web": "cd apps/web && bun run build",
     "build:api": "cd apps/api && bun run build",
-    "size-limit:web": "cd apps/web && bun run size-limit",
     "prepare": "husky install && bun format"
   },
   "workspaces": [
@@ -27,7 +27,7 @@
     "@biomejs/biome": "^1.5.3",
     "concurrently": "^8.2.2",
     "@happy-dom/global-registrator": "^13.3.2",
-    "bun": "latest",
+    "bun": "^1.0.29",
     "bun-types": "latest",
     "husky": "^9.0.11",
     "lint-staged": "^15.1.0",

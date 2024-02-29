@@ -4,6 +4,7 @@ import { Person } from './base.ts'
 import {
   AbsenceTypesDescriptionKeys,
   AbsenceTypesKeys,
+  AdditionalMarks,
   ExaminationKeys,
   LessonTypeKeys,
   LessonWorkTypeKeys
@@ -134,15 +135,16 @@ export const LessonWorkType: Record<LessonWorkTypeKeys, string> = {
   '': 'Не указано'
 }
 
-export const Grade: Record<string, string | number> = {
+export type MarkKeys = 'Five' | 'Four' | 'Three' | 'Two' | 'Success' | ''
+
+export const Grade: Record<MarkKeys, AdditionalMarks | number> = {
   Five: 5,
   Four: 4,
   Three: 3,
   Two: 2,
-  One: 1,
   Success: 'Зч',
   '': 'Д' // Empty grade as 'Д'
-}
+} as const
 
 export const LessonType: Record<LessonTypeKeys, string> = {
   Lecture: 'Лекция',
@@ -162,7 +164,10 @@ export const LessonType: Record<LessonTypeKeys, string> = {
   '': 'Не указан'
 }
 
-export const AbsenceTypes: Record<AbsenceTypesKeys, string> = {
+export const AbsenceTypes: Record<
+  AbsenceTypesKeys,
+  AbsenceTypesDescriptionKeys
+> = {
   IsAbsent: 'Н',
   IsLate: 'О'
 }
@@ -175,10 +180,7 @@ export const AbsenceTypesDescription: Record<
   О: 'Опоздание'
 }
 
-export type GradeKeys = keyof typeof Grade
-
-export type TextMark = GradeKeys
-export type TMark = (typeof Grade)[GradeKeys]
+export type TMark = MarkKeys
 export type TLesson = keyof typeof LessonWorkType
 export type LessonTypes = keyof typeof LessonType
 export type AbsenceType = keyof typeof AbsenceTypes
@@ -187,19 +189,21 @@ export interface Task {
   attachments: []
   id: number
   isRequired: boolean
-  mark: TextMark
+  mark: MarkKeys
   topic?: string
   type: TLesson
 }
 
 export type Teacher = Person
 
+export interface Classroom {
+  building: string
+  id: number
+  name: string
+}
+
 export interface Timetable {
-  classroom: {
-    building: string
-    id: number
-    name: string
-  }
+  classroom: Classroom
   teacher?: Teacher
 }
 
@@ -242,7 +246,7 @@ export interface AuthData {
 export interface DayWithMarks {
   day: Date
   absenceType?: AbsenceType
-  markValues: TextMark[]
+  markValues: MarkKeys[]
 }
 
 export interface DayWithMarksForSubject {
@@ -271,11 +275,11 @@ export const Examinations: Record<ExaminationKeys, string> = {
   Other: 'Др. форма контроля'
 }
 
-export type ExaminationType = keyof typeof Examinations
+// export type ExaminationType = keyof typeof Examinations
 export type TermType = 'Semester'
 
 export interface Subject {
-  examinationType?: ExaminationType
+  examinationType?: ExaminationKeys
   marks: Record<string, number | string>
   name: string
   id: number
@@ -306,7 +310,7 @@ export interface NotificationsResponse {
 }
 
 export interface AttestationMark {
-  value?: 'Success' | string
+  value?: MarkKeys
 }
 
 export type AttestationTerm = {
@@ -315,8 +319,9 @@ export type AttestationTerm = {
   id: number
 }
 
-export interface AttestationSubject extends Subject {
+export interface AttestationSubject extends Omit<Subject, 'marks'> {
   finalMark: AttestationMark
+  marks: Record<number, { value: MarkKeys }>
 }
 
 export interface AcademicYear {
@@ -327,7 +332,7 @@ export interface AcademicYear {
   marks: AttestationMark
 }
 
-/** Ответ от services/students/<id>/attestation **/
+/** Ответ от database/students/<id>/attestation **/
 export interface AcademicRecord {
   academicYears: AcademicYear[]
   subjects: AttestationSubject[]

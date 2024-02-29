@@ -1,0 +1,5 @@
+.tableWrapper {
+  height: 50vh;
+  overflow-x: auto;
+  margin-bottom: 100px !important;
+}

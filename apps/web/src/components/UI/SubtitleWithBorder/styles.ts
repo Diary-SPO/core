@@ -3,33 +3,33 @@ import { GREEN, ORANGE, RED } from '@config'
 export const colors = {
   red: {
     background: RED,
-    border: `1px solid red`,
+    border: '1px solid red',
     color: 'white'
   },
   green: {
     background: GREEN,
-    border: `1px solid green`,
+    border: '1px solid green',
     color: 'white'
   },
   'green-outline': {
     color: 'green',
     borderRadius: '5px',
-    border: `1px solid green`
+    border: '1px solid green'
   },
   'yellow-outline': {
     borderRadius: '5px',
-    border: `1px solid #ffb060`,
+    border: '1px solid #ffb060',
     color: '#ffb060'
   },
   'red-outline': {
     borderRadius: '5px',
-    border: `1px solid #DA0A35`,
+    border: '1px solid #DA0A35',
     color: '#DA0A35'
   },
   yellow: {
     background: ORANGE,
     borderRadius: '5px',
-    border: `1px solid #ffb060`,
+    border: '1px solid #ffb060',
     color: 'white'
   }
 }

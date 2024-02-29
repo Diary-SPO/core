@@ -14,7 +14,7 @@ interface ILessonGrade {
 }
 
 const LessonGrade: FC<ILessonGrade> = ({ tasks, absenceType }) => {
-  const hasTasks = tasks?.length
+  const hasTasks = Boolean(tasks?.length)
 
   if (!hasTasks && !absenceType) {
     return

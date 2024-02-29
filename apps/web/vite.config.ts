@@ -4,11 +4,15 @@ import { defineConfig } from 'vite'
 
 // https://vitejs.dev/config/
 export default defineConfig({
+  server: {
+    port: 5173
+  },
   plugins: [preact()],
   resolve: {
     alias: [
       { find: /^@vkontakte\/vkui$/, replacement: '@vkontakte/vkui/dist/cssm' },
       { find: '@utils', replacement: path.resolve(__dirname, './src/utils') },
+      { find: '@types', replacement: path.resolve(__dirname, './src/types') },
       { find: '@config', replacement: path.resolve(__dirname, './src/config') },
       { find: '@store', replacement: path.resolve(__dirname, './src/store') },
       { find: '@hooks', replacement: path.resolve(__dirname, './src/hooks') },
@@ -23,14 +27,14 @@ export default defineConfig({
     sourcemap: false,
     target: 'es2017',
     assetsInlineLimit: 0,
-    rollupOptions: {
-      logLevel: 'debug',
-      output: {
-        generatedCode: {
-          preset: 'es2015',
-          arrowFunctions: false
-        }
-      }
-    }
+    minify: 'terser',
+    terserOptions: {
+      compress: {
+        drop_console: true,
+      },
+      format: {
+        comments: false,
+      },
+    },
   }
 })

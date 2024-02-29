@@ -1,7 +1,8 @@
 import { ErrorPlaceholder, PanelHeaderWithBack, Suspense } from '@components'
 import { Day } from '@diary-spo/shared'
 import { useRateLimitExceeded, useSnackbar } from '@hooks'
-import { handleResponse } from '@utils'
+import { Nullable } from '@types'
+import { handleResponse, isApiError } from '@utils'
 import {
   useActiveVkuiLocation,
   useRouteNavigator
@@ -17,14 +18,16 @@ import {
 } from '@vkontakte/vkui'
 import { endOfWeek, startOfWeek } from '@vkontakte/vkui/dist/lib/date'
 import { FC, lazy, useEffect, useState } from 'preact/compat'
-import { getLessons } from '../../methods'
-import ScheduleAsideButtons from './ScheduleAsideButtons.tsx'
-import { getWeekString, isNeedToGetNewData } from './utils.ts'
 
+import { getLessons } from '../../methods'
+import { Props } from '../types.ts'
+import { getWeekString, isNeedToGetNewData } from './utils'
+
+const ScheduleAsideButtons = lazy(() => import('./ScheduleAsideButtons'))
 const MarksByDay = lazy(() => import('./MarksByDay'))
 const ScheduleGroup = lazy(() => import('./ScheduleGroup'))
 
-const Schedule: FC<{ id: string }> = ({ id }) => {
+const Schedule: FC<Props> = ({ id }) => {
   /** Управление данными **/
   const newDate = new Date()
   const cachedDate = new Date(localStorage.getItem('currentDate'))
@@ -32,7 +35,7 @@ const Schedule: FC<{ id: string }> = ({ id }) => {
     cachedDate && cachedDate.getFullYear() >= 2023 ? cachedDate : newDate
 
   const [endDate, setEndDate] = useState<Date>(endOfWeek(currentDate))
-  const [lessonsState, setLessons] = useState<Day[] | null>()
+  const [lessonsState, setLessons] = useState<Nullable<Day[]>>(null)
   const [startDate, setStartDate] = useState<Date>(startOfWeek(currentDate))
 
   /** Навигация **/
@@ -48,6 +51,8 @@ const Schedule: FC<{ id: string }> = ({ id }) => {
 
   const handleGetLesson = async (start: Date, end: Date) => {
     setIsLoading(true)
+    setIsError(false)
+
     localStorage.setItem('currentDate', startDate.toString())
 
     try {
@@ -64,14 +69,12 @@ const Schedule: FC<{ id: string }> = ({ id }) => {
         showSnackbar
       )
 
-      if (data instanceof Response) {
+      if (isApiError(data)) {
         return
       }
 
       setLessons(data)
       localStorage.setItem('savedLessons', JSON.stringify(data))
-    } catch (e) {
-      console.error('handleGetLesson', e)
     } finally {
       setIsLoading(false)
     }
@@ -99,7 +102,6 @@ const Schedule: FC<{ id: string }> = ({ id }) => {
     await handleGetLesson(startDate, endDate)
   }
 
-  /** Для получения расписания и оценок при маунте */
   useEffect(() => {
     gettedLessons()
   }, [])
@@ -115,23 +117,29 @@ const Schedule: FC<{ id: string }> = ({ id }) => {
     )
 
   const ScheduleGroupAside = (
-    <ScheduleAsideButtons
-      handleGetLesson={handleGetLesson}
-      showSnackbar={showSnackbar}
-      endDate={endDate}
-      startDate={startDate}
-      setEndDate={setEndDate}
-      setStartDate={setStartDate}
-    />
+    <Suspense id='ScheduleAsideButtons'>
+      <ScheduleAsideButtons
+        handleGetLesson={handleGetLesson}
+        showSnackbar={showSnackbar}
+        endDate={endDate}
+        startDate={startDate}
+        setEndDate={setEndDate}
+        setStartDate={setStartDate}
+      />
+    </Suspense>
   )
 
   const shouldShowSpinner = isLoading && <PanelSpinner />
 
   const MarksByDayOrLoading = shouldShowSpinner || (
-    <MarksByDay lessonsState={lessonsState} />
+    <Suspense id='MarksByDay'>
+      <MarksByDay lessonsState={lessonsState} />
+    </Suspense>
   )
   const ScheduleOrLoading = shouldShowSpinner || (
-    <ScheduleGroup lessonsState={lessonsState} />
+    <Suspense id='ScheduleGroup'>
+      <ScheduleGroup lessonsState={lessonsState} />
+    </Suspense>
   )
 
   const MarksHeader = (

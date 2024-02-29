@@ -1,0 +1,7 @@
+.flex {
+    display: flex;
+}
+
+.markWrapper {
+    max-width: 100px !important;
+}

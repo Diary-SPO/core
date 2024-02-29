@@ -6,11 +6,14 @@ import {
   ConfigProvider,
   usePlatform
 } from '@vkontakte/vkui'
-import { router } from '../../routes'
+import { router } from '../../routes/router'
 import AuthProvider from './AuthProvider.tsx'
 
-import App from './App'
-import NotFoundCorrect from './NotFound'
+import { Suspense } from '@components'
+import { lazy } from 'preact/compat'
+
+const NotFoundCorrect = lazy(() => import('./NotFound'))
+const App = lazy(() => import('./App'))
 
 vkBridge.send('VKWebAppInit')
 
@@ -27,7 +30,9 @@ const AppWrapper = () => {
           isWebView={vkBridge.isWebView()}
         >
           <AuthProvider>
-            <App />
+            <Suspense id='App' mode='screen'>
+              <App />
+            </Suspense>
           </AuthProvider>
         </ConfigProvider>
       </RouterProvider>

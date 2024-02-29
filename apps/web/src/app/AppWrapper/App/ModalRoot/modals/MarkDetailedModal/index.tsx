@@ -1,5 +1,6 @@
 import { Mark } from '@components'
 import { LessonWorkType } from '@diary-spo/shared'
+import { useMarkModal } from '@store'
 import { setDefaultMark } from '@utils'
 import {
   Group,
@@ -8,7 +9,6 @@ import {
   ModalPageHeader,
   SimpleCell
 } from '@vkontakte/vkui'
-import useMarkModal from '../../../../../../store/useMarkModal.ts'
 
 const MarkDetailedModal = ({ id }: { id: string }) => {
   const { modalData } = useMarkModal()

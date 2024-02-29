@@ -1,0 +1,10 @@
+.marksCount {
+  display: flex;
+  flex-direction: row-reverse;
+  gap: 5px;
+  justify-content: space-around;
+}
+
+.icon {
+  margin-top: 4px;
+}

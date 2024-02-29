@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'bun:test'
-import { createStore } from '@store'
+import { createStore } from '../store.ts'
 
 describe('store', () => {
   it('устанавляет начальное состояние', () => {
