@@ -15,3 +15,5 @@
 - api - Backend часть
 - shared - общие типы
 - types - БД типы
+
+test deploy
