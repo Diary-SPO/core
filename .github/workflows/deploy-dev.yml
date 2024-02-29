@@ -1,0 +1,27 @@
+name: Deploy apps in development mode
+
+on:
+  issue_comment:
+    types: [created]
+
+jobs:
+  Deploy:
+    # Триггер на команду '/deploy' в Pull Request
+    if: |
+      github.event.issue.pull_request &&
+      contains(github.event.comment.body, '/deploy')
+    runs-on: self-hosted
+    steps:
+      - name: Checkout pull request branch
+        uses: actions/checkout@v3
+        with:
+          ref: refs/pull/${{ github.event.issue.number }}/head
+      
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v1
+      
+      - name: Install dependencies
+        run: bun i
+      
+      - name: Run apps
+        run: bun dev:all
