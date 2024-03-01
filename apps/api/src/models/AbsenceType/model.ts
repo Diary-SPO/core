@@ -20,7 +20,8 @@ const absenceTypeModel = sequelize.define<IAbsenceTypeModel>(
     },
     name: {
       type: DataTypes.ENUM(...Object.keys(AbsenceTypes)),
-      allowNull: false
+      allowNull: false,
+      unique: true
     }
   },
   {

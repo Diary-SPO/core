@@ -1,4 +1,4 @@
-import { Nullable } from '@types'
+import { Nullable } from '@diary-spo/shared'
 import { useCallback, useState } from 'preact/hooks'
 
 /**

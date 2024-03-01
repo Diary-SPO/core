@@ -20,7 +20,8 @@ const lessonTypeModel = sequelize.define<ILessonTypeModel>(
     },
     name: {
       type: DataTypes.ENUM(...Object.keys(LessonType)),
-      allowNull: false
+      allowNull: false,
+      unique: true
     }
   },
   {

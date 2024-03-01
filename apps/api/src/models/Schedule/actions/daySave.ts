@@ -1,10 +1,10 @@
 import { Day } from '@diary-spo/shared'
 import { ICacheData } from '@helpers'
 import { IScheduleModel } from '@models'
-import { deleteOld } from './deleteOld'
+import { deleteOldDays } from './deleteOldDays'
 import { lessonSave } from './lessonSave'
 
-export const ScheduleSave = async (day: Day, authData: ICacheData) => {
+export const daySave = async (day: Day, authData: ICacheData) => {
   if (!day.lessons) {
     return
   }
@@ -18,5 +18,5 @@ export const ScheduleSave = async (day: Day, authData: ICacheData) => {
   }
 
   // По завершению всех промисов - удаляем старое расписание
-  Promise.all(promises).then((v) => deleteOld(v, authData))
+  Promise.all(promises).then((v) => deleteOldDays(v, authData))
 }

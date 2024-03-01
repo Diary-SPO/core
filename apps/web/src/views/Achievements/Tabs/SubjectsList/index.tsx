@@ -1,11 +1,10 @@
-import { AttestationResponse } from '@diary-spo/shared'
+import { AttestationResponse, Nullable } from '@diary-spo/shared'
 import { Placeholder } from '@vkontakte/vkui'
 import { FunctionalComponent } from 'preact'
 import { StateUpdater, useEffect, useState } from 'preact/hooks'
 
 import { THIRD_SEC } from '@config'
 import { useRateLimitExceeded } from '@hooks'
-import { Nullable } from '@types'
 import { handleResponse, isApiError } from '@utils'
 
 import { getAttestation } from '../../../../methods'

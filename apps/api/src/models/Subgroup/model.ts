@@ -21,7 +21,8 @@ export const SubgroupModel = sequelize.define<ISubgroupModelType>(
     },
     name: {
       type: DataTypes.STRING(35),
-      allowNull: false
+      allowNull: false,
+      unique: 'subgroup_unique'
     },
     groupId: {
       type: DataTypes.INTEGER,
@@ -29,7 +30,8 @@ export const SubgroupModel = sequelize.define<ISubgroupModelType>(
       references: {
         model: GroupModel,
         key: 'id'
-      }
+      },
+      unique: 'subgroup_unique'
     }
   },
   {

@@ -2,7 +2,7 @@ import { API_CODES, API_ERRORS, ApiError } from '@api'
 import { SERVER_URL } from '@config'
 import { Day } from '@diary-spo/shared'
 import { ICacheData } from '@helpers'
-import { ScheduleGetFromDB, ScheduleSave } from '@models'
+import { ScheduleGetFromDB, daySave } from '@models'
 import { HeadersWithCookie } from '@utils'
 
 export const getLessonsService = async (
@@ -33,7 +33,7 @@ export const getLessonsService = async (
   // Сохраняем и отдаём
   const days: Day[] = await response.json()
   for (const day of days) {
-    ScheduleSave(day, authData).catch((err: string) =>
+    daySave(day, authData).catch((err: string) =>
       console.error(`Ошибка сохранения расписания: ${err}`)
     )
   }

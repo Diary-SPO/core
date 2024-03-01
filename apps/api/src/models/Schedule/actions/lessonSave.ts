@@ -1,8 +1,8 @@
 import { Lesson } from '@diary-spo/shared'
 import { ICacheData, objPropertyCopy } from '@helpers'
 import {
-  subjectSaveOrGet, 
-  TeacherSaveOrGet, 
+  subjectSaveOrGet,
+  TeacherSaveOrGet,
   saveClassroom,
   IScheduleModel,
   IScheduleModelNoId,
@@ -10,8 +10,13 @@ import {
   themesSaveOrGet,
   AbsenceTypeSaveOrGet,
   lessonTypeSaveOrGet,
-  tasksSaveOrGet
+  tasksSaveOrGet,
+  subgroupSaveOrGet,
+  scheduleSubgroupSaveOrGet,
+  deleteScheduleSubgroup,
+  ScheduleWhere
 } from '@models'
+import { detectSubgroup } from '@models'
 
 /**
  * Сохраняет и обновляет занятие в базе данных
@@ -42,6 +47,7 @@ export const lessonSave = async (
 
   const subject = lesson.name
   const gradebook = lesson.gradebook
+  const subgroup = detectSubgroup(subject)
 
   // Получаем id в базе для полученных из lesson данных
   subjectId = (await subjectSaveOrGet(subject)).id
@@ -70,7 +76,7 @@ export const lessonSave = async (
     lessonTypeId = (await lessonTypeSaveOrGet(gradebook.lessonType)).id
     gradebookIdFromDiary = gradebook.id
   }
-  
+
   if (gradebook && gradebook.absenceType) {
     absenceTypeId = (await AbsenceTypeSaveOrGet(gradebook.absenceType)).id
   }
@@ -90,14 +96,18 @@ export const lessonSave = async (
   }
 
   // Ищем, есть ли расисание в базе
-  const schedule = await ScheduleModel.findOne({
-    where: {
-      groupId: scheduleToSave.groupId,
-      startTime: scheduleToSave.startTime,
-      endTime: scheduleToSave.endTime,
-      date: scheduleToSave.date
-    }
-  })
+  let where: ScheduleWhere = {
+    groupId: scheduleToSave.groupId,
+    startTime: scheduleToSave.startTime,
+    endTime: scheduleToSave.endTime,
+    date: scheduleToSave.date
+  }
+
+  if (subgroup) {
+    where.subjectId = subjectId
+  }
+
+  const schedule = await ScheduleModel.findOne({ where })
 
   // Промис актуального расписания в БД
   let promiseToReturn
@@ -123,6 +133,24 @@ export const lessonSave = async (
     const scheduleId = (await promiseToReturn).id
     tasksSaveOrGet(gradebook.tasks, scheduleId, authData)
   }
+
+  // Если есть подгруппа - сохраняем
+  if (subgroup) {
+    const subgroupDB = subgroupSaveOrGet(subgroup, authData.groupId)
+    subgroupDB.then(async (r) => {
+      const scheduleId = (await promiseToReturn).id
+      if (!r[1]) {
+        scheduleSubgroupSaveOrGet(scheduleId, authData.localUserId, r[0].id)
+      }
+    })
+  }
+
+  // Удаялем пподгруппы, если в расписании их нет
+  promiseToReturn.then(async (s) => {
+    if (!subgroup) {
+      deleteScheduleSubgroup(s.id, authData.localUserId)
+    }
+  })
 
   return promiseToReturn
 }

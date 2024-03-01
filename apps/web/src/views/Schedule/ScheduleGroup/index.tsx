@@ -1,5 +1,4 @@
-import { Day } from '@diary-spo/shared'
-import { Nullable } from '@types'
+import { Day, Nullable } from '@diary-spo/shared'
 import { CardGrid } from '@vkontakte/vkui'
 import { FunctionComponent } from 'preact'
 import { memo } from 'preact/compat'

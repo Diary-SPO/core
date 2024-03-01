@@ -1,5 +1,4 @@
-import { Subject } from '@diary-spo/shared'
-import { Nullable } from '@types'
+import { Nullable, Subject } from '@diary-spo/shared'
 import { Group, Header } from '@vkontakte/vkui'
 import { FunctionalComponent } from 'preact'
 import SubjectCard from './SubjectCard'

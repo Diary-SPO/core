@@ -19,7 +19,8 @@ const subjectModel = sequelize.define<ISubjectModelType>(
     },
     name: {
       type: DataTypes.STRING,
-      allowNull: false
+      allowNull: false,
+      unique: true
     }
   },
   {

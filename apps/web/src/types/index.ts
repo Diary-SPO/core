@@ -32,5 +32,3 @@ export type ReturnedMark =
   | 'ДЗ'
   | '.'
   | number
-
-export type Nullable<T> = T | null

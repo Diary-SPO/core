@@ -8,7 +8,8 @@
     "serve": "bun run build && bun run ./dist/main.js",
     "lint": "biome lint . --apply",
     "format": "biome format . --write",
-    "checkAll": "biome check . --apply-unsafe"
+    "checkAll": "biome check . --apply-unsafe",
+    "cli": "bun run ./src/cli"
   },
   "dependencies": {
     "@elysiajs/cors": "^0.8.0",

@@ -1,5 +1,5 @@
 import { VKUI_RED } from '@config'
-import { Nullable } from '@types'
+import { Nullable } from '@diary-spo/shared'
 import { Icon28ErrorCircleOutline } from '@vkontakte/icons'
 import { Snackbar } from '@vkontakte/vkui'
 import { ReactNode } from 'preact/compat'

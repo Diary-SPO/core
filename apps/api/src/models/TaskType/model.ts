@@ -20,7 +20,8 @@ const taskTypeModel = sequelize.define<ITaskTypeModel>(
     },
     name: {
       type: DataTypes.STRING(...Object.keys(LessonWorkType)),
-      allowNull: false
+      allowNull: false,
+      unique: true
     }
   },
   {

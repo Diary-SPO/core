@@ -40,7 +40,8 @@ export const ScheduleModel = sequelize.define<IScheduleModel>(
       references: {
         model: GroupModel,
         key: 'id'
-      }
+      },
+      unique: 'unique_schedule_k'
     },
     teacherId: {
       type: DataTypes.INTEGER,
@@ -56,7 +57,8 @@ export const ScheduleModel = sequelize.define<IScheduleModel>(
       references: {
         model: SubjectModel,
         key: 'id'
-      }
+      },
+      unique: 'unique_schedule_k'
     },
     lessonTypeId: {
       type: DataTypes.INTEGER,
@@ -80,15 +82,18 @@ export const ScheduleModel = sequelize.define<IScheduleModel>(
     },
     date: {
       type: DataTypes.DATEONLY,
-      allowNull: false
+      allowNull: false,
+      unique: 'unique_schedule_k'
     },
     startTime: {
       type: DataTypes.STRING(5),
-      allowNull: false
+      allowNull: false,
+      unique: 'unique_schedule_k'
     },
     endTime: {
       type: DataTypes.STRING(5),
-      allowNull: false
+      allowNull: false,
+      unique: 'unique_schedule_k'
     },
     classroomId: {
       type: DataTypes.INTEGER,

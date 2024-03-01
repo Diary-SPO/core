@@ -24,7 +24,8 @@ export const ScheduleSubgroupModel =
         references: {
           model: ScheduleModel,
           key: 'id'
-        }
+        },
+        unique: 'scheduleSubgroup_unique'
       },
       diaryUserId: {
         type: DataTypes.INTEGER,
@@ -32,7 +33,8 @@ export const ScheduleSubgroupModel =
         references: {
           model: DiaryUserModel,
           key: 'id'
-        }
+        },
+        unique: 'scheduleSubgroup_unique'
       },
       subgroupId: {
         type: DataTypes.INTEGER,
