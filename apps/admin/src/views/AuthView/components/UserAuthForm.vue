@@ -1,16 +1,21 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { onMounted, ref } from 'vue'
 import {
+  Button,
+  Form,
   FormControl,
-  FormLabel,
-  FormItem,
   FormField,
+  FormItem,
+  FormLabel,
   FormMessage,
-} from '@/components/ui/form'
-import { useToast } from '@/components/ui/toast'
-import { Input } from '@/components/ui/input'
-import { Button } from '@/components/ui/button'
+  Input,
+  useToast,
+} from '@/components'
 import { GithubLogoIcon } from '@radix-icons/vue'
+import { SERVER_URL } from '@/config'
+import { getGitHubUrl } from '@/utils/oauth/github'
+import { useLocalStorage } from '@vueuse/core'
+
 const { toast } = useToast()
 
 const formValues = ref({
@@ -18,15 +23,55 @@ const formValues = ref({
   password: '',
 })
 
-async function onSubmit() {
+const onSubmit = () => {
   console.log(formValues.value.password)
-
-  toast({
-    title: 'Scheduled: Catch up',
-    description: 'Friday, February 10, 2023 at 5:57 PM',
-    duration: 2000,
-  })
 }
+
+const getAuthParam = async () => {
+  const urlParams = new URLSearchParams(window.location.search)
+  const code = urlParams.get('code')
+  // const data = urlParams.get('code')
+
+  if (!code) {
+    return
+  }
+
+  try {
+    toast({
+      title: 'Вход через GitHub',
+      description: 'Пожалуйста, подождите',
+      duration: 1000,
+    })
+
+    // const data = await fetch(`${SERVER_URL}/oauth/github`, {
+    //   method: 'POST',
+    //   body: JSON.stringify({
+    //     code,
+    //   }),
+    //   headers: {
+    //     'Content-Type': 'application/json',
+    //   },
+    // // })
+    // console.log('data 1', data)
+    // return data
+  } catch (e) {
+    console.log('AAAAAAAAAAAAAAAA')
+    console.log(e)
+
+    toast({
+      variant: 'destructive',
+      title: 'Ошибка входа',
+      description: 'Сообщите нам о проблеме',
+    })
+  }
+}
+
+onMounted(async () => {
+  const data = await getAuthParam()
+  useLocalStorage('data', JSON.stringify(data))
+
+  console.log('data', data)
+})
 </script>
 
 <template>
@@ -71,7 +116,7 @@ async function onSubmit() {
     </div>
   </div>
 
-  <Button variant="outline" type="button">
+  <Button :href="getGitHubUrl('/')" variant="outline" as="a">
     <GithubLogoIcon class="mr-2" />
     GitHub
   </Button>

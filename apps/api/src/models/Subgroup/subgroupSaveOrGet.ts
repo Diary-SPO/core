@@ -15,9 +15,7 @@ export const subgroupSaveOrGet = async (
     }
   }).catch(() => {
     throw new LogError(
-      `Ошибка сохранения Subgroup. Входные данные: ${JSON.stringify(
-        subgroup
-      )}`
+      `Ошибка сохранения Subgroup. Входные данные: ${JSON.stringify(subgroup)}`
     )
   })
 

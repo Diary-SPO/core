@@ -1,7 +1,7 @@
 import fs from 'fs'
-import { getTimezone } from 'src/config/getTimeZone'
 import { PARAMS_INIT } from './params'
 import checkEnvVariables from './utils'
+import { getTimezone } from './getTimeZone'
 
 if (!fs.existsSync('.env')) {
   throw new Error(
@@ -25,3 +25,8 @@ export const {
   ENCRYPT_KEY,
   TIMEZONE
 } = PARAMS_INIT
+
+export * from './types'
+export * from './env'
+export * from './constants'
+export * from './utils'

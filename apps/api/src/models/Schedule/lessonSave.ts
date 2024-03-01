@@ -110,5 +110,4 @@ export const LessonSave = async (
   }
 
   await scheduleSubgroupSafeSave(schedule.id, user.id, subgroupId)
-
 }

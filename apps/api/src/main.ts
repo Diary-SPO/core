@@ -1,6 +1,6 @@
 import { cors } from '@elysiajs/cors'
 import { swagger } from '@elysiajs/swagger'
-import routes from '@routes'
+import { routes, adminRoutes } from '@routes'
 import { Elysia } from 'elysia'
 import { compression } from 'elysia-compression'
 import { helmet } from 'elysia-helmet'
@@ -18,11 +18,13 @@ const app = new Elysia()
       }
     })
   )
+
   .use(
     cors({
       origin: true
     })
   )
+  .use(adminRoutes)
   .use(
     compression({
       type: 'gzip',
