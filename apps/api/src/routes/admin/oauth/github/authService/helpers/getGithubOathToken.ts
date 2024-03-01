@@ -1,10 +1,6 @@
 import { GitHubOauthToken } from './types'
 import axios from 'axios'
-import {
-  CLIENT_ID,
-  CLIENT_SECRET,
-  REDIRECT_URL
-} from '../../../../../config/env'
+import { CLIENT_ID, CLIENT_SECRET, REDIRECT_URL } from '@config'
 import { ApiError } from '@api'
 import qs from 'qs'
 

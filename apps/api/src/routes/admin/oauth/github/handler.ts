@@ -1,7 +1,10 @@
 import { Context } from 'elysia'
 import { getGithubOathToken, getGithubUser } from './authService'
 import { HttpStatusCode } from 'axios'
-import { REDIRECT_URL } from '../../../config/env'
+import { REDIRECT_URL } from '@config'
+import { generateToken } from '@helpers'
+import { DiaryUserModel } from '@models'
+import { NotFoundError } from '@api'
 
 interface AuthContext {
   query: {
@@ -27,9 +30,20 @@ const getGitHubAuth = async ({
 
     const { id } = await getGithubUser({ access_token })
 
-    // TODO: сделать сохранение токена
+    const user = await DiaryUserModel.findOne({
+      where: {
+        gitHubId: id
+      }
+    })
 
-    set.redirect = `${REDIRECT_URL}?code=${code}&id=${id}`
+    if (!user) {
+      throw new NotFoundError('GitHub account not found')
+    }
+
+    // TODO: сделать сохранение токена
+    const token = await generateToken(user.id)
+
+    set.redirect = `${REDIRECT_URL}?code=${code}&id=${id}&token=${token}`
     return id
   } catch (e) {
     console.log('OAuth error', e)
