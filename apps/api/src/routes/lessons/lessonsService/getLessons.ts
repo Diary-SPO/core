@@ -1,11 +1,8 @@
 import { API_CODES, API_ERRORS, ApiError } from '@api'
 import { SERVER_URL } from '@config'
 import { Day } from '@diary-spo/shared'
+import { ScheduleGetFromDB, ScheduleSave } from '@models'
 import { HeadersWithCookie } from '@utils'
-import {
-  ScheduleGetFromDB,
-  ScheduleSave
-} from 'src/services/controllers/schedule'
 
 export const getLessonsService = async (
   startDate: string,
@@ -25,7 +22,8 @@ export const getLessonsService = async (
 
   if (!response.ok) {
     // Получаем из базы
-    return (await ScheduleGetFromDB(startDate, endDate, id)) as unknown as Day[]
+    // TODO: fix it
+    return (ScheduleGetFromDB(startDate, endDate, id)) as unknown as Day[]
   }
 
   // Сохраняем и отдаём

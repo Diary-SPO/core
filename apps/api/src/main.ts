@@ -1,10 +1,9 @@
 import { cors } from '@elysiajs/cors'
 import { swagger } from '@elysiajs/swagger'
-import { Elysia } from 'elysia'
-import { helmet } from 'elysia-helmet'
-
 import { routes, adminRoutes } from '@routes'
+import { Elysia } from 'elysia'
 import { compression } from 'elysia-compression'
+import { helmet } from 'elysia-helmet'
 
 const port = Bun.env.PORT ?? 3003
 const app = new Elysia()
@@ -45,6 +44,4 @@ console.log(
 
 const workerURL = new URL('worker', import.meta.url).href
 new Worker(workerURL)
-console.log('Worker running!')
-
-// sequelize.sync({logging: true})
+console.log('===============', 'Worker running!', '===============')

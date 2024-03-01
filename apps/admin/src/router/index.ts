@@ -13,14 +13,14 @@ const router = createRouter({
     {
       path: '/about',
       name: 'about',
-      component: () => import('../views/AboutView.vue'),
+      component: () => import('../views/AboutView.vue')
     },
     {
       path: '/login',
       name: 'login',
-      component: () => import('../views/AuthView/AuthView.vue'),
-    },
-  ],
+      component: () => import('../views/AuthView/AuthView.vue')
+    }
+  ]
 })
 
 router.beforeEach(beforeEach)

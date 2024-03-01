@@ -332,7 +332,7 @@ export interface AcademicYear {
   marks: AttestationMark
 }
 
-/** Ответ от services/students/<id>/attestation **/
+/** Ответ от database/students/<id>/attestation **/
 export interface AcademicRecord {
   academicYears: AcademicYear[]
   subjects: AttestationSubject[]

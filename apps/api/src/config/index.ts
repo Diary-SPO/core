@@ -1,4 +1,5 @@
 import fs from 'fs'
+import { getTimezone } from 'src/config/getTimeZone'
 import { PARAMS_INIT } from './params'
 import checkEnvVariables from './utils'
 
@@ -10,6 +11,10 @@ if (!fs.existsSync('.env')) {
 
 checkEnvVariables(PARAMS_INIT)
 
+PARAMS_INIT.TIMEZONE = getTimezone(
+  PARAMS_INIT.TIMEZONE === '0' ? null : PARAMS_INIT.TIMEZONE
+)
+
 export const {
   SERVER_URL,
   DATABASE_HOST,
@@ -17,5 +22,6 @@ export const {
   DATABASE_NAME,
   DATABASE_USERNAME,
   DATABASE_PASSWORD,
-  ENCRYPT_KEY
+  ENCRYPT_KEY,
+  TIMEZONE
 } = PARAMS_INIT

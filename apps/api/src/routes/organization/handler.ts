@@ -1,17 +1,12 @@
 import { API_CODES, API_ERRORS, ApiError } from '@api'
 import { SERVER_URL } from '@config'
-import {
-  DiaryUserModel,
-  GroupModel,
-  SPOModel,
-  SPOModelType,
-  getCookieFromToken
-} from '@db'
 import type { Organization } from '@diary-spo/shared'
+import { getCookieFromToken } from '@helpers'
+import { DiaryUserModel, GroupModel, SPOModel, SPOModelType } from '@models'
 import { HeadersWithCookie } from '@utils'
 import type { Context } from 'elysia'
 import { Optional } from 'sequelize'
-import { checkSameKeys } from 'src/services/helpers/checkDataForObject'
+import { checkSameKeys } from '../../helpers/checkDataForObject'
 
 const getOrganization = async ({
   request
@@ -48,16 +43,20 @@ const getOrganization = async ({
         exclude: ['id']
       }
     }).then(() => {
-      if (record && !checkSameKeys(saveData, record)) {
-        SPOModel.update(
-          { ...saveData },
-          {
-            where: {
-              organizationId: response.organizationId
-            }
-          }
-        )
+      if (!record || checkSameKeys(saveData, record)) {
+        return
       }
+
+      SPOModel.update(
+        { 
+          ...saveData 
+        },
+        {
+          where: {
+            organizationId: response.organizationId
+          }
+        }
+      )
     })
 
     // Отдаём данные

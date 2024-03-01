@@ -1,6 +1,6 @@
-import { ISPOModel, SPOModel, SPOModelType } from '@db'
+import { ISPOModel, SPOModel, SPOModelType } from '@models'
 import { Optional } from 'sequelize'
-
+// ВЫНЕСТИ В МОДЕЛЬ СПО
 export const saveOrGetSPO = async (
   data: Optional<SPOModelType, 'id'>
 ): Promise<ISPOModel> => {

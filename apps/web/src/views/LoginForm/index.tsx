@@ -16,15 +16,16 @@ import {
 import { ChangeEvent, FC } from 'preact/compat'
 import { useEffect, useState } from 'preact/hooks'
 
-import { Hashes } from '@libs'
 import { PanelHeaderWithBack } from '@components'
 import { ADMIN_PAGE, VKUI_RED } from '@config'
 import { useSnackbar } from '@hooks'
+import { Hashes } from '@libs'
 import { handleResponse, isApiError } from '@utils'
+
 import { postLogin } from '../../methods'
 import { VIEW_SCHEDULE } from '../../routes'
 import { Props } from '../types.ts'
-import { saveData, loginPattern } from './helpers'
+import { loginPattern, saveData } from './helpers'
 
 const LoginForm: FC<Props> = ({ id }) => {
   const routeNavigator = useRouteNavigator()

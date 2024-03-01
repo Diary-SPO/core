@@ -1,8 +1,8 @@
 import { API_CODES, ApiError } from '@api'
 import { SERVER_URL } from '@config'
-import { generateToken } from '@db'
 import type { UserData } from '@diary-spo/shared'
 import { PersonResponse } from '@diary-spo/types'
+import { generateToken } from '@helpers'
 import { ResponseLoginFromDiaryUser } from '@types'
 import {
   ApiResponse,
@@ -11,9 +11,11 @@ import {
   fetcher,
   formatDate
 } from '@utils'
+// TODO: сделать папку с утилитами может
 import { saveOrGetDiaryUser } from './saveOrGetDiaryUser'
 import { saveOrGetGroup } from './saveOrGetGroup'
 import { saveOrGetSPO } from './saveOrGetSPO'
+import { LogError } from 'src/LogError'
 
 export const saveUserData = async (
   parsedRes: ApiResponse<UserData>,
@@ -90,6 +92,6 @@ export const saveUserData = async (
     return ResponseLoginFromDiaryUser(regDiaryUser, regSPO, regGroup, token)
   } catch (err) {
     error(err)
-    throw new Error('Ошибка на этапе работы с базой: ')
+    throw new LogError('Ошибка на этапе работы с базой: ')
   }
 }

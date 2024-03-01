@@ -1,6 +1,6 @@
 import { SERVER_URL } from '@config'
-import { getCookieFromToken } from '@db'
 import type { NotificationsResponse } from '@diary-spo/shared'
+import { getCookieFromToken } from '@helpers'
 import { ContextWithID } from '@types'
 import { HeadersWithCookie } from '@utils'
 

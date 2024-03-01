@@ -4,14 +4,13 @@
   "scripts": {
     "start": "bun run ./src/main.ts",
     "dev": "bun run --watch ./src/main.ts",
-    "build": "bun build ./src/main.ts ./src/worker.ts --outdir dist --minify --target bun",
+    "build": "bun build ./src/main.ts ./src/worker --outdir dist --minify --target bun",
     "serve": "bun run build && bun run ./dist/main.js",
     "lint": "biome lint . --apply",
     "format": "biome format . --write",
     "checkAll": "biome check . --apply-unsafe"
   },
   "dependencies": {
-    "@diary-spo/sql": "^1.2.2",
     "@elysiajs/cors": "^0.8.0",
     "axios": "^1.6.7",
     "cache-manager": "^5.4.0",

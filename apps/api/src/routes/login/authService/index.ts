@@ -1,17 +1,17 @@
 import { API_CODES, ApiError } from '@api'
 import { ENCRYPT_KEY } from '@config'
+import { encrypt } from '@diary-spo/crypto'
+import { ResponseLogin } from '@diary-spo/types'
 import {
   DiaryUserModel,
   GroupModel,
   IDiaryUserModel,
   IGroupModel,
   ISPOModel,
-  SPOModel,
-  generateToken
-} from '@db'
-import { encrypt } from '@diary-spo/sql'
+  SPOModel
+} from '@models'
 import { ResponseLoginFromDiaryUser } from '@types'
-import { ResponseLogin } from '@diary-spo/types'
+import { generateToken } from '../../../helpers'
 
 type DiaryUserAuthInfo = IDiaryUserModel & {
   group: IGroupModel & {
@@ -46,6 +46,7 @@ export const offlineAuth = async (
         }
       ]
     }
+    // TODO: fix it
   })) as DiaryUserAuthInfo
 
   if (!diaryUserRecord) {
@@ -64,6 +65,7 @@ export const offlineAuth = async (
   return ResponseLoginFromDiaryUser(
     diaryUserRecord,
     spoData,
+    // TODO: fix it
     groupData as IGroupModel, // Т.к. выше нахимичили свой тип, то явно указываем то, что ожидается
     token
   )

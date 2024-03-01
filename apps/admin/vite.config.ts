@@ -4,24 +4,24 @@ import vue from '@vitejs/plugin-vue'
 // import vueJsx from '@vitejs/plugin-vue-jsx'
 import { defineConfig } from 'vite'
 
-import tailwind from 'tailwindcss'
 import autoprefixer from 'autoprefixer'
+import tailwind from 'tailwindcss'
 
 // https://vitejs.dev/config/
 export default defineConfig({
   server: {
-    port: 5174,
+    port: 5174
   },
   // vueJsx() - пока не используется
   plugins: [vue()],
   css: {
     postcss: {
-      plugins: [tailwind(), autoprefixer()],
-    },
+      plugins: [tailwind(), autoprefixer()]
+    }
   },
   resolve: {
     alias: {
-      '@': fileURLToPath(new URL('./src', import.meta.url)),
-    },
-  },
+      '@': fileURLToPath(new URL('./src', import.meta.url))
+    }
+  }
 })
