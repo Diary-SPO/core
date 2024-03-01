@@ -1,7 +1,7 @@
 import { sequelize } from '@db'
 import { DataTypes } from 'sequelize'
-import { DiaryUserModel } from '../DiaryUser/model'
-import { TaskModel } from '../Task/model'
+import { DiaryUserModel } from '../DiaryUser'
+import { TaskModel } from '../Task'
 import { IModelPrototypeNoId } from '../types'
 
 export type RequiredModelType = {

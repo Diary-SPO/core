@@ -36,11 +36,13 @@ const classroomModel = sequelize.define<IClassroomModelType>(
       references: {
         model: SPOModel,
         key: 'id'
-      }
+      },
+      unique: 'classroom_uniq_k'
     },
     idFromDiary: {
       type: DataTypes.INTEGER,
-      allowNull: false
+      allowNull: false,
+      unique: 'classroom_uniq_k'
     }
   },
   {

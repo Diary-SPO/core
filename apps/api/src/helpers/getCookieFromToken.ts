@@ -3,7 +3,11 @@ import {
   AuthModel,
   AuthModelType,
   DiaryUserModel,
-  DiaryUserModelType
+  DiaryUserModelType,
+  GroupModel,
+  GroupModelType,
+  SPOModel,
+  SPOModelType
 } from '@models'
 import { caching } from 'cache-manager'
 
@@ -13,12 +17,19 @@ const memoryCache = await caching('memory', {
   refreshThreshold: 10 * 1000 /* как часто проверять в фоновом режиме */
 })
 
-type IUserAuthInfo = AuthModelType & { diaryUser: DiaryUserModelType }
+type IUserAuthInfo = AuthModelType & {
+  diaryUser: DiaryUserModelType & {
+    group: GroupModelType & {
+      spo: SPOModelType
+    }
+  }
+}
 export type ICacheData = {
   cookie: string
   idFromDiary: number
   localUserId: number
   groupId: number
+  spoId: number
 }
 
 /**
@@ -42,7 +53,17 @@ export const getCookieFromToken = async (
     },
     include: {
       model: DiaryUserModel,
-      required: true
+      required: true,
+      include: [
+        {
+          model: GroupModel,
+          required: true,
+          include: [{
+            model: SPOModel,
+            required: true
+          }]
+        }
+      ]
     }
     // TODO: fix it
   })) as IUserAuthInfo | null
@@ -53,12 +74,14 @@ export const getCookieFromToken = async (
 
   const cookie = DiaryUserAuth.diaryUser.cookie
   const idFromDiary = DiaryUserAuth.diaryUser.idFromDiary
-  const localUserId = DiaryUserAuth.idDiaryUser
+  const localUserId = DiaryUserAuth.diaryUserId
   const groupId = DiaryUserAuth.diaryUser.groupId
+  const spoId = DiaryUserAuth.diaryUser.group.spo.id
+  const toSave = { cookie, idFromDiary, localUserId, groupId, spoId }
 
-  await memoryCache.set(token, { cookie, idFromDiary, localUserId, groupId })
+  await memoryCache.set(token, toSave)
 
-  return { cookie, idFromDiary, localUserId, groupId }
+  return { ...toSave }
 }
 
 /**

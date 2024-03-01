@@ -26,7 +26,8 @@ export const GroupModel = sequelize.define<IGroupModel>(
       references: {
         model: SPOModel,
         key: 'id'
-      }
+      },
+      unique: 'group_uniq_k'
     },
     groupName: {
       type: DataTypes.STRING(31),
@@ -34,7 +35,8 @@ export const GroupModel = sequelize.define<IGroupModel>(
     },
     idFromDiary: {
       type: DataTypes.INTEGER,
-      allowNull: false
+      allowNull: false,
+      unique: 'group_uniq_k'
     }
   },
   {

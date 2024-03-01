@@ -1,25 +1,30 @@
 import { sequelize } from '@db'
-import { DataTypes } from 'sequelize'
+import { DataTypes, Optional } from 'sequelize'
+import { AbsenceTypeModel } from '../AbsenceType'
 import { ClassroomModel } from '../Classroom'
-import { GradebookModel } from '../Gradebook'
 import { GroupModel } from '../Group'
 import { SubjectModel } from '../Subject'
 import { TeacherModel } from '../Teacher'
 import { IModelPrototype } from '../types'
+import { LessonTypeModel } from '../LessonType'
 
 export type ScheduleModelType = {
   id: number
   groupId: number
   teacherId: number | null
   subjectId: number | null
+  lessonTypeId?: number | null
+  absenceTypeId?: number | null
+  gradebookIdFromDiary?: number | null
   date: Date | string
   startTime: string
   endTime: string
-  classroomId: number
+  classroomId: number | null
   gradebookId?: number | null
 }
 
 export type IScheduleModel = IModelPrototype<ScheduleModelType, 'id'>
+export type IScheduleModelNoId = Optional<ScheduleModelType, 'id'>
 
 export const ScheduleModel = sequelize.define<IScheduleModel>(
   'schedule',
@@ -53,8 +58,28 @@ export const ScheduleModel = sequelize.define<IScheduleModel>(
         key: 'id'
       }
     },
+    lessonTypeId: {
+      type: DataTypes.INTEGER,
+      allowNull: true,
+      references: {
+        model: LessonTypeModel,
+        key: 'id'
+      }
+    },
+    absenceTypeId: {
+      type: DataTypes.INTEGER,
+      allowNull: true,
+      references: {
+        model: AbsenceTypeModel,
+        key: 'id'
+      }
+    },
+    gradebookIdFromDiary: {
+      type: DataTypes.INTEGER,
+      allowNull: true
+    },
     date: {
-      type: DataTypes.DATE,
+      type: DataTypes.DATEONLY,
       allowNull: false
     },
     startTime: {
@@ -70,14 +95,6 @@ export const ScheduleModel = sequelize.define<IScheduleModel>(
       allowNull: false,
       references: {
         model: ClassroomModel,
-        key: 'id'
-      }
-    },
-    gradebookId: {
-      type: DataTypes.INTEGER,
-      allowNull: true,
-      references: {
-        model: GradebookModel,
         key: 'id'
       }
     }

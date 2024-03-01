@@ -1,6 +1,6 @@
 import { sequelize } from '@db'
 import { DataTypes } from 'sequelize'
-import { GroupModel } from '../Group/model'
+import { GroupModel } from '../Group'
 import { IModelPrototype } from '../types'
 
 export type SubgroupModelType = {

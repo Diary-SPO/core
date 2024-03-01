@@ -16,9 +16,7 @@ export const TeacherSaveOrGet = async (
     }
   }).catch(() => {
     throw new LogError(
-      `Ошибка сохранения Teacher. Входные данные: ${JSON.stringify(
-        teacher
-      )}`
+      `Ошибка сохранения Teacher. Входные данные: ${JSON.stringify(teacher)}`
     )
   })
 

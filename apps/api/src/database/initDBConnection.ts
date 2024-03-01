@@ -43,7 +43,7 @@ export const cache = new SequelizeSimpleCache({
 // Включить кеширование ?
 export const enableCache = false
 // Синхронизовать таблицы ?
-export const forceSyncDatabase = false
+export const forceSyncDatabase = true
 
 try {
   await sequelize.authenticate()

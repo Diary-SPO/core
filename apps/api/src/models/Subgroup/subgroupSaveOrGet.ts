@@ -1,7 +1,7 @@
 import { Optional } from 'sequelize'
+import { LogError } from 'src/LogError'
 import { checkSameKeys } from '../../helpers/checkDataForObject'
 import { SubgroupModel, SubgroupModelType } from './model'
-import { LogError } from 'src/LogError'
 
 export const subgroupSaveOrGet = async (
   subgroup: Optional<SubgroupModelType, 'id'>
@@ -15,9 +15,7 @@ export const subgroupSaveOrGet = async (
     }
   }).catch(() => {
     throw new LogError(
-      `Ошибка сохранения Subgroup. Входные данные: ${JSON.stringify(
-        subgroup
-      )}`
+      `Ошибка сохранения Subgroup. Входные данные: ${JSON.stringify(subgroup)}`
     )
   })
 

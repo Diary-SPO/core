@@ -1,11 +1,11 @@
 import { sequelize } from '@db'
 import { DataTypes } from 'sequelize'
-import { GradebookModel } from '../Gradebook'
+import { ScheduleModel } from '../Schedule'
 import { IModelPrototype } from '../types'
 
 export type ThemeModelType = {
   id: number
-  gradebookId: number
+  scheduleId: number
   description: string
 }
 
@@ -19,11 +19,11 @@ export const ThemeModel = sequelize.define<IThemeModelType>(
       autoIncrement: true,
       primaryKey: true
     },
-    gradebookId: {
+    scheduleId: {
       type: DataTypes.INTEGER,
       allowNull: false,
       references: {
-        model: GradebookModel,
+        model: ScheduleModel,
         key: 'id'
       }
     },

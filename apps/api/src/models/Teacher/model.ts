@@ -28,7 +28,8 @@ export const TeacherModel = sequelize.define<ITeacherModel>(
       references: {
         model: SPOModel,
         key: 'id'
-      }
+      },
+      unique: 'teacher_uniq_k'
     },
     firstName: {
       type: DataTypes.STRING(45),
@@ -44,7 +45,8 @@ export const TeacherModel = sequelize.define<ITeacherModel>(
     },
     idFromDiary: {
       type: DataTypes.INTEGER,
-      allowNull: false
+      allowNull: false,
+      unique: 'teacher_uniq_k'
     }
   },
   {

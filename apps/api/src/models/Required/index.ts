@@ -1,2 +1,2 @@
 export * from './model'
-export * from './requiredSaveOrGet'
+export * from './actions/requiredSaveOrGet'

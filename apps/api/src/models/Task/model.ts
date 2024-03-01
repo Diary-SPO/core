@@ -1,12 +1,12 @@
 import { sequelize } from '@db'
 import { DataTypes } from 'sequelize'
-import { GradebookModel } from '../Gradebook'
+import { ScheduleModel } from '../Schedule'
 import { TaskTypeModel } from '../TaskType'
 import { IModelPrototype } from '../types'
 
 export type TaskModelType = {
   id: number
-  gradebookId: number
+  scheduleId: number
   taskTypeId: number
   topic: string
   idFromDiary: number
@@ -22,11 +22,11 @@ export const TaskModel = sequelize.define<ITaskModel>(
       autoIncrement: true,
       primaryKey: true
     },
-    gradebookId: {
+    scheduleId: {
       type: DataTypes.INTEGER,
       allowNull: false,
       references: {
-        model: GradebookModel,
+        model: ScheduleModel,
         key: 'id'
       }
     },

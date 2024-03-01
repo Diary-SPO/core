@@ -1,7 +1,7 @@
 import { Optional } from 'sequelize'
+import { LogError } from 'src/LogError'
 import { checkSameKeys } from '../../helpers'
 import { ClassroomModel, ClassroomModelType } from './model'
-import { LogError } from 'src/LogError'
 
 export const saveClassroom = async (
   classroom: Optional<ClassroomModelType, 'id'>

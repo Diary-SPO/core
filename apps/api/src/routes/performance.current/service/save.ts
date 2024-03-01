@@ -1,13 +1,7 @@
 import { sequelize } from '@db'
 import { PerformanceCurrent } from '@diary-spo/shared'
 import { ICacheData } from '@helpers'
-import {
-  GradebookModel,
-  MarkModel,
-  MarkValueModel,
-  ScheduleModel,
-  TaskModel
-} from '@models'
+import { MarkModel, MarkValueModel, ScheduleModel, TaskModel } from '@models'
 import { Op } from 'sequelize'
 import { getLessonsService } from '../../lessons/lessonsService'
 

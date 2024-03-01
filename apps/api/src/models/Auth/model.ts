@@ -5,7 +5,7 @@ import { IModelPrototype } from '../types'
 
 export type AuthModelType = {
   id: number
-  idDiaryUser: number
+  diaryUserId: number
   token: string
   lastUsedDate: string
 }
@@ -20,7 +20,7 @@ export const AuthModel = sequelize.define<IAuthModel>(
       autoIncrement: true,
       primaryKey: true
     },
-    idDiaryUser: {
+    diaryUserId: {
       type: DataTypes.INTEGER,
       allowNull: false,
       references: {
