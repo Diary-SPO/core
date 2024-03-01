@@ -8,7 +8,7 @@ import type { NavigationGuardNext, RouteLocationNormalized } from 'vue-router'
 export const beforeEach = async (
   to: RouteLocationNormalized,
   from: RouteLocationNormalized,
-  next: NavigationGuardNext,
+  next: NavigationGuardNext
 ) => {
   const isAuth = await isAuthenticated()
   const isToLogin = to.name === 'login'

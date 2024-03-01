@@ -10,7 +10,11 @@ interface AuthContext {
   }
 }
 
-const getGitHubAuth = async ({ query, set, request }: Context & AuthContext) => {
+const getGitHubAuth = async ({
+  query,
+  set,
+  request
+}: Context & AuthContext) => {
   const { code, state } = query
 
   try {

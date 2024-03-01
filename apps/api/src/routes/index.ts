@@ -34,4 +34,3 @@ export const adminRoutes = new Elysia()
   .use(oauthGitHub)
   /** Обработка любых ошибок в кажом роуте **/
   .onError(errorHandler)
-

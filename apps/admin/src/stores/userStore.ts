@@ -15,7 +15,7 @@ export const useUserStore = defineStore({
   state: (): UserState => ({
     isAuthenticated: false,
     token: null,
-    user: null,
+    user: null
   }),
   actions: {
     login(token: string, user: User) {
@@ -27,6 +27,6 @@ export const useUserStore = defineStore({
       this.isAuthenticated = false
       this.token = null
       this.user = null
-    },
-  },
+    }
+  }
 })

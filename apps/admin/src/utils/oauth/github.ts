@@ -5,7 +5,7 @@ export const getGitHubUrl = (from: string) => {
     client_id: CLIENT_ID,
     redirect_url: REDIRECT_URL,
     scope: 'user:email',
-    state: from,
+    state: from
   }
 
   const qs = new URLSearchParams(options)

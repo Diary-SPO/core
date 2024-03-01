@@ -3,7 +3,7 @@ import getGitHubAuth from './handler'
 
 const schema = {
   query: t.Object({
-    code: t.String(),
+    code: t.String()
   })
 }
 
