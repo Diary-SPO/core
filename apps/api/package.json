@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "@elysiajs/cors": "^0.8.0",
+    "@diary-spo/crypto": "workspace:*",
     "axios": "^1.6.7",
     "cache-manager": "^5.4.0",
     "elysia": "^0.8.5",

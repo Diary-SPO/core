@@ -8,9 +8,18 @@ export const API_CODES = {
   UNKNOWN_ERROR: 520
 } as const
 
+// Ошибки, которые возвращаем мы
 export const API_ERRORS = {
   INVALID_TOKEN: 'INVALID_TOKEN',
   USER_NOT_FOUND: 'USER_NOT_FOUND',
   DATA_NOT_FOUND: 'DATA_NOT_FOUND',
-  USER_NOT_PERMISSION: 'USER_NOT_PERMISSION'
-}
+  USER_NOT_PERMISSION: 'USER_NOT_PERMISSION',
+  PARSE_ERROR: 'PARSE_ERROR'
+} as const
+
+// Ошибки, которые возвращает фреймворк
+export const BASE_API_ERRORS = {
+  INTERNAL_SERVER_ERROR: 'INTERNAL_SERVER_ERROR',
+  VALIDATION: 'VALIDATION',
+  NOT_FOUND: 'NOT_FOUND'
+} as const

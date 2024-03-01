@@ -12,17 +12,23 @@ import oauthGitHub from './oauth/github'
 
 import { headersSchema } from '@utils'
 import { errorHandler } from './helpers'
+import { isValidToken } from '../middlewares'
 
 export const routes = new Elysia()
   /** Роуты с проверкой на наличие secret поля **/
-  .guard(headersSchema, (app) =>
-    app
-      .use(organization)
-      .use(lessons)
-      .use(performanceCurrent)
-      .use(attestation)
-      .use(ads)
-      .use(finalMarks)
+  .guard(
+    {
+      beforeHandle: headersSchema,
+      beforeHandle: isValidToken
+    },
+    (app) =>
+      app
+        .use(organization)
+        .use(lessons)
+        .use(performanceCurrent)
+        .use(attestation)
+        .use(ads)
+        .use(finalMarks)
   )
   /** Роуты без проверки **/
   .use(hello)
