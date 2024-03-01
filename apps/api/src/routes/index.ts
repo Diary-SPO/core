@@ -8,11 +8,11 @@ import lessons from './lessons'
 import login from './login'
 import organization from './organization'
 import performanceCurrent from './performance.current'
-import oauthGitHub from './oauth/github'
+import oauthGitHub from './admin/oauth/github'
 
 import { headersSchema } from '@utils'
 import { errorHandler } from './helpers'
-import { isValidToken } from '../middlewares'
+import { isValidToken, isAdmin } from '../middlewares'
 
 export const routes = new Elysia()
   /** Роуты с проверкой на наличие secret поля **/
@@ -37,6 +37,12 @@ export const routes = new Elysia()
   .onError(errorHandler)
 
 export const adminRoutes = new Elysia()
-  .use(oauthGitHub)
+  .guard(
+    {
+      beforeHandle: headersSchema,
+      beforeHandle: isAdmin
+    },
+    (app) => app.use(oauthGitHub)
+  )
   /** Обработка любых ошибок в кажом роуте **/
   .onError(errorHandler)
