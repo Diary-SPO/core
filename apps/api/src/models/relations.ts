@@ -23,7 +23,8 @@ import {
   TermModel,
   TermSubjectModel,
   TermTypeModel,
-  ThemeModel
+  ThemeModel,
+  AbsenceModel
 } from './import'
 
 // SPO <--->> Group
@@ -150,10 +151,6 @@ FinalMarkModel.belongsTo(MarkValueModel)
 MarkValueModel.hasMany(TermSubjectModel)
 TermSubjectModel.belongsTo(MarkValueModel)
 
-// AbsenceType <-->> ScheduleModel
-AbsenceTypeModel.hasMany(ScheduleModel)
-ScheduleModel.belongsTo(AbsenceTypeModel)
-
 // Group <-->> Subgroup
 GroupModel.hasMany(SubgroupModel)
 SubgroupModel.belongsTo(GroupModel)
@@ -169,6 +166,18 @@ ScheduleSubgroupModel.belongsTo(DiaryUserModel)
 // Schedule <-->> ScheduleSubgroup
 ScheduleModel.hasMany(ScheduleSubgroupModel)
 ScheduleSubgroupModel.belongsTo(ScheduleModel)
+
+// AbsenceType <-->> Absence
+AbsenceTypeModel.hasMany(AbsenceModel)
+AbsenceModel.belongsTo(AbsenceTypeModel)
+
+// Schedule <-->> Absence
+ScheduleModel.hasMany(AbsenceModel)
+AbsenceModel.belongsTo(ScheduleModel)
+
+// DiaryUser <-->> Absence
+DiaryUserModel.hasMany(AbsenceModel)
+AbsenceModel.belongsTo(DiaryUserModel)
 
 if (forceSyncDatabase) {
   console.log('Syncing database...')

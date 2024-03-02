@@ -3,14 +3,12 @@ import { IScheduleModel, ScheduleModel } from '../model'
 import { Op } from 'sequelize'
 import { ScheduleSubgroupModel } from 'src/models/ScheduleSubgroup'
 import { ScheduleSubgroupsGet } from './types'
-import { SubgroupModel } from 'src/models/Subgroup'
 import { checkInSubgroups } from './checkInSubgroups'
 
 export const deleteOldDays = async (
   schedules: (IScheduleModel | null)[],
   authModel: ICacheData
 ) => {
-  // TODO: удалять расписания
   // Если расписания нет в списке id'шников в schedules
   // и у расписания не тсвязанной подгруппы или подгруппа
   // принадлежит текущему пользователю, то удаляем
@@ -47,7 +45,7 @@ export const deleteOldDays = async (
   }) as Promise<ScheduleSubgroupsGet[]>
 
   schedulesToDelete.then((s) => {
-    console.log((JSON.stringify(s, null, 2)))
+    //console.log((JSON.stringify(s, null, 2)))
     for (const schedule of s) {
       if (schedule.scheduleSubgroups.length === 0
          || checkInSubgroups(schedule.scheduleSubgroups, authModel.localUserId)) {

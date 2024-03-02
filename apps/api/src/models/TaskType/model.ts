@@ -23,12 +23,6 @@ const taskTypeModel = sequelize.define<ITaskTypeModel>(
       allowNull: false,
       unique: true
     }
-  },
-  {
-    freezeTableName: true,
-    timestamps: false,
-    createdAt: false,
-    updatedAt: false
   }
 )
 

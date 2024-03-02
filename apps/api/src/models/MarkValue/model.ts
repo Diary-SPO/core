@@ -31,12 +31,6 @@ const markValueModel = sequelize.define<IMarkValueModelType>(
         this.setDataValue('value', value)
       }
     }
-  },
-  {
-    freezeTableName: true,
-    timestamps: false,
-    createdAt: false,
-    updatedAt: false
   }
 )
 

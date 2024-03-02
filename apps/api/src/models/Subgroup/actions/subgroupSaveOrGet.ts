@@ -1,6 +1,6 @@
-import { SubgroupModel } from "../model";
+import { ISubgroupModelType, SubgroupModel } from "../model";
 
-export const subgroupSaveOrGet = (name: string, groupId: number) => {
+export const subgroupSaveOrGet = (name: string, groupId: number): Promise<[ISubgroupModelType, boolean]> => {
   const where = {
     name,
     groupId
@@ -9,4 +9,11 @@ export const subgroupSaveOrGet = (name: string, groupId: number) => {
     where,
     defaults: where
   })
+  .catch(async () =>
+    subgroupSaveOrGet(name, groupId).catch(
+        () => {
+          throw new Error(`Ошибка сохранения Subgroup`)
+        }
+      )
+    )
 }

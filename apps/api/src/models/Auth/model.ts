@@ -37,11 +37,5 @@ export const AuthModel = sequelize.define<IAuthModel>(
       type: DataTypes.DATEONLY,
       allowNull: false
     }
-  },
-  {
-    freezeTableName: true,
-    timestamps: false,
-    createdAt: false,
-    updatedAt: false
   }
 )

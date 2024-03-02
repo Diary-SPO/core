@@ -37,11 +37,5 @@ export const RequiredModel = sequelize.define<IRequiredModel>(
       type: DataTypes.BOOLEAN,
       allowNull: false
     }
-  },
-  {
-    freezeTableName: true,
-    timestamps: false,
-    createdAt: false,
-    updatedAt: false
   }
 )

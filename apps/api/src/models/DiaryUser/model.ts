@@ -115,11 +115,5 @@ export const DiaryUserModel = sequelize.define<IDiaryUserModel>(
       allowNull: false,
       comment: 'id пользователя из дневника'
     }
-  },
-  {
-    freezeTableName: true, // Говорим, что имя модели = Имя таблицы
-    timestamps: false,
-    createdAt: false,
-    updatedAt: false
   }
 )

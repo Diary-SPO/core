@@ -42,11 +42,5 @@ export const TermModel = sequelize.define<ITermModel>(
         key: 'id'
       }
     }
-  },
-  {
-    freezeTableName: true,
-    timestamps: false,
-    createdAt: false,
-    updatedAt: false
   }
 )

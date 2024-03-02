@@ -1,4 +1,4 @@
-import { Lesson } from '@diary-spo/shared'
+import { Lesson, Nullable } from '@diary-spo/shared'
 import { ICacheData, objPropertyCopy } from '@helpers'
 import {
   subjectSaveOrGet,
@@ -14,12 +14,14 @@ import {
   subgroupSaveOrGet,
   scheduleSubgroupSaveOrGet,
   deleteScheduleSubgroup,
-  ScheduleWhere
+  ScheduleWhere,
+  saveOrGetAbsence,
+  deleteAbsence,
+  detectSubgroup
 } from '@models'
-import { detectSubgroup } from '@models'
 
 /**
- * Сохраняет и обновляет занятие в базе данных
+ * Сохраняет и обновляет занятие в базе данных.
  * @param lesson - Занятие для сохранения
  * @param authData - Данные, предоставленные клиентом для авторизации
  * @returns Promise<IScheduleModel | null>
@@ -38,12 +40,12 @@ export const lessonSave = async (
   }
 
   // Извлекаем нужные нам данные из lesson
-  let subjectId = null
-  let teacherId = null
-  let classroomId = null
-  let lessonTypeId = null
-  let absenceTypeId = null
-  let gradebookIdFromDiary = null
+  let subjectId: Nullable<number> = null
+  let teacherId: Nullable<number> = null
+  let classroomId: Nullable<number> = null
+  let lessonTypeId: Nullable<number> = null
+  let absenceTypeId: Nullable<number> = null
+  let gradebookIdFromDiary: Nullable<number> = null
 
   const subject = lesson.name
   const gradebook = lesson.gradebook
@@ -88,7 +90,6 @@ export const lessonSave = async (
     subjectId,
     classroomId,
     lessonTypeId,
-    absenceTypeId,
     gradebookIdFromDiary,
     startTime: lesson.startTime,
     endTime: lesson.endTime,
@@ -110,7 +111,7 @@ export const lessonSave = async (
   const schedule = await ScheduleModel.findOne({ where })
 
   // Промис актуального расписания в БД
-  let promiseToReturn
+  let promiseToReturn: Promise<IScheduleModel>
 
   /**
    * Если расписание есть в базе, то
@@ -150,6 +151,15 @@ export const lessonSave = async (
     if (!subgroup) {
       deleteScheduleSubgroup(s.id, authData.localUserId)
     }
+  })
+
+  promiseToReturn.then(async (s) => {
+    if (absenceTypeId) {
+      saveOrGetAbsence(absenceTypeId, s.id, authData.localUserId)
+    } else {
+      deleteAbsence(s.id, authData.localUserId)
+    }
+    return s
   })
 
   return promiseToReturn

@@ -46,11 +46,5 @@ export const AcademicYearModel = sequelize.define<IAcademicYearModel>(
       type: DataTypes.INTEGER,
       allowNull: false
     }
-  },
-  {
-    freezeTableName: true,
-    timestamps: false,
-    createdAt: false,
-    updatedAt: false
   }
 )

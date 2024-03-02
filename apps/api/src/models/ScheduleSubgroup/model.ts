@@ -44,11 +44,5 @@ export const ScheduleSubgroupModel =
           key: 'id'
         }
       }
-    },
-    {
-      freezeTableName: true,
-      timestamps: false,
-      createdAt: false,
-      updatedAt: false
     }
   )

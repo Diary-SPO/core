@@ -21,12 +21,6 @@ const termTypeModel = sequelize.define<ITermTypeModel>(
       type: DataTypes.STRING,
       allowNull: false
     }
-  },
-  {
-    freezeTableName: true,
-    timestamps: false,
-    createdAt: false,
-    updatedAt: false
   }
 )
 

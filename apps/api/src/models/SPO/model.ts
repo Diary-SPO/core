@@ -67,11 +67,5 @@ export const SPOModel = sequelize.define<ISPOModel>(
       allowNull: false,
       unique: true
     }
-  },
-  {
-    freezeTableName: true,
-    timestamps: false,
-    createdAt: false,
-    updatedAt: false
   }
 )

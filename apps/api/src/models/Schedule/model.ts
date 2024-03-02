@@ -1,26 +1,25 @@
 import { sequelize } from '@db'
 import { DataTypes, Optional } from 'sequelize'
-import { AbsenceTypeModel } from '../AbsenceType'
 import { ClassroomModel } from '../Classroom'
 import { GroupModel } from '../Group'
 import { SubjectModel } from '../Subject'
 import { TeacherModel } from '../Teacher'
 import { IModelPrototype } from '../types'
 import { LessonTypeModel } from '../LessonType'
+import { Nullable } from '@diary-spo/shared'
 
 export type ScheduleModelType = {
   id: number
   groupId: number
-  teacherId: number | null
-  subjectId: number | null
-  lessonTypeId?: number | null
-  absenceTypeId?: number | null
-  gradebookIdFromDiary?: number | null
+  teacherId: Nullable<number>
+  subjectId: Nullable<number>
+  lessonTypeId?: Nullable<number>
+  gradebookIdFromDiary?: Nullable<number>
   date: Date | string
   startTime: string
   endTime: string
-  classroomId: number | null
-  gradebookId?: number | null
+  classroomId: Nullable<number>
+  gradebookId?: Nullable<number>
 }
 
 export type IScheduleModel = IModelPrototype<ScheduleModelType, 'id'>
@@ -68,14 +67,6 @@ export const ScheduleModel = sequelize.define<IScheduleModel>(
         key: 'id'
       }
     },
-    absenceTypeId: {
-      type: DataTypes.INTEGER,
-      allowNull: true,
-      references: {
-        model: AbsenceTypeModel,
-        key: 'id'
-      }
-    },
     gradebookIdFromDiary: {
       type: DataTypes.INTEGER,
       allowNull: true
@@ -103,11 +94,5 @@ export const ScheduleModel = sequelize.define<IScheduleModel>(
         key: 'id'
       }
     }
-  },
-  {
-    freezeTableName: true,
-    timestamps: false,
-    createdAt: false,
-    updatedAt: false
   }
 )

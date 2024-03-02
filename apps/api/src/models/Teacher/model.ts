@@ -48,11 +48,5 @@ export const TeacherModel = sequelize.define<ITeacherModel>(
       allowNull: false,
       unique: 'teacher_uniq_k'
     }
-  },
-  {
-    freezeTableName: true,
-    timestamps: false,
-    createdAt: false,
-    updatedAt: false
   }
 )

@@ -23,12 +23,6 @@ const lessonTypeModel = sequelize.define<ILessonTypeModel>(
       allowNull: false,
       unique: true
     }
-  },
-  {
-    freezeTableName: true,
-    timestamps: false,
-    createdAt: false,
-    updatedAt: false
   }
 )
 

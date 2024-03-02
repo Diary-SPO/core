@@ -42,11 +42,5 @@ export const FinalMarkModel = sequelize.define<IFinalMarkModel>(
         key: 'id'
       }
     }
-  },
-  {
-    freezeTableName: true,
-    timestamps: false,
-    createdAt: false,
-    updatedAt: false
   }
 )

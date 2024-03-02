@@ -31,11 +31,5 @@ export const ThemeModel = sequelize.define<IThemeModelType>(
       type: DataTypes.TEXT,
       allowNull: false
     }
-  },
-  {
-    freezeTableName: true,
-    timestamps: false,
-    createdAt: false,
-    updatedAt: false
   }
 )

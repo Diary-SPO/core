@@ -1,2 +1,2 @@
 export * from './model'
-export * from './saveClassroom'
+export * from './actions'

@@ -2,8 +2,7 @@ import { Task } from "@diary-spo/shared";
 import { taskTypeSaveOrGet } from "src/models/TaskType";
 import { TaskModel } from "../model";
 import { objPropertyCopy } from "src/helpers/objPropertyCopy";
-import { deleteTasksNotIn } from "./deleteNotIn";
-import { requiredSaveOrGet } from "src/models/Required";
+import { deleteTasksNotIn, requiredSaveOrGet } from "@models";
 import { ICacheData } from "@helpers";
 
 export const tasksSaveOrGet = async (tasks: Task[], scheduleId: number, authData: ICacheData) => {

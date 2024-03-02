@@ -42,11 +42,5 @@ export const MarkModel = sequelize.define<IMarkModelType>(
         key: 'id'
       }
     }
-  },
-  {
-    freezeTableName: true,
-    timestamps: false,
-    createdAt: false,
-    updatedAt: false
   }
 )

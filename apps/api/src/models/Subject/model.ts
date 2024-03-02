@@ -22,12 +22,6 @@ const subjectModel = sequelize.define<ISubjectModelType>(
       allowNull: false,
       unique: true
     }
-  },
-  {
-    freezeTableName: true,
-    timestamps: false,
-    createdAt: false,
-    updatedAt: false
   }
 )
 

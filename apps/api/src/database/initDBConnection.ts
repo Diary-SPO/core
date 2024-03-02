@@ -27,6 +27,12 @@ export const sequelize = new Sequelize({
     min: 1,
     acquire: 30000, // К-ство миллисекунд, прежде чем выбросить ошибку
     idle: 10000 // К-ство миллисекунд, прежде чем освободить "неактивное" соединение (время ожидания)
+  },
+  define: {
+    freezeTableName: true,
+    timestamps: false,
+    createdAt: false,
+    updatedAt: false
   }
 })
 

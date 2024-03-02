@@ -44,12 +44,6 @@ const classroomModel = sequelize.define<IClassroomModelType>(
       allowNull: false,
       unique: 'classroom_uniq_k'
     }
-  },
-  {
-    freezeTableName: true,
-    timestamps: false,
-    createdAt: false,
-    updatedAt: false
   }
 )
 

@@ -44,13 +44,8 @@ export const TaskModel = sequelize.define<ITaskModel>(
     },
     idFromDiary: {
       type: DataTypes.INTEGER,
-      allowNull: false
+      allowNull: false,
+      unique: true
     }
-  },
-  {
-    freezeTableName: true,
-    timestamps: false,
-    createdAt: false,
-    updatedAt: false
   }
 )

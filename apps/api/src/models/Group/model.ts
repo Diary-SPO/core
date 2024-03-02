@@ -38,11 +38,5 @@ export const GroupModel = sequelize.define<IGroupModel>(
       allowNull: false,
       unique: 'group_uniq_k'
     }
-  },
-  {
-    freezeTableName: true,
-    timestamps: false,
-    createdAt: false,
-    updatedAt: false
   }
 )

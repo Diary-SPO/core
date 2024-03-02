@@ -33,11 +33,5 @@ export const SubgroupModel = sequelize.define<ISubgroupModelType>(
       },
       unique: 'subgroup_unique'
     }
-  },
-  {
-    freezeTableName: true,
-    timestamps: false,
-    createdAt: false,
-    updatedAt: false
   }
 )
