@@ -1,12 +1,15 @@
-import { checkSameKeys } from '@helpers'
-import { ClassroomModel, ClassroomModelType } from '@models'
+import { objPropertyCopy } from '@helpers'
+import {
+  ClassroomModel,
+  ClassroomModelType,
+  IClassroomModelType
+} from '@models'
 import { Optional } from 'sequelize'
-import { LogError } from 'src/LogError'
 
 export const saveClassroom = async (
   classroom: Optional<ClassroomModelType, 'id'>
-) => {
-  const [record, isCreated] = await ClassroomModel.findOrCreate({
+): Promise<IClassroomModelType> =>
+  ClassroomModel.findOrCreate({
     where: {
       idFromDiary: classroom.idFromDiary,
       spoId: classroom.spoId
@@ -14,19 +17,17 @@ export const saveClassroom = async (
     defaults: {
       ...classroom
     }
-  }).catch(() => {
-    throw new LogError(
-      `Ошибка сохранения Classroom. Входные данные: ${JSON.stringify(
-        classroom
-      )}`
-    )
   })
-
-  if (!isCreated && !checkSameKeys(classroom, record)) {
-    return await record.update({
-      ...classroom
+    .then((v) => {
+      const result = v[0]
+      if (v[1]) {
+        return result
+      }
+      objPropertyCopy(result, classroom)
+      return result.save()
     })
-  }
-
-  return record
-}
+    .catch(async () =>
+      saveClassroom(classroom).catch(() => {
+        throw new Error('Ошибка сохранения Classroom')
+      })
+    )

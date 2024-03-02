@@ -1,7 +1,6 @@
 import { Lesson, Nullable } from '@diary-spo/shared'
 import { ICacheData, objPropertyCopy } from '@helpers'
 import {
-  AbsenceTypeSaveOrGet,
   IScheduleModel,
   IScheduleModelNoId,
   ScheduleModel,
@@ -13,6 +12,7 @@ import {
   lessonTypeSaveOrGet,
   saveClassroom,
   saveOrGetAbsence,
+  saveOrGetAbsenceType,
   scheduleSubgroupSaveOrGet,
   subgroupSaveOrGet,
   subjectSaveOrGet,
@@ -80,7 +80,7 @@ export const lessonSave = async (
   }
 
   if (gradebook?.absenceType) {
-    absenceTypeId = (await AbsenceTypeSaveOrGet(gradebook.absenceType)).id
+    absenceTypeId = (await saveOrGetAbsenceType(gradebook.absenceType)).id
   }
 
   // Подготавливаем расписание для сохранения в базу

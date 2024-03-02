@@ -1,8 +1,10 @@
 import { LessonTypeKeys } from '@diary-spo/shared'
-import { LessonTypeModel } from '@models'
+import { ILessonTypeModel, LessonTypeModel } from '@models'
 
-export const lessonTypeSaveOrGet = async (name: LessonTypeKeys) => {
-  const [record] = await LessonTypeModel.findOrCreate({
+export const lessonTypeSaveOrGet = async (
+  name: LessonTypeKeys
+): Promise<ILessonTypeModel> =>
+  LessonTypeModel.findOrCreate({
     where: {
       name
     },
@@ -10,5 +12,9 @@ export const lessonTypeSaveOrGet = async (name: LessonTypeKeys) => {
       name
     }
   })
-  return record
-}
+    .then((v) => v[0])
+    .catch(async () =>
+      lessonTypeSaveOrGet(name).catch(() => {
+        throw new Error('Ошибка сохранения LessonType')
+      })
+    )
