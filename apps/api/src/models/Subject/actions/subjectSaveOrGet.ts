@@ -1,7 +1,9 @@
+import { ISubjectModelType, SubjectModel } from '@models'
 import { LogError } from 'src/LogError'
-import { ISubjectModelType, SubjectModel } from '../model'
 
-export const subjectSaveOrGet = async (subjectName: string): Promise<ISubjectModelType> =>
+export const subjectSaveOrGet = async (
+  subjectName: string
+): Promise<ISubjectModelType> =>
   SubjectModel.findOrCreate({
     where: {
       name: subjectName
@@ -13,9 +15,7 @@ export const subjectSaveOrGet = async (subjectName: string): Promise<ISubjectMod
     .then((v) => v[0])
     // Если ошибка - пробуем ещё раз
     .catch(async () =>
-      subjectSaveOrGet(subjectName).catch(
-        () => {
-          throw new LogError(`Ошибка сохранения Subject`)
-        }
-      )
+      subjectSaveOrGet(subjectName).catch(() => {
+        throw new LogError('Ошибка сохранения Subject')
+      })
     )

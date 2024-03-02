@@ -11,25 +11,22 @@ export type ThemeModelType = {
 
 export type IThemeModelType = IModelPrototype<ThemeModelType, 'id'>
 
-export const ThemeModel = sequelize.define<IThemeModelType>(
-  'theme',
-  {
-    id: {
-      type: DataTypes.INTEGER,
-      autoIncrement: true,
-      primaryKey: true
-    },
-    scheduleId: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-      references: {
-        model: ScheduleModel,
-        key: 'id'
-      }
-    },
-    description: {
-      type: DataTypes.TEXT,
-      allowNull: false
+export const ThemeModel = sequelize.define<IThemeModelType>('theme', {
+  id: {
+    type: DataTypes.INTEGER,
+    autoIncrement: true,
+    primaryKey: true
+  },
+  scheduleId: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+    references: {
+      model: ScheduleModel,
+      key: 'id'
     }
+  },
+  description: {
+    type: DataTypes.TEXT,
+    allowNull: false
   }
-)
+})

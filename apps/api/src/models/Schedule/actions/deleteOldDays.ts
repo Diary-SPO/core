@@ -1,9 +1,12 @@
 import { ICacheData } from '@helpers'
-import { IScheduleModel, ScheduleModel } from '../model'
+import {
+  IScheduleModel,
+  ScheduleModel,
+  ScheduleSubgroupModel,
+  ScheduleSubgroupsGet,
+  checkInSubgroups
+} from '@models'
 import { Op } from 'sequelize'
-import { ScheduleSubgroupModel } from 'src/models/ScheduleSubgroup'
-import { ScheduleSubgroupsGet } from './types'
-import { checkInSubgroups } from './checkInSubgroups'
 
 export const deleteOldDays = async (
   schedules: (IScheduleModel | null)[],
@@ -47,8 +50,10 @@ export const deleteOldDays = async (
   schedulesToDelete.then((s) => {
     //console.log((JSON.stringify(s, null, 2)))
     for (const schedule of s) {
-      if (schedule.scheduleSubgroups.length === 0
-         || checkInSubgroups(schedule.scheduleSubgroups, authModel.localUserId)) {
+      if (
+        schedule.scheduleSubgroups.length === 0 ||
+        checkInSubgroups(schedule.scheduleSubgroups, authModel.localUserId)
+      ) {
         schedule.destroy()
       }
     }

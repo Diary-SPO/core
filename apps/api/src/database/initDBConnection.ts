@@ -7,10 +7,10 @@ import {
   TIMEZONE
 } from '@config'
 import { error } from '@utils'
+import { errorLogger } from '@utils'
 import { exit } from 'process'
 import { Sequelize } from 'sequelize'
 import SequelizeSimpleCache from 'sequelize-simple-cache'
-import { errorLogger } from 'src/utils/errorLogger'
 
 export const sequelize = new Sequelize({
   database: DATABASE_NAME,

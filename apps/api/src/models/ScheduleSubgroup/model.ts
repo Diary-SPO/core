@@ -15,34 +15,31 @@ export type IScheduleSubgroupModelType =
   IModelPrototypeNoId<ScheduleSubgroupModelType>
 
 export const ScheduleSubgroupModel =
-  sequelize.define<IScheduleSubgroupModelType>(
-    'scheduleSubgroup',
-    {
-      scheduleId: {
-        type: DataTypes.INTEGER,
-        primaryKey: true,
-        references: {
-          model: ScheduleModel,
-          key: 'id'
-        },
-        unique: 'scheduleSubgroup_unique'
+  sequelize.define<IScheduleSubgroupModelType>('scheduleSubgroup', {
+    scheduleId: {
+      type: DataTypes.INTEGER,
+      primaryKey: true,
+      references: {
+        model: ScheduleModel,
+        key: 'id'
       },
-      diaryUserId: {
-        type: DataTypes.INTEGER,
-        primaryKey: true,
-        references: {
-          model: DiaryUserModel,
-          key: 'id'
-        },
-        unique: 'scheduleSubgroup_unique'
+      unique: 'scheduleSubgroup_unique'
+    },
+    diaryUserId: {
+      type: DataTypes.INTEGER,
+      primaryKey: true,
+      references: {
+        model: DiaryUserModel,
+        key: 'id'
       },
-      subgroupId: {
-        type: DataTypes.INTEGER,
-        primaryKey: true,
-        references: {
-          model: SubgroupModel,
-          key: 'id'
-        }
+      unique: 'scheduleSubgroup_unique'
+    },
+    subgroupId: {
+      type: DataTypes.INTEGER,
+      primaryKey: true,
+      references: {
+        model: SubgroupModel,
+        key: 'id'
       }
     }
-  )
+  })

@@ -12,31 +12,28 @@ export type GroupModelType = {
 
 export type IGroupModel = IModelPrototype<GroupModelType, 'id'>
 
-export const GroupModel = sequelize.define<IGroupModel>(
-  'group',
-  {
-    id: {
-      type: DataTypes.INTEGER,
-      autoIncrement: true,
-      primaryKey: true
+export const GroupModel = sequelize.define<IGroupModel>('group', {
+  id: {
+    type: DataTypes.INTEGER,
+    autoIncrement: true,
+    primaryKey: true
+  },
+  spoId: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+    references: {
+      model: SPOModel,
+      key: 'id'
     },
-    spoId: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-      references: {
-        model: SPOModel,
-        key: 'id'
-      },
-      unique: 'group_uniq_k'
-    },
-    groupName: {
-      type: DataTypes.STRING(31),
-      allowNull: false
-    },
-    idFromDiary: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-      unique: 'group_uniq_k'
-    }
+    unique: 'group_uniq_k'
+  },
+  groupName: {
+    type: DataTypes.STRING(31),
+    allowNull: false
+  },
+  idFromDiary: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+    unique: 'group_uniq_k'
   }
-)
+})

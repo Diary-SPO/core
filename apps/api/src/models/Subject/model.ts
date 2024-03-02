@@ -9,21 +9,18 @@ export type SubjectModelType = {
 
 export type ISubjectModelType = IModelPrototype<SubjectModelType, 'id'>
 
-const subjectModel = sequelize.define<ISubjectModelType>(
-  'subject',
-  {
-    id: {
-      type: DataTypes.INTEGER,
-      primaryKey: true,
-      autoIncrement: true
-    },
-    name: {
-      type: DataTypes.STRING,
-      allowNull: false,
-      unique: true
-    }
+const subjectModel = sequelize.define<ISubjectModelType>('subject', {
+  id: {
+    type: DataTypes.INTEGER,
+    primaryKey: true,
+    autoIncrement: true
+  },
+  name: {
+    type: DataTypes.STRING,
+    allowNull: false,
+    unique: true
   }
-)
+})
 
 export const SubjectModel = enableCache
   ? cache.init<ISubjectModelType>(subjectModel)

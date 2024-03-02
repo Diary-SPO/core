@@ -10,21 +10,18 @@ export type TaskTypeModelType = {
 
 export type ITaskTypeModel = IModelPrototype<TaskTypeModelType, 'id'>
 
-const taskTypeModel = sequelize.define<ITaskTypeModel>(
-  'taskType',
-  {
-    id: {
-      type: DataTypes.INTEGER,
-      autoIncrement: true,
-      primaryKey: true
-    },
-    name: {
-      type: DataTypes.STRING(...Object.keys(LessonWorkType)),
-      allowNull: false,
-      unique: true
-    }
+const taskTypeModel = sequelize.define<ITaskTypeModel>('taskType', {
+  id: {
+    type: DataTypes.INTEGER,
+    autoIncrement: true,
+    primaryKey: true
+  },
+  name: {
+    type: DataTypes.STRING(...Object.keys(LessonWorkType)),
+    allowNull: false,
+    unique: true
   }
-)
+})
 
 export const TaskTypeModel = enableCache
   ? cache.init<ITaskTypeModel>(taskTypeModel)

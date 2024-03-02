@@ -14,38 +14,35 @@ export type TaskModelType = {
 
 export type ITaskModel = IModelPrototype<TaskModelType, 'id'>
 
-export const TaskModel = sequelize.define<ITaskModel>(
-  'task',
-  {
-    id: {
-      type: DataTypes.INTEGER,
-      autoIncrement: true,
-      primaryKey: true
-    },
-    scheduleId: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-      references: {
-        model: ScheduleModel,
-        key: 'id'
-      }
-    },
-    taskTypeId: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-      references: {
-        model: TaskTypeModel,
-        key: 'id'
-      }
-    },
-    topic: {
-      type: DataTypes.TEXT,
-      allowNull: false
-    },
-    idFromDiary: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-      unique: true
+export const TaskModel = sequelize.define<ITaskModel>('task', {
+  id: {
+    type: DataTypes.INTEGER,
+    autoIncrement: true,
+    primaryKey: true
+  },
+  scheduleId: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+    references: {
+      model: ScheduleModel,
+      key: 'id'
     }
+  },
+  taskTypeId: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+    references: {
+      model: TaskTypeModel,
+      key: 'id'
+    }
+  },
+  topic: {
+    type: DataTypes.TEXT,
+    allowNull: false
+  },
+  idFromDiary: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+    unique: true
   }
-)
+})

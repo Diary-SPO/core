@@ -1,4 +1,4 @@
-import { ScheduleSubgroupModel } from "../model";
+import { ScheduleSubgroupModel } from '@models'
 
 export const scheduleSubgroupSaveOrGet = async (
   scheduleId: number,

@@ -10,29 +10,26 @@ export type MarkValueModelType = {
 
 export type IMarkValueModelType = IModelPrototype<MarkValueModelType, 'id'>
 
-const markValueModel = sequelize.define<IMarkValueModelType>(
-  'markValue',
-  {
-    id: {
-      type: DataTypes.INTEGER,
-      primaryKey: true,
-      autoIncrement: true
-    },
-    value: {
-      type: DataTypes.ENUM(...Object.keys(Grade)),
-      allowNull: false,
-      set(value: MarkKeys) {
-        if (!Object.keys(Grade).includes(value)) {
-          console.warn(
-            `Предупреждение: значение ${value} не присутствует в перечислении Grade`
-          )
-        }
-
-        this.setDataValue('value', value)
+const markValueModel = sequelize.define<IMarkValueModelType>('markValue', {
+  id: {
+    type: DataTypes.INTEGER,
+    primaryKey: true,
+    autoIncrement: true
+  },
+  value: {
+    type: DataTypes.ENUM(...Object.keys(Grade)),
+    allowNull: false,
+    set(value: MarkKeys) {
+      if (!Object.keys(Grade).includes(value)) {
+        console.warn(
+          `Предупреждение: значение ${value} не присутствует в перечислении Grade`
+        )
       }
+
+      this.setDataValue('value', value)
     }
   }
-)
+})
 
 export const MarkValueModel = enableCache
   ? cache.init<IMarkValueModelType>(markValueModel)

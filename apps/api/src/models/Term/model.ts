@@ -13,34 +13,31 @@ export type TermModelType = {
 
 export type ITermModel = IModelPrototype<TermModelType, 'id'>
 
-export const TermModel = sequelize.define<ITermModel>(
-  'term',
-  {
-    id: {
-      type: DataTypes.INTEGER,
-      autoIncrement: true,
-      primaryKey: true
-    },
-    idFromDiary: {
-      type: DataTypes.INTEGER,
-      allowNull: false
-    },
-    number: {
-      type: DataTypes.INTEGER,
-      allowNull: false
-    },
-    isActive: {
-      type: DataTypes.BOOLEAN,
-      allowNull: false,
-      defaultValue: false
-    },
-    academicYearId: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-      references: {
-        model: AcademicYearModel,
-        key: 'id'
-      }
+export const TermModel = sequelize.define<ITermModel>('term', {
+  id: {
+    type: DataTypes.INTEGER,
+    autoIncrement: true,
+    primaryKey: true
+  },
+  idFromDiary: {
+    type: DataTypes.INTEGER,
+    allowNull: false
+  },
+  number: {
+    type: DataTypes.INTEGER,
+    allowNull: false
+  },
+  isActive: {
+    type: DataTypes.BOOLEAN,
+    allowNull: false,
+    defaultValue: false
+  },
+  academicYearId: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+    references: {
+      model: AcademicYearModel,
+      key: 'id'
     }
   }
-)
+})

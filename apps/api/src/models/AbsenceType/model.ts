@@ -10,21 +10,18 @@ export type AbsenceTypeModelType = {
 
 export type IAbsenceTypeModel = IModelPrototype<AbsenceTypeModelType, 'id'>
 
-const absenceTypeModel = sequelize.define<IAbsenceTypeModel>(
-  'absenceType',
-  {
-    id: {
-      type: DataTypes.INTEGER,
-      autoIncrement: true,
-      primaryKey: true
-    },
-    name: {
-      type: DataTypes.ENUM(...Object.keys(AbsenceTypes)),
-      allowNull: false,
-      unique: true
-    }
+const absenceTypeModel = sequelize.define<IAbsenceTypeModel>('absenceType', {
+  id: {
+    type: DataTypes.INTEGER,
+    autoIncrement: true,
+    primaryKey: true
+  },
+  name: {
+    type: DataTypes.ENUM(...Object.keys(AbsenceTypes)),
+    allowNull: false,
+    unique: true
   }
-)
+})
 
 export const AbsenceTypeModel = enableCache
   ? cache.init<IAbsenceTypeModel>(absenceTypeModel)

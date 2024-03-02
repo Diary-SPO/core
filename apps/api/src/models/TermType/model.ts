@@ -9,20 +9,17 @@ export type TermTypeModelType = {
 
 export type ITermTypeModel = IModelPrototype<TermTypeModelType, 'id'>
 
-const termTypeModel = sequelize.define<ITermTypeModel>(
-  'termType',
-  {
-    id: {
-      type: DataTypes.INTEGER,
-      autoIncrement: true,
-      primaryKey: true
-    },
-    name: {
-      type: DataTypes.STRING,
-      allowNull: false
-    }
+const termTypeModel = sequelize.define<ITermTypeModel>('termType', {
+  id: {
+    type: DataTypes.INTEGER,
+    autoIncrement: true,
+    primaryKey: true
+  },
+  name: {
+    type: DataTypes.STRING,
+    allowNull: false
   }
-)
+})
 
 export const TermTypeModel = enableCache
   ? cache.init<ITermTypeModel>(termTypeModel)

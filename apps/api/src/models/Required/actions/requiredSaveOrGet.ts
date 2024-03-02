@@ -1,23 +1,26 @@
-import { ICacheData } from "@helpers";
-import { RequiredModel } from "../model";
+import { ICacheData } from '@helpers'
+import { RequiredModel } from '@models'
 
-export const requiredSaveOrGet = async (isRequired: boolean, taskId: number, authData: ICacheData) => RequiredModel
-.findOrCreate({
+export const requiredSaveOrGet = async (
+  isRequired: boolean,
+  taskId: number,
+  authData: ICacheData
+) =>
+  RequiredModel.findOrCreate({
     where: {
-        taskId
+      taskId
     },
     defaults: {
-        taskId,
-        isRequired,
-        diaryUserId: authData.localUserId
+      taskId,
+      isRequired,
+      diaryUserId: authData.localUserId
     }
-})
-.then (v => {
+  }).then((v) => {
     const result = v[0]
     if (v[1]) {
-        return result
+      return result
     }
     return result.update({
-        isRequired
+      isRequired
     })
-})
+  })

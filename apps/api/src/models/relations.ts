@@ -1,5 +1,6 @@
 import { forceSyncDatabase, sequelize } from '@db'
 import {
+  AbsenceModel,
   AbsenceTypeModel,
   AcademicYearModel,
   AuthModel,
@@ -23,8 +24,7 @@ import {
   TermModel,
   TermSubjectModel,
   TermTypeModel,
-  ThemeModel,
-  AbsenceModel
+  ThemeModel
 } from './import'
 
 // SPO <--->> Group
@@ -181,6 +181,5 @@ AbsenceModel.belongsTo(DiaryUserModel)
 
 if (forceSyncDatabase) {
   console.log('Syncing database...')
-  await sequelize.sync({
-  })
+  await sequelize.sync({})
 }

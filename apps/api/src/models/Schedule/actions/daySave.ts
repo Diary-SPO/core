@@ -1,8 +1,6 @@
 import { Day } from '@diary-spo/shared'
 import { ICacheData } from '@helpers'
-import { IScheduleModel } from '@models'
-import { deleteOldDays } from './deleteOldDays'
-import { lessonSave } from './lessonSave'
+import { IScheduleModel, deleteOldDays, lessonSave } from '@models'
 
 export const daySave = async (day: Day, authData: ICacheData) => {
   if (!day.lessons) {

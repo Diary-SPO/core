@@ -1,12 +1,12 @@
-import { Op } from "sequelize"
-import { ScheduleSubgroupModel } from "../model"
+import { ScheduleSubgroupModel } from '@models'
+import { Op } from 'sequelize'
 
 export const deleteScheduleSubgroup = async (
   scheduleId: number,
   diaryUserId: number
 ) => {
   return ScheduleSubgroupModel.destroy({
-    where :{
+    where: {
       [Op.and]: [
         {
           scheduleId,

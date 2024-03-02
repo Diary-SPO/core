@@ -1,4 +1,4 @@
-import { AbsenceModel } from "@models";
+import { AbsenceModel } from '@models'
 
 /**
  * Удаляет опоздание, если оно существовало.
@@ -6,12 +6,10 @@ import { AbsenceModel } from "@models";
  * @param localUserId - Id пользователя в БД
  * @returns Promise<IAbsenceModel>
  */
-export const deleteAbsence = async (
-  scheduleId: number,
-  localUserId: number
-) => AbsenceModel.destroy({
-  where: {
-    scheduleId,
-    diaryUserId: localUserId
-  }
-})
+export const deleteAbsence = async (scheduleId: number, localUserId: number) =>
+  AbsenceModel.destroy({
+    where: {
+      scheduleId,
+      diaryUserId: localUserId
+    }
+  })

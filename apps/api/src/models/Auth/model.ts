@@ -12,30 +12,27 @@ export type AuthModelType = {
 
 export type IAuthModel = IModelPrototype<AuthModelType, 'id'>
 
-export const AuthModel = sequelize.define<IAuthModel>(
-  'auth',
-  {
-    id: {
-      type: DataTypes.INTEGER,
-      autoIncrement: true,
-      primaryKey: true
-    },
-    diaryUserId: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-      references: {
-        model: DiaryUserModel,
-        key: 'id'
-      }
-    },
-    token: {
-      type: DataTypes.STRING(24),
-      allowNull: false,
-      unique: true
-    },
-    lastUsedDate: {
-      type: DataTypes.DATEONLY,
-      allowNull: false
+export const AuthModel = sequelize.define<IAuthModel>('auth', {
+  id: {
+    type: DataTypes.INTEGER,
+    autoIncrement: true,
+    primaryKey: true
+  },
+  diaryUserId: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+    references: {
+      model: DiaryUserModel,
+      key: 'id'
     }
+  },
+  token: {
+    type: DataTypes.STRING(24),
+    allowNull: false,
+    unique: true
+  },
+  lastUsedDate: {
+    type: DataTypes.DATEONLY,
+    allowNull: false
   }
-)
+})

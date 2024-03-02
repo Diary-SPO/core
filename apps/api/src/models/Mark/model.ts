@@ -13,34 +13,31 @@ export type MarkModelType = {
 
 export type IMarkModelType = IModelPrototypeNoId<MarkModelType>
 
-export const MarkModel = sequelize.define<IMarkModelType>(
-  'mark',
-  {
-    diaryUserId: {
-      type: DataTypes.INTEGER,
-      primaryKey: true,
-      allowNull: false,
-      references: {
-        model: DiaryUserModel,
-        key: 'id'
-      }
-    },
-    taskId: {
-      type: DataTypes.INTEGER,
-      primaryKey: true,
-      allowNull: false,
-      references: {
-        model: TaskModel,
-        key: 'id'
-      }
-    },
-    markValueId: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-      references: {
-        model: MarkValueModel,
-        key: 'id'
-      }
+export const MarkModel = sequelize.define<IMarkModelType>('mark', {
+  diaryUserId: {
+    type: DataTypes.INTEGER,
+    primaryKey: true,
+    allowNull: false,
+    references: {
+      model: DiaryUserModel,
+      key: 'id'
+    }
+  },
+  taskId: {
+    type: DataTypes.INTEGER,
+    primaryKey: true,
+    allowNull: false,
+    references: {
+      model: TaskModel,
+      key: 'id'
+    }
+  },
+  markValueId: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+    references: {
+      model: MarkValueModel,
+      key: 'id'
     }
   }
-)
+})

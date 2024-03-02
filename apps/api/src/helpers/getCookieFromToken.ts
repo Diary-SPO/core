@@ -58,10 +58,12 @@ export const getCookieFromToken = async (
         {
           model: GroupModel,
           required: true,
-          include: [{
-            model: SPOModel,
-            required: true
-          }]
+          include: [
+            {
+              model: SPOModel,
+              required: true
+            }
+          ]
         }
       ]
     }

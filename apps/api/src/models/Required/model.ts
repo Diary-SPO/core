@@ -12,30 +12,27 @@ export type RequiredModelType = {
 
 export type IRequiredModel = IModelPrototypeNoId<RequiredModelType>
 
-export const RequiredModel = sequelize.define<IRequiredModel>(
-  'required',
-  {
-    diaryUserId: {
-      type: DataTypes.INTEGER,
-      primaryKey: true,
-      allowNull: false,
-      references: {
-        model: DiaryUserModel,
-        key: 'id'
-      }
-    },
-    taskId: {
-      type: DataTypes.INTEGER,
-      primaryKey: true,
-      allowNull: false,
-      references: {
-        model: TaskModel,
-        key: 'id'
-      }
-    },
-    isRequired: {
-      type: DataTypes.BOOLEAN,
-      allowNull: false
+export const RequiredModel = sequelize.define<IRequiredModel>('required', {
+  diaryUserId: {
+    type: DataTypes.INTEGER,
+    primaryKey: true,
+    allowNull: false,
+    references: {
+      model: DiaryUserModel,
+      key: 'id'
     }
+  },
+  taskId: {
+    type: DataTypes.INTEGER,
+    primaryKey: true,
+    allowNull: false,
+    references: {
+      model: TaskModel,
+      key: 'id'
+    }
+  },
+  isRequired: {
+    type: DataTypes.BOOLEAN,
+    allowNull: false
   }
-)
+})

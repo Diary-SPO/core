@@ -1,6 +1,6 @@
 import { sequelize } from '@db'
 import { Day } from '@diary-spo/shared'
-import { getUserById } from '../../DiaryUser'
+import { getUserById } from '@models'
 
 export const ScheduleGetFromDB = async (
   startDate: string,

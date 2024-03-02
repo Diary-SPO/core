@@ -1,11 +1,15 @@
-import { Task } from "@diary-spo/shared";
-import { taskTypeSaveOrGet } from "src/models/TaskType";
-import { TaskModel } from "../model";
-import { objPropertyCopy } from "src/helpers/objPropertyCopy";
-import { deleteTasksNotIn, requiredSaveOrGet } from "@models";
-import { ICacheData } from "@helpers";
+import { Task } from '@diary-spo/shared'
+import { ICacheData } from '@helpers'
+import { deleteTasksNotIn, requiredSaveOrGet } from '@models'
+import { objPropertyCopy } from 'src/helpers/objPropertyCopy'
+import { taskTypeSaveOrGet } from 'src/models/TaskType'
+import { TaskModel } from '../model'
 
-export const tasksSaveOrGet = async (tasks: Task[], scheduleId: number, authData: ICacheData) => {
+export const tasksSaveOrGet = async (
+  tasks: Task[],
+  scheduleId: number,
+  authData: ICacheData
+) => {
   const promises = []
 
   // Удаляем устаревшие таски
@@ -30,17 +34,17 @@ export const tasksSaveOrGet = async (tasks: Task[], scheduleId: number, authData
     })
     // Проверяем, нужно ли обновить и отдаём
     promise
-    .then((result) => {
-      let task = result[0]
-      if (result[1]) {
-        return task
-      }
-      objPropertyCopy(task, taskToSave)
-      return task.save()
-    })
-    .then((result) => {
-      requiredSaveOrGet(task.isRequired, result.id, authData)
-    })
+      .then((result) => {
+        const task = result[0]
+        if (result[1]) {
+          return task
+        }
+        objPropertyCopy(task, taskToSave)
+        return task.save()
+      })
+      .then((result) => {
+        requiredSaveOrGet(task.isRequired, result.id, authData)
+      })
     // Сохраняем в массив промисов
     promises.push(promise)
   }

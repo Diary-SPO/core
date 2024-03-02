@@ -1,23 +1,23 @@
 import { Lesson, Nullable } from '@diary-spo/shared'
 import { ICacheData, objPropertyCopy } from '@helpers'
 import {
-  subjectSaveOrGet,
-  TeacherSaveOrGet,
-  saveClassroom,
+  AbsenceTypeSaveOrGet,
   IScheduleModel,
   IScheduleModelNoId,
   ScheduleModel,
-  themesSaveOrGet,
-  AbsenceTypeSaveOrGet,
-  lessonTypeSaveOrGet,
-  tasksSaveOrGet,
-  subgroupSaveOrGet,
-  scheduleSubgroupSaveOrGet,
-  deleteScheduleSubgroup,
   ScheduleWhere,
-  saveOrGetAbsence,
+  TeacherSaveOrGet,
   deleteAbsence,
-  detectSubgroup
+  deleteScheduleSubgroup,
+  detectSubgroup,
+  lessonTypeSaveOrGet,
+  saveClassroom,
+  saveOrGetAbsence,
+  scheduleSubgroupSaveOrGet,
+  subgroupSaveOrGet,
+  subjectSaveOrGet,
+  tasksSaveOrGet,
+  themesSaveOrGet
 } from '@models'
 
 /**
@@ -79,7 +79,7 @@ export const lessonSave = async (
     gradebookIdFromDiary = gradebook.id
   }
 
-  if (gradebook && gradebook.absenceType) {
+  if (gradebook?.absenceType) {
     absenceTypeId = (await AbsenceTypeSaveOrGet(gradebook.absenceType)).id
   }
 
@@ -97,7 +97,7 @@ export const lessonSave = async (
   }
 
   // Ищем, есть ли расисание в базе
-  let where: ScheduleWhere = {
+  const where: ScheduleWhere = {
     groupId: scheduleToSave.groupId,
     startTime: scheduleToSave.startTime,
     endTime: scheduleToSave.endTime,
@@ -125,12 +125,12 @@ export const lessonSave = async (
     promiseToReturn = ScheduleModel.create(scheduleToSave)
   }
 
-  if (gradebook && gradebook.themes) {
+  if (gradebook?.themes) {
     const scheduleId = (await promiseToReturn).id
     themesSaveOrGet(gradebook.themes, scheduleId)
   }
 
-  if (gradebook && gradebook.tasks) {
+  if (gradebook?.tasks) {
     const scheduleId = (await promiseToReturn).id
     tasksSaveOrGet(gradebook.tasks, scheduleId, authData)
   }
