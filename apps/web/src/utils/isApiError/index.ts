@@ -5,6 +5,7 @@ export const isApiError = (data: unknown): data is AxiosResponse => {
   const isResponse = data instanceof Response
 
   return (
+    !data &&
     isObj &&
     (isResponse ||
       ('status' in data &&

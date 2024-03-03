@@ -42,10 +42,10 @@ const makeRequest = async <T>(
   }
 
   /** Если ни один сервер не был обработан верно **/
-  return new Response('', {
-    status: 520,
-    headers: { 'Content-Type': 'application/json' }
-  })
+  // return new Response('', {
+  //   status: 520,
+  //   headers: { 'Content-Type': 'application/json' }
+  // })
 }
 
 export default makeRequest

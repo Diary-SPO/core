@@ -9,6 +9,8 @@ import { isApiError } from '../isApiError'
  * Принимает response и выполняет соответствующие коллбэки в зависимости от полученного ответа.
  */
 
+const errorIcon = <Icon28ErrorCircleOutline fill={VKUI_RED} />
+
 export const handleResponse = <T extends object>(
   /** Ответ от сервера **/
   response: T,
@@ -27,6 +29,14 @@ export const handleResponse = <T extends object>(
 ): T => {
   console.log('%c[handleResponse]', 'color: green', response)
 
+  if (!response) {
+    showSnackbar?.({
+      before: errorIcon,
+      title: 'Ошибка при попытке сделать запрос',
+      subtitle: 'Сообщите нам о проблеме'
+    })
+  }
+
   /**
    * Если нам пришел ответ от сервера с ошибкой
    *
@@ -34,14 +44,10 @@ export const handleResponse = <T extends object>(
    */
   if (!isApiError(response)) {
     loadingCallback(false)
-    console.log('good')
-    console.log(response)
     return response
   }
 
   console.log('%c[handleResponse]', 'color: violet', response.status)
-
-  const errorIcon = <Icon28ErrorCircleOutline fill={VKUI_RED} />
 
   switch (response.status) {
     case HTTP_STATUSES.RATE_LIMIT:
