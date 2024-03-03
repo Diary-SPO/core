@@ -19,9 +19,9 @@ import { useEffect, useState } from 'preact/hooks'
 import { PanelHeaderWithBack } from '@components'
 import { ADMIN_PAGE, VKUI_RED } from '@config'
 import { useSnackbar } from '@hooks'
-import { Hashes } from '@libs'
 import { handleResponse, isApiError } from '@utils'
 
+import { b64 } from '@diary-spo/crypto'
 import { postLogin } from '../../methods'
 import { VIEW_SCHEDULE } from '../../routes'
 import { Props } from '../types.ts'
@@ -76,7 +76,7 @@ const LoginForm: FC<Props> = ({ id }) => {
       return
     }
 
-    const passwordHashed = await Hashes.SHA256.b64(password)
+    const passwordHashed = await b64(password)
 
     const response = await postLogin(login, passwordHashed, true)
 

@@ -16,7 +16,7 @@ import {
   Panel,
   PullToRefresh,
   Spinner,
-  Tabs,
+  Tabs as VKUITabs,
   TabsItem
 } from '@vkontakte/vkui'
 import { FC, lazy } from 'preact/compat'
@@ -156,7 +156,7 @@ const Achievements: FC<Props> = ({ id }) => {
         )}
       </PullToRefresh>
 
-      <Tabs mode='accent'>
+      <VKUITabs mode='accent'>
         <HorizontalScroll arrowSize='l'>
           <TabsItem
             before={<Icon28GridSquareOutline />}
@@ -183,7 +183,7 @@ const Achievements: FC<Props> = ({ id }) => {
             Ведомость
           </TabsItem>
         </HorizontalScroll>
-      </Tabs>
+      </VKUITabs>
 
       {isLoading && (
         <Div>

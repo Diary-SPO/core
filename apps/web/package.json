@@ -27,7 +27,6 @@
   "devDependencies": {
     "@diary-spo/shared": "workspace:*",
     "@preact/preset-vite": "^2.8.1",
-    "@size-limit/preset-app": "^11.0.2",
     "@types/jsdom": "^21.1.6",
     "@vkontakte/vk-miniapps-deploy": "^0.1.6",
     "gh-pages": "^6.0.0"

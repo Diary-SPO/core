@@ -12,7 +12,7 @@ export interface Storage {
   value: string
 }
 
-export type ServerResponse<T = unknown> = Promise<T | AxiosResponse<any, any>>
+export type ServerResponse<T = unknown> = Promise<T | Response | AxiosResponse>
 
 export const HTTP_STATUSES = {
   /** Ошибка авторизации **/

@@ -1,6 +1,5 @@
-import { Sizes } from '@components'
 import { GRAY, GREEN, ORANGE, RED, VIOLET } from '@config'
-import { ReturnedMark } from '../../../types'
+import { ReturnedMark } from '@types'
 
 export type Sizes = 'l' | 's'
 

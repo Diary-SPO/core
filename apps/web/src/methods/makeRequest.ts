@@ -1,6 +1,6 @@
 import { BASE_URLS } from '@config'
 import { HTTP_STATUSES, ServerResponse } from '@types'
-import axios, { AxiosError, AxiosResponse } from 'axios'
+import axios, { AxiosError } from 'axios'
 
 const makeRequest = async <T>(
   route: string,
@@ -45,7 +45,7 @@ const makeRequest = async <T>(
   return new Response('', {
     status: 520,
     headers: { 'Content-Type': 'application/json' }
-  }) as unknown as AxiosResponse
+  })
 }
 
 export default makeRequest

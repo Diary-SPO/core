@@ -1,9 +1,8 @@
 import { API_CODES, API_ERRORS, ApiError } from '@api'
 import { SERVER_URL } from '@config'
-import type { UserData } from '@diary-spo/shared'
-import { ResponseLogin } from '@diary-spo/types'
+import { b64 } from '@diary-spo/crypto'
+import type { ResponseLogin, UserData } from '@diary-spo/shared'
 import { fetcher } from '@utils'
-import Hashes from 'jshashes'
 import { LogError } from 'src/LogError'
 import { offlineAuth } from './authService'
 import { handleResponse } from './authService/helpers'
@@ -22,7 +21,7 @@ const postAuth = async ({ body }: AuthContext): Promise<ResponseLogin> => {
 
   /** Если пароль передан в исходном виде, то хешируем его на сервере **/
   if (!isHash) {
-    password = new Hashes.SHA256().b64(body.password)
+    password = await b64(body.password)
   }
 
   const res = await fetcher<UserData>({

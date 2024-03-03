@@ -2,7 +2,6 @@
   "name": "@diary-spo/crypto",
   "version": "1.0.0",
   "description": "",
-  "main": "index.ts",
   "scripts": {},
   "author": "scffs",
   "license": "MIT",
@@ -10,7 +9,7 @@
     "crypto": "^1.0.1"
   },
   "exports": {
-    ".": "./index.ts"
+    ".": "./src/index.ts"
   },
   "devDependencies": {
   }
