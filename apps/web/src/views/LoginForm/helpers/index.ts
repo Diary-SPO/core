@@ -1,4 +1,4 @@
-import { ResponseLogin } from '@diary-spo/types'
+import { ResponseLogin } from '@diary-spo/shared'
 
 export const saveData = (basePath: ResponseLogin) => {
   const userId = String(basePath.id)

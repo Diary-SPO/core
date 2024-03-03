@@ -1,16 +1,12 @@
-import { Person } from '@diary-spo/shared'
+import { Person } from '../../base.ts'
 
 export interface PersonResponse {
-  person: {
-    birthday: string
-    id: number
-    isEsiaBound: boolean
+  person: Person & {
     login: string
     phone: string
-    firstName: string
+    birthday: string
     isTrusted: boolean
-    lastName: string
-    middleName: string
+    isEsiaBound: boolean
   }
 }
 

@@ -1,9 +1,15 @@
 import { AxiosResponse } from 'axios'
 
-export const isApiError = (data: any): data is AxiosResponse => {
+export const isApiError = (data: unknown): data is AxiosResponse => {
+  const isObj = typeof data === 'object'
+  const isResponse = data instanceof Response
+
   return (
-    typeof data === 'object' &&
-    (data instanceof Response ||
-      (typeof data.status === 'number' && typeof data.statusText === 'string'))
+    isObj &&
+    (isResponse ||
+      ('status' in data &&
+        typeof data.status === 'number' &&
+        'statusText' in data &&
+        typeof data.statusText === 'string'))
   )
 }

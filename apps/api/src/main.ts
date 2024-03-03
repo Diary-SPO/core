@@ -49,9 +49,9 @@ console.log(
 
 // Соробщение о текущем часовом поясе
 console.log(
-  `Будет использоваться следующая часовая зона: '${TIMEZONE}'`
-  + (getTimezone() !== TIMEZONE ? ' (задана через .env)' : '')
-  + '.'
+  `Будет использоваться следующая часовая зона: '${TIMEZONE}'${
+    getTimezone() !== TIMEZONE ? ' (задана через .env)' : ''
+  }.`
 )
 
 const workerURL = new URL('worker', import.meta.url).href

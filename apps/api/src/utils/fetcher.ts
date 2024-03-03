@@ -1,5 +1,3 @@
-import fetch, { type Headers } from 'node-fetch'
-
 export type HTTPMethods = 'GET' | 'POST'
 
 export interface ApiResponse<T> {
