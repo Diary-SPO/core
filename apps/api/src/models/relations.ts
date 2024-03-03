@@ -24,6 +24,7 @@ import {
   TermModel,
   TermSubjectModel,
   TermTypeModel,
+  TermUserModel,
   ThemeModel
 } from './import'
 
@@ -60,28 +61,16 @@ GroupModel.hasMany(AcademicYearModel)
 AcademicYearModel.belongsTo(GroupModel)
 
 // AcademicYear <-->> Term
-AcademicYearModel.hasMany(TermModel, {
-  foreignKey: 'id'
-})
-TermModel.belongsTo(AcademicYearModel, {
-  foreignKey: 'academicYearId'
-})
+AcademicYearModel.hasMany(TermModel)
+TermModel.belongsTo(AcademicYearModel)
 
 // Term <-->> TermSubject
-TermModel.hasMany(TermSubjectModel, {
-  foreignKey: 'id'
-})
-TermSubjectModel.belongsTo(TermModel, {
-  foreignKey: 'termId'
-})
+TermModel.hasMany(TermSubjectModel)
+TermSubjectModel.belongsTo(TermModel)
 
 // TermSubject <-->> ExaminationType
-TermSubjectModel.hasMany(ExaminationTypeModel, {
-  foreignKey: 'id'
-})
-ExaminationTypeModel.belongsTo(TermSubjectModel, {
-  foreignKey: 'termSubjectId'
-})
+TermSubjectModel.hasMany(ExaminationTypeModel)
+ExaminationTypeModel.belongsTo(TermSubjectModel)
 
 // LessonType <-->> Schedule
 LessonTypeModel.hasMany(ScheduleModel)
@@ -124,20 +113,12 @@ SubjectModel.hasMany(TermSubjectModel)
 TermSubjectModel.belongsTo(SubjectModel)
 
 // TermType <-->> AcademicYear
-TermTypeModel.hasMany(AcademicYearModel, {
-  foreignKey: 'id'
-})
-AcademicYearModel.belongsTo(TermTypeModel, {
-  foreignKey: 'termTypeId'
-})
+TermTypeModel.hasMany(AcademicYearModel)
+AcademicYearModel.belongsTo(TermTypeModel)
 
 // Subject <-->> FinalMark
-SubjectModel.hasMany(FinalMarkModel, {
-  foreignKey: 'id'
-})
-FinalMarkModel.belongsTo(SubjectModel, {
-  foreignKey: 'subjectId'
-})
+SubjectModel.hasMany(FinalMarkModel)
+FinalMarkModel.belongsTo(SubjectModel)
 
 // MarkValue <-->> Mark
 MarkValueModel.hasMany(MarkModel)
@@ -178,6 +159,14 @@ AbsenceModel.belongsTo(ScheduleModel)
 // DiaryUser <-->> Absence
 DiaryUserModel.hasMany(AbsenceModel)
 AbsenceModel.belongsTo(DiaryUserModel)
+
+// Term <-->> TermUser
+TermModel.hasMany(TermUserModel)
+TermUserModel.belongsTo(TermModel)
+
+// DiaryUser <-->> TermUser
+DiaryUserModel.hasMany(TermUserModel)
+TermUserModel.belongsTo(DiaryUserModel)
 
 if (forceSyncDatabase) {
   console.log('Syncing database...')

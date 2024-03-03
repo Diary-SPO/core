@@ -1,8 +1,21 @@
 {
   "name": "@diary-spo/core",
-  "private": true,
   "version": "1.0.0",
+  "author": "scffs",
+  "devDependencies": {
+    "@biomejs/biome": "^1.5.3",
+    "concurrently": "^8.2.2",
+    "@happy-dom/global-registrator": "^13.3.2",
+    "bun": "^1.0.29",
+    "bun-types": "latest",
+    "husky": "^9.0.11",
+    "lint-staged": "^15.1.0",
+    "typescript": "latest"
+  },
   "description": "",
+  "keywords": [],
+  "license": "MIT",
+  "private": true,
   "scripts": {
     "dev:api": "cd apps/api && bun dev",
     "dev:web": "cd apps/web && bun dev",
@@ -19,18 +32,5 @@
   },
   "workspaces": [
     "apps/*"
-  ],
-  "keywords": [],
-  "author": "scffs",
-  "license": "MIT",
-  "devDependencies": {
-    "@biomejs/biome": "^1.5.3",
-    "concurrently": "^8.2.2",
-    "@happy-dom/global-registrator": "^13.3.2",
-    "bun": "^1.0.29",
-    "bun-types": "latest",
-    "husky": "^9.0.11",
-    "lint-staged": "^15.1.0",
-    "typescript": "latest"
-  }
+  ]
 }

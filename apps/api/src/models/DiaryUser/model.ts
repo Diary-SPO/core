@@ -1,6 +1,7 @@
 import { ENCRYPT_KEY } from '@config'
 import { sequelize } from '@db'
 import { decrypt, encrypt } from '@diary-spo/crypto'
+import { Nullable } from '@diary-spo/shared'
 import { formatDate } from '@utils'
 import { DataTypes } from 'sequelize'
 import { GroupModel } from '../Group'
@@ -18,7 +19,8 @@ export type DiaryUserModelType = {
   lastName: string
   middleName?: string
   cookie: string
-  cookieLastDateUpdate: string
+  cookieLastDateUpdate?: string
+  termLastDateUpdate?: Nullable<string>
   isAdmin: boolean
   idFromDiary: number
 }
@@ -101,6 +103,12 @@ export const DiaryUserModel = sequelize.define<IDiaryUserModel>('diaryUser', {
     defaultValue: formatDate(new Date().toISOString()), // Текущая дата по умолчанию
     comment:
       'Последняя дата обновления куки пользователя. Нужно обновлять, в теории, не реже, чем каждые 14 дней'
+  },
+  termLastDateUpdate: {
+    type: DataTypes.DATEONLY,
+    allowNull: true,
+    defaultValue: null,
+    comment: 'Последняя дата обновления активного семестра'
   },
   isAdmin: {
     type: DataTypes.BOOLEAN,

@@ -80,7 +80,6 @@ export const saveUserData = async (
       lastName: person.lastName,
       middleName: person.middleName,
       cookie,
-      cookieLastDateUpdate: formatDate(new Date().toISOString()),
       isAdmin: false,
       idFromDiary: student.id
     })

@@ -1,20 +1,14 @@
-import { SERVER_URL } from '@config'
-import type { NotificationsResponse } from '@diary-spo/shared'
+import type { AcademicRecord } from '@diary-spo/shared'
 import { getCookieFromToken } from '@helpers'
 import { ContextWithID } from '@types'
-import { HeadersWithCookie } from '@utils'
+import { getFinalMarksFromDiary } from 'src/ApiOriginal'
 
 const getFinalMarks = async ({
   request
-}: ContextWithID): Promise<NotificationsResponse | string> => {
+}: ContextWithID): Promise<AcademicRecord | string> => {
   const authData = await getCookieFromToken(request.headers.toJSON().secret)
-  const path = `${SERVER_URL}/services/students/${authData.idFromDiary}/attestation`
 
-  const response = await fetch(path, {
-    headers: HeadersWithCookie(authData.cookie)
-  })
-
-  return response.json()
+  return await getFinalMarksFromDiary(authData)
 }
 
 export default getFinalMarks
