@@ -326,7 +326,7 @@ export interface AttestationSubject extends Omit<Subject, 'marks'> {
 
 export interface AcademicYear {
   id: number
-  TermType: TermType
+  termType: TermType
   terms: AttestationTerm[]
   number: number
   marks: AttestationMark

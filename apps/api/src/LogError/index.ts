@@ -1,3 +1,4 @@
+// TODO: Сделать функцией
 export class LogError extends Error {
   message: string
 

@@ -7,10 +7,10 @@ import {
   TIMEZONE
 } from '@config'
 import { error } from '@utils'
+import { errorLogger } from '@utils'
 import { exit } from 'process'
 import { Sequelize } from 'sequelize'
 import SequelizeSimpleCache from 'sequelize-simple-cache'
-import { errorLogger } from 'src/utils/errorLogger'
 
 export const sequelize = new Sequelize({
   database: DATABASE_NAME,
@@ -27,6 +27,12 @@ export const sequelize = new Sequelize({
     min: 1,
     acquire: 30000, // К-ство миллисекунд, прежде чем выбросить ошибку
     idle: 10000 // К-ство миллисекунд, прежде чем освободить "неактивное" соединение (время ожидания)
+  },
+  define: {
+    freezeTableName: true,
+    timestamps: false,
+    createdAt: false,
+    updatedAt: false
   }
 })
 
@@ -43,7 +49,7 @@ export const cache = new SequelizeSimpleCache({
 // Включить кеширование ?
 export const enableCache = false
 // Синхронизовать таблицы ?
-export const forceSyncDatabase = false
+export const forceSyncDatabase = true
 
 try {
   await sequelize.authenticate()

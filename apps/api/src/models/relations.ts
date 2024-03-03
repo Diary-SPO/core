@@ -1,5 +1,6 @@
 import { forceSyncDatabase, sequelize } from '@db'
 import {
+  AbsenceModel,
   AbsenceTypeModel,
   AcademicYearModel,
   AuthModel,
@@ -7,7 +8,6 @@ import {
   DiaryUserModel,
   ExaminationTypeModel,
   FinalMarkModel,
-  GradebookModel,
   GroupModel,
   LessonTypeModel,
   MarkModel,
@@ -24,128 +24,69 @@ import {
   TermModel,
   TermSubjectModel,
   TermTypeModel,
+  TermUserModel,
   ThemeModel
 } from './import'
 
 // SPO <--->> Group
-SPOModel.hasMany(GroupModel, {
-  foreignKey: 'id'
-})
-GroupModel.belongsTo(SPOModel, {
-  foreignKey: 'spoId'
-})
+SPOModel.hasMany(GroupModel)
+GroupModel.belongsTo(SPOModel)
 
 // Task <-->> Required
 TaskModel.hasMany(RequiredModel)
 RequiredModel.belongsTo(TaskModel)
 
 // Group <--->> DiaryUser
-GroupModel.hasMany(DiaryUserModel, {
-  foreignKey: 'id'
-})
-DiaryUserModel.belongsTo(GroupModel, {
-  foreignKey: 'groupId'
-})
+GroupModel.hasMany(DiaryUserModel)
+DiaryUserModel.belongsTo(GroupModel)
 
-// DiaryUser <--->> Auth
-DiaryUserModel.hasMany(AuthModel, {
-  foreignKey: 'id'
-})
-AuthModel.belongsTo(DiaryUserModel, {
-  foreignKey: 'idDiaryUser'
-})
+// DiaryUser <-->> Auth
+DiaryUserModel.hasMany(AuthModel)
+AuthModel.belongsTo(DiaryUserModel)
 
 // SPO <-->> Teacher
-SPOModel.hasMany(TeacherModel, {
-  foreignKey: 'id'
-})
-TeacherModel.belongsTo(SPOModel, {
-  foreignKey: 'spoId'
-})
+SPOModel.hasMany(TeacherModel)
+TeacherModel.belongsTo(SPOModel)
 
 // Group <-->> Schedule
-GroupModel.hasMany(ScheduleModel, {
-  foreignKey: 'id'
-})
-ScheduleModel.belongsTo(GroupModel, {
-  foreignKey: 'groupId'
-})
+GroupModel.hasMany(ScheduleModel)
+ScheduleModel.belongsTo(GroupModel)
 
 // Teacher <-->> Schedule
-TeacherModel.hasMany(ScheduleModel, {
-  foreignKey: 'id'
-})
-ScheduleModel.belongsTo(TeacherModel, {
-  foreignKey: 'teacherId'
-})
+TeacherModel.hasMany(ScheduleModel)
+ScheduleModel.belongsTo(TeacherModel)
 
 // Group <-->> AcademicYear
-GroupModel.hasMany(AcademicYearModel, {
-  foreignKey: 'id'
-})
-AcademicYearModel.belongsTo(GroupModel, {
-  foreignKey: 'groupId'
-})
+GroupModel.hasMany(AcademicYearModel)
+AcademicYearModel.belongsTo(GroupModel)
 
 // AcademicYear <-->> Term
-AcademicYearModel.hasMany(TermModel, {
-  foreignKey: 'id'
-})
-TermModel.belongsTo(AcademicYearModel, {
-  foreignKey: 'academicYearId'
-})
+AcademicYearModel.hasMany(TermModel)
+TermModel.belongsTo(AcademicYearModel)
 
 // Term <-->> TermSubject
-TermModel.hasMany(TermSubjectModel, {
-  foreignKey: 'id'
-})
-TermSubjectModel.belongsTo(TermModel, {
-  foreignKey: 'termId'
-})
+TermModel.hasMany(TermSubjectModel)
+TermSubjectModel.belongsTo(TermModel)
 
 // TermSubject <-->> ExaminationType
-TermSubjectModel.hasMany(ExaminationTypeModel, {
-  foreignKey: 'id'
-})
-ExaminationTypeModel.belongsTo(TermSubjectModel, {
-  foreignKey: 'termSubjectId'
-})
+TermSubjectModel.hasMany(ExaminationTypeModel)
+ExaminationTypeModel.belongsTo(TermSubjectModel)
 
-// Gradebook <-->> Schedule
-GradebookModel.hasMany(ScheduleModel)
-ScheduleModel.belongsTo(GradebookModel)
+// LessonType <-->> Schedule
+LessonTypeModel.hasMany(ScheduleModel)
+ScheduleModel.belongsTo(LessonTypeModel)
 
-// LessonType <-->> Gradebook
-LessonTypeModel.hasMany(GradebookModel, {
-  foreignKey: 'id'
-})
-GradebookModel.belongsTo(LessonTypeModel, {
-  foreignKey: 'lessonTypeId'
-})
+// ScheduleModel <-->> Theme
+ScheduleModel.hasMany(ThemeModel)
+ThemeModel.belongsTo(ScheduleModel)
 
-// Gradebook <-->> Theme
-GradebookModel.hasMany(ThemeModel, {
-  foreignKey: 'id'
-})
-ThemeModel.belongsTo(GradebookModel, {
-  foreignKey: 'gradebookId'
-})
-
-// Gradebook <-->> Task
-GradebookModel.hasMany(TaskModel, {
-  foreignKey: 'id'
-})
-TaskModel.belongsTo(GradebookModel, {
-  foreignKey: 'gradebookId'
-})
+// ScheduleModel <-->> Task
+ScheduleModel.hasMany(TaskModel)
+TaskModel.belongsTo(ScheduleModel)
 
 // TaskType <-->> Task
-TaskTypeModel.hasMany(TaskModel, {
-  foreignKey: 'id'
-})
-TaskModel.belongsTo(TaskTypeModel, {
-  foreignKey: 'taskTypeId'
-})
+TaskTypeModel.hasMany(TaskModel)
+TaskModel.belongsTo(TaskTypeModel)
 
 // Task <-->> Mark
 TaskModel.hasMany(MarkModel)
@@ -156,88 +97,44 @@ DiaryUserModel.hasMany(MarkModel)
 MarkModel.belongsTo(DiaryUserModel)
 
 // Classroom <-->> Schedule
-ClassroomModel.hasMany(ScheduleModel, {
-  foreignKey: 'id'
-})
-ScheduleModel.belongsTo(ClassroomModel, {
-  foreignKey: 'classroomId'
-})
+ClassroomModel.hasMany(ScheduleModel)
+ScheduleModel.belongsTo(ClassroomModel)
 
 // SPO <-->> Classroom
-SPOModel.hasMany(ClassroomModel, {
-  foreignKey: 'id'
-})
-ClassroomModel.belongsTo(SPOModel, {
-  foreignKey: 'spoId'
-})
+SPOModel.hasMany(ClassroomModel)
+ClassroomModel.belongsTo(SPOModel)
 
 // Subject <-->> Schedule
-SubjectModel.hasMany(ScheduleModel, {
-  foreignKey: 'id'
-})
-ScheduleModel.belongsTo(SubjectModel, {
-  foreignKey: 'subjectId'
-})
+SubjectModel.hasMany(ScheduleModel)
+ScheduleModel.belongsTo(SubjectModel)
 
 // Subject <-->> TermSubject
-SubjectModel.hasMany(TermSubjectModel, {
-  foreignKey: 'id'
-})
-TermSubjectModel.belongsTo(SubjectModel, {
-  foreignKey: 'subjectId'
-})
+SubjectModel.hasMany(TermSubjectModel)
+TermSubjectModel.belongsTo(SubjectModel)
 
 // TermType <-->> AcademicYear
-TermTypeModel.hasMany(AcademicYearModel, {
-  foreignKey: 'id'
-})
-AcademicYearModel.belongsTo(TermTypeModel, {
-  foreignKey: 'termTypeId'
-})
+TermTypeModel.hasMany(AcademicYearModel)
+AcademicYearModel.belongsTo(TermTypeModel)
 
 // Subject <-->> FinalMark
-SubjectModel.hasMany(FinalMarkModel, {
-  foreignKey: 'id'
-})
-FinalMarkModel.belongsTo(SubjectModel, {
-  foreignKey: 'subjectId'
-})
+SubjectModel.hasMany(FinalMarkModel)
+FinalMarkModel.belongsTo(SubjectModel)
 
 // MarkValue <-->> Mark
 MarkValueModel.hasMany(MarkModel)
 MarkModel.belongsTo(MarkValueModel)
 
 // MarkValue <-->> FinalMark
-MarkValueModel.hasMany(FinalMarkModel, {
-  foreignKey: 'id'
-})
-FinalMarkModel.belongsTo(MarkValueModel, {
-  foreignKey: 'markValueId'
-})
+MarkValueModel.hasMany(FinalMarkModel)
+FinalMarkModel.belongsTo(MarkValueModel)
 
 // MarkValue <-->> TermSubject
-MarkValueModel.hasMany(TermSubjectModel, {
-  foreignKey: 'id'
-})
-TermSubjectModel.belongsTo(MarkValueModel, {
-  foreignKey: 'markValueId'
-})
-
-// AbsenceType <-->> Gradebook
-AbsenceTypeModel.hasMany(GradebookModel, {
-  foreignKey: 'id'
-})
-GradebookModel.belongsTo(AbsenceTypeModel, {
-  foreignKey: 'absenceTypeId'
-})
+MarkValueModel.hasMany(TermSubjectModel)
+TermSubjectModel.belongsTo(MarkValueModel)
 
 // Group <-->> Subgroup
-GroupModel.hasMany(SubgroupModel, {
-  foreignKey: 'id'
-})
-SubgroupModel.belongsTo(GroupModel, {
-  foreignKey: 'groupId'
-})
+GroupModel.hasMany(SubgroupModel)
+SubgroupModel.belongsTo(GroupModel)
 
 // Subgroup <-->> scheduleSubgroup
 SubgroupModel.hasMany(ScheduleSubgroupModel)
@@ -251,9 +148,27 @@ ScheduleSubgroupModel.belongsTo(DiaryUserModel)
 ScheduleModel.hasMany(ScheduleSubgroupModel)
 ScheduleSubgroupModel.belongsTo(ScheduleModel)
 
+// AbsenceType <-->> Absence
+AbsenceTypeModel.hasMany(AbsenceModel)
+AbsenceModel.belongsTo(AbsenceTypeModel)
+
+// Schedule <-->> Absence
+ScheduleModel.hasMany(AbsenceModel)
+AbsenceModel.belongsTo(ScheduleModel)
+
+// DiaryUser <-->> Absence
+DiaryUserModel.hasMany(AbsenceModel)
+AbsenceModel.belongsTo(DiaryUserModel)
+
+// Term <-->> TermUser
+TermModel.hasMany(TermUserModel)
+TermUserModel.belongsTo(TermModel)
+
+// DiaryUser <-->> TermUser
+DiaryUserModel.hasMany(TermUserModel)
+TermUserModel.belongsTo(DiaryUserModel)
+
 if (forceSyncDatabase) {
   console.log('Syncing database...')
-  sequelize.sync({
-    force: true
-  })
+  await sequelize.sync({})
 }

@@ -1,8 +1,7 @@
 import { ErrorPlaceholder, PanelHeaderWithBack, Suspense } from '@components'
 import { THIRD_SEC, VKUI_ACCENT_BG, VKUI_RED } from '@config'
-import { PerformanceCurrent } from '@diary-spo/shared'
+import { Nullable, PerformanceCurrent } from '@diary-spo/shared'
 import { useRateLimitExceeded, useSnackbar } from '@hooks'
-import { Nullable } from '@types'
 import { handleResponse, isApiError } from '@utils'
 import {
   Icon28EducationOutline,

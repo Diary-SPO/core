@@ -25,11 +25,5 @@ export const ExaminationTypeModel = sequelize.define<IExaminationTypeModel>(
       type: DataTypes.ENUM(...Object.keys(Examinations)),
       allowNull: false
     }
-  },
-  {
-    freezeTableName: true,
-    timestamps: false,
-    createdAt: false,
-    updatedAt: false
   }
 )

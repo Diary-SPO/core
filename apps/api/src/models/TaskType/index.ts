@@ -1,2 +1,2 @@
 export * from './model'
-export * from './taskTypeSaveOrGet'
+export * from './actions'

@@ -73,11 +73,5 @@ export const TermSubjectModel = sequelize.define<ITermSubjectModel>(
         key: 'id'
       }
     }
-  },
-  {
-    freezeTableName: true,
-    timestamps: false,
-    createdAt: false,
-    updatedAt: false
   }
 )

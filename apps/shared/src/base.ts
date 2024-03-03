@@ -4,3 +4,5 @@ export interface Person {
   lastName: string
   middleName?: string
 }
+
+export type Nullable<T> = T | null

@@ -1,5 +1,4 @@
-import { AttestationResponse, Subject } from '@diary-spo/shared'
-import { Nullable } from '@types'
+import { AttestationResponse, Nullable, Subject } from '@diary-spo/shared'
 
 // TODO: add tests
 export const processAttestationData = (data: Nullable<AttestationResponse>) => {

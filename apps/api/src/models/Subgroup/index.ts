@@ -1,2 +1,3 @@
 export * from './model'
-export * from './subgroupSaveOrGet'
+export * from './actions/detectSubgroup'
+export * from './actions/subgroupSaveOrGet'

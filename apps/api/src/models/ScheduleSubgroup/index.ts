@@ -1,2 +1,2 @@
 export * from './model'
-export * from './scheduleSubgroup'
+export * from './actions'

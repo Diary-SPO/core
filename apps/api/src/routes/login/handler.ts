@@ -4,10 +4,10 @@ import type { UserData } from '@diary-spo/shared'
 import { ResponseLogin } from '@diary-spo/types'
 import { fetcher } from '@utils'
 import Hashes from 'jshashes'
+import { LogError } from 'src/LogError'
 import { offlineAuth } from './authService'
 import { handleResponse } from './authService/helpers'
 import { saveUserData } from './authService/saveUserData'
-import { LogError } from 'src/LogError'
 
 interface AuthContext {
   body: {

@@ -11,11 +11,11 @@ import {
   fetcher,
   formatDate
 } from '@utils'
+import { LogError } from 'src/LogError'
 // TODO: сделать папку с утилитами может
 import { saveOrGetDiaryUser } from './saveOrGetDiaryUser'
 import { saveOrGetGroup } from './saveOrGetGroup'
 import { saveOrGetSPO } from './saveOrGetSPO'
-import { LogError } from 'src/LogError'
 
 export const saveUserData = async (
   parsedRes: ApiResponse<UserData>,
@@ -80,7 +80,6 @@ export const saveUserData = async (
       lastName: person.lastName,
       middleName: person.middleName,
       cookie,
-      cookieLastDateUpdate: formatDate(new Date().toISOString()),
       isAdmin: false,
       idFromDiary: student.id
     })

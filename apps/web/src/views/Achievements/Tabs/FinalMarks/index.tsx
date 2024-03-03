@@ -1,10 +1,9 @@
-import { AcademicRecord } from '@diary-spo/shared'
+import { AcademicRecord, Nullable } from '@diary-spo/shared'
 import { Placeholder } from '@vkontakte/vkui'
 import { FunctionalComponent } from 'preact'
 import { StateUpdater, useEffect, useState } from 'preact/hooks'
 
 import { useRateLimitExceeded } from '@hooks'
-import { Nullable } from '@types'
 import { handleResponse, isApiError } from '@utils'
 
 import { Table } from './Table'

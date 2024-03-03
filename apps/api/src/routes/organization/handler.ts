@@ -48,8 +48,8 @@ const getOrganization = async ({
       }
 
       SPOModel.update(
-        { 
-          ...saveData 
+        {
+          ...saveData
         },
         {
           where: {

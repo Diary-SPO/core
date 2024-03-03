@@ -1,4 +1,4 @@
-import { Nullable } from '@types'
+import { Nullable } from '@diary-spo/shared'
 import { Accordion, Div, Text } from '@vkontakte/vkui'
 import { FC, ReactNode } from 'preact/compat'
 import { useState } from 'preact/hooks'

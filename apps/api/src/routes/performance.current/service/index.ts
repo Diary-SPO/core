@@ -1,7 +1,6 @@
 import { SERVER_URL } from '@config'
 import { ICacheData } from '@helpers'
 import { HeadersWithCookie } from '@utils'
-import { savePerformance } from './save'
 
 export const getCurrPerformance = async (authData: ICacheData) => {
   const path = `${SERVER_URL}/services/reports/current/performance/${authData.idFromDiary}`
@@ -17,7 +16,7 @@ export const getCurrPerformance = async (authData: ICacheData) => {
   const result = await response.json()
 
   // Сохраняем в базе
-  savePerformance(result, authData)
+  //savePerformance(result, authData)
 
   return result
 }
