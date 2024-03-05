@@ -1,9 +1,6 @@
 type ArgumentTypes<F extends Function> = F extends (...args: infer A) => any
   ? A
   : never
-type ArgumentType<F extends Function> = F extends (arg: infer A) => any
-  ? A
-  : never
 
 /**
  * Пытается выполнить функцию.
