@@ -1,7 +1,7 @@
 import type { AttestationResponse } from '@diary-spo/shared'
 import { getCookieFromToken } from '@helpers'
 import { ContextWithID } from '@types'
-import { getAttestationFromDiary } from 'src/ApiOriginal'
+import { getAttestationFromDiary } from './service'
 
 const getAttestation = async ({
   request

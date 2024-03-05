@@ -10,6 +10,7 @@ import {
   SPOModelType
 } from '@models'
 import { caching } from 'cache-manager'
+import { Nullable } from '@diary-spo/shared'
 
 const memoryCache = await caching('memory', {
   max: 1000,
@@ -30,6 +31,7 @@ export type ICacheData = {
   localUserId: number
   groupId: number
   spoId: number
+  termLastUpdate?: Nullable<string>
 }
 
 /**
@@ -79,7 +81,8 @@ export const getCookieFromToken = async (
   const localUserId = DiaryUserAuth.diaryUserId
   const groupId = DiaryUserAuth.diaryUser.groupId
   const spoId = DiaryUserAuth.diaryUser.group.spo.id
-  const toSave = { cookie, idFromDiary, localUserId, groupId, spoId }
+  const termLastUpdate = DiaryUserAuth.diaryUser.termLastDateUpdate
+  const toSave = { cookie, idFromDiary, localUserId, groupId, spoId, termLastUpdate }
 
   await memoryCache.set(token, toSave)
 

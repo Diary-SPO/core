@@ -2,6 +2,7 @@ import { AttestationTerm } from '@diary-spo/shared'
 import { ICacheData } from '@helpers'
 import { IAcademicYearModel } from 'src/models/AcademicYear'
 import { TermModel } from '../model'
+import { saveOrGetTermUser } from 'src/models/TermUser'
 
 export const saveOrGetTerm = async (
   term: AttestationTerm,
@@ -20,8 +21,11 @@ export const saveOrGetTerm = async (
       isActive: term.isActive,
       academicYearId: year.id
     }
-  }).then((v) => {
+  }).then(async (v) => {
     const result = v[0]
+    // Связываем с пользователем
+    await saveOrGetTermUser(result.id, authData)
+    // Отдаём сам семестр
     if (v[1]) {
       return result
     }
