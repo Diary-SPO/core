@@ -1,6 +1,5 @@
 import { API_CODES, ApiError } from '@api'
-import { ENCRYPT_KEY } from '@config'
-import { encrypt } from '@diary-spo/crypto'
+import { KEY } from '@config'
 import { ResponseLogin } from '@diary-spo/types'
 import {
   DiaryUserModel,
@@ -15,7 +14,7 @@ import { generateToken } from '../../../helpers'
 
 type DiaryUserAuthInfo = IDiaryUserModel & {
   group: IGroupModel & {
-    SPO: ISPOModel
+    spo: ISPOModel
   }
 }
 
@@ -34,7 +33,7 @@ export const offlineAuth = async (
   const diaryUserRecord = (await DiaryUserModel.findOne({
     where: {
       login,
-      password: encrypt(password, ENCRYPT_KEY)
+      password: KEY.encrypt(password)
     },
     include: {
       model: GroupModel,
@@ -57,7 +56,7 @@ export const offlineAuth = async (
   }
 
   const groupData = diaryUserRecord.group
-  const spoData = groupData.SPO
+  const spoData = groupData.spo
 
   // Если пользователь найден, генерируем токен и отдаём
   const token = await generateToken(diaryUserRecord.id)

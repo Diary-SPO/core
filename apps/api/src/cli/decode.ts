@@ -1,14 +1,8 @@
-import { decrypt } from '@diary-spo/crypto'
+import { KEY } from '../config'
 
 export const decode = (str: string) => {
-  const key = Bun.env.ENCRYPT_KEY
 
-  if (!key) {
-    console.log('Ключ шифрования не задан')
-    return
-  }
-
-  const key_decrypt = decrypt(str, key)
+  const key_decrypt = KEY.decrypt(str)
   console.log(`Decrypt: ${str} -> ${key_decrypt}`)
   process.exit()
 }

@@ -1,11 +1,10 @@
-import { ENCRYPT_KEY } from '@config'
 import { sequelize } from '@db'
-import { decrypt, encrypt } from '@diary-spo/crypto'
 import { Nullable } from '@diary-spo/shared'
 import { formatDate } from '@utils'
 import { DataTypes } from 'sequelize'
 import { GroupModel } from '../Group'
 import { IModelPrototype } from '../types'
+import { KEY } from '@config'
 
 // REMOVE IT
 export type DiaryUserModelType = {
@@ -48,15 +47,15 @@ export const DiaryUserModel = sequelize.define<IDiaryUserModel>('diaryUser', {
     comment: 'Логин пользователя в Сетевом городе'
   },
   password: {
-    type: DataTypes.STRING,
+    type: DataTypes.TEXT,
     allowNull: false,
     comment:
       'Зашифрованный хеш пароля от аккаунта пользователя в Сетевом городе',
     set(value: string) {
-      this.setDataValue('password', encrypt(value, ENCRYPT_KEY))
+      this.setDataValue('password', KEY.encrypt(value))
     },
     get() {
-      return decrypt(this.getDataValue('password'), ENCRYPT_KEY)
+      return KEY.decrypt(this.getDataValue('password'))
     }
   },
   phone: {
@@ -91,10 +90,10 @@ export const DiaryUserModel = sequelize.define<IDiaryUserModel>('diaryUser', {
     allowNull: false,
     comment: 'Cookie от авторизации пользователя в Сетевом городе',
     set(value: string) {
-      this.setDataValue('cookie', encrypt(value, ENCRYPT_KEY))
+      this.setDataValue('cookie', KEY.encrypt(value))
     },
     get() {
-      return decrypt(this.getDataValue('cookie'), ENCRYPT_KEY)
+      return KEY.decrypt(this.getDataValue('cookie'))
     }
   },
   cookieLastDateUpdate: {

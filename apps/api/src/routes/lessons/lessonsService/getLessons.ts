@@ -23,11 +23,12 @@ export const getLessonsService = async (
   if (!response.ok) {
     // Получаем из базы
     // TODO: fix it
-    return ScheduleGetFromDB(
+    /*return ScheduleGetFromDB(
       startDate,
       endDate,
       authData.idFromDiary
-    ) as unknown as Day[]
+    ) as unknown as Day[]*/
+    throw new ApiError(API_ERRORS.DATA_NOT_FOUND, API_CODES.INTERNAL_SERVER_ERROR)
   }
 
   // Сохраняем и отдаём

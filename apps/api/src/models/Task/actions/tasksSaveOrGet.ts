@@ -1,5 +1,5 @@
 import { Task } from '@diary-spo/shared'
-import { ICacheData } from '@helpers'
+import { ICacheData, retriesForError } from '@helpers'
 import { deleteTasksNotIn, requiredSaveOrGet } from '@models'
 import { objPropertyCopy } from 'src/helpers/objPropertyCopy'
 import { taskTypeSaveOrGet } from 'src/models/TaskType'
@@ -16,7 +16,7 @@ export const tasksSaveOrGet = async (
   deleteTasksNotIn(tasks, scheduleId)
 
   for (const task of tasks) {
-    const taskTypeId = (await taskTypeSaveOrGet(task.type)).id
+    const taskTypeId = (await retriesForError(taskTypeSaveOrGet, [task.type], 3)).id
     const taskToSave = {
       scheduleId,
       topic: task?.topic ?? 'Не указано',

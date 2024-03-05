@@ -17,7 +17,8 @@ const termTypeModel = sequelize.define<ITermTypeModel>('termType', {
   },
   name: {
     type: DataTypes.STRING,
-    allowNull: false
+    allowNull: false,
+    unique: true
   }
 })
 

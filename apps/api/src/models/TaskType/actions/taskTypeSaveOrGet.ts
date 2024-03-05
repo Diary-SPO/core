@@ -12,10 +12,4 @@ export const taskTypeSaveOrGet = async (
       name
     }
   })
-    .then((v) => v[0])
-    // Если ошибка - пробуем ещё раз
-    .catch(async () =>
-      taskTypeSaveOrGet(name).catch(() => {
-        throw new Error('Не удалось сохранить taskType')
-      })
-    )
+  .then((v) => v[0])

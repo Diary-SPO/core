@@ -14,6 +14,7 @@ export type ITermUserModel = IModelPrototypeNoId<TermUserModelType>
 export const TermUserModel = sequelize.define<ITermUserModel>('termUser', {
   termId: {
     type: DataTypes.INTEGER,
+    primaryKey: true,
     allowNull: false,
     references: {
       model: TermModel
@@ -21,6 +22,7 @@ export const TermUserModel = sequelize.define<ITermUserModel>('termUser', {
   },
   diaryUserId: {
     type: DataTypes.INTEGER,
+    primaryKey: true,
     allowNull: false,
     references: {
       model: DiaryUserModel

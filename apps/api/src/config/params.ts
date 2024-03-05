@@ -9,6 +9,5 @@ export const PARAMS_INIT: ParamsInit = {
   DATABASE_NAME: '',
   DATABASE_USERNAME: '',
   DATABASE_PASSWORD: '',
-  ENCRYPT_KEY: '', // 32 символа
   TIMEZONE: getTimezone()
 }
