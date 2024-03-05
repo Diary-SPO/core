@@ -1,8 +1,8 @@
 import type { AcademicRecord } from '@diary-spo/shared'
 import { getCookieFromToken } from '@helpers'
 import { ContextWithID } from '@types'
-import { getFinalMarksFromDiary } from './service'
 import { detectTerm } from 'src/models/Term/actions/detectTerm'
+import { getFinalMarksFromDiary } from './service'
 
 const getFinalMarks = async ({
   request

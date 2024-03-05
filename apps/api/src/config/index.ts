@@ -1,7 +1,7 @@
 import fs from 'fs'
 import { PARAMS_INIT } from './params'
-import checkEnvVariables from './utils'
 import { rsa } from './rsa'
+import checkEnvVariables from './utils'
 
 if (!fs.existsSync('.env')) {
   throw new Error(

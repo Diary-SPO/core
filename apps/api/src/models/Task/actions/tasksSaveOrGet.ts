@@ -16,7 +16,9 @@ export const tasksSaveOrGet = async (
   deleteTasksNotIn(tasks, scheduleId)
 
   for (const task of tasks) {
-    const taskTypeId = (await retriesForError(taskTypeSaveOrGet, [task.type], 3)).id
+    const taskTypeId = (
+      await retriesForError(taskTypeSaveOrGet, [task.type], 3)
+    ).id
     const taskToSave = {
       scheduleId,
       topic: task?.topic ?? 'Не указано',

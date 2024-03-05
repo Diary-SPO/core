@@ -1,9 +1,12 @@
-import { AcademicYear } from "@diary-spo/shared";
-import { ICacheData, objPropertyCopy } from "@helpers";
-import { saveOrGetTerm, saveOrGetTermType } from "@models";
-import { AcademicYearModel } from "@models";
+import { AcademicYear } from '@diary-spo/shared'
+import { ICacheData, objPropertyCopy } from '@helpers'
+import { saveOrGetTerm, saveOrGetTermType } from '@models'
+import { AcademicYearModel } from '@models'
 
-export const saveOrGetAcademicYear = async (academicYear: AcademicYear, authData: ICacheData) => {
+export const saveOrGetAcademicYear = async (
+  academicYear: AcademicYear,
+  authData: ICacheData
+) => {
   const termTypeId = (await saveOrGetTermType(academicYear.termType)).id
   const idFromDiary = academicYear.id
   const number = academicYear.number

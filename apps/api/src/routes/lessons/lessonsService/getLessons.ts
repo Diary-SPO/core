@@ -28,7 +28,10 @@ export const getLessonsService = async (
       endDate,
       authData.idFromDiary
     ) as unknown as Day[]*/
-    throw new ApiError(API_ERRORS.DATA_NOT_FOUND, API_CODES.INTERNAL_SERVER_ERROR)
+    throw new ApiError(
+      API_ERRORS.DATA_NOT_FOUND,
+      API_CODES.INTERNAL_SERVER_ERROR
+    )
   }
 
   // Сохраняем и отдаём

@@ -11,5 +11,4 @@ export const taskTypeSaveOrGet = async (
     defaults: {
       name
     }
-  })
-  .then((v) => v[0])
+  }).then((v) => v[0])

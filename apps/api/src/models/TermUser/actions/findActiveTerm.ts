@@ -1,18 +1,20 @@
-import { ICacheData } from "@helpers";
-import { TermUserModel } from "../model";
-import { TermModel } from "src/models/import";
+import { ICacheData } from '@helpers'
+import { TermModel } from 'src/models/import'
+import { TermUserModel } from '../model'
 
 export const findActiveTerm = async (authData: ICacheData) => {
-  return (await TermUserModel.findOne({
-    where: {
-      diaryUserId: authData.localUserId
-    },
-    include: {
-      model: TermModel,
+  return (
+    await TermUserModel.findOne({
       where: {
-        isActive: true
+        diaryUserId: authData.localUserId
       },
-      required: true
-    }
-  }))?.termId
+      include: {
+        model: TermModel,
+        where: {
+          isActive: true
+        },
+        required: true
+      }
+    })
+  )?.termId
 }

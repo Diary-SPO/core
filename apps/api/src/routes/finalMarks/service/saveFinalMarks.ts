@@ -1,3 +1,1 @@
-export const saveFinalMarks = async () => {
-  
-}
+export const saveFinalMarks = async () => {}

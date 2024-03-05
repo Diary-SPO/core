@@ -6,11 +6,11 @@ export const isApiError = (data: unknown): data is AxiosResponse => {
 
   return (
     !data ||
-    isObj &&
-    (isResponse ||
-      ('status' in data &&
-        typeof data.status === 'number' &&
-        'statusText' in data &&
-        typeof data.statusText === 'string'))
+    (isObj &&
+      (isResponse ||
+        ('status' in data &&
+          typeof data.status === 'number' &&
+          'statusText' in data &&
+          typeof data.statusText === 'string')))
   )
 }

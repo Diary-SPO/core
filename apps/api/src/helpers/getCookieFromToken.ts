@@ -1,4 +1,5 @@
 import { ApiError } from '@api'
+import { Nullable } from '@diary-spo/shared'
 import {
   AuthModel,
   AuthModelType,
@@ -10,7 +11,6 @@ import {
   SPOModelType
 } from '@models'
 import { caching } from 'cache-manager'
-import { Nullable } from '@diary-spo/shared'
 
 const memoryCache = await caching('memory', {
   max: 1000,
@@ -82,7 +82,14 @@ export const getCookieFromToken = async (
   const groupId = DiaryUserAuth.diaryUser.groupId
   const spoId = DiaryUserAuth.diaryUser.group.spo.id
   const termLastUpdate = DiaryUserAuth.diaryUser.termLastDateUpdate
-  const toSave = { cookie, idFromDiary, localUserId, groupId, spoId, termLastUpdate }
+  const toSave = {
+    cookie,
+    idFromDiary,
+    localUserId,
+    groupId,
+    spoId,
+    termLastUpdate
+  }
 
   await memoryCache.set(token, toSave)
 

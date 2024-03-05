@@ -1,10 +1,10 @@
+import { KEY } from '@config'
 import { sequelize } from '@db'
 import { Nullable } from '@diary-spo/shared'
 import { formatDate } from '@utils'
 import { DataTypes } from 'sequelize'
 import { GroupModel } from '../Group'
 import { IModelPrototype } from '../types'
-import { KEY } from '@config'
 
 // REMOVE IT
 export type DiaryUserModelType = {
