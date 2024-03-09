@@ -1,0 +1,10 @@
+User-agent: *
+Disallow: /#/schedule
+Disallow: /#/marks
+Disallow: /#/attestation
+Disallow: /#/notifications
+Disallow: /#/contacts
+Disallow: /#/settings
+Disallow: /#/
+Allow: /
+Allow: /index.html
