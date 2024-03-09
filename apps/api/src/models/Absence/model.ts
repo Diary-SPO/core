@@ -14,7 +14,7 @@ export type AbsenceModelType = {
 
 export type IAbsenceModel = IModelPrototype<AbsenceModelType, 'id'>
 
-const absenceModel = sequelize.define<IAbsenceModel>('absenceType', {
+const absenceModel = sequelize.define<IAbsenceModel>('absence', {
   id: {
     type: DataTypes.INTEGER,
     autoIncrement: true,
@@ -23,6 +23,7 @@ const absenceModel = sequelize.define<IAbsenceModel>('absenceType', {
   absenceTypeId: {
     type: DataTypes.INTEGER,
     allowNull: false,
+    primaryKey: true,
     references: {
       model: AbsenceTypeModel
     }
@@ -30,6 +31,7 @@ const absenceModel = sequelize.define<IAbsenceModel>('absenceType', {
   scheduleId: {
     type: DataTypes.INTEGER,
     allowNull: false,
+    primaryKey: true,
     references: {
       model: ScheduleModel
     }
@@ -37,6 +39,7 @@ const absenceModel = sequelize.define<IAbsenceModel>('absenceType', {
   diaryUserId: {
     type: DataTypes.INTEGER,
     allowNull: false,
+    primaryKey: true,
     references: {
       model: DiaryUserModel
     }

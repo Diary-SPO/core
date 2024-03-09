@@ -23,6 +23,7 @@ export const TaskModel = sequelize.define<ITaskModel>('task', {
   scheduleId: {
     type: DataTypes.INTEGER,
     allowNull: false,
+    unique: 'task_unique_k',
     references: {
       model: ScheduleModel,
       key: 'id'
@@ -43,6 +44,6 @@ export const TaskModel = sequelize.define<ITaskModel>('task', {
   idFromDiary: {
     type: DataTypes.INTEGER,
     allowNull: false,
-    unique: true
+    unique: 'task_unique_k'
   }
 })

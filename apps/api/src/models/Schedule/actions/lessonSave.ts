@@ -1,23 +1,24 @@
 import { Lesson, Nullable } from '@diary-spo/shared'
-import { ICacheData, objPropertyCopy } from '@helpers'
+import { ICacheData, objPropertyCopy, retriesForError } from '@helpers'
 import {
   IScheduleModel,
   IScheduleModelNoId,
   ScheduleModel,
   ScheduleWhere,
-  TeacherSaveOrGet,
+  TeacherSaveOrGet as teacherSaveOrGet,
   deleteAbsence,
   deleteScheduleSubgroup,
   detectSubgroup,
   lessonTypeSaveOrGet,
   saveClassroom,
   saveOrGetAbsence,
-  saveOrGetAbsenceType,
+  saveOrGetAbsenceType as absenceTypeSaveOrGet,
   scheduleSubgroupSaveOrGet,
   subgroupSaveOrGet,
   subjectSaveOrGet,
   tasksSaveOrGet,
-  themesSaveOrGet
+  themesSaveOrGet,
+  ITermDetectP
 } from '@models'
 
 /**
@@ -29,7 +30,8 @@ import {
 export const lessonSave = async (
   date: Date,
   lesson: Lesson,
-  authData: ICacheData
+  authData: ICacheData,
+  termPromise?: ITermDetectP
 ): Promise<IScheduleModel | null> => {
   /**
    * Пропускаем пустые занятия типа:
@@ -52,7 +54,11 @@ export const lessonSave = async (
   const subgroup = detectSubgroup(subject)
 
   // Получаем id в базе для полученных из lesson данных
-  subjectId = (await subjectSaveOrGet(subject)).id
+  subjectId = (await retriesForError(
+    subjectSaveOrGet,
+    [subject],
+    2
+  )).id
 
   if (lesson.timetable.teacher) {
     const LessonTeacher = {
@@ -61,7 +67,12 @@ export const lessonSave = async (
       spoId: authData.spoId,
       idFromDiary: lesson.timetable.teacher.id
     }
-    teacherId = (await TeacherSaveOrGet(LessonTeacher)).id
+    teacherId = (
+      await retriesForError(
+        teacherSaveOrGet,
+        [LessonTeacher],
+        2
+      )).id
   }
 
   if (lesson.timetable.classroom) {
@@ -71,42 +82,55 @@ export const lessonSave = async (
       spoId: authData.spoId,
       idFromDiary: lesson.timetable.classroom?.id
     }
-    classroomId = (await saveClassroom(classroom)).id
+    classroomId = (
+      await retriesForError(
+        saveClassroom,
+        [classroom],
+        2
+      )).id
   }
 
   if (gradebook) {
-    lessonTypeId = (await lessonTypeSaveOrGet(gradebook.lessonType)).id
+    lessonTypeId = (
+      await retriesForError(
+        lessonTypeSaveOrGet,
+        [gradebook.lessonType],
+        2
+      )).id
     gradebookIdFromDiary = gradebook.id
   }
 
   if (gradebook?.absenceType) {
-    absenceTypeId = (await saveOrGetAbsenceType(gradebook.absenceType)).id
+    absenceTypeId = (
+      await retriesForError(
+        absenceTypeSaveOrGet,
+        [gradebook.absenceType],
+        2
+      )).id
   }
 
-  // Подготавливаем расписание для сохранения в базу
-  const scheduleToSave: IScheduleModelNoId = {
+  // Ищем, есть ли расисание в базе
+  const where: ScheduleWhere = {
     groupId: authData.groupId,
-    teacherId,
-    subjectId,
-    classroomId,
-    lessonTypeId,
-    gradebookIdFromDiary,
     startTime: lesson.startTime,
     endTime: lesson.endTime,
     date: date
   }
 
-  // Ищем, есть ли расисание в базе
-  const where: ScheduleWhere = {
-    groupId: scheduleToSave.groupId,
-    startTime: scheduleToSave.startTime,
-    endTime: scheduleToSave.endTime,
-    date: scheduleToSave.date
+  // Подготавливаем расписание для сохранения в базу
+  const scheduleToSave: IScheduleModelNoId = {
+    teacherId,
+    subjectId,
+    classroomId,
+    lessonTypeId,
+    gradebookIdFromDiary,
+    ...where
   }
 
-  if (subgroup) {
+  // Похоже это не надо...
+  /*if (subgroup) {
     where.subjectId = subjectId
-  }
+  }*/
 
   const schedule = await ScheduleModel.findOne({ where })
 
@@ -115,7 +139,7 @@ export const lessonSave = async (
 
   /**
    * Если расписание есть в базе, то
-   * пробуем поменять поля и если онипоменялись, то
+   * пробуем поменять поля и если они поменялись, то
    * он (метод save) сделает запрос для сохранения
    */
   if (schedule) {
@@ -127,35 +151,57 @@ export const lessonSave = async (
 
   if (gradebook?.themes) {
     const scheduleId = (await promiseToReturn).id
-    themesSaveOrGet(gradebook.themes, scheduleId)
+    retriesForError(
+      themesSaveOrGet,
+      [gradebook.themes, scheduleId],
+      2
+    )
   }
 
+  // Сохраняем "задачи" (оценки там же)
   if (gradebook?.tasks) {
     const scheduleId = (await promiseToReturn).id
-    tasksSaveOrGet(gradebook.tasks, scheduleId, authData)
+    retriesForError(
+      tasksSaveOrGet,
+      [gradebook.tasks, scheduleId, authData, termPromise],
+      2
+    )
   }
 
   // Если есть подгруппа - сохраняем
   if (subgroup) {
-    const subgroupDB = subgroupSaveOrGet(subgroup, authData.groupId)
+    const subgroupDB = retriesForError(
+      subgroupSaveOrGet,
+      [subgroup, authData.groupId],
+      2
+    )
     subgroupDB.then(async (r) => {
       const scheduleId = (await promiseToReturn).id
       if (!r[1]) {
-        scheduleSubgroupSaveOrGet(scheduleId, authData.localUserId, r[0].id)
+        retriesForError(
+          scheduleSubgroupSaveOrGet,
+          [scheduleId, authData.localUserId, r[0].id],
+          2
+        )
       }
     })
   }
 
-  // Удаялем пподгруппы, если в расписании их нет
+  // Удаляем подгруппы, если в расписании их нет
   promiseToReturn.then(async (s) => {
     if (!subgroup) {
       deleteScheduleSubgroup(s.id, authData.localUserId)
     }
   })
 
+  // Сохраняем опоздания (если есть)
   promiseToReturn.then(async (s) => {
     if (absenceTypeId) {
-      saveOrGetAbsence(absenceTypeId, s.id, authData.localUserId)
+      retriesForError(
+        saveOrGetAbsence,
+        [absenceTypeId, s.id, authData.localUserId],
+        2
+      )
     } else {
       deleteAbsence(s.id, authData.localUserId)
     }

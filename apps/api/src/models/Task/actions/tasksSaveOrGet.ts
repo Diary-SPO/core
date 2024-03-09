@@ -1,14 +1,16 @@
 import { Task } from '@diary-spo/shared'
 import { ICacheData, retriesForError } from '@helpers'
-import { deleteTasksNotIn, requiredSaveOrGet } from '@models'
+import { ITermDetectP, deleteTasksNotIn, markSaveOrGet, requiredSaveOrGet } from '@models'
 import { objPropertyCopy } from 'src/helpers/objPropertyCopy'
 import { taskTypeSaveOrGet } from 'src/models/TaskType'
 import { TaskModel } from '../model'
+import { markDelete } from 'src/models/Mark/actions/markDelete'
 
 export const tasksSaveOrGet = async (
   tasks: Task[],
   scheduleId: number,
-  authData: ICacheData
+  authData: ICacheData,
+  termPromise?: ITermDetectP
 ) => {
   const promises = []
 
@@ -44,8 +46,35 @@ export const tasksSaveOrGet = async (
         objPropertyCopy(task, taskToSave)
         return task.save()
       })
-      .then((result) => {
-        requiredSaveOrGet(task.isRequired, result.id, authData)
+      // Сохраняем или обновляем обязательность оценок
+      // TODO: СДЕЛАТЬ УДАЛЕНИЕ ОБЯЗАТЕЛЬНОСТИ ОЦЕНОК
+      .then(async (result) => {
+        const required = await requiredSaveOrGet(task.isRequired, result.id, authData)
+        return {result, required}
+      })
+      // Сохраняем или обновляем оценки
+      .then(async (result) => {
+        const taskId = result.required.taskId
+        const taskReturn = result.result
+
+        let termId
+
+        if (termPromise) {
+          termId = (await termPromise)
+        }
+
+        if (!termPromise || !termId) {
+          return taskReturn
+        }
+
+        // На всякий який (ну и пустышки не берём)
+        if (task.mark) {
+          markSaveOrGet(task.mark, taskId, termId, authData)
+        } else {
+          markDelete(taskId, authData)
+        }
+
+        return taskReturn
       })
     // Сохраняем в массив промисов
     promises.push(promise)

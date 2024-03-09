@@ -4,7 +4,7 @@ type ArgumentTypes<F extends Function> = F extends (...args: infer A) => any
 
 /**
  * Пытается выполнить функцию.
- * В случае ошибки пытается выполнить её ещё reties количество раз.
+ * В случае ошибки пытается выполнить её ещё `reties - 1` количество раз.
  * Если функция за retries количество раз не выполнилась, то возвращает ошибку.
  * @param callback
  * @param calbackArguments
@@ -15,9 +15,10 @@ export const retriesForError = async <C extends Function>(
   callback: C,
   calbackArguments: ArgumentTypes<C>,
   retries = 2
-): Promise<ReturnType<C>> =>
+  // @ts-ignore
+): ReturnType<C> =>
   callback(...calbackArguments).catch(async (err: string) => {
-    if (retries <= 0) throw new Error(err)
+    if (retries <= 1) throw new Error(`Ertries error: ` + err)
     await Bun.sleep(50)
-    return await retriesForError(callback, calbackArguments, retries - 1)
+    return retriesForError(callback, calbackArguments, retries - 1)
   })

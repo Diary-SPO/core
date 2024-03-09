@@ -26,8 +26,3 @@ export const saveClassroom = async (
       objPropertyCopy(result, classroom)
       return result.save()
     })
-    .catch(async () =>
-      saveClassroom(classroom).catch(() => {
-        throw new Error('Ошибка сохранения Classroom')
-      })
-    )

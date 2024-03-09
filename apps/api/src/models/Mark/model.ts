@@ -4,11 +4,13 @@ import { DiaryUserModel } from '../DiaryUser'
 import { MarkValueModel } from '../MarkValue'
 import { TaskModel } from '../Task'
 import { IModelPrototypeNoId } from '../types'
+import { TermModel } from '../Term'
 
 export type MarkModelType = {
   diaryUserId: number
   taskId: number
   markValueId: number
+  termId: number
 }
 
 export type IMarkModelType = IModelPrototypeNoId<MarkModelType>
@@ -19,8 +21,7 @@ export const MarkModel = sequelize.define<IMarkModelType>('mark', {
     primaryKey: true,
     allowNull: false,
     references: {
-      model: DiaryUserModel,
-      key: 'id'
+      model: DiaryUserModel
     }
   },
   taskId: {
@@ -28,16 +29,21 @@ export const MarkModel = sequelize.define<IMarkModelType>('mark', {
     primaryKey: true,
     allowNull: false,
     references: {
-      model: TaskModel,
-      key: 'id'
+      model: TaskModel
     }
   },
   markValueId: {
     type: DataTypes.INTEGER,
     allowNull: false,
     references: {
-      model: MarkValueModel,
-      key: 'id'
+      model: MarkValueModel
+    }
+  },
+  termId: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+    references: {
+      model: TermModel
     }
   }
 })

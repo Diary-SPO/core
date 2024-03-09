@@ -32,7 +32,7 @@ export const rsa = async () => {
   key.importKey(privateKeyString, 'openssh-private')
   key.importKey(publicKeyString, 'openssh-public')
 
-  console.log('Найдены ключи шифрования и будет использоваться')
+  console.log('Найдены ключи шифрования и будут использоваться')
 
   return keyController(key)
 }

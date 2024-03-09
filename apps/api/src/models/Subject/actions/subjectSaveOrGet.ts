@@ -13,9 +13,3 @@ export const subjectSaveOrGet = async (
     }
   })
     .then((v) => v[0])
-    // Если ошибка - пробуем ещё раз
-    .catch(async () =>
-      subjectSaveOrGet(subjectName).catch(() => {
-        throw new LogError('Ошибка сохранения Subject')
-      })
-    )

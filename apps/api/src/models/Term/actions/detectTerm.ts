@@ -31,12 +31,13 @@ export const detectTerm = async (
     attestation = await getFinalMarksFromDiary(authData)
   }
 
-  if (!attestation) {
+  // По идее не нужно
+  /*if (!attestation) {
     throw new ApiError(
       API_ERRORS.DATA_NOT_FOUND,
       API_CODES.INTERNAL_SERVER_ERROR
     )
-  }
+  }*/
 
   // Сохраняем данные
   const promises = []
@@ -64,3 +65,5 @@ export const detectTerm = async (
 
   return findActiveTerm(authData)
 }
+
+export type ITermDetectP = Promise<number|undefined>

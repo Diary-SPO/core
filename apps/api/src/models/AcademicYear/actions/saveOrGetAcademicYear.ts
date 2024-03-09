@@ -1,5 +1,5 @@
 import { AcademicYear } from '@diary-spo/shared'
-import { ICacheData, objPropertyCopy } from '@helpers'
+import { ICacheData, objPropertyCopy, retriesForError } from '@helpers'
 import { saveOrGetTerm, saveOrGetTermType } from '@models'
 import { AcademicYearModel } from '@models'
 
@@ -20,7 +20,7 @@ export const saveOrGetAcademicYear = async (
     idFromDiary
   }
 
-  const [record, isCreated] = await AcademicYearModel.findOrCreate({
+  const findFunc = () => AcademicYearModel.findOrCreate({
     where: {
       groupId,
       idFromDiary
@@ -28,9 +28,13 @@ export const saveOrGetAcademicYear = async (
     defaults
   })
 
+  // Пытаемся найти. Если ошибка, пробуем в последний раз
+  const [record, isCreated] = await retriesForError(findFunc, [], 2)
+
   // Сохраняем семестры для текщего года
   for (const term of academicYear.terms) {
-    const promise = saveOrGetTerm(term, record, authData)
+    const saveFunc = () => saveOrGetTerm(term, record, authData)
+    const promise = retriesForError(saveFunc, [], 2)
 
     // Если это активный семестр, то нам обязательно нужно дождаться
     // его записи в базу. А остальные пусть не задерживают.

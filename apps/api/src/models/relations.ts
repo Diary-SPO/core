@@ -168,6 +168,10 @@ TermUserModel.belongsTo(TermModel)
 DiaryUserModel.hasMany(TermUserModel)
 TermUserModel.belongsTo(DiaryUserModel)
 
+// Term <-->> Mark
+TermModel.hasMany(MarkModel)
+MarkModel.belongsTo(TermModel)
+
 if (forceSyncDatabase) {
   console.log('Syncing database...')
   await sequelize.sync({})

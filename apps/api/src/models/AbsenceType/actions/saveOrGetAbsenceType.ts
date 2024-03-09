@@ -13,8 +13,3 @@ export const saveOrGetAbsenceType = async (
     }
   })
     .then((v) => v[0])
-    .catch(async () =>
-      saveOrGetAbsenceType(name).catch(() => {
-        throw new Error('Ошибка сохранения AbsenceType')
-      })
-    )

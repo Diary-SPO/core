@@ -4,6 +4,7 @@ import { Day } from '@diary-spo/shared'
 import { ICacheData } from '@helpers'
 import { ScheduleGetFromDB, daySave } from '@models'
 import { HeadersWithCookie } from '@utils'
+import { detectTerm } from 'src/models/Term/actions/detectTerm'
 
 export const getLessonsService = async (
   startDate: string,
@@ -36,8 +37,9 @@ export const getLessonsService = async (
 
   // Сохраняем и отдаём
   const days: Day[] = await response.json()
+  const term = detectTerm(authData)
   for (const day of days) {
-    daySave(day, authData).catch((err: string) =>
+    daySave(day, authData, term).catch((err: string) =>
       console.error(`Ошибка сохранения расписания: ${err}`)
     )
   }

@@ -13,8 +13,3 @@ export const lessonTypeSaveOrGet = async (
     }
   })
     .then((v) => v[0])
-    .catch(async () =>
-      lessonTypeSaveOrGet(name).catch(() => {
-        throw new Error('Ошибка сохранения LessonType')
-      })
-    )

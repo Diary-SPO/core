@@ -23,10 +23,12 @@ export const ThemeModel = sequelize.define<IThemeModelType>('theme', {
     references: {
       model: ScheduleModel,
       key: 'id'
-    }
+    },
+    unique: 'theme_unique_k'
   },
   description: {
     type: DataTypes.TEXT,
-    allowNull: false
+    allowNull: false,
+    unique: 'theme_unique_k'
   }
 })
