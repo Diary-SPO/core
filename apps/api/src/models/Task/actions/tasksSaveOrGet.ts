@@ -1,6 +1,6 @@
 import { Task } from '@diary-spo/shared'
 import { ICacheData, retriesForError } from '@helpers'
-import { ITermDetectP, deleteTasksNotIn, markSaveOrGet, requiredSaveOrGet } from '@models'
+import { IScheduleModel, ITermDetectP, deleteTasksNotIn, markSaveOrGet, requiredSaveOrGet } from '@models'
 import { objPropertyCopy } from 'src/helpers/objPropertyCopy'
 import { taskTypeSaveOrGet } from 'src/models/TaskType'
 import { TaskModel } from '../model'
@@ -8,11 +8,12 @@ import { markDelete } from 'src/models/Mark/actions/markDelete'
 
 export const tasksSaveOrGet = async (
   tasks: Task[],
-  scheduleId: number,
+  schedule: IScheduleModel,
   authData: ICacheData,
   termPromise?: ITermDetectP
 ) => {
   const promises = []
+  const scheduleId = schedule.id
 
   // Удаляем устаревшие таски
   deleteTasksNotIn(tasks, scheduleId)
@@ -69,7 +70,7 @@ export const tasksSaveOrGet = async (
 
         // На всякий який (ну и пустышки не берём)
         if (task.mark) {
-          markSaveOrGet(task.mark, taskId, termId, authData)
+          markSaveOrGet(task.mark, schedule, taskId, termId, authData)
         } else {
           markDelete(taskId, authData)
         }

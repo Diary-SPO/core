@@ -160,10 +160,10 @@ export const lessonSave = async (
 
   // Сохраняем "задачи" (оценки там же)
   if (gradebook?.tasks) {
-    const scheduleId = (await promiseToReturn).id
+    const schedule = await promiseToReturn
     retriesForError(
       tasksSaveOrGet,
-      [gradebook.tasks, scheduleId, authData, termPromise],
+      [gradebook.tasks, schedule, authData, termPromise],
       2
     )
   }

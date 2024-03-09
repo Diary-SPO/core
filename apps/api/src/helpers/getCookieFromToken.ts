@@ -32,6 +32,7 @@ export type ICacheData = {
   groupId: number
   spoId: number
   termLastUpdate?: Nullable<string>
+  termStartDate?: Nullable<string>
 }
 
 /**
@@ -82,13 +83,15 @@ export const getCookieFromToken = async (
   const groupId = DiaryUserAuth.diaryUser.groupId
   const spoId = DiaryUserAuth.diaryUser.group.spo.id
   const termLastUpdate = DiaryUserAuth.diaryUser.termLastDateUpdate
+  const termStartDate = DiaryUserAuth.diaryUser.termStartDate
   const toSave = {
     cookie,
     idFromDiary,
     localUserId,
     groupId,
     spoId,
-    termLastUpdate
+    termLastUpdate,
+    termStartDate
   }
 
   await memoryCache.set(token, toSave)

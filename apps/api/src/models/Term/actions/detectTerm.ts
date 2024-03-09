@@ -5,6 +5,7 @@ import { DiaryUserModel, findActiveTerm } from '@models'
 import { formatDate } from '@utils'
 import { saveOrGetAcademicYear } from 'src/models/AcademicYear/actions'
 import { getFinalMarksFromDiary } from 'src/routes/finalMarks/service'
+import { searchCurrStartDate } from './searchCurrStartDate'
 
 /**
  * Обновляет (если нужно) текущий семестр и отдаёт его
@@ -50,10 +51,15 @@ export const detectTerm = async (
   // Ждём завершения всех промисов
   await Promise.all(promises).then(async () => {
     // Если все завершились успешно - обновляем у
-    // пользователя дату последнего извелечения
+    // пользователя дату последнего извелечения и дату начала семестра
+    const termStartDate = await searchCurrStartDate(authData)
+    if (!termStartDate) {
+      return
+    }
     await DiaryUserModel.update(
       {
-        termLastDateUpdate: currDate
+        termLastDateUpdate: currDate,
+        termStartDate
       },
       {
         where: {

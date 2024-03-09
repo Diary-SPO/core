@@ -10,7 +10,7 @@ export type MarkModelType = {
   diaryUserId: number
   taskId: number
   markValueId: number
-  termId: number
+  termId: number | null
 }
 
 export type IMarkModelType = IModelPrototypeNoId<MarkModelType>
@@ -41,7 +41,7 @@ export const MarkModel = sequelize.define<IMarkModelType>('mark', {
   },
   termId: {
     type: DataTypes.INTEGER,
-    allowNull: false,
+    allowNull: true,
     references: {
       model: TermModel
     }

@@ -20,6 +20,7 @@ export type DiaryUserModelType = {
   cookie: string
   cookieLastDateUpdate?: string
   termLastDateUpdate?: Nullable<string>
+  termStartDate?: Nullable<string>
   isAdmin: boolean
   idFromDiary: number
 }
@@ -108,6 +109,12 @@ export const DiaryUserModel = sequelize.define<IDiaryUserModel>('diaryUser', {
     allowNull: true,
     defaultValue: null,
     comment: 'Последняя дата обновления активного семестра'
+  },
+  termStartDate: {
+    type: DataTypes.DATEONLY,
+    allowNull: true,
+    defaultValue: null,
+    comment: 'Дата начала семестра (нужно для правильного сохранения оценок)'
   },
   isAdmin: {
     type: DataTypes.BOOLEAN,
