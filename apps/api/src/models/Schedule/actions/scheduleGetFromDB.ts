@@ -17,14 +17,15 @@ export const ScheduleGetFromDB = async (
 	json_build_object(
     'date', s."date" ,
     'lessons', json_agg(
+      json_strip_nulls(
       json_build_object(
         'startTime', s."startTime",
         'endTime', s."endTime",
         'gradebook', 
           case
-            when g."idFromDiary" is null then null
+            when s."gradebookIdFromDiary" is null then null
             else jsonb_build_object(
-              'id', g."idFromDiary",
+              'id', s."gradebookIdFromDiary",
               'lessonType', lt.name,
               'tasks', 
               case
@@ -34,7 +35,12 @@ export const ScheduleGetFromDB = async (
                     'topic', t.topic,
                     'id', t."idFromDiary",
                     'isRequired', r."isRequired",
-                    'mark', '',
+                    'mark', 
+					case 
+						when m."taskId" is null then null
+						else mv.value 
+					end
+					,
                     'type', tt."name" 
                 )
               )
@@ -68,14 +74,15 @@ export const ScheduleGetFromDB = async (
             )
           end
       )
-    )
+    ))
 ) as "data"
 from schedule s
 left join "scheduleSubgroup" ss on ss."scheduleId" = s.id
-left join gradebook g on g.id = s."gradebookId"
-left join "lessonType" lt on g."lessonTypeId"  = lt.id
+left join "lessonType" lt on s."lessonTypeId"  = lt.id
 left join subject sj on s."subjectId" = sj.id
-left join task t on t."gradebookId" = g.id
+left join task t on t."scheduleId" = s.id
+left join mark m on m."taskId" = t.id and m."diaryUserId" = ${user.id}
+left join "markValue" mv on mv.id = m."markValueId" 
 left join "taskType" tt on tt.id = t."taskTypeId"
 left join classroom c on s."classroomId" = c.id
 left join teacher tr on s."teacherId" = tr.id
@@ -107,6 +114,7 @@ order by "date"
       if (dayDB.date === day.toISOString().split('T')[0]) {
         // Сортируем по дате начала пары
         // TODO: fix it
+        // @ts-ignore
         dayDB.lessons.sort((a, b) => (a.startTime > b.startTime ? 1 : -1))
         formatDays.push(dayDB)
         isSearch = true

@@ -1,6 +1,6 @@
 import { API_CODES, API_ERRORS, ApiError } from '@api'
 import { AcademicRecord } from '@diary-spo/shared'
-import { ICacheData } from '@helpers'
+import { ICacheData, updateCache } from '@helpers'
 import { DiaryUserModel, findActiveTerm } from '@models'
 import { formatDate } from '@utils'
 import { saveOrGetAcademicYear } from 'src/models/AcademicYear/actions'
@@ -67,6 +67,9 @@ export const detectTerm = async (
         }
       }
     )
+    authData.termLastUpdate = currDate
+    authData.termStartDate = termStartDate
+    await updateCache(authData)
   })
 
   return findActiveTerm(authData)

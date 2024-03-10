@@ -3,6 +3,7 @@ import {
   AbsenceModel,
   AbsenceTypeModel,
   AcademicYearModel,
+  AdsModel,
   AuthModel,
   ClassroomModel,
   DiaryUserModel,
@@ -171,6 +172,10 @@ TermUserModel.belongsTo(DiaryUserModel)
 // Term <-->> Mark
 TermModel.hasMany(MarkModel)
 MarkModel.belongsTo(TermModel)
+
+// SPO <-->> Ads
+SPOModel.hasMany(AdsModel)
+AdsModel.belongsTo(SPOModel)
 
 if (forceSyncDatabase) {
   console.log('Syncing database...')

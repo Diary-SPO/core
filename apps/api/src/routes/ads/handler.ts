@@ -3,6 +3,8 @@ import type { NotificationsResponse } from '@diary-spo/shared'
 import { getCookieFromToken } from '@helpers'
 import { ContextWithID } from '@types'
 import { HeadersWithCookie } from '@utils'
+import { saveAds } from 'src/models/Ads/actions'
+import { adsGetFromDB } from 'src/models/Ads/actions/adsGetFromDB'
 
 const getAds = async ({
   request
@@ -13,7 +15,16 @@ const getAds = async ({
     headers: HeadersWithCookie(authData.cookie)
   })
 
-  return await response.json()
+  if (!response.ok) {
+    return JSON.stringify(await adsGetFromDB(authData), null, 2)
+  }
+
+  const result = await response.json()
+
+  // Попутно сохраняем
+  saveAds(result, authData)
+
+  return result
 }
 
 export default getAds

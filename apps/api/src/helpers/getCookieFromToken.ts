@@ -14,8 +14,8 @@ import { caching } from 'cache-manager'
 
 const memoryCache = await caching('memory', {
   max: 1000,
-  ttl: 30 * 1000 /*milliseconds*/,
-  refreshThreshold: 10 * 1000 /* как часто проверять в фоновом режиме */
+  ttl: 60 * 1000 /*milliseconds*/,
+  refreshThreshold: 30 * 1000 /* как часто проверять в фоновом режиме */
 })
 
 type IUserAuthInfo = AuthModelType & {
@@ -31,6 +31,7 @@ export type ICacheData = {
   localUserId: number
   groupId: number
   spoId: number
+  token: string
   termLastUpdate?: Nullable<string>
   termStartDate?: Nullable<string>
 }
@@ -91,7 +92,8 @@ export const getCookieFromToken = async (
     groupId,
     spoId,
     termLastUpdate,
-    termStartDate
+    termStartDate,
+    token
   }
 
   await memoryCache.set(token, toSave)
@@ -113,4 +115,9 @@ const cacheGetter = async (token: string): Promise<ICacheData | null> => {
   }
 
   return cacheCookie
+}
+
+
+export const updateCache = async (newCache: ICacheData) => {
+  await memoryCache.set(newCache.token, newCache)
 }
