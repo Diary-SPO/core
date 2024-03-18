@@ -1,3 +1,3 @@
 export * from './model'
-export * from './actions/scheduleGetFromDB'
 export * from './actions'
+export * from './resources'

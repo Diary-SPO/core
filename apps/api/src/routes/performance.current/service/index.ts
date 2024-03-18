@@ -1,13 +1,13 @@
-import { SERVER_URL } from '@config'
 import { PerformanceCurrent } from '@diary-spo/shared'
 import { ICacheData } from '@helpers'
-import { HeadersWithCookie } from '@utils'
 import { getPerformanceCurrent } from './getPerformanceCurrent'
+import { savePerfomance } from './savePerfomance'
+import { getPerformanceFromDB } from './getPerformanceFromDB'
 
 export const getCurrPerformance = async (
   authData: ICacheData
 ): Promise<PerformanceCurrent | null> => {
-  const response = await getPerformanceCurrent(authData)
+  /*const response = await getPerformanceCurrent(authData)
 
   if (!response.ok) {
     // Возвращаем из базы
@@ -17,7 +17,8 @@ export const getCurrPerformance = async (
   const result = await response.json()
 
   // Сохраняем в базе
-  //savePerformance(result, authData)
+  savePerfomance(result, authData)
 
-  return result
+  return result*/
+  return getPerformanceFromDB(authData)
 }
