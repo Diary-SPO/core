@@ -13,7 +13,7 @@
   "dependencies": {
     "@diary-spo/sql": "^1.2.2",
     "@elysiajs/cors": "^0.8.0",
-    "elysia": "^0.8.5",
+    "elysia": "^1.0.0",
     "elysia-compression": "^0.0.7",
     "elysia-helmet": "^1.0.1",
     "jshashes": "^1.0.8",
