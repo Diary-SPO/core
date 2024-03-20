@@ -1,6 +1,7 @@
 import { ICacheData } from "@helpers";
 import { MarkModel, MarkValueModel, ScheduleModel, SubjectModel, TaskModel } from "@models";
-import { marksPerformanceResource } from "src/resources";
+import { structurizeResponse } from "./structurizeResponse";
+import { IPerformanceFromDB } from "./types";
 
 export const getPerformanceFromDB = async (authData: ICacheData) => {
   const result = await SubjectModel.findAll({
@@ -26,6 +27,6 @@ export const getPerformanceFromDB = async (authData: ICacheData) => {
         }
       ]
     }
-  })
-  return marksPerformanceResource(result)
+  }) as IPerformanceFromDB[]
+  return structurizeResponse(result)
 }
