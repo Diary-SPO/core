@@ -54,11 +54,7 @@ export const lessonSave = async (
   const subgroup = detectSubgroup(subject)
 
   // Получаем id в базе для полученных из lesson данных
-  subjectId = (await retriesForError(
-    subjectSaveOrGet,
-    [subject],
-    2
-  )).id
+  subjectId = (await retriesForError(subjectSaveOrGet, [subject], 2)).id
 
   if (lesson.timetable.teacher) {
     const LessonTeacher = {
@@ -67,12 +63,7 @@ export const lessonSave = async (
       spoId: authData.spoId,
       idFromDiary: lesson.timetable.teacher.id
     }
-    teacherId = (
-      await retriesForError(
-        teacherSaveOrGet,
-        [LessonTeacher],
-        2
-      )).id
+    teacherId = (await retriesForError(teacherSaveOrGet, [LessonTeacher], 2)).id
   }
 
   if (lesson.timetable.classroom) {
@@ -82,31 +73,20 @@ export const lessonSave = async (
       spoId: authData.spoId,
       idFromDiary: lesson.timetable.classroom?.id
     }
-    classroomId = (
-      await retriesForError(
-        saveClassroom,
-        [classroom],
-        2
-      )).id
+    classroomId = (await retriesForError(saveClassroom, [classroom], 2)).id
   }
 
   if (gradebook) {
     lessonTypeId = (
-      await retriesForError(
-        lessonTypeSaveOrGet,
-        [gradebook.lessonType],
-        2
-      )).id
+      await retriesForError(lessonTypeSaveOrGet, [gradebook.lessonType], 2)
+    ).id
     gradebookIdFromDiary = gradebook.id
   }
 
   if (gradebook?.absenceType) {
     absenceTypeId = (
-      await retriesForError(
-        absenceTypeSaveOrGet,
-        [gradebook.absenceType],
-        2
-      )).id
+      await retriesForError(absenceTypeSaveOrGet, [gradebook.absenceType], 2)
+    ).id
   }
 
   // Ищем, есть ли расисание в базе
@@ -151,11 +131,7 @@ export const lessonSave = async (
 
   if (gradebook?.themes) {
     const scheduleId = (await promiseToReturn).id
-    retriesForError(
-      themesSaveOrGet,
-      [gradebook.themes, scheduleId],
-      2
-    )
+    retriesForError(themesSaveOrGet, [gradebook.themes, scheduleId], 2)
   }
 
   // Сохраняем "задачи" (оценки там же)

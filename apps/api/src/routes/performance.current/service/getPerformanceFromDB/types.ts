@@ -1,12 +1,23 @@
-import { MarkKeys } from "@diary-spo/shared";
-import { IMarkModelType, IMarkValueModelType, IScheduleModel, ISubjectModelType, ITaskModel } from "@models";
+import { MarkKeys } from '@diary-spo/shared'
+import {
+  IAbsenceModel,
+  IAbsenceTypeModel,
+  IMarkModelType,
+  IMarkValueModelType,
+  IScheduleModel,
+  ISubjectModelType,
+  ITaskModel
+} from '@models'
 
 export type IPerformanceFromDB = ISubjectModelType & {
   schedules: IScheduleFull[]
 }
 
 type IScheduleFull = IScheduleModel & {
-  tasks: ITaskFull[]
+  tasks: ITaskFull[],
+  absences: (IAbsenceModel & {
+    absenceType: IAbsenceTypeModel
+  })[]
 }
 
 type ITaskFull = ITaskModel & {
@@ -28,6 +39,7 @@ export type IMonthWithDay = {
 export type IDayWithMarks = {
   day: string | Date
   markValues: MarkKeys[]
+  absenceType?: string
 }
 
 export const monthNames: string[] = [

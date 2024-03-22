@@ -13,11 +13,10 @@ export const TeacherSaveOrGet = async (
     defaults: {
       ...teacher
     }
+  }).then((v) => {
+    const result = v[0]
+    if (v[1]) {
+      return result
+    }
+    return result.update({ ...teacher })
   })
-    .then((v) => {
-      const result = v[0]
-      if (v[1]) {
-        return result
-      }
-      return result.update({ ...teacher })
-    })

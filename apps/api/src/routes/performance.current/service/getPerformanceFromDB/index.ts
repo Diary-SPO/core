@@ -1,10 +1,18 @@
-import { ICacheData } from "@helpers";
-import { MarkModel, MarkValueModel, ScheduleModel, SubjectModel, TaskModel } from "@models";
-import { structurizeResponse } from "./structurizeResponse";
-import { IPerformanceFromDB } from "./types";
+import { ICacheData } from '@helpers'
+import {
+  AbsenceModel,
+  AbsenceTypeModel,
+  MarkModel,
+  MarkValueModel,
+  ScheduleModel,
+  SubjectModel,
+  TaskModel
+} from '@models'
+import { structurizeResponse } from './structurizeResponse'
+import { IPerformanceFromDB } from './types'
 
 export const getPerformanceFromDB = async (authData: ICacheData) => {
-  const result = await SubjectModel.findAll({
+  const result = (await SubjectModel.findAll({
     include: {
       model: ScheduleModel,
       include: [
@@ -17,16 +25,27 @@ export const getPerformanceFromDB = async (authData: ICacheData) => {
                 {
                   model: MarkValueModel,
                   required: true,
-                  attributes: ["value"]
-                },
+                  attributes: ['value']
+                }
               ],
               required: true
-            },
+            }
           ],
-          required: true
+          required: false
+        },
+        {
+          model: AbsenceModel,
+          include: [{
+            model: AbsenceTypeModel,
+            required: true
+          }],
+          where: {
+            diaryUserId: authData.localUserId
+          },
+          required: false
         }
       ]
     }
-  }) as IPerformanceFromDB[]
+  })) as IPerformanceFromDB[]
   return structurizeResponse(result)
 }

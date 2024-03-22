@@ -1,5 +1,10 @@
-import { Grade, MarkKeys } from "@diary-spo/shared";
-import { IDayWithMarks, IMonthWithDay, IPerformanceFromDB, monthNames } from "./types";
+import { Grade, MarkKeys } from '@diary-spo/shared'
+import {
+  IDayWithMarks,
+  IMonthWithDay,
+  IPerformanceFromDB,
+  monthNames
+} from './types'
 
 export const structurizeResponse = (subjects: IPerformanceFromDB[]) => {
   const monthsWithDays: IMonthWithDay[] = []
@@ -41,6 +46,8 @@ export const structurizeResponse = (subjects: IPerformanceFromDB[]) => {
       }
       */
 
+      let absenceType = schedule.absences?.[0] ? schedule.absences[0].absenceType.name : undefined
+
       let existDay = null
 
       for (const dayWithMarks of daysWithMarks) {
@@ -55,10 +62,14 @@ export const structurizeResponse = (subjects: IPerformanceFromDB[]) => {
         continue
       }
 
-      daysWithMarks.push({
-        day,
-        markValues
-      })
+      // Если нет ни опозданий ни оценок, то не добавлем день в выдачу
+      if (markValues.length || absenceType) {
+        daysWithMarks.push({
+          day,
+          absenceType,
+          markValues
+        })
+      }
 
       // Добавляем дату в monthsWithDays
       const num = new Date(day).getMonth() + 1
@@ -97,14 +108,19 @@ export const structurizeResponse = (subjects: IPerformanceFromDB[]) => {
     }
 
     // Выполняем сортировку всех дат и месяцев
-    daysWithMarks.sort((a, b) => new Date(a.day).getTime() > new Date(b.day).getTime() ? 1 : -1)
-    monthsWithDays.sort((a, b) => a.month.num > b.month.num ? 1 : -1)
-    monthsWithDays.forEach(v => {
-      v.daysWithLessons.sort((a, b) => new Date(a).getTime() > new Date(b).getTime() ? 1 : -1)
+    daysWithMarks.sort((a, b) =>
+      new Date(a.day).getTime() > new Date(b.day).getTime() ? 1 : -1
+    )
+    monthsWithDays.sort((a, b) => (a.month.num > b.month.num ? 1 : -1))
+    monthsWithDays.forEach((v) => {
+      v.daysWithLessons.sort((a, b) =>
+        new Date(a).getTime() > new Date(b).getTime() ? 1 : -1
+      )
     })
 
     // undefined не будет генерировать поле в ответе
-    const averageMark = countMarks > 0 ? (sumMarks / countMarks).toFixed(2) : undefined
+    const averageMark =
+      countMarks > 0 ? (sumMarks / countMarks).toFixed(2) : undefined
 
     daysWithMarksForSubject.push({
       subjectName,

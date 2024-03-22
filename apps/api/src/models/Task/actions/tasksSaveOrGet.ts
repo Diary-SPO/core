@@ -1,6 +1,12 @@
 import { Task } from '@diary-spo/shared'
 import { ICacheData, retriesForError } from '@helpers'
-import { IScheduleModel, ITermDetectP, deleteTasksNotIn, markSaveOrGet, requiredSaveOrGet } from '@models'
+import {
+  IScheduleModel,
+  ITermDetectP,
+  deleteTasksNotIn,
+  markSaveOrGet,
+  requiredSaveOrGet
+} from '@models'
 import { objPropertyCopy } from 'src/helpers/objPropertyCopy'
 import { taskTypeSaveOrGet } from 'src/models/TaskType'
 import { TaskModel } from '../model'
@@ -50,8 +56,12 @@ export const tasksSaveOrGet = async (
       // Сохраняем или обновляем обязательность оценок
       // TODO: СДЕЛАТЬ УДАЛЕНИЕ ОБЯЗАТЕЛЬНОСТИ ОЦЕНОК
       .then(async (result) => {
-        const required = await requiredSaveOrGet(task.isRequired, result.id, authData)
-        return {result, required}
+        const required = await requiredSaveOrGet(
+          task.isRequired,
+          result.id,
+          authData
+        )
+        return { result, required }
       })
       // Сохраняем или обновляем оценки
       .then(async (result) => {
@@ -61,7 +71,7 @@ export const tasksSaveOrGet = async (
         let termId
 
         if (termPromise) {
-          termId = (await termPromise)
+          termId = await termPromise
         }
 
         if (!termPromise || !termId) {

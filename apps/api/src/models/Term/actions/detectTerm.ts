@@ -75,4 +75,4 @@ export const detectTerm = async (
   return findActiveTerm(authData)
 }
 
-export type ITermDetectP = Promise<number|undefined>
+export type ITermDetectP = Promise<number | undefined>

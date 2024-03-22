@@ -1,4 +1,4 @@
-import { API_CODES, ApiError } from '@api'
+import { API_CODES, API_ERRORS, ApiError } from '@api'
 import { KEY } from '@config'
 import { ResponseLogin } from '@diary-spo/types'
 import {
@@ -50,8 +50,8 @@ export const offlineAuth = async (
 
   if (!diaryUserRecord) {
     throw new ApiError(
-      'User not found or incorrect password!',
-      API_CODES.NOT_FOUND
+      API_ERRORS.USER_NOT_FOUND,
+      API_CODES.UNAUTHORIZED
     )
   }
 

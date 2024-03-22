@@ -35,27 +35,21 @@ const postAuth = async ({ body }: AuthContext): Promise<ResponseLogin> => {
   switch (parsedRes) {
     /** Авторизация через нашу БД **/
     case 'DOWN': {
-      try {
-        const authData = await offlineAuth(login, password)
+      const authData = await offlineAuth(login, password)
 
-        if (!authData) {
-          throw new ApiError(
-            API_ERRORS.USER_NOT_FOUND,
-            API_CODES.INTERNAL_SERVER_ERROR
-          )
-        }
-
-        return authData
-      } catch (e) {
-        throw new LogError(
-          `Authorization error: access to the diary was denied, and authorization through the database failed. Full: ${e}`
+      if (!authData) {
+        throw new ApiError(
+          API_ERRORS.USER_NOT_FOUND,
+          API_CODES.UNAUTHORIZED
         )
       }
+
+      return authData
     }
     /** Неизвестная ошибка **/
     case 'UNKNOWN':
       throw new ApiError('Unknown auth error', API_CODES.UNKNOWN_ERROR)
-    /** Сервер выернул корректные данные, сохраняем их в БД **/
+    /** Сервер вернул корректные данные, сохраняем их в БД **/
     default:
       /**
        * Если сетевой город поменял тип своего ответа, то мы бы хотели об этом узнать

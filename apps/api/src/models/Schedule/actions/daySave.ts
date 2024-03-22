@@ -3,7 +3,11 @@ import { ICacheData } from '@helpers'
 import { IScheduleModel, deleteOldDays, lessonSave } from '@models'
 import { ITermDetectP } from '@models'
 
-export const daySave = async (day: Day, authData: ICacheData, termPromise?: ITermDetectP) => {
+export const daySave = async (
+  day: Day,
+  authData: ICacheData,
+  termPromise?: ITermDetectP
+) => {
   if (!day.lessons) {
     return
   }

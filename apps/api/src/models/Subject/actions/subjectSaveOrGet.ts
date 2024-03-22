@@ -11,5 +11,4 @@ export const subjectSaveOrGet = async (
     defaults: {
       name: subjectName
     }
-  })
-    .then((v) => v[0])
+  }).then((v) => v[0])

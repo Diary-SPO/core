@@ -9,6 +9,4 @@ import { ICacheData } from '@helpers'
 export const savePerfomance = async (
   perfomance: PerformanceCurrent,
   authData: ICacheData
-) => {
-  
-}
+) => {}

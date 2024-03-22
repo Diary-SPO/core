@@ -1,4 +1,4 @@
-import { ApiError } from '@api'
+import { API_ERRORS, ApiError } from '@api'
 import { Nullable } from '@diary-spo/shared'
 import {
   AuthModel,
@@ -75,7 +75,7 @@ export const getCookieFromToken = async (
   })) as IUserAuthInfo | null
 
   if (!DiaryUserAuth) {
-    throw new ApiError('INVALID_TOKEN', 401)
+    throw new ApiError(API_ERRORS.INVALID_TOKEN, 401)
   }
 
   const cookie = DiaryUserAuth.diaryUser.cookie
@@ -116,7 +116,6 @@ const cacheGetter = async (token: string): Promise<ICacheData | null> => {
 
   return cacheCookie
 }
-
 
 export const updateCache = async (newCache: ICacheData) => {
   await memoryCache.set(newCache.token, newCache)

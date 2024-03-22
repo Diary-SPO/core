@@ -20,13 +20,14 @@ export const saveOrGetAcademicYear = async (
     idFromDiary
   }
 
-  const findFunc = () => AcademicYearModel.findOrCreate({
-    where: {
-      groupId,
-      idFromDiary
-    },
-    defaults
-  })
+  const findFunc = () =>
+    AcademicYearModel.findOrCreate({
+      where: {
+        groupId,
+        idFromDiary
+      },
+      defaults
+    })
 
   // Пытаемся найти. Если ошибка, пробуем в последний раз
   const [record, isCreated] = await retriesForError(findFunc, [], 2)

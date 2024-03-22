@@ -2,7 +2,7 @@ import NodeRSA from 'node-rsa'
 import { generateKeyRSA } from './'
 import { searchKeyRSA } from './'
 
-const path = '..\\..\\'
+const path = '../../' // ..\\..\\ не работает на линуксе, поэтому будет так
 
 const keyController = (key: NodeRSA) => {
   return {

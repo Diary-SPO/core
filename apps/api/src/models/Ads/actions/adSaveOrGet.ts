@@ -1,9 +1,12 @@
-import { NotificationsResponse } from "@diary-spo/shared";
-import { ICacheData, objPropertyCopy } from "@helpers";
-import { AdsModel, AdsModelType } from "@models";
-import { Optional } from "sequelize";
+import { NotificationsResponse } from '@diary-spo/shared'
+import { ICacheData, objPropertyCopy } from '@helpers'
+import { AdsModel, AdsModelType } from '@models'
+import { Optional } from 'sequelize'
 
-export const adSaveOrGer = async (ad: NotificationsResponse, authData: ICacheData) => {
+export const adSaveOrGer = async (
+  ad: NotificationsResponse,
+  authData: ICacheData
+) => {
   const where = {
     spoId: authData.spoId,
     idFromDiary: ad.id
@@ -20,11 +23,11 @@ export const adSaveOrGer = async (ad: NotificationsResponse, authData: ICacheDat
     shouldDeleteNews: ad.shouldDeleteNews,
     deleteInDays: ad.deleteInDays
   }
-  
-  const result = await AdsModel.findOrCreate({where, defaults})
+
+  const result = await AdsModel.findOrCreate({ where, defaults })
 
   const adDB = result[0]
-  
+
   objPropertyCopy(adDB, defaults)
 
   return adDB.save()

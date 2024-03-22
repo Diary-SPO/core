@@ -17,12 +17,11 @@ export const saveClassroom = async (
     defaults: {
       ...classroom
     }
+  }).then((v) => {
+    const result = v[0]
+    if (v[1]) {
+      return result
+    }
+    objPropertyCopy(result, classroom)
+    return result.save()
   })
-    .then((v) => {
-      const result = v[0]
-      if (v[1]) {
-        return result
-      }
-      objPropertyCopy(result, classroom)
-      return result.save()
-    })

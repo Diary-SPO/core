@@ -1,5 +1,5 @@
-import { ICacheData } from "@helpers";
-import { AdsModel } from "../model";
+import { ICacheData } from '@helpers'
+import { AdsModel } from '../model'
 
 export const adsGetFromDB = async (authData: ICacheData) => {
   return AdsModel.findAll({
@@ -7,9 +7,9 @@ export const adsGetFromDB = async (authData: ICacheData) => {
       spoId: authData.spoId
     },
     attributes: {
-      exclude: ["id", "spoId", "idFromDiary"],
-      include: [["idFromDiary", "id"]]
+      exclude: ['id', 'spoId', 'idFromDiary'],
+      include: [['idFromDiary', 'id']]
     },
-    order: [["date", "DESC"]]
+    order: [['date', 'DESC']]
   })
 }

@@ -70,6 +70,16 @@ export const errorHandler: ErrorHandler = ({
     }
   }
 
+  /** Непредвиденная ошибка на сервере **/
+  if (error.message === API_ERRORS.INTERNAL_ERROR) {
+    set.status = API_CODES.INTERNAL_SERVER_ERROR
+    return {
+      message: API_ERRORS.INTERNAL_ERROR,
+      code: API_CODES.INTERNAL_SERVER_ERROR,
+      path
+    }
+  }
+
   /**
    * Обработка дефолтных ошибок
    **/
