@@ -35,10 +35,11 @@ export const getLessonsService = async (
   const days: Day[] = await response.json()
   const term = detectTerm(authData)
   for (const day of days) {
-    const backgroundProcess = async () => daySave(day, authData, term).catch((err: string) =>
-      console.error(`Ошибка сохранения расписания: ${err}`)
-    )
-    
+    const backgroundProcess = async () =>
+      daySave(day, authData, term).catch((err: string) =>
+        console.error(`Ошибка сохранения расписания: ${err}`)
+      )
+
     if (isAwait) {
       await backgroundProcess()
     } else {

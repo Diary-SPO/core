@@ -1,4 +1,8 @@
-import { DayWithMarks, DayWithMarksForSubject, PerformanceCurrent } from '@diary-spo/shared'
+import {
+  DayWithMarks,
+  DayWithMarksForSubject,
+  PerformanceCurrent
+} from '@diary-spo/shared'
 import { ICacheData } from '@helpers'
 import { getPerformanceFromDB } from './getPerformanceFromDB'
 import { getLessonsService } from 'src/routes/lessons/lessonsService'
@@ -25,7 +29,11 @@ export const savePerfomance = async (
       const subjectName = month.subjectName
 
       // Ищем этот же день для этого же предмета в БД, чтобы сравнить
-      const dayFromDB = searchDayFromSubject(dataFromDatabase, subjectName, actualDate)
+      const dayFromDB = searchDayFromSubject(
+        dataFromDatabase,
+        subjectName,
+        actualDate
+      )
 
       // Если дня нет в БД, то добавляем в список на добавление/обновление
       if (!dayFromDB) {
@@ -45,7 +53,9 @@ export const savePerfomance = async (
   }
 
   // Обновляем дял каждого дня
-  dayToUpdate.sort((a, b) => new Date(a).getTime() > new Date(b).getTime() ? 1 : -1)
+  dayToUpdate.sort((a, b) =>
+    new Date(a).getTime() > new Date(b).getTime() ? 1 : -1
+  )
 
   const grouppingDates = groupping(dayToUpdate)
 
@@ -53,11 +63,20 @@ export const savePerfomance = async (
 
   // Загружаем расписание по сгруппированным дням (это вызовет автоматическое обновление оценок)
   for (const group of grouppingDates) {
-    await getLessonsService(String(group.startDate), String(group.endDate), authData, true)
+    await getLessonsService(
+      String(group.startDate),
+      String(group.endDate),
+      authData,
+      true
+    )
   }
 }
 
-const searchDayFromSubject = (performance: PerformanceCurrent, subjectName: string, dayToSearch: Date | string) => {
+const searchDayFromSubject = (
+  performance: PerformanceCurrent,
+  subjectName: string,
+  dayToSearch: Date | string
+) => {
   for (const month of performance.daysWithMarksForSubject) {
     if (!month.daysWithMarks || month.subjectName != subjectName) continue
     for (const day of month.daysWithMarks) {
@@ -73,7 +92,10 @@ type countable = {
   [key: string]: number
 }
 
-const isEquilsPerformanceDays = (dayOne: DayWithMarks, dayTwo: DayWithMarks) => {
+const isEquilsPerformanceDays = (
+  dayOne: DayWithMarks,
+  dayTwo: DayWithMarks
+) => {
   const countableOne = countableDayData(dayOne)
   const countableTwo = countableDayData(dayTwo)
 
@@ -118,7 +140,7 @@ const countableDayData = (day: DayWithMarks) => {
 const groupping = (dates: (string | Date)[]) => {
   if (!dates.length) return null
   // Количество миллисекунд в дне
-  const oneDay = 1000 * 60 * 60 * 24;
+  const oneDay = 1000 * 60 * 60 * 24
   // Сгруппированные даты
   const groupDates = []
 
@@ -126,7 +148,8 @@ const groupping = (dates: (string | Date)[]) => {
     dates.splice(dates.indexOf(day), 1)
     let endDate = day
     for (const daySearch of dates) {
-      const dayDiffMilliseconds = new Date(daySearch).getTime() - new Date(day).getTime()
+      const dayDiffMilliseconds =
+        new Date(daySearch).getTime() - new Date(day).getTime()
       const dayDiff = Math.round(dayDiffMilliseconds / oneDay)
       if (endDate < daySearch && dayDiff < 14) {
         endDate = daySearch
