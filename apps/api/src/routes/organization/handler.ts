@@ -38,24 +38,14 @@ const getOrganization = async ({
     const record = SPOModel.findOne({
       where: {
         organizationId: response.organizationId
-      },
-      attributes: {
-        exclude: ['id']
       }
-    }).then(() => {
-      // FIXME: это што........
-      if (!record || checkSameKeys(saveData, record)) {
+    }).then((result) => {
+      if (!result) {
         return
       }
-
-      SPOModel.update(
+      result.update(
         {
           ...saveData
-        },
-        {
-          where: {
-            organizationId: response.organizationId
-          }
         }
       )
     })
