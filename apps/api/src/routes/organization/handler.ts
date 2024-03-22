@@ -43,11 +43,9 @@ const getOrganization = async ({
       if (!result) {
         return
       }
-      result.update(
-        {
-          ...saveData
-        }
-      )
+      result.update({
+        ...saveData
+      })
     })
 
     // Отдаём данные
