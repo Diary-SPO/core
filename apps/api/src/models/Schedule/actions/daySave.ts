@@ -1,5 +1,5 @@
 import { Day } from '@diary-spo/shared'
-import { ICacheData } from '@helpers'
+import { ICacheData, retriesForError } from '@helpers'
 import { IScheduleModel, deleteOldDays, lessonSave } from '@models'
 import { ITermDetectP } from '@models'
 
@@ -15,7 +15,7 @@ export const daySave = async (
   const promises: Promise<IScheduleModel | null>[] = []
 
   for (const lesson of day.lessons) {
-    const promise = lessonSave(day.date, lesson, authData, termPromise)
+    const promise = retriesForError(lessonSave, [day.date, lesson, authData, termPromise], 3, 1000) //lessonSave(day.date, lesson, authData, termPromise)
     // Сохраняем промис, чтобы дождаться массового завершения
     promises.push(promise)
   }

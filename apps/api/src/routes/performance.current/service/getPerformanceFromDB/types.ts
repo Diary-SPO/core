@@ -14,7 +14,7 @@ export type IPerformanceFromDB = ISubjectModelType & {
 }
 
 type IScheduleFull = IScheduleModel & {
-  tasks: ITaskFull[],
+  tasks: ITaskFull[]
   absences: (IAbsenceModel & {
     absenceType: IAbsenceTypeModel
   })[]

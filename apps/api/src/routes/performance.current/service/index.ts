@@ -7,11 +7,11 @@ import { getPerformanceFromDB } from './getPerformanceFromDB'
 export const getCurrPerformance = async (
   authData: ICacheData
 ): Promise<PerformanceCurrent | null> => {
-  /*const response = await getPerformanceCurrent(authData)
+  const response = await getPerformanceCurrent(authData)
 
   if (!response.ok) {
     // Возвращаем из базы
-    return null
+    return getPerformanceFromDB(authData)
   }
 
   const result = await response.json()
@@ -19,6 +19,5 @@ export const getCurrPerformance = async (
   // Сохраняем в базе
   savePerfomance(result, authData)
 
-  return result*/
-  return getPerformanceFromDB(authData)
+  return result
 }

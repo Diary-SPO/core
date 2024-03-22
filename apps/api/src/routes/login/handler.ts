@@ -38,10 +38,7 @@ const postAuth = async ({ body }: AuthContext): Promise<ResponseLogin> => {
       const authData = await offlineAuth(login, password)
 
       if (!authData) {
-        throw new ApiError(
-          API_ERRORS.USER_NOT_FOUND,
-          API_CODES.UNAUTHORIZED
-        )
+        throw new ApiError(API_ERRORS.USER_NOT_FOUND, API_CODES.UNAUTHORIZED)
       }
 
       return authData

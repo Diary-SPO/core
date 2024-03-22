@@ -1,4 +1,4 @@
-import { Grade, MarkKeys } from '@diary-spo/shared'
+import { Grade, MarkKeys, PerformanceCurrent } from '@diary-spo/shared'
 import {
   IDayWithMarks,
   IMonthWithDay,
@@ -35,18 +35,11 @@ export const structurizeResponse = (subjects: IPerformanceFromDB[]) => {
         }
       }
 
-      const day = schedule.date
+      const day = schedule.date.toString() + 'T00:00:00.0000000'
 
-      // TODO: ADD ABSENCE TYPE
-      /*
-      {
-                    "day": "2024-03-13T00:00:00.0000000",
-               ---> "absenceType": "IsAbsent", <---
-                    "markValues": []
-      }
-      */
-
-      let absenceType = schedule.absences?.[0] ? schedule.absences[0].absenceType.name : undefined
+      let absenceType = schedule.absences?.[0]
+        ? schedule.absences[0].absenceType.name
+        : undefined
 
       let existDay = null
 
@@ -62,13 +55,15 @@ export const structurizeResponse = (subjects: IPerformanceFromDB[]) => {
         continue
       }
 
+      const dayToSave = {
+        day,
+        absenceType,
+        markValues
+      }
+
       // Если нет ни опозданий ни оценок, то не добавлем день в выдачу
       if (markValues.length || absenceType) {
-        daysWithMarks.push({
-          day,
-          absenceType,
-          markValues
-        })
+        daysWithMarks.push(dayToSave)
       }
 
       // Добавляем дату в monthsWithDays
@@ -132,5 +127,5 @@ export const structurizeResponse = (subjects: IPerformanceFromDB[]) => {
   return {
     monthsWithDays,
     daysWithMarksForSubject
-  }
+  } as PerformanceCurrent
 }

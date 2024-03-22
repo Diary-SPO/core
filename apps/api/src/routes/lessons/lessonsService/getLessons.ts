@@ -9,7 +9,8 @@ import { detectTerm } from 'src/models/Term/actions/detectTerm'
 export const getLessonsService = async (
   startDate: string,
   endDate: string,
-  authData: ICacheData
+  authData: ICacheData,
+  isAwait: boolean = false
 ): Promise<Day[] | string> => {
   const path = `${SERVER_URL}/services/students/${authData.idFromDiary}/lessons/${startDate}/${endDate}`
 
@@ -34,9 +35,15 @@ export const getLessonsService = async (
   const days: Day[] = await response.json()
   const term = detectTerm(authData)
   for (const day of days) {
-    daySave(day, authData, term).catch((err: string) =>
+    const backgroundProcess = async () => daySave(day, authData, term).catch((err: string) =>
       console.error(`Ошибка сохранения расписания: ${err}`)
     )
+    
+    if (isAwait) {
+      await backgroundProcess()
+    } else {
+      backgroundProcess()
+    }
   }
   return days
 }

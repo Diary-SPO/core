@@ -49,10 +49,7 @@ export const offlineAuth = async (
   })) as DiaryUserAuthInfo
 
   if (!diaryUserRecord) {
-    throw new ApiError(
-      API_ERRORS.USER_NOT_FOUND,
-      API_CODES.UNAUTHORIZED
-    )
+    throw new ApiError(API_ERRORS.USER_NOT_FOUND, API_CODES.UNAUTHORIZED)
   }
 
   const groupData = diaryUserRecord.group

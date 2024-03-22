@@ -2,6 +2,7 @@ import { ICacheData } from '@helpers'
 import {
   AbsenceModel,
   AbsenceTypeModel,
+  detectTerm,
   MarkModel,
   MarkValueModel,
   ScheduleModel,
@@ -10,8 +11,13 @@ import {
 } from '@models'
 import { structurizeResponse } from './structurizeResponse'
 import { IPerformanceFromDB } from './types'
+import { Op } from 'sequelize'
 
 export const getPerformanceFromDB = async (authData: ICacheData) => {
+  if (!authData.termStartDate) {
+    await detectTerm(authData)
+  }
+  const termStartDate = authData.termStartDate
   const result = (await SubjectModel.findAll({
     include: {
       model: ScheduleModel,
@@ -35,16 +41,23 @@ export const getPerformanceFromDB = async (authData: ICacheData) => {
         },
         {
           model: AbsenceModel,
-          include: [{
-            model: AbsenceTypeModel,
-            required: true
-          }],
+          include: [
+            {
+              model: AbsenceTypeModel,
+              required: true
+            }
+          ],
           where: {
             diaryUserId: authData.localUserId
           },
           required: false
         }
-      ]
+      ],
+      where: {
+        date: {
+          [Op.gte]: termStartDate
+        }
+      }
     }
   })) as IPerformanceFromDB[]
   return structurizeResponse(result)

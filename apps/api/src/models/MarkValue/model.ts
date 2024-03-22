@@ -27,7 +27,8 @@ const markValueModel = sequelize.define<IMarkValueModelType>('markValue', {
       }
 
       this.setDataValue('value', value)
-    }
+    },
+    unique: true
   }
 })
 

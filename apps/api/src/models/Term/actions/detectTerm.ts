@@ -32,6 +32,11 @@ export const detectTerm = async (
     attestation = await getFinalMarksFromDiary(authData)
   }
 
+  // Если данных нет, то скорее всего дневник упал, поэтому отдаёт то что знаем
+  if (!attestation) {
+    return findActiveTerm(authData)
+  }
+
   // По идее не нужно
   /*if (!attestation) {
     throw new ApiError(
