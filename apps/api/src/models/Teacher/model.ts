@@ -9,7 +9,7 @@ export type TeacherModelType = {
   firstName: string
   lastName: string
   middleName?: string
-  idFromDiary: number
+  idFromDiary?: number
 }
 
 export type ITeacherModel = IModelPrototype<TeacherModelType, 'id'>
@@ -26,8 +26,7 @@ export const TeacherModel = sequelize.define<ITeacherModel>('teacher', {
     references: {
       model: SPOModel,
       key: 'id'
-    },
-    unique: 'teacher_uniq_k'
+    }
   },
   firstName: {
     type: DataTypes.STRING(45),
@@ -43,7 +42,17 @@ export const TeacherModel = sequelize.define<ITeacherModel>('teacher', {
   },
   idFromDiary: {
     type: DataTypes.INTEGER,
-    allowNull: false,
-    unique: 'teacher_uniq_k'
+    allowNull: true
   }
+}, {
+  indexes: [
+    {
+      unique: true,
+      fields: ['spoId', 'idFromDiary']
+    },
+    {
+      unique: true,
+      fields: ['spoId', 'firstName', 'lastName', 'middleName']
+    },
+  ]
 })

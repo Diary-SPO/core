@@ -26,7 +26,8 @@ import {
   TermSubjectModel,
   TermTypeModel,
   TermUserModel,
-  ThemeModel
+  ThemeModel,
+  TermSubjectExaminationTypeModel
 } from './import'
 
 // SPO <--->> Group
@@ -70,8 +71,8 @@ TermModel.hasMany(TermSubjectModel)
 TermSubjectModel.belongsTo(TermModel)
 
 // TermSubject <-->> ExaminationType
-TermSubjectModel.hasMany(ExaminationTypeModel)
-ExaminationTypeModel.belongsTo(TermSubjectModel)
+ExaminationTypeModel.hasMany(TermSubjectModel)
+TermSubjectModel.belongsTo(ExaminationTypeModel)
 
 // LessonType <-->> Schedule
 LessonTypeModel.hasMany(ScheduleModel)
@@ -176,6 +177,10 @@ MarkModel.belongsTo(TermModel)
 // SPO <-->> Ads
 SPOModel.hasMany(AdsModel)
 AdsModel.belongsTo(SPOModel)
+
+// termSubjectExaminationTypeId <-->> TermSubject
+TermSubjectExaminationTypeModel.hasMany(TermSubjectModel)
+TermSubjectModel.belongsTo(TermSubjectExaminationTypeModel)
 
 if (forceSyncDatabase) {
   console.log('Syncing database...')

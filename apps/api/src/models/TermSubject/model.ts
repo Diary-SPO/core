@@ -7,6 +7,7 @@ import { SubjectModel } from '../Subject'
 import { TeacherModel } from '../Teacher'
 import { TermModel } from '../Term'
 import { IModelPrototypeNoId } from '../types'
+import { TermSubjectExaminationTypeModel } from '../TermSubjectExaminationType'
 
 export type TermSubjectModelType = {
   termId: number
@@ -15,6 +16,8 @@ export type TermSubjectModelType = {
   markValueId?: number
   teacherId?: number
   examinationTypeId?: number
+  termSubjectExaminationTypeId?: number
+  idFromDiary: number
 }
 
 export type ITermSubjectModel = IModelPrototypeNoId<TermSubjectModelType>
@@ -72,6 +75,17 @@ export const TermSubjectModel = sequelize.define<ITermSubjectModel>(
         model: ExaminationTypeModel,
         key: 'id'
       }
+    },
+    termSubjectExaminationTypeId: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      references: {
+        model: TermSubjectExaminationTypeModel
+      }
+    },
+    idFromDiary: {
+      type: DataTypes.INTEGER,
+      allowNull: false
     }
   }
 )

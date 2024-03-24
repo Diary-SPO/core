@@ -1,13 +1,15 @@
 // Эти данные приходят с бэка сетевого города, типизация актуальна на момент 04.09.23
 // В некоторых местах типизация может быть не полной
 import { Person } from '../../base.ts'
+import { Optional } from 'sequelize';
 import {
   AbsenceTypesDescriptionKeys,
   AbsenceTypesKeys,
   AdditionalMarks,
   ExaminationKeys,
   LessonTypeKeys,
-  LessonWorkTypeKeys
+  LessonWorkTypeKeys,
+  TermSubjectExaminationKeys
 } from './keys.ts'
 
 export interface Organization {
@@ -275,12 +277,19 @@ export const Examinations: Record<ExaminationKeys, string> = {
   Other: 'Др. форма контроля'
 }
 
+export const TermSubjectExaminations: Record<TermSubjectExaminationKeys, string> = {
+  profModules: 'Квалиф. экзамены по ПМ',
+  subjects: 'Зачёты',
+  courseWorks: 'Курсовые работы'
+}
+
 // export type ExaminationType = keyof typeof Examinations
 export type TermType = 'Semester'
 
 export interface Subject {
+  teacher?: Omit<Teacher, 'id'>
   examinationType?: ExaminationKeys
-  marks: Record<string, number | string>
+  marks: Record<string, number | string | {value: MarkKeys}>
   name: string
   id: number
 }
@@ -291,8 +300,8 @@ export interface AttestationResponse {
   year?: number
   students?: Person[]
   subjects: Subject[]
-  profModules?: unknown[]
-  courseWorks?: unknown[]
+  profModules?: Subject[]
+  courseWorks?: Subject[]
   departmentName: string
 }
 
