@@ -26,7 +26,7 @@
   "devDependencies": {
     "@diary-spo/shared": "workspace:*",
     "@diary-spo/types": "workspace:*",
-    "@elysiajs/swagger": "^0.8.5",
+    "@elysiajs/swagger": "^1.0.3",
     "@types/pg": "^8.10.9"
   }
 }
