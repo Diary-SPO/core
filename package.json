@@ -26,7 +26,7 @@
   "devDependencies": {
     "@biomejs/biome": "^1.5.3",
     "concurrently": "^8.2.2",
-    "@happy-dom/global-registrator": "^13.3.2",
+    "@happy-dom/global-registrator": "^14.3.6",
     "bun": "latest",
     "bun-types": "latest",
     "husky": "^9.0.11",
