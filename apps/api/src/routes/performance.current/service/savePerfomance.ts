@@ -4,8 +4,8 @@ import {
   PerformanceCurrent
 } from '@diary-spo/shared'
 import { ICacheData } from '@helpers'
-import { getPerformanceFromDB } from './getPerformanceFromDB'
 import { getLessonsService } from 'src/routes/lessons/lessonsService'
+import { getPerformanceFromDB } from './getPerformanceFromDB'
 
 /**
  * Сохраняет оценки в базе
@@ -37,7 +37,7 @@ export const savePerfomance = async (
 
       // Если дня нет в БД, то добавляем в список на добавление/обновление
       if (!dayFromDB) {
-        if (dayToUpdate.indexOf(actualDate) == -1) {
+        if (dayToUpdate.indexOf(actualDate) === -1) {
           dayToUpdate.push(actualDate)
         }
         continue
@@ -46,7 +46,7 @@ export const savePerfomance = async (
       const isEquils = isEquilsPerformanceDays(day, dayFromDB)
 
       // Если есть отличия, то добавляем в список на добавление/обновление
-      if (!isEquils && dayToUpdate.indexOf(actualDate) == -1) {
+      if (!isEquils && dayToUpdate.indexOf(actualDate) === -1) {
         dayToUpdate.push(actualDate)
       }
     }
@@ -78,9 +78,9 @@ const searchDayFromSubject = (
   dayToSearch: Date | string
 ) => {
   for (const month of performance.daysWithMarksForSubject) {
-    if (!month.daysWithMarks || month.subjectName != subjectName) continue
+    if (!month.daysWithMarks || month.subjectName !== subjectName) continue
     for (const day of month.daysWithMarks) {
-      if (day.day == dayToSearch) {
+      if (day.day === dayToSearch) {
         return day
       }
     }
@@ -105,7 +105,7 @@ const isEquilsPerformanceDays = (
 
   for (const markType of [...countableOne.types, ...countableTwo.types]) {
     // Если есть отличия, то возвращаем, что не эквивалентны
-    if (countableOne.marks[markType] != countableTwo.marks[markType]) {
+    if (countableOne.marks[markType] !== countableTwo.marks[markType]) {
       return false
     }
   }

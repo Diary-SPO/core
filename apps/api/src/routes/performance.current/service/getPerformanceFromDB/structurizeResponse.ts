@@ -1,11 +1,11 @@
 import { Grade, MarkKeys, PerformanceCurrent } from '@diary-spo/shared'
+import { ICacheData } from '@helpers'
 import {
   IDayWithMarks,
   IMonthWithDay,
   IPerformanceFromDB,
   monthNames
 } from './types'
-import { ICacheData } from '@helpers'
 
 export const structurizeResponse = (
   subjects: IPerformanceFromDB[],
@@ -43,7 +43,7 @@ export const structurizeResponse = (
         break
       }
 
-      let markValues: MarkKeys[] = []
+      const markValues: MarkKeys[] = []
       // Рассчитываем оценки
       for (const task of schedule.tasks) {
         for (const mark of task.marks) {
@@ -58,9 +58,9 @@ export const structurizeResponse = (
         }
       }
 
-      const day = schedule.date.toString() + 'T00:00:00.0000000'
+      const day = `${schedule.date.toString()}T00:00:00.0000000`
 
-      let absenceType = schedule.absences?.[0]
+      const absenceType = schedule.absences?.[0]
         ? schedule.absences[0].absenceType.name
         : undefined
 
@@ -101,7 +101,7 @@ export const structurizeResponse = (
           // Ищем, есть ли уже день в месяце
           let isExist = false
           for (const dayCheck of month.daysWithLessons) {
-            if (dayCheck == day) {
+            if (dayCheck === day) {
               isExist = true
               break
             }

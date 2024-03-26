@@ -1,9 +1,9 @@
 import { sequelize } from '@db'
 import { DataTypes } from 'sequelize'
 import { GroupModel } from '../Group'
+import { SPOModel } from '../SPO'
 import { TermTypeModel } from '../TermType'
 import { IModelPrototype } from '../types'
-import { SPOModel } from '../SPO'
 
 export type AdsModelType = {
   id: number

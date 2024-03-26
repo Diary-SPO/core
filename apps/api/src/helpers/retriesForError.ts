@@ -20,7 +20,7 @@ export const retriesForError = async <C extends Function>(
   // @ts-ignore
 ): ReturnType<C> =>
   callback(...calbackArguments).catch(async (err: string) => {
-    if (retries <= 1) throw new Error(`Ertries error: ` + err)
+    if (retries <= 1) throw new Error(`Ertries error: ${err}`)
     await Bun.sleep(sleep)
     return retriesForError(callback, calbackArguments, retries - 1)
   })

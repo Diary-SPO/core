@@ -3,6 +3,7 @@ import { ICacheData, objPropertyCopy, retriesForError } from '@helpers'
 import {
   IScheduleModel,
   IScheduleModelNoId,
+  ITermDetectP,
   ScheduleModel,
   ScheduleWhere,
   TeacherSaveOrGet as teacherSaveOrGet,
@@ -17,8 +18,7 @@ import {
   subgroupSaveOrGet,
   subjectSaveOrGet,
   tasksSaveOrGet,
-  themesSaveOrGet,
-  ITermDetectP
+  themesSaveOrGet
 } from '@models'
 
 /**

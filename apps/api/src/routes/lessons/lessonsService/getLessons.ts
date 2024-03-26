@@ -10,7 +10,7 @@ export const getLessonsService = async (
   startDate: string,
   endDate: string,
   authData: ICacheData,
-  isAwait: boolean = false
+  isAwait = false
 ): Promise<Day[] | string> => {
   const path = `${SERVER_URL}/services/students/${authData.idFromDiary}/lessons/${startDate}/${endDate}`
 

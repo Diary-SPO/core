@@ -1,9 +1,9 @@
 import { MarkKeys } from '@diary-spo/shared'
 import { ICacheData, retriesForError } from '@helpers'
-import { markValueSaveOrGet } from 'src/models/MarkValue'
-import { markSaveOrGetUnSafe } from './markSaveOrGetUnSafe'
-import { IScheduleModel } from 'src/models/Schedule'
 import { formatDate } from '@utils'
+import { markValueSaveOrGet } from 'src/models/MarkValue'
+import { IScheduleModel } from 'src/models/Schedule'
+import { markSaveOrGetUnSafe } from './markSaveOrGetUnSafe'
 
 export const markSaveOrGet = async (
   mark: MarkKeys,
@@ -21,7 +21,7 @@ export const markSaveOrGet = async (
       new Date(authData.termLastUpdate).toISOString()
     )
 
-    termId = minDate <= scheduleDate && currDate == lastUpdate ? termId : null
+    termId = minDate <= scheduleDate && currDate === lastUpdate ? termId : null
   } else {
     termId = null
   }

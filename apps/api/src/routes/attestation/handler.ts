@@ -1,8 +1,8 @@
+import { API_CODES, API_ERRORS, ApiError } from '@api'
 import type { AttestationResponse } from '@diary-spo/shared'
 import { getCookieFromToken } from '@helpers'
 import { ContextWithID } from '@types'
 import { getAttestationFromDiary } from './service'
-import { API_CODES, API_ERRORS, ApiError } from '@api'
 import { saveAttestation } from './service/saveAttestation'
 
 const getAttestation = async ({

@@ -6,8 +6,8 @@ import { MarkValueModel } from '../MarkValue'
 import { SubjectModel } from '../Subject'
 import { TeacherModel } from '../Teacher'
 import { TermModel } from '../Term'
-import { IModelPrototypeNoId } from '../types'
 import { TermSubjectExaminationTypeModel } from '../TermSubjectExaminationType'
+import { IModelPrototypeNoId } from '../types'
 
 export type TermSubjectModelType = {
   termId: number

@@ -5,10 +5,10 @@ import {
 } from '@diary-spo/shared'
 import { ICacheData, retriesForError } from '@helpers'
 import {
+  TeacherSaveOrGet,
   markValueSaveOrGet,
   saveOrGetExaminationType,
   subjectSaveOrGet,
-  TeacherSaveOrGet,
   termSubjectSaveOrGet
 } from '@models'
 

@@ -8,9 +8,9 @@ import {
   requiredSaveOrGet
 } from '@models'
 import { objPropertyCopy } from 'src/helpers/objPropertyCopy'
+import { markDelete } from 'src/models/Mark/actions/markDelete'
 import { taskTypeSaveOrGet } from 'src/models/TaskType'
 import { TaskModel } from '../model'
-import { markDelete } from 'src/models/Mark/actions/markDelete'
 
 export const tasksSaveOrGet = async (
   tasks: Task[],

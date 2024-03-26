@@ -23,11 +23,11 @@ import {
   TaskTypeModel,
   TeacherModel,
   TermModel,
+  TermSubjectExaminationTypeModel,
   TermSubjectModel,
   TermTypeModel,
   TermUserModel,
-  ThemeModel,
-  TermSubjectExaminationTypeModel
+  ThemeModel
 } from './import'
 
 // SPO <--->> Group
