@@ -1,13 +1,14 @@
-import { TeacherModel, TeacherModelType } from "@models";
-import { Optional, Op } from "sequelize";
-import { LogError } from "src/LogError";
+import { TeacherModel, TeacherModelType } from '@models'
+import { Optional, Op } from 'sequelize'
+import { LogError } from 'src/LogError'
 
 export const TeacherSaveOrGet = async (
-  teacher: Optional<TeacherModelType, "id" | "idFromDiary"> & Omit<TeacherModelType, "id" | "idFromDiary">
+  teacher: Optional<TeacherModelType, 'id' | 'idFromDiary'> &
+    Omit<TeacherModelType, 'id' | 'idFromDiary'>
 ): Promise<TeacherModelType> => {
-  // TODO: что-то как-т острашно стало. Лучше 
-  // сделать две разные функции - одна по id 
-  // будет искать/сохранять, а другая 
+  // TODO: что-то как-т острашно стало. Лучше
+  // сделать две разные функции - одна по id
+  // будет искать/сохранять, а другая
   // чисто spoId + names
   return TeacherModel.findOrCreate({
     // @ts-ignore
@@ -34,13 +35,13 @@ export const TeacherSaveOrGet = async (
       ]
     },
     defaults: {
-      ...teacher,
-    },
-  }).then((v) => {
-    const result = v[0];
-    if (v[1]) {
-      return result;
+      ...teacher
     }
-    return result.update({ ...teacher });
+  }).then((v) => {
+    const result = v[0]
+    if (v[1]) {
+      return result
+    }
+    return result.update({ ...teacher })
   })
-};
+}

@@ -35,4 +35,7 @@ export type AbsenceTypesKeys = 'IsAbsent' | 'IsLate'
 export type AbsenceTypesDescriptionKeys = 'Н' | 'О'
 export type AdditionalMarks = 'Д' | 'Зч'
 export type ExaminationKeys = 'DifferentiatedTest' | 'Test' | 'Exam' | 'Other'
-export type TermSubjectExaminationKeys = 'subjects' | 'profModules' | 'courseWorks'
+export type TermSubjectExaminationKeys =
+  | 'subjects'
+  | 'profModules'
+  | 'courseWorks'

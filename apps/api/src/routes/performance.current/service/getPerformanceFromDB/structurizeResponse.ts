@@ -7,7 +7,10 @@ import {
 } from './types'
 import { ICacheData } from '@helpers'
 
-export const structurizeResponse = (subjects: IPerformanceFromDB[], authData: ICacheData) => {
+export const structurizeResponse = (
+  subjects: IPerformanceFromDB[],
+  authData: ICacheData
+) => {
   const monthsWithDays: IMonthWithDay[] = []
   const daysWithMarksForSubject = []
 
@@ -22,7 +25,6 @@ export const structurizeResponse = (subjects: IPerformanceFromDB[], authData: IC
 
     // Формируем daysWithMarks
     for (const schedule of subject.schedules) {
-
       // TODO: Очень костыльно убираем чужие подгруппы. Нужно поправить (в будущем)
       const subgroups = schedule.scheduleSubgroups
       if (subgroups.length) {

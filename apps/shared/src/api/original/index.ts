@@ -1,7 +1,7 @@
 // Эти данные приходят с бэка сетевого города, типизация актуальна на момент 04.09.23
 // В некоторых местах типизация может быть не полной
 import { Person } from '../../base.ts'
-import { Optional } from 'sequelize';
+import { Optional } from 'sequelize'
 import {
   AbsenceTypesDescriptionKeys,
   AbsenceTypesKeys,
@@ -277,7 +277,10 @@ export const Examinations: Record<ExaminationKeys, string> = {
   Other: 'Др. форма контроля'
 }
 
-export const TermSubjectExaminations: Record<TermSubjectExaminationKeys, string> = {
+export const TermSubjectExaminations: Record<
+  TermSubjectExaminationKeys,
+  string
+> = {
   profModules: 'Квалиф. экзамены по ПМ',
   subjects: 'Зачёты',
   courseWorks: 'Курсовые работы'
@@ -289,7 +292,7 @@ export type TermType = 'Semester'
 export interface Subject {
   teacher?: Omit<Teacher, 'id'>
   examinationType?: ExaminationKeys
-  marks: Record<string, number | string | {value: MarkKeys}>
+  marks: Record<string, number | string | { value: MarkKeys }>
   name: string
   id: number
 }

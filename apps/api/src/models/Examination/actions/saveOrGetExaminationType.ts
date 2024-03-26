@@ -1,5 +1,5 @@
-import { ExaminationKeys } from "@diary-spo/shared"
-import { ExaminationTypeModel } from "../model"
+import { ExaminationKeys } from '@diary-spo/shared'
+import { ExaminationTypeModel } from '../model'
 
 export const saveOrGetExaminationType = async (type: ExaminationKeys) => {
   return ExaminationTypeModel.findOrCreate({
@@ -9,5 +9,5 @@ export const saveOrGetExaminationType = async (type: ExaminationKeys) => {
     defaults: {
       name: type
     }
-  }).then(v => v[0])
+  }).then((v) => v[0])
 }

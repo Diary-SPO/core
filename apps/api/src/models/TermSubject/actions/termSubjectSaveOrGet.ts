@@ -1,5 +1,5 @@
-import { Subject } from "@diary-spo/shared";
-import { TermSubjectModel } from "../model";
+import { Subject } from '@diary-spo/shared'
+import { TermSubjectModel } from '../model'
 
 type IArgument = {
   termId: number

@@ -1,7 +1,9 @@
-import { TermSubjectExaminationKeys } from "@diary-spo/shared"
-import { TermSubjectExaminationTypeModel } from "../model"
+import { TermSubjectExaminationKeys } from '@diary-spo/shared'
+import { TermSubjectExaminationTypeModel } from '../model'
 
-export const saveOrGetTermSubjectExaminationType = async (type: TermSubjectExaminationKeys) => {
+export const saveOrGetTermSubjectExaminationType = async (
+  type: TermSubjectExaminationKeys
+) => {
   return TermSubjectExaminationTypeModel.findOrCreate({
     where: {
       name: type
@@ -9,5 +11,5 @@ export const saveOrGetTermSubjectExaminationType = async (type: TermSubjectExami
     defaults: {
       name: type
     }
-  }).then(v => v[0])
+  }).then((v) => v[0])
 }

@@ -1,9 +1,12 @@
-import { AttestationResponse } from "@diary-spo/shared";
-import { ICacheData } from "@helpers";
-import { detectTerm } from "@models";
-import { saveTermSubjects } from "./saveTermSubjects";
+import { AttestationResponse } from '@diary-spo/shared'
+import { ICacheData } from '@helpers'
+import { detectTerm } from '@models'
+import { saveTermSubjects } from './saveTermSubjects'
 
-export const saveAttestation = async (data: AttestationResponse, authData: ICacheData) => {
+export const saveAttestation = async (
+  data: AttestationResponse,
+  authData: ICacheData
+) => {
   const currTermId = await detectTerm(authData)
 
   if (!currTermId) {
