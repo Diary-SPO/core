@@ -7,11 +7,6 @@ export const ScheduleGetFromDB = async (
   endDate: string,
   userId: number
 ) => {
-  const user = await getUserById(userId, true)
-
-  if (!user) {
-    return null
-  }
   const formatSchedules = await sequelize.query(
     /*crypto*/ `SELECT 
 	json_build_object(
@@ -81,13 +76,13 @@ left join "scheduleSubgroup" ss on ss."scheduleId" = s.id
 left join "lessonType" lt on s."lessonTypeId"  = lt.id
 left join subject sj on s."subjectId" = sj.id
 left join task t on t."scheduleId" = s.id
-left join mark m on m."taskId" = t.id and m."diaryUserId" = ${user.id}
+left join mark m on m."taskId" = t.id and m."diaryUserId" = ${userId}
 left join "markValue" mv on mv.id = m."markValueId" 
 left join "taskType" tt on tt.id = t."taskTypeId"
 left join classroom c on s."classroomId" = c.id
 left join teacher tr on s."teacherId" = tr.id
 left join required r on r."taskId" = t.id
-where ss."scheduleId" is null or ss."diaryUserId" = ${user.id}
+where ss."scheduleId" is null or ss."diaryUserId" = ${userId}
 group by "date"
 having "date" between '${startDate}' and '${endDate}'
 order by "date"

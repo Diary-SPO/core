@@ -27,7 +27,7 @@ export const getLessonsService = async (
     return ScheduleGetFromDB(
       startDate,
       endDate,
-      authData.idFromDiary
+      authData.localUserId
     ) as unknown as Day[]
   }
 

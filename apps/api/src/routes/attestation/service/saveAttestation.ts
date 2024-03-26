@@ -1,7 +1,7 @@
 import { AttestationResponse } from "@diary-spo/shared";
 import { ICacheData } from "@helpers";
 import { detectTerm } from "@models";
-import { saveTermSubject } from "./saveTermSubject";
+import { saveTermSubjects } from "./saveTermSubjects";
 
 export const saveAttestation = async (data: AttestationResponse, authData: ICacheData) => {
   const currTermId = await detectTerm(authData)
@@ -14,5 +14,15 @@ export const saveAttestation = async (data: AttestationResponse, authData: ICach
   const profModules = data.profModules
   const courseWorks = data.courseWorks
 
-  saveTermSubject('subjects', currTermId, subjects, authData)
+  // Вызываем сохранение
+
+  saveTermSubjects('subjects', currTermId, subjects, authData)
+
+  if (profModules) {
+    saveTermSubjects('profModules', currTermId, profModules, authData)
+  }
+
+  if (courseWorks) {
+    saveTermSubjects('courseWorks', currTermId, courseWorks, authData)
+  }
 }

@@ -5,8 +5,9 @@ import {
   IPerformanceFromDB,
   monthNames
 } from './types'
+import { ICacheData } from '@helpers'
 
-export const structurizeResponse = (subjects: IPerformanceFromDB[]) => {
+export const structurizeResponse = (subjects: IPerformanceFromDB[], authData: ICacheData) => {
   const monthsWithDays: IMonthWithDay[] = []
   const daysWithMarksForSubject = []
 
@@ -14,12 +15,32 @@ export const structurizeResponse = (subjects: IPerformanceFromDB[]) => {
   for (const subject of subjects) {
     const subjectName = subject.name
     const daysWithMarks: IDayWithMarks[] = []
+    let isIgnored = true
     // Рассчёт оценок
     let sumMarks = 0
     let countMarks = 0
 
     // Формируем daysWithMarks
     for (const schedule of subject.schedules) {
+
+      // TODO: Очень костыльно убираем чужие подгруппы. Нужно поправить (в будущем)
+      const subgroups = schedule.scheduleSubgroups
+      if (subgroups.length) {
+        for (const subgroup of subgroups) {
+          if (subgroup.diaryUserId === authData.localUserId) {
+            isIgnored = false
+            break
+          }
+        }
+      } else {
+        isIgnored = false
+      }
+
+      // TODO: относится к костылю выше
+      if (isIgnored) {
+        break
+      }
+
       let markValues: MarkKeys[] = []
       // Рассчитываем оценки
       for (const task of schedule.tasks) {
@@ -100,6 +121,11 @@ export const structurizeResponse = (subjects: IPerformanceFromDB[]) => {
         },
         daysWithLessons: [day]
       })
+    }
+
+    // TODO: относится к костылю выше
+    if (isIgnored) {
+      continue
     }
 
     // Выполняем сортировку всех дат и месяцев

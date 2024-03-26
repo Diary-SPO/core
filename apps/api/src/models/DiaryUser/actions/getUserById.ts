@@ -14,7 +14,7 @@ export const getUserById = async (
   // TODO: fix it
   return DiaryUserModel.findOne({
     where: {
-      idFromDiary: id
+      id
     },
     include: getGroup ? GroupModel : undefined
   })

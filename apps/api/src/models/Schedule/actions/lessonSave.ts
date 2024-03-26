@@ -77,10 +77,13 @@ export const lessonSave = async (
   }
 
   if (gradebook) {
+    gradebookIdFromDiary = gradebook.id
+  }
+
+  if (gradebook?.lessonType) {
     lessonTypeId = (
       await retriesForError(lessonTypeSaveOrGet, [gradebook.lessonType], 2)
     ).id
-    gradebookIdFromDiary = gradebook.id
   }
 
   if (gradebook?.absenceType) {
@@ -94,7 +97,8 @@ export const lessonSave = async (
     groupId: authData.groupId,
     startTime: lesson.startTime,
     endTime: lesson.endTime,
-    date: date
+    date: date,
+    subjectId
   }
 
   // Подготавливаем расписание для сохранения в базу
@@ -129,21 +133,6 @@ export const lessonSave = async (
     promiseToReturn = ScheduleModel.create(scheduleToSave)
   }
 
-  if (gradebook?.themes) {
-    const scheduleId = (await promiseToReturn).id
-    retriesForError(themesSaveOrGet, [gradebook.themes, scheduleId], 2)
-  }
-
-  // Сохраняем "задачи" (оценки там же)
-  if (gradebook?.tasks) {
-    const schedule = await promiseToReturn
-    retriesForError(
-      tasksSaveOrGet,
-      [gradebook.tasks, schedule, authData, termPromise],
-      2
-    )
-  }
-
   // Если есть подгруппа - сохраняем
   if (subgroup) {
     const subgroupDB = retriesForError(
@@ -169,6 +158,21 @@ export const lessonSave = async (
       deleteScheduleSubgroup(s.id, authData.localUserId)
     }
   })
+
+  if (gradebook?.themes) {
+    const scheduleId = (await promiseToReturn).id
+    retriesForError(themesSaveOrGet, [gradebook.themes, scheduleId], 2)
+  }
+
+  // Сохраняем "задачи" (оценки там же)
+  if (gradebook?.tasks && gradebook.tasks.length > 0) {
+    const schedule = await promiseToReturn
+    retriesForError(
+      tasksSaveOrGet,
+      [gradebook.tasks, schedule, authData, termPromise],
+      2
+    )
+  }
 
   // Сохраняем опоздания (если есть)
   promiseToReturn.then(async (s) => {

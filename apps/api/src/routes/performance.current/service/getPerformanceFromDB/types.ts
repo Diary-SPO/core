@@ -6,7 +6,8 @@ import {
   IMarkValueModelType,
   IScheduleModel,
   ISubjectModelType,
-  ITaskModel
+  ITaskModel,
+  ScheduleSubgroupModelType
 } from '@models'
 
 export type IPerformanceFromDB = ISubjectModelType & {
@@ -18,6 +19,7 @@ type IScheduleFull = IScheduleModel & {
   absences: (IAbsenceModel & {
     absenceType: IAbsenceTypeModel
   })[]
+  scheduleSubgroups: ScheduleSubgroupModelType[]
 }
 
 type ITaskFull = ITaskModel & {

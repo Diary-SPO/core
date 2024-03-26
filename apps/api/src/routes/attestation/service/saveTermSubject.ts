@@ -1,29 +1,14 @@
 import { MarkKeys, Subject, TermSubjectExaminationKeys } from "@diary-spo/shared";
 import { ICacheData, retriesForError } from "@helpers";
-import {
-  detectTerm,
-  markValueSaveOrGet,
-  saveOrGetExaminationType,
-  subjectSaveOrGet,
-  TeacherSaveOrGet,
-  termSubjectSaveOrGet,
-} from "@models";
-import { saveOrGetTermSubjectExaminationType } from "src/models/TermSubjectExaminationType/actions/saveOrGetTermSubjectExaminationType";
+import { markValueSaveOrGet, saveOrGetExaminationType, subjectSaveOrGet, TeacherSaveOrGet, termSubjectSaveOrGet } from "@models";
 
 export const saveTermSubject = async (
-  type: TermSubjectExaminationKeys,
+  termSubjectExaminationTypeId: number | undefined,
   currTermId: number,
-  subjectsSave: Subject[],
+  subjectSave: Subject,
   authData: ICacheData
 ) => {
-  // subjects, profModules, courseWorks и прочее
-  const termSubjectExaminationType = await retriesForError(
-    saveOrGetTermSubjectExaminationType,
-    [type]
-  );
-
-  for (const subjectSave of subjectsSave) {
-    const examinationType = subjectSave.examinationType;
+  const examinationType = subjectSave.examinationType;
     const teacher = subjectSave.teacher;
     const name = subjectSave.name;
     const id = subjectSave.id;
@@ -59,10 +44,9 @@ export const saveTermSubject = async (
       markValueId: markValueFromDB?.id,
       teacherId: teacherFromDB?.id,
       examinationTypeId: examinationTypeFromDB?.id,
-      termSubjectExaminationTypeId: termSubjectExaminationType?.id,
+      termSubjectExaminationTypeId: termSubjectExaminationTypeId,
       idFromDiary: id,
     };
 
     retriesForError(termSubjectSaveOrGet, [subject]);
-  }
 };

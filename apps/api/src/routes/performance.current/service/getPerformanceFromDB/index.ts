@@ -6,6 +6,8 @@ import {
   MarkModel,
   MarkValueModel,
   ScheduleModel,
+  ScheduleSubgroupModel,
+  SubgroupModel,
   SubjectModel,
   TaskModel
 } from '@models'
@@ -34,6 +36,9 @@ export const getPerformanceFromDB = async (authData: ICacheData) => {
                   attributes: ['value']
                 }
               ],
+              where: {
+                diaryUserId: authData.localUserId
+              },
               required: true
             }
           ],
@@ -51,6 +56,10 @@ export const getPerformanceFromDB = async (authData: ICacheData) => {
             diaryUserId: authData.localUserId
           },
           required: false
+        },
+        {
+          model: ScheduleSubgroupModel,
+          required: false
         }
       ],
       where: {
@@ -60,5 +69,5 @@ export const getPerformanceFromDB = async (authData: ICacheData) => {
       }
     }
   })) as IPerformanceFromDB[]
-  return structurizeResponse(result)
+  return structurizeResponse(result, authData)
 }
