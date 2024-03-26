@@ -3,13 +3,13 @@ import { Placeholder } from '@vkontakte/vkui'
 import { FunctionalComponent } from 'preact'
 import { StateUpdater, useEffect, useState } from 'preact/hooks'
 
+import { getFinalMarks } from '@api'
+import { THIRD_SEC } from '@config'
 import { useRateLimitExceeded } from '@hooks'
 import { handleResponse, isApiError } from '@utils'
 
 import { Table } from './Table'
 
-import { THIRD_SEC } from '@config'
-import { getFinalMarks } from '../../../../methods'
 import './index.css'
 
 interface Props {

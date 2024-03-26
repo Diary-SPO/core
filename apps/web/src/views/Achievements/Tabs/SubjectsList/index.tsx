@@ -3,11 +3,11 @@ import { Placeholder } from '@vkontakte/vkui'
 import { FunctionalComponent } from 'preact'
 import { StateUpdater, useEffect, useState } from 'preact/hooks'
 
+import { getAttestation } from '@api'
 import { THIRD_SEC } from '@config'
 import { useRateLimitExceeded } from '@hooks'
 import { handleResponse, isApiError } from '@utils'
 
-import { getAttestation } from '../../../../methods'
 import SubjectGroup from './SubjectGroup'
 import { processAttestationData } from './helpers'
 

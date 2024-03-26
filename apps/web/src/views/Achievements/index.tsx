@@ -22,7 +22,7 @@ import {
 import { FC, lazy } from 'preact/compat'
 import { useEffect, useState } from 'preact/hooks'
 
-import { getPerformance } from '../../methods'
+import { getPerformance } from '@api'
 
 import { Props } from '../types.ts'
 import { formatStatisticsData } from './helpers.ts'

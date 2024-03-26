@@ -25,13 +25,14 @@ import {
   usePlatform
 } from '@vkontakte/vkui'
 import { FC, lazy } from 'preact/compat'
+
 import {
   MAIN_SETTINGS,
   VIEW_MARKS,
   VIEW_NOTIFICATIONS,
   VIEW_SCHEDULE,
   VIEW_SETTINGS
-} from '../../../routes'
+} from '@routes'
 
 const Epic = lazy(() => import('./Epic'))
 import ModalRoot from './ModalRoot'

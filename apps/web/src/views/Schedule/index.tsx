@@ -18,7 +18,7 @@ import {
 import { endOfWeek, startOfWeek } from '@vkontakte/vkui/dist/lib/date'
 import { FC, lazy, useEffect, useState } from 'preact/compat'
 
-import { getLessons } from '../../methods'
+import { getLessons } from '@api'
 import { Props } from '../types.ts'
 import { getWeekString, isNeedToGetNewData } from './utils'
 

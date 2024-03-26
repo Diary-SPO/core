@@ -1,3 +1,4 @@
+import { b64 } from '@diary-spo/crypto'
 import {
   Icon28DoorArrowLeftOutline,
   Icon28ErrorCircleOutline
@@ -16,14 +17,13 @@ import {
 import { ChangeEvent, FC } from 'preact/compat'
 import { useEffect, useState } from 'preact/hooks'
 
+import { postLogin } from '@api'
 import { PanelHeaderWithBack } from '@components'
 import { ADMIN_PAGE, VKUI_RED } from '@config'
 import { useSnackbar } from '@hooks'
+import { VIEW_SCHEDULE } from '@routes'
 import { handleResponse, isApiError } from '@utils'
 
-import { b64 } from '@diary-spo/crypto'
-import { postLogin } from '../../methods'
-import { VIEW_SCHEDULE } from '../../routes'
 import { Props } from '../types.ts'
 import { loginPattern, saveData } from './helpers'
 

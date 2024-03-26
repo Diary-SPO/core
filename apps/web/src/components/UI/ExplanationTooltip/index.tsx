@@ -1,20 +1,13 @@
 import { Icon16HelpOutline } from '@vkontakte/icons'
 import { Popover, Subhead } from '@vkontakte/vkui'
-import { CSSProperties, FC } from 'preact/compat'
+import { FC } from 'preact/compat'
 
 interface ITooltipText {
   text?: string
   tooltipContent: string
 }
 
-const style: CSSProperties = {
-  display: 'inline-block',
-  verticalAlign: 'middle',
-  position: 'relative',
-  top: -1,
-  color: 'var(--vkui--color_icon_secondary)',
-  marginLeft: 5
-}
+import './index.css'
 
 const ExplanationTooltip: FC<ITooltipText> = ({ text, tooltipContent }) => {
   const textTooltip = (
@@ -32,7 +25,7 @@ const ExplanationTooltip: FC<ITooltipText> = ({ text, tooltipContent }) => {
     <div style={{ cursor: 'pointer' }}>
       {text}
       <Popover style={{ maxWidth: 220 }} action='hover' content={textTooltip}>
-        <Icon16HelpOutline style={style} />
+        <Icon16HelpOutline className='iconHelp' />
       </Popover>
     </div>
   )

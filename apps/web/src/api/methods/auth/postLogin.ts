@@ -1,6 +1,6 @@
 import { ResponseLogin } from '@diary-spo/shared'
 import { ServerResponse } from '@types'
-import makeRequest from '../makeRequest'
+import makeRequest from '../../makeRequest.ts'
 
 export const postLogin = async (
   login: string,

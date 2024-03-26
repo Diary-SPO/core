@@ -1,2 +1,2 @@
-export * from './server'
+export * from './methods'
 export * from './makeRequest.ts'

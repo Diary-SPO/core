@@ -1,7 +1,0 @@
-export * from './getFinalMarks'
-// export * from './getCollegeInfo'
-export * from './getAds'
-export * from './getLessons'
-export * from './getPerformance'
-export * from './getAttestation'
-export * from './postLogin'

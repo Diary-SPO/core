@@ -11,12 +11,13 @@ import {
   useAdaptivityConditionalRender
 } from '@vkontakte/vkui'
 import { FC } from 'preact/compat'
+
 import {
   VIEW_MARKS,
   VIEW_NOTIFICATIONS,
   VIEW_SCHEDULE,
   VIEW_SETTINGS
-} from '../../../../routes'
+} from '@routes'
 
 interface ITabbar {
   onStoryChange: (current: Pages) => void

@@ -1,0 +1,9 @@
+.iconHelp {
+  position: relative;
+  top: -1px;
+
+  display: inline-block;
+  vertical-align: middle;
+  color: var(--vkui--color_icon_secondary);
+  margin-left: 5px;
+}

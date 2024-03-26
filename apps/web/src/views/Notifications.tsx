@@ -1,3 +1,4 @@
+import { getAds } from '@api'
 import {
   ErrorPlaceholder,
   PanelHeaderWithBack,
@@ -21,7 +22,6 @@ import {
 } from '@vkontakte/vkui'
 import { FC } from 'preact/compat'
 import { useEffect, useState } from 'preact/hooks'
-import { getAds } from '../methods'
 import { Props } from './types.ts'
 
 const updateCache = (ads: NotificationsResponse[]) => {

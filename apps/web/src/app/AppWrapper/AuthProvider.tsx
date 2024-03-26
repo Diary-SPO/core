@@ -4,7 +4,8 @@ import {
 } from '@vkontakte/vk-mini-apps-router'
 import { VNode } from 'preact'
 import { useLayoutEffect } from 'preact/hooks'
-import { MAIN_SETTINGS, PAGE_SCHEDULE } from '../../routes'
+
+import { MAIN_SETTINGS, PAGE_SCHEDULE } from '@routes'
 
 const AuthProvider = ({ children }: { children: VNode }) => {
   const routeNavigator = useRouteNavigator()
