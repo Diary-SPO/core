@@ -63,7 +63,7 @@ You can rewrite file `.env.example` and rename to `.env`
 ## Launch and build scripts
 
 ```bash
-bun start     # run methods from source code
+bun start     # run server from source code
 bun dev       # run with watch mode
 bun run build # build to ./dist folder
 bun serve     # build and run production
