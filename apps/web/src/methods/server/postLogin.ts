@@ -1,4 +1,4 @@
-import { ResponseLogin } from '@diary-spo/types'
+import { ResponseLogin } from '@diary-spo/shared'
 import { ServerResponse } from '@types'
 import makeRequest from '../makeRequest'
 

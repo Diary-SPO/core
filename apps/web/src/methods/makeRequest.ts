@@ -28,11 +28,12 @@ const makeRequest = async <T>(
 
       return response.data
     } catch (err) {
-      console.info('%c [makeRequest]', 'color: blueviolet', err)
-
       if (!(err instanceof AxiosError)) {
+        console.info('%c [NOT AXIOS ERROR]', 'color: red', err)
         return
       }
+
+      console.info('%c [makeRequest]', 'color: blueviolet', err)
 
       /** В случае ошибки авторизации мы не делаем запрос на другой сервер, а сразу возвращаем ответ **/
       if (err?.response?.status === HTTP_STATUSES.UNAUTHORIZED) {
