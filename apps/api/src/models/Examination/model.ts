@@ -23,7 +23,8 @@ export const ExaminationTypeModel = sequelize.define<IExaminationTypeModel>(
     },
     name: {
       type: DataTypes.ENUM(...Object.keys(Examinations)),
-      allowNull: false
+      allowNull: false,
+      unique: true
     }
   }
 )

@@ -32,6 +32,9 @@ export type ICacheData = {
   groupId: number
   spoId: number
   token: string
+  firstName: string
+  lastName: string
+  middleName: string
   termLastUpdate?: Nullable<string>
   termStartDate?: Nullable<string>
 }
@@ -78,19 +81,26 @@ export const getCookieFromToken = async (
     throw new ApiError(API_ERRORS.INVALID_TOKEN, 401)
   }
 
-  const cookie = DiaryUserAuth.diaryUser.cookie
-  const idFromDiary = DiaryUserAuth.diaryUser.idFromDiary
-  const localUserId = DiaryUserAuth.diaryUserId
-  const groupId = DiaryUserAuth.diaryUser.groupId
-  const spoId = DiaryUserAuth.diaryUser.group.spo.id
-  const termLastUpdate = DiaryUserAuth.diaryUser.termLastDateUpdate
-  const termStartDate = DiaryUserAuth.diaryUser.termStartDate
+  const user = DiaryUserAuth.diaryUser
+  const cookie = user.cookie
+  const idFromDiary = user.idFromDiary
+  const localUserId = user.id
+  const groupId = user.groupId
+  const spoId = user.group.spo.id
+  const termLastUpdate = user.termLastDateUpdate
+  const termStartDate = user.termStartDate
+  const firstName = user.firstName
+  const lastName = user.lastName
+  const middleName = user.middleName
   const toSave = {
     cookie,
     idFromDiary,
     localUserId,
     groupId,
     spoId,
+    firstName,
+    lastName,
+    middleName,
     termLastUpdate,
     termStartDate,
     token

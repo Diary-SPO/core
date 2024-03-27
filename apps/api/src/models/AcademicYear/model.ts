@@ -8,6 +8,7 @@ export type AcademicYearModelType = {
   id: number
   termTypeId: number
   number: number
+  year?: number
   groupId: number
   idFromDiary: number
 }
@@ -33,6 +34,10 @@ export const AcademicYearModel = sequelize.define<IAcademicYearModel>(
     number: {
       type: DataTypes.INTEGER,
       allowNull: false
+    },
+    year: {
+      type: DataTypes.INTEGER,
+      allowNull: true
     },
     groupId: {
       type: DataTypes.INTEGER,

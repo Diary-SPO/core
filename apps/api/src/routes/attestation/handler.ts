@@ -4,6 +4,7 @@ import { getCookieFromToken } from '@helpers'
 import { ContextWithID } from '@types'
 import { getAttestationFromDiary } from './service'
 import { saveAttestation } from './service/saveAttestation'
+import { getAttestationFromDB } from './service/getAttestationFromDB'
 
 const getAttestation = async ({
   request
@@ -13,7 +14,8 @@ const getAttestation = async ({
   const res = await getAttestationFromDiary(authData)
 
   if (!res) {
-    throw new ApiError(API_ERRORS.DATA_NOT_FOUND, API_CODES.UNKNOWN_ERROR)
+    return await getAttestationFromDB(authData)
+    //throw new ApiError(API_ERRORS.DATA_NOT_FOUND, API_CODES.UNKNOWN_ERROR)
   }
 
   saveAttestation(res, authData).catch((e) => console.error(e))

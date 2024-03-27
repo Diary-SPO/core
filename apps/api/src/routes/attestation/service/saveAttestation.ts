@@ -2,6 +2,7 @@ import { AttestationResponse } from '@diary-spo/shared'
 import { ICacheData } from '@helpers'
 import { detectTerm } from '@models'
 import { saveTermSubjects } from './saveTermSubjects'
+import { saveYear } from 'src/models/AcademicYear/actions/saveYear'
 
 export const saveAttestation = async (
   data: AttestationResponse,
@@ -16,6 +17,10 @@ export const saveAttestation = async (
   const subjects = data.subjects
   const profModules = data.profModules
   const courseWorks = data.courseWorks
+
+  // Сохраняем год
+  const year = data?.year
+  saveYear(year, currTermId).catch(() => console.log("Ошибка сохранения года"))
 
   // Вызываем сохранение
 

@@ -27,7 +27,8 @@ export const TermSubjectExaminationTypeModel =
       },
       name: {
         type: DataTypes.ENUM(...Object.keys(TermSubjectExaminations)),
-        allowNull: false
+        allowNull: false,
+        unique: true
       }
     }
   )

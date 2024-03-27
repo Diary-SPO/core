@@ -178,9 +178,13 @@ MarkModel.belongsTo(TermModel)
 SPOModel.hasMany(AdsModel)
 AdsModel.belongsTo(SPOModel)
 
-// termSubjectExaminationTypeId <-->> TermSubject
+// termSubjectExaminationType <-->> TermSubject
 TermSubjectExaminationTypeModel.hasMany(TermSubjectModel)
 TermSubjectModel.belongsTo(TermSubjectExaminationTypeModel)
+
+// Teacher <-->> TermSubjectModel
+TeacherModel.hasMany(TermSubjectModel)
+TermSubjectModel.belongsTo(TeacherModel)
 
 if (forceSyncDatabase) {
   console.log('Syncing database...')
