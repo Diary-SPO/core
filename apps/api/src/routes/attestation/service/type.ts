@@ -8,7 +8,7 @@ import {
   TermSubjectExaminationTypeModelType,
   TermSubjectModelType,
   TermTypeModelType
-} from "@models";
+} from '@models'
 
 export type IAttestationResponseRaw = AcademicYearModelType & {
   termType: TermTypeModelType

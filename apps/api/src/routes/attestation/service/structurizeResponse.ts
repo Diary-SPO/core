@@ -1,8 +1,11 @@
-import { ExaminationKeys, Subject } from "@diary-spo/shared";
-import { IAttestationResponseRaw } from "./type";
-import { ICacheData } from "@helpers";
+import { ExaminationKeys, Subject } from '@diary-spo/shared'
+import { IAttestationResponseRaw } from './type'
+import { ICacheData } from '@helpers'
 
-export const structurizeResponse = async (data: IAttestationResponseRaw | null, authData: ICacheData) => {
+export const structurizeResponse = async (
+  data: IAttestationResponseRaw | null,
+  authData: ICacheData
+) => {
   if (!data || data.terms.length === 0) {
     return null
   }
@@ -11,13 +14,15 @@ export const structurizeResponse = async (data: IAttestationResponseRaw | null, 
   const termType = data.termType.name
   const termNumber = term.number
   const year = data?.year || new Date().getFullYear()
-  const departmentName = ""
-  const students = [{
-    firstName: authData.firstName,
-    lastName: authData.lastName,
-    middleName: authData.middleName,
-    id: authData.idFromDiary
-  }]
+  const departmentName = ''
+  const students = [
+    {
+      firstName: authData.firstName,
+      lastName: authData.lastName,
+      middleName: authData.middleName,
+      id: authData.idFromDiary
+    }
+  ]
 
   const subjects = getAllByName(data, 'subjects', authData)
   const profModules = getAllByName(data, 'profModules', authData)
@@ -35,7 +40,11 @@ export const structurizeResponse = async (data: IAttestationResponseRaw | null, 
   }
 }
 
-function getAllByName(raw: IAttestationResponseRaw, type: string, authData: ICacheData) {
+function getAllByName(
+  raw: IAttestationResponseRaw,
+  type: string,
+  authData: ICacheData
+) {
   const sort: Subject[] = []
   for (const term of raw.terms) {
     for (const subject of term.termSubjects) {
@@ -43,16 +52,18 @@ function getAllByName(raw: IAttestationResponseRaw, type: string, authData: ICac
         const teacher = subject?.teacher
         const examinationType = subject.examinationType?.name as ExaminationKeys
         let marks = Object()
-        marks[authData.idFromDiary] = {value: subject.markValue?.value}
+        marks[authData.idFromDiary] = { value: subject.markValue?.value }
         const name = subject.subject.name
         const id = subject.idFromDiary
 
-        const formatTeacher = teacher ? {
-          firstName: teacher.firstName,
-          lastName: teacher.lastName,
-          middleName: teacher.middleName,
-          id: teacher.idFromDiary
-        } : undefined
+        const formatTeacher = teacher
+          ? {
+              firstName: teacher.firstName,
+              lastName: teacher.lastName,
+              middleName: teacher.middleName,
+              id: teacher.idFromDiary
+            }
+          : undefined
 
         sort.push({
           teacher: formatTeacher,

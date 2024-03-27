@@ -1,5 +1,5 @@
-import { TermModel } from "src/models/Term"
-import { AcademicYearModel } from "../model"
+import { TermModel } from 'src/models/Term'
+import { AcademicYearModel } from '../model'
 
 export const saveYear = async (
   year: number | undefined,

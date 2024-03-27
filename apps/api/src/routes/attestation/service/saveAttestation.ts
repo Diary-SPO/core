@@ -20,7 +20,7 @@ export const saveAttestation = async (
 
   // Сохраняем год
   const year = data?.year
-  saveYear(year, currTermId).catch(() => console.log("Ошибка сохранения года"))
+  saveYear(year, currTermId).catch(() => console.log('Ошибка сохранения года'))
 
   // Вызываем сохранение
 
