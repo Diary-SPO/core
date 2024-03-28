@@ -133,24 +133,21 @@ export const lessonSave = async (
     objPropertyCopy(schedule, scheduleToSave)
     promiseToReturn = schedule.save()
   }
-  promiseToReturn ||= new Promise(() => schedule)
+  promiseToReturn ||= schedule.save()
 
   // Если есть подгруппа - сохраняем
   if (subgroup) {
-    const subgroupDB = retriesForError(
+    retriesForError(
       subgroupSaveOrGet,
       [subgroup, authData.groupId],
       2
-    )
-    subgroupDB.then(async (r) => {
+    ).then(async (r) => {
       const scheduleId = (await promiseToReturn).id
-      if (!r[1]) {
-        retriesForError(
-          scheduleSubgroupSaveOrGet,
-          [scheduleId, authData.localUserId, r[0].id],
-          2
-        )
-      }
+      retriesForError(
+        scheduleSubgroupSaveOrGet,
+        [scheduleId, authData.localUserId, r[0].id],
+        2
+      )
     })
   }
 

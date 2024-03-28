@@ -12,12 +12,10 @@ export const scheduleSubgroupSaveOrGet = async (
   }
   const promise = ScheduleSubgroupModel.findOrCreate({
     where,
-    defaults: {
-      ...where
-    }
+    defaults: where
   })
 
-  promise.then((v) => {
+  promise.then(async (v) => {
     const result = v[0]
     if (v[1]) {
       return result

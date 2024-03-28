@@ -17,7 +17,7 @@ const taskTypeModel = sequelize.define<ITaskTypeModel>('taskType', {
     primaryKey: true
   },
   name: {
-    type: DataTypes.STRING(...Object.keys(LessonWorkType)),
+    type: DataTypes.ENUM(...Object.keys(LessonWorkType)),
     allowNull: false,
     unique: true
   }

@@ -17,7 +17,7 @@ export const daySave = async (
   for (const lesson of day.lessons) {
     const promise = retriesForError(
       lessonSave,
-      [day.date, lesson, authData, termPromise],
+      [new Date(day.date), lesson, authData, termPromise],
       3,
       1000
     ) //lessonSave(day.date, lesson, authData, termPromise)

@@ -227,7 +227,7 @@ export interface Lesson {
 }
 
 export interface Day {
-  date: Date
+  date: Date | string
   lessons: Lesson[] | null
 }
 

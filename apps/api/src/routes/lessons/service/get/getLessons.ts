@@ -5,6 +5,7 @@ import { ICacheData } from '@helpers'
 import { ScheduleGetFromDB, daySave } from '@models'
 import { HeadersWithCookie } from '@utils'
 import { detectTerm } from 'src/models/Term/actions/other/detectTerm'
+import { structurizeResponse } from '../helpers'
 
 export const getLessonsService = async (
   startDate: string,
@@ -24,11 +25,12 @@ export const getLessonsService = async (
 
   if (!response.ok) {
     // Получаем из базы
-    return ScheduleGetFromDB(
+    const rawSchedule = await ScheduleGetFromDB(
       startDate,
       endDate,
-      authData.localUserId
-    ) as unknown as Day[]
+      authData
+    )
+    return structurizeResponse(rawSchedule, startDate, endDate, authData)
   }
 
   // Сохраняем и отдаём

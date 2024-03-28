@@ -7,12 +7,8 @@ export const deleteScheduleSubgroup = async (
 ) => {
   return ScheduleSubgroupModel.destroy({
     where: {
-      [Op.and]: [
-        {
-          scheduleId,
-          diaryUserId
-        }
-      ]
+      scheduleId,
+      diaryUserId
     }
   })
 }
