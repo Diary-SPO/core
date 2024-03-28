@@ -1,7 +1,4 @@
-import {
-  DayWithMarks,
-  PerformanceCurrent
-} from '@diary-spo/shared'
+import { DayWithMarks, PerformanceCurrent } from '@diary-spo/shared'
 import { ICacheData } from '@helpers'
 import { getLessonsService } from 'src/routes/lessons/service'
 import { getPerformanceFromDB } from '../get'

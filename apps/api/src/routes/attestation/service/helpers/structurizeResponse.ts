@@ -50,9 +50,7 @@ function getAllByName(
         const name = subject.subject.name
         const id = subject.idFromDiary
 
-        const formatTeacher = teacher
-          ? formatPerson(teacher)
-          : undefined
+        const formatTeacher = teacher ? formatPerson(teacher) : undefined
 
         sort.push({
           teacher: formatTeacher,
@@ -67,7 +65,7 @@ function getAllByName(
   return sort
 }
 
-function formatPerson (person: TeacherModelType | ICacheData) {
+function formatPerson(person: TeacherModelType | ICacheData) {
   return {
     firstName: person.firstName,
     lastName: person.lastName,

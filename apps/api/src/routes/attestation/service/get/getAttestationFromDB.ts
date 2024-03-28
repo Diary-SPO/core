@@ -11,13 +11,12 @@ import {
   TermTypeModel,
   detectTerm
 } from '@models'
-import { 
-  IAttestationResponseRaw, 
-  structurizeResponse 
-} from '../'
+import { IAttestationResponseRaw, structurizeResponse } from '../'
 import { AttestationResponse } from '@diary-spo/shared'
 
-export const getAttestationFromDB = async (authData: ICacheData): Promise<string | AttestationResponse> => {
+export const getAttestationFromDB = async (
+  authData: ICacheData
+): Promise<string | AttestationResponse> => {
   const currTermId = await detectTerm(authData)
   const dataFromDB = (await AcademicYearModel.findOne({
     include: [

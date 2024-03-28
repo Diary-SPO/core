@@ -133,7 +133,7 @@ export const lessonSave = async (
     objPropertyCopy(schedule, scheduleToSave)
     promiseToReturn = schedule.save()
   }
-  promiseToReturn ||= new Promise(()=>schedule)
+  promiseToReturn ||= new Promise(() => schedule)
 
   // Если есть подгруппа - сохраняем
   if (subgroup) {
