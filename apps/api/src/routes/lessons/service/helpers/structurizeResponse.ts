@@ -1,14 +1,14 @@
-import { Day, Lesson, Task, Timetable } from "@diary-spo/shared";
-import { ICacheData } from "@helpers";
-import { ScheduleFromDB } from "@models";
-import { structurizeTimetable } from "./structurizeTimetable";
-import { structurizeGradebook } from "./structurizeGradebook";
-import { formatDate } from "@utils";
+import { Day, Lesson, Task, Timetable } from '@diary-spo/shared'
+import { ICacheData } from '@helpers'
+import { ScheduleFromDB } from '@models'
+import { structurizeTimetable } from './structurizeTimetable'
+import { structurizeGradebook } from './structurizeGradebook'
+import { formatDate } from '@utils'
 
 export const structurizeResponse = (
   raw: ScheduleFromDB[],
   startDate: string,
-  endDate: string, 
+  endDate: string,
   authData: ICacheData
 ) => {
   const Days: Day[] = []
@@ -39,10 +39,7 @@ export const structurizeResponse = (
       }
 
       // Сам lesson
-      const {
-        endTime,
-        startTime
-      } = rd
+      const { endTime, startTime } = rd
       const name = rd.subject.name
 
       // Градебук
@@ -50,7 +47,7 @@ export const structurizeResponse = (
 
       //Подготавливаем timetable
       const timetable = structurizeTimetable(rd)
-      
+
       const lesson: Lesson = {
         endTime,
         startTime,
@@ -62,8 +59,8 @@ export const structurizeResponse = (
       lessons.push(lesson)
     }
     // Сортируем lessons
-    lessons.sort((a, b) => a.startTime > b.startTime ? 1 : -1)
-    
+    lessons.sort((a, b) => (a.startTime > b.startTime ? 1 : -1))
+
     Days.push({
       date,
       lessons

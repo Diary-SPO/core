@@ -25,11 +25,7 @@ export const getLessonsService = async (
 
   if (!response.ok) {
     // Получаем из базы
-    const rawSchedule = await ScheduleGetFromDB(
-      startDate,
-      endDate,
-      authData
-    )
+    const rawSchedule = await ScheduleGetFromDB(startDate, endDate, authData)
     return structurizeResponse(rawSchedule, startDate, endDate, authData)
   }
 

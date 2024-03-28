@@ -137,18 +137,16 @@ export const lessonSave = async (
 
   // Если есть подгруппа - сохраняем
   if (subgroup) {
-    retriesForError(
-      subgroupSaveOrGet,
-      [subgroup, authData.groupId],
-      2
-    ).then(async (r) => {
-      const scheduleId = (await promiseToReturn).id
-      retriesForError(
-        scheduleSubgroupSaveOrGet,
-        [scheduleId, authData.localUserId, r[0].id],
-        2
-      )
-    })
+    retriesForError(subgroupSaveOrGet, [subgroup, authData.groupId], 2).then(
+      async (r) => {
+        const scheduleId = (await promiseToReturn).id
+        retriesForError(
+          scheduleSubgroupSaveOrGet,
+          [scheduleId, authData.localUserId, r[0].id],
+          2
+        )
+      }
+    )
   }
 
   // Удаляем подгруппы, если в расписании их нет

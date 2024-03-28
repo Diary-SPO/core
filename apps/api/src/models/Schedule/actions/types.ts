@@ -1,16 +1,16 @@
-import { 
+import {
   IAbsenceModel,
   IAbsenceTypeModel,
   IClassroomModelType,
   ILessonTypeModel,
-  IMarkModelType, 
-  IMarkValueModelType, 
-  IRequiredModel, 
-  IScheduleModel, 
-  IScheduleSubgroupModelType, 
-  ISubjectModelType, 
-  ITaskModel, 
-  ITaskTypeModel, 
+  IMarkModelType,
+  IMarkValueModelType,
+  IRequiredModel,
+  IScheduleModel,
+  IScheduleSubgroupModelType,
+  ISubjectModelType,
+  ITaskModel,
+  ITaskTypeModel,
   ITeacherModel,
   IThemeModelType
 } from '@models'
@@ -35,14 +35,20 @@ export type ScheduleFromDB = IScheduleModel & {
   classroom: IClassroomModelType
   teacher: ITeacherModel
   themes: IThemeModelType[]
-  absences: Array<IAbsenceModel & {
-    absenceType: IAbsenceTypeModel
-  }>
-  tasks: Array<ITaskModel & {
-    taskType: ITaskTypeModel,
-    requireds: IRequiredModel[],
-    marks: Array<IMarkModelType & {
-      markValue: IMarkValueModelType
-    }>
-  }>
+  absences: Array<
+    IAbsenceModel & {
+      absenceType: IAbsenceTypeModel
+    }
+  >
+  tasks: Array<
+    ITaskModel & {
+      taskType: ITaskTypeModel
+      requireds: IRequiredModel[]
+      marks: Array<
+        IMarkModelType & {
+          markValue: IMarkValueModelType
+        }
+      >
+    }
+  >
 }
