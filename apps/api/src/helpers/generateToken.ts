@@ -17,7 +17,7 @@ export const generateToken = async (diaryUserId: number): Promise<string> => {
 
   // TODO: сделать метод рядом с моделью для создания и использовать тут
   await AuthModel.create({
-    diaryUserId: diaryUserId,
+    diaryUserId,
     token,
     lastUsedDate: formattedDate
   }).catch(() => {

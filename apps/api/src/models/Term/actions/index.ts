@@ -1,4 +1,5 @@
 export * from './type'
 //export * from './getCurrTermId'
-export * from './saveOrGetTerm'
-export * from './detectTerm'
+export * from './save'
+export * from './other'
+export * from './get'

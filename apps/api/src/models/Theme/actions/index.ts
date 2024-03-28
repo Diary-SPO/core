@@ -1,2 +1,2 @@
-export * from './deleteNotIn'
-export * from './themesSaveOrGet'
+export * from './delete'
+export * from './save'

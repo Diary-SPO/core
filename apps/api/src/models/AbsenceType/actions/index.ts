@@ -1,1 +1,1 @@
-export * from './saveOrGetAbsenceType'
+export * from './save'

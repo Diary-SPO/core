@@ -1,1 +1,1 @@
-export * from './subjectSaveOrGet'
+export * from './save'

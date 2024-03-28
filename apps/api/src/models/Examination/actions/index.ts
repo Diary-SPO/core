@@ -1,1 +1,1 @@
-export * from './saveOrGetExaminationType'
+export * from './save'

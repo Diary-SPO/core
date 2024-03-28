@@ -4,7 +4,7 @@ import { getCookieFromToken } from '@helpers'
 import { ContextWithID } from '@types'
 import { HeadersWithCookie } from '@utils'
 import { saveAds } from 'src/models/Ads/actions'
-import { adsGetFromDB } from 'src/models/Ads/actions/adsGetFromDB'
+import { adsGetFromDB } from '@models'
 
 const getAds = async ({
   request

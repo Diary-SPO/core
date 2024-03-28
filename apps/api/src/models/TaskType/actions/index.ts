@@ -1,1 +1,1 @@
-export * from './taskTypeSaveOrGet'
+export * from './save'

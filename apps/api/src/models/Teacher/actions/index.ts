@@ -1,1 +1,1 @@
-export * from './teacherSaveOrGet'
+export * from './save'

@@ -16,7 +16,7 @@ export const retriesForError = async <C extends Function>(
   callback: C,
   calbackArguments: ArgumentTypes<C>,
   retries = 2,
-  sleep = 50
+  sleep = 250
   // @ts-ignore
 ): ReturnType<C> =>
   callback(...calbackArguments).catch(async (err: string) => {

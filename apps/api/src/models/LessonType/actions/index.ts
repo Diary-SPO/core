@@ -1,1 +1,1 @@
-export * from './lessonTypeSaveOrGet'
+export * from './save'

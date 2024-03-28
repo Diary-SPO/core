@@ -34,7 +34,7 @@ export type ICacheData = {
   token: string
   firstName: string
   lastName: string
-  middleName: string
+  middleName?: string
   termLastUpdate?: Nullable<string>
   termStartDate?: Nullable<string>
 }
@@ -82,16 +82,20 @@ export const getCookieFromToken = async (
   }
 
   const user = DiaryUserAuth.diaryUser
-  const cookie = user.cookie
-  const idFromDiary = user.idFromDiary
-  const localUserId = user.id
-  const groupId = user.groupId
   const spoId = user.group.spo.id
-  const termLastUpdate = user.termLastDateUpdate
-  const termStartDate = user.termStartDate
-  const firstName = user.firstName
-  const lastName = user.lastName
-  const middleName = user.middleName
+
+  const {
+    cookie,
+    idFromDiary,
+    groupId,
+    firstName,
+    lastName,
+    middleName,
+    termStartDate,
+    termLastDateUpdate: termLastUpdate,
+    id: localUserId
+  } = user
+
   const toSave = {
     cookie,
     idFromDiary,

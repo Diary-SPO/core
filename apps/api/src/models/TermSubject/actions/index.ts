@@ -1,1 +1,1 @@
-export * from './termSubjectSaveOrGet'
+export * from './save/termSubjectSaveOrGet'

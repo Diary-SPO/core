@@ -1,2 +1,2 @@
-export * from './getFinalMarks'
-export * from './saveFinalMarks'
+export * from './get'
+export * from './save'

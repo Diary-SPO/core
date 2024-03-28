@@ -1,2 +1,2 @@
-export * from './deleteAbsence'
-export * from './saveOrGetAbsence'
+export * from './delete'
+export * from './save'

@@ -3,10 +3,9 @@ import { SERVER_URL } from '@config'
 import { b64 } from '@diary-spo/crypto'
 import type { ResponseLogin, UserData } from '@diary-spo/shared'
 import { fetcher } from '@utils'
-import { LogError } from 'src/LogError'
-import { offlineAuth } from './authService'
-import { handleResponse } from './authService/helpers'
-import { saveUserData } from './authService/saveUserData'
+import { offlineAuth } from './service'
+import { handleResponse } from './service/helpers/helpers'
+import { saveUserData } from './service/save/saveUserData'
 
 interface AuthContext {
   body: {

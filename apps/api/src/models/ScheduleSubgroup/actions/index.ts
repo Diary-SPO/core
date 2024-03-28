@@ -1,2 +1,2 @@
-export * from './deleteScheduleSubgroup'
-export * from './scheduleSubgroupSaveOrGet'
+export * from './delete'
+export * from './save'

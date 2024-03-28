@@ -2,7 +2,7 @@ import type { Day } from '@diary-spo/shared'
 import { getCookieFromToken } from '@helpers'
 import { IContext } from '@types'
 import { formatDate } from '@utils'
-import { getLessonsService } from './lessonsService'
+import { getLessonsService } from './service'
 
 const getLessons = async ({
   request,

@@ -1,3 +1,2 @@
-export * from './adSaveOrGet'
-export * from './saveAd'
-export * from './saveAds'
+export * from './save'
+export * from './get'

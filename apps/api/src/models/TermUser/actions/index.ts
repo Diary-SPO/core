@@ -1,2 +1,2 @@
-export * from './saveOrGetTermUser'
-export * from './findActiveTerm'
+export * from './save'
+export * from './get'
