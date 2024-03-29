@@ -6,7 +6,7 @@ import { savePerfomance } from './save/savePerfomance'
 
 export const getCurrPerformance = async (
   authData: ICacheData
-): Promise<PerformanceCurrent | null> => {
+): Promise<PerformanceCurrent> => {
   const response = await getPerformanceCurrent(authData)
 
   if (!response.ok) {

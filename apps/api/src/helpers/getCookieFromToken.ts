@@ -134,3 +134,7 @@ const cacheGetter = async (token: string): Promise<ICacheData | null> => {
 export const updateCache = async (newCache: ICacheData) => {
   await memoryCache.set(newCache.token, newCache)
 }
+
+export const deleteCache = async (token: string) => {
+  await memoryCache.del(token)
+}

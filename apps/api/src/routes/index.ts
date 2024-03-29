@@ -8,6 +8,7 @@ import lessons from './lessons'
 import login from './login'
 import organization from './organization'
 import performanceCurrent from './performance.current'
+import logout from './logout'
 
 import { headersSchema } from '@utils'
 import { errorHandler } from './helpers'
@@ -22,6 +23,7 @@ const routes = new Elysia()
       .use(attestation)
       .use(ads)
       .use(finalMarks)
+      .use(logout)
   )
   /** Роуты без проверки **/
   .use(hello)
