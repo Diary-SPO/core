@@ -9,7 +9,7 @@ type IArgument = {
   teacherId?: number
   examinationTypeId?: number
   termSubjectExaminationTypeId?: number
-  idFromDiary: number
+  idFromDiary?: number
 }
 
 export const termSubjectSaveOrGet = async (subject: IArgument) => {

@@ -8,7 +8,7 @@ import { IModelPrototypeNoId } from '../types'
 export type FinalMarkModelType = {
   subjectId: number
   diaryUserId: number
-  markValueId: number
+  markValueId: number | null
 }
 
 export type IFinalMarkModel = IModelPrototypeNoId<FinalMarkModelType>
@@ -34,7 +34,7 @@ export const FinalMarkModel = sequelize.define<IFinalMarkModel>('finalMark', {
   },
   markValueId: {
     type: DataTypes.INTEGER,
-    allowNull: false,
+    allowNull: true,
     references: {
       model: MarkValueModel,
       key: 'id'

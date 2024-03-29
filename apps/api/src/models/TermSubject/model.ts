@@ -17,7 +17,7 @@ export type TermSubjectModelType = {
   teacherId?: number
   examinationTypeId?: number
   termSubjectExaminationTypeId?: number
-  idFromDiary: number
+  idFromDiary?: number
 }
 
 export type ITermSubjectModel = IModelPrototypeNoId<TermSubjectModelType>
@@ -78,14 +78,14 @@ export const TermSubjectModel = sequelize.define<ITermSubjectModel>(
     },
     termSubjectExaminationTypeId: {
       type: DataTypes.INTEGER,
-      allowNull: false,
+      allowNull: true,
       references: {
         model: TermSubjectExaminationTypeModel
       }
     },
     idFromDiary: {
       type: DataTypes.INTEGER,
-      allowNull: false
+      allowNull: true
     }
   }
 )

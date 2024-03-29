@@ -48,7 +48,7 @@ function getAllByName(
         const marks = Object()
         marks[authData.idFromDiary] = { value: subject.markValue?.value }
         const name = subject.subject.name
-        const id = subject.idFromDiary
+        const id = subject.idFromDiary ?? 0
 
         const formatTeacher = teacher ? formatPerson(teacher) : undefined
 
