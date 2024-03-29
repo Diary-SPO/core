@@ -1,3 +1,4 @@
+import { AttestationResponse } from '@diary-spo/shared'
 import { ICacheData } from '@helpers'
 import {
   AcademicYearModel,
@@ -12,7 +13,6 @@ import {
   detectTerm
 } from '@models'
 import { IAttestationResponseRaw, structurizeResponse } from '../'
-import { AttestationResponse } from '@diary-spo/shared'
 
 export const getAttestationFromDB = async (
   authData: ICacheData

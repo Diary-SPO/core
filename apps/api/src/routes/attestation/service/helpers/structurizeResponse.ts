@@ -1,7 +1,7 @@
 import { ExaminationKeys, Subject } from '@diary-spo/shared'
-import { IAttestationResponseRaw } from '../'
 import { ICacheData } from '@helpers'
 import { TeacherModelType } from '@models'
+import { IAttestationResponseRaw } from '../'
 
 export const structurizeResponse = async (
   data: IAttestationResponseRaw | null,
@@ -42,10 +42,10 @@ function getAllByName(
   const sort: Subject[] = []
   for (const term of raw.terms) {
     for (const subject of term.termSubjects) {
-      if (subject.termSubjectExaminationType.name == type) {
+      if (subject.termSubjectExaminationType.name === type) {
         const teacher = subject?.teacher
         const examinationType = subject.examinationType?.name as ExaminationKeys
-        let marks = Object()
+        const marks = Object()
         marks[authData.idFromDiary] = { value: subject.markValue?.value }
         const name = subject.subject.name
         const id = subject.idFromDiary

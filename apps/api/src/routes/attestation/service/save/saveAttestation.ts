@@ -1,8 +1,8 @@
 import { AttestationResponse } from '@diary-spo/shared'
 import { ICacheData } from '@helpers'
 import { detectTerm } from '@models'
-import { saveTermSubjects } from './saveTermSubjects'
 import { saveYear } from 'src/models/AcademicYear/actions/save/saveYear'
+import { saveTermSubjects } from './saveTermSubjects'
 
 export const saveAttestation = async (
   data: AttestationResponse,

@@ -2,9 +2,9 @@ import type { AttestationResponse } from '@diary-spo/shared'
 import { getCookieFromToken } from '@helpers'
 import { ContextWithID } from '@types'
 import {
+  getAttestationFromDB,
   getAttestationFromDiary,
-  saveAttestation,
-  getAttestationFromDB
+  saveAttestation
 } from './service'
 
 const getAttestation = async ({

@@ -1,7 +1,7 @@
 import { PerformanceCurrent } from '@diary-spo/shared'
 import { ICacheData } from '@helpers'
-import { getPerformanceCurrent } from './get/getPerformanceCurrent'
 import { getPerformanceFromDB } from './get'
+import { getPerformanceCurrent } from './get/getPerformanceCurrent'
 import { savePerfomance } from './save/savePerfomance'
 
 export const getCurrPerformance = async (

@@ -7,8 +7,8 @@ import {
   markSaveOrGet,
   requiredSaveOrGet
 } from '@models'
-import { objPropertyCopy } from 'src/helpers/objPropertyCopy'
 import { markDelete } from '@models'
+import { objPropertyCopy } from 'src/helpers/objPropertyCopy'
 import { taskTypeSaveOrGet } from 'src/models/TaskType'
 import { TaskModel } from '../../model'
 

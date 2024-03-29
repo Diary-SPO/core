@@ -1,9 +1,9 @@
 import { Day, Lesson, Task, Timetable } from '@diary-spo/shared'
 import { ICacheData } from '@helpers'
 import { ScheduleFromDB } from '@models'
-import { structurizeTimetable } from './structurizeTimetable'
-import { structurizeGradebook } from './structurizeGradebook'
 import { formatDate } from '@utils'
+import { structurizeGradebook } from './structurizeGradebook'
+import { structurizeTimetable } from './structurizeTimetable'
 
 export const structurizeResponse = (
   raw: ScheduleFromDB[],
@@ -26,11 +26,11 @@ export const structurizeResponse = (
   for (const date of dates) {
     const lessons: Lesson[] = []
     for (const rd of raw) {
-      if (rd.date != date) continue
+      if (rd.date !== date) continue
       if (rd.scheduleSubgroups.length) {
         let meSubgroup = false
         for (const subgroup of rd.scheduleSubgroups) {
-          if (subgroup.diaryUserId == authData.localUserId) {
+          if (subgroup.diaryUserId === authData.localUserId) {
             meSubgroup = true
             break
           }
@@ -43,7 +43,7 @@ export const structurizeResponse = (
       const name = rd.subject.name
 
       // Градебук
-      let gradebook = structurizeGradebook(rd)
+      const gradebook = structurizeGradebook(rd)
 
       //Подготавливаем timetable
       const timetable = structurizeTimetable(rd)
