@@ -1,9 +1,18 @@
-import { AcademicRecord, MarkKeys } from "@diary-spo/shared";
-import { ICacheData } from "@helpers";
-import { markValueSaveOrGet, saveOrGetFinalMark, saveOrGetTerm, subjectSaveOrGet, termSubjectSaveOrGet } from "@models";
-import { saveOrGetAcademicYear } from "src/models/AcademicYear/actions";
+import { AcademicRecord, MarkKeys } from '@diary-spo/shared'
+import { ICacheData } from '@helpers'
+import {
+  markValueSaveOrGet,
+  saveOrGetFinalMark,
+  saveOrGetTerm,
+  subjectSaveOrGet,
+  termSubjectSaveOrGet
+} from '@models'
+import { saveOrGetAcademicYear } from 'src/models/AcademicYear/actions'
 
-export const saveFinalMarks = async (finalMarks: AcademicRecord, authData: ICacheData) => {
+export const saveFinalMarks = async (
+  finalMarks: AcademicRecord,
+  authData: ICacheData
+) => {
   for (const subject of finalMarks.subjects) {
     const finalMark = subject.finalMark?.value
     const name = subject.name
@@ -16,14 +25,19 @@ export const saveFinalMarks = async (finalMarks: AcademicRecord, authData: ICach
       const semesterIdFromDiary = Number(semId)
       const mark = marks[semesterIdFromDiary]?.value
 
-      const searchAcademicYear = searchAcademicAndSemesterById(semesterIdFromDiary, finalMarks)
+      const searchAcademicYear = searchAcademicAndSemesterById(
+        semesterIdFromDiary,
+        finalMarks
+      )
       if (!searchAcademicYear) continue
 
-      const {year, term} = searchAcademicYear
+      const { year, term } = searchAcademicYear
 
       const yearFromDB = await saveOrGetAcademicYear(year, authData)
       const termFromDB = await saveOrGetTerm(term, yearFromDB, authData)
-      const idMarkFromDB = mark ? (await markValueSaveOrGet(mark)).id : undefined
+      const idMarkFromDB = mark
+        ? (await markValueSaveOrGet(mark)).id
+        : undefined
 
       // Сохраняем промежуточную оценку
       termSubjectSaveOrGet({
@@ -40,16 +54,21 @@ export const saveFinalMarks = async (finalMarks: AcademicRecord, authData: ICach
     }
 
     // Сохраняем итоговые оценки
-    const idMarkFromDB = finalMark ? (await markValueSaveOrGet(finalMark)).id : undefined
+    const idMarkFromDB = finalMark
+      ? (await markValueSaveOrGet(finalMark)).id
+      : undefined
     saveOrGetFinalMark(idMarkFromDB ?? null, subjectFromDB.id, authData)
   }
 }
 
-function searchAcademicAndSemesterById(idFromDiary: number, finalMarks: AcademicRecord) {
+function searchAcademicAndSemesterById(
+  idFromDiary: number,
+  finalMarks: AcademicRecord
+) {
   for (const year of finalMarks.academicYears) {
     for (const term of year.terms) {
       if (term.id === idFromDiary) {
-        return {year, term}
+        return { year, term }
       }
     }
   }

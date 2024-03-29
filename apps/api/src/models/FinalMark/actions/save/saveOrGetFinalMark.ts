@@ -1,5 +1,5 @@
-import { ICacheData } from "@helpers"
-import { FinalMarkModel } from "../../model"
+import { ICacheData } from '@helpers'
+import { FinalMarkModel } from '../../model'
 
 export const saveOrGetFinalMark = async (
   markValueId: number | null,
@@ -8,7 +8,7 @@ export const saveOrGetFinalMark = async (
 ) => {
   const where = {
     subjectId,
-    diaryUserId: authData.localUserId,
+    diaryUserId: authData.localUserId
   }
   return FinalMarkModel.findOrCreate({
     where,
