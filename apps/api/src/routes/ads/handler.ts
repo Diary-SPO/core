@@ -11,6 +11,7 @@ const getAds = async ({
 }: ContextWithID): Promise<NotificationsResponse | string> => {
   const authData = await getCookieFromToken(request.headers.toJSON().secret)
   const path = `${SERVER_URL}/services/people/organization/news/last/10`
+  console.log(path)
   const response = await fetch(path, {
     headers: HeadersWithCookie(authData.cookie)
   })

@@ -48,7 +48,7 @@ export const savePerfomance = async (
     }
   }
 
-  // Обновляем дял каждого дня
+  // Обновляем для каждого дня
   dayToUpdate.sort((a, b) =>
     new Date(a).getTime() > new Date(b).getTime() ? 1 : -1
   )
@@ -140,18 +140,25 @@ const groupping = (dates: (string | Date)[]) => {
   // Сгруппированные даты
   const groupDates = []
 
-  for (const day of dates) {
+  // const day of dates
+  for (let i = 0; i < dates.length; i++) {
+    const day = dates[i]
     dates.splice(dates.indexOf(day), 1)
+    i--
     let endDate = day
-    for (const daySearch of dates) {
+    //const daySearch of dates
+    for (let j = 0; j < dates.length; j++) {
+      const daySearch = dates[j]
       const dayDiffMilliseconds =
         new Date(daySearch).getTime() - new Date(day).getTime()
       const dayDiff = Math.round(dayDiffMilliseconds / oneDay)
       if (endDate < daySearch && dayDiff < 14) {
         endDate = daySearch
         dates.splice(dates.indexOf(daySearch), 1)
+        j--
       }
     }
+    console.log(day, endDate)
     groupDates.push({
       startDate: day,
       endDate

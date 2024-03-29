@@ -5,6 +5,7 @@ import { HeadersWithCookie } from '@utils'
 
 export const getAttestationFromDiary = async (authData: ICacheData) => {
   const path = `${SERVER_URL}/services/reports/curator/group-attestation-for-student/${authData.idFromDiary}`
+  console.log(path)
   const response = fetch(path, {
     headers: HeadersWithCookie(authData.cookie)
   })

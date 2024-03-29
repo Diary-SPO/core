@@ -28,6 +28,8 @@ export const fetcher = async <T>({
         Cookie: cookie ?? ''
       }
     })
+    //console.log(path)
+    console.log(url)
 
     if (!response.ok) {
       return response.status

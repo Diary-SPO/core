@@ -12,6 +12,7 @@ const getOrganization = async ({
 }: Context): Promise<Organization | Optional<SPOModelType, 'id'> | string> => {
   const authData = await getCookieFromToken(request.headers.toJSON().secret)
   const path = `${SERVER_URL}/services/people/organization`
+  console.log(path)
   const response = await fetch(path, {
     headers: HeadersWithCookie(authData.cookie)
   }).then((res) => res.json())

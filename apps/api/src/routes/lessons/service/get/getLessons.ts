@@ -14,7 +14,7 @@ export const getLessonsService = async (
   isAwait = false
 ): Promise<Day[] | string> => {
   const path = `${SERVER_URL}/services/students/${authData.idFromDiary}/lessons/${startDate}/${endDate}`
-
+  console.log(path)
   const response = await fetch(path, {
     headers: HeadersWithCookie(authData.cookie)
   })
