@@ -21,7 +21,7 @@
 }
 
 main {
-  animation: show .2s forwards ease-in;
+  animation: show .3s forwards ease-in;
 }
 
 @keyframes show {

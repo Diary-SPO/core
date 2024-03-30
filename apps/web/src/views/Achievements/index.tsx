@@ -30,7 +30,6 @@ const MarksByGroup = lazy(() => import('./Tabs/MarksByGroup'))
 const SubjectsList = lazy(() => import('./Tabs/SubjectsList'))
 
 const Achievements: FC<Props> = ({ id }) => {
-  const [isSummaryLoading, setIsSummaryLoading] = useState<boolean>(false)
   const [isLoading, setIsLoading] = useState<boolean>(false)
   const [isError, setIsError] = useState<boolean>(false)
 
@@ -90,7 +89,7 @@ const Achievements: FC<Props> = ({ id }) => {
     }
 
     try {
-      setIsSummaryLoading(true)
+      setIsLoading(true)
       const marks = await getPerformance()
 
       handleResponse(
@@ -104,7 +103,7 @@ const Achievements: FC<Props> = ({ id }) => {
           })
         },
         handleRateLimitExceeded,
-        setIsSummaryLoading,
+        setIsLoading,
         showSnackbar,
         false
       )
@@ -116,7 +115,7 @@ const Achievements: FC<Props> = ({ id }) => {
 
       saveData(marks)
     } finally {
-      setIsSummaryLoading(false)
+      setIsLoading(false)
     }
   }
 
@@ -133,15 +132,11 @@ const Achievements: FC<Props> = ({ id }) => {
       case 'summary':
         tab = (
           <Suspense id='UserInfo'>
-            {isSummaryLoading ? (
-              <LoadingData />
-            ) : (
-              <Summary
-                totalNumberOfMarks={totalNumberOfMarks}
-                averageMark={averageMark}
-                markCounts={markCounts}
-              />
-            )}
+            <Summary
+              totalNumberOfMarks={totalNumberOfMarks}
+              averageMark={averageMark}
+              markCounts={markCounts}
+            />
           </Suspense>
         )
         break
@@ -185,10 +180,7 @@ const Achievements: FC<Props> = ({ id }) => {
   return (
     <Panel nav={id}>
       <PanelHeaderWithBack title='Успеваемость' />
-      <PullToRefresh
-        onRefresh={() => fetchMarks(true)}
-        isFetching={isSummaryLoading}
-      >
+      <PullToRefresh onRefresh={() => fetchMarks(true)} isFetching={isLoading}>
         <VKUITabs mode='default'>
           <HorizontalScroll arrowSize='l'>
             {data.map((item) => (
@@ -205,9 +197,7 @@ const Achievements: FC<Props> = ({ id }) => {
           </HorizontalScroll>
         </VKUITabs>
 
-        {activeTab}
-
-        {isLoading && <LoadingData />}
+        {isLoading ? <LoadingData /> : activeTab}
       </PullToRefresh>
 
       {isError && <ErrorPlaceholder />}
