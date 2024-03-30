@@ -1,4 +1,4 @@
-import { Group, Placeholder } from '@vkontakte/vkui'
+import { Group, Header } from '@vkontakte/vkui'
 import { FunctionalComponent } from 'preact'
 import { useEffect, useState } from 'preact/hooks'
 
@@ -8,9 +8,9 @@ import { getFinalMarks } from '@api'
 import { useRateLimitExceeded } from '@hooks'
 import { handleResponse, isApiError, isNeedToUpdateCache } from '@utils'
 
-import { Table } from './Table'
+import LoadingData from '../../LoadingData.tsx'
 
-import './index.css'
+import { MarksForSubject } from './Table'
 
 interface Props {
   setIsError: (value: boolean) => void
@@ -69,12 +69,16 @@ const FinalMarks: FunctionalComponent<Props> = ({
   }
 
   if (!isLoading && !finalMarksData?.subjects?.length) {
-    return <Placeholder>Данных нет</Placeholder>
+    return <LoadingData text='Обработка данных...' />
   }
 
   return (
-    <Group className='tableWrapper'>
-      <Table data={finalMarksData} />
+    <Group
+      mode='plain'
+      className='tableWrapper'
+      header={<Header mode='tertiary'>Для подробностей нажми на оценку</Header>}
+    >
+      <MarksForSubject data={finalMarksData} />
     </Group>
   )
 }

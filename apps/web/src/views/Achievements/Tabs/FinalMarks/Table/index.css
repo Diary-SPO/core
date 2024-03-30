@@ -1,0 +1,25 @@
+.marksWrapper {
+  align-items: center;
+}
+
+.marksGap {
+  display: inline;
+  margin-left: 5px;
+}
+
+.popoverWrapper {
+  cursor: pointer;
+}
+
+.markPopoverContent {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.totalMark {
+  display: flex;
+  align-items: center;
+
+  margin-bottom: 10px;
+}

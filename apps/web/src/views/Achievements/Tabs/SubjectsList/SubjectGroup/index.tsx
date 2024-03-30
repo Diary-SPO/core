@@ -17,6 +17,7 @@ const SubjectGroup: FunctionalComponent<ISubjectGroup> = ({
   year
 }) => (
   <Group
+    className='tableWrapper'
     mode='plain'
     key={semesterKey}
     header={

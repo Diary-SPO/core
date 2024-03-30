@@ -1,3 +1,4 @@
+import { Mark } from '@components'
 import { MarkKeys } from '@diary-spo/shared'
 import {
   Icon20IncognitoOutline,
@@ -24,8 +25,8 @@ const AverageMarkCell: FC<IAverageMarkCell> = ({ marks }) => {
     <MiniInfoCell
       textWrap='full'
       before={<Icon20StatisticsOutline />}
-      style={{ marginTop: 5 }}
-      after={calculateAverageMark(marks)}
+      style={{ margin: '5px 0' }}
+      after={<Mark mark={calculateAverageMark(marks)} size='s' />}
     >
       Средний балл:
     </MiniInfoCell>

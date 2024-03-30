@@ -28,8 +28,9 @@ export const MarksByGroup: FC<IMarksByGroup> = ({ marksForSubject }) => {
 
   return (
     <Group
+      className='tableWrapper'
       mode='plain'
-      header={<Header mode='secondary'>Оценки по дисциплинам</Header>}
+      header={<Header mode='tertiary'>Оценки по дисциплинам</Header>}
     >
       {subjectMarksMatrix.map(({ subjectName, data }, i) => (
         <CardGrid key={i} size='l'>

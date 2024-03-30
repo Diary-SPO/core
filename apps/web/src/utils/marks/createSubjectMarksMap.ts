@@ -1,12 +1,14 @@
 import { AbsenceType, PerformanceCurrent, TMark } from '@diary-spo/shared'
 
+export interface SubjectMarksItem {
+  date: string
+  marks: TMark[]
+  absenceType?: AbsenceType
+}
+
 export type SubjectMarksMatrix = Array<{
   subjectName: string
-  data: Array<{
-    date: string
-    marks: TMark[]
-    absenceType?: AbsenceType
-  }>
+  data: Array<SubjectMarksItem>
 }>
 
 export const createSubjectMarksMatrix = (

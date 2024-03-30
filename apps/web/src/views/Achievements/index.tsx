@@ -11,7 +11,7 @@ import {
   Tabs as VKUITabs,
   TabsItem
 } from '@vkontakte/vkui'
-import { FC } from 'preact/compat'
+import { FC, Suspense } from 'preact/compat'
 import { useEffect, useState } from 'preact/hooks'
 
 import { getPerformance } from '@api'
@@ -151,8 +151,11 @@ const Achievements: FC<Props> = ({ id }) => {
         </VKUITabs>
 
         {isLoading && <LoadingData />}
-        {!isLoading && !isError && activeTab}
       </PullToRefresh>
+
+      {!isLoading && !isError && (
+        <Suspense fallback='Загрузка...'>{activeTab}</Suspense>
+      )}
 
       {isError && <ErrorPlaceholder />}
 

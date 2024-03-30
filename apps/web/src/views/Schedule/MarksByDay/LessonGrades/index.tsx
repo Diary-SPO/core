@@ -11,8 +11,6 @@ import { useMarkModal } from '@store'
 import { setDefaultMark, truncateString } from '@utils'
 import { LessonGradesProps } from '../types.ts'
 
-import './index.css'
-
 const LessonGrades: FunctionalComponent<LessonGradesProps> = ({
   day,
   lessonGrades
@@ -44,8 +42,6 @@ const LessonGrades: FunctionalComponent<LessonGradesProps> = ({
             <HorizontalCell
               onClick={() => handleMarkClick(task, lessonName)}
               className='markWrapper'
-              // style={{maxWidth: 'unset'}}
-              key={`${lessonName}_${task.id}_${task.type}`}
             >
               <Mark
                 // className='markWrapper'

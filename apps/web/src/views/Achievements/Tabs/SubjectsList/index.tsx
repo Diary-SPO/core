@@ -64,10 +64,6 @@ const SubjectList: FunctionalComponent<Props> = ({
     fetchData()
   }, [])
 
-  if (isLoading) {
-    return
-  }
-
   if (!isLoading && !attestationData?.subjects?.length) {
     return <Placeholder>Данных нет</Placeholder>
   }

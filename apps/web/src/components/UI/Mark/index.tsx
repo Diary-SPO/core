@@ -25,7 +25,8 @@ const Mark: FC<IMark> = ({ mark, size = 'l', bottom, color, ...props }) => {
     fontSize: fontSizes[size],
     borderRadius: borders[size],
     color: 'white',
-    display: 'inline-block'
+    display: 'inline-block',
+    minWidth: 20
   }
 
   const Bottom = bottom && (

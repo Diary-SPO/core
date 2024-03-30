@@ -1,3 +1,7 @@
+* {
+  box-sizing: border-box;
+}
+
 /* Для PC / Tablet */
 .lessonCard > section {
   padding-bottom: 10px !important;
@@ -32,4 +36,18 @@ main {
   to {
     transform: translateX(0);
   }
+}
+
+.flex {
+  display: flex;
+}
+
+.markWrapper {
+  max-width: 100px !important;
+}
+
+.tableWrapper {
+  padding: 0 20px;
+  height: 90vh;
+  overflow-x: auto;
 }

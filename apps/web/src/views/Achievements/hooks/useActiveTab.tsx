@@ -1,5 +1,5 @@
 import { PerformanceCurrent } from '@diary-spo/shared'
-import { lazy, useMemo } from 'preact/compat'
+import { lazy } from 'preact/compat'
 
 import { Suspense } from '@components'
 import { Tabs } from '../types.ts'
@@ -19,6 +19,10 @@ export const useActiveTab = (
   isLoading: boolean,
   setIsLoading: (value: boolean) => void
 ) => {
+  if (isLoading) {
+    return
+  }
+
   let activeTabComponent = null
 
   switch (selected) {
@@ -66,8 +70,5 @@ export const useActiveTab = (
       break
   }
 
-  return useMemo(
-    () => <main className='activeTabWrapper'>{activeTabComponent}</main>,
-    [selected]
-  )
+  return <main className='activeTabWrapper'>{activeTabComponent}</main>
 }

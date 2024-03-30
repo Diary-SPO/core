@@ -1,11 +1,6 @@
-import { AcademicRecord, Nullable } from '@diary-spo/shared'
+import { AcademicRecord } from '@diary-spo/shared'
 
-export type Cell = Nullable<{
-  row: number
-  col: number
-}>
-
-export interface TableProps {
+export interface MarksForSubjectProps {
   data: AcademicRecord
 }
 
