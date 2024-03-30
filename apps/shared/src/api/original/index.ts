@@ -332,7 +332,7 @@ export type AttestationTerm = {
 
 export interface AttestationSubject extends Omit<Subject, 'marks'> {
   finalMark: AttestationMark
-  marks: Record<number, { value: MarkKeys }>
+  marks: Record<number, { value?: MarkKeys }>
 }
 
 export interface AcademicYear {
@@ -340,7 +340,7 @@ export interface AcademicYear {
   termType: TermType
   terms: AttestationTerm[]
   number: number
-  marks: AttestationMark
+  marks?: AttestationMark
 }
 
 /** Ответ от database/students/<id>/attestation **/

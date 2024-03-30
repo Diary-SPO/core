@@ -22,5 +22,7 @@ export const termSubjectSaveOrGet = async (subject: IArgument) => {
     defaults: {
       ...subject
     }
+  }).then(() => {
+    // TODO: ТУТ СКОПИРОВАТЬ ПОЛЯ
   })
 }
