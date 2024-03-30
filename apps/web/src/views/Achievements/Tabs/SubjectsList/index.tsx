@@ -4,9 +4,8 @@ import { FunctionalComponent } from 'preact'
 import { StateUpdater, useEffect, useState } from 'preact/hooks'
 
 import { getAttestation } from '@api'
-import { THIRD_SEC } from '@config'
 import { useRateLimitExceeded } from '@hooks'
-import { handleResponse, isApiError } from '@utils'
+import { handleResponse, isApiError, isNeedToUpdateCache } from '@utils'
 
 import SubjectGroup from './SubjectGroup'
 import { processAttestationData } from './helpers'
@@ -27,9 +26,8 @@ const SubjectList: FunctionalComponent<Props> = ({
 
   useEffect(() => {
     const data = localStorage.getItem('attestationData')
-    const lastFetchingTime = localStorage.getItem('attestationData_time')
 
-    if (data && Date.now() - Number(lastFetchingTime) <= THIRD_SEC) {
+    if (data && !isNeedToUpdateCache('attestationData_time')) {
       setAttestationData(JSON.parse(data))
       return
     }

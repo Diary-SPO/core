@@ -1,20 +1,19 @@
 import { AcademicRecord, Nullable } from '@diary-spo/shared'
 import { Group, Placeholder } from '@vkontakte/vkui'
 import { FunctionalComponent } from 'preact'
-import { StateUpdater, useEffect, useState } from 'preact/hooks'
+import { useEffect, useState } from 'preact/hooks'
 
 import { getFinalMarks } from '@api'
-import { THIRD_SEC } from '@config'
 import { useRateLimitExceeded } from '@hooks'
-import { handleResponse, isApiError } from '@utils'
+import { handleResponse, isApiError, isNeedToUpdateCache } from '@utils'
 
 import { Table } from './Table'
 
 import './index.css'
 
 interface Props {
-  setIsError: StateUpdater<boolean>
-  setIsLoading: StateUpdater<boolean>
+  setIsError: (value: boolean) => void
+  setIsLoading: (value: boolean) => void
   isLoading: boolean
 }
 
@@ -28,9 +27,8 @@ const FinalMarks: FunctionalComponent<Props> = ({
 
   useEffect(() => {
     const data = localStorage.getItem('finalMarksData')
-    const lastFetchingTime = localStorage.getItem('finalMarksData_time')
 
-    if (data && Date.now() - Number(lastFetchingTime) <= THIRD_SEC) {
+    if (data && !isNeedToUpdateCache('finalMarksData_time')) {
       setFinalMarksData(JSON.parse(data))
       return
     }

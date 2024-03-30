@@ -1,7 +1,7 @@
 import { ErrorPlaceholder, PanelHeaderWithBack, Suspense } from '@components'
 import { Day, Nullable } from '@diary-spo/shared'
 import { useRateLimitExceeded, useSnackbar } from '@hooks'
-import { handleResponse, isApiError } from '@utils'
+import { handleResponse, isApiError, isNeedToUpdateCache } from '@utils'
 import {
   useActiveVkuiLocation,
   useRouteNavigator
@@ -20,7 +20,7 @@ import { FC, lazy, useEffect, useState } from 'preact/compat'
 
 import { getLessons } from '@api'
 import { Props } from '../types.ts'
-import { getWeekString, isNeedToGetNewData } from './utils'
+import { getWeekString } from './utils'
 
 const ScheduleAsideButtons = lazy(() => import('./ScheduleAsideButtons'))
 const MarksByDay = lazy(() => import('./MarksByDay'))
@@ -87,7 +87,7 @@ const Schedule: FC<Props> = ({ id }) => {
   const gettedLessons = async (isHandle?: boolean) => {
     const savedLessons = localStorage.getItem('savedLessons')
 
-    if (savedLessons && !isNeedToGetNewData() && !isHandle) {
+    if (savedLessons && !isNeedToUpdateCache('lastFetchTime') && !isHandle) {
       showSnackbar({
         layout: 'vertical',
         action: 'Загрузить новые',

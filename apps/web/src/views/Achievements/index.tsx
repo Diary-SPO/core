@@ -1,8 +1,8 @@
 import { ErrorPlaceholder, PanelHeaderWithBack } from '@components'
-import { THIRD_SEC, VKUI_ACCENT_BG, VKUI_RED } from '@config'
+import { VKUI_ACCENT_BG, VKUI_RED } from '@config'
 import { Nullable, PerformanceCurrent } from '@diary-spo/shared'
 import { useRateLimitExceeded, useSnackbar } from '@hooks'
-import { handleResponse, isApiError } from '@utils'
+import { handleResponse, isApiError, isNeedToUpdateCache } from '@utils'
 import { Icon28ErrorCircleOutline, Icon28InfoCircle } from '@vkontakte/icons'
 import {
   HorizontalScroll,
@@ -61,15 +61,10 @@ const Achievements: FC<Props> = ({ id }) => {
   }
 
   const fetchMarks = async (isHandle?: boolean) => {
-    const lastFetchingTime = localStorage.getItem('lastFetchTime')
     const savedMarks = localStorage.getItem('savedMarks')
 
     /** Проверяем есть ли кеш и не нужно ли его обновить **/
-    if (
-      savedMarks &&
-      Date.now() - Number(lastFetchingTime) <= THIRD_SEC &&
-      !isHandle
-    ) {
+    if (savedMarks && !isNeedToUpdateCache('lastFetchTime') && !isHandle) {
       const marks = JSON.parse(savedMarks)
 
       saveData(marks)
