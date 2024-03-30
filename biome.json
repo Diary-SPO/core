@@ -27,6 +27,7 @@
     "ignore": [
       "node_modules",
       "./apps/api/dist",
+      "./apps/admin/dist",
       "./apps/web/dist",
       "bun.lockb"
     ]

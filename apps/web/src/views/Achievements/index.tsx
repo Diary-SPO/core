@@ -80,6 +80,7 @@ const Achievements: FC<Props> = ({ id }) => {
     }
 
     try {
+      setIsError(false)
       setIsLoading(true)
       const marks = await getPerformance()
 
@@ -105,6 +106,8 @@ const Achievements: FC<Props> = ({ id }) => {
       }
 
       saveData(marks)
+    } catch {
+      setIsError(true)
     } finally {
       setIsLoading(false)
     }
@@ -147,7 +150,8 @@ const Achievements: FC<Props> = ({ id }) => {
           </HorizontalScroll>
         </VKUITabs>
 
-        {isLoading ? <LoadingData /> : activeTab}
+        {isLoading && <LoadingData />}
+        {!isLoading && !isError && activeTab}
       </PullToRefresh>
 
       {isError && <ErrorPlaceholder />}

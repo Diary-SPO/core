@@ -1,7 +1,8 @@
-import { AcademicRecord, Nullable } from '@diary-spo/shared'
 import { Group, Placeholder } from '@vkontakte/vkui'
 import { FunctionalComponent } from 'preact'
 import { useEffect, useState } from 'preact/hooks'
+
+import { AcademicRecord, Nullable } from '@diary-spo/shared'
 
 import { getFinalMarks } from '@api'
 import { useRateLimitExceeded } from '@hooks'

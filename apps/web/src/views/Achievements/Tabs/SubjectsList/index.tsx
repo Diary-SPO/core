@@ -55,6 +55,7 @@ const SubjectList: FunctionalComponent<Props> = ({
         localStorage.setItem('attestationData', JSON.stringify(attestation))
         localStorage.setItem('attestationData_time', JSON.stringify(Date.now()))
       } catch {
+        setIsError(true)
       } finally {
         setIsLoading(false)
       }
