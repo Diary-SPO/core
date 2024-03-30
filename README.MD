@@ -11,7 +11,7 @@
 
 ### Структура проекта
 
-- web - Frontend чать
+- web - Frontend часть
+- admin - Админская часть
 - api - Backend часть
 - shared - общие типы
-- types - БД типы
