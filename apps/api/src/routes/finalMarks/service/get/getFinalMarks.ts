@@ -13,7 +13,5 @@ export const getFinalMarksFromDiary = async (authData: ICacheData) => {
 
   return response
     .then(async (r): Promise<AcademicRecord> => r.json())
-    .catch(() => {
-      throw new ApiError(API_ERRORS.DATA_NOT_FOUND, API_CODES.UNKNOWN_ERROR)
-    })
+    .catch(() => null)
 }
