@@ -8,14 +8,13 @@ import {
   Icon28ErrorCircleOutline,
   Icon28GridSquareOutline,
   Icon28InfoCircle,
-  Icon28TextViewfinderOutline
+  Icon28TextViewfinderOutline,
+  Icon28UserCircleOutline
 } from '@vkontakte/icons'
 import {
-  Div,
   HorizontalScroll,
   Panel,
   PullToRefresh,
-  Spinner,
   Tabs as VKUITabs,
   TabsItem
 } from '@vkontakte/vkui'
@@ -25,15 +24,14 @@ import { useEffect, useState } from 'preact/hooks'
 import { getPerformance } from '@api'
 
 import { Props } from '../types.ts'
+import LoadingData from './LoadingData.tsx'
 import { formatStatisticsData } from './helpers.ts'
+import { Tabs } from './types.ts'
 
 const Summary = lazy(() => import('./Summary'))
-const UserInfo = lazy(() => import('./UserInfo'))
 const FinalMarks = lazy(() => import('./Tabs/FinalMarks'))
 const MarksByGroup = lazy(() => import('./Tabs/MarksByGroup'))
 const SubjectsList = lazy(() => import('./Tabs/SubjectsList'))
-
-type Tabs = 'current' | 'finalMarks' | 'attestation'
 
 const Achievements: FC<Props> = ({ id }) => {
   const [isSummaryLoading, setIsSummaryLoading] = useState<boolean>(false)
@@ -130,7 +128,63 @@ const Achievements: FC<Props> = ({ id }) => {
     fetchMarks()
   }, [])
 
-  const [selected, setSelected] = useState<Tabs>('current')
+  const [selected, setSelected] = useState<Tabs>('summary')
+
+  const useActiveTab = () => {
+    let tab = null
+
+    switch (selected) {
+      case 'summary':
+        tab = (
+          <Suspense id='UserInfo'>
+            {isSummaryLoading ? (
+              <LoadingData />
+            ) : (
+              <Summary
+                totalNumberOfMarks={totalNumberOfMarks}
+                averageMark={averageMark}
+                markCounts={markCounts}
+              />
+            )}
+          </Suspense>
+        )
+        break
+      case 'current':
+        tab = (
+          <Suspense id='MarksByGroup'>
+            <MarksByGroup marksForSubject={marksForSubject} />
+          </Suspense>
+        )
+        break
+      case 'finalMarks':
+        tab = (
+          <Suspense id='FinalMarks'>
+            <FinalMarks
+              setIsError={setIsError}
+              isLoading={isLoading}
+              setIsLoading={setIsLoading}
+            />
+          </Suspense>
+        )
+        break
+      case 'attestation':
+        return (
+          <Suspense id='AttestationTab'>
+            <SubjectsList
+              setIsError={setIsError}
+              isLoading={isLoading}
+              setIsLoading={setIsLoading}
+            />
+          </Suspense>
+        )
+      default:
+        return null
+    }
+
+    return <div>{tab}</div>
+  }
+
+  const activeTab = useActiveTab()
 
   return (
     <Panel nav={id}>
@@ -139,83 +193,48 @@ const Achievements: FC<Props> = ({ id }) => {
         onRefresh={() => fetchMarks(true)}
         isFetching={isSummaryLoading}
       >
-        <Suspense id='UserInfo'>
-          <UserInfo />
-        </Suspense>
+        <VKUITabs mode='default'>
+          <HorizontalScroll arrowSize='l'>
+            <TabsItem
+              before={<Icon28UserCircleOutline />}
+              disabled={selected === 'summary'}
+              selected={selected === 'summary'}
+              onClick={() => setSelected('summary')}
+            >
+              Общее
+            </TabsItem>
 
-        {isSummaryLoading ? (
-          <Div>
-            <Spinner />
-          </Div>
-        ) : (
-          <Summary
-            totalNumberOfMarks={totalNumberOfMarks}
-            averageMark={averageMark}
-            markCounts={markCounts}
-          />
-        )}
+            <TabsItem
+              before={<Icon28GridSquareOutline />}
+              disabled={selected === 'current'}
+              selected={selected === 'current'}
+              onClick={() => setSelected('current')}
+            >
+              Текущие
+            </TabsItem>
+            <TabsItem
+              before={<Icon28EducationOutline />}
+              disabled={selected === 'finalMarks'}
+              selected={selected === 'finalMarks'}
+              onClick={() => setSelected('finalMarks')}
+            >
+              Итоговые
+            </TabsItem>
+            <TabsItem
+              before={<Icon28TextViewfinderOutline />}
+              disabled={selected === 'attestation'}
+              selected={selected === 'attestation'}
+              onClick={() => setSelected('attestation')}
+            >
+              Ведомость
+            </TabsItem>
+          </HorizontalScroll>
+        </VKUITabs>
+
+        {activeTab}
+
+        {isLoading && <LoadingData />}
       </PullToRefresh>
-
-      <VKUITabs mode='accent'>
-        <HorizontalScroll arrowSize='l'>
-          <TabsItem
-            before={<Icon28GridSquareOutline />}
-            disabled={selected === 'current'}
-            selected={selected === 'current'}
-            onClick={() => setSelected('current')}
-          >
-            Текущие
-          </TabsItem>
-          <TabsItem
-            before={<Icon28EducationOutline />}
-            disabled={selected === 'finalMarks'}
-            selected={selected === 'finalMarks'}
-            onClick={() => setSelected('finalMarks')}
-          >
-            Итоговые
-          </TabsItem>
-          <TabsItem
-            before={<Icon28TextViewfinderOutline />}
-            disabled={selected === 'attestation'}
-            selected={selected === 'attestation'}
-            onClick={() => setSelected('attestation')}
-          >
-            Ведомость
-          </TabsItem>
-        </HorizontalScroll>
-      </VKUITabs>
-
-      {isLoading && (
-        <Div>
-          <Spinner />
-        </Div>
-      )}
-
-      {!isError && selected === 'current' && (
-        <Suspense id='MarksByGroup'>
-          <MarksByGroup marksForSubject={marksForSubject} />
-        </Suspense>
-      )}
-
-      {!isError && selected === 'finalMarks' && (
-        <Suspense id='FinalMarks'>
-          <FinalMarks
-            setIsError={setIsError}
-            isLoading={isLoading}
-            setIsLoading={setIsLoading}
-          />
-        </Suspense>
-      )}
-
-      {!isError && selected === 'attestation' && (
-        <Suspense id='AttestationTab'>
-          <SubjectsList
-            setIsError={setIsError}
-            isLoading={isLoading}
-            setIsLoading={setIsLoading}
-          />
-        </Suspense>
-      )}
 
       {isError && <ErrorPlaceholder />}
 

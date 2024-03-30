@@ -10,11 +10,13 @@ interface IMarksList {
 
 const MarksList: FC<IMarksList> = ({ marks }) => (
   <div className='marksList'>
-    {marks.map(({ date, marks: markValues, absenceType }) => (
-      <div key={`${date}_${absenceType}`} className='marksList__item'>
-        {renderMarksOrAbsence(markValues, absenceType)}
-      </div>
-    ))}
+    {marks
+      .filter((mark) => mark.marks.length > 0)
+      .map(({ date, marks: markValues, absenceType }) => (
+        <div key={`${date}_${absenceType}`} className='marksList__item'>
+          {renderMarksOrAbsence(markValues, absenceType)}
+        </div>
+      ))}
   </div>
 )
 

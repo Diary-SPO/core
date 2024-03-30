@@ -1,5 +1,5 @@
 import { AcademicRecord, Nullable } from '@diary-spo/shared'
-import { Placeholder } from '@vkontakte/vkui'
+import { Group, Placeholder } from '@vkontakte/vkui'
 import { FunctionalComponent } from 'preact'
 import { StateUpdater, useEffect, useState } from 'preact/hooks'
 
@@ -74,9 +74,9 @@ const FinalMarks: FunctionalComponent<Props> = ({
   }
 
   return (
-    <div className='tableWrapper'>
+    <Group className='tableWrapper'>
       <Table data={finalMarksData} />
-    </div>
+    </Group>
   )
 }
 
