@@ -6,6 +6,7 @@ import { Elysia } from 'elysia'
 import { compression } from 'elysia-compression'
 import { helmet } from 'elysia-helmet'
 import { getTimezone } from './config/getTimeZone'
+import {sequelize} from "@db";
 
 // настраиваем сервер...
 const port = Bun.env.PORT ?? 3003

@@ -1,4 +1,4 @@
-import { ErrorPlaceholder, PanelHeaderWithBack, Suspense } from '@components'
+import { ErrorPlaceholder, PanelHeaderWithBack } from '@components'
 import { THIRD_SEC, VKUI_ACCENT_BG, VKUI_RED } from '@config'
 import { Nullable, PerformanceCurrent } from '@diary-spo/shared'
 import { useRateLimitExceeded, useSnackbar } from '@hooks'
@@ -11,7 +11,7 @@ import {
   Tabs as VKUITabs,
   TabsItem
 } from '@vkontakte/vkui'
-import { FC, lazy } from 'preact/compat'
+import { FC } from 'preact/compat'
 import { useEffect, useState } from 'preact/hooks'
 
 import { getPerformance } from '@api'
@@ -23,11 +23,7 @@ import { formatStatisticsData } from './helpers.ts'
 import { Tabs } from './types.ts'
 
 import LoadingData from './LoadingData.tsx'
-
-const Summary = lazy(() => import('./Summary'))
-const FinalMarks = lazy(() => import('./Tabs/FinalMarks'))
-const MarksByGroup = lazy(() => import('./Tabs/MarksByGroup'))
-const SubjectsList = lazy(() => import('./Tabs/SubjectsList'))
+import { useActiveTab } from './hooks/useActiveTab.tsx'
 
 const Achievements: FC<Props> = ({ id }) => {
   const [isLoading, setIsLoading] = useState<boolean>(false)
@@ -125,57 +121,16 @@ const Achievements: FC<Props> = ({ id }) => {
 
   const [selected, setSelected] = useState<Tabs>('summary')
 
-  const useActiveTab = () => {
-    let tab = null
-
-    switch (selected) {
-      case 'summary':
-        tab = (
-          <Suspense id='UserInfo'>
-            <Summary
-              totalNumberOfMarks={totalNumberOfMarks}
-              averageMark={averageMark}
-              markCounts={markCounts}
-            />
-          </Suspense>
-        )
-        break
-      case 'current':
-        tab = (
-          <Suspense id='MarksByGroup'>
-            <MarksByGroup marksForSubject={marksForSubject} />
-          </Suspense>
-        )
-        break
-      case 'finalMarks':
-        tab = (
-          <Suspense id='FinalMarks'>
-            <FinalMarks
-              setIsError={setIsError}
-              isLoading={isLoading}
-              setIsLoading={setIsLoading}
-            />
-          </Suspense>
-        )
-        break
-      case 'attestation':
-        return (
-          <Suspense id='AttestationTab'>
-            <SubjectsList
-              setIsError={setIsError}
-              isLoading={isLoading}
-              setIsLoading={setIsLoading}
-            />
-          </Suspense>
-        )
-      default:
-        return null
-    }
-
-    return <main className='activeTabWrapper'>{tab}</main>
-  }
-
-  const activeTab = useActiveTab()
+  const activeTab = useActiveTab(
+    selected,
+    totalNumberOfMarks,
+    averageMark,
+    markCounts,
+    marksForSubject,
+    setIsError,
+    isLoading,
+    setIsLoading
+  )
 
   return (
     <Panel nav={id}>
