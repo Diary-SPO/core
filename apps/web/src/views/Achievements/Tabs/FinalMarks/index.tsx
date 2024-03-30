@@ -40,7 +40,7 @@ const FinalMarks: FunctionalComponent<Props> = ({
       setIsError(false)
       try {
         const finalMarks = await getFinalMarks()
-        console.log(finalMarks)
+
         handleResponse(
           finalMarks,
           () => setIsError(true),

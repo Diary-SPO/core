@@ -3,14 +3,7 @@ import { THIRD_SEC, VKUI_ACCENT_BG, VKUI_RED } from '@config'
 import { Nullable, PerformanceCurrent } from '@diary-spo/shared'
 import { useRateLimitExceeded, useSnackbar } from '@hooks'
 import { handleResponse, isApiError } from '@utils'
-import {
-  Icon28EducationOutline,
-  Icon28ErrorCircleOutline,
-  Icon28GridSquareOutline,
-  Icon28InfoCircle,
-  Icon28TextViewfinderOutline,
-  Icon28UserCircleOutline
-} from '@vkontakte/icons'
+import { Icon28ErrorCircleOutline, Icon28InfoCircle } from '@vkontakte/icons'
 import {
   HorizontalScroll,
   Panel,
@@ -24,9 +17,12 @@ import { useEffect, useState } from 'preact/hooks'
 import { getPerformance } from '@api'
 
 import { Props } from '../types.ts'
-import LoadingData from './LoadingData.tsx'
+
+import { data } from './data.tsx'
 import { formatStatisticsData } from './helpers.ts'
 import { Tabs } from './types.ts'
+
+import LoadingData from './LoadingData.tsx'
 
 const Summary = lazy(() => import('./Summary'))
 const FinalMarks = lazy(() => import('./Tabs/FinalMarks'))
@@ -181,7 +177,7 @@ const Achievements: FC<Props> = ({ id }) => {
         return null
     }
 
-    return <div>{tab}</div>
+    return <main className='activeTabWrapper'>{tab}</main>
   }
 
   const activeTab = useActiveTab()
@@ -195,39 +191,17 @@ const Achievements: FC<Props> = ({ id }) => {
       >
         <VKUITabs mode='default'>
           <HorizontalScroll arrowSize='l'>
-            <TabsItem
-              before={<Icon28UserCircleOutline />}
-              disabled={selected === 'summary'}
-              selected={selected === 'summary'}
-              onClick={() => setSelected('summary')}
-            >
-              Общее
-            </TabsItem>
-
-            <TabsItem
-              before={<Icon28GridSquareOutline />}
-              disabled={selected === 'current'}
-              selected={selected === 'current'}
-              onClick={() => setSelected('current')}
-            >
-              Текущие
-            </TabsItem>
-            <TabsItem
-              before={<Icon28EducationOutline />}
-              disabled={selected === 'finalMarks'}
-              selected={selected === 'finalMarks'}
-              onClick={() => setSelected('finalMarks')}
-            >
-              Итоговые
-            </TabsItem>
-            <TabsItem
-              before={<Icon28TextViewfinderOutline />}
-              disabled={selected === 'attestation'}
-              selected={selected === 'attestation'}
-              onClick={() => setSelected('attestation')}
-            >
-              Ведомость
-            </TabsItem>
+            {data.map((item) => (
+              <TabsItem
+                key={item.type}
+                before={item.icon}
+                disabled={selected === item.type}
+                selected={selected === item.type}
+                onClick={() => setSelected(item.type)}
+              >
+                {item.text}
+              </TabsItem>
+            ))}
           </HorizontalScroll>
         </VKUITabs>
 
