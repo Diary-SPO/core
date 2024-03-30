@@ -1,12 +1,12 @@
-import { FunctionalComponent } from 'preact'
 import {
   useActiveVkuiLocation,
   useRouteNavigator
 } from '@vkontakte/vk-mini-apps-router'
 import { PanelHeader, PanelHeaderBack } from '@vkontakte/vkui'
+import { FunctionalComponent } from 'preact'
 
-import { MAIN_SETTINGS } from '@routes'
 import { BETA_VERSION, IS_DEV } from '@config'
+import { MAIN_SETTINGS } from '@routes'
 
 const PanelHeaderWithBack: FunctionalComponent<{ title: string }> = ({
   title

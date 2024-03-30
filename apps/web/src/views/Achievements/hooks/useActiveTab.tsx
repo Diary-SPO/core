@@ -1,5 +1,5 @@
-import { lazy } from 'preact/compat'
 import { PerformanceCurrent } from '@diary-spo/shared'
+import { lazy } from 'preact/compat'
 
 import { Suspense } from '@components'
 import { Tabs } from '../types.ts'
