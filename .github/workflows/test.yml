@@ -1,0 +1,26 @@
+name: Run Tests at Web and Api
+
+on:
+  push:
+    branches:
+      - '*'
+
+jobs:
+  Tests:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v1
+        with:
+          bun-version: 'latest'
+
+
+      - name: Install dependencies
+        run: bun install
+
+      - name: Run tests
+        run: bun test

@@ -90,17 +90,20 @@ function searchAcademicAndSemesterById(
   return null
 }
 
-async function deleteNotIn(notDeleted: ITermSubjectModel[], authData: ICacheData) {
+async function deleteNotIn(
+  notDeleted: ITermSubjectModel[],
+  authData: ICacheData
+) {
   const where = []
   for (const raw of notDeleted) {
-    const {termId, subjectId, markValueId} = raw
+    const { termId, subjectId, markValueId } = raw
     where.push({
       termId: {
         [Op.ne]: termId
-      }, 
+      },
       subjectId: {
         [Op.ne]: subjectId
-      }, 
+      },
       markValueId: {
         [Op.ne]: markValueId
       }

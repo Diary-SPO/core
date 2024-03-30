@@ -1,8 +1,19 @@
-import { ICacheData } from "@helpers";
-import { RawFinalMarksFromDB } from "../type";
-import { AcademicYear, AttestationMark, AttestationSubject, AttestationTerm, MarkKeys, Subject, TermType } from "@diary-spo/shared";
+import { ICacheData } from '@helpers'
+import { RawFinalMarksFromDB } from '../type'
+import {
+  AcademicYear,
+  AttestationMark,
+  AttestationSubject,
+  AttestationTerm,
+  MarkKeys,
+  Subject,
+  TermType
+} from '@diary-spo/shared'
 
-export const structurizeResponse = async (raw: RawFinalMarksFromDB, authData: ICacheData) => {
+export const structurizeResponse = async (
+  raw: RawFinalMarksFromDB,
+  authData: ICacheData
+) => {
   const academicYears: AcademicYear[] = []
   const subjects: AttestationSubject[] = []
 
@@ -55,9 +66,11 @@ export const structurizeResponse = async (raw: RawFinalMarksFromDB, authData: IC
           }
         }
 
-        subject.marks[term.idFromDiary] = sub?.markValue?.value ? {
-          value: sub.markValue.value
-        } : {}
+        subject.marks[term.idFromDiary] = sub?.markValue?.value
+          ? {
+              value: sub.markValue.value
+            }
+          : {}
 
         if (!isAdded) {
           subjects.push(subject)
@@ -78,7 +91,7 @@ export const structurizeResponse = async (raw: RawFinalMarksFromDB, authData: IC
   }
 
   academicYears.sort((a, b) => a.number - b.number)
-  subjects.sort((a, b) => a.name > b.name ? 1 : -1)
+  subjects.sort((a, b) => (a.name > b.name ? 1 : -1))
 
   return {
     academicYears,

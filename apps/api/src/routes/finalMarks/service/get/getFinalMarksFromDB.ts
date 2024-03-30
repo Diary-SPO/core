@@ -1,25 +1,41 @@
-import { ICacheData } from "@helpers";
-import { AcademicYearModel, FinalMarkModel, MarkModel, MarkValueModel, SubjectModel, TermModel, TermSubjectModel, TermTypeModel } from "@models";
-import { RawFinalMark, RawFinalMarksFromDB, RawSubjectMark } from "../type";
+import { ICacheData } from '@helpers'
+import {
+  AcademicYearModel,
+  FinalMarkModel,
+  MarkModel,
+  MarkValueModel,
+  SubjectModel,
+  TermModel,
+  TermSubjectModel,
+  TermTypeModel
+} from '@models'
+import { RawFinalMark, RawFinalMarksFromDB, RawSubjectMark } from '../type'
 
-export const getFinalMarksFromDB = async (authData: ICacheData): Promise<RawFinalMarksFromDB> => {
+export const getFinalMarksFromDB = async (
+  authData: ICacheData
+): Promise<RawFinalMarksFromDB> => {
   const subjectMarks = AcademicYearModel.findAll({
-    include: [{
-      model: TermModel,
-      include: [{
-        model: TermSubjectModel,
+    include: [
+      {
+        model: TermModel,
         include: [
-          SubjectModel, 
           {
-            model: MarkValueModel,
-            required: false
+            model: TermSubjectModel,
+            include: [
+              SubjectModel,
+              {
+                model: MarkValueModel,
+                required: false
+              }
+            ],
+            where: {
+              diaryUserId: authData.localUserId
+            }
           }
-        ],
-        where: {
-          diaryUserId: authData.localUserId
-        }
-      }]
-    }, TermTypeModel]
+        ]
+      },
+      TermTypeModel
+    ]
   })
 
   const finalMarks = FinalMarkModel.findAll({
@@ -27,7 +43,7 @@ export const getFinalMarksFromDB = async (authData: ICacheData): Promise<RawFina
       diaryUserId: authData.localUserId
     },
     include: [
-      SubjectModel, 
+      SubjectModel,
       {
         model: MarkValueModel,
         required: false
@@ -35,9 +51,8 @@ export const getFinalMarksFromDB = async (authData: ICacheData): Promise<RawFina
     ]
   })
 
-
   return {
     subjectMarks: (await subjectMarks) as RawSubjectMark[],
     finalMarks: (await finalMarks) as RawFinalMark[]
-  } 
+  }
 }
