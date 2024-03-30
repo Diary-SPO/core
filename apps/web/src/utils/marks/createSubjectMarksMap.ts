@@ -26,7 +26,7 @@ export const createSubjectMarksMatrix = (
       subjectMarksMatrix
         .find((subject) => subject.subjectName === subjectName)
         .data.push({
-          date: new Date(dayWithMark.day).toLocaleDateString(),
+          date: new Date(dayWithMark.day).toLocaleDateString('ru-RU'),
           marks: dayWithMark.markValues,
           absenceType: dayWithMark.absenceType
         })

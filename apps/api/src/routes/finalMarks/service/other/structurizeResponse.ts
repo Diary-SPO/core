@@ -1,5 +1,3 @@
-import { ICacheData } from '@helpers'
-import { RawFinalMarksFromDB } from '../type'
 import {
   AcademicYear,
   AttestationMark,
@@ -9,6 +7,8 @@ import {
   Subject,
   TermType
 } from '@diary-spo/shared'
+import { ICacheData } from '@helpers'
+import { RawFinalMarksFromDB } from '../type'
 
 export const structurizeResponse = async (
   raw: RawFinalMarksFromDB,
@@ -33,7 +33,7 @@ export const structurizeResponse = async (
 
         // Ищем, добавлен ли уже предмет
         for (const s of subjects) {
-          if (s.name == sub.subject.name) {
+          if (s.name === sub.subject.name) {
             subject = s
             isAdded = true
             break
@@ -43,11 +43,11 @@ export const structurizeResponse = async (
         if (!subject) {
           const id = sub.idFromDiary ?? 0
           const name = sub.subject.name
-          let marks: any = new Object()
+          const marks: any = new Object()
           let finalMark: AttestationMark = {}
 
           for (const RawFinalMark of raw.finalMarks) {
-            if (RawFinalMark.subjectId == sub.subjectId) {
+            if (RawFinalMark.subjectId === sub.subjectId) {
               const mark = RawFinalMark?.markValue?.value
               if (mark) {
                 finalMark = {
