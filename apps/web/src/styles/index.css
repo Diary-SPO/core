@@ -19,3 +19,17 @@
 .marksWrapper > div::before, .marksWrapper > div::after {
     content: none !important;
 }
+
+main {
+  animation: show .3s forwards ease-in;
+}
+
+@keyframes show {
+  from {
+    transform: translateX(-100%);
+  }
+
+  to {
+    transform: translateX(0);
+  }
+}

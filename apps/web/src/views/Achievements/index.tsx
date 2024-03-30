@@ -1,42 +1,31 @@
-import { ErrorPlaceholder, PanelHeaderWithBack, Suspense } from '@components'
+import { ErrorPlaceholder, PanelHeaderWithBack } from '@components'
 import { THIRD_SEC, VKUI_ACCENT_BG, VKUI_RED } from '@config'
 import { Nullable, PerformanceCurrent } from '@diary-spo/shared'
 import { useRateLimitExceeded, useSnackbar } from '@hooks'
 import { handleResponse, isApiError } from '@utils'
+import { Icon28ErrorCircleOutline, Icon28InfoCircle } from '@vkontakte/icons'
 import {
-  Icon28EducationOutline,
-  Icon28ErrorCircleOutline,
-  Icon28GridSquareOutline,
-  Icon28InfoCircle,
-  Icon28TextViewfinderOutline
-} from '@vkontakte/icons'
-import {
-  Div,
   HorizontalScroll,
   Panel,
   PullToRefresh,
-  Spinner,
   Tabs as VKUITabs,
   TabsItem
 } from '@vkontakte/vkui'
-import { FC, lazy } from 'preact/compat'
+import { FC } from 'preact/compat'
 import { useEffect, useState } from 'preact/hooks'
 
 import { getPerformance } from '@api'
 
 import { Props } from '../types.ts'
+
+import { data } from './data.tsx'
 import { formatStatisticsData } from './helpers.ts'
+import { Tabs } from './types.ts'
 
-const Summary = lazy(() => import('./Summary'))
-const UserInfo = lazy(() => import('./UserInfo'))
-const FinalMarks = lazy(() => import('./Tabs/FinalMarks'))
-const MarksByGroup = lazy(() => import('./Tabs/MarksByGroup'))
-const SubjectsList = lazy(() => import('./Tabs/SubjectsList'))
-
-type Tabs = 'current' | 'finalMarks' | 'attestation'
+import LoadingData from './LoadingData.tsx'
+import { useActiveTab } from './hooks/useActiveTab.tsx'
 
 const Achievements: FC<Props> = ({ id }) => {
-  const [isSummaryLoading, setIsSummaryLoading] = useState<boolean>(false)
   const [isLoading, setIsLoading] = useState<boolean>(false)
   const [isError, setIsError] = useState<boolean>(false)
 
@@ -96,7 +85,7 @@ const Achievements: FC<Props> = ({ id }) => {
     }
 
     try {
-      setIsSummaryLoading(true)
+      setIsLoading(true)
       const marks = await getPerformance()
 
       handleResponse(
@@ -110,7 +99,7 @@ const Achievements: FC<Props> = ({ id }) => {
           })
         },
         handleRateLimitExceeded,
-        setIsSummaryLoading,
+        setIsLoading,
         showSnackbar,
         false
       )
@@ -122,7 +111,7 @@ const Achievements: FC<Props> = ({ id }) => {
 
       saveData(marks)
     } finally {
-      setIsSummaryLoading(false)
+      setIsLoading(false)
     }
   }
 
@@ -130,92 +119,41 @@ const Achievements: FC<Props> = ({ id }) => {
     fetchMarks()
   }, [])
 
-  const [selected, setSelected] = useState<Tabs>('current')
+  const [selected, setSelected] = useState<Tabs>('summary')
+
+  const activeTab = useActiveTab(
+    selected,
+    totalNumberOfMarks,
+    averageMark,
+    markCounts,
+    marksForSubject,
+    setIsError,
+    isLoading,
+    setIsLoading
+  )
 
   return (
     <Panel nav={id}>
       <PanelHeaderWithBack title='Успеваемость' />
-      <PullToRefresh
-        onRefresh={() => fetchMarks(true)}
-        isFetching={isSummaryLoading}
-      >
-        <Suspense id='UserInfo'>
-          <UserInfo />
-        </Suspense>
+      <PullToRefresh onRefresh={() => fetchMarks(true)} isFetching={isLoading}>
+        <VKUITabs mode='default'>
+          <HorizontalScroll arrowSize='l'>
+            {data.map((item) => (
+              <TabsItem
+                key={item.type}
+                before={item.icon}
+                disabled={selected === item.type}
+                selected={selected === item.type}
+                onClick={() => setSelected(item.type)}
+              >
+                {item.text}
+              </TabsItem>
+            ))}
+          </HorizontalScroll>
+        </VKUITabs>
 
-        {isSummaryLoading ? (
-          <Div>
-            <Spinner />
-          </Div>
-        ) : (
-          <Summary
-            totalNumberOfMarks={totalNumberOfMarks}
-            averageMark={averageMark}
-            markCounts={markCounts}
-          />
-        )}
+        {isLoading ? <LoadingData /> : activeTab}
       </PullToRefresh>
-
-      <VKUITabs mode='accent'>
-        <HorizontalScroll arrowSize='l'>
-          <TabsItem
-            before={<Icon28GridSquareOutline />}
-            disabled={selected === 'current'}
-            selected={selected === 'current'}
-            onClick={() => setSelected('current')}
-          >
-            Текущие
-          </TabsItem>
-          <TabsItem
-            before={<Icon28EducationOutline />}
-            disabled={selected === 'finalMarks'}
-            selected={selected === 'finalMarks'}
-            onClick={() => setSelected('finalMarks')}
-          >
-            Итоговые
-          </TabsItem>
-          <TabsItem
-            before={<Icon28TextViewfinderOutline />}
-            disabled={selected === 'attestation'}
-            selected={selected === 'attestation'}
-            onClick={() => setSelected('attestation')}
-          >
-            Ведомость
-          </TabsItem>
-        </HorizontalScroll>
-      </VKUITabs>
-
-      {isLoading && (
-        <Div>
-          <Spinner />
-        </Div>
-      )}
-
-      {!isError && selected === 'current' && (
-        <Suspense id='MarksByGroup'>
-          <MarksByGroup marksForSubject={marksForSubject} />
-        </Suspense>
-      )}
-
-      {!isError && selected === 'finalMarks' && (
-        <Suspense id='FinalMarks'>
-          <FinalMarks
-            setIsError={setIsError}
-            isLoading={isLoading}
-            setIsLoading={setIsLoading}
-          />
-        </Suspense>
-      )}
-
-      {!isError && selected === 'attestation' && (
-        <Suspense id='AttestationTab'>
-          <SubjectsList
-            setIsError={setIsError}
-            isLoading={isLoading}
-            setIsLoading={setIsLoading}
-          />
-        </Suspense>
-      )}
 
       {isError && <ErrorPlaceholder />}
 

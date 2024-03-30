@@ -2,7 +2,7 @@ import { THIRD_SEC } from '@config'
 
 export const getWeekString = (startDate: Date, endDate: Date) => {
   return `
-  ${startDate.getDate() + 1}
+  ${startDate.getDate()}
   ${startDate.toLocaleString('default', { month: 'long' }).slice(0, 3)}
     -
     ${endDate.getDate()}

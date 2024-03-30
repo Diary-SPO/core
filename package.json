@@ -32,9 +32,5 @@
   },
   "workspaces": [
     "apps/*"
-  ],
-  "dependencies": {
-    "@types/node-rsa": "^1.1.4",
-    "node-rsa": "^1.1.1"
-  }
+  ]
 }

@@ -1,5 +1,5 @@
 import { PerformanceCurrent } from '@diary-spo/shared'
-import { createSubjectMarksMap } from '@utils'
+import { createSubjectMarksMatrix } from '@utils'
 import {
   Card,
   CardGrid,
@@ -24,14 +24,14 @@ export const MarksByGroup: FC<IMarksByGroup> = ({ marksForSubject }) => {
     return <Placeholder>Данных нет</Placeholder>
   }
 
-  const subjectMarksMap = createSubjectMarksMap(marksForSubject)
+  const subjectMarksMatrix = createSubjectMarksMatrix(marksForSubject)
 
   return (
     <Group
       mode='plain'
       header={<Header mode='secondary'>Оценки по дисциплинам</Header>}
     >
-      {Object.keys(subjectMarksMap).map((subjectName, i) => (
+      {subjectMarksMatrix.map(({ subjectName, data }, i) => (
         <CardGrid key={i} size='l'>
           <Card mode='shadow'>
             <Div>
@@ -42,12 +42,10 @@ export const MarksByGroup: FC<IMarksByGroup> = ({ marksForSubject }) => {
             </Div>
 
             <HorizontalScroll>
-              <MarksList marks={subjectMarksMap[subjectName]} />
+              <MarksList marks={data} />
             </HorizontalScroll>
 
-            <AverageMarkCell
-              marks={subjectMarksMap[subjectName].flatMap(({ marks }) => marks)}
-            />
+            <AverageMarkCell marks={data.flatMap((item) => item.marks)} />
           </Card>
         </CardGrid>
       ))}
