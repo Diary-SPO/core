@@ -1,8 +1,8 @@
-import { Suspense } from '@components'
-import { PerformanceCurrent } from '@diary-spo/shared'
-import { Tabs } from '../types.ts'
-
 import { lazy } from 'preact/compat'
+import { PerformanceCurrent } from '@diary-spo/shared'
+
+import { Suspense } from '@components'
+import { Tabs } from '../types.ts'
 
 const Summary = lazy(() => import('../Tabs/Summary'))
 const FinalMarks = lazy(() => import('../Tabs/FinalMarks'))

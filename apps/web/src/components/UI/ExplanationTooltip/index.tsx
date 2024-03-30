@@ -1,6 +1,6 @@
+import { FC } from 'preact/compat'
 import { Icon16HelpOutline } from '@vkontakte/icons'
 import { Popover, Subhead } from '@vkontakte/vkui'
-import { FC } from 'preact/compat'
 
 interface ITooltipText {
   text?: string

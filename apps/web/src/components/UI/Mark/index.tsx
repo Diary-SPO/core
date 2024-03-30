@@ -1,6 +1,7 @@
 import { ReturnedMark } from '@types'
 import { Footnote } from '@vkontakte/vkui'
 import { CSSProperties, FC, HTMLAttributes, useMemo } from 'preact/compat'
+
 import {
   Sizes,
   borders,

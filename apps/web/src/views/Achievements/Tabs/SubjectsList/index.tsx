@@ -1,7 +1,7 @@
 import { AttestationResponse, Nullable } from '@diary-spo/shared'
 import { Placeholder } from '@vkontakte/vkui'
 import { FunctionalComponent } from 'preact'
-import { StateUpdater, useEffect, useState } from 'preact/hooks'
+import { useEffect, useState } from 'preact/hooks'
 
 import { getAttestation } from '@api'
 import { useRateLimitExceeded } from '@hooks'
@@ -11,8 +11,8 @@ import SubjectGroup from './SubjectGroup'
 import { processAttestationData } from './helpers'
 
 interface Props {
-  setIsLoading: StateUpdater<boolean>
-  setIsError: StateUpdater<boolean>
+  setIsLoading: (value: boolean) => void
+  setIsError: (value: boolean) => void
   isLoading: boolean
 }
 

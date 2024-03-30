@@ -1,9 +1,9 @@
-import { VKUI_RED } from '@config'
-import { Nullable } from '@diary-spo/shared'
+import { ReactNode, useCallback, useState } from 'preact/compat'
 import { Icon28ErrorCircleOutline } from '@vkontakte/icons'
 import { Snackbar } from '@vkontakte/vkui'
-import { ReactNode } from 'preact/compat'
-import { useCallback, useState } from 'preact/hooks'
+import { Nullable } from '@diary-spo/shared'
+
+import { VKUI_RED } from '@config'
 
 /**
  * Функция 'useRateLimitExceeded' обрабатывает случай превышения лимита запросов.
