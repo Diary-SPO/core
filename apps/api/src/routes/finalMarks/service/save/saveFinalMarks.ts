@@ -1,24 +1,31 @@
-import { AcademicRecord, MarkKeys } from '@diary-spo/shared'
+import { AcademicRecord } from '@diary-spo/shared'
 import { ICacheData } from '@helpers'
 import {
+  ITermSubjectModel,
+  TermSubjectModel,
   markValueSaveOrGet,
   saveOrGetFinalMark,
   saveOrGetTerm,
   subjectSaveOrGet,
   termSubjectSaveOrGet
 } from '@models'
+import { Op } from 'sequelize'
 import { saveOrGetAcademicYear } from 'src/models/AcademicYear/actions'
 
 export const saveFinalMarks = async (
   finalMarks: AcademicRecord,
   authData: ICacheData
 ) => {
-  for (const subject of finalMarks.subjects) {
+  const promises: Promise<ITermSubjectModel>[] = []
+  const notDeleted: ITermSubjectModel[] = []
+
+  finalMarks.subjects.forEach(async (subject) => {
     const finalMark = subject.finalMark?.value
     const name = subject.name
     const marks = subject.marks
 
     const subjectFromDB = await subjectSaveOrGet(name)
+    let yearFromDB = null
 
     // Сохраняем промежуточные оценки
     for (const semId of Object.keys(marks)) {
@@ -33,24 +40,29 @@ export const saveFinalMarks = async (
 
       const { year, term } = searchAcademicYear
 
-      const yearFromDB = await saveOrGetAcademicYear(year, authData)
+      // Уменьшаем количество запросов примерно на 12 шт.
+      if (!yearFromDB || yearFromDB.idFromDiary !== year.id) {
+        yearFromDB = await saveOrGetAcademicYear(year, authData)
+      }
       const termFromDB = await saveOrGetTerm(term, yearFromDB, authData)
       const idMarkFromDB = mark
         ? (await markValueSaveOrGet(mark)).id
         : undefined
 
       // Сохраняем промежуточную оценку
-      termSubjectSaveOrGet({
+      const promise = termSubjectSaveOrGet({
         termId: termFromDB.id,
         subjectId: subjectFromDB.id,
         diaryUserId: authData.localUserId,
         markValueId: idMarkFromDB
       }).then((r) => {
         const [raw, isCreated] = r
+        notDeleted.push(raw)
         if (isCreated) return raw
         raw.markValueId = idMarkFromDB
         return raw.save()
       })
+      promises.push(promise)
     }
 
     // Сохраняем итоговые оценки
@@ -58,7 +70,10 @@ export const saveFinalMarks = async (
       ? (await markValueSaveOrGet(finalMark)).id
       : undefined
     saveOrGetFinalMark(idMarkFromDB ?? null, subjectFromDB.id, authData)
-  }
+  })
+
+  await Promise.all(promises)
+  deleteNotIn(notDeleted, authData)
 }
 
 function searchAcademicAndSemesterById(
@@ -73,4 +88,34 @@ function searchAcademicAndSemesterById(
     }
   }
   return null
+}
+
+async function deleteNotIn(notDeleted: ITermSubjectModel[], authData: ICacheData) {
+  const where = []
+  for (const raw of notDeleted) {
+    const {termId, subjectId, markValueId} = raw
+    where.push({
+      termId: {
+        [Op.ne]: termId
+      }, 
+      subjectId: {
+        [Op.ne]: subjectId
+      }, 
+      markValueId: {
+        [Op.ne]: markValueId
+      }
+    })
+  }
+  if (where.length > 0) {
+    TermSubjectModel.destroy({
+      where: {
+        [Op.and]: [
+          ...where,
+          {
+            diaryUserId: authData.localUserId
+          }
+        ]
+      }
+    })
+  }
 }

@@ -130,6 +130,10 @@ MarkModel.belongsTo(MarkValueModel)
 MarkValueModel.hasMany(FinalMarkModel)
 FinalMarkModel.belongsTo(MarkValueModel)
 
+// DiaryUser <-->> FinalMark
+DiaryUserModel.hasMany(FinalMarkModel)
+FinalMarkModel.belongsTo(DiaryUserModel)
+
 // MarkValue <-->> TermSubject
 MarkValueModel.hasMany(TermSubjectModel)
 TermSubjectModel.belongsTo(MarkValueModel)
@@ -185,6 +189,10 @@ TermSubjectModel.belongsTo(TermSubjectExaminationTypeModel)
 // Teacher <-->> TermSubjectModel
 TeacherModel.hasMany(TermSubjectModel)
 TermSubjectModel.belongsTo(TeacherModel)
+
+// DiaryUser <-->> TermSubject
+DiaryUserModel.hasMany(TermSubjectModel)
+TermSubjectModel.belongsTo(DiaryUserModel)
 
 if (forceSyncDatabase) {
   console.log('Syncing database...')

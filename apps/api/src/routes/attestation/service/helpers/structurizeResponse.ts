@@ -42,7 +42,7 @@ function getAllByName(
   const sort: Subject[] = []
   for (const term of raw.terms) {
     for (const subject of term.termSubjects) {
-      if (subject.termSubjectExaminationType.name === type) {
+      if (subject?.termSubjectExaminationType?.name === type) {
         const teacher = subject?.teacher
         const examinationType = subject.examinationType?.name as ExaminationKeys
         const marks = Object()
