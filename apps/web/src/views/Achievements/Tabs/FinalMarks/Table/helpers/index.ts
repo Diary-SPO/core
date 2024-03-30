@@ -29,32 +29,32 @@ export const getMark = (value: MarkKeys): TermMark => {
 /**
  * Преобразует данные для рендера в таблице
  */
-// TODO: add tests
 export const buildSubjectMatrix = (data: AcademicRecord): SubjectMatrix => {
   const subjectMatrix: SubjectMatrix = []
 
-  data.subjects.forEach((subject) => {
+  for (const subject of data.subjects) {
     const subjectData: SubjectData = {
       subjectName: subject.name,
       terms: [],
       finalMark: getMark(subject.finalMark.value) || ''
     }
 
-    data.academicYears.forEach((year) => {
-      year.terms.forEach((term) => {
+    for (const year of data.academicYears) {
+      for (const term of year.terms) {
         const mark = subject.marks[term.id]
 
         const termData: Term = {
           course: year.number,
           semester: term.number,
-          mark: mark ? getMark(mark?.value) || '.' : ''
+          mark: mark ? getMark(mark.value) || '.' : ''
         }
 
         subjectData.terms.push(termData)
-      })
-    })
+      }
+    }
+
     subjectMatrix.push(subjectData)
-  })
+  }
 
   return subjectMatrix
 }

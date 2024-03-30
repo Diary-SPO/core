@@ -35,9 +35,7 @@ const UserInfo: FunctionComponent = () => {
   const getUserInfo = async () => {
     setIsLoading(true)
 
-    const localData =
-      localStorage.getItem('data') ?? sessionStorage.getItem('data')
-    console.log('localData', localData)
+    const localData = localStorage.getItem('data')
     if (localData) {
       const parsedData = JSON.parse(localData) as UserData
 
@@ -49,10 +47,8 @@ const UserInfo: FunctionComponent = () => {
       setIsLoading(false)
     }
 
-    const newUserData =
-      localStorage.getItem('data') ?? sessionStorage.getItem('data')
+    const newUserData = localStorage.getItem('data')
     const parsedUserData = JSON.parse(newUserData) as UserData
-    console.log('parsedUserData', parsedUserData)
 
     setUserData({
       name: parsedUserData.name || '',
@@ -62,7 +58,6 @@ const UserInfo: FunctionComponent = () => {
     })
 
     localStorage.setItem('userData', JSON.stringify(newUserData))
-    sessionStorage.setItem('userData', JSON.stringify(newUserData))
 
     setIsLoading(false)
   }

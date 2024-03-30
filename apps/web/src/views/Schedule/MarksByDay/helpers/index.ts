@@ -10,17 +10,21 @@ export const transformData = (
 
   const resultMap = new Map<string, MarkDetailed[]>()
 
-  lessonsState.forEach((lessonDay) => {
+  for (const lessonDay of lessonsState) {
     const day = new Date(lessonDay.date).toLocaleDateString('ru')
 
-    lessonDay.lessons?.forEach((lesson) => {
+    if (!lessonDay.lessons) {
+      continue
+    }
+
+    for (const lesson of lessonDay.lessons) {
       if (!lesson.name || !lesson.gradebook) {
-        return
+        continue
       }
 
       const existingTasks = resultMap.get(day) || []
 
-      lesson.gradebook.tasks.forEach((newTask) => {
+      for (const newTask of lesson.gradebook.tasks) {
         if (
           !existingTasks.some(
             (existingTask) => existingTask.task.id === newTask.id
@@ -28,11 +32,11 @@ export const transformData = (
         ) {
           existingTasks.push({ lessonName: lesson.name, task: newTask })
         }
-      })
+      }
 
       resultMap.set(day, existingTasks)
-    })
-  })
+    }
+  }
 
   return Array.from(resultMap.entries())
 }
