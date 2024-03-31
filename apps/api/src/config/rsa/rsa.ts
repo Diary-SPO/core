@@ -1,4 +1,3 @@
-import { KEY_SCAN_PATH } from '@config'
 import NodeRSA from 'node-rsa'
 import { generateKeyRSA, searchKeyRSA } from './'
 
