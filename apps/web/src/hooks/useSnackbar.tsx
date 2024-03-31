@@ -29,7 +29,6 @@ export const useSnackbar = (): [
 
     setSnackbar(
       <Snackbar
-        offsetY={45}
         layout={snackbarData.layout || 'vertical'}
         onClose={() => setSnackbar(null)}
         before={

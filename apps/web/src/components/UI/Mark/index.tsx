@@ -41,7 +41,7 @@ const Mark: FC<IMark> = ({ mark, size = 'l', bottom, color, ...props }) => {
 
   return useMemo(
     () => (
-      <div {...props} style='max-width: min-content;'>
+      <div {...props}>
         <div className='markRoot' style={style}>
           {mark}
         </div>
