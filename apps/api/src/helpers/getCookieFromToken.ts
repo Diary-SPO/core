@@ -110,8 +110,6 @@ export const getCookieFromToken = async (
     token
   }
 
-  console.log('Сетаю localUserId: ', typeof localUserId)
-
   await memoryCache.set(token, toSave)
 
   return { ...toSave }
@@ -129,8 +127,6 @@ const cacheGetter = async (token: string): Promise<ICacheData | null> => {
   if (!cacheCookie) {
     return null
   }
-
-  console.log('Гетаю localUserId: ', typeof cacheCookie.localUserId)
 
   return cacheCookie
 }

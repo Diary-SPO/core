@@ -6,18 +6,18 @@ import {
   type ITermDetectP,
   ScheduleModel,
   type ScheduleWhere,
-  TeacherSaveOrGet as teacherSaveOrGet,
+  saveOrGetAbsenceType as absenceTypeSaveOrGet,
   deleteAbsence,
   deleteScheduleSubgroup,
   detectSubgroup,
   lessonTypeSaveOrGet,
   saveClassroom,
   saveOrGetAbsence,
-  saveOrGetAbsenceType as absenceTypeSaveOrGet,
   scheduleSubgroupSaveOrGet,
   subgroupSaveOrGet,
   subjectSaveOrGet,
   tasksSaveOrGet,
+  TeacherSaveOrGet as teacherSaveOrGet,
   themesSaveOrGet
 } from '@models'
 
@@ -160,7 +160,7 @@ export const lessonSave = async (
   }
 
   // Сохраняем "задачи" (оценки там же)
-  if (gradebook.tasks?.length) {
+  if (gradebook?.tasks?.length) {
     const schedule = await promiseToReturn
     retriesForError(
       tasksSaveOrGet,

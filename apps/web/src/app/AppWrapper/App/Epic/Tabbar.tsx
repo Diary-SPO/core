@@ -6,8 +6,8 @@ import {
   Icon28SettingsOutline
 } from '@vkontakte/icons'
 import {
-  Tabbar as VKUITabbar,
   TabbarItem,
+  Tabbar as VKUITabbar,
   useAdaptivityConditionalRender
 } from '@vkontakte/vkui'
 import type { FC } from 'preact/compat'

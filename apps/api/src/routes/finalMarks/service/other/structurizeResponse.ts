@@ -1,9 +1,9 @@
-import {
-  type AcademicYear,
-  type AttestationMark,
-  type AttestationSubject,
-  type AttestationTerm,
-  type TermType
+import type {
+  AcademicYear,
+  AttestationMark,
+  AttestationSubject,
+  AttestationTerm,
+  TermType
 } from '@diary-spo/shared'
 import type { ICacheData } from '@helpers'
 import type { RawFinalMarksFromDB } from '../type'
