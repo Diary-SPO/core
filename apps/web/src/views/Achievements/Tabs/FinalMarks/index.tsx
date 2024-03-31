@@ -1,4 +1,4 @@
-import { Group, Header } from '@vkontakte/vkui'
+import { Group, Header, Placeholder } from '@vkontakte/vkui'
 import type { FunctionalComponent } from 'preact'
 import { useEffect, useState } from 'preact/hooks'
 
@@ -69,7 +69,8 @@ const FinalMarks: FunctionalComponent<Props> = ({
   }
 
   if (!finalMarksData?.subjects?.length) {
-    return <LoadingData text='Обработка данных...' />
+    //return <LoadingData text='Обработка данных...' />
+    return <Placeholder>Данных нет</Placeholder>
   }
 
   return (

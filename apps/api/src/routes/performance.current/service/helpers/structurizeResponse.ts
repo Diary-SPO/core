@@ -31,7 +31,7 @@ export const structurizeResponse = (
     for (const schedule of subject.schedules) {
       // TODO: Очень костыльно убираем чужие подгруппы. Нужно поправить (в будущем)
       const subgroups = schedule.scheduleSubgroups
-      if (subgroups.length) {
+      if (subgroups.length > 0) {
         for (const subgroup of subgroups) {
           if (subgroup.diaryUserId === authData.localUserId) {
             isIgnored = false
@@ -89,9 +89,9 @@ export const structurizeResponse = (
       }
 
       // Если нет ни опозданий ни оценок, то не добавлем день в выдачу
-      if (markValues.length || absenceType) {
-        daysWithMarks.push(dayToSave)
-      }
+      // if (markValues.length || absenceType) {
+      daysWithMarks.push(dayToSave)
+      // }
 
       // Добавляем дату в monthsWithDays
       const num = new Date(day).getMonth() + 1

@@ -30,12 +30,16 @@ export const getFinalMarksFromDB = async (
             ],
             where: {
               diaryUserId: authData.localUserId
-            }
+            },
+            required: false
           }
         ]
       },
       TermTypeModel
-    ]
+    ],
+    where: {
+      groupId: authData.groupId
+    }
   })
 
   const finalMarks = FinalMarkModel.findAll({

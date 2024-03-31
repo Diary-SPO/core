@@ -34,7 +34,8 @@ export const getAttestationFromDB = async (
             ],
             where: {
               diaryUserId: authData.localUserId
-            }
+            },
+            required: false
           }
         ],
         where: {
