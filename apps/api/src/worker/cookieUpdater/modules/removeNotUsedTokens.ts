@@ -21,20 +21,12 @@ export const removeNotUsedTokens = async (): Promise<void> => {
   }
 
   for (let i = 0; i < tokens?.length; i++) {
-    await AuthModel.destroy({
-      where: {
-        id: tokens[i].id
-      }
-    })
+    await tokens[i].destroy()
       .then(() => {
-        console.log(
-          `Успешно удалил токен [${tokens[i].id}]: ${tokens[i].token}`
-        )
+        console.log(`Успешно удалил токен: ${tokens[i].token}`)
       })
       .catch(() => {
-        console.error(
-          `Ошибка удаления токена [${tokens[i].id}]: ${tokens[i].token}`
-        )
+        console.error(`Ошибка удаления токена: ${tokens[i].token}`)
       })
   }
 }

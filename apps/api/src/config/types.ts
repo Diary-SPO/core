@@ -28,6 +28,7 @@ export interface StringParams {
   DATABASE_USERNAME: string
   DATABASE_PASSWORD: string
   TIMEZONE: string
+  KEY_SCAN_PATH: string
 }
 
 export type ParamsKeys = StringKeys<ParamsInit>
