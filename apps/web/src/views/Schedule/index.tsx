@@ -88,7 +88,7 @@ const Schedule: FC<Props> = ({ id }) => {
 
   const gettedLessons = async (isHandle?: boolean) => {
     const savedLessons = localStorage.getItem('savedLessons')
-    console.log('asd')
+
     if (savedLessons && !isNeedToUpdateCache('lastFetchTime') && !isHandle) {
       showSnackbar({
         layout: 'vertical',
@@ -158,10 +158,10 @@ const Schedule: FC<Props> = ({ id }) => {
     >
       <Panel nav={id}>
         <PanelHeaderWithBack title='Главная' />
-        {isError ? (
-          <ErrorPlaceholder onClick={handleReloadData} />
-        ) : (
-          <PullToRefresh onRefresh={handleReloadData} isFetching={isLoading}>
+        <PullToRefresh onRefresh={handleReloadData} isFetching={isLoading}>
+          {isError ? (
+            <ErrorPlaceholder onClick={handleReloadData} />
+          ) : (
             <Div>
               <Suspense id='MarksByDay'>
                 <Group header={MarksHeader}>{MarksByDayOrLoading}</Group>
@@ -182,8 +182,8 @@ const Schedule: FC<Props> = ({ id }) => {
                 </Group>
               </Suspense>
             </Div>
-          </PullToRefresh>
-        )}
+          )}
+        </PullToRefresh>
 
         {snackbar}
         {rateSnackbar}
