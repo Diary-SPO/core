@@ -16,12 +16,12 @@ export type ITaskModel = IModelPrototype<TaskModelType, 'id'>
 
 export const TaskModel = sequelize.define<ITaskModel>('task', {
   id: {
-    type: DataTypes.INTEGER,
+    type: DataTypes.BIGINT,
     autoIncrement: true,
     primaryKey: true
   },
   scheduleId: {
-    type: DataTypes.INTEGER,
+    type: DataTypes.BIGINT,
     allowNull: false,
     unique: 'task_unique_k',
     references: {

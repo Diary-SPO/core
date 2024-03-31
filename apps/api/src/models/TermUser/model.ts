@@ -13,7 +13,7 @@ export type ITermUserModel = IModelPrototypeNoId<TermUserModelType>
 
 export const TermUserModel = sequelize.define<ITermUserModel>('termUser', {
   termId: {
-    type: DataTypes.INTEGER,
+    type: DataTypes.BIGINT,
     primaryKey: true,
     allowNull: false,
     references: {
@@ -21,7 +21,7 @@ export const TermUserModel = sequelize.define<ITermUserModel>('termUser', {
     }
   },
   diaryUserId: {
-    type: DataTypes.INTEGER,
+    type: DataTypes.BIGINT,
     primaryKey: true,
     allowNull: false,
     references: {

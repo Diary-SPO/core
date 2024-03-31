@@ -13,12 +13,12 @@ export type IThemeModelType = IModelPrototype<ThemeModelType, 'id'>
 
 export const ThemeModel = sequelize.define<IThemeModelType>('theme', {
   id: {
-    type: DataTypes.INTEGER,
+    type: DataTypes.BIGINT,
     autoIncrement: true,
     primaryKey: true
   },
   scheduleId: {
-    type: DataTypes.INTEGER,
+    type: DataTypes.BIGINT,
     allowNull: false,
     references: {
       model: ScheduleModel,

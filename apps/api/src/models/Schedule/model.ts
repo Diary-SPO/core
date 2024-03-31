@@ -27,12 +27,12 @@ export type IScheduleModelNoId = Optional<ScheduleModelType, 'id'>
 
 export const ScheduleModel = sequelize.define<IScheduleModel>('schedule', {
   id: {
-    type: DataTypes.INTEGER,
+    type: DataTypes.BIGINT,
     autoIncrement: true,
     primaryKey: true
   },
   groupId: {
-    type: DataTypes.INTEGER,
+    type: DataTypes.BIGINT,
     allowNull: false,
     references: {
       model: GroupModel,
@@ -41,7 +41,7 @@ export const ScheduleModel = sequelize.define<IScheduleModel>('schedule', {
     unique: 'unique_schedule_k'
   },
   teacherId: {
-    type: DataTypes.INTEGER,
+    type: DataTypes.BIGINT,
     allowNull: true,
     references: {
       model: TeacherModel,
@@ -49,7 +49,7 @@ export const ScheduleModel = sequelize.define<IScheduleModel>('schedule', {
     }
   },
   subjectId: {
-    type: DataTypes.INTEGER,
+    type: DataTypes.BIGINT,
     allowNull: true,
     references: {
       model: SubjectModel,
@@ -85,7 +85,7 @@ export const ScheduleModel = sequelize.define<IScheduleModel>('schedule', {
     unique: 'unique_schedule_k'
   },
   classroomId: {
-    type: DataTypes.INTEGER,
+    type: DataTypes.BIGINT,
     allowNull: false,
     references: {
       model: ClassroomModel,

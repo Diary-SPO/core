@@ -29,12 +29,12 @@ export type IDiaryUserModel = IModelPrototype<DiaryUserModelType, 'id'>
 
 export const DiaryUserModel = sequelize.define<IDiaryUserModel>('diaryUser', {
   id: {
-    type: DataTypes.INTEGER,
+    type: DataTypes.BIGINT,
     autoIncrement: true,
     primaryKey: true
   },
   groupId: {
-    type: DataTypes.INTEGER,
+    type: DataTypes.BIGINT,
     allowNull: false,
     comment: 'id группы пользователя. Берётся из базы',
     references: {

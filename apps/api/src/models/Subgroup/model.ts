@@ -13,7 +13,7 @@ export type ISubgroupModelType = IModelPrototype<SubgroupModelType, 'id'>
 
 export const SubgroupModel = sequelize.define<ISubgroupModelType>('subgroup', {
   id: {
-    type: DataTypes.INTEGER,
+    type: DataTypes.BIGINT,
     primaryKey: true,
     autoIncrement: true
   },
@@ -23,7 +23,7 @@ export const SubgroupModel = sequelize.define<ISubgroupModelType>('subgroup', {
     unique: 'subgroup_unique'
   },
   groupId: {
-    type: DataTypes.INTEGER,
+    type: DataTypes.BIGINT,
     allowNull: false,
     references: {
       model: GroupModel,

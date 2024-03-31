@@ -14,7 +14,7 @@ export type IRequiredModel = IModelPrototypeNoId<RequiredModelType>
 
 export const RequiredModel = sequelize.define<IRequiredModel>('required', {
   diaryUserId: {
-    type: DataTypes.INTEGER,
+    type: DataTypes.BIGINT,
     primaryKey: true,
     allowNull: false,
     references: {
@@ -23,7 +23,7 @@ export const RequiredModel = sequelize.define<IRequiredModel>('required', {
     }
   },
   taskId: {
-    type: DataTypes.INTEGER,
+    type: DataTypes.BIGINT,
     primaryKey: true,
     allowNull: false,
     references: {

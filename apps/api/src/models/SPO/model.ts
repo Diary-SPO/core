@@ -20,7 +20,7 @@ export type ISPOModel = IModelPrototype<SPOModelType, 'id'>
 
 export const SPOModel = sequelize.define<ISPOModel>('spo', {
   id: {
-    type: DataTypes.INTEGER,
+    type: DataTypes.BIGINT,
     autoIncrement: true,
     primaryKey: true
   },
