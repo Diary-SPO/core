@@ -23,7 +23,7 @@ export const tasksSaveOrGet = async (
 
   // Удаляем устаревшие таски
   // TODO: проверить работоспособность после исправления
-  //deleteTasksNotIn(tasks, scheduleId)
+  deleteTasksNotIn(tasks, scheduleId)
 
   for (const task of tasks) {
     const taskTypeId = (
