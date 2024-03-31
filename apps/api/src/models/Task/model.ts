@@ -5,8 +5,8 @@ import { TaskTypeModel } from '../TaskType'
 import type { IModelPrototype } from '../types'
 
 export type TaskModelType = {
-  id: number
-  scheduleId: number
+  id: bigint
+  scheduleId: bigint
   taskTypeId: number
   topic: string
   idFromDiary: number

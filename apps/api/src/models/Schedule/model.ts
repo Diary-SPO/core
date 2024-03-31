@@ -9,16 +9,16 @@ import { TeacherModel } from '../Teacher'
 import type { IModelPrototype } from '../types'
 
 export type ScheduleModelType = {
-  id: number
-  groupId: number
-  teacherId: Nullable<number>
-  subjectId: Nullable<number>
+  id: bigint
+  groupId: bigint
+  teacherId: Nullable<bigint>
+  subjectId: Nullable<bigint>
   lessonTypeId?: Nullable<number>
   gradebookIdFromDiary?: Nullable<number>
   date: Date | string
   startTime: string
   endTime: string
-  classroomId: Nullable<number>
+  classroomId: Nullable<bigint>
   gradebookId?: Nullable<number>
 }
 

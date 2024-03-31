@@ -8,8 +8,8 @@ import type { IModelPrototype } from '../types'
 
 // REMOVE IT
 export type DiaryUserModelType = {
-  id: number
-  groupId: number
+  id: bigint
+  groupId: bigint
   login: string
   password: string
   phone?: string

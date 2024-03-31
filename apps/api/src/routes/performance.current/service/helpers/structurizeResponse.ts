@@ -31,7 +31,7 @@ export const structurizeResponse = (
     for (const schedule of subject.schedules) {
       // TODO: Очень костыльно убираем чужие подгруппы. Нужно поправить (в будущем)
       const subgroups = schedule.scheduleSubgroups
-      if (subgroups.length) {
+      if (subgroups.length > 0) {
         for (const subgroup of subgroups) {
           if (subgroup.diaryUserId === authData.localUserId) {
             isIgnored = false

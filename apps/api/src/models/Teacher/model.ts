@@ -4,8 +4,8 @@ import { SPOModel } from '../SPO'
 import type { IModelPrototype } from '../types'
 
 export type TeacherModelType = {
-  id: number
-  spoId: number
+  id: bigint
+  spoId: bigint
   firstName: string
   lastName: string
   middleName?: string
@@ -18,12 +18,12 @@ export const TeacherModel = sequelize.define<ITeacherModel>(
   'teacher',
   {
     id: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.BIGINT,
       autoIncrement: true,
       primaryKey: true
     },
     spoId: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.BIGINT,
       allowNull: false,
       references: {
         model: SPOModel,

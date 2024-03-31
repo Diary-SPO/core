@@ -10,11 +10,11 @@ import { TermSubjectExaminationTypeModel } from '../TermSubjectExaminationType'
 import type { IModelPrototypeNoId } from '../types'
 
 export type TermSubjectModelType = {
-  termId: number
-  subjectId: number
-  diaryUserId: number
+  termId: bigint
+  subjectId: bigint
+  diaryUserId: bigint
   markValueId?: number
-  teacherId?: number
+  teacherId?: bigint
   examinationTypeId?: number
   termSubjectExaminationTypeId?: number
   idFromDiary?: number
@@ -26,7 +26,7 @@ export const TermSubjectModel = sequelize.define<ITermSubjectModel>(
   'termSubject',
   {
     termId: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.BIGINT,
       allowNull: false,
       primaryKey: true,
       references: {
@@ -35,7 +35,7 @@ export const TermSubjectModel = sequelize.define<ITermSubjectModel>(
       }
     },
     subjectId: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.BIGINT,
       allowNull: false,
       primaryKey: true,
       references: {
@@ -44,7 +44,7 @@ export const TermSubjectModel = sequelize.define<ITermSubjectModel>(
       }
     },
     diaryUserId: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.BIGINT,
       allowNull: false,
       primaryKey: true,
       references: {
@@ -61,7 +61,7 @@ export const TermSubjectModel = sequelize.define<ITermSubjectModel>(
       }
     },
     teacherId: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.BIGINT,
       allowNull: true,
       references: {
         model: TeacherModel,

@@ -6,9 +6,9 @@ import { SubgroupModel } from '../Subgroup'
 import type { IModelPrototypeNoId } from '../types'
 
 export type ScheduleSubgroupModelType = {
-  scheduleId: number
-  diaryUserId: number
-  subgroupId: number
+  scheduleId: bigint
+  diaryUserId: bigint
+  subgroupId: bigint
 }
 
 export type IScheduleSubgroupModelType =
@@ -17,7 +17,7 @@ export type IScheduleSubgroupModelType =
 export const ScheduleSubgroupModel =
   sequelize.define<IScheduleSubgroupModelType>('scheduleSubgroup', {
     scheduleId: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.BIGINT,
       primaryKey: true,
       references: {
         model: ScheduleModel,
@@ -26,7 +26,7 @@ export const ScheduleSubgroupModel =
       unique: 'scheduleSubgroup_unique'
     },
     diaryUserId: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.BIGINT,
       primaryKey: true,
       references: {
         model: DiaryUserModel,
@@ -35,7 +35,7 @@ export const ScheduleSubgroupModel =
       unique: 'scheduleSubgroup_unique'
     },
     subgroupId: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.BIGINT,
       primaryKey: true,
       references: {
         model: SubgroupModel,

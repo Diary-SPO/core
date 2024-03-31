@@ -4,11 +4,11 @@ import { AcademicYearModel } from '../AcademicYear'
 import type { IModelPrototype } from '../types'
 
 export type TermModelType = {
-  id: number
+  id: bigint
   idFromDiary: number
   number: number
   isActive: boolean
-  academicYearId: number
+  academicYearId: bigint
 }
 
 export type ITermModel = IModelPrototype<TermModelType, 'id'>
@@ -24,7 +24,7 @@ export const TermModel = sequelize.define<ITermModel>('term', {
     allowNull: false
   },
   number: {
-    type: DataTypes.INTEGER,
+    type: DataTypes.SMALLINT,
     allowNull: false
   },
   isActive: {

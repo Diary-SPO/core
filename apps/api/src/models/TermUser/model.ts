@@ -5,8 +5,8 @@ import { TermModel } from '../Term'
 import type { IModelPrototypeNoId } from '../types'
 
 export type TermUserModelType = {
-  termId: number
-  diaryUserId: number
+  termId: bigint
+  diaryUserId: bigint
 }
 
 export type ITermUserModel = IModelPrototypeNoId<TermUserModelType>

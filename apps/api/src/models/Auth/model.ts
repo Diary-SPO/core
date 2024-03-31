@@ -4,7 +4,7 @@ import { DiaryUserModel } from '../DiaryUser'
 import { IModelPrototypeNoId } from '../types'
 
 export type AuthModelType = {
-  diaryUserId: number
+  diaryUserId: bigint
   token: string
   lastUsedDate: string
 }

@@ -8,7 +8,7 @@ export type ClassroomModelType = {
   id: number
   building: string
   name: string
-  spoId: number
+  spoId: bigint
   idFromDiary: number
 }
 

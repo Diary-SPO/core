@@ -3,7 +3,7 @@ import { DataTypes } from 'sequelize'
 import type { IModelPrototype } from '../types'
 
 export type SPOModelType = {
-  id: number
+  id: bigint
   abbreviation: string
   name: string
   shortName: string

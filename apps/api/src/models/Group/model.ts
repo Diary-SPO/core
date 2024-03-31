@@ -4,8 +4,8 @@ import { SPOModel } from '../SPO'
 import type { IModelPrototype } from '../types'
 
 export type GroupModelType = {
-  id: number
-  spoId: number
+  id: bigint
+  spoId: bigint
   groupName: string
   idFromDiary: number
 }

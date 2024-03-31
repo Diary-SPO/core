@@ -3,7 +3,7 @@ import { DataTypes } from 'sequelize'
 import type { IModelPrototype } from '../types'
 
 export type SubjectModelType = {
-  id: number
+  id: bigint
   name: string
 }
 

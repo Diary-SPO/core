@@ -4,9 +4,9 @@ import { GroupModel } from '../Group'
 import type { IModelPrototype } from '../types'
 
 export type SubgroupModelType = {
-  id: number
+  id: bigint
   name: string
-  groupId: number
+  groupId: bigint
 }
 
 export type ISubgroupModelType = IModelPrototype<SubgroupModelType, 'id'>

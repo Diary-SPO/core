@@ -5,8 +5,8 @@ import { TaskModel } from '../Task'
 import type { IModelPrototypeNoId } from '../types'
 
 export type RequiredModelType = {
-  diaryUserId: number
-  taskId: number
+  diaryUserId: bigint
+  taskId: bigint
   isRequired: boolean
 }
 

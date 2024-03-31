@@ -38,7 +38,7 @@ export const getPerformanceFromDB = async (authData: ICacheData) => {
               where: {
                 diaryUserId: authData.localUserId
               },
-              required: true
+              required: false
             }
           ],
           required: false
@@ -64,7 +64,8 @@ export const getPerformanceFromDB = async (authData: ICacheData) => {
       where: {
         date: {
           [Op.gte]: termStartDate
-        }
+        },
+        groupId: authData.groupId
       }
     }
   })) as IPerformanceFromDB[]

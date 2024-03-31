@@ -11,6 +11,9 @@ import { error } from '@utils'
 import { errorLogger } from '@utils'
 import { Sequelize } from 'sequelize'
 import SequelizeSimpleCache from 'sequelize-simple-cache'
+import pg from 'pg'
+
+pg.defaults.parseInt8 = true
 
 export const sequelize = new Sequelize({
   database: DATABASE_NAME,

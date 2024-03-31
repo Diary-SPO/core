@@ -7,10 +7,10 @@ import { TermModel } from '../Term'
 import type { IModelPrototypeNoId } from '../types'
 
 export type MarkModelType = {
-  diaryUserId: number
-  taskId: number
+  diaryUserId: bigint
+  taskId: bigint
   markValueId: number
-  termId: number | null
+  termId: bigint | null
 }
 
 export type IMarkModelType = IModelPrototypeNoId<MarkModelType>

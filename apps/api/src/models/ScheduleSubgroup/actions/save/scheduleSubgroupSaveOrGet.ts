@@ -1,18 +1,24 @@
 import { ScheduleSubgroupModel } from '@models'
+import { Op } from 'sequelize'
 
 export const scheduleSubgroupSaveOrGet = async (
-  scheduleId: number,
-  diaryUserId: number,
-  subgroupId: number
+  scheduleId: bigint,
+  diaryUserId: bigint,
+  subgroupId: bigint
 ) => {
   const where = {
     scheduleId,
     diaryUserId,
-    subgroupId
+    subgroupId: {
+      [Op.ne]: null
+    }
   }
   const promise = ScheduleSubgroupModel.findOrCreate({
     where,
-    defaults: where
+    defaults: {
+      ...where,
+      subgroupId
+    }
   })
 
   promise.then(async (v) => {

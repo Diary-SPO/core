@@ -4,8 +4,8 @@ import { ScheduleModel } from '../Schedule'
 import type { IModelPrototype } from '../types'
 
 export type ThemeModelType = {
-  id: number
-  scheduleId: number
+  id: bigint
+  scheduleId: bigint
   description: string
 }
 

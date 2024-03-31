@@ -6,10 +6,10 @@ import { ScheduleModel } from '../Schedule'
 import type { IModelPrototype } from '../types'
 
 export type AbsenceModelType = {
-  id: number
+  id: bigint
   absenceTypeId: number
-  scheduleId: number
-  diaryUserId: number
+  scheduleId: bigint
+  diaryUserId: bigint
 }
 
 export type IAbsenceModel = IModelPrototype<AbsenceModelType, 'id'>

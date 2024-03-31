@@ -1,13 +1,11 @@
 import { sequelize } from '@db'
 import { DataTypes } from 'sequelize'
-import { GroupModel } from '../Group'
 import { SPOModel } from '../SPO'
-import { TermTypeModel } from '../TermType'
 import type { IModelPrototype } from '../types'
 
 export type AdsModelType = {
-  id: number
-  spoId: number
+  id: bigint
+  spoId: bigint
   date: string | Date
   title: string
   text: string
@@ -65,7 +63,7 @@ export const AdsModel = sequelize.define<IAdsModelType>('ads', {
     allowNull: false
   },
   deleteInDays: {
-    type: DataTypes.INTEGER,
+    type: DataTypes.SMALLINT,
     allowNull: false
   },
   idFromDiary: {

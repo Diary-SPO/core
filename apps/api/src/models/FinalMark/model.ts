@@ -6,8 +6,8 @@ import { SubjectModel } from '../Subject'
 import type { IModelPrototypeNoId } from '../types'
 
 export type FinalMarkModelType = {
-  subjectId: number
-  diaryUserId: number
+  subjectId: bigint
+  diaryUserId: bigint
   markValueId: number | null
 }
 
