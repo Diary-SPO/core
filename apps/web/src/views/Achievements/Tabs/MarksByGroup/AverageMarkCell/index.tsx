@@ -1,10 +1,10 @@
-import { FC } from 'preact/compat'
-import { MiniInfoCell } from '@vkontakte/vkui'
 import { MarkKeys } from '@diary-spo/shared'
 import {
   Icon20IncognitoOutline,
   Icon20StatisticsOutline
 } from '@vkontakte/icons'
+import { MiniInfoCell } from '@vkontakte/vkui'
+import { FC } from 'preact/compat'
 
 import { Mark } from '@components'
 

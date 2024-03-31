@@ -25,25 +25,23 @@
 }
 
 main {
-  animation: show .3s forwards ease-in;
+  animation: show .5s forwards ease-in;
 }
 
 @keyframes show {
   from {
-    transform: translateX(-100%);
+    opacity: 0;
+    transform: translateY(200%);
   }
 
   to {
-    transform: translateX(0);
+    opacity: 1;
+    transform: translateY(0);
   }
 }
 
 .flex {
   display: flex;
-}
-
-.markWrapper {
-  max-width: 100px !important;
 }
 
 .tableWrapper {

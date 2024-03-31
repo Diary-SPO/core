@@ -1,6 +1,5 @@
-import { Subject } from '@diary-spo/shared'
+import { objPropertyCopy } from '@helpers'
 import { TermSubjectModel } from '../../model'
-import { objPropertyCopy } from '../../../../helpers/objPropertyCopy';
 
 type IArgument = {
   termId: number
