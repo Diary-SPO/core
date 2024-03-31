@@ -1,5 +1,6 @@
 import { Subject } from '@diary-spo/shared'
 import { TermSubjectModel } from '../../model'
+import { objPropertyCopy } from '../../../../helpers/objPropertyCopy';
 
 type IArgument = {
   termId: number
@@ -22,7 +23,12 @@ export const termSubjectSaveOrGet = async (subject: IArgument) => {
     defaults: {
       ...subject
     }
-  }).then(() => {
-    // TODO: ТУТ СКОПИРОВАТЬ ПОЛЯ
+  }).then(async (r) => {
+    const [raw, isCreated] = r
+    if (isCreated) {
+      return r
+    }
+    objPropertyCopy(raw, subject)
+    return [await raw.save(), isCreated]
   })
 }
