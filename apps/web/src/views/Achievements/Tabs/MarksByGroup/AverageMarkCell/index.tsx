@@ -1,12 +1,16 @@
-import { Mark } from '@components'
+import { FC } from 'preact/compat'
+import { MiniInfoCell } from '@vkontakte/vkui'
 import { MarkKeys } from '@diary-spo/shared'
 import {
   Icon20IncognitoOutline,
   Icon20StatisticsOutline
 } from '@vkontakte/icons'
-import { MiniInfoCell } from '@vkontakte/vkui'
-import { FC } from 'preact/compat'
+
+import { Mark } from '@components'
+
 import { calculateAverageMark } from './helpers'
+
+import './index.css'
 
 interface IAverageMarkCell {
   marks: MarkKeys[]
@@ -25,7 +29,7 @@ const AverageMarkCell: FC<IAverageMarkCell> = ({ marks }) => {
     <MiniInfoCell
       textWrap='full'
       before={<Icon20StatisticsOutline />}
-      style={{ margin: '5px 0' }}
+      className='averageMarkCell'
       after={<Mark mark={calculateAverageMark(marks)} size='s' />}
     >
       Средний балл:
