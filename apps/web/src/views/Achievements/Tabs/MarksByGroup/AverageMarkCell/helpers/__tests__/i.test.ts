@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'bun:test'
-import { MarkKeys } from '@diary-spo/shared'
-import { createSubjectMarksMap } from '@utils'
+import type { MarkKeys } from '@diary-spo/shared'
+import { createSubjectMarksMatrix } from '@utils'
 import { calculateAverageMark } from '../index.ts'
 import {
   expectedMapData,
@@ -36,13 +36,13 @@ describe('calculateAverageMark', () => {
   })
 })
 
-describe('createSubjectMarksMap', () => {
+describe('createSubjectMarksMatrix', () => {
   it('создает коллекцию для статистики', () => {
     const mockPerformance = mockData
 
     const expectedMap = expectedMapData
 
-    const result = createSubjectMarksMap(mockPerformance)
+    const result = createSubjectMarksMatrix(mockPerformance)
     expect(result).toEqual(expectedMap)
   })
 
@@ -51,7 +51,7 @@ describe('createSubjectMarksMap', () => {
 
     const expectedMap = expectedMapDataWithoutMarks
 
-    const result = createSubjectMarksMap(mockPerformance)
+    const result = createSubjectMarksMatrix(mockPerformance)
     expect(result).toEqual(expectedMap)
   })
 })

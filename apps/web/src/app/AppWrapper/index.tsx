@@ -6,11 +6,12 @@ import {
   ConfigProvider,
   usePlatform
 } from '@vkontakte/vkui'
-import { router } from '../../routes/router'
-import AuthProvider from './AuthProvider.tsx'
+import { lazy } from 'preact/compat'
 
 import { Suspense } from '@components'
-import { lazy } from 'preact/compat'
+
+import { router } from '../../routes/router'
+import AuthProvider from './AuthProvider.tsx'
 
 const NotFoundCorrect = lazy(() => import('./NotFound'))
 const App = lazy(() => import('./App'))

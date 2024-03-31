@@ -1,9 +1,9 @@
 import { sequelize } from '@db'
 import { DataTypes } from 'sequelize'
-import { IModelPrototype } from '../types'
+import type { IModelPrototype } from '../types'
 
 export type SPOModelType = {
-  id: number
+  id: bigint
   abbreviation: string
   name: string
   shortName: string
@@ -18,60 +18,51 @@ export type SPOModelType = {
 
 export type ISPOModel = IModelPrototype<SPOModelType, 'id'>
 
-export const SPOModel = sequelize.define<ISPOModel>(
-  'SPO',
-  {
-    id: {
-      type: DataTypes.INTEGER,
-      autoIncrement: true,
-      primaryKey: true
-    },
-    abbreviation: {
-      type: DataTypes.TEXT,
-      allowNull: false
-    },
-    name: {
-      type: DataTypes.TEXT,
-      allowNull: false
-    },
-    shortName: {
-      type: DataTypes.TEXT,
-      allowNull: false
-    },
-    actualAddress: {
-      type: DataTypes.TEXT,
-      allowNull: false
-    },
-    email: {
-      type: DataTypes.STRING(50),
-      allowNull: false
-    },
-    site: {
-      type: DataTypes.STRING(75),
-      allowNull: false
-    },
-    phone: {
-      type: DataTypes.STRING(25),
-      allowNull: false
-    },
-    type: {
-      type: DataTypes.STRING(20),
-      allowNull: false
-    },
-    directorName: {
-      type: DataTypes.STRING(85),
-      allowNull: false
-    },
-    organizationId: {
-      type: DataTypes.STRING,
-      allowNull: false,
-      unique: true
-    }
+export const SPOModel = sequelize.define<ISPOModel>('spo', {
+  id: {
+    type: DataTypes.BIGINT,
+    autoIncrement: true,
+    primaryKey: true
   },
-  {
-    freezeTableName: true,
-    timestamps: false,
-    createdAt: false,
-    updatedAt: false
+  abbreviation: {
+    type: DataTypes.TEXT,
+    allowNull: false
+  },
+  name: {
+    type: DataTypes.TEXT,
+    allowNull: false
+  },
+  shortName: {
+    type: DataTypes.TEXT,
+    allowNull: false
+  },
+  actualAddress: {
+    type: DataTypes.TEXT,
+    allowNull: false
+  },
+  email: {
+    type: DataTypes.STRING(50),
+    allowNull: false
+  },
+  site: {
+    type: DataTypes.STRING(75),
+    allowNull: false
+  },
+  phone: {
+    type: DataTypes.STRING(25),
+    allowNull: false
+  },
+  type: {
+    type: DataTypes.STRING(20),
+    allowNull: false
+  },
+  directorName: {
+    type: DataTypes.STRING(85),
+    allowNull: false
+  },
+  organizationId: {
+    type: DataTypes.STRING,
+    allowNull: false,
+    unique: true
   }
-)
+})

@@ -6,6 +6,7 @@ import finalMarks from './finalMarks'
 import hello from './hello'
 import lessons from './lessons'
 import login from './login'
+import logout from './logout'
 import organization from './organization'
 import performanceCurrent from './performance.current'
 
@@ -22,6 +23,7 @@ const routes = new Elysia()
       .use(attestation)
       .use(ads)
       .use(finalMarks)
+      .use(logout)
   )
   /** Роуты без проверки **/
   .use(hello)

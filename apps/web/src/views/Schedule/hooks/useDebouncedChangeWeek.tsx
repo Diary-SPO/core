@@ -1,4 +1,4 @@
-import { Nullable } from '@types'
+import type { Nullable } from '@diary-spo/shared'
 import { useCallback, useState } from 'preact/hooks'
 
 /**
@@ -9,9 +9,7 @@ import { useCallback, useState } from 'preact/hooks'
  * После задержки сбрасывает счетчик и вызывает функцию, отправляющую измененные даты на сервер.
  */
 
-interface SendToServerIfValid {
-  (start: Date, end: Date): void
-}
+type SendToServerIfValid = (start: Date, end: Date) => void
 
 const useDebouncedChangeWeek = (
   startDate: Date,

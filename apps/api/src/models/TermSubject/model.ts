@@ -6,15 +6,18 @@ import { MarkValueModel } from '../MarkValue'
 import { SubjectModel } from '../Subject'
 import { TeacherModel } from '../Teacher'
 import { TermModel } from '../Term'
-import { IModelPrototypeNoId } from '../types'
+import { TermSubjectExaminationTypeModel } from '../TermSubjectExaminationType'
+import type { IModelPrototypeNoId } from '../types'
 
 export type TermSubjectModelType = {
-  termId: number
-  subjectId: number
-  diaryUserId: number
+  termId: bigint
+  subjectId: bigint
+  diaryUserId: bigint
   markValueId?: number
-  teacherId?: number
+  teacherId?: bigint
   examinationTypeId?: number
+  termSubjectExaminationTypeId?: number
+  idFromDiary?: number
 }
 
 export type ITermSubjectModel = IModelPrototypeNoId<TermSubjectModelType>
@@ -23,7 +26,7 @@ export const TermSubjectModel = sequelize.define<ITermSubjectModel>(
   'termSubject',
   {
     termId: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.BIGINT,
       allowNull: false,
       primaryKey: true,
       references: {
@@ -32,7 +35,7 @@ export const TermSubjectModel = sequelize.define<ITermSubjectModel>(
       }
     },
     subjectId: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.BIGINT,
       allowNull: false,
       primaryKey: true,
       references: {
@@ -41,7 +44,7 @@ export const TermSubjectModel = sequelize.define<ITermSubjectModel>(
       }
     },
     diaryUserId: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.BIGINT,
       allowNull: false,
       primaryKey: true,
       references: {
@@ -50,7 +53,7 @@ export const TermSubjectModel = sequelize.define<ITermSubjectModel>(
       }
     },
     markValueId: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.SMALLINT,
       allowNull: true,
       references: {
         model: MarkValueModel,
@@ -58,7 +61,7 @@ export const TermSubjectModel = sequelize.define<ITermSubjectModel>(
       }
     },
     teacherId: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.BIGINT,
       allowNull: true,
       references: {
         model: TeacherModel,
@@ -66,18 +69,23 @@ export const TermSubjectModel = sequelize.define<ITermSubjectModel>(
       }
     },
     examinationTypeId: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.SMALLINT,
       allowNull: true,
       references: {
         model: ExaminationTypeModel,
         key: 'id'
       }
+    },
+    termSubjectExaminationTypeId: {
+      type: DataTypes.SMALLINT,
+      allowNull: true,
+      references: {
+        model: TermSubjectExaminationTypeModel
+      }
+    },
+    idFromDiary: {
+      type: DataTypes.INTEGER,
+      allowNull: true
     }
-  },
-  {
-    freezeTableName: true,
-    timestamps: false,
-    createdAt: false,
-    updatedAt: false
   }
 )

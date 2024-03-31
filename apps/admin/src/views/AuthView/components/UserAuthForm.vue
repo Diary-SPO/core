@@ -1,21 +1,21 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { Button } from '@/components/ui/button'
 import {
   FormControl,
-  FormLabel,
-  FormItem,
   FormField,
-  FormMessage,
+  FormItem,
+  FormLabel,
+  FormMessage
 } from '@/components/ui/form'
-import { useToast } from '@/components/ui/toast'
 import { Input } from '@/components/ui/input'
-import { Button } from '@/components/ui/button'
+import { useToast } from '@/components/ui/toast'
 import { GithubLogoIcon } from '@radix-icons/vue'
+import { ref } from 'vue'
 const { toast } = useToast()
 
 const formValues = ref({
   login: '',
-  password: '',
+  password: ''
 })
 
 async function onSubmit() {
@@ -24,7 +24,7 @@ async function onSubmit() {
   toast({
     title: 'Scheduled: Catch up',
     description: 'Friday, February 10, 2023 at 5:57 PM',
-    duration: 2000,
+    duration: 2000
   })
 }
 </script>

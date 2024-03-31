@@ -1,20 +1,29 @@
-import { SERVER_URL } from '@config'
-import type { NotificationsResponse } from '@diary-spo/shared'
+import type { AcademicRecord } from '@diary-spo/shared'
 import { getCookieFromToken } from '@helpers'
-import { ContextWithID } from '@types'
-import { HeadersWithCookie } from '@utils'
+import { detectTerm } from '@models'
+import type { ContextWithID } from '@types'
+import { getFinalMarksFromDiary, saveFinalMarks } from './service'
+import { getFinalMarksFromDB } from './service/get/getFinalMarksFromDB'
+import { structurizeResponse } from './service/other'
 
 const getFinalMarks = async ({
   request
-}: ContextWithID): Promise<NotificationsResponse | string> => {
+}: ContextWithID): Promise<AcademicRecord | string> => {
   const authData = await getCookieFromToken(request.headers.toJSON().secret)
-  const path = `${SERVER_URL}/services/students/${authData.idFromDiary}/attestation`
 
-  const response = await fetch(path, {
-    headers: HeadersWithCookie(authData.cookie)
+  const finalMarks = await getFinalMarksFromDiary(authData)
+
+  if (!finalMarks) {
+    const dataFromDB = await getFinalMarksFromDB(authData)
+    return structurizeResponse(dataFromDB, authData)
+  }
+
+  // Попутно сохраним "обновление" о семестре
+  detectTerm(authData, finalMarks).then(() => {
+    saveFinalMarks(finalMarks, authData)
   })
 
-  return response.json()
+  return finalMarks
 }
 
 export default getFinalMarks

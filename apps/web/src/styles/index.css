@@ -19,3 +19,29 @@
 .marksWrapper > div::before, .marksWrapper > div::after {
     content: none !important;
 }
+
+main {
+  animation: show .5s forwards ease-in;
+}
+
+@keyframes show {
+  from {
+    opacity: 0;
+    transform: translateY(200%);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.flex {
+  display: flex;
+}
+
+.tableWrapper {
+  padding: 0 20px;
+  height: 90vh;
+  overflow-x: auto;
+}

@@ -1,8 +1,7 @@
 import { ErrorPlaceholder, PanelHeaderWithBack, Suspense } from '@components'
-import { Day } from '@diary-spo/shared'
+import type { Day, Nullable } from '@diary-spo/shared'
 import { useRateLimitExceeded, useSnackbar } from '@hooks'
-import { Nullable } from '@types'
-import { handleResponse, isApiError } from '@utils'
+import { handleResponse, isApiError, isNeedToUpdateCache } from '@utils'
 import {
   useActiveVkuiLocation,
   useRouteNavigator
@@ -17,11 +16,12 @@ import {
   View
 } from '@vkontakte/vkui'
 import { endOfWeek, startOfWeek } from '@vkontakte/vkui/dist/lib/date'
-import { FC, lazy, useEffect, useState } from 'preact/compat'
+import { type FC, lazy, useEffect, useState } from 'preact/compat'
 
-import { getLessons } from '../../methods'
-import { Props } from '../types.ts'
-import { getWeekString, isNeedToGetNewData } from './utils'
+import { getLessons } from '@api'
+
+import type { Props } from '../types.ts'
+import { getWeekString } from './utils'
 
 const ScheduleAsideButtons = lazy(() => import('./ScheduleAsideButtons'))
 const MarksByDay = lazy(() => import('./MarksByDay'))
@@ -50,6 +50,7 @@ const Schedule: FC<Props> = ({ id }) => {
   const [snackbar, showSnackbar] = useSnackbar()
 
   const handleGetLesson = async (start: Date, end: Date) => {
+    console.log('asdasd')
     setIsLoading(true)
     setIsError(false)
 
@@ -88,7 +89,7 @@ const Schedule: FC<Props> = ({ id }) => {
   const gettedLessons = async (isHandle?: boolean) => {
     const savedLessons = localStorage.getItem('savedLessons')
 
-    if (savedLessons && !isNeedToGetNewData() && !isHandle) {
+    if (savedLessons && !isNeedToUpdateCache('lastFetchTime') && !isHandle) {
       showSnackbar({
         layout: 'vertical',
         action: 'Загрузить новые',
@@ -157,29 +158,33 @@ const Schedule: FC<Props> = ({ id }) => {
     >
       <Panel nav={id}>
         <PanelHeaderWithBack title='Главная' />
-        {isError && <ErrorPlaceholder onClick={handleReloadData} />}
         <PullToRefresh onRefresh={handleReloadData} isFetching={isLoading}>
-          <Div>
-            <Suspense id='MarksByDay'>
-              <Group header={MarksHeader}>{MarksByDayOrLoading}</Group>
-            </Suspense>
-            <Suspense id='ScheduleGroup' mode='screen'>
-              <Group
-                header={
-                  <Header
-                    aside={ScheduleGroupAside}
-                    mode='secondary'
-                    style='align-items: center;'
-                  >
-                    {weekString}
-                  </Header>
-                }
-              >
-                {ScheduleOrLoading}
-              </Group>
-            </Suspense>
-          </Div>
+          {isError ? (
+            <ErrorPlaceholder onClick={handleReloadData} />
+          ) : (
+            <Div>
+              <Suspense id='MarksByDay'>
+                <Group header={MarksHeader}>{MarksByDayOrLoading}</Group>
+              </Suspense>
+              <Suspense id='ScheduleGroup' mode='screen'>
+                <Group
+                  header={
+                    <Header
+                      aside={ScheduleGroupAside}
+                      mode='secondary'
+                      style='align-items: center;'
+                    >
+                      {weekString}
+                    </Header>
+                  }
+                >
+                  {ScheduleOrLoading}
+                </Group>
+              </Suspense>
+            </Div>
+          )}
         </PullToRefresh>
+
         {snackbar}
         {rateSnackbar}
       </Panel>

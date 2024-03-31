@@ -1,2 +1,2 @@
 export * from './model'
-export * from './themesSaveOrGet'
+export * from './actions'

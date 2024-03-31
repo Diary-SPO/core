@@ -1,6 +1,6 @@
 import { Mark } from '@components'
-import { AbsenceType, AbsenceTypes, Grade } from '@diary-spo/shared'
-import { ReactNode } from 'preact/compat'
+import { type AbsenceType, AbsenceTypes, Grade } from '@diary-spo/shared'
+import type { ReactNode } from 'preact/compat'
 
 // TODO: create tests
 export const renderMarksOrAbsence = (

@@ -1,6 +1,6 @@
 import { API_CODES, API_ERRORS } from '@api'
 import { error as errorLog } from '@utils'
-import { ErrorHandler } from 'elysia'
+import type { ErrorHandler } from 'elysia'
 
 interface ErrorResponse {
   code: number
@@ -66,6 +66,16 @@ export const errorHandler: ErrorHandler = ({
     return {
       message: 'INVALID_DATA',
       code: API_CODES.UNAUTHORIZED,
+      path
+    }
+  }
+
+  /** Непредвиденная ошибка на сервере **/
+  if (error.message === API_ERRORS.INTERNAL_ERROR) {
+    set.status = API_CODES.INTERNAL_SERVER_ERROR
+    return {
+      message: API_ERRORS.INTERNAL_ERROR,
+      code: API_CODES.INTERNAL_SERVER_ERROR,
       path
     }
   }

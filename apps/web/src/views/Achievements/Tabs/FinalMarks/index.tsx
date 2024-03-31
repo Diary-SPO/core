@@ -1,21 +1,20 @@
-import { AcademicRecord } from '@diary-spo/shared'
-import { Placeholder } from '@vkontakte/vkui'
-import { FunctionalComponent } from 'preact'
-import { StateUpdater, useEffect, useState } from 'preact/hooks'
+import { Group, Header } from '@vkontakte/vkui'
+import type { FunctionalComponent } from 'preact'
+import { useEffect, useState } from 'preact/hooks'
 
+import type { AcademicRecord, Nullable } from '@diary-spo/shared'
+
+import { getFinalMarks } from '@api'
 import { useRateLimitExceeded } from '@hooks'
-import { Nullable } from '@types'
-import { handleResponse, isApiError } from '@utils'
+import { handleResponse, isApiError, isNeedToUpdateCache } from '@utils'
 
-import { Table } from './Table'
+import LoadingData from '../../LoadingData'
 
-import { THIRD_SEC } from '@config'
-import { getFinalMarks } from '../../../../methods'
-import './index.css'
+import { MarksForSubject } from './MarksForSubject'
 
 interface Props {
-  setIsError: StateUpdater<boolean>
-  setIsLoading: StateUpdater<boolean>
+  setIsError: (value: boolean) => void
+  setIsLoading: (value: boolean) => void
   isLoading: boolean
 }
 
@@ -29,9 +28,8 @@ const FinalMarks: FunctionalComponent<Props> = ({
 
   useEffect(() => {
     const data = localStorage.getItem('finalMarksData')
-    const lastFetchingTime = localStorage.getItem('finalMarksData_time')
 
-    if (data && Date.now() - Number(lastFetchingTime) <= THIRD_SEC) {
+    if (data && !isNeedToUpdateCache('finalMarksData_time')) {
       setFinalMarksData(JSON.parse(data))
       return
     }
@@ -41,7 +39,7 @@ const FinalMarks: FunctionalComponent<Props> = ({
       setIsError(false)
       try {
         const finalMarks = await getFinalMarks()
-        console.log(finalMarks)
+
         handleResponse(
           finalMarks,
           () => setIsError(true),
@@ -70,14 +68,18 @@ const FinalMarks: FunctionalComponent<Props> = ({
     return
   }
 
-  if (!isLoading && !finalMarksData?.subjects?.length) {
-    return <Placeholder>Данных нет</Placeholder>
+  if (!finalMarksData?.subjects?.length) {
+    return <LoadingData text='Обработка данных...' />
   }
 
   return (
-    <div className='tableWrapper'>
-      <Table data={finalMarksData} />
-    </div>
+    <Group
+      mode='plain'
+      className='tableWrapper'
+      header={<Header mode='tertiary'>Для подробностей нажми на оценку</Header>}
+    >
+      <MarksForSubject data={finalMarksData} />
+    </Group>
   )
 }
 

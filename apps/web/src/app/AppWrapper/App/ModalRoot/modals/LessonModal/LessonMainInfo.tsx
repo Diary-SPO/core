@@ -1,8 +1,8 @@
 import { ExplanationTooltip } from '@components'
-import { LessonType, LessonTypeKeys } from '@diary-spo/shared'
+import { LessonType, type LessonTypeKeys } from '@diary-spo/shared'
 import { textToLink } from '@utils'
 import { Group, Header, InfoRow, SimpleCell } from '@vkontakte/vkui'
-import { FC } from 'preact/compat'
+import type { FC } from 'preact/compat'
 
 export interface ILessonMainInfo {
   name: string

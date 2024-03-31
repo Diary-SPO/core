@@ -1,10 +1,14 @@
 import { Div, Group, Header, Spinner } from '@vkontakte/vkui'
-import { useMemo } from 'preact/compat'
+import { type FC, useMemo } from 'preact/compat'
 
-const LoadingData = () =>
+interface Props {
+  text?: string
+}
+
+const LoadingData: FC<Props> = ({ text }) =>
   useMemo(
     () => (
-      <Group header={<Header mode='tertiary'>Загрузка...</Header>}>
+      <Group header={<Header mode='tertiary'>{text ?? 'Загрузка...'}</Header>}>
         <Div>
           <Spinner />
         </Div>

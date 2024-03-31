@@ -1,9 +1,9 @@
-import { VKUI_ACCENT_BG } from '@config'
-import { Nullable } from '@types'
+import type { Nullable } from '@diary-spo/shared'
 import { Icon28InfoCircleOutline } from '@vkontakte/icons'
-import { Snackbar, SnackbarProps } from '@vkontakte/vkui'
-import { ReactNode } from 'preact/compat'
-import { useCallback, useState } from 'preact/hooks'
+import { Snackbar, type SnackbarProps } from '@vkontakte/vkui'
+import { type ReactNode, useCallback, useState } from 'preact/compat'
+
+import { VKUI_ACCENT_BG } from '@config'
 
 /**
  * Функция 'useSnackbar' управляет отображением Snackbar'а для уведомлений.

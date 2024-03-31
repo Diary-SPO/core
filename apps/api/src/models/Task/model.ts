@@ -1,12 +1,12 @@
 import { sequelize } from '@db'
 import { DataTypes } from 'sequelize'
-import { GradebookModel } from '../Gradebook'
+import { ScheduleModel } from '../Schedule'
 import { TaskTypeModel } from '../TaskType'
-import { IModelPrototype } from '../types'
+import type { IModelPrototype } from '../types'
 
 export type TaskModelType = {
-  id: number
-  gradebookId: number
+  id: bigint
+  scheduleId: bigint
   taskTypeId: number
   topic: string
   idFromDiary: number
@@ -14,43 +14,36 @@ export type TaskModelType = {
 
 export type ITaskModel = IModelPrototype<TaskModelType, 'id'>
 
-export const TaskModel = sequelize.define<ITaskModel>(
-  'task',
-  {
-    id: {
-      type: DataTypes.INTEGER,
-      autoIncrement: true,
-      primaryKey: true
-    },
-    gradebookId: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-      references: {
-        model: GradebookModel,
-        key: 'id'
-      }
-    },
-    taskTypeId: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-      references: {
-        model: TaskTypeModel,
-        key: 'id'
-      }
-    },
-    topic: {
-      type: DataTypes.TEXT,
-      allowNull: false
-    },
-    idFromDiary: {
-      type: DataTypes.INTEGER,
-      allowNull: false
+export const TaskModel = sequelize.define<ITaskModel>('task', {
+  id: {
+    type: DataTypes.BIGINT,
+    autoIncrement: true,
+    primaryKey: true
+  },
+  scheduleId: {
+    type: DataTypes.BIGINT,
+    allowNull: false,
+    unique: 'task_unique_k',
+    references: {
+      model: ScheduleModel,
+      key: 'id'
     }
   },
-  {
-    freezeTableName: true,
-    timestamps: false,
-    createdAt: false,
-    updatedAt: false
+  taskTypeId: {
+    type: DataTypes.SMALLINT,
+    allowNull: false,
+    references: {
+      model: TaskTypeModel,
+      key: 'id'
+    }
+  },
+  topic: {
+    type: DataTypes.TEXT,
+    allowNull: false
+  },
+  idFromDiary: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+    unique: 'task_unique_k'
   }
-)
+})

@@ -1,3 +1,4 @@
+import { b64 } from '@diary-spo/crypto'
 import {
   Icon28DoorArrowLeftOutline,
   Icon28ErrorCircleOutline
@@ -13,18 +14,17 @@ import {
   Link,
   Panel
 } from '@vkontakte/vkui'
-import { ChangeEvent, FC } from 'preact/compat'
+import type { ChangeEvent, FC } from 'preact/compat'
 import { useEffect, useState } from 'preact/hooks'
 
+import { postLogin } from '@api'
 import { PanelHeaderWithBack } from '@components'
 import { ADMIN_PAGE, VKUI_RED } from '@config'
 import { useSnackbar } from '@hooks'
-import { Hashes } from '@libs'
+import { VIEW_SCHEDULE } from '@routes'
 import { handleResponse, isApiError } from '@utils'
 
-import { postLogin } from '../../methods'
-import { VIEW_SCHEDULE } from '../../routes'
-import { Props } from '../types.ts'
+import type { Props } from '../types.ts'
 import { loginPattern, saveData } from './helpers'
 
 const LoginForm: FC<Props> = ({ id }) => {
@@ -76,7 +76,7 @@ const LoginForm: FC<Props> = ({ id }) => {
       return
     }
 
-    const passwordHashed = await Hashes.SHA256.b64(password)
+    const passwordHashed = await b64(password)
 
     const response = await postLogin(login, passwordHashed, true)
 

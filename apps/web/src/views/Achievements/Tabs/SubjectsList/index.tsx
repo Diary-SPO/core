@@ -1,20 +1,18 @@
-import { AttestationResponse } from '@diary-spo/shared'
+import type { AttestationResponse, Nullable } from '@diary-spo/shared'
 import { Placeholder } from '@vkontakte/vkui'
-import { FunctionalComponent } from 'preact'
-import { StateUpdater, useEffect, useState } from 'preact/hooks'
+import type { FunctionalComponent } from 'preact'
+import { useEffect, useState } from 'preact/hooks'
 
-import { THIRD_SEC } from '@config'
+import { getAttestation } from '@api'
 import { useRateLimitExceeded } from '@hooks'
-import { Nullable } from '@types'
-import { handleResponse, isApiError } from '@utils'
+import { handleResponse, isApiError, isNeedToUpdateCache } from '@utils'
 
-import { getAttestation } from '../../../../methods'
 import SubjectGroup from './SubjectGroup'
 import { processAttestationData } from './helpers'
 
 interface Props {
-  setIsLoading: StateUpdater<boolean>
-  setIsError: StateUpdater<boolean>
+  setIsLoading: (value: boolean) => void
+  setIsError: (value: boolean) => void
   isLoading: boolean
 }
 
@@ -28,9 +26,8 @@ const SubjectList: FunctionalComponent<Props> = ({
 
   useEffect(() => {
     const data = localStorage.getItem('attestationData')
-    const lastFetchingTime = localStorage.getItem('attestationData_time')
 
-    if (data && Date.now() - Number(lastFetchingTime) <= THIRD_SEC) {
+    if (data && !isNeedToUpdateCache('attestationData_time')) {
       setAttestationData(JSON.parse(data))
       return
     }
@@ -58,6 +55,7 @@ const SubjectList: FunctionalComponent<Props> = ({
         localStorage.setItem('attestationData', JSON.stringify(attestation))
         localStorage.setItem('attestationData_time', JSON.stringify(Date.now()))
       } catch {
+        setIsError(true)
       } finally {
         setIsLoading(false)
       }
@@ -65,10 +63,6 @@ const SubjectList: FunctionalComponent<Props> = ({
 
     fetchData()
   }, [])
-
-  if (isLoading) {
-    return
-  }
 
   if (!isLoading && !attestationData?.subjects?.length) {
     return <Placeholder>Данных нет</Placeholder>

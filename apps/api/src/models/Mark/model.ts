@@ -3,50 +3,47 @@ import { DataTypes } from 'sequelize'
 import { DiaryUserModel } from '../DiaryUser'
 import { MarkValueModel } from '../MarkValue'
 import { TaskModel } from '../Task'
-import { IModelPrototypeNoId } from '../types'
+import { TermModel } from '../Term'
+import type { IModelPrototypeNoId } from '../types'
 
 export type MarkModelType = {
-  diaryUserId: number
-  taskId: number
+  diaryUserId: bigint
+  taskId: bigint
   markValueId: number
+  termId: bigint | null
 }
 
 export type IMarkModelType = IModelPrototypeNoId<MarkModelType>
 
-export const MarkModel = sequelize.define<IMarkModelType>(
-  'mark',
-  {
-    diaryUserId: {
-      type: DataTypes.INTEGER,
-      primaryKey: true,
-      allowNull: false,
-      references: {
-        model: DiaryUserModel,
-        key: 'id'
-      }
-    },
-    taskId: {
-      type: DataTypes.INTEGER,
-      primaryKey: true,
-      allowNull: false,
-      references: {
-        model: TaskModel,
-        key: 'id'
-      }
-    },
-    markValueId: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-      references: {
-        model: MarkValueModel,
-        key: 'id'
-      }
+export const MarkModel = sequelize.define<IMarkModelType>('mark', {
+  diaryUserId: {
+    type: DataTypes.BIGINT,
+    primaryKey: true,
+    allowNull: false,
+    references: {
+      model: DiaryUserModel
     }
   },
-  {
-    freezeTableName: true,
-    timestamps: false,
-    createdAt: false,
-    updatedAt: false
+  taskId: {
+    type: DataTypes.BIGINT,
+    primaryKey: true,
+    allowNull: false,
+    references: {
+      model: TaskModel
+    }
+  },
+  markValueId: {
+    type: DataTypes.SMALLINT,
+    allowNull: false,
+    references: {
+      model: MarkValueModel
+    }
+  },
+  termId: {
+    type: DataTypes.BIGINT,
+    allowNull: true,
+    references: {
+      model: TermModel
+    }
   }
-)
+})

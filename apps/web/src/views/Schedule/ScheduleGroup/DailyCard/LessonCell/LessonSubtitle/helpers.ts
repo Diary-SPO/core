@@ -3,7 +3,7 @@
  * Принимает строку времени в формате 'hh:mm' (timeString) и базовую дату (baseDate).
  * Возвращает объект Date, представляющий введенное время, или null в случае некорректного формата или значений.
  */
-import { Nullable } from '@types'
+import type { Nullable } from '@diary-spo/shared'
 
 export const convertStringToTime = (
   timeString: string,

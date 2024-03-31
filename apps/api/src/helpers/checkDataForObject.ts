@@ -1,5 +1,6 @@
-type value = { [key: string]: any }
-export const checkSameKeys = <A extends value, E extends value>(
+type Value = { [key: string]: unknown }
+
+export const checkSameKeys = <A extends Value, E extends Value>(
   actualData: A,
   expectedData: E
 ): boolean => {

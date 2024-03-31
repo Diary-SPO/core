@@ -1,4 +1,4 @@
-import { Pages } from '@types'
+import type { Pages } from '@types'
 import {
   Icon28BookSpreadOutline,
   Icon28GraphOutline,
@@ -6,17 +6,18 @@ import {
   Icon28SettingsOutline
 } from '@vkontakte/icons'
 import {
-  Tabbar as VKUITabbar,
   TabbarItem,
+  Tabbar as VKUITabbar,
   useAdaptivityConditionalRender
 } from '@vkontakte/vkui'
-import { FC } from 'preact/compat'
+import type { FC } from 'preact/compat'
+
 import {
   VIEW_MARKS,
   VIEW_NOTIFICATIONS,
   VIEW_SCHEDULE,
   VIEW_SETTINGS
-} from '../../../../routes'
+} from '@routes'
 
 interface ITabbar {
   onStoryChange: (current: Pages) => void
