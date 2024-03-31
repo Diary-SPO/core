@@ -1,5 +1,5 @@
-import { ResponseLogin } from '@diary-spo/types'
-import { IDiaryUserModel, IGroupModel, ISPOModel } from '@models'
+import type { ResponseLogin } from '@diary-spo/types'
+import type { IDiaryUserModel, IGroupModel, ISPOModel } from '@models'
 
 export function ResponseLoginFromDiaryUser(
   diaryUser: IDiaryUserModel,

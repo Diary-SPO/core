@@ -1,4 +1,4 @@
-import {
+import type {
   AcademicYearModelType,
   ExaminationTypeModelType,
   MarkValueModelType,

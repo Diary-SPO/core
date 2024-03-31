@@ -1,8 +1,8 @@
 import { Group, Header } from '@vkontakte/vkui'
-import { FunctionalComponent } from 'preact'
+import type { FunctionalComponent } from 'preact'
 import { useEffect, useState } from 'preact/hooks'
 
-import { AcademicRecord, Nullable } from '@diary-spo/shared'
+import type { AcademicRecord, Nullable } from '@diary-spo/shared'
 
 import { getFinalMarks } from '@api'
 import { useRateLimitExceeded } from '@hooks'

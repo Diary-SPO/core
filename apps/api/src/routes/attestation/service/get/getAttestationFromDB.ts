@@ -1,5 +1,5 @@
-import { AttestationResponse } from '@diary-spo/shared'
-import { ICacheData } from '@helpers'
+import type { AttestationResponse } from '@diary-spo/shared'
+import type { ICacheData } from '@helpers'
 import {
   AcademicYearModel,
   ExaminationTypeModel,
@@ -12,7 +12,7 @@ import {
   TermTypeModel,
   detectTerm
 } from '@models'
-import { IAttestationResponseRaw, structurizeResponse } from '../'
+import { type IAttestationResponseRaw, structurizeResponse } from '../'
 
 export const getAttestationFromDB = async (
   authData: ICacheData

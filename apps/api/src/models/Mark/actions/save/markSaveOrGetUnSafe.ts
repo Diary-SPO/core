@@ -1,4 +1,4 @@
-import { ICacheData } from '@helpers'
+import type { ICacheData } from '@helpers'
 import { MarkModel } from '@models'
 
 export const markSaveOrGetUnSafe = async (

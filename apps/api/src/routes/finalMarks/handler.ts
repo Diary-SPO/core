@@ -1,7 +1,7 @@
 import type { AcademicRecord } from '@diary-spo/shared'
 import { getCookieFromToken } from '@helpers'
 import { detectTerm } from '@models'
-import { ContextWithID } from '@types'
+import type { ContextWithID } from '@types'
 import { getFinalMarksFromDiary, saveFinalMarks } from './service'
 import { getFinalMarksFromDB } from './service/get/getFinalMarksFromDB'
 import { structurizeResponse } from './service/other'

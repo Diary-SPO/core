@@ -1,6 +1,6 @@
 import type { PerformanceCurrent } from '@diary-spo/shared'
 import { getCookieFromToken } from '@helpers'
-import { ContextWithID } from '@types'
+import type { ContextWithID } from '@types'
 import { getCurrPerformance } from './service'
 
 const getPerformanceCurrent = async ({

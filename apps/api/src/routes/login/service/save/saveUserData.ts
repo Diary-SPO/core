@@ -4,7 +4,7 @@ import type { PersonResponse, UserData } from '@diary-spo/shared'
 import { generateToken } from '@helpers'
 import { ResponseLoginFromDiaryUser } from '@types'
 import {
-  ApiResponse,
+  type ApiResponse,
   cookieExtractor,
   error,
   fetcher,

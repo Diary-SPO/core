@@ -1,4 +1,4 @@
-import { ICacheData } from '@helpers'
+import type { ICacheData } from '@helpers'
 import { RequiredModel } from '@models'
 
 export const requiredSaveOrGet = async (

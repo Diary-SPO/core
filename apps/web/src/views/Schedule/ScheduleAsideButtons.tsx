@@ -1,12 +1,12 @@
 import { ExplanationTooltip } from '@components'
-import { SnackbarData } from '@hooks'
+import type { SnackbarData } from '@hooks'
 import {
   Icon16ArrowLeftOutline,
   Icon16ArrowRightOutline
 } from '@vkontakte/icons'
 import { Button, ButtonGroup, IconButton } from '@vkontakte/vkui'
 import { endOfWeek, startOfWeek } from '@vkontakte/vkui/dist/lib/date'
-import { FC, useEffect, useState } from 'preact/compat'
+import { type FC, useEffect, useState } from 'preact/compat'
 import useDebouncedChangeWeek from './hooks/useDebouncedChangeWeek.tsx'
 
 interface ScheduleAsideButtonsProps {

@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'bun:test'
-import { MarkKeys } from '@diary-spo/shared'
+import type { MarkKeys } from '@diary-spo/shared'
 import { createSubjectMarksMatrix } from '@utils'
 import { calculateAverageMark } from '../index.ts'
 import {

@@ -5,7 +5,7 @@ import {
   SubtitleWithBorder
 } from '@components'
 import { VKUI_RED } from '@config'
-import { NotificationsResponse, Nullable } from '@diary-spo/shared'
+import type { NotificationsResponse, Nullable } from '@diary-spo/shared'
 import { useSnackbar } from '@hooks'
 import { handleResponse, isApiError } from '@utils'
 import { Icon28ErrorCircleOutline } from '@vkontakte/icons'
@@ -20,9 +20,9 @@ import {
   Text,
   Title
 } from '@vkontakte/vkui'
-import { FC } from 'preact/compat'
+import type { FC } from 'preact/compat'
 import { useEffect, useState } from 'preact/hooks'
-import { Props } from './types.ts'
+import type { Props } from './types.ts'
 
 const updateCache = (ads: NotificationsResponse[]) => {
   localStorage.setItem('savedAds', JSON.stringify(ads))

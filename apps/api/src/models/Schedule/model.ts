@@ -1,12 +1,12 @@
 import { sequelize } from '@db'
-import { Nullable } from '@diary-spo/shared'
-import { DataTypes, Optional } from 'sequelize'
+import type { Nullable } from '@diary-spo/shared'
+import { DataTypes, type Optional } from 'sequelize'
 import { ClassroomModel } from '../Classroom'
 import { GroupModel } from '../Group'
 import { LessonTypeModel } from '../LessonType'
 import { SubjectModel } from '../Subject'
 import { TeacherModel } from '../Teacher'
-import { IModelPrototype } from '../types'
+import type { IModelPrototype } from '../types'
 
 export type ScheduleModelType = {
   id: number

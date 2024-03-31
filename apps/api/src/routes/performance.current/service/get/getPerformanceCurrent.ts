@@ -1,5 +1,5 @@
 import { SERVER_URL } from '@config'
-import { ICacheData } from '@helpers'
+import type { ICacheData } from '@helpers'
 import { HeadersWithCookie } from '@utils'
 
 export const getPerformanceCurrent = async (authData: ICacheData) => {

@@ -1,5 +1,5 @@
-import { Timetable } from '@diary-spo/shared'
-import { ScheduleFromDB } from '@models'
+import type { Timetable } from '@diary-spo/shared'
+import type { ScheduleFromDB } from '@models'
 
 export const structurizeTimetable = (rs: ScheduleFromDB): Timetable => {
   const { building, name: clName, idFromDiary: id } = rs.classroom

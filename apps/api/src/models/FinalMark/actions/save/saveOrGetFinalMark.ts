@@ -1,4 +1,4 @@
-import { ICacheData } from '@helpers'
+import type { ICacheData } from '@helpers'
 import { FinalMarkModel } from '../../model'
 
 export const saveOrGetFinalMark = async (

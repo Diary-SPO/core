@@ -25,19 +25,19 @@ export default defineConfig({
         replacement: path.resolve(__dirname, 'src/components')
       }
     ]
-  },
+  }
   // build: {
   //   sourcemap: false,
   //   target: 'es2017',
   //   assetsInlineLimit: 0,
-    // minify: 'terser',
-    // terserOptions: {
-    //   compress: {
-    //     drop_console: true,
-    //   },
-    //   format: {
-    //     comments: false,
-    //   },
-    // },
+  // minify: 'terser',
+  // terserOptions: {
+  //   compress: {
+  //     drop_console: true,
+  //   },
+  //   format: {
+  //     comments: false,
+  //   },
+  // },
   // }
 })

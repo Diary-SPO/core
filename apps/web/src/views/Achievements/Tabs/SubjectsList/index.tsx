@@ -1,6 +1,6 @@
-import { AttestationResponse, Nullable } from '@diary-spo/shared'
+import type { AttestationResponse, Nullable } from '@diary-spo/shared'
 import { Placeholder } from '@vkontakte/vkui'
-import { FunctionalComponent } from 'preact'
+import type { FunctionalComponent } from 'preact'
 import { useEffect, useState } from 'preact/hooks'
 
 import { getAttestation } from '@api'

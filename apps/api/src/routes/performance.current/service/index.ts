@@ -1,5 +1,5 @@
-import { PerformanceCurrent } from '@diary-spo/shared'
-import { ICacheData } from '@helpers'
+import type { PerformanceCurrent } from '@diary-spo/shared'
+import type { ICacheData } from '@helpers'
 import { getPerformanceFromDB } from './get'
 import { getPerformanceCurrent } from './get/getPerformanceCurrent'
 import { savePerfomance } from './save/savePerfomance'

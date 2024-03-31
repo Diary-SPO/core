@@ -1,7 +1,7 @@
-import { Task } from '@diary-spo/shared'
+import type { Task } from '@diary-spo/shared'
 import { useRouteNavigator } from '@vkontakte/vk-mini-apps-router'
 import { Header, HorizontalCell } from '@vkontakte/vkui'
-import { FunctionalComponent } from 'preact'
+import type { FunctionalComponent } from 'preact'
 import { useCallback } from 'preact/hooks'
 
 import { Mark } from '@components'
@@ -9,7 +9,7 @@ import { MODAL_PAGE_MARK } from '@config'
 import { useMarkModal } from '@store'
 import { setDefaultMark, truncateString } from '@utils'
 
-import { LessonGradesProps } from '../types.ts'
+import type { LessonGradesProps } from '../types.ts'
 
 import './index.css'
 

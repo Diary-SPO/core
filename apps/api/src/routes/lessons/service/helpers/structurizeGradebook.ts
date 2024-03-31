@@ -1,5 +1,5 @@
-import { Gradebook, Task } from '@diary-spo/shared'
-import { ScheduleFromDB } from '@models'
+import type { Gradebook, Task } from '@diary-spo/shared'
+import type { ScheduleFromDB } from '@models'
 
 export const structurizeGradebook = (
   rd: ScheduleFromDB

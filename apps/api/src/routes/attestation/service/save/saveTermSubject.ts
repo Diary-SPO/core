@@ -1,9 +1,9 @@
 import {
-  MarkKeys,
-  Subject,
+  type MarkKeys,
+  type Subject,
   TermSubjectExaminationKeys
 } from '@diary-spo/shared'
-import { ICacheData, retriesForError } from '@helpers'
+import { type ICacheData, retriesForError } from '@helpers'
 import {
   TeacherSaveOrGet,
   markValueSaveOrGet,

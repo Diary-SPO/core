@@ -7,7 +7,7 @@ import { SubjectModel } from '../Subject'
 import { TeacherModel } from '../Teacher'
 import { TermModel } from '../Term'
 import { TermSubjectExaminationTypeModel } from '../TermSubjectExaminationType'
-import { IModelPrototypeNoId } from '../types'
+import type { IModelPrototypeNoId } from '../types'
 
 export type TermSubjectModelType = {
   termId: number

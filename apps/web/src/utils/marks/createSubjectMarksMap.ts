@@ -1,4 +1,4 @@
-import { AbsenceType, PerformanceCurrent, TMark } from '@diary-spo/shared'
+import type { AbsenceType, PerformanceCurrent, TMark } from '@diary-spo/shared'
 
 export interface SubjectMarksItem {
   date: string

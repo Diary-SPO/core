@@ -1,17 +1,17 @@
 import { GRAY, GREEN, ORANGE, RED, VIOLET } from '@config'
-import { ReturnedMark } from '@types'
+import type { ReturnedMark } from '@types'
 
 export type Sizes = 'l' | 's'
 
 type R = Record<Sizes, string>
 
 export const sizes: R = {
-  l: '10px 29px',
+  l: '10px 30px',
   s: '5px 10px'
 }
 
 export const fontSizes: R = {
-  l: '3rem',
+  l: '2.5rem',
   s: '1rem'
 }
 

@@ -1,7 +1,7 @@
-import { ExaminationKeys, Subject } from '@diary-spo/shared'
-import { ICacheData } from '@helpers'
-import { TeacherModelType } from '@models'
-import { IAttestationResponseRaw } from '../'
+import type { ExaminationKeys, Subject } from '@diary-spo/shared'
+import type { ICacheData } from '@helpers'
+import type { TeacherModelType } from '@models'
+import type { IAttestationResponseRaw } from '../'
 
 export const structurizeResponse = async (
   data: IAttestationResponseRaw | null,

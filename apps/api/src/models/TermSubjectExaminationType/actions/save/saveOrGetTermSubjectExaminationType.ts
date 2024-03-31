@@ -1,4 +1,4 @@
-import { TermSubjectExaminationKeys } from '@diary-spo/shared'
+import type { TermSubjectExaminationKeys } from '@diary-spo/shared'
 import { TermSubjectExaminationTypeModel } from '../../model'
 
 export const saveOrGetTermSubjectExaminationType = async (

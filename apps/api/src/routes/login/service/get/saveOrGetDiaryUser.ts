@@ -1,5 +1,9 @@
-import { DiaryUserModel, DiaryUserModelType, IDiaryUserModel } from '@models'
-import { Optional } from 'sequelize'
+import {
+  DiaryUserModel,
+  type DiaryUserModelType,
+  type IDiaryUserModel
+} from '@models'
+import type { Optional } from 'sequelize'
 // ВЫНЕСТИ В МОДЕЛЬ юзера
 
 export const saveOrGetDiaryUser = async (

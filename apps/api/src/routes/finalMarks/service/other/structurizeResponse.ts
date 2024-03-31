@@ -1,14 +1,14 @@
 import {
-  AcademicYear,
-  AttestationMark,
-  AttestationSubject,
-  AttestationTerm,
+  type AcademicYear,
+  type AttestationMark,
+  type AttestationSubject,
+  type AttestationTerm,
   MarkKeys,
   Subject,
-  TermType
+  type TermType
 } from '@diary-spo/shared'
-import { ICacheData } from '@helpers'
-import { RawFinalMarksFromDB } from '../type'
+import type { ICacheData } from '@helpers'
+import type { RawFinalMarksFromDB } from '../type'
 
 export const structurizeResponse = async (
   raw: RawFinalMarksFromDB,

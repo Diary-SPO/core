@@ -1,5 +1,5 @@
 import { ErrorPlaceholder, PanelHeaderWithBack, Suspense } from '@components'
-import { Day, Nullable } from '@diary-spo/shared'
+import type { Day, Nullable } from '@diary-spo/shared'
 import { useRateLimitExceeded, useSnackbar } from '@hooks'
 import { handleResponse, isApiError, isNeedToUpdateCache } from '@utils'
 import {
@@ -16,11 +16,11 @@ import {
   View
 } from '@vkontakte/vkui'
 import { endOfWeek, startOfWeek } from '@vkontakte/vkui/dist/lib/date'
-import { FC, lazy, useEffect, useState } from 'preact/compat'
+import { type FC, lazy, useEffect, useState } from 'preact/compat'
 
 import { getLessons } from '@api'
 
-import { Props } from '../types.ts'
+import type { Props } from '../types.ts'
 import { getWeekString } from './utils'
 
 const ScheduleAsideButtons = lazy(() => import('./ScheduleAsideButtons'))

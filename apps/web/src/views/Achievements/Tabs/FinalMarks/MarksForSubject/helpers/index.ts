@@ -1,5 +1,5 @@
-import { AcademicRecord, Grade, MarkKeys } from '@diary-spo/shared'
-import { SubjectData, SubjectMatrix, Term, TermMark } from '../types.ts'
+import { type AcademicRecord, Grade, type MarkKeys } from '@diary-spo/shared'
+import type { SubjectData, SubjectMatrix, Term, TermMark } from '../types.ts'
 
 /**
  * Получает корректную оценку

@@ -1,14 +1,14 @@
 import { API_ERRORS, ApiError } from '@api'
-import { Nullable } from '@diary-spo/shared'
+import type { Nullable } from '@diary-spo/shared'
 import {
   AuthModel,
-  AuthModelType,
+  type AuthModelType,
   DiaryUserModel,
-  DiaryUserModelType,
+  type DiaryUserModelType,
   GroupModel,
-  GroupModelType,
+  type GroupModelType,
   SPOModel,
-  SPOModelType
+  type SPOModelType
 } from '@models'
 import { caching } from 'cache-manager'
 

@@ -1,10 +1,10 @@
 import { objPropertyCopy } from '@helpers'
 import {
   ClassroomModel,
-  ClassroomModelType,
-  IClassroomModelType
+  type ClassroomModelType,
+  type IClassroomModelType
 } from '@models'
-import { Optional } from 'sequelize'
+import type { Optional } from 'sequelize'
 
 export const saveClassroom = async (
   classroom: Optional<ClassroomModelType, 'id'>

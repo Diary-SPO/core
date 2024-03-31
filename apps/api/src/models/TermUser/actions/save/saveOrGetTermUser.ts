@@ -1,4 +1,4 @@
-import { ICacheData } from '@helpers'
+import type { ICacheData } from '@helpers'
 import { TermUserModel } from '@models'
 
 export const saveOrGetTermUser = async (termId: number, authData: ICacheData) =>

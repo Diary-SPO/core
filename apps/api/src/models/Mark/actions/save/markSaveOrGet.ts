@@ -1,8 +1,8 @@
-import { MarkKeys } from '@diary-spo/shared'
-import { ICacheData, retriesForError } from '@helpers'
+import type { MarkKeys } from '@diary-spo/shared'
+import { type ICacheData, retriesForError } from '@helpers'
 import { formatDate } from '@utils'
 import { markValueSaveOrGet } from 'src/models/MarkValue'
-import { IScheduleModel } from 'src/models/Schedule'
+import type { IScheduleModel } from 'src/models/Schedule'
 import { markSaveOrGetUnSafe } from './markSaveOrGetUnSafe'
 
 export const markSaveOrGet = async (

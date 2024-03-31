@@ -1,9 +1,11 @@
 import { Mark } from '@components'
-import { Gradebook, Lesson, Timetable } from '@diary-spo/shared'
+import type { Gradebook, Lesson, Timetable } from '@diary-spo/shared'
 import { isDistant, setDefaultMark } from '@utils'
 import { SimpleCell } from '@vkontakte/vkui'
-import { FC } from 'preact/compat'
+import type { FC } from 'preact/compat'
 import LessonSubtitle from './LessonSubtitle'
+
+import './index.css'
 
 interface ILessonCell {
   lesson: Lesson

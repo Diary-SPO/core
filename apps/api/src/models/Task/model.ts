@@ -2,7 +2,7 @@ import { sequelize } from '@db'
 import { DataTypes } from 'sequelize'
 import { ScheduleModel } from '../Schedule'
 import { TaskTypeModel } from '../TaskType'
-import { IModelPrototype } from '../types'
+import type { IModelPrototype } from '../types'
 
 export type TaskModelType = {
   id: number

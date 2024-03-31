@@ -1,7 +1,7 @@
 import { cache, enableCache, sequelize } from '@db'
-import { LessonType, LessonTypeKeys } from '@diary-spo/shared'
+import { LessonType, type LessonTypeKeys } from '@diary-spo/shared'
 import { DataTypes } from 'sequelize'
-import { IModelPrototype } from '../types'
+import type { IModelPrototype } from '../types'
 
 export type LessonTypeModelType = {
   id: number

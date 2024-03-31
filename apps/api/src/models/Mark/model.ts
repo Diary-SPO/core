@@ -4,7 +4,7 @@ import { DiaryUserModel } from '../DiaryUser'
 import { MarkValueModel } from '../MarkValue'
 import { TaskModel } from '../Task'
 import { TermModel } from '../Term'
-import { IModelPrototypeNoId } from '../types'
+import type { IModelPrototypeNoId } from '../types'
 
 export type MarkModelType = {
   diaryUserId: number

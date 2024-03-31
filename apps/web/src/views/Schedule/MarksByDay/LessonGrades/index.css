@@ -1,3 +1,3 @@
 .markWrapper {
-  max-width: 100px !important;
+  max-width: fit-content !important;
 }

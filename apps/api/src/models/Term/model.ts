@@ -1,7 +1,7 @@
 import { sequelize } from '@db'
 import { DataTypes } from 'sequelize'
 import { AcademicYearModel } from '../AcademicYear'
-import { IModelPrototype } from '../types'
+import type { IModelPrototype } from '../types'
 
 export type TermModelType = {
   id: number

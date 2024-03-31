@@ -1,5 +1,5 @@
-import { Day } from '@diary-spo/shared'
-import { MarkDetailed } from '../types.ts'
+import type { Day } from '@diary-spo/shared'
+import type { MarkDetailed } from '../types.ts'
 
 export const transformData = (
   lessonsState: Day[]

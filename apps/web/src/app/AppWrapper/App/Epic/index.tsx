@@ -5,14 +5,14 @@ import {
   VIEW_SCHEDULE,
   VIEW_SETTINGS
 } from '@routes'
-import { Pages } from '@types'
+import type { Pages } from '@types'
 import {
   useActiveVkuiLocation,
   useRouteNavigator
 } from '@vkontakte/vk-mini-apps-router'
 import { View, useAdaptivityConditionalRender } from '@vkontakte/vkui'
 import { Epic as VKUIEpic } from '@vkontakte/vkui/dist/components/Epic/Epic'
-import { FC } from 'preact/compat'
+import type { FC } from 'preact/compat'
 
 import {
   Achievements,

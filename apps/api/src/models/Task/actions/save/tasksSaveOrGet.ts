@@ -1,8 +1,8 @@
-import { Task } from '@diary-spo/shared'
-import { ICacheData, retriesForError } from '@helpers'
+import type { Task } from '@diary-spo/shared'
+import { type ICacheData, retriesForError } from '@helpers'
 import {
-  IScheduleModel,
-  ITermDetectP,
+  type IScheduleModel,
+  type ITermDetectP,
   deleteTasksNotIn,
   markSaveOrGet,
   requiredSaveOrGet

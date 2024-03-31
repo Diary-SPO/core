@@ -1,5 +1,5 @@
-import { AcademicRecord } from '@diary-spo/shared'
-import { ICacheData, updateCache } from '@helpers'
+import type { AcademicRecord } from '@diary-spo/shared'
+import { type ICacheData, updateCache } from '@helpers'
 import { DiaryUserModel, findActiveTerm } from '@models'
 import { formatDate } from '@utils'
 import { saveOrGetAcademicYear } from 'src/models/AcademicYear/actions'

@@ -1,3 +1,4 @@
+import { exit } from 'node:process'
 import {
   DATABASE_HOST,
   DATABASE_NAME,
@@ -8,7 +9,6 @@ import {
 } from '@config'
 import { error } from '@utils'
 import { errorLogger } from '@utils'
-import { exit } from 'process'
 import { Sequelize } from 'sequelize'
 import SequelizeSimpleCache from 'sequelize-simple-cache'
 

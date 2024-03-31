@@ -22,7 +22,7 @@ export const isToday = (date: Date) => {
  * возвращая отформатированную строку, представляющую дату урока.
  */
 
-export const formatLessonDate = (dateString: Date) => {
+export const formatLessonDate = (dateString: Date | string) => {
   const date = new Date(dateString)
   const options: Intl.DateTimeFormatOptions = {
     year: 'numeric',

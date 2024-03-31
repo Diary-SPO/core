@@ -1,4 +1,4 @@
-import { AxiosResponse } from 'axios'
+import type { AxiosResponse } from 'axios'
 
 export const isApiError = (data: unknown): data is AxiosResponse => {
   const isObj = typeof data === 'object'

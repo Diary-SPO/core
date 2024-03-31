@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'bun:test'
-import { AcademicRecord } from '@diary-spo/shared'
+import type { AcademicRecord } from '@diary-spo/shared'
 import { buildSubjectMatrix } from '../index.ts'
 import { expectedMatrix, mockData } from './mocs.ts'
 

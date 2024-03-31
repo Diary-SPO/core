@@ -1,6 +1,6 @@
 import { VKUI_RED_BG, VKUI_VIOLET } from '@config'
-import { FunctionComponent } from 'preact'
-import { CSSProperties } from 'preact/compat'
+import type { FunctionComponent } from 'preact'
+import type { CSSProperties } from 'preact/compat'
 import { convertStringToTime, getTimeRemaining } from './helpers.ts'
 
 interface ITimeRemaining {
@@ -44,7 +44,7 @@ const TimeRemaining: FunctionComponent<ITimeRemaining> = ({
     return null
   }
 
-  const isRed = parseInt(timeRemainingText, 10) < 30
+  const isRed = Number.parseInt(timeRemainingText, 10) < 30
   const currentColor = isRed ? VKUI_RED_BG : VKUI_VIOLET
 
   const styles: CSSProperties = {

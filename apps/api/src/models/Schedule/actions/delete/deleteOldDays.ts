@@ -1,9 +1,9 @@
-import { ICacheData } from '@helpers'
+import type { ICacheData } from '@helpers'
 import {
-  IScheduleModel,
+  type IScheduleModel,
   ScheduleModel,
   ScheduleSubgroupModel,
-  ScheduleSubgroupsGet,
+  type ScheduleSubgroupsGet,
   checkInSubgroups
 } from '@models'
 import { Op } from 'sequelize'

@@ -3,7 +3,7 @@ import {
   useRouteNavigator
 } from '@vkontakte/vk-mini-apps-router'
 import { PanelHeader, PanelHeaderBack } from '@vkontakte/vkui'
-import { FunctionalComponent } from 'preact'
+import type { FunctionalComponent } from 'preact'
 
 import { BETA_VERSION, IS_DEV } from '@config'
 import { MAIN_SETTINGS } from '@routes'

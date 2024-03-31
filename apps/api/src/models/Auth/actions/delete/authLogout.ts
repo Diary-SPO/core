@@ -1,4 +1,4 @@
-import { ICacheData, deleteCache } from '@helpers'
+import { type ICacheData, deleteCache } from '@helpers'
 import { AuthModel } from '../../model'
 
 export const authLogout = async (authData: ICacheData) => {

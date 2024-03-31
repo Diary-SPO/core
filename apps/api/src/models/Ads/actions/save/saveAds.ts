@@ -1,5 +1,5 @@
-import { NotificationsResponse } from '@diary-spo/shared'
-import { ICacheData } from '@helpers'
+import type { NotificationsResponse } from '@diary-spo/shared'
+import type { ICacheData } from '@helpers'
 import { saveAd } from './saveAd'
 
 export const saveAds = async (

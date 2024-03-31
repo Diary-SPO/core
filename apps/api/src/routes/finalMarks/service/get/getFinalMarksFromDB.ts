@@ -1,4 +1,4 @@
-import { ICacheData } from '@helpers'
+import type { ICacheData } from '@helpers'
 import {
   AcademicYearModel,
   FinalMarkModel,
@@ -9,7 +9,7 @@ import {
   TermSubjectModel,
   TermTypeModel
 } from '@models'
-import { RawFinalMark, RawFinalMarksFromDB, RawSubjectMark } from '../type'
+import type { RawFinalMark, RawFinalMarksFromDB, RawSubjectMark } from '../type'
 
 export const getFinalMarksFromDB = async (
   authData: ICacheData

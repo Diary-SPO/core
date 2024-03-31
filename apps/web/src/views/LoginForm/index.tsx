@@ -14,7 +14,7 @@ import {
   Link,
   Panel
 } from '@vkontakte/vkui'
-import { ChangeEvent, FC } from 'preact/compat'
+import type { ChangeEvent, FC } from 'preact/compat'
 import { useEffect, useState } from 'preact/hooks'
 
 import { postLogin } from '@api'
@@ -24,7 +24,7 @@ import { useSnackbar } from '@hooks'
 import { VIEW_SCHEDULE } from '@routes'
 import { handleResponse, isApiError } from '@utils'
 
-import { Props } from '../types.ts'
+import type { Props } from '../types.ts'
 import { loginPattern, saveData } from './helpers'
 
 const LoginForm: FC<Props> = ({ id }) => {

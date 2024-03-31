@@ -1,4 +1,4 @@
-import { Lesson } from '@diary-spo/shared'
+import type { Lesson } from '@diary-spo/shared'
 import { useSyncExternalStore } from 'preact/compat'
 import { createStore } from '../store'
 

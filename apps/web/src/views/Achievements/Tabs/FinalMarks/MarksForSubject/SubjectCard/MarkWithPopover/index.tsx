@@ -1,9 +1,9 @@
 import { Div, Popover, Subhead } from '@vkontakte/vkui'
-import { FC } from 'preact/compat'
+import type { FC } from 'preact/compat'
 
 import { ExplanationTooltip, Mark } from '@components'
 
-import { Term } from '../../types.ts'
+import type { Term } from '../../types.ts'
 
 import './index.css'
 

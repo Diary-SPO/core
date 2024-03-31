@@ -3,7 +3,7 @@ import { DataTypes } from 'sequelize'
 import { DiaryUserModel } from '../DiaryUser'
 import { ScheduleModel } from '../Schedule'
 import { SubgroupModel } from '../Subgroup'
-import { IModelPrototypeNoId } from '../types'
+import type { IModelPrototypeNoId } from '../types'
 
 export type ScheduleSubgroupModelType = {
   scheduleId: number
