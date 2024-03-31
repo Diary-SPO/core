@@ -19,6 +19,7 @@ import { endOfWeek, startOfWeek } from '@vkontakte/vkui/dist/lib/date'
 import { FC, lazy, useEffect, useState } from 'preact/compat'
 
 import { getLessons } from '@api'
+
 import { Props } from '../types.ts'
 import { getWeekString } from './utils'
 
@@ -49,6 +50,7 @@ const Schedule: FC<Props> = ({ id }) => {
   const [snackbar, showSnackbar] = useSnackbar()
 
   const handleGetLesson = async (start: Date, end: Date) => {
+    console.log('asdasd')
     setIsLoading(true)
     setIsError(false)
 
@@ -156,29 +158,33 @@ const Schedule: FC<Props> = ({ id }) => {
     >
       <Panel nav={id}>
         <PanelHeaderWithBack title='Главная' />
-        {isError && <ErrorPlaceholder onClick={handleReloadData} />}
         <PullToRefresh onRefresh={handleReloadData} isFetching={isLoading}>
-          <Div>
-            <Suspense id='MarksByDay'>
-              <Group header={MarksHeader}>{MarksByDayOrLoading}</Group>
-            </Suspense>
-            <Suspense id='ScheduleGroup' mode='screen'>
-              <Group
-                header={
-                  <Header
-                    aside={ScheduleGroupAside}
-                    mode='secondary'
-                    style='align-items: center;'
-                  >
-                    {weekString}
-                  </Header>
-                }
-              >
-                {ScheduleOrLoading}
-              </Group>
-            </Suspense>
-          </Div>
+          {isError ? (
+            <ErrorPlaceholder onClick={handleReloadData} />
+          ) : (
+            <Div>
+              <Suspense id='MarksByDay'>
+                <Group header={MarksHeader}>{MarksByDayOrLoading}</Group>
+              </Suspense>
+              <Suspense id='ScheduleGroup' mode='screen'>
+                <Group
+                  header={
+                    <Header
+                      aside={ScheduleGroupAside}
+                      mode='secondary'
+                      style='align-items: center;'
+                    >
+                      {weekString}
+                    </Header>
+                  }
+                >
+                  {ScheduleOrLoading}
+                </Group>
+              </Suspense>
+            </Div>
+          )}
         </PullToRefresh>
+
         {snackbar}
         {rateSnackbar}
       </Panel>

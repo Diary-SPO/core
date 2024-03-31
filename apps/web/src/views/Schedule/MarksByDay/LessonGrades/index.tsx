@@ -1,15 +1,17 @@
-import { Mark } from '@components'
-import { MODAL_PAGE_MARK } from '@config'
 import { Task } from '@diary-spo/shared'
-
 import { useRouteNavigator } from '@vkontakte/vk-mini-apps-router'
 import { Header, HorizontalCell } from '@vkontakte/vkui'
 import { FunctionalComponent } from 'preact'
 import { useCallback } from 'preact/hooks'
 
+import { Mark } from '@components'
+import { MODAL_PAGE_MARK } from '@config'
 import { useMarkModal } from '@store'
 import { setDefaultMark, truncateString } from '@utils'
+
 import { LessonGradesProps } from '../types.ts'
+
+import './index.css'
 
 const LessonGrades: FunctionalComponent<LessonGradesProps> = ({
   day,
@@ -44,7 +46,6 @@ const LessonGrades: FunctionalComponent<LessonGradesProps> = ({
               className='markWrapper'
             >
               <Mark
-                // className='markWrapper'
                 bottom={truncateString(lessonName, 18)}
                 mark={setDefaultMark(task)}
               />
