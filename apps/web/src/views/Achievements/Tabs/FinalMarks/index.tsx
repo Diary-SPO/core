@@ -8,8 +8,6 @@ import { getFinalMarks } from '@api'
 import { useRateLimitExceeded } from '@hooks'
 import { handleResponse, isApiError, isNeedToUpdateCache } from '@utils'
 
-import LoadingData from '../../LoadingData'
-
 import { MarksForSubject } from './MarksForSubject'
 
 interface Props {
@@ -27,17 +25,18 @@ const FinalMarks: FunctionalComponent<Props> = ({
     useState<Nullable<AcademicRecord>>(null)
 
   useEffect(() => {
-    const data = localStorage.getItem('finalMarksData')
-
-    if (data && !isNeedToUpdateCache('finalMarksData_time')) {
-      setFinalMarksData(JSON.parse(data))
-      return
-    }
-
     const fetchData = async () => {
       setIsLoading(true)
       setIsError(false)
+
+      const data = localStorage.getItem('finalMarksData')
+
       try {
+        if (data && !isNeedToUpdateCache('finalMarksData_time')) {
+          setFinalMarksData(JSON.parse(data))
+          return
+        }
+
         const finalMarks = await getFinalMarks()
 
         handleResponse(
@@ -56,6 +55,7 @@ const FinalMarks: FunctionalComponent<Props> = ({
         localStorage.setItem('finalMarksData', JSON.stringify(finalMarks))
         localStorage.setItem('finalMarksData_time', JSON.stringify(Date.now()))
       } catch {
+        setIsError(true)
       } finally {
         setIsLoading(false)
       }
@@ -69,7 +69,6 @@ const FinalMarks: FunctionalComponent<Props> = ({
   }
 
   if (!finalMarksData?.subjects?.length) {
-    //return <LoadingData text='Обработка данных...' />
     return <Placeholder>Данных нет</Placeholder>
   }
 
