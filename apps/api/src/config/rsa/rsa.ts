@@ -1,8 +1,6 @@
+import { KEY_SCAN_PATH } from '@config'
 import NodeRSA from 'node-rsa'
-import { generateKeyRSA } from './'
-import { searchKeyRSA } from './'
-
-const path = '../../' // ..\\..\\ не работает на линуксе, поэтому будет так
+import { generateKeyRSA, searchKeyRSA } from './'
 
 const keyController = (key: NodeRSA) => {
   return {
@@ -14,7 +12,7 @@ const keyController = (key: NodeRSA) => {
   }
 }
 
-export const rsa = async () => {
+export const rsa = async (path: string) => {
   const privateKeyFile = await searchKeyRSA(path, 'openssh-private.key')
   const publicKeyFile = await searchKeyRSA(path, 'openssh-public.key')
 

@@ -12,7 +12,7 @@ if (!fs.existsSync('.env')) {
 checkEnvVariables(PARAMS_INIT)
 
 // Читаем или генерируем ключ
-export const KEY = await rsa()
+export const KEY = await rsa(PARAMS_INIT.KEY_SCAN_PATH)
 
 export const {
   SERVER_URL,
@@ -21,5 +21,6 @@ export const {
   DATABASE_NAME,
   DATABASE_USERNAME,
   DATABASE_PASSWORD,
-  TIMEZONE
+  TIMEZONE,
+  KEY_SCAN_PATH
 } = PARAMS_INIT
