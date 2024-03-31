@@ -1,22 +1,22 @@
-import { Lesson } from '@diary-spo/shared'
+import type { Lesson } from '@diary-spo/shared'
+import { useLessonModal } from '@store'
 import { ModalPage, ModalPageHeader } from '@vkontakte/vkui'
-import { FC } from 'preact/compat'
+import type { FC } from 'preact/compat'
 import { useEffect, useState } from 'preact/hooks'
 import LessonGrade from './LessonGrade'
-import LessonMainInfo, { ILessonMainInfo } from './LessonMainInfo'
+import LessonMainInfo, { type ILessonMainInfo } from './LessonMainInfo'
 import LessonTimePlaceInfo, {
-  ILessonTimePlaceInfo
+  type ILessonTimePlaceInfo
 } from './LessonTimePlaceInfo'
+import { cleanData } from './data.ts'
 import { setLessonDetails } from './helpers.ts'
-import { cleanData } from './hooks/data.ts'
-import useModal from './hooks/useModal.tsx'
 
 interface ILessonModal {
   id: string
 }
 
 const LessonModal: FC<ILessonModal> = ({ id }) => {
-  const { modal } = useModal()
+  const { modal } = useLessonModal()
   const [lessonData, setLessonData] = useState<Lesson>(cleanData)
   const [lessonMainInfo, setLessonMainInfo] = useState<
     Partial<ILessonMainInfo>

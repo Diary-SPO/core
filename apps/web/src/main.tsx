@@ -1,7 +1,16 @@
 import { render } from 'preact'
-import AppWrapper from './app/AppWrapper'
+
+import { Suspense } from '@components'
+import { lazy } from 'preact/compat'
 
 import '@vkontakte/vkui/dist/cssm/styles/themes.css'
-import './index.css'
+import './styles/index.css'
 
-render(<AppWrapper />, document.getElementById('app')!)
+const AppWrapper = lazy(() => import('./app/AppWrapper'))
+
+render(
+  <Suspense id='RootAppWrapper' mode='screen'>
+    <AppWrapper />
+  </Suspense>,
+  document.getElementById('app')!
+)

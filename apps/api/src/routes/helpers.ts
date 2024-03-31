@@ -1,6 +1,6 @@
 import { API_CODES, API_ERRORS } from '@api'
 import { error as errorLog } from '@utils'
-import { ErrorHandler } from 'elysia'
+import type { ErrorHandler } from 'elysia'
 
 interface ErrorResponse {
   code: number
@@ -34,12 +34,48 @@ export const errorHandler: ErrorHandler = ({
     }
   }
 
+  /** У пользователя недостаточно прав (для Сетевого города) **/
+  if (
+    Number(code) === API_CODES.FORBIDDEN &&
+    error.message === API_ERRORS.USER_NOT_PERMISSION
+  ) {
+    set.status = API_CODES.FORBIDDEN
+    return {
+      message: API_ERRORS.USER_NOT_PERMISSION,
+      code: API_CODES.FORBIDDEN,
+      path
+    }
+  }
+
+  /** Запрошенная информация не найдена **/
+  if (
+    Number(code) === API_CODES.INTERNAL_SERVER_ERROR &&
+    error.message === API_ERRORS.DATA_NOT_FOUND
+  ) {
+    set.status = API_CODES.INTERNAL_SERVER_ERROR
+    return {
+      message: API_ERRORS.DATA_NOT_FOUND,
+      code: API_CODES.INTERNAL_SERVER_ERROR,
+      path
+    }
+  }
+
   /** Не валидные данные для авторизации **/
   if (Number(code) === API_CODES.UNAUTHORIZED) {
     set.status = API_CODES.UNAUTHORIZED
     return {
       message: 'INVALID_DATA',
       code: API_CODES.UNAUTHORIZED,
+      path
+    }
+  }
+
+  /** Непредвиденная ошибка на сервере **/
+  if (error.message === API_ERRORS.INTERNAL_ERROR) {
+    set.status = API_CODES.INTERNAL_SERVER_ERROR
+    return {
+      message: API_ERRORS.INTERNAL_ERROR,
+      code: API_CODES.INTERNAL_SERVER_ERROR,
       path
     }
   }

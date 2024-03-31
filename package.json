@@ -1,12 +1,25 @@
 {
   "name": "@diary-spo/core",
+  "version": "3.0.0",
+  "author": "diary-spo",
+  "devDependencies": {
+    "@biomejs/biome": "^1.6.3",
+    "bun": "^1.0.36",
+    "bun-types": "^1.0.36",
+    "concurrently": "^8.2.2",
+    "husky": "^9.0.11",
+    "lint-staged": "^15.2.2",
+    "typescript": "^5.4.3"
+  },
+  "description": "A web diary",
+  "keywords": [],
+  "license": "MIT",
   "private": true,
-  "version": "1.0.0",
-  "description": "",
   "scripts": {
     "dev:api": "cd apps/api && bun dev",
     "dev:web": "cd apps/web && bun dev",
-    "dev:all": "concurrently \"bun dev:api\" \"bun dev:web\"",
+    "dev:admin": "cd apps/admin && bun dev",
+    "dev:all": "concurrently \"bun dev:api\" \"bun dev:web\" \"bun dev:admin\"",
     "dev:web:preview": "cd apps/web && bun preview",
     "dev:api:serve": "cd apps/api && bun serve",
     "lint": "biome lint . --apply",
@@ -14,23 +27,10 @@
     "checkAll": "biome check . --apply-unsafe",
     "build:web": "cd apps/web && bun run build",
     "build:api": "cd apps/api && bun run build",
-    "size-limit:web": "cd apps/web && bun run size-limit",
-    "prepare": "husky install && bun format"
+    "prepare": "husky"
   },
-  "workspaces": [
-    "apps/*"
-  ],
-  "keywords": [],
-  "author": "scffs",
-  "license": "MIT",
-  "devDependencies": {
-    "@biomejs/biome": "^1.5.3",
-    "concurrently": "^8.2.2",
-    "@happy-dom/global-registrator": "^13.3.2",
-    "bun": "latest",
-    "bun-types": "latest",
-    "husky": "^9.0.11",
-    "lint-staged": "^15.1.0",
-    "typescript": "latest"
-  }
+  "lint-staged": {
+    "*": "bun run checkAll"
+  },
+  "workspaces": ["apps/*"]
 }

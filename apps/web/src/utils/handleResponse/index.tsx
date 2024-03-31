@@ -1,16 +1,19 @@
 import { VKUI_RED } from '@config'
-import { SnackbarData } from '@hooks'
+import type { SnackbarData } from '@hooks'
+import { HTTP_STATUSES } from '@types'
 import { Icon28ErrorCircleOutline } from '@vkontakte/icons'
-import { HTTP_STATUSES } from '../../types'
+import { isApiError } from '../isApiError'
 
 /**
  * Функция 'handleResponse' обрабатывает различные негативные сценарии ответа после запроса.
  * Принимает response и выполняет соответствующие коллбэки в зависимости от полученного ответа.
  */
 
+const errorIcon = <Icon28ErrorCircleOutline fill={VKUI_RED} />
+
 export const handleResponse = <T extends object>(
   /** Ответ от сервера **/
-  response: Response | T,
+  response: T,
   /** Функция, вызываемая при ошибке **/
   errorCallback?: () => void,
   /** Функция, вызываемая достижении rate limit **/
@@ -23,23 +26,28 @@ export const handleResponse = <T extends object>(
   shouldCallErrorIfFatal = true,
   /** Надо ли вызывать errorCallback при 401 ошибке **/
   shouldCallErrorIfUnauth = false
-): undefined | T => {
+): T => {
   console.log('%c[handleResponse]', 'color: green', response)
+
+  if (!response) {
+    showSnackbar?.({
+      before: errorIcon,
+      title: 'Ошибка при попытке сделать запрос',
+      subtitle: 'Сообщите нам о проблеме'
+    })
+  }
 
   /**
    * Если нам пришел ответ от сервера с ошибкой
    *
    * P.S. В "хорошем" ответе нет поля statusText, а только нужные данные
    */
-  if (!(response instanceof Response) || !('statusText' in response)) {
+  if (!isApiError(response)) {
     loadingCallback(false)
-
     return response
   }
 
   console.log('%c[handleResponse]', 'color: violet', response.status)
-
-  const errorIcon = <Icon28ErrorCircleOutline fill={VKUI_RED} />
 
   switch (response.status) {
     case HTTP_STATUSES.RATE_LIMIT:

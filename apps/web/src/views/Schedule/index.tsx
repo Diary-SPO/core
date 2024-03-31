@@ -1,7 +1,7 @@
 import { ErrorPlaceholder, PanelHeaderWithBack, Suspense } from '@components'
-import { Day } from '@diary-spo/shared'
+import type { Day, Nullable } from '@diary-spo/shared'
 import { useRateLimitExceeded, useSnackbar } from '@hooks'
-import { handleResponse } from '@utils'
+import { handleResponse, isApiError, isNeedToUpdateCache } from '@utils'
 import {
   useActiveVkuiLocation,
   useRouteNavigator
@@ -16,15 +16,18 @@ import {
   View
 } from '@vkontakte/vkui'
 import { endOfWeek, startOfWeek } from '@vkontakte/vkui/dist/lib/date'
-import { FC, lazy, useEffect, useState } from 'preact/compat'
-import { getLessons } from '../../methods'
-import ScheduleAsideButtons from './ScheduleAsideButtons.tsx'
-import { getWeekString, isNeedToGetNewData } from './utils.ts'
+import { type FC, lazy, useEffect, useState } from 'preact/compat'
 
+import { getLessons } from '@api'
+
+import type { Props } from '../types.ts'
+import { getWeekString } from './utils'
+
+const ScheduleAsideButtons = lazy(() => import('./ScheduleAsideButtons'))
 const MarksByDay = lazy(() => import('./MarksByDay'))
 const ScheduleGroup = lazy(() => import('./ScheduleGroup'))
 
-const Schedule: FC<{ id: string }> = ({ id }) => {
+const Schedule: FC<Props> = ({ id }) => {
   /** Управление данными **/
   const newDate = new Date()
   const cachedDate = new Date(localStorage.getItem('currentDate'))
@@ -32,7 +35,7 @@ const Schedule: FC<{ id: string }> = ({ id }) => {
     cachedDate && cachedDate.getFullYear() >= 2023 ? cachedDate : newDate
 
   const [endDate, setEndDate] = useState<Date>(endOfWeek(currentDate))
-  const [lessonsState, setLessons] = useState<Day[] | null>()
+  const [lessonsState, setLessons] = useState<Nullable<Day[]>>(null)
   const [startDate, setStartDate] = useState<Date>(startOfWeek(currentDate))
 
   /** Навигация **/
@@ -47,7 +50,10 @@ const Schedule: FC<{ id: string }> = ({ id }) => {
   const [snackbar, showSnackbar] = useSnackbar()
 
   const handleGetLesson = async (start: Date, end: Date) => {
+    console.log('asdasd')
     setIsLoading(true)
+    setIsError(false)
+
     localStorage.setItem('currentDate', startDate.toString())
 
     try {
@@ -64,14 +70,12 @@ const Schedule: FC<{ id: string }> = ({ id }) => {
         showSnackbar
       )
 
-      if (data instanceof Response) {
+      if (isApiError(data)) {
         return
       }
 
       setLessons(data)
       localStorage.setItem('savedLessons', JSON.stringify(data))
-    } catch (e) {
-      console.error('handleGetLesson', e)
     } finally {
       setIsLoading(false)
     }
@@ -85,7 +89,7 @@ const Schedule: FC<{ id: string }> = ({ id }) => {
   const gettedLessons = async (isHandle?: boolean) => {
     const savedLessons = localStorage.getItem('savedLessons')
 
-    if (savedLessons && !isNeedToGetNewData() && !isHandle) {
+    if (savedLessons && !isNeedToUpdateCache('lastFetchTime') && !isHandle) {
       showSnackbar({
         layout: 'vertical',
         action: 'Загрузить новые',
@@ -99,7 +103,6 @@ const Schedule: FC<{ id: string }> = ({ id }) => {
     await handleGetLesson(startDate, endDate)
   }
 
-  /** Для получения расписания и оценок при маунте */
   useEffect(() => {
     gettedLessons()
   }, [])
@@ -115,23 +118,29 @@ const Schedule: FC<{ id: string }> = ({ id }) => {
     )
 
   const ScheduleGroupAside = (
-    <ScheduleAsideButtons
-      handleGetLesson={handleGetLesson}
-      showSnackbar={showSnackbar}
-      endDate={endDate}
-      startDate={startDate}
-      setEndDate={setEndDate}
-      setStartDate={setStartDate}
-    />
+    <Suspense id='ScheduleAsideButtons'>
+      <ScheduleAsideButtons
+        handleGetLesson={handleGetLesson}
+        showSnackbar={showSnackbar}
+        endDate={endDate}
+        startDate={startDate}
+        setEndDate={setEndDate}
+        setStartDate={setStartDate}
+      />
+    </Suspense>
   )
 
   const shouldShowSpinner = isLoading && <PanelSpinner />
 
   const MarksByDayOrLoading = shouldShowSpinner || (
-    <MarksByDay lessonsState={lessonsState} />
+    <Suspense id='MarksByDay'>
+      <MarksByDay lessonsState={lessonsState} />
+    </Suspense>
   )
   const ScheduleOrLoading = shouldShowSpinner || (
-    <ScheduleGroup lessonsState={lessonsState} />
+    <Suspense id='ScheduleGroup'>
+      <ScheduleGroup lessonsState={lessonsState} />
+    </Suspense>
   )
 
   const MarksHeader = (
@@ -149,29 +158,33 @@ const Schedule: FC<{ id: string }> = ({ id }) => {
     >
       <Panel nav={id}>
         <PanelHeaderWithBack title='Главная' />
-        {isError && <ErrorPlaceholder onClick={handleReloadData} />}
         <PullToRefresh onRefresh={handleReloadData} isFetching={isLoading}>
-          <Div>
-            <Suspense id='MarksByDay'>
-              <Group header={MarksHeader}>{MarksByDayOrLoading}</Group>
-            </Suspense>
-            <Suspense id='ScheduleGroup' mode='screen'>
-              <Group
-                header={
-                  <Header
-                    aside={ScheduleGroupAside}
-                    mode='secondary'
-                    style='align-items: center;'
-                  >
-                    {weekString}
-                  </Header>
-                }
-              >
-                {ScheduleOrLoading}
-              </Group>
-            </Suspense>
-          </Div>
+          {isError ? (
+            <ErrorPlaceholder onClick={handleReloadData} />
+          ) : (
+            <Div>
+              <Suspense id='MarksByDay'>
+                <Group header={MarksHeader}>{MarksByDayOrLoading}</Group>
+              </Suspense>
+              <Suspense id='ScheduleGroup' mode='screen'>
+                <Group
+                  header={
+                    <Header
+                      aside={ScheduleGroupAside}
+                      mode='secondary'
+                      style='align-items: center;'
+                    >
+                      {weekString}
+                    </Header>
+                  }
+                >
+                  {ScheduleOrLoading}
+                </Group>
+              </Suspense>
+            </Div>
+          )}
         </PullToRefresh>
+
         {snackbar}
         {rateSnackbar}
       </Panel>

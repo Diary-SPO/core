@@ -8,7 +8,7 @@ import {
   Div,
   usePlatform
 } from '@vkontakte/vkui'
-import { CSSProperties, FC } from 'preact/compat'
+import type { CSSProperties, FC } from 'preact/compat'
 
 export const notFoundStyle: CSSProperties = {
   display: 'flex',
@@ -41,6 +41,7 @@ const NotFound: FC = () => {
       isWebView={vkBridge.isWebView()}
       platform={platform}
     >
+      {/*@ts-ignore Типы не совместимы*/}
       <AppRoot safeAreaInsets={vkBridgeInsets}>
         <Div style={notFoundStyle}>
           <h1 style={text}>404</h1>

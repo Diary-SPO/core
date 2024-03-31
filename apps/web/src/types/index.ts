@@ -1,19 +1,18 @@
-import { TextMark } from '@diary-spo/shared'
+import type {
+  AbsenceTypesDescriptionKeys,
+  AdditionalMarks,
+  MarkKeys
+} from '@diary-spo/shared'
+import type { AxiosResponse } from 'axios'
 
-export type Pages =
-  | 'schedule'
-  | 'contacts'
-  | 'marks'
-  | 'settings'
-  | 'attestation'
-  | 'notifications'
+export type Pages = 'schedule' | 'marks' | 'settings' | 'notifications'
 
 export interface Storage {
   key: string
   value: string
 }
 
-export type ServerResponse<T = unknown> = Promise<T | Response>
+export type ServerResponse<T = unknown> = Promise<T | AxiosResponse>
 
 export const HTTP_STATUSES = {
   /** Ошибка авторизации **/
@@ -26,6 +25,10 @@ export const HTTP_STATUSES = {
   INTERNAL: 500
 } as const
 
-export const loginPattern = /^[a-zA-Z0-9а-яА-ЯёЁ-]+$/
-
-export type ReturnedMark = TextMark | 'Н' | 'ДЗ' | 'О' | 'Д' | number
+export type ReturnedMark =
+  | MarkKeys
+  | AbsenceTypesDescriptionKeys
+  | AdditionalMarks
+  | 'ДЗ'
+  | '.'
+  | number

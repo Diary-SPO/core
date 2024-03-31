@@ -1,3 +1,4 @@
+import type { Nullable } from '@diary-spo/shared'
 import { useCallback, useState } from 'preact/hooks'
 
 /**
@@ -8,9 +9,7 @@ import { useCallback, useState } from 'preact/hooks'
  * После задержки сбрасывает счетчик и вызывает функцию, отправляющую измененные даты на сервер.
  */
 
-interface SendToServerIfValid {
-  (start: Date, end: Date): void
-}
+type SendToServerIfValid = (start: Date, end: Date) => void
 
 const useDebouncedChangeWeek = (
   startDate: Date,
@@ -20,8 +19,7 @@ const useDebouncedChangeWeek = (
   setEndDate: (endDate: Date) => void
 ) => {
   const [clickCount, setClickCount] = useState<number>(0)
-  // eslint-disable-next-line no-undef
-  const [timeoutId, setTimeoutId] = useState<NodeJS.Timeout | null>(null)
+  const [timeoutId, setTimeoutId] = useState<Nullable<number>>(null)
 
   const debouncedChangeWeek = useCallback(
     (direction: 'prev' | 'next', sendToServerIfValid: SendToServerIfValid) => {
@@ -58,12 +56,12 @@ const useDebouncedChangeWeek = (
       clearTimeout(timeoutId)
     }
 
-    const newTimeoutId = setTimeout(() => {
+    const timeout = window.setTimeout(() => {
       debouncedChangeWeek(direction, sendToServerIfValid)
       setClickCount(0)
     }, 500)
 
-    setTimeoutId(newTimeoutId)
+    setTimeoutId(timeout)
   }
 
   return { handleButtonClick }

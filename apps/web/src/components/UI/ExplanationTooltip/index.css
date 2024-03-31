@@ -1,0 +1,22 @@
+.iconHelp {
+  position: relative;
+  top: -1px;
+
+  display: inline-block;
+  vertical-align: middle;
+  color: var(--vkui--color_icon_secondary);
+  margin-left: 5px;
+}
+
+.explanationTooltipText {
+  padding: 8px;
+  color: var(--vkui--color_text_primary)
+}
+
+.explanationTooltipPopover {
+  max-width: 220px;
+}
+
+.explanationTooltipWrapper {
+  cursor: pointer;
+}

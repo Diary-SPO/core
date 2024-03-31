@@ -2,10 +2,10 @@ import { ExplanationTooltip, Mark } from '@components'
 import {
   AbsenceTypes,
   AbsenceTypesDescription,
-  Lesson
+  type Lesson
 } from '@diary-spo/shared'
 import { Group, Header, SimpleCell } from '@vkontakte/vkui'
-import { FC } from 'preact/compat'
+import type { FC } from 'preact/compat'
 import LessonTasks from './LessonTasks'
 
 interface ILessonGrade {
@@ -14,7 +14,7 @@ interface ILessonGrade {
 }
 
 const LessonGrade: FC<ILessonGrade> = ({ tasks, absenceType }) => {
-  const hasTasks = tasks?.length
+  const hasTasks = Boolean(tasks?.length)
 
   if (!hasTasks && !absenceType) {
     return

@@ -1,7 +1,7 @@
 import { Suspense } from '@components'
+import type { Pages } from '@types'
 import {
   Icon28BookSpreadOutline,
-  Icon28EducationOutline,
   Icon28GraphOutline,
   Icon28HomeOutline,
   Icon28SettingsOutline
@@ -24,19 +24,17 @@ import {
   useAdaptivityConditionalRender,
   usePlatform
 } from '@vkontakte/vkui'
-import { FC } from 'preact/compat'
+import { type FC, lazy } from 'preact/compat'
+
 import {
   MAIN_SETTINGS,
-  VIEW_ATTESTATION,
-  VIEW_CONTACTS,
   VIEW_MARKS,
   VIEW_NOTIFICATIONS,
   VIEW_SCHEDULE,
   VIEW_SETTINGS
-} from '../../../routes'
-import { Pages } from '../../../types'
+} from '@routes'
 
-import Epic from './Epic'
+const Epic = lazy(() => import('./Epic'))
 import ModalRoot from './ModalRoot'
 
 const App: FC = () => {
@@ -66,6 +64,7 @@ const App: FC = () => {
   const modals = <ModalRoot />
 
   return (
+    // @ts-ignore Типы не совместимы
     <AppRoot safeAreaInsets={vkBridgeInsets}>
       <SplitLayout
         popout={routerPopout}
@@ -99,29 +98,13 @@ const App: FC = () => {
                 >
                   Успеваемость
                 </Cell>
-                {/*// @ts-ignore Типы не совместимы */}
-                <Cell
-                  onClick={() => onStoryChange(VIEW_ATTESTATION)}
-                  hovered={panel === VIEW_ATTESTATION}
-                  before={<Icon28EducationOutline />}
-                >
-                  Аттестация
-                </Cell>
-                {/*// @ts-ignore Типы не совместимы */}
+                {/*//@ts-ignore типы React не совсем совместимы с Preact*/}
                 <Cell
                   onClick={() => onStoryChange(VIEW_NOTIFICATIONS)}
                   hovered={panel === VIEW_NOTIFICATIONS}
                   before={<Icon28BookSpreadOutline />}
                 >
                   Объявления
-                </Cell>
-                {/*// @ts-ignore Типы не совместимы */}
-                <Cell
-                  onClick={() => onStoryChange(VIEW_CONTACTS)}
-                  hovered={panel === VIEW_CONTACTS}
-                  before={<Icon28EducationOutline />}
-                >
-                  Помощь
                 </Cell>
                 {/*// @ts-ignore Типы не совместимы */}
                 <Cell
@@ -135,11 +118,11 @@ const App: FC = () => {
             </Panel>
           </SplitCol>
         )}
-        <SplitCol width='100%' maxWidth='700px' stretchedOnMobile autoSpaced>
-          <Suspense id='Epic'>
+        <Suspense id='Epic'>
+          <SplitCol width='100%' maxWidth='700px' stretchedOnMobile autoSpaced>
             <Epic onStoryChange={onStoryChange} />
-          </Suspense>
-        </SplitCol>
+          </SplitCol>
+        </Suspense>
       </SplitLayout>
     </AppRoot>
   )

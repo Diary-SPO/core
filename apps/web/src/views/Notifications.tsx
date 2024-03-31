@@ -1,36 +1,37 @@
-import { PanelHeaderWithBack, SubtitleWithBorder } from '@components'
+import { getAds } from '@api'
+import {
+  ErrorPlaceholder,
+  PanelHeaderWithBack,
+  SubtitleWithBorder
+} from '@components'
 import { VKUI_RED } from '@config'
-import { NotificationsResponse } from '@diary-spo/shared'
+import type { NotificationsResponse, Nullable } from '@diary-spo/shared'
 import { useSnackbar } from '@hooks'
-import { handleResponse } from '@utils'
+import { handleResponse, isApiError } from '@utils'
 import { Icon28ErrorCircleOutline } from '@vkontakte/icons'
 import {
-  Button,
-  ButtonGroup,
   Card,
   Div,
   Group,
   Header,
-  Link,
   Panel,
   Placeholder,
   Spinner,
   Text,
   Title
 } from '@vkontakte/vkui'
-import { FC } from 'preact/compat'
+import type { FC } from 'preact/compat'
 import { useEffect, useState } from 'preact/hooks'
-import { getAds } from '../methods'
+import type { Props } from './types.ts'
 
 const updateCache = (ads: NotificationsResponse[]) => {
   localStorage.setItem('savedAds', JSON.stringify(ads))
   localStorage.setItem('lastFetchTime', String(Date.now()))
 }
 
-const Notifications: FC<{ id: string }> = ({ id }) => {
-  const [notifications, setNotifications] = useState<
-    NotificationsResponse[] | null
-  >(null)
+const Notifications: FC<Props> = ({ id }) => {
+  const [notifications, setNotifications] =
+    useState<Nullable<NotificationsResponse[]>>(null)
   const [isLoading, setLoading] = useState<boolean>(false)
   const [isError, setIsError] = useState<boolean>(false)
   const [snackbar, showSnackbar] = useSnackbar()
@@ -42,29 +43,29 @@ const Notifications: FC<{ id: string }> = ({ id }) => {
 
   const fetchAds = async (isHandle?: boolean) => {
     setLoading(true)
-    try {
-      if (!isHandle) {
-        const cachedAds = JSON.parse(localStorage.getItem('savedAds') || '')
-        setNotifications(cachedAds)
-      }
+    const cachedAds = localStorage.getItem('savedAds')
 
+    if (!isHandle && cachedAds) {
+      setNotifications(JSON.parse(cachedAds))
+      return
+    }
+
+    try {
       const ads = await getAds()
       handleResponse(ads, handleError, handleError, setLoading, showSnackbar)
 
-      if (ads instanceof Response) {
+      if (isApiError(ads)) {
+        showSnackbar({
+          before: <Icon28ErrorCircleOutline fill={VKUI_RED} />,
+          title: 'Ошибка при попытке загрузить объявления',
+          action: 'Попробовать снова',
+          onActionClick: () => fetchAds(true)
+        })
         return
       }
 
       updateCache(ads)
       setNotifications(ads)
-    } catch (error) {
-      showSnackbar({
-        before: <Icon28ErrorCircleOutline fill={VKUI_RED} />,
-        title: 'Ошибка при попытке загрузить объявления',
-        action: 'Попробовать снова',
-        onActionClick: () => fetchAds(true)
-      })
-      console.error('Ошибка при получении объявлений:', error)
     } finally {
       setLoading(false)
     }
@@ -86,95 +87,71 @@ const Notifications: FC<{ id: string }> = ({ id }) => {
     })
   }, [])
 
+  if (isLoading) {
+    return (
+      <Div>
+        <Spinner />
+      </Div>
+    )
+  }
+
+  const notificationsList = notifications?.map(
+    ({
+      title,
+      id: _id,
+      date,
+      isForEmployees,
+      isForParents,
+      isForStudents,
+      text
+    }) => (
+      <Group
+        key={_id}
+        description={
+          <div style={{ display: 'flex', gap: 10 }}>
+            {isForEmployees && (
+              <SubtitleWithBorder>Для работников</SubtitleWithBorder>
+            )}
+
+            {isForParents && (
+              <SubtitleWithBorder color='yellow-outline'>
+                Для родителей
+              </SubtitleWithBorder>
+            )}
+            {isForStudents && (
+              <SubtitleWithBorder color='green-outline'>
+                Для студентов
+              </SubtitleWithBorder>
+            )}
+          </div>
+        }
+        header={
+          <Header mode='tertiary'>{new Date(date).toLocaleDateString()}</Header>
+        }
+      >
+        <Card mode='shadow'>
+          <Div>
+            {/*//@ts-ignore типы React не совсем совместимы с Preact*/}
+            <Title level='3' Component='h3'>
+              {title}
+            </Title>
+            {/*//@ts-ignore типы React не совсем совместимы с Preact*/}
+            <Text>{text}</Text>
+          </Div>
+        </Card>
+      </Group>
+    )
+  )
+
   return (
     <Panel nav={id}>
       <PanelHeaderWithBack title='Объявления' />
-      <Div>
-        {notifications &&
-          notifications?.length > 0 &&
-          notifications?.map(
-            ({
-              title,
-              id: _id,
-              date,
-              isForEmployees,
-              isForParents,
-              isForStudents,
-              text
-            }) => (
-              <Group
-                key={_id}
-                description={
-                  <div style={{ display: 'flex', gap: 10 }}>
-                    {isForEmployees && (
-                      <SubtitleWithBorder>Для работников</SubtitleWithBorder>
-                    )}
-                    {isForParents && (
-                      <SubtitleWithBorder color='yellow-outline'>
-                        Для родителей
-                      </SubtitleWithBorder>
-                    )}
-                    {isForStudents && (
-                      <SubtitleWithBorder color='green-outline'>
-                        Для студентов
-                      </SubtitleWithBorder>
-                    )}
-                  </div>
-                }
-                header={
-                  <Header mode='tertiary'>
-                    {new Date(date).toLocaleDateString()}
-                  </Header>
-                }
-              >
-                <Card mode='shadow'>
-                  <Div>
-                    {/*//@ts-ignore типы React не совсем совместимы с Preact*/}
-                    <Title level='3' Component='h3'>
-                      {title}
-                    </Title>
-                    {/*//@ts-ignore типы React не совсем совместимы с Preact*/}
-                    <Text>{text}</Text>
-                  </Div>
-                </Card>
-              </Group>
-            )
-          )}
+      <Div>{notificationsList}</Div>
 
-        <Div>
-          {isLoading && (
-            <Div>
-              <Spinner />
-            </Div>
-          )}
-        </Div>
-
-        <Div>
-          {isError && (
-            <Placeholder
-              header='Ошибка при загрузке'
-              action={
-                <ButtonGroup mode='vertical' align='center'>
-                  {/*// @ts-ignore Типы не совместимы */}
-                  <Button size='s' onClick={() => fetchAds(true)}>
-                    Попробовать снова
-                  </Button>
-                  {/*// @ts-ignore Типы не совместимы */}
-                  <Link href='https://vk.me/diary_spo' target='_blank'>
-                    Сообщить о проблеме
-                  </Link>
-                </ButtonGroup>
-              }
-            />
-          )}
-        </Div>
-
-        <Div>
-          {notifications && notifications?.length < 1 && (
-            <Placeholder header='Объявлений нет' />
-          )}
-        </Div>
-      </Div>
+      {!notifications?.length && !isError && (
+        <Placeholder header='Объявлений нет' />
+      )}
+      {isError && <ErrorPlaceholder onClick={() => fetchAds(true)} />}
       {snackbar}
     </Panel>
   )

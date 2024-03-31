@@ -1,4 +1,4 @@
-import { Day, Task } from '@diary-spo/shared'
+import type { Day, Task } from '@diary-spo/shared'
 
 export interface LessonGradesProps {
   day: string

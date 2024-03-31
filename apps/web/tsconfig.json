@@ -24,7 +24,6 @@
     "jsxImportSource": "preact",
     "baseUrl": ".",
     "paths": {
-      "react": ["./node_modules/preact/compat/"],
       "react-dom": ["./node_modules/preact/compat/"],
       "@utils": ["./src/utils"],
       "@components": ["./src/components"],
@@ -32,6 +31,10 @@
       "@store": ["./src/store"],
       "@libs": ["./src/libs"],
       "@hooks": ["./src/hooks"],
+      "@types": ["./src/types"],
+      "@api": ["./src/api"],
+      "@routes": ["./src/routes"],
+      "@views": ["./src/views"]
     }
   },
   "include": ["src"],

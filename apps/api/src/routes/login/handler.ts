@@ -1,12 +1,11 @@
 import { API_CODES, API_ERRORS, ApiError } from '@api'
 import { SERVER_URL } from '@config'
-import type { ResponseLogin } from '@db'
-import type { UserData } from '@diary-spo/shared'
+import { b64 } from '@diary-spo/crypto'
+import type { ResponseLogin, UserData } from '@diary-spo/shared'
 import { fetcher } from '@utils'
-import Hashes from 'jshashes'
-import { offlineAuth } from './authService'
-import { handleResponse } from './authService/helpers'
-import { saveUserData } from './authService/saveUserData'
+import { offlineAuth } from './service'
+import { handleResponse } from './service/helpers/helpers'
+import { saveUserData } from './service/save/saveUserData'
 
 interface AuthContext {
   body: {
@@ -21,7 +20,7 @@ const postAuth = async ({ body }: AuthContext): Promise<ResponseLogin> => {
 
   /** Если пароль передан в исходном виде, то хешируем его на сервере **/
   if (!isHash) {
-    password = new Hashes.SHA256().b64(body.password)
+    password = await b64(body.password)
   }
 
   const res = await fetcher<UserData>({
@@ -35,27 +34,18 @@ const postAuth = async ({ body }: AuthContext): Promise<ResponseLogin> => {
   switch (parsedRes) {
     /** Авторизация через нашу БД **/
     case 'DOWN': {
-      try {
-        const authData = await offlineAuth(login, password)
+      const authData = await offlineAuth(login, password)
 
-        if (!authData) {
-          throw new ApiError(
-            API_ERRORS.USER_NOT_FOUND,
-            API_CODES.INTERNAL_SERVER_ERROR
-          )
-        }
-
-        return authData
-      } catch (e) {
-        throw new Error(
-          `Authorization error: access to the diary was denied, and authorization through the database failed. Full: ${e}`
-        )
+      if (!authData) {
+        throw new ApiError(API_ERRORS.USER_NOT_FOUND, API_CODES.UNAUTHORIZED)
       }
+
+      return authData
     }
     /** Неизвестная ошибка **/
     case 'UNKNOWN':
       throw new ApiError('Unknown auth error', API_CODES.UNKNOWN_ERROR)
-    /** Сервер выернул корректные данные, сохраняем их в БД **/
+    /** Сервер вернул корректные данные, сохраняем их в БД **/
     default:
       /**
        * Если сетевой город поменял тип своего ответа, то мы бы хотели об этом узнать

@@ -1,5 +1,6 @@
-import fs from 'fs'
+import fs from 'node:fs'
 import { PARAMS_INIT } from './params'
+import { rsa } from './rsa'
 import checkEnvVariables from './utils'
 
 if (!fs.existsSync('.env')) {
@@ -10,6 +11,9 @@ if (!fs.existsSync('.env')) {
 
 checkEnvVariables(PARAMS_INIT)
 
+// Читаем или генерируем ключ
+export const KEY = await rsa()
+
 export const {
   SERVER_URL,
   DATABASE_HOST,
@@ -17,5 +21,5 @@ export const {
   DATABASE_NAME,
   DATABASE_USERNAME,
   DATABASE_PASSWORD,
-  ENCRYPT_KEY
+  TIMEZONE
 } = PARAMS_INIT

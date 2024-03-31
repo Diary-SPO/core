@@ -1,30 +1,26 @@
 import {
+  MAIN_SETTINGS,
+  VIEW_MARKS,
+  VIEW_NOTIFICATIONS,
+  VIEW_SCHEDULE,
+  VIEW_SETTINGS
+} from '@routes'
+import type { Pages } from '@types'
+import {
   useActiveVkuiLocation,
   useRouteNavigator
 } from '@vkontakte/vk-mini-apps-router'
 import { View, useAdaptivityConditionalRender } from '@vkontakte/vkui'
 import { Epic as VKUIEpic } from '@vkontakte/vkui/dist/components/Epic/Epic'
-import { FC } from 'preact/compat'
-import {
-  MAIN_SETTINGS,
-  VIEW_ATTESTATION,
-  VIEW_CONTACTS,
-  VIEW_MARKS,
-  VIEW_NOTIFICATIONS,
-  VIEW_SCHEDULE,
-  VIEW_SETTINGS
-} from '../../../../routes'
-import { Pages } from '../../../../types'
+import type { FC } from 'preact/compat'
 
 import {
-  Attestation,
-  Contacts,
+  Achievements,
   LoginForm,
-  Marks,
   Notifications,
   Schedule,
   Settings
-} from '../../../../views'
+} from '@views'
 
 import { Suspense } from '@components'
 import Tabbar from './Tabbar'
@@ -60,16 +56,10 @@ const Epic: FC<IEpic> = ({ onStoryChange }) => {
           <Schedule id={VIEW_SCHEDULE} />
         </Suspense>
         <Suspense id={VIEW_MARKS} mode='screen'>
-          <Marks id={VIEW_MARKS} />
-        </Suspense>
-        <Suspense id={VIEW_ATTESTATION} mode='screen'>
-          <Attestation id={VIEW_ATTESTATION} />
+          <Achievements id={VIEW_MARKS} />
         </Suspense>
         <Suspense id={VIEW_NOTIFICATIONS} mode='screen'>
           <Notifications id={VIEW_NOTIFICATIONS} />
-        </Suspense>
-        <Suspense id={VIEW_CONTACTS} mode='screen'>
-          <Contacts id={VIEW_CONTACTS} />
         </Suspense>
         <Suspense id={VIEW_SETTINGS} mode='screen'>
           <Settings id={VIEW_SETTINGS} />

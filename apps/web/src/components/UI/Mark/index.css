@@ -1,0 +1,6 @@
+.markRoot {
+  color: white;
+  display: inline-block;
+  min-width: 20px;
+  box-sizing: border-box;
+}

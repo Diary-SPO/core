@@ -1,4 +1,4 @@
-import { Lesson } from '@diary-spo/shared'
+import type { Lesson } from '@diary-spo/shared'
 
 /**
  * Функция 'formatLessonName' форматирует название урока, добавляя к нему дополнительную информацию, если есть разделитель '/'.
