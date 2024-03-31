@@ -8,9 +8,9 @@ import { getFinalMarks } from '@api'
 import { useRateLimitExceeded } from '@hooks'
 import { handleResponse, isApiError, isNeedToUpdateCache } from '@utils'
 
-import LoadingData from '../../LoadingData.tsx'
+import LoadingData from '../../LoadingData'
 
-import { MarksForSubject } from './Table'
+import { MarksForSubject } from './MarksForSubject'
 
 interface Props {
   setIsError: (value: boolean) => void
@@ -68,7 +68,7 @@ const FinalMarks: FunctionalComponent<Props> = ({
     return
   }
 
-  if (!isLoading && !finalMarksData?.subjects?.length) {
+  if (!finalMarksData?.subjects?.length) {
     return <LoadingData text='Обработка данных...' />
   }
 

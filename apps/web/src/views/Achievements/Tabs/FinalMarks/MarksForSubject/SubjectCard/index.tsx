@@ -11,9 +11,11 @@ import { FC } from 'preact/compat'
 
 import { Mark } from '@components'
 
-import { MarkWithPopover } from './MarkWithPopover.tsx'
+import { MarkWithPopover } from './MarkWithPopover'
 
-import { Term, TermMark } from './types.ts'
+import { Term, TermMark } from '../types.ts'
+
+import './index.css'
 
 export const SubjectCard: FC<{
   subjectName: string

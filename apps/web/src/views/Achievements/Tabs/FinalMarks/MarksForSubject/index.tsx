@@ -3,8 +3,7 @@ import { FC } from 'preact/compat'
 import { buildSubjectMatrix } from './helpers'
 import { MarksForSubjectProps } from './types.ts'
 
-import { SubjectCard } from './SubjectCard.tsx'
-import './index.css'
+import { SubjectCard } from './SubjectCard'
 
 export const MarksForSubject: FC<MarksForSubjectProps> = ({ data }) => {
   const subjectMatrix = buildSubjectMatrix(data)

@@ -1,11 +1,13 @@
-.marksWrapper {
-  align-items: center;
+.markPopoverContentWrapper {
+  cursor: help;
 }
+
 
 .marksGap {
   display: inline;
   margin-left: 5px;
 }
+
 
 .popoverWrapper {
   cursor: pointer;
@@ -15,11 +17,4 @@
   display: flex;
   flex-direction: column;
   gap: 5px;
-}
-
-.totalMark {
-  display: flex;
-  align-items: center;
-
-  margin-bottom: 10px;
 }

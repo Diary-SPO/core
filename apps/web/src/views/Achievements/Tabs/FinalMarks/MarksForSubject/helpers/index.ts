@@ -2,17 +2,6 @@ import { AcademicRecord, Grade, MarkKeys } from '@diary-spo/shared'
 import { SubjectData, SubjectMatrix, Term, TermMark } from '../types.ts'
 
 /**
- * Стили для таблицы
- */
-const bgColor = 'rgba(240,240,240,0.05)'
-
-export const cellStyle = (isSelected: boolean, isHovered: boolean) => ({
-  padding: '10px',
-  border: '1px solid #ddd',
-  backgroundColor: isSelected ? bgColor : isHovered ? bgColor : 'inherit'
-})
-
-/**
  * Получает корректную оценку
  */
 // TODO: add tests

@@ -3,7 +3,9 @@ import { FC } from 'preact/compat'
 
 import { ExplanationTooltip, Mark } from '@components'
 
-import { Term } from './types.ts'
+import { Term } from '../../types.ts'
+
+import './index.css'
 
 export const MarkWithPopover: FC<{ term: Term }> = ({ term }) => {
   const markComponent = (
@@ -43,7 +45,7 @@ export const MarkWithPopover: FC<{ term: Term }> = ({ term }) => {
       aria-labelledby='menubutton'
       content={popoverContent}
     >
-      <div>{markComponent}</div>
+      <div className='markPopoverContentWrapper'>{markComponent}</div>
     </Popover>
   )
 }
