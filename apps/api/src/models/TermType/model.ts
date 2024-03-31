@@ -11,7 +11,7 @@ export type ITermTypeModel = IModelPrototype<TermTypeModelType, 'id'>
 
 const termTypeModel = sequelize.define<ITermTypeModel>('termType', {
   id: {
-    type: DataTypes.INTEGER,
+    type: DataTypes.SMALLINT,
     autoIncrement: true,
     primaryKey: true
   },

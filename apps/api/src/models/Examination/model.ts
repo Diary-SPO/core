@@ -1,4 +1,4 @@
-import { sequelize } from '@db'
+import { cache, enableCache, sequelize } from '@db'
 import { ExaminationKeys, Examinations } from '@diary-spo/shared'
 import { DataTypes } from 'sequelize'
 import { IModelPrototype } from '../types'
@@ -13,11 +13,11 @@ export type IExaminationTypeModel = IModelPrototype<
   'id'
 >
 
-export const ExaminationTypeModel = sequelize.define<IExaminationTypeModel>(
+const examinationTypeModel = sequelize.define<IExaminationTypeModel>(
   'examinationType',
   {
     id: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.SMALLINT,
       autoIncrement: true,
       primaryKey: true
     },
@@ -28,3 +28,7 @@ export const ExaminationTypeModel = sequelize.define<IExaminationTypeModel>(
     }
   }
 )
+
+export const ExaminationTypeModel = enableCache
+  ? cache.init<IExaminationTypeModel>(examinationTypeModel)
+  : examinationTypeModel

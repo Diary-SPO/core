@@ -12,7 +12,7 @@ export type ITaskTypeModel = IModelPrototype<TaskTypeModelType, 'id'>
 
 const taskTypeModel = sequelize.define<ITaskTypeModel>('taskType', {
   id: {
-    type: DataTypes.INTEGER,
+    type: DataTypes.SMALLINT,
     autoIncrement: true,
     primaryKey: true
   },

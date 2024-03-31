@@ -24,7 +24,7 @@ export const AcademicYearModel = sequelize.define<IAcademicYearModel>(
       primaryKey: true
     },
     termTypeId: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.SMALLINT,
       allowNull: false,
       references: {
         model: TermTypeModel,

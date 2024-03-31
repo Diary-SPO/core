@@ -21,7 +21,7 @@ export const TermSubjectExaminationTypeModel =
     'termSubjectExaminationType',
     {
       id: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.SMALLINT,
         autoIncrement: true,
         primaryKey: true
       },

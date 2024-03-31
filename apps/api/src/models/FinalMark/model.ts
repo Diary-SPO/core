@@ -33,7 +33,7 @@ export const FinalMarkModel = sequelize.define<IFinalMarkModel>('finalMark', {
     }
   },
   markValueId: {
-    type: DataTypes.INTEGER,
+    type: DataTypes.SMALLINT,
     allowNull: true,
     references: {
       model: MarkValueModel,

@@ -12,7 +12,7 @@ export type IMarkValueModelType = IModelPrototype<MarkValueModelType, 'id'>
 
 const markValueModel = sequelize.define<IMarkValueModelType>('markValue', {
   id: {
-    type: DataTypes.INTEGER,
+    type: DataTypes.SMALLINT,
     primaryKey: true,
     autoIncrement: true
   },
