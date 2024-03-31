@@ -1,4 +1,4 @@
-import { PerformanceCurrent } from '@diary-spo/shared'
+import type { PerformanceCurrent } from '@diary-spo/shared'
 import { createSubjectMarksMatrix } from '@utils'
 import {
   Card,
@@ -10,7 +10,7 @@ import {
   Placeholder,
   Title
 } from '@vkontakte/vkui'
-import { FC } from 'preact/compat'
+import type { FC } from 'preact/compat'
 
 import AverageMarkCell from './AverageMarkCell'
 import MarksList from './MarksList'

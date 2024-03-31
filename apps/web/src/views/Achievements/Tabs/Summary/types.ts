@@ -1,4 +1,4 @@
-import { Nullable } from '@diary-spo/shared'
+import type { Nullable } from '@diary-spo/shared'
 
 export interface ISummary {
   totalNumberOfMarks: Nullable<number>

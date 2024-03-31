@@ -3,7 +3,7 @@ import { DataTypes } from 'sequelize'
 import { AbsenceTypeModel } from '../AbsenceType'
 import { DiaryUserModel } from '../DiaryUser'
 import { ScheduleModel } from '../Schedule'
-import { IModelPrototype } from '../types'
+import type { IModelPrototype } from '../types'
 
 export type AbsenceModelType = {
   id: number

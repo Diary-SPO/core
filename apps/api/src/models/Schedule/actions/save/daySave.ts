@@ -1,7 +1,7 @@
-import { Day } from '@diary-spo/shared'
-import { ICacheData, retriesForError } from '@helpers'
-import { IScheduleModel, deleteOldDays, lessonSave } from '@models'
-import { ITermDetectP } from '@models'
+import type { Day } from '@diary-spo/shared'
+import { type ICacheData, retriesForError } from '@helpers'
+import { type IScheduleModel, deleteOldDays, lessonSave } from '@models'
+import type { ITermDetectP } from '@models'
 
 export const daySave = async (
   day: Day,

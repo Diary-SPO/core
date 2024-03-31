@@ -1,5 +1,5 @@
-import { SubjectMarksItem } from '@utils'
-import { FC } from 'preact/compat'
+import type { SubjectMarksItem } from '@utils'
+import type { FC } from 'preact/compat'
 
 import { renderMarksOrAbsence } from './helpers'
 

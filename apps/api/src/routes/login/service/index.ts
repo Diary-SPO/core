@@ -1,12 +1,12 @@
 import { API_CODES, API_ERRORS, ApiError } from '@api'
 import { KEY } from '@config'
-import { ResponseLogin } from '@diary-spo/types'
+import type { ResponseLogin } from '@diary-spo/types'
 import {
   DiaryUserModel,
   GroupModel,
-  IDiaryUserModel,
-  IGroupModel,
-  ISPOModel,
+  type IDiaryUserModel,
+  type IGroupModel,
+  type ISPOModel,
   SPOModel
 } from '@models'
 import { ResponseLoginFromDiaryUser } from '@types'

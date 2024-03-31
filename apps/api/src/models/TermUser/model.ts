@@ -2,7 +2,7 @@ import { sequelize } from '@db'
 import { DataTypes } from 'sequelize'
 import { DiaryUserModel } from '../DiaryUser'
 import { TermModel } from '../Term'
-import { IModelPrototypeNoId } from '../types'
+import type { IModelPrototypeNoId } from '../types'
 
 export type TermUserModelType = {
   termId: number

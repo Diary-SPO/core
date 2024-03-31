@@ -1,5 +1,5 @@
-import { Grade, Task } from '@diary-spo/shared'
-import { ReturnedMark } from '../../types'
+import { Grade, type Task } from '@diary-spo/shared'
+import type { ReturnedMark } from '../../types'
 
 /**
  * Функция 'setDefaultMark' устанавливает значение оценки по умолчанию на основе задачи.

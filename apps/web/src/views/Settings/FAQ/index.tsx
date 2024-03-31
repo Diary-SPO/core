@@ -1,5 +1,5 @@
 import { Card, Group, Header } from '@vkontakte/vkui'
-import { FunctionComponent } from 'preact'
+import type { FunctionComponent } from 'preact'
 import { lazy } from 'preact/compat'
 
 import { Suspense } from '@components'

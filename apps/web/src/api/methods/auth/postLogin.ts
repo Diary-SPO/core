@@ -1,5 +1,5 @@
-import { ResponseLogin } from '@diary-spo/shared'
-import { ServerResponse } from '@types'
+import type { ResponseLogin } from '@diary-spo/shared'
+import type { ServerResponse } from '@types'
 import makeRequest from '../../makeRequest.ts'
 
 export const postLogin = async (

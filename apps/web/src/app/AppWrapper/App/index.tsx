@@ -1,5 +1,5 @@
 import { Suspense } from '@components'
-import { Pages } from '@types'
+import type { Pages } from '@types'
 import {
   Icon28BookSpreadOutline,
   Icon28GraphOutline,
@@ -24,7 +24,7 @@ import {
   useAdaptivityConditionalRender,
   usePlatform
 } from '@vkontakte/vkui'
-import { FC, lazy } from 'preact/compat'
+import { type FC, lazy } from 'preact/compat'
 
 import {
   MAIN_SETTINGS,

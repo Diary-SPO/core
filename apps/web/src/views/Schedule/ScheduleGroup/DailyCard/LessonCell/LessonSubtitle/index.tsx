@@ -1,7 +1,7 @@
 import { SubtitleWithBorder } from '@components'
-import { AbsenceTypes, Gradebook, LessonType } from '@diary-spo/shared'
+import { AbsenceTypes, type Gradebook, LessonType } from '@diary-spo/shared'
 import { isDistant } from '@utils'
-import { FC } from 'preact/compat'
+import type { FC } from 'preact/compat'
 import TimeRemaining from './TimeRemaining.tsx'
 
 import './index.css'

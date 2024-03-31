@@ -1,4 +1,4 @@
-import { Person } from '../../base.ts'
+import type { Person } from '../../base.ts'
 
 export interface PersonResponse {
   person: Person & {

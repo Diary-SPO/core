@@ -1,23 +1,23 @@
-import { Lesson, Nullable } from '@diary-spo/shared'
-import { ICacheData, objPropertyCopy, retriesForError } from '@helpers'
+import type { Lesson, Nullable } from '@diary-spo/shared'
+import { type ICacheData, objPropertyCopy, retriesForError } from '@helpers'
 import {
-  IScheduleModel,
-  IScheduleModelNoId,
-  ITermDetectP,
+  type IScheduleModel,
+  type IScheduleModelNoId,
+  type ITermDetectP,
   ScheduleModel,
-  ScheduleWhere,
-  TeacherSaveOrGet as teacherSaveOrGet,
+  type ScheduleWhere,
+  saveOrGetAbsenceType as absenceTypeSaveOrGet,
   deleteAbsence,
   deleteScheduleSubgroup,
   detectSubgroup,
   lessonTypeSaveOrGet,
   saveClassroom,
   saveOrGetAbsence,
-  saveOrGetAbsenceType as absenceTypeSaveOrGet,
   scheduleSubgroupSaveOrGet,
   subgroupSaveOrGet,
   subjectSaveOrGet,
   tasksSaveOrGet,
+  TeacherSaveOrGet as teacherSaveOrGet,
   themesSaveOrGet
 } from '@models'
 

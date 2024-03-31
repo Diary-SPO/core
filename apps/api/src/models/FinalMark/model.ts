@@ -3,7 +3,7 @@ import { DataTypes } from 'sequelize'
 import { DiaryUserModel } from '../DiaryUser'
 import { MarkValueModel } from '../MarkValue'
 import { SubjectModel } from '../Subject'
-import { IModelPrototypeNoId } from '../types'
+import type { IModelPrototypeNoId } from '../types'
 
 export type FinalMarkModelType = {
   subjectId: number

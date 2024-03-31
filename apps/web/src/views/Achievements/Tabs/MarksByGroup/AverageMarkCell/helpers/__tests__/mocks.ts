@@ -1,5 +1,5 @@
-import { PerformanceCurrent } from '@diary-spo/shared'
-import { SubjectMarksMatrix } from '@utils'
+import type { PerformanceCurrent } from '@diary-spo/shared'
+import type { SubjectMarksMatrix } from '@utils'
 
 /** createSubjectMarksMatrix */
 

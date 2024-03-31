@@ -2,9 +2,9 @@ import { Mark } from '@components'
 import { VIOLET } from '@config'
 import { Icon20EducationOutline, Icon28BrainOutline } from '@vkontakte/icons'
 import { Group, Header, MiniInfoCell } from '@vkontakte/vkui'
-import { FC, Fragment } from 'preact/compat'
+import { type FC, Fragment } from 'preact/compat'
 import UserInfo from './UserInfo'
-import { ISummary } from './types.ts'
+import type { ISummary } from './types.ts'
 
 import './index.css'
 

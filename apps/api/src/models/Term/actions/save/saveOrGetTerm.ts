@@ -1,6 +1,6 @@
-import { AttestationTerm } from '@diary-spo/shared'
-import { ICacheData, retriesForError } from '@helpers'
-import { IAcademicYearModel } from 'src/models/AcademicYear'
+import type { AttestationTerm } from '@diary-spo/shared'
+import { type ICacheData, retriesForError } from '@helpers'
+import type { IAcademicYearModel } from 'src/models/AcademicYear'
 import { saveOrGetTermUser } from 'src/models/TermUser'
 import { TermModel } from '../../model'
 

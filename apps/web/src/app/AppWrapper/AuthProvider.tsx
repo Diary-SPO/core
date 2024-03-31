@@ -2,7 +2,7 @@ import {
   useActiveVkuiLocation,
   useRouteNavigator
 } from '@vkontakte/vk-mini-apps-router'
-import { VNode } from 'preact'
+import type { VNode } from 'preact'
 import { useLayoutEffect } from 'preact/hooks'
 
 import { MAIN_SETTINGS, PAGE_SCHEDULE } from '@routes'

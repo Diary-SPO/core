@@ -1,9 +1,9 @@
-import {
+import type {
   AbsenceTypesDescriptionKeys,
   AdditionalMarks,
   MarkKeys
 } from '@diary-spo/shared'
-import { AxiosResponse } from 'axios'
+import type { AxiosResponse } from 'axios'
 
 export type Pages = 'schedule' | 'marks' | 'settings' | 'notifications'
 

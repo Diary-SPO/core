@@ -1,4 +1,4 @@
-import { ICacheData } from '@helpers'
+import type { ICacheData } from '@helpers'
 import { TermModel } from 'src/models/import'
 import { TermUserModel } from '../../model'
 

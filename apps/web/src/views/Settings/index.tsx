@@ -1,9 +1,9 @@
 import { Panel } from '@vkontakte/vkui'
-import { FunctionalComponent } from 'preact'
+import type { FunctionalComponent } from 'preact'
 import { lazy } from 'preact/compat'
 
 import { PanelHeaderWithBack, Suspense } from '@components'
-import { Props } from '../types.ts'
+import type { Props } from '../types.ts'
 
 const Contacts = lazy(() => import('./Contacts'))
 const Actions = lazy(() => import('./Actions'))

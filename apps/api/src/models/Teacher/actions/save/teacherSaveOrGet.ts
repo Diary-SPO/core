@@ -1,5 +1,5 @@
-import { TeacherModel, TeacherModelType } from '@models'
-import { Op, Optional } from 'sequelize'
+import { TeacherModel, type TeacherModelType } from '@models'
+import { Op, type Optional } from 'sequelize'
 import { LogError } from 'src/LogError'
 
 export const TeacherSaveOrGet = async (

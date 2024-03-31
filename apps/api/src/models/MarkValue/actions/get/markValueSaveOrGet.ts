@@ -1,4 +1,4 @@
-import { MarkKeys } from '@diary-spo/shared'
+import type { MarkKeys } from '@diary-spo/shared'
 import { MarkValueModel } from '@models'
 
 export const markValueSaveOrGet = async (value: MarkKeys) =>

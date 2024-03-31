@@ -1,9 +1,13 @@
-import { Grade, MarkKeys, PerformanceCurrent } from '@diary-spo/shared'
-import { ICacheData } from '@helpers'
 import {
-  IDayWithMarks,
-  IMonthWithDay,
-  IPerformanceFromDB,
+  Grade,
+  type MarkKeys,
+  type PerformanceCurrent
+} from '@diary-spo/shared'
+import type { ICacheData } from '@helpers'
+import {
+  type IDayWithMarks,
+  type IMonthWithDay,
+  type IPerformanceFromDB,
   monthNames
 } from '../types'
 

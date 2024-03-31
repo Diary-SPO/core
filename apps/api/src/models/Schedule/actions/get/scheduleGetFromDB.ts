@@ -1,4 +1,4 @@
-import { ICacheData } from '@helpers'
+import type { ICacheData } from '@helpers'
 import {
   AbsenceModel,
   AbsenceTypeModel,
@@ -7,7 +7,7 @@ import {
   MarkModel,
   MarkValueModel,
   RequiredModel,
-  ScheduleFromDB,
+  type ScheduleFromDB,
   ScheduleModel,
   ScheduleSubgroupModel,
   SubjectModel,

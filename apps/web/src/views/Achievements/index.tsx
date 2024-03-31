@@ -1,6 +1,6 @@
 import { ErrorPlaceholder, PanelHeaderWithBack } from '@components'
 import { VKUI_ACCENT_BG, VKUI_RED } from '@config'
-import { Nullable, PerformanceCurrent } from '@diary-spo/shared'
+import type { Nullable, PerformanceCurrent } from '@diary-spo/shared'
 import { useRateLimitExceeded, useSnackbar } from '@hooks'
 import { handleResponse, isApiError, isNeedToUpdateCache } from '@utils'
 import { Icon28ErrorCircleOutline, Icon28InfoCircle } from '@vkontakte/icons'
@@ -8,19 +8,19 @@ import {
   HorizontalScroll,
   Panel,
   PullToRefresh,
-  Tabs as VKUITabs,
-  TabsItem
+  TabsItem,
+  Tabs as VKUITabs
 } from '@vkontakte/vkui'
-import { FC, Suspense } from 'preact/compat'
+import { type FC, Suspense } from 'preact/compat'
 import { useEffect, useState } from 'preact/hooks'
 
 import { getPerformance } from '@api'
 
-import { Props } from '../types.ts'
+import type { Props } from '../types.ts'
 
 import { data } from './data.tsx'
 import { formatStatisticsData } from './helpers.ts'
-import { Tabs } from './types.ts'
+import type { Tabs } from './types.ts'
 
 import LoadingData from './LoadingData.tsx'
 import { useActiveTab } from './hooks/useActiveTab.tsx'

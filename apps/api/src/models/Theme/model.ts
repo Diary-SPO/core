@@ -1,7 +1,7 @@
 import { sequelize } from '@db'
 import { DataTypes } from 'sequelize'
 import { ScheduleModel } from '../Schedule'
-import { IModelPrototype } from '../types'
+import type { IModelPrototype } from '../types'
 
 export type ThemeModelType = {
   id: number

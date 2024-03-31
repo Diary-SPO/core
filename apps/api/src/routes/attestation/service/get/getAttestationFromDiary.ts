@@ -1,6 +1,6 @@
 import { SERVER_URL } from '@config'
-import { AttestationResponse } from '@diary-spo/shared'
-import { ICacheData } from '@helpers'
+import type { AttestationResponse } from '@diary-spo/shared'
+import type { ICacheData } from '@helpers'
 import { HeadersWithCookie } from '@utils'
 
 export const getAttestationFromDiary = async (authData: ICacheData) => {

@@ -1,5 +1,5 @@
-import { Subject, TermSubjectExaminationKeys } from '@diary-spo/shared'
-import { ICacheData, retriesForError } from '@helpers'
+import type { Subject, TermSubjectExaminationKeys } from '@diary-spo/shared'
+import { type ICacheData, retriesForError } from '@helpers'
 import { saveOrGetTermSubjectExaminationType } from '@models'
 import { saveTermSubject } from './saveTermSubject'
 

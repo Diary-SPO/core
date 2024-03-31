@@ -1,5 +1,5 @@
-import { Day } from '@diary-spo/shared'
-import { ServerResponse } from '@types'
+import type { Day } from '@diary-spo/shared'
+import type { ServerResponse } from '@types'
 import makeRequest from '../../makeRequest.ts'
 import { formatDateForRequest } from '../helpers'
 

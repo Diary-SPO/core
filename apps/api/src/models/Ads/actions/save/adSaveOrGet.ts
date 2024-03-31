@@ -1,7 +1,7 @@
-import { NotificationsResponse } from '@diary-spo/shared'
-import { ICacheData, objPropertyCopy } from '@helpers'
-import { AdsModel, AdsModelType } from '@models'
-import { Optional } from 'sequelize'
+import type { NotificationsResponse } from '@diary-spo/shared'
+import { type ICacheData, objPropertyCopy } from '@helpers'
+import { AdsModel, type AdsModelType } from '@models'
+import type { Optional } from 'sequelize'
 
 export const adSaveOrGer = async (
   ad: NotificationsResponse,

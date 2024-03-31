@@ -1,10 +1,10 @@
-import { MarkKeys } from '@diary-spo/shared'
+import type { MarkKeys } from '@diary-spo/shared'
 import {
   Icon20IncognitoOutline,
   Icon20StatisticsOutline
 } from '@vkontakte/icons'
 import { MiniInfoCell } from '@vkontakte/vkui'
-import { FC } from 'preact/compat'
+import type { FC } from 'preact/compat'
 
 import { Mark } from '@components'
 

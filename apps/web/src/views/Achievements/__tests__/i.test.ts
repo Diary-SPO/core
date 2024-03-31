@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'bun:test'
-import { PerformanceCurrent } from '@diary-spo/shared'
+import type { PerformanceCurrent } from '@diary-spo/shared'
 import { formatStatisticsData } from '../helpers.ts'
 /** formatStatisticsData **/
 describe('должна создать коллекцию с нужными полями', () => {

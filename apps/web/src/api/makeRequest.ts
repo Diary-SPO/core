@@ -1,5 +1,5 @@
 import { BASE_URLS } from '@config'
-import { HTTP_STATUSES, ServerResponse } from '@types'
+import { HTTP_STATUSES, type ServerResponse } from '@types'
 import axios, { AxiosError } from 'axios'
 
 const makeRequest = async <T>(

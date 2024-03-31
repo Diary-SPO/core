@@ -1,7 +1,7 @@
 import { API_CODES, API_ERRORS, ApiError } from '@api'
 import { SERVER_URL } from '@config'
-import { AcademicRecord } from '@diary-spo/shared'
-import { ICacheData } from '@helpers'
+import type { AcademicRecord } from '@diary-spo/shared'
+import type { ICacheData } from '@helpers'
 import { HeadersWithCookie } from '@utils'
 
 export const getFinalMarksFromDiary = async (authData: ICacheData) => {

@@ -1,5 +1,5 @@
-import { PerformanceCurrent } from '@diary-spo/shared'
-import { ICacheData } from '@helpers'
+import type { PerformanceCurrent } from '@diary-spo/shared'
+import type { ICacheData } from '@helpers'
 import { formatDate } from '@utils'
 import { getPerformanceCurrent } from 'src/routes/performance.current/service/get/getPerformanceCurrent'
 

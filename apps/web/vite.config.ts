@@ -30,15 +30,14 @@ export default defineConfig({
   //   sourcemap: false,
   //   target: 'es2017',
   //   assetsInlineLimit: 0,
-  //   // minify: 'esbuild',
-  //   // rollupOptions: {
-  //   //   logLevel: 'debug',
-  //   //   output: {
-  //   //     generatedCode: {
-  //   //       preset: 'es2015',
-  //   //       arrowFunctions: false
-  //   //     }
-  //   //   }
-  //   // }
+  // minify: 'terser',
+  // terserOptions: {
+  //   compress: {
+  //     drop_console: true,
+  //   },
+  //   format: {
+  //     comments: false,
+  //   },
+  // },
   // }
 })

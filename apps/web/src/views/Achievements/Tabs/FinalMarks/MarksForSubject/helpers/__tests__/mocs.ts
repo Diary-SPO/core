@@ -1,5 +1,5 @@
-import { AcademicRecord } from '@diary-spo/shared'
-import { SubjectMatrix } from '../../types.ts'
+import type { AcademicRecord } from '@diary-spo/shared'
+import type { SubjectMatrix } from '../../types.ts'
 
 export const mockData: AcademicRecord = {
   academicYears: [

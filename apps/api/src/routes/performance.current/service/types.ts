@@ -1,5 +1,5 @@
-import { MarkKeys } from '@diary-spo/shared'
-import {
+import type { MarkKeys } from '@diary-spo/shared'
+import type {
   IAbsenceModel,
   IAbsenceTypeModel,
   IMarkModelType,

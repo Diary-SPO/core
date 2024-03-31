@@ -1,4 +1,4 @@
-import fs from 'fs'
+import fs from 'node:fs'
 import { PARAMS_INIT } from './params'
 import { rsa } from './rsa'
 import checkEnvVariables from './utils'

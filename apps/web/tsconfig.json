@@ -34,7 +34,7 @@
       "@types": ["./src/types"],
       "@api": ["./src/api"],
       "@routes": ["./src/routes"],
-      "@views": ["./src/views"],
+      "@views": ["./src/views"]
     }
   },
   "include": ["src"],

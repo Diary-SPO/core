@@ -1,5 +1,5 @@
-import { LessonTypeKeys } from '@diary-spo/shared'
-import { ILessonTypeModel, LessonTypeModel } from '@models'
+import type { LessonTypeKeys } from '@diary-spo/shared'
+import { type ILessonTypeModel, LessonTypeModel } from '@models'
 
 export const lessonTypeSaveOrGet = async (
   name: LessonTypeKeys

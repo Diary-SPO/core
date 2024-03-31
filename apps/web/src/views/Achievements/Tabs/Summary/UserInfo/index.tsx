@@ -10,7 +10,7 @@ import {
   Text,
   Title
 } from '@vkontakte/vkui'
-import { FunctionComponent } from 'preact'
+import type { FunctionComponent } from 'preact'
 import { useEffect, useState } from 'preact/compat'
 import { winxAva } from '../../../../../images/config.ts'
 

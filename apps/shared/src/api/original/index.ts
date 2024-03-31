@@ -1,7 +1,7 @@
 // Эти данные приходят с бэка сетевого города, типизация актуальна на момент 04.09.23
 // В некоторых местах типизация может быть не полной
-import { Person } from '../../base.ts'
-import {
+import type { Person } from '../../base.ts'
+import type {
   AbsenceTypesDescriptionKeys,
   AbsenceTypesKeys,
   AdditionalMarks,

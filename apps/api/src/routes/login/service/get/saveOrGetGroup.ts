@@ -1,4 +1,4 @@
-import { GroupModel, IGroupModel } from '@models'
+import { GroupModel, type IGroupModel } from '@models'
 // ВЫНЕСТИ В МОДЕЛЬ группы
 
 export const saveOrGetGroup = async (

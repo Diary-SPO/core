@@ -1,7 +1,7 @@
-import { AcademicRecord } from '@diary-spo/shared'
-import { ICacheData } from '@helpers'
+import type { AcademicRecord } from '@diary-spo/shared'
+import type { ICacheData } from '@helpers'
 import {
-  ITermSubjectModel,
+  type ITermSubjectModel,
   TermSubjectModel,
   markValueSaveOrGet,
   saveOrGetFinalMark,

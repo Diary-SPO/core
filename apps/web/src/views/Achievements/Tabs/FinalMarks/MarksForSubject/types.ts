@@ -1,4 +1,4 @@
-import { AcademicRecord } from '@diary-spo/shared'
+import type { AcademicRecord } from '@diary-spo/shared'
 
 export interface MarksForSubjectProps {
   data: AcademicRecord

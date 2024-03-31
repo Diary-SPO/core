@@ -1,4 +1,4 @@
-import { Task } from '@diary-spo/shared'
+import type { Task } from '@diary-spo/shared'
 import { TaskModel } from '@models'
 import { Op } from 'sequelize'
 

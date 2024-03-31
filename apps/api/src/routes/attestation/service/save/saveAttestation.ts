@@ -1,5 +1,5 @@
-import { AttestationResponse } from '@diary-spo/shared'
-import { ICacheData } from '@helpers'
+import type { AttestationResponse } from '@diary-spo/shared'
+import type { ICacheData } from '@helpers'
 import { detectTerm } from '@models'
 import { saveYear } from 'src/models/AcademicYear/actions/save/saveYear'
 import { saveTermSubjects } from './saveTermSubjects'

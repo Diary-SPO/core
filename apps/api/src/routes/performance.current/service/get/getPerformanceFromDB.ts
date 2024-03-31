@@ -1,4 +1,4 @@
-import { ICacheData } from '@helpers'
+import type { ICacheData } from '@helpers'
 import {
   AbsenceModel,
   AbsenceTypeModel,
@@ -12,7 +12,7 @@ import {
 } from '@models'
 import { Op } from 'sequelize'
 import { structurizeResponse } from '../helpers'
-import { IPerformanceFromDB } from '../types'
+import type { IPerformanceFromDB } from '../types'
 
 export const getPerformanceFromDB = async (authData: ICacheData) => {
   if (!authData.termStartDate) {

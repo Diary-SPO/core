@@ -1,4 +1,4 @@
-import { ISubgroupModelType, SubgroupModel } from '@models'
+import { type ISubgroupModelType, SubgroupModel } from '@models'
 
 export const subgroupSaveOrGet = (
   name: string,

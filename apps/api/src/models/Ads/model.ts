@@ -3,7 +3,7 @@ import { DataTypes } from 'sequelize'
 import { GroupModel } from '../Group'
 import { SPOModel } from '../SPO'
 import { TermTypeModel } from '../TermType'
-import { IModelPrototype } from '../types'
+import type { IModelPrototype } from '../types'
 
 export type AdsModelType = {
   id: number

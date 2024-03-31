@@ -7,13 +7,13 @@ import {
   MiniInfoCell,
   Title
 } from '@vkontakte/vkui'
-import { FC } from 'preact/compat'
+import type { FC } from 'preact/compat'
 
 import { Mark } from '@components'
 
 import { MarkWithPopover } from './MarkWithPopover'
 
-import { Term, TermMark } from '../types.ts'
+import type { Term, TermMark } from '../types.ts'
 
 import './index.css'
 

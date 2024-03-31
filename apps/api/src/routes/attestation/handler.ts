@@ -1,6 +1,6 @@
 import type { AttestationResponse } from '@diary-spo/shared'
 import { getCookieFromToken } from '@helpers'
-import { ContextWithID } from '@types'
+import type { ContextWithID } from '@types'
 import {
   getAttestationFromDB,
   getAttestationFromDiary,

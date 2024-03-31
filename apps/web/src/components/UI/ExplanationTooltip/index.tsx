@@ -1,6 +1,6 @@
 import { Icon16HelpOutline } from '@vkontakte/icons'
 import { Popover, Subhead } from '@vkontakte/vkui'
-import { FC, ReactNode } from 'preact/compat'
+import type { FC, ReactNode } from 'preact/compat'
 
 interface ITooltipText {
   text?: ReactNode
