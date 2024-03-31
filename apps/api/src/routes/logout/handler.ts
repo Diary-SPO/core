@@ -11,7 +11,6 @@ const logoutHandler = async ({ request }: Context) => {
   authLogout(authData)
 
   return {
-    token: authData.token,
     success: true
   }
 }
