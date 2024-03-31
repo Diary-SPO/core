@@ -26,18 +26,18 @@ export default defineConfig({
       }
     ]
   },
-  build: {
-    sourcemap: false,
-    target: 'es2017',
-    assetsInlineLimit: 0,
-    minify: 'terser',
-    terserOptions: {
-      compress: {
-        drop_console: true,
-      },
-      format: {
-        comments: false,
-      },
-    },
-  }
+  // build: {
+  //   sourcemap: false,
+  //   target: 'es2017',
+  //   assetsInlineLimit: 0,
+    // minify: 'terser',
+    // terserOptions: {
+    //   compress: {
+    //     drop_console: true,
+    //   },
+    //   format: {
+    //     comments: false,
+    //   },
+    // },
+  // }
 })

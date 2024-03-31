@@ -7,7 +7,6 @@
     "concurrently": "^8.2.2",
     "bun": "^1.0.36",
     "bun-types": "^1.0.36",
-    "husky": "^9.0.11",
     "lint-staged": "^15.1.0",
     "typescript": "^5.4.3"
   },
@@ -26,8 +25,7 @@
     "format": "biome format . --write",
     "checkAll": "biome check . --apply-unsafe",
     "build:web": "cd apps/web && bun run build",
-    "build:api": "cd apps/api && bun run build",
-    "prepare": "husky"
+    "build:api": "cd apps/api && bun run build"
   },
   "workspaces": [
     "apps/*"
