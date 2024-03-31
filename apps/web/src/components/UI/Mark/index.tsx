@@ -1,5 +1,5 @@
-import { CSSProperties, FC, HTMLAttributes, useMemo } from 'preact/compat'
 import { Footnote } from '@vkontakte/vkui'
+import { CSSProperties, FC, HTMLAttributes, useMemo } from 'preact/compat'
 
 import { ReturnedMark } from '@types'
 
@@ -26,7 +26,7 @@ const Mark: FC<IMark> = ({ mark, size = 'l', bottom, color, ...props }) => {
     padding: sizes[size],
     background: color ?? getBackgroundColor(mark),
     fontSize: fontSizes[size],
-    borderRadius: borders[size],
+    borderRadius: borders[size]
   }
 
   const Bottom = bottom && (
@@ -37,7 +37,9 @@ const Mark: FC<IMark> = ({ mark, size = 'l', bottom, color, ...props }) => {
   return useMemo(
     () => (
       <div {...props}>
-        <div className='markRoot' style={style}>{mark}</div>
+        <div className='markRoot' style={style}>
+          {mark}
+        </div>
         {Bottom}
       </div>
     ),

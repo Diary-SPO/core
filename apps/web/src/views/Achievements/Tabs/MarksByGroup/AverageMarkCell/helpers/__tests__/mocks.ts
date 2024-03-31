@@ -46,7 +46,7 @@ export const expectedMapDataWithoutMarks: SubjectMarksMatrix = [
     data: [
       {
         absenceType: undefined,
-        date: '30.03.2024',
+        date: new Date().toLocaleDateString('ru'),
         marks: []
       }
     ],
@@ -59,7 +59,7 @@ export const expectedMapData: SubjectMarksMatrix = [
     data: [
       {
         absenceType: undefined,
-        date: '30.03.2024',
+        date: new Date().toLocaleDateString('ru'),
         marks: ['Five', 'Four']
       }
     ],
