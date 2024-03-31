@@ -158,7 +158,7 @@ const groupping = (dates: (string | Date)[]) => {
         j--
       }
     }
-    console.log(day, endDate)
+
     groupDates.push({
       startDate: day,
       endDate

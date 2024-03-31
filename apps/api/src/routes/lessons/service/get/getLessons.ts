@@ -11,7 +11,7 @@ export const getLessonsService = async (
   startDate: string,
   endDate: string,
   authData: ICacheData,
-  isAwait = false
+  notGetFromDB = false
 ): Promise<Day[] | string> => {
   const path = `${SERVER_URL}/services/students/${authData.idFromDiary}/lessons/${startDate}/${endDate}`
   console.log(path)
@@ -23,7 +23,7 @@ export const getLessonsService = async (
     throw new ApiError(API_ERRORS.USER_NOT_PERMISSION, API_CODES.FORBIDDEN)
   }
 
-  if (!response.ok) {
+  if (!response.ok && !notGetFromDB) {
     // Получаем из базы
     const rawSchedule = await ScheduleGetFromDB(startDate, endDate, authData)
     return structurizeResponse(rawSchedule, startDate, endDate, authData)
@@ -38,7 +38,7 @@ export const getLessonsService = async (
         console.error(`Ошибка сохранения расписания: ${err}`)
       )
 
-    if (isAwait) {
+    if (notGetFromDB) {
       await backgroundProcess()
     } else {
       backgroundProcess()
