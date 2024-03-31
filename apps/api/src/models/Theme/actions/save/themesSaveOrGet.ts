@@ -1,6 +1,6 @@
 import { ThemeModel, deleteThemesNotIn } from '@models'
 
-export const themesSaveOrGet = async (themes: string[], scheduleId: number) => {
+export const themesSaveOrGet = async (themes: string[], scheduleId: bigint) => {
   const promises = []
 
   // Удаялем устаревшие темы

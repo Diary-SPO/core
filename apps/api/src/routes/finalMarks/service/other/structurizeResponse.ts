@@ -3,8 +3,6 @@ import {
   type AttestationMark,
   type AttestationSubject,
   type AttestationTerm,
-  MarkKeys,
-  Subject,
   type TermType
 } from '@diary-spo/shared'
 import type { ICacheData } from '@helpers'

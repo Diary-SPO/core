@@ -9,7 +9,7 @@ import { suid } from 'rand-token'
  * @param diaryUserId
  * @returns {string} token
  */
-export const generateToken = async (diaryUserId: number): Promise<string> => {
+export const generateToken = async (diaryUserId: bigint): Promise<string> => {
   // Генерируем токен
   const token = suid(16)
 

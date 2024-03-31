@@ -1,7 +1,7 @@
 import { ThemeModel } from '@models'
 import { Op } from 'sequelize'
 
-export const deleteThemesNotIn = async (themes: string[], scheduleId: number) =>
+export const deleteThemesNotIn = async (themes: string[], scheduleId: bigint) =>
   ThemeModel.destroy({
     where: {
       [Op.and]: [

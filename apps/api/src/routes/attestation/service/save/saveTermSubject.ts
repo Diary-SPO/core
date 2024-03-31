@@ -14,7 +14,7 @@ import {
 
 export const saveTermSubject = async (
   termSubjectExaminationTypeId: number | undefined,
-  currTermId: number,
+  currTermId: bigint,
   subjectSave: Subject,
   authData: ICacheData
 ) => {

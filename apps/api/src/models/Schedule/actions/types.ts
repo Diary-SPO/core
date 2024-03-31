@@ -20,11 +20,11 @@ export type ScheduleSubgroupsGet = IScheduleModel & {
 }
 
 export type ScheduleWhere = {
-  groupId: number
+  groupId: bigint
   startTime: string
   endTime: string
   date: Date | string
-  subjectId?: number
+  subjectId?: bigint
 }
 
 /* Ответ из БД */

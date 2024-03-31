@@ -31,7 +31,7 @@ export const structurizeResponse = (
     for (const schedule of subject.schedules) {
       // TODO: Очень костыльно убираем чужие подгруппы. Нужно поправить (в будущем)
       const subgroups = schedule.scheduleSubgroups
-      if (subgroups.length > 0) {
+      if (subgroups.length) {
         for (const subgroup of subgroups) {
           if (subgroup.diaryUserId === authData.localUserId) {
             isIgnored = false
@@ -139,11 +139,11 @@ export const structurizeResponse = (
       new Date(a.day).getTime() > new Date(b.day).getTime() ? 1 : -1
     )
     monthsWithDays.sort((a, b) => (a.month.num > b.month.num ? 1 : -1))
-    monthsWithDays.forEach((v) => {
+    for (const v of monthsWithDays) {
       v.daysWithLessons.sort((a, b) =>
         new Date(a).getTime() > new Date(b).getTime() ? 1 : -1
       )
-    })
+    }
 
     // undefined не будет генерировать поле в ответе
     const averageMark =

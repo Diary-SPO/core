@@ -1,5 +1,5 @@
 import { Icon28Hearts2Outline } from '@vkontakte/icons'
-import { Footnote, Footer as VKUIFooter } from '@vkontakte/vkui'
+import { Footer as VKUIFooter, Footnote } from '@vkontakte/vkui'
 
 import './index.css'
 

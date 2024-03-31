@@ -1,8 +1,8 @@
 import { ScheduleSubgroupModel } from '@models'
 
 export const deleteScheduleSubgroup = async (
-  scheduleId: number,
-  diaryUserId: number
+  scheduleId: bigint,
+  diaryUserId: bigint
 ) => {
   return ScheduleSubgroupModel.destroy({
     where: {

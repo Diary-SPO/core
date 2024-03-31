@@ -6,7 +6,7 @@ import { AbsenceModel } from '@models'
  * @param localUserId - Id пользователя в БД
  * @returns Promise<IAbsenceModel>
  */
-export const deleteAbsence = async (scheduleId: number, localUserId: number) =>
+export const deleteAbsence = async (scheduleId: bigint, localUserId: bigint) =>
   AbsenceModel.destroy({
     where: {
       scheduleId,

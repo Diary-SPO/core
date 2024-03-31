@@ -9,9 +9,9 @@ import {
 } from '@config'
 import { error } from '@utils'
 import { errorLogger } from '@utils'
+import pg from 'pg'
 import { Sequelize } from 'sequelize'
 import SequelizeSimpleCache from 'sequelize-simple-cache'
-import pg from 'pg'
 
 pg.defaults.parseInt8 = true
 

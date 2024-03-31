@@ -3,7 +3,7 @@ import { AcademicYearModel } from '../../model'
 
 export const saveYear = async (
   year: number | undefined,
-  currTermId: number
+  currTermId: bigint
 ) => {
   const find = await AcademicYearModel.findOne({
     include: {

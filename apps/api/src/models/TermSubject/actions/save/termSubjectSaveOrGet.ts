@@ -2,11 +2,11 @@ import { objPropertyCopy } from '@helpers'
 import { TermSubjectModel } from '../../model'
 
 type IArgument = {
-  termId: number
-  subjectId: number
-  diaryUserId: number
+  termId: bigint
+  subjectId: bigint
+  diaryUserId: bigint
   markValueId?: number
-  teacherId?: number
+  teacherId?: bigint
   examinationTypeId?: number
   termSubjectExaminationTypeId?: number
   idFromDiary?: number
@@ -25,9 +25,9 @@ export const termSubjectSaveOrGet = async (subject: IArgument) => {
   }).then(async (r) => {
     const [raw, isCreated] = r
     if (isCreated) {
-      return r
+      return raw
     }
     objPropertyCopy(raw, subject)
-    return [await raw.save(), isCreated]
+    return raw.save()
   })
 }

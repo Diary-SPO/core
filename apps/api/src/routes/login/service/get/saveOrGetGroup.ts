@@ -4,7 +4,7 @@ import { GroupModel, type IGroupModel } from '@models'
 export const saveOrGetGroup = async (
   id: number,
   name: string,
-  spoId: number
+  spoId: bigint
 ): Promise<IGroupModel> => {
   const obj = {
     idFromDiary: id,

@@ -55,11 +55,11 @@ export const saveFinalMarks = async (
         subjectId: subjectFromDB.id,
         diaryUserId: authData.localUserId,
         markValueId: idMarkFromDB
-      }).then((r) => {
-        const [raw, isCreated] = r
+      }).then((raw) => {
         notDeleted.push(raw)
-        if (isCreated) return raw
-        raw.markValueId = idMarkFromDB
+        if (raw.markValueId !== idMarkFromDB) {
+          raw.markValueId = idMarkFromDB
+        }
         return raw.save()
       })
       promises.push(promise)
@@ -109,7 +109,7 @@ async function deleteNotIn(
       }
     })
   }
-  if (where.length > 0) {
+  if (where.length) {
     TermSubjectModel.destroy({
       where: {
         [Op.and]: [

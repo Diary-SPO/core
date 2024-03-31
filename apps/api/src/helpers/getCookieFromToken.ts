@@ -28,9 +28,9 @@ type IUserAuthInfo = AuthModelType & {
 export type ICacheData = {
   cookie: string
   idFromDiary: number
-  localUserId: number
-  groupId: number
-  spoId: number
+  localUserId: bigint
+  groupId: bigint
+  spoId: bigint
   token: string
   firstName: string
   lastName: string
@@ -131,7 +131,6 @@ const cacheGetter = async (token: string): Promise<ICacheData | null> => {
   }
 
   console.log('Гетаю localUserId: ', typeof cacheCookie.localUserId)
-
 
   return cacheCookie
 }

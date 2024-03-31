@@ -8,8 +8,8 @@ import {
   HorizontalScroll,
   Panel,
   PullToRefresh,
-  TabsItem,
-  Tabs as VKUITabs
+  Tabs as VKUITabs,
+  TabsItem
 } from '@vkontakte/vkui'
 import { type FC, Suspense } from 'preact/compat'
 import { useEffect, useState } from 'preact/hooks'

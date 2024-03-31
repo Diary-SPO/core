@@ -13,7 +13,7 @@ import { searchCurrStartDate } from '../get/searchCurrStartDate'
  */
 export const detectTerm = async (
   authData: ICacheData,
-  attestation?: AcademicRecord
+  attestation?: AcademicRecord | null
 ) => {
   const currDate = formatDate(new Date().toISOString())
   // Если данные уже актуальны, то просто ищем и отдаём
@@ -79,4 +79,4 @@ export const detectTerm = async (
   return findActiveTerm(authData)
 }
 
-export type ITermDetectP = Promise<number | undefined>
+export type ITermDetectP = Promise<bigint | undefined>

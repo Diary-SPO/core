@@ -11,8 +11,8 @@ import { AbsenceModel } from '@models'
  */
 export const saveOrGetAbsence = async (
   absenceTypeId: number,
-  scheduleId: number,
-  localUserId: number
+  scheduleId: bigint,
+  localUserId: bigint
 ) =>
   AbsenceModel.findOrCreate({
     where: {

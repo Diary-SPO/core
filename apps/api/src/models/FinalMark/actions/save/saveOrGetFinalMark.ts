@@ -3,7 +3,7 @@ import { FinalMarkModel } from '../../model'
 
 export const saveOrGetFinalMark = async (
   markValueId: number | null,
-  subjectId: number,
+  subjectId: bigint,
   authData: ICacheData
 ) => {
   const where = {

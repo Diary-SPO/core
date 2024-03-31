@@ -69,7 +69,7 @@ export const tasksSaveOrGet = async (
         const taskId = result.required.taskId
         const taskReturn = result.result
 
-        let termId
+        let termId: bigint | undefined
 
         if (termPromise) {
           termId = await termPromise

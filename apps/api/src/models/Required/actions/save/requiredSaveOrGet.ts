@@ -3,7 +3,7 @@ import { RequiredModel } from '@models'
 
 export const requiredSaveOrGet = async (
   isRequired: boolean,
-  taskId: number,
+  taskId: bigint,
   authData: ICacheData
 ) => {
   const where = {

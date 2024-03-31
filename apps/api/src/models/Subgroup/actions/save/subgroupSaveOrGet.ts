@@ -2,7 +2,7 @@ import { type ISubgroupModelType, SubgroupModel } from '@models'
 
 export const subgroupSaveOrGet = (
   name: string,
-  groupId: number
+  groupId: bigint
 ): Promise<[ISubgroupModelType, boolean]> => {
   const where = {
     name,

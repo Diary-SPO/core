@@ -3,8 +3,8 @@ import { MarkModel } from '@models'
 
 export const markSaveOrGetUnSafe = async (
   markValueId: number,
-  taskId: number,
-  termId: number | null,
+  taskId: bigint,
+  termId: bigint | null,
   authData: ICacheData
 ) => {
   const where = {

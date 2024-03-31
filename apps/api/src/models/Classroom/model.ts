@@ -5,7 +5,7 @@ import type { IModelPrototype } from '../types'
 
 // REMOVE IT
 export type ClassroomModelType = {
-  id: number
+  id: bigint
   building: string
   name: string
   spoId: bigint

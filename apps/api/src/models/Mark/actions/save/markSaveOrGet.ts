@@ -8,8 +8,8 @@ import { markSaveOrGetUnSafe } from './markSaveOrGetUnSafe'
 export const markSaveOrGet = async (
   mark: MarkKeys,
   schedule: IScheduleModel,
-  taskId: number,
-  termId: number | null,
+  taskId: bigint,
+  termId: bigint | null,
   authData: ICacheData
 ) => {
   // Не сохраняем текущий семестр для предыдущих семестров

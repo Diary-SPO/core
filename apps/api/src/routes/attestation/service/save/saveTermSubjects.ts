@@ -5,7 +5,7 @@ import { saveTermSubject } from './saveTermSubject'
 
 export const saveTermSubjects = async (
   type: TermSubjectExaminationKeys,
-  currTermId: number,
+  currTermId: bigint,
   subjectsSave: Subject[],
   authData: ICacheData
 ) => {

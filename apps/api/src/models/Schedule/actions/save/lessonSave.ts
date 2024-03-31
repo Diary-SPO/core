@@ -6,18 +6,18 @@ import {
   type ITermDetectP,
   ScheduleModel,
   type ScheduleWhere,
-  saveOrGetAbsenceType as absenceTypeSaveOrGet,
+  TeacherSaveOrGet as teacherSaveOrGet,
   deleteAbsence,
   deleteScheduleSubgroup,
   detectSubgroup,
   lessonTypeSaveOrGet,
   saveClassroom,
   saveOrGetAbsence,
+  saveOrGetAbsenceType as absenceTypeSaveOrGet,
   scheduleSubgroupSaveOrGet,
   subgroupSaveOrGet,
   subjectSaveOrGet,
   tasksSaveOrGet,
-  TeacherSaveOrGet as teacherSaveOrGet,
   themesSaveOrGet
 } from '@models'
 
@@ -42,9 +42,9 @@ export const lessonSave = async (
   }
 
   // Извлекаем нужные нам данные из lesson
-  let subjectId: Nullable<number> = null
-  let teacherId: Nullable<number> = null
-  let classroomId: Nullable<number> = null
+  let subjectId: Nullable<bigint> = null
+  let teacherId: Nullable<bigint> = null
+  let classroomId: Nullable<bigint> = null
   let lessonTypeId: Nullable<number> = null
   let absenceTypeId: Nullable<number> = null
   let gradebookIdFromDiary: Nullable<number> = null
@@ -121,9 +121,6 @@ export const lessonSave = async (
     defaults: scheduleToSave
   })
 
-  // Промис актуального расписания в БД
-  let promiseToReturn: Promise<IScheduleModel>
-
   /**
    * Если расписание есть в базе, то
    * пробуем поменять поля и если они поменялись, то
@@ -132,7 +129,9 @@ export const lessonSave = async (
   if (!isCreated) {
     objPropertyCopy(schedule, scheduleToSave)
   }
-  promiseToReturn = schedule.save()
+
+  // Промис актуального расписания в БД
+  const promiseToReturn = schedule.save()
 
   // Если есть подгруппа - сохраняем
   if (subgroup) {
@@ -161,7 +160,7 @@ export const lessonSave = async (
   }
 
   // Сохраняем "задачи" (оценки там же)
-  if (gradebook?.tasks && gradebook.tasks.length > 0) {
+  if (gradebook.tasks?.length) {
     const schedule = await promiseToReturn
     retriesForError(
       tasksSaveOrGet,
