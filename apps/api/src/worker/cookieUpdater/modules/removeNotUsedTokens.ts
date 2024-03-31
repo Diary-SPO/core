@@ -27,14 +27,10 @@ export const removeNotUsedTokens = async (): Promise<void> => {
       }
     })
       .then(() => {
-        console.log(
-          `Успешно удалил токен: ${tokens[i].token}`
-        )
+        console.log(`Успешно удалил токен: ${tokens[i].token}`)
       })
       .catch(() => {
-        console.error(
-          `Ошибка удаления токена: ${tokens[i].token}`
-        )
+        console.error(`Ошибка удаления токена: ${tokens[i].token}`)
       })
   }
 }
