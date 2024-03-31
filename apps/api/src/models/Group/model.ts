@@ -14,12 +14,12 @@ export type IGroupModel = IModelPrototype<GroupModelType, 'id'>
 
 export const GroupModel = sequelize.define<IGroupModel>('group', {
   id: {
-    type: DataTypes.INTEGER,
+    type: DataTypes.BIGINT,
     autoIncrement: true,
     primaryKey: true
   },
   spoId: {
-    type: DataTypes.INTEGER,
+    type: DataTypes.BIGINT,
     allowNull: false,
     references: {
       model: SPOModel,

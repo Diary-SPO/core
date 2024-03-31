@@ -17,7 +17,7 @@ export type IMarkModelType = IModelPrototypeNoId<MarkModelType>
 
 export const MarkModel = sequelize.define<IMarkModelType>('mark', {
   diaryUserId: {
-    type: DataTypes.INTEGER,
+    type: DataTypes.BIGINT,
     primaryKey: true,
     allowNull: false,
     references: {
@@ -25,7 +25,7 @@ export const MarkModel = sequelize.define<IMarkModelType>('mark', {
     }
   },
   taskId: {
-    type: DataTypes.INTEGER,
+    type: DataTypes.BIGINT,
     primaryKey: true,
     allowNull: false,
     references: {
@@ -40,7 +40,7 @@ export const MarkModel = sequelize.define<IMarkModelType>('mark', {
     }
   },
   termId: {
-    type: DataTypes.INTEGER,
+    type: DataTypes.BIGINT,
     allowNull: true,
     references: {
       model: TermModel

@@ -15,7 +15,7 @@ export type IFinalMarkModel = IModelPrototypeNoId<FinalMarkModelType>
 
 export const FinalMarkModel = sequelize.define<IFinalMarkModel>('finalMark', {
   subjectId: {
-    type: DataTypes.INTEGER,
+    type: DataTypes.BIGINT,
     allowNull: false,
     primaryKey: true,
     references: {
@@ -24,7 +24,7 @@ export const FinalMarkModel = sequelize.define<IFinalMarkModel>('finalMark', {
     }
   },
   diaryUserId: {
-    type: DataTypes.INTEGER,
+    type: DataTypes.BIGINT,
     allowNull: false,
     primaryKey: true,
     references: {

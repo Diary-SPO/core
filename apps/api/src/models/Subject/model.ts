@@ -11,7 +11,7 @@ export type ISubjectModelType = IModelPrototype<SubjectModelType, 'id'>
 
 const subjectModel = sequelize.define<ISubjectModelType>('subject', {
   id: {
-    type: DataTypes.INTEGER,
+    type: DataTypes.BIGINT,
     primaryKey: true,
     autoIncrement: true
   },

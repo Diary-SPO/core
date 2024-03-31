@@ -1,25 +1,19 @@
 import { sequelize } from '@db'
 import { DataTypes } from 'sequelize'
 import { DiaryUserModel } from '../DiaryUser'
-import type { IModelPrototype } from '../types'
+import { IModelPrototypeNoId } from '../types'
 
 export type AuthModelType = {
-  id: number
   diaryUserId: number
   token: string
   lastUsedDate: string
 }
 
-export type IAuthModel = IModelPrototype<AuthModelType, 'id'>
+export type IAuthModel = IModelPrototypeNoId<AuthModelType>
 
 export const AuthModel = sequelize.define<IAuthModel>('auth', {
-  id: {
-    type: DataTypes.INTEGER,
-    autoIncrement: true,
-    primaryKey: true
-  },
   diaryUserId: {
-    type: DataTypes.INTEGER,
+    type: DataTypes.BIGINT,
     allowNull: false,
     references: {
       model: DiaryUserModel,

@@ -24,12 +24,12 @@ export type IAdsModelType = IModelPrototype<AdsModelType, 'id'>
 
 export const AdsModel = sequelize.define<IAdsModelType>('ads', {
   id: {
-    type: DataTypes.INTEGER,
+    type: DataTypes.BIGINT,
     autoIncrement: true,
     primaryKey: true
   },
   spoId: {
-    type: DataTypes.INTEGER,
+    type: DataTypes.BIGINT,
     allowNull: false,
     references: {
       model: SPOModel

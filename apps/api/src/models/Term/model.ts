@@ -15,7 +15,7 @@ export type ITermModel = IModelPrototype<TermModelType, 'id'>
 
 export const TermModel = sequelize.define<ITermModel>('term', {
   id: {
-    type: DataTypes.INTEGER,
+    type: DataTypes.BIGINT,
     autoIncrement: true,
     primaryKey: true
   },
@@ -33,7 +33,7 @@ export const TermModel = sequelize.define<ITermModel>('term', {
     defaultValue: false
   },
   academicYearId: {
-    type: DataTypes.INTEGER,
+    type: DataTypes.BIGINT,
     allowNull: false,
     references: {
       model: AcademicYearModel,

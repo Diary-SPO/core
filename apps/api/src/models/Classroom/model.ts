@@ -16,7 +16,7 @@ export type IClassroomModelType = IModelPrototype<ClassroomModelType, 'id'>
 
 const classroomModel = sequelize.define<IClassroomModelType>('classroom', {
   id: {
-    type: DataTypes.INTEGER,
+    type: DataTypes.BIGINT,
     primaryKey: true,
     autoIncrement: true
   },
@@ -29,7 +29,7 @@ const classroomModel = sequelize.define<IClassroomModelType>('classroom', {
     allowNull: false
   },
   spoId: {
-    type: DataTypes.INTEGER,
+    type: DataTypes.BIGINT,
     allowNull: false,
     references: {
       model: SPOModel,
