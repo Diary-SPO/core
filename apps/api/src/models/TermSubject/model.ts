@@ -53,7 +53,7 @@ export const TermSubjectModel = sequelize.define<ITermSubjectModel>(
       }
     },
     markValueId: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.SMALLINT,
       allowNull: true,
       references: {
         model: MarkValueModel,
@@ -69,7 +69,7 @@ export const TermSubjectModel = sequelize.define<ITermSubjectModel>(
       }
     },
     examinationTypeId: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.SMALLINT,
       allowNull: true,
       references: {
         model: ExaminationTypeModel,
@@ -77,7 +77,7 @@ export const TermSubjectModel = sequelize.define<ITermSubjectModel>(
       }
     },
     termSubjectExaminationTypeId: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.SMALLINT,
       allowNull: true,
       references: {
         model: TermSubjectExaminationTypeModel

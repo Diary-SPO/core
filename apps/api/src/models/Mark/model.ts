@@ -33,7 +33,7 @@ export const MarkModel = sequelize.define<IMarkModelType>('mark', {
     }
   },
   markValueId: {
-    type: DataTypes.INTEGER,
+    type: DataTypes.SMALLINT,
     allowNull: false,
     references: {
       model: MarkValueModel

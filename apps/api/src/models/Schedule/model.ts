@@ -58,7 +58,7 @@ export const ScheduleModel = sequelize.define<IScheduleModel>('schedule', {
     unique: 'unique_schedule_k'
   },
   lessonTypeId: {
-    type: DataTypes.INTEGER,
+    type: DataTypes.SMALLINT,
     allowNull: true,
     references: {
       model: LessonTypeModel,

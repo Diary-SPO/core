@@ -21,7 +21,7 @@ const absenceModel = sequelize.define<IAbsenceModel>('absence', {
     primaryKey: true
   },
   absenceTypeId: {
-    type: DataTypes.INTEGER,
+    type: DataTypes.SMALLINT,
     allowNull: false,
     primaryKey: true,
     references: {

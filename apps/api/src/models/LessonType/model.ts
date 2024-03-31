@@ -12,7 +12,7 @@ export type ILessonTypeModel = IModelPrototype<LessonTypeModelType, 'id'>
 
 const lessonTypeModel = sequelize.define<ILessonTypeModel>('lessonType', {
   id: {
-    type: DataTypes.INTEGER,
+    type: DataTypes.SMALLINT,
     autoIncrement: true,
     primaryKey: true
   },

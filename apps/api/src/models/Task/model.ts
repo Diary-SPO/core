@@ -30,7 +30,7 @@ export const TaskModel = sequelize.define<ITaskModel>('task', {
     }
   },
   taskTypeId: {
-    type: DataTypes.INTEGER,
+    type: DataTypes.SMALLINT,
     allowNull: false,
     references: {
       model: TaskTypeModel,

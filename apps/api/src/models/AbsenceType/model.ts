@@ -12,7 +12,7 @@ export type IAbsenceTypeModel = IModelPrototype<AbsenceTypeModelType, 'id'>
 
 const absenceTypeModel = sequelize.define<IAbsenceTypeModel>('absenceType', {
   id: {
-    type: DataTypes.INTEGER,
+    type: DataTypes.SMALLINT,
     autoIncrement: true,
     primaryKey: true
   },
