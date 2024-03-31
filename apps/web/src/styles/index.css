@@ -1,7 +1,3 @@
-* {
-  box-sizing: border-box;
-}
-
 /* Для PC / Tablet */
 .lessonCard > section {
   padding-bottom: 10px !important;
