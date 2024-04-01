@@ -13,18 +13,20 @@ import performanceCurrent from './performance.current'
 import { headersSchema } from '@utils'
 import { errorHandler } from './helpers'
 
+export const cleanRoutes = new Elysia()
+  .use(organization)
+  .use(lessons)
+  .use(performanceCurrent)
+  .use(attestation)
+  .use(ads)
+  .use(finalMarks)
+  .use(logout)
+  .use(hello)
+  .use(login)
+
 const routes = new Elysia()
   /** Роуты с проверкой на наличие secret поля **/
-  .guard(headersSchema, (app) =>
-    app
-      .use(organization)
-      .use(lessons)
-      .use(performanceCurrent)
-      .use(attestation)
-      .use(ads)
-      .use(finalMarks)
-      .use(logout)
-  )
+  .guard(headersSchema, (app) => app.use(cleanRoutes))
   /** Роуты без проверки **/
   .use(hello)
   .use(login)

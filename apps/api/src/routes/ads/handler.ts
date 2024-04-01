@@ -8,7 +8,7 @@ import { saveAds } from 'src/models/Ads/actions'
 
 const getAds = async ({
   request
-}: ContextWithID): Promise<NotificationsResponse | string> => {
+}: ContextWithID): Promise<NotificationsResponse> => {
   const authData = await getCookieFromToken(request.headers.toJSON().secret)
   const path = `${SERVER_URL}/services/people/organization/news/last/10`
   console.log(path)
@@ -16,6 +16,7 @@ const getAds = async ({
     headers: HeadersWithCookie(authData.cookie)
   })
 
+  /* why string? */
   if (!response.ok) {
     return JSON.stringify(await adsGetFromDB(authData), null, 2)
   }

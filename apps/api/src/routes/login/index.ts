@@ -1,20 +1,23 @@
 import { Elysia, t } from 'elysia'
 import postAuth from './handler'
 
-const schema = {
+// const schema = {
+//   body: t.Object({
+//     login: t.String(),
+//     password: t.String(),
+//     isHash: t.Boolean()
+//   })
+// }
+
+const login = new Elysia().post('/login', postAuth, {
   body: t.Object({
     login: t.String(),
     password: t.String(),
     isHash: t.Boolean()
   })
-}
+  // detail: {
+  //   tags: ['Auth']
+  // }
+})
 
-const performanceCurrent = new Elysia().guard(schema, (app) =>
-  app.post('/login', postAuth, {
-    detail: {
-      tags: ['Auth']
-    }
-  })
-)
-
-export default performanceCurrent
+export default login

@@ -2,8 +2,8 @@ import { TIMEZONE } from '@config'
 import { sequelize } from '@db'
 import { cors } from '@elysiajs/cors'
 import { swagger } from '@elysiajs/swagger'
-import routes from '@routes'
-import { Elysia } from 'elysia'
+import routes, { type cleanRoutes } from '@routes'
+import { Elysia, t } from 'elysia'
 import { compression } from 'elysia-compression'
 import { helmet } from 'elysia-helmet'
 import { getTimezone } from './config/getTimeZone'
@@ -59,3 +59,21 @@ sequelize.sync()
 const workerURL = new URL('worker', import.meta.url).href
 new Worker(workerURL)
 console.log('===============', 'Worker running!', '===============')
+
+// const app2 = new Elysia()
+//   .post(
+//     '/user',
+//     ({ body: { name }, error }) => {
+//       if (name === 'Otto') return error(400, 'Bad Request')
+//
+//       return name
+//     },
+//     {
+//       body: t.Object({
+//         name: t.String()
+//       })
+//     }
+//   )
+//   .listen(3000)
+
+export type App = typeof cleanRoutes

@@ -1,19 +1,18 @@
 import type { ResponseLogin } from '@diary-spo/shared'
 import type { ServerResponse } from '@types'
-import makeRequest from '../../makeRequest.ts'
+
+import { api } from '../../api.ts'
 
 export const postLogin = async (
   login: string,
   password: string,
   isHash: boolean
 ): ServerResponse<ResponseLogin> => {
-  return makeRequest<ResponseLogin>(
-    '/login/',
-    'POST',
-    JSON.stringify({
-      login,
-      password,
-      isHash
-    })
-  )
+  const { data } = await api.login.post({
+    login,
+    password,
+    isHash
+  })
+
+  return data
 }

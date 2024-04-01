@@ -3,11 +3,12 @@ import { SERVER_URL } from '@config'
 import { b64 } from '@diary-spo/crypto'
 import type { ResponseLogin, UserData } from '@diary-spo/shared'
 import { fetcher } from '@utils'
+import type { Context } from 'elysia'
 import { offlineAuth } from './service'
 import { handleResponse } from './service/helpers'
 import { saveUserData } from './service/save'
 
-interface AuthContext {
+interface AuthContext extends Context {
   body: {
     login: string
     password: string
