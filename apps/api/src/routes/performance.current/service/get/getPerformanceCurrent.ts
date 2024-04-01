@@ -5,8 +5,8 @@ import { HeadersWithCookie } from '@utils'
 export const getPerformanceCurrent = async (authData: ICacheData) => {
   const path = `${SERVER_URL}/services/reports/current/performance/${authData.idFromDiary}`
   console.log(path)
-  const response = fetch(path, {
+
+  return fetch(path, {
     headers: HeadersWithCookie(authData.cookie)
   })
-  return response
 }

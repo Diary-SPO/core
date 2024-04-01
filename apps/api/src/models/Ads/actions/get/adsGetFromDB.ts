@@ -1,8 +1,8 @@
 import type { ICacheData } from '@helpers'
 import { AdsModel } from '@models'
 
-export const adsGetFromDB = async (authData: ICacheData) => {
-  return AdsModel.findAll({
+export const adsGetFromDB = async (authData: ICacheData) =>
+  AdsModel.findAll({
     where: {
       spoId: authData.spoId
     },
@@ -12,4 +12,3 @@ export const adsGetFromDB = async (authData: ICacheData) => {
     },
     order: [['date', 'DESC']]
   })
-}

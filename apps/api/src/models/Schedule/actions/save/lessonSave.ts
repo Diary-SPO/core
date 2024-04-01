@@ -6,7 +6,7 @@ import {
   type ITermDetectP,
   ScheduleModel,
   type ScheduleWhere,
-  saveOrGetAbsenceType as absenceTypeSaveOrGet,
+  absenceTypeSaveOrGet,
   deleteAbsence,
   deleteScheduleSubgroup,
   detectSubgroup,
@@ -23,8 +23,10 @@ import {
 
 /**
  * Сохраняет и обновляет занятие в базе данных.
+ * @param date
  * @param lesson - Занятие для сохранения
  * @param authData - Данные, предоставленные клиентом для авторизации
+ * @param termPromise
  * @returns Promise<IScheduleModel | null>
  */
 export const lessonSave = async (
@@ -42,7 +44,6 @@ export const lessonSave = async (
   }
 
   // Извлекаем нужные нам данные из lesson
-  let subjectId: Nullable<bigint> = null
   let teacherId: Nullable<bigint> = null
   let classroomId: Nullable<bigint> = null
   let lessonTypeId: Nullable<number> = null
@@ -54,7 +55,7 @@ export const lessonSave = async (
   const subgroup = detectSubgroup(subject)
 
   // Получаем id в базе для полученных из lesson данных
-  subjectId = (await retriesForError(subjectSaveOrGet, [subject], 2)).id
+  const subjectId = (await retriesForError(subjectSaveOrGet, [subject], 2)).id
 
   if (lesson.timetable.teacher) {
     const LessonTeacher = {

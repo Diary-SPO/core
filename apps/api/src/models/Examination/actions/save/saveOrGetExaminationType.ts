@@ -1,8 +1,8 @@
 import type { ExaminationKeys } from '@diary-spo/shared'
 import { ExaminationTypeModel } from '../../model'
 
-export const saveOrGetExaminationType = async (type: ExaminationKeys) => {
-  return ExaminationTypeModel.findOrCreate({
+export const saveOrGetExaminationType = async (type: ExaminationKeys) =>
+  ExaminationTypeModel.findOrCreate({
     where: {
       name: type
     },
@@ -10,4 +10,3 @@ export const saveOrGetExaminationType = async (type: ExaminationKeys) => {
       name: type
     }
   }).then((v) => v[0])
-}

@@ -7,6 +7,7 @@ import { GroupModel } from '../Group'
 import type { IModelPrototype } from '../types'
 
 // REMOVE IT
+// ?
 export type DiaryUserModelType = {
   id: bigint
   groupId: bigint

@@ -3,12 +3,12 @@ import type { ICacheData } from '@helpers'
 import { getLessonsService } from 'src/routes/lessons/service'
 import { getPerformanceFromDB } from '../get'
 
+// разделить на разные файлы
+
 /**
  * Сохраняет оценки в базе
- * @param perfomance
- * @param authData
  */
-export const savePerfomance = async (
+export const savePerformance = async (
   performance: PerformanceCurrent,
   authData: ICacheData
 ) => {
@@ -39,10 +39,10 @@ export const savePerfomance = async (
         continue
       }
 
-      const isEquils = isEquilsPerformanceDays(day, dayFromDB)
+      const isEqual = isEqualsPerformanceDays(day, dayFromDB)
 
       // Если есть отличия, то добавляем в список на добавление/обновление
-      if (!isEquils && dayToUpdate.indexOf(actualDate) === -1) {
+      if (!isEqual && dayToUpdate.indexOf(actualDate) === -1) {
         dayToUpdate.push(actualDate)
       }
     }
@@ -53,12 +53,12 @@ export const savePerfomance = async (
     new Date(a).getTime() > new Date(b).getTime() ? 1 : -1
   )
 
-  const grouppingDates = groupping(dayToUpdate)
+  const groupedDates = getGroupedDates(dayToUpdate)
 
-  if (!grouppingDates) return
+  if (!groupedDates) return
 
   // Загружаем расписание по сгруппированным дням (это вызовет автоматическое обновление оценок)
-  for (const group of grouppingDates) {
+  for (const group of groupedDates) {
     await getLessonsService(
       String(group.startDate),
       String(group.endDate),
@@ -88,7 +88,7 @@ type countable = {
   [key: string]: number
 }
 
-const isEquilsPerformanceDays = (
+const isEqualsPerformanceDays = (
   dayOne: DayWithMarks,
   dayTwo: DayWithMarks
 ) => {
@@ -133,7 +133,7 @@ const countableDayData = (day: DayWithMarks) => {
 /**
  * Группирует даты в один запрос к серверу
  */
-const groupping = (dates: (string | Date)[]) => {
+const getGroupedDates = (dates: (string | Date)[]) => {
   if (!dates.length) return null
   // Количество миллисекунд в дне
   const oneDay = 1000 * 60 * 60 * 24

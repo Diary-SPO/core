@@ -10,6 +10,7 @@ export const requiredSaveOrGet = async (
     taskId,
     diaryUserId: authData.localUserId
   }
+
   return RequiredModel.findOrCreate({
     where,
     defaults: {

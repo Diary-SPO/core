@@ -8,6 +8,7 @@ export const subgroupSaveOrGet = (
     name,
     groupId
   }
+
   return SubgroupModel.findOrCreate({
     where,
     defaults: where

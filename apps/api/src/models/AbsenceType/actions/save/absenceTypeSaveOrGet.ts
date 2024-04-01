@@ -1,7 +1,7 @@
 import type { AbsenceTypesKeys } from '@diary-spo/shared'
 import { AbsenceTypeModel, type IAbsenceTypeModel } from '@models'
 
-export const saveOrGetAbsenceType = async (
+export const absenceTypeSaveOrGet = async (
   name: AbsenceTypesKeys
 ): Promise<IAbsenceTypeModel> =>
   AbsenceTypeModel.findOrCreate({

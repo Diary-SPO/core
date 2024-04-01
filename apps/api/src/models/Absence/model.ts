@@ -1,8 +1,10 @@
-import { cache, enableCache, sequelize } from '@db'
 import { DataTypes } from 'sequelize'
+
+import { cache, enableCache, sequelize } from '@db'
 import { AbsenceTypeModel } from '../AbsenceType'
 import { DiaryUserModel } from '../DiaryUser'
 import { ScheduleModel } from '../Schedule'
+
 import type { IModelPrototype } from '../types'
 
 export type AbsenceModelType = {
