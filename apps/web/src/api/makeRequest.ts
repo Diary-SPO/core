@@ -24,7 +24,7 @@ const makeRequest = async <T>(
         timeout: 2000
       })
 
-      console.info('%c [makeRequest]', 'color: blueviolet', response)
+      // console.info('%c [makeRequest]', 'color: blueviolet', response)
 
       return response.data
     } catch (err) {
@@ -33,7 +33,7 @@ const makeRequest = async <T>(
         return
       }
 
-      console.info('%c [makeRequest]', 'color: blueviolet', err)
+      // console.info('%c [makeRequest]', 'color: blueviolet', err)
 
       /** В случае ошибки авторизации мы не делаем запрос на другой сервер, а сразу возвращаем ответ **/
       if (err?.response?.status === HTTP_STATUSES.UNAUTHORIZED) {

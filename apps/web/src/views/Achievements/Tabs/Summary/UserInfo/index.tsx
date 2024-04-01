@@ -12,7 +12,7 @@ import {
 } from '@vkontakte/vkui'
 import type { FunctionComponent } from 'preact'
 import { useEffect, useState } from 'preact/compat'
-import { winxAva } from '../../../../../images/config.ts'
+import { winxAva } from '../../../../../config/images.ts'
 
 import './index.css'
 
