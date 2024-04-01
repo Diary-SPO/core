@@ -1,6 +1,7 @@
-import { API_CODES, API_ERRORS, ApiError } from '@api'
+import { API_ERRORS, UnauthorizedError } from '@api'
 import { KEY } from '@config'
-import type { ResponseLogin } from '@diary-spo/types'
+import type { ResponseLogin } from '@diary-spo/shared'
+import { generateToken } from '@helpers'
 import {
   DiaryUserModel,
   GroupModel,
@@ -10,7 +11,6 @@ import {
   SPOModel
 } from '@models'
 import { ResponseLoginFromDiaryUser } from '@types'
-import { generateToken } from '../../../helpers'
 
 type DiaryUserAuthInfo = IDiaryUserModel & {
   group: IGroupModel & {
@@ -49,7 +49,7 @@ export const offlineAuth = async (
   })) as DiaryUserAuthInfo
 
   if (!diaryUserRecord) {
-    throw new ApiError(API_ERRORS.USER_NOT_FOUND, API_CODES.UNAUTHORIZED)
+    throw new UnauthorizedError(API_ERRORS.USER_NOT_FOUND)
   }
 
   const groupData = diaryUserRecord.group

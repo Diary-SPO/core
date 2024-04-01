@@ -2,6 +2,8 @@ import { API_CODES, ApiError } from '@api'
 import { SERVER_URL } from '@config'
 import type { PersonResponse, UserData } from '@diary-spo/shared'
 import { generateToken } from '@helpers'
+// TODO: сделать папку с утилитами может
+import { saveOrGetDiaryUser, saveOrGetGroup, saveOrGetSPO } from '@models'
 import { ResponseLoginFromDiaryUser } from '@types'
 import {
   type ApiResponse,
@@ -11,10 +13,6 @@ import {
   formatDate
 } from '@utils'
 import { LogError } from 'src/LogError'
-// TODO: сделать папку с утилитами может
-import { saveOrGetDiaryUser } from '../get/saveOrGetDiaryUser'
-import { saveOrGetGroup } from '../get/saveOrGetGroup'
-import { saveOrGetSPO } from '../get/saveOrGetSPO'
 
 export const saveUserData = async (
   parsedRes: ApiResponse<UserData>,

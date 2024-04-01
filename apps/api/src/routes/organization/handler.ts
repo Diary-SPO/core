@@ -1,16 +1,18 @@
-import { API_CODES, API_ERRORS, ApiError } from '@api'
-import { SERVER_URL } from '@config'
 import type { Organization } from '@diary-spo/shared'
-import { checkSameKeys, getCookieFromToken } from '@helpers'
+import type { Context } from 'elysia'
+import type { Optional } from 'sequelize'
+
 import {
   DiaryUserModel,
   GroupModel,
   SPOModel,
   type SPOModelType
 } from '@models'
+
+import { API_CODES, API_ERRORS, ApiError } from '@api'
+import { SERVER_URL } from '@config'
+import { getCookieFromToken } from '@helpers'
 import { HeadersWithCookie } from '@utils'
-import type { Context } from 'elysia'
-import type { Optional } from 'sequelize'
 
 const getOrganization = async ({
   request
@@ -41,6 +43,7 @@ const getOrganization = async ({
 
     // Тут сохраняем в фоне, чтобы не задерживать
     // FIXME: это што........
+    // ?
     const record = SPOModel.findOne({
       where: {
         organizationId: response.organizationId

@@ -21,7 +21,8 @@ export const removeNotUsedTokens = async (): Promise<void> => {
   }
 
   for (let i = 0; i < tokens?.length; i++) {
-    await tokens[i].destroy()
+    await tokens[i]
+      .destroy()
       .then(() => {
         console.log(`Успешно удалил токен: ${tokens[i].token}`)
       })

@@ -1,11 +1,11 @@
-import { API_CODES, API_ERRORS, ApiError } from '@api'
+import { API_CODES, API_ERRORS, ApiError, ForbiddenError } from '@api'
 import { SERVER_URL } from '@config'
 import type { Day } from '@diary-spo/shared'
 import type { ICacheData } from '@helpers'
 import { ScheduleGetFromDB, daySave } from '@models'
 import { HeadersWithCookie } from '@utils'
 import { detectTerm } from 'src/models/Term/actions/other/detectTerm'
-import { structurizeResponse } from '../helpers'
+import { getFormattedResponse } from '../helpers'
 
 export const getLessonsService = async (
   startDate: string,
@@ -20,13 +20,13 @@ export const getLessonsService = async (
   })
 
   if (response.status === API_CODES.FORBIDDEN) {
-    throw new ApiError(API_ERRORS.USER_NOT_PERMISSION, API_CODES.FORBIDDEN)
+    throw new ForbiddenError(API_ERRORS.USER_NOT_PERMISSION)
   }
 
   if (!response.ok && !notGetFromDB) {
     // Получаем из базы
     const rawSchedule = await ScheduleGetFromDB(startDate, endDate, authData)
-    return structurizeResponse(rawSchedule, startDate, endDate, authData)
+    return getFormattedResponse(rawSchedule, startDate, endDate, authData)
   }
 
   // Сохраняем и отдаём

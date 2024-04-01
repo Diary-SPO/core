@@ -1,17 +1,18 @@
-import { type Day, type Lesson, Task, Timetable } from '@diary-spo/shared'
+import type { Day, Lesson } from '@diary-spo/shared'
 import type { ICacheData } from '@helpers'
 import type { ScheduleFromDB } from '@models'
 import { formatDate } from '@utils'
-import { structurizeGradebook } from './structurizeGradebook'
-import { structurizeTimetable } from './structurizeTimetable'
 
-export const structurizeResponse = (
+import { getFordattedGradebook } from './getFordattedGradebook'
+import { getFormattedTimetable } from './getFormattedTimetable'
+
+export const getFormattedResponse = (
   raw: ScheduleFromDB[],
   startDate: string,
   endDate: string,
   authData: ICacheData
 ) => {
-  const Days: Day[] = []
+  const days: Day[] = []
 
   // Подготавливаем даты
   const sd = new Date(startDate)
@@ -27,14 +28,17 @@ export const structurizeResponse = (
     const lessons: Lesson[] = []
     for (const rd of raw) {
       if (rd.date !== date) continue
+
       if (rd.scheduleSubgroups.length) {
         let meSubgroup = false
+
         for (const subgroup of rd.scheduleSubgroups) {
           if (subgroup.diaryUserId === authData.localUserId) {
             meSubgroup = true
             break
           }
         }
+
         if (!meSubgroup) continue
       }
 
@@ -43,10 +47,10 @@ export const structurizeResponse = (
       const name = rd.subject.name
 
       // Градебук
-      const gradebook = structurizeGradebook(rd)
+      const gradebook = getFordattedGradebook(rd)
 
       //Подготавливаем timetable
-      const timetable = structurizeTimetable(rd)
+      const timetable = getFormattedTimetable(rd)
 
       const lesson: Lesson = {
         endTime,
@@ -61,14 +65,14 @@ export const structurizeResponse = (
     // Сортируем lessons
     lessons.sort((a, b) => (a.startTime > b.startTime ? 1 : -1))
 
-    Days.push({
+    days.push({
       date,
       lessons
     })
   }
 
   // Сортируем дни
-  Days.sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime())
+  days.sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime())
 
-  return Days
+  return days
 }
