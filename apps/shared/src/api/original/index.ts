@@ -231,18 +231,18 @@ export interface Day {
   lessons: Lesson[] | null
 }
 
-export interface IMark {
-  subjects: {
-    id: number
-    mark: TMark
-    name: string
-  }
-}
-
-export interface AuthData {
-  cookie: string
-  data: UserData
-}
+// export interface IMark {
+//   subjects: {
+//     id: number
+//     mark: TMark
+//     name: string
+//   }
+// }
+//
+// export interface AuthData {
+//   cookie: string
+//   data: UserData
+// }
 
 export interface DayWithMarks {
   day: Date

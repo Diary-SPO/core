@@ -1,16 +1,14 @@
-import type { AxiosResponse } from 'axios'
+import type { ApiResponse } from '@types'
 
-export const isApiError = (data: unknown): data is AxiosResponse => {
+export const isApiError = (data: unknown): data is ApiResponse => {
   const isObj = typeof data === 'object'
-  const isResponse = data instanceof Response
 
-  return (
-    !data ||
-    (isObj &&
-      (isResponse ||
-        ('status' in data &&
-          typeof data.status === 'number' &&
-          'statusText' in data &&
-          typeof data.statusText === 'string')))
+  return Boolean(
+    data &&
+      isObj &&
+      'error' in data &&
+      data.error &&
+      typeof data.error === 'object' &&
+      'status' in data.error
   )
 }

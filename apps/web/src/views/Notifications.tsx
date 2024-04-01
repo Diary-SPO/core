@@ -64,8 +64,8 @@ const Notifications: FC<Props> = ({ id }) => {
         return
       }
 
-      updateCache(ads)
-      setNotifications(ads)
+      updateCache(ads.data)
+      setNotifications(ads.data)
     } finally {
       setLoading(false)
     }

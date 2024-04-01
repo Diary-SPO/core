@@ -29,11 +29,11 @@ const FinalMarks: FunctionalComponent<Props> = ({
       setIsLoading(true)
       setIsError(false)
 
-      const data = localStorage.getItem('finalMarksData')
+      const finalMarksData = localStorage.getItem('finalMarksData')
 
       try {
-        if (data && !isNeedToUpdateCache('finalMarksData_time')) {
-          setFinalMarksData(JSON.parse(data))
+        if (finalMarksData && !isNeedToUpdateCache('finalMarksData_time')) {
+          setFinalMarksData(JSON.parse(finalMarksData))
           return
         }
 
@@ -51,8 +51,8 @@ const FinalMarks: FunctionalComponent<Props> = ({
           return
         }
 
-        setFinalMarksData(finalMarks)
-        localStorage.setItem('finalMarksData', JSON.stringify(finalMarks))
+        setFinalMarksData(finalMarks.data)
+        localStorage.setItem('finalMarksData', JSON.stringify(finalMarks.data))
         localStorage.setItem('finalMarksData_time', JSON.stringify(Date.now()))
       } catch {
         setIsError(true)

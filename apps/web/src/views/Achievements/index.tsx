@@ -1,8 +1,4 @@
-import { ErrorPlaceholder, PanelHeaderWithBack } from '@components'
-import { VKUI_ACCENT_BG, VKUI_RED } from '@config'
 import type { Nullable, PerformanceCurrent } from '@diary-spo/shared'
-import { useRateLimitExceeded, useSnackbar } from '@hooks'
-import { handleResponse, isApiError, isNeedToUpdateCache } from '@utils'
 import { Icon28ErrorCircleOutline, Icon28InfoCircle } from '@vkontakte/icons'
 import {
   HorizontalScroll,
@@ -15,15 +11,18 @@ import { type FC, Suspense } from 'preact/compat'
 import { useEffect, useState } from 'preact/hooks'
 
 import { getPerformance } from '@api'
+import { ErrorPlaceholder, PanelHeaderWithBack } from '@components'
+import { VKUI_ACCENT_BG, VKUI_RED } from '@config'
+import { useRateLimitExceeded, useSnackbar } from '@hooks'
+import { handleResponse, isApiError, isNeedToUpdateCache } from '@utils'
+import { useActiveTab } from './hooks/useActiveTab'
 
 import type { Props } from '../types.ts'
-
 import { data } from './data.tsx'
 import { formatStatisticsData } from './helpers.ts'
 import type { Tabs } from './types.ts'
 
 import LoadingData from './LoadingData.tsx'
-import { useActiveTab } from './hooks/useActiveTab.tsx'
 
 const Achievements: FC<Props> = ({ id }) => {
   const [isLoading, setIsLoading] = useState<boolean>(false)
@@ -82,10 +81,10 @@ const Achievements: FC<Props> = ({ id }) => {
     try {
       setIsError(false)
       setIsLoading(true)
-      const marks = await getPerformance()
+      const response = await getPerformance()
 
       handleResponse(
-        marks,
+        response,
         () => {
           showSnackbar({
             before: <Icon28ErrorCircleOutline fill={VKUI_RED} />,
@@ -100,12 +99,15 @@ const Achievements: FC<Props> = ({ id }) => {
         false
       )
 
-      if (isApiError(marks) || !('daysWithMarksForSubject' in marks)) {
+      if (
+        isApiError(response) ||
+        !('daysWithMarksForSubject' in response.data)
+      ) {
         localStorage.removeItem('savedMarks')
         return
       }
 
-      saveData(marks)
+      saveData(response.data)
     } catch {
       setIsError(true)
     } finally {

@@ -1,14 +1,17 @@
 import type { Day } from '@diary-spo/shared'
+
 import { getCookieFromToken } from '@helpers'
 import type { IContext } from '@types'
 import { formatDate } from '@utils'
+
 import { getLessonsService } from './service'
 
 const getLessons = async ({
   request,
-  params
+  body
 }: IContext): Promise<Day[] | string> => {
-  const { startDate, endDate } = params
+  // todo: типизировать
+  const { startDate, endDate } = body
 
   const formattedStartDate = formatDate(startDate)
   const formattedEndDate = formatDate(endDate)

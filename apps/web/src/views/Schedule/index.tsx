@@ -50,17 +50,16 @@ const Schedule: FC<Props> = ({ id }) => {
   const [snackbar, showSnackbar] = useSnackbar()
 
   const handleGetLesson = async (start: Date, end: Date) => {
-    console.log('asdasd')
     setIsLoading(true)
     setIsError(false)
 
     localStorage.setItem('currentDate', startDate.toString())
 
     try {
-      const data = await getLessons(start, end)
+      const response = await getLessons(start, end)
 
       handleResponse(
-        data,
+        response,
         () => {
           setIsLoading(false)
           setIsError(true)
@@ -70,12 +69,12 @@ const Schedule: FC<Props> = ({ id }) => {
         showSnackbar
       )
 
-      if (isApiError(data)) {
+      if (isApiError(response)) {
         return
       }
 
-      setLessons(data)
-      localStorage.setItem('savedLessons', JSON.stringify(data))
+      setLessons(response.data)
+      localStorage.setItem('savedLessons', JSON.stringify(response.data))
     } finally {
       setIsLoading(false)
     }

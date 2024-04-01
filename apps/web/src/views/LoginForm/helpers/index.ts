@@ -3,6 +3,9 @@ import type { ResponseLogin } from '@diary-spo/shared'
 export const saveData = (basePath: ResponseLogin) => {
   const userId = String(basePath.id)
   const token = basePath.token
+
+  console.log('token', token)
+
   const name = `${String(basePath.lastName)} ${String(
     basePath.firstName
   )} ${String(basePath.middleName)}`

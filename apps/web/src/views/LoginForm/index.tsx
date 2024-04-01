@@ -80,7 +80,7 @@ const LoginForm: FC<Props> = ({ id }) => {
 
     const response = await postLogin(login, passwordHashed, true)
 
-    const data = handleResponse(
+    handleResponse(
       response,
       () => setIsDataInvalid(true),
       undefined,
@@ -90,17 +90,17 @@ const LoginForm: FC<Props> = ({ id }) => {
       true
     )
 
-    if (isApiError(data) || !data.token) {
+    if (isApiError(response) || !response.data?.token) {
       return
     }
 
-    saveData(data)
+    saveData(response.data)
 
     showSnackbar({
       title: 'Вхожу',
       subtitle: 'Подождите немного'
     })
-
+    console.log('asd')
     await routeNavigator.replace(`/${VIEW_SCHEDULE}`)
   }
 

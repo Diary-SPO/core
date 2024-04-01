@@ -1,10 +1,11 @@
 import type { PerformanceCurrent } from '@diary-spo/shared'
-import type { ICacheData } from '@helpers'
-import { getPerformanceFromDB } from './get'
-import { getPerformanceCurrent } from './get/getPerformanceCurrent'
-import { savePerformance } from './save/savePerformance'
 
-export const getCurrPerformance = async (
+import type { ICacheData } from '@helpers'
+
+import { getPerformanceCurrent, getPerformanceFromDB } from './get'
+import { savePerformance } from './save'
+
+export const getPerformanceCurrentService = async (
   authData: ICacheData
 ): Promise<PerformanceCurrent> => {
   const response = await getPerformanceCurrent(authData)

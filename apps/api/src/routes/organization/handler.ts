@@ -16,7 +16,7 @@ import { HeadersWithCookie } from '@utils'
 
 const getOrganization = async ({
   request
-}: Context): Promise<Organization | Optional<SPOModelType, 'id'> | string> => {
+}: Context): Promise<Organization | Optional<SPOModelType, 'id'>> => {
   const authData = await getCookieFromToken(request.headers.toJSON().secret)
   const path = `${SERVER_URL}/services/people/organization`
   console.log(path)
@@ -25,26 +25,36 @@ const getOrganization = async ({
   }).then((res) => res.json())
 
   if (response) {
+    const {
+      abbreviation,
+      name,
+      shortName,
+      actualAddress,
+      email,
+      site,
+      phone,
+      type,
+      directorName,
+      organizationId
+    } = response
     /* Хотелось бы красиво по убыванию...
      * Но тогда будут не красиво "скакать" поля при разных ответах (от дневника и из базы)
      */
     const saveData: Optional<SPOModelType, 'id'> = {
-      abbreviation: response.abbreviation,
-      name: response.name,
-      shortName: response.shortName,
-      actualAddress: response.actualAddress,
-      email: response.email,
-      site: response.site,
-      phone: response.phone,
-      type: response.type,
-      directorName: response.directorName,
-      organizationId: response.organizationId
+      abbreviation,
+      name,
+      shortName,
+      actualAddress,
+      email,
+      site,
+      phone,
+      type,
+      directorName,
+      organizationId
     }
 
     // Тут сохраняем в фоне, чтобы не задерживать
-    // FIXME: это што........
-    // ?
-    const record = SPOModel.findOne({
+    SPOModel.findOne({
       where: {
         organizationId: response.organizationId
       }

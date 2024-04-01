@@ -51,8 +51,11 @@ const SubjectList: FunctionalComponent<Props> = ({
           return
         }
 
-        setAttestationData(attestation)
-        localStorage.setItem('attestationData', JSON.stringify(attestation))
+        setAttestationData(attestation.data)
+        localStorage.setItem(
+          'attestationData',
+          JSON.stringify(attestation.data)
+        )
         localStorage.setItem('attestationData_time', JSON.stringify(Date.now()))
       } catch {
         setIsError(true)
