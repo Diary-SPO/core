@@ -5,14 +5,7 @@ import { generateToken } from '@helpers'
 // TODO: сделать папку с утилитами может
 import { saveOrGetDiaryUser, saveOrGetGroup, saveOrGetSPO } from '@models'
 import { ResponseLoginFromDiaryUser } from '@types'
-import {
-  type ApiResponse,
-  cookieExtractor,
-  error,
-  fetcher,
-  formatDate
-} from '@utils'
-import { LogError } from 'src/LogError'
+import { type ApiResponse, cookieExtractor, error, fetcher } from '@utils'
 
 export const saveUserData = async (
   parsedRes: ApiResponse<UserData>,
@@ -88,6 +81,5 @@ export const saveUserData = async (
     return ResponseLoginFromDiaryUser(regDiaryUser, regSPO, regGroup, token)
   } catch (err) {
     error(err)
-    throw new LogError('Ошибка на этапе работы с базой: ')
   }
 }
