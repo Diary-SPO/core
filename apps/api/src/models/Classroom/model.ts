@@ -1,5 +1,7 @@
-import { cache, enableCache, sequelize } from '@db'
 import { DataTypes } from 'sequelize'
+
+import { cache, enableCache, sequelize } from '@db'
+
 import { SPOModel } from '../SPO'
 import type { IModelPrototype } from '../types'
 

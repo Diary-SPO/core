@@ -1,6 +1,7 @@
 import { DataTypes } from 'sequelize'
 
 import { cache, enableCache, sequelize } from '@db'
+
 import { AbsenceTypeModel } from '../AbsenceType'
 import { DiaryUserModel } from '../DiaryUser'
 import { ScheduleModel } from '../Schedule'

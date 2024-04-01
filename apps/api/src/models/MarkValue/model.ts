@@ -1,6 +1,8 @@
-import { cache, enableCache, sequelize } from '@db'
 import { Grade, type MarkKeys } from '@diary-spo/shared'
 import { DataTypes } from 'sequelize'
+
+import { cache, enableCache, sequelize } from '@db'
+
 import type { IModelPrototype } from '../types'
 
 export type MarkValueModelType = {

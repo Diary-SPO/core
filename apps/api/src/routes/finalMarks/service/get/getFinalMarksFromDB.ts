@@ -2,7 +2,6 @@ import type { ICacheData } from '@helpers'
 import {
   AcademicYearModel,
   FinalMarkModel,
-  MarkModel,
   MarkValueModel,
   SubjectModel,
   TermModel,

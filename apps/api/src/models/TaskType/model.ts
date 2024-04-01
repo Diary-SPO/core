@@ -1,6 +1,8 @@
-import { cache, enableCache, sequelize } from '@db'
 import { LessonWorkType, type LessonWorkTypeKeys } from '@diary-spo/shared'
 import { DataTypes } from 'sequelize'
+
+import { cache, enableCache, sequelize } from '@db'
+
 import type { IModelPrototype } from '../types'
 
 export type TaskTypeModelType = {

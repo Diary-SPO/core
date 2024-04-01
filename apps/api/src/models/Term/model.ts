@@ -1,5 +1,7 @@
-import { sequelize } from '@db'
 import { DataTypes } from 'sequelize'
+
+import { sequelize } from '@db'
+
 import { AcademicYearModel } from '../AcademicYear'
 import type { IModelPrototype } from '../types'
 

@@ -1,5 +1,7 @@
-import { sequelize } from '@db'
 import { DataTypes } from 'sequelize'
+
+import { sequelize } from '@db'
+
 import { DiaryUserModel } from '../DiaryUser'
 import { TaskModel } from '../Task'
 import type { IModelPrototypeNoId } from '../types'

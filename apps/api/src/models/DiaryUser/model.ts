@@ -1,8 +1,10 @@
+import type { Nullable } from '@diary-spo/shared'
+import { DataTypes } from 'sequelize'
+
 import { KEY } from '@config'
 import { sequelize } from '@db'
-import type { Nullable } from '@diary-spo/shared'
 import { formatDate } from '@utils'
-import { DataTypes } from 'sequelize'
+
 import { GroupModel } from '../Group'
 import type { IModelPrototype } from '../types'
 
