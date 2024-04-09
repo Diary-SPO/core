@@ -20,18 +20,18 @@
     "@vkontakte/vk-bridge": "^2.14.1",
     "@vkontakte/vk-bridge-react": "^1.0.1",
     "@vkontakte/vk-mini-apps-router": "1.4.3",
-    "@vkontakte/vkui": "6.0.1",
+    "@vkontakte/vkui": "6.0.2",
     "axios": "^1.6.8",
     "preact": "^10.20.1"
   },
   "devDependencies": {
     "@diary-spo/shared": "workspace:*",
-    "@happy-dom/global-registrator": "^14.3.9",
+    "@happy-dom/global-registrator": "^14.7.1",
     "@preact/preset-vite": "^2.8.2",
     "@types/jsdom": "^21.1.6",
     "@vkontakte/vk-miniapps-deploy": "^0.1.7",
     "gh-pages": "^6.1.1",
-    "vite": "^5.2.7"
+    "vite": "^6.0.0-alpha.1"
   },
   "browserslist": {
     "production": [">0.2%", "not dead", "not op_mini all"],
