@@ -72,36 +72,41 @@ const LoginForm: FC<Props> = ({ id }) => {
     e.preventDefault()
     if (!loginPattern.test(login)) {
       setIsDataInvalid(true)
-      setIsLoading(false)
       return
     }
 
     const passwordHashed = await b64(password)
 
-    const response = await postLogin(login, passwordHashed, true)
+    try {
+      const response = await postLogin(login, passwordHashed, true)
 
-    const data = handleResponse(
-      response,
-      () => setIsDataInvalid(true),
-      undefined,
-      setIsLoading,
-      showSnackbar,
-      false,
-      true
-    )
+      const data = handleResponse(
+        response,
+        () => setIsDataInvalid(true),
+        undefined,
+        setIsLoading,
+        showSnackbar,
+        false,
+        true
+      )
 
-    if (isApiError(data) || !data.token) {
-      return
+      if (isApiError(data) || !data.token) {
+        return
+      }
+
+      saveData(data)
+
+      showSnackbar({
+        title: 'Вхожу',
+        subtitle: 'Подождите немного'
+      })
+
+      await routeNavigator.replace(`/${VIEW_SCHEDULE}`)
+    } catch (error) {
+      console.log(error)
+    } finally {
+      setIsLoading(false)
     }
-
-    saveData(data)
-
-    showSnackbar({
-      title: 'Вхожу',
-      subtitle: 'Подождите немного'
-    })
-
-    await routeNavigator.replace(`/${VIEW_SCHEDULE}`)
   }
 
   const isLoginEmpty = login === ''

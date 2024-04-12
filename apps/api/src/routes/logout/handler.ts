@@ -1,7 +1,7 @@
-import { API_CODES, API_ERRORS, ApiError } from '@api'
+import type { Context } from 'elysia'
+
 import { getCookieFromToken } from '@helpers'
 import { authLogout } from '@models'
-import type { Context } from 'elysia'
 
 const logoutHandler = async ({ request }: Context) => {
   const secret = request.headers.toJSON().secret

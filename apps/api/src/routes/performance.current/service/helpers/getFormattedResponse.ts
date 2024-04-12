@@ -11,7 +11,7 @@ import {
   monthNames
 } from '../types'
 
-export const structurizeResponse = (
+export const getFormattedResponse = (
   subjects: IPerformanceFromDB[],
   authData: ICacheData
 ) => {

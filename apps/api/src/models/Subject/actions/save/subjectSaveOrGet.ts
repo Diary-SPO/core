@@ -1,5 +1,4 @@
 import { type ISubjectModelType, SubjectModel } from '@models'
-import { LogError } from 'src/LogError'
 
 export const subjectSaveOrGet = async (
   subjectName: string

@@ -3,7 +3,7 @@ import { type ICacheData, retriesForError } from '@helpers'
 import {
   type IScheduleModel,
   type ITermDetectP,
-  deleteTasksNotIn,
+  deleteTasks,
   markSaveOrGet,
   requiredSaveOrGet
 } from '@models'
@@ -23,7 +23,7 @@ export const tasksSaveOrGet = async (
 
   // Удаляем устаревшие таски
   // TODO: проверить работоспособность после исправления
-  deleteTasksNotIn(tasks, scheduleId)
+  deleteTasks(tasks, scheduleId)
 
   for (const task of tasks) {
     const taskTypeId = (

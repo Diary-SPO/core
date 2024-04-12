@@ -11,7 +11,7 @@ import {
   detectTerm
 } from '@models'
 import { Op } from 'sequelize'
-import { structurizeResponse } from '../helpers'
+import { getFormattedResponse } from '../helpers'
 import type { IPerformanceFromDB } from '../types'
 
 export const getPerformanceFromDB = async (authData: ICacheData) => {
@@ -69,5 +69,5 @@ export const getPerformanceFromDB = async (authData: ICacheData) => {
       }
     }
   })) as IPerformanceFromDB[]
-  return structurizeResponse(result, authData)
+  return getFormattedResponse(result, authData)
 }

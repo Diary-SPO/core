@@ -12,10 +12,12 @@ export const deleteOldDays = async (
   schedules: (IScheduleModel | null)[],
   authModel: ICacheData
 ) => {
-  // Если расписания нет в списке id'шников в schedules
-  // и у расписания не тсвязанной подгруппы или подгруппа
-  // принадлежит текущему пользователю, то удаляем
-  //console.log(JSON.stringify(schedules, null, 2))
+  /**
+   *  Если расписания нет в списке id'шников в schedules
+   *  и у расписания не тсвязанной подгруппы или подгруппа
+   *  принадлежит текущему пользователю, то удаляем
+   *  console.log(JSON.stringify(schedules, null, 2))
+   */
   const ids = []
   let date = null
 

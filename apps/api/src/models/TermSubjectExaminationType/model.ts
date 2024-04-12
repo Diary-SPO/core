@@ -1,9 +1,11 @@
-import { sequelize } from '@db'
 import {
   type TermSubjectExaminationKeys,
   TermSubjectExaminations
 } from '@diary-spo/shared'
 import { DataTypes } from 'sequelize'
+
+import { sequelize } from '@db'
+
 import type { IModelPrototype } from '../types'
 
 export type TermSubjectExaminationTypeModelType = {

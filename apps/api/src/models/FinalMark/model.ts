@@ -1,5 +1,7 @@
-import { sequelize } from '@db'
 import { DataTypes } from 'sequelize'
+
+import { sequelize } from '@db'
+
 import { DiaryUserModel } from '../DiaryUser'
 import { MarkValueModel } from '../MarkValue'
 import { SubjectModel } from '../Subject'

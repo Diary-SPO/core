@@ -84,3 +84,4 @@ export const ScheduleGetFromDB = async (
     ]
   })) as ScheduleFromDB[]
 }
+// нужен хороший комментарий насчет этой функции (и других функций) + избавление от as

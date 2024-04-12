@@ -4,7 +4,6 @@ import {
   type IDiaryUserModel
 } from '@models'
 import type { Optional } from 'sequelize'
-// ВЫНЕСТИ В МОДЕЛЬ юзера
 
 export const saveOrGetDiaryUser = async (
   data: Optional<DiaryUserModelType, 'id'>

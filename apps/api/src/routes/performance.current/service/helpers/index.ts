@@ -1,1 +1,1 @@
-export * from './structurizeResponse'
+export * from './getFormattedResponse'

@@ -1,6 +1,7 @@
 import { sequelize } from '@db'
 import type { Nullable } from '@diary-spo/shared'
 import { DataTypes, type Optional } from 'sequelize'
+
 import { ClassroomModel } from '../Classroom'
 import { GroupModel } from '../Group'
 import { LessonTypeModel } from '../LessonType'

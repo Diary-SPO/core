@@ -6,13 +6,16 @@ export const saveOrGetFinalMark = async (
   subjectId: bigint,
   authData: ICacheData
 ) => {
+  // why
   const where = {
     subjectId,
     diaryUserId: authData.localUserId
   }
   return FinalMarkModel.findOrCreate({
+    // why
     where,
     defaults: {
+      // why
       ...where,
       markValueId
     }

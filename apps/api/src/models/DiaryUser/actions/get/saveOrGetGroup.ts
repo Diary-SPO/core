@@ -1,5 +1,4 @@
 import { GroupModel, type IGroupModel } from '@models'
-// ВЫНЕСТИ В МОДЕЛЬ группы
 
 export const saveOrGetGroup = async (
   id: number,

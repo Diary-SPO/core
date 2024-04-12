@@ -9,5 +9,6 @@ export const checkInSubgroups = (
       return true
     }
   }
+
   return false
 }

@@ -1,11 +1,11 @@
-import { API_CODES, API_ERRORS, ApiError } from '@api'
+import { API_ERRORS, NotFoundError, UnknownError } from '@api'
 import { SERVER_URL } from '@config'
 import { b64 } from '@diary-spo/crypto'
 import type { ResponseLogin, UserData } from '@diary-spo/shared'
 import { fetcher } from '@utils'
 import { offlineAuth } from './service'
-import { handleResponse } from './service/helpers/helpers'
-import { saveUserData } from './service/save/saveUserData'
+import { handleResponse } from './service/helpers'
+import { saveUserData } from './service/save'
 
 interface AuthContext {
   body: {
@@ -37,14 +37,14 @@ const postAuth = async ({ body }: AuthContext): Promise<ResponseLogin> => {
       const authData = await offlineAuth(login, password)
 
       if (!authData) {
-        throw new ApiError(API_ERRORS.USER_NOT_FOUND, API_CODES.UNAUTHORIZED)
+        throw new NotFoundError(API_ERRORS.USER_NOT_FOUND)
       }
 
       return authData
     }
     /** Неизвестная ошибка **/
     case 'UNKNOWN':
-      throw new ApiError('Unknown auth error', API_CODES.UNKNOWN_ERROR)
+      throw new UnknownError('Unknown auth error')
     /** Сервер вернул корректные данные, сохраняем их в БД **/
     default:
       /**
@@ -52,7 +52,7 @@ const postAuth = async ({ body }: AuthContext): Promise<ResponseLogin> => {
        * Поэтому проверяем хотя бы наличие одного обязательного поля
        **/
       if (!parsedRes.data.tenants) {
-        throw new ApiError('Unreachable auth error', API_CODES.UNKNOWN_ERROR)
+        throw new UnknownError('Unreachable auth error')
       }
 
       return saveUserData(parsedRes, login, password)

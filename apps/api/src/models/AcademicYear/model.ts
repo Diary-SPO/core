@@ -1,5 +1,7 @@
-import { sequelize } from '@db'
 import { DataTypes } from 'sequelize'
+
+import { sequelize } from '@db'
+
 import { GroupModel } from '../Group'
 import { TermTypeModel } from '../TermType'
 import type { IModelPrototype } from '../types'

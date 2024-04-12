@@ -1,1 +1,1 @@
-export * from './savePerfomance'
+export * from './savePerformance'

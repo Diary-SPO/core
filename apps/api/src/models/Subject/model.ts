@@ -1,5 +1,7 @@
-import { cache, enableCache, sequelize } from '@db'
 import { DataTypes } from 'sequelize'
+
+import { cache, enableCache, sequelize } from '@db'
+
 import type { IModelPrototype } from '../types'
 
 export type SubjectModelType = {
