@@ -16,7 +16,7 @@
     "@vueuse/core": "^10.8.0",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.0",
-    "lucide-vue-next": "^0.378.0",
+    "lucide-vue-next": "^0.379.0",
     "pinia": "^2.1.7",
     "radix-vue": "^1.4.8",
     "tailwind-merge": "^2.2.1",
