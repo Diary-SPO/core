@@ -1,0 +1,44 @@
+version: '3.5'
+services:
+  diary-spo:
+    image: diary-spo:latest
+    container_name: diary-spo
+#    network_mode: 'host'
+    ports:
+      - 3345:3003
+    depends_on:
+      - postgres
+#    volumes:
+#      - ./config:/config
+#      - ./cache:/cache
+#      - /mnt/disk0/films_apps/jellyfin:/mnt/disk0
+#      - type: bind
+#        source: /path/to/media
+#        target: /media
+#      - type: bind
+#        source: /path/to/media2
+#        target: /media2
+#        read_only: true
+    restart: 'unless-stopped'
+    # Optional - alternative address used for autodiscovery
+    environment:
+      - SERVER_URL=https://poo.tomedu.ru
+      - DATABASE_HOST=postgres
+      - DATABASE_PORT=5432
+      - DATABASE_NAME=diary_db
+      - DATABASE_USERNAME=dbuser
+      - DATABASE_PASSWORD=dbpassword
+    # Optional - may be necessary for docker healthcheck to pass if running in host network mode
+#    extra_hosts:
+#      - 'host.docker.internal:host-gateway'
+  postgres:
+        image: postgres:latest
+        container_name: diary-spo-postgres
+        expose:
+          - 5432
+#        ports:
+#            - "5432:5432"
+        environment:
+            - POSTGRES_USER=dbuser
+            - POSTGRES_PASSWORD=dbpassword
+            - POSTGRES_DB=diary_db
