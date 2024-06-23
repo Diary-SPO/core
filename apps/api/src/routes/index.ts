@@ -15,7 +15,24 @@ import { AuthService } from '../services/AuthService'
 import getOrganization from './organization/handler'
 
 const routes = new Elysia()
-  .use(organization)
+  .use(AuthService)
+  .guard({
+    isSignIn: true
+  })
+  .get(
+    '/organization',
+    ({
+      Auth: {
+        user: { localUserId, cookie }
+      }
+    }) => getOrganization({ userId: localUserId, cookie }),
+    {
+      detail: {
+        tags: ['Organization']
+      }
+    }
+  )
+  // .use(organization)
   // .use(lessons)
   // .use(performanceCurrent)
   // .use(attestation)
