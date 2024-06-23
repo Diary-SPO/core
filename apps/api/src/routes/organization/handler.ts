@@ -1,5 +1,4 @@
 import type { Organization } from '@diary-spo/shared'
-import type { Context } from 'elysia'
 import type { Optional } from 'sequelize'
 
 import {
@@ -11,17 +10,21 @@ import {
 
 import { API_CODES, API_ERRORS, ApiError } from '@api'
 import { SERVER_URL } from '@config'
-import { getCookieFromToken } from '@helpers'
 import { HeadersWithCookie } from '@utils'
 
+interface Data {
+  cookie: string
+  userId: bigint
+}
+
 const getOrganization = async ({
-  request
-}: Context): Promise<Organization | Optional<SPOModelType, 'id'> | string> => {
-  const authData = await getCookieFromToken(request.headers.toJSON().secret)
+  cookie,
+  userId
+}: Data): Promise<Organization | Optional<SPOModelType, 'id'> | string> => {
   const path = `${SERVER_URL}/services/people/organization`
   console.log(path)
   const response = await fetch(path, {
-    headers: HeadersWithCookie(authData.cookie)
+    headers: HeadersWithCookie(cookie)
   }).then((res) => res.json())
 
   if (response) {
@@ -68,7 +71,7 @@ const getOrganization = async ({
         id: (
           await GroupModel.findByPk(
             (
-              await DiaryUserModel.findByPk(authData.localUserId)
+              await DiaryUserModel.findByPk(userId)
             )?.groupId
           )
         )?.spoId
