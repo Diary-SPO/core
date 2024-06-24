@@ -9,14 +9,13 @@ import {
 
 const getAttestation = async ({
   request
-}: ContextWithID): Promise<AttestationResponse | string> => {
+}: ContextWithID): Promise<AttestationResponse | null> => {
   const authData = await getCookieFromToken(request.headers.toJSON().secret)
 
   const res = await getAttestationFromDiary(authData)
 
   if (!res) {
-    return await getAttestationFromDB(authData)
-    //throw new ApiError(API_ERRORS.DATA_NOT_FOUND, API_CODES.UNKNOWN_ERROR)
+    return getAttestationFromDB(authData)
   }
 
   saveAttestation(res, authData).catch((e) => console.error(e))

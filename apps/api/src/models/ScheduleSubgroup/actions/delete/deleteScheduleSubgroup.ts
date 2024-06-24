@@ -1,4 +1,4 @@
-import { ScheduleSubgroupModel } from '@models'
+import { ScheduleSubgroupModel } from '../../model'
 
 export const deleteScheduleSubgroup = async (
   scheduleId: bigint,

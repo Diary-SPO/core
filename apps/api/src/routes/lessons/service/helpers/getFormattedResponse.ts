@@ -1,9 +1,9 @@
 import type { Day, Lesson } from '@diary-spo/shared'
 import type { ICacheData } from '@helpers'
-import type { ScheduleFromDB } from '@models'
 import { formatDate } from '@utils'
 
-import { getFordattedGradebook } from './getFordattedGradebook'
+import type { ScheduleFromDB } from '../../../../models'
+import { getFormattedGradebook } from './getFormattedGradebook'
 import { getFormattedTimetable } from './getFormattedTimetable'
 
 export const getFormattedResponse = (
@@ -47,7 +47,7 @@ export const getFormattedResponse = (
       const name = rd.subject.name
 
       // Градебук
-      const gradebook = getFordattedGradebook(rd)
+      const gradebook = getFormattedGradebook(rd)
 
       //Подготавливаем timetable
       const timetable = getFormattedTimetable(rd)

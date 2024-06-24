@@ -1,10 +1,11 @@
 import type { AcademicRecord } from '@diary-spo/shared'
 import { type ICacheData, updateCache } from '@helpers'
-import { DiaryUserModel, findActiveTerm } from '@models'
 import { formatDate } from '@utils'
 
 import { getFinalMarksFromDiary } from 'src/routes/finalMarks/service'
-import { saveOrGetAcademicYear } from '../../../AcademicYear/actions'
+import { saveOrGetAcademicYear } from '../../../AcademicYear'
+import { DiaryUserModel } from '../../../DiaryUser'
+import { findActiveTerm } from '../../../TermUser'
 import { searchCurrStartDate } from '../get'
 
 /**

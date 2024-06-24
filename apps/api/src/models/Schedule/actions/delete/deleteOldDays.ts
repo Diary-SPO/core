@@ -1,12 +1,10 @@
 import type { ICacheData } from '@helpers'
-import {
-  type IScheduleModel,
-  ScheduleModel,
-  ScheduleSubgroupModel,
-  type ScheduleSubgroupsGet,
-  checkInSubgroups
-} from '@models'
+
 import { Op } from 'sequelize'
+import { ScheduleSubgroupModel } from '../../../ScheduleSubgroup'
+import { type IScheduleModel, ScheduleModel } from '../../model'
+import { checkInSubgroups } from '../other'
+import type { ScheduleSubgroupsGet } from '../types'
 
 export const deleteOldDays = async (
   schedules: (IScheduleModel | null)[],

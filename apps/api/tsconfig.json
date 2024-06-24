@@ -7,10 +7,8 @@
     "paths": {
       "@types": ["src/types"],
       "@config": ["src/config"],
-      "@routes": ["src/routes"],
       "@utils": ["src/utils"],
       "@db": ["src/database"],
-      "@models": ["src/models"],
       "@helpers": ["src/helpers"],
       "@api": ["src/ApiError"]
     },

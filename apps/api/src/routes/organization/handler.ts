@@ -1,4 +1,3 @@
-import type { Organization } from '@diary-spo/shared'
 import type { Optional } from 'sequelize'
 
 import {
@@ -6,7 +5,7 @@ import {
   GroupModel,
   SPOModel,
   type SPOModelType
-} from '@models'
+} from '../../models'
 
 import { API_CODES, API_ERRORS, ApiError } from '@api'
 import { SERVER_URL } from '@config'
@@ -20,9 +19,9 @@ interface Data {
 const getOrganization = async ({
   cookie,
   userId
-}: Data): Promise<Organization | Optional<SPOModelType, 'id'> | string> => {
+}: Data): Promise<Optional<SPOModelType, 'id'>> => {
   const path = `${SERVER_URL}/services/people/organization`
-  console.log(path)
+
   const response = await fetch(path, {
     headers: HeadersWithCookie(cookie)
   }).then((res) => res.json())
@@ -31,7 +30,7 @@ const getOrganization = async ({
     /* Хотелось бы красиво по убыванию...
      * Но тогда будут не красиво "скакать" поля при разных ответах (от дневника и из базы)
      */
-    const saveData: Optional<SPOModelType, 'id'> = {
+    const saveData = {
       abbreviation: response.abbreviation,
       name: response.name,
       shortName: response.shortName,
@@ -45,9 +44,7 @@ const getOrganization = async ({
     }
 
     // Тут сохраняем в фоне, чтобы не задерживать
-    // FIXME: это што........
-    // ?
-    const record = SPOModel.findOne({
+    SPOModel.findOne({
       where: {
         organizationId: response.organizationId
       }
@@ -75,9 +72,6 @@ const getOrganization = async ({
             )?.groupId
           )
         )?.spoId
-      },
-      attributes: {
-        exclude: ['id']
       }
     })
   )?.toJSON()

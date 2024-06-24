@@ -1,25 +1,25 @@
 import type { Lesson, Nullable } from '@diary-spo/shared'
 import { type ICacheData, objPropertyCopy, retriesForError } from '@helpers'
+import { deleteAbsence, saveOrGetAbsence } from '../../../Absence'
+import { absenceTypeSaveOrGet } from '../../../AbsenceType'
+import { saveClassroom } from '../../../Classroom'
+import { lessonTypeSaveOrGet } from '../../../LessonType'
+import {
+  deleteScheduleSubgroup,
+  scheduleSubgroupSaveOrGet
+} from '../../../ScheduleSubgroup'
+import { detectSubgroup, subgroupSaveOrGet } from '../../../Subgroup'
+import { subjectSaveOrGet } from '../../../Subject'
+import { tasksSaveOrGet } from '../../../Task'
+import { teacherSaveOrGet } from '../../../Teacher'
+import type { ITermDetectP } from '../../../Term'
+import { themesSaveOrGet } from '../../../Theme'
 import {
   type IScheduleModel,
   type IScheduleModelNoId,
-  type ITermDetectP,
-  ScheduleModel,
-  type ScheduleWhere,
-  absenceTypeSaveOrGet,
-  deleteAbsence,
-  deleteScheduleSubgroup,
-  detectSubgroup,
-  lessonTypeSaveOrGet,
-  saveClassroom,
-  saveOrGetAbsence,
-  scheduleSubgroupSaveOrGet,
-  subgroupSaveOrGet,
-  subjectSaveOrGet,
-  tasksSaveOrGet,
-  TeacherSaveOrGet as teacherSaveOrGet,
-  themesSaveOrGet
-} from '@models'
+  ScheduleModel
+} from '../../model'
+import type { ScheduleWhere } from '../types'
 
 /**
  * Сохраняет и обновляет занятие в базе данных.

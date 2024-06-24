@@ -2,10 +2,13 @@ import { API_CODES, ApiError } from '@api'
 import { SERVER_URL } from '@config'
 import type { PersonResponse, UserData } from '@diary-spo/shared'
 import { generateToken } from '@helpers'
-// TODO: сделать папку с утилитами может
-import { saveOrGetDiaryUser, saveOrGetGroup, saveOrGetSPO } from '@models'
 import { ResponseLoginFromDiaryUser } from '@types'
 import { type ApiResponse, cookieExtractor, error, fetcher } from '@utils'
+import {
+  saveOrGetDiaryUser,
+  saveOrGetGroup,
+  saveOrGetSPO
+} from '../../../../models'
 
 export const saveUserData = async (
   parsedRes: ApiResponse<UserData>,
@@ -40,6 +43,8 @@ export const saveUserData = async (
         : SPO.legalAddress.length > 5
           ? SPO.legalAddress
           : SPO.address.mailAddress
+
+    await Promise.any([])
 
     const regSPO = await saveOrGetSPO({
       abbreviation: SPO.abbreviation,

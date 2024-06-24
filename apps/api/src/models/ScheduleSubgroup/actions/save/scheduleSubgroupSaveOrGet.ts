@@ -1,5 +1,5 @@
-import { ScheduleSubgroupModel } from '@models'
 import { Op } from 'sequelize'
+import { ScheduleSubgroupModel } from '../../model'
 
 export const scheduleSubgroupSaveOrGet = async (
   scheduleId: bigint,

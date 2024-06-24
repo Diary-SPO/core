@@ -14,8 +14,9 @@ export interface PersonResponse {
  * Структура ответа на запрос авторизации (/login)
  */
 export type ResponseLogin = Person & {
-  spoId?: number
-  groupId: number
+  id: bigint
+  spoId?: bigint
+  groupId: bigint
   organization: {
     abbreviation: string
     addressSettlement: string

@@ -8,7 +8,7 @@ import type {
   ISubjectModelType,
   ITaskModel,
   ScheduleSubgroupModelType
-} from '@models'
+} from '../../../models'
 
 export type IPerformanceFromDB = ISubjectModelType & {
   schedules: IScheduleFull[]

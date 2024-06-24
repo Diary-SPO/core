@@ -1,5 +1,6 @@
 import { API_ERRORS, ApiError } from '@api'
 import type { Nullable } from '@diary-spo/shared'
+import { caching } from 'cache-manager'
 import {
   AuthModel,
   type AuthModelType,
@@ -9,8 +10,7 @@ import {
   type GroupModelType,
   SPOModel,
   type SPOModelType
-} from '@models'
-import { caching } from 'cache-manager'
+} from '../models'
 
 const memoryCache = await caching('memory', {
   max: 1000,

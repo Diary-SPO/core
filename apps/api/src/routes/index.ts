@@ -14,7 +14,7 @@ import { API_CODES } from '@api'
 import { AuthService } from '../services/AuthService'
 import getOrganization from './organization/handler'
 
-const routes = new Elysia()
+export const routes = new Elysia()
   .use(AuthService)
   .guard({
     isSignIn: true
@@ -64,5 +64,3 @@ const routes = new Elysia()
 
     return { path, message: error.message, code: code }
   })
-
-export default routes

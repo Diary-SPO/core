@@ -6,7 +6,7 @@ import type {
   TermModelType,
   TermSubjectModelType,
   TermTypeModelType
-} from '@models'
+} from '../../../models'
 
 export type RawFinalMarksFromDB = {
   subjectMarks: Array<RawSubjectMark>

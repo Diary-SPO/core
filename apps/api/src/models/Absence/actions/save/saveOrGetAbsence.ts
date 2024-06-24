@@ -1,4 +1,4 @@
-import { AbsenceModel } from '@models'
+import { AbsenceModel } from '../../model'
 
 /**
  * Сохраняет опоздание.
