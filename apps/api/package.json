@@ -15,7 +15,7 @@
     "@elysiajs/cors": "^1.0.2",
     "elysia": "^1.0.23",
     "elysia-compression": "^0.0.7",
-    "elysia-helmet": "^1.0.2",
+    "elysia-helmet": "^2.0.0",
     "pg": "^8.12.0",
     "pg-hstore": "^2.3.4",
     "rand-token": "^1.0.1",
