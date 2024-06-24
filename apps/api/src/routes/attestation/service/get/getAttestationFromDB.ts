@@ -1,5 +1,6 @@
 import type { AttestationResponse } from '@diary-spo/shared'
 import type { ICacheData } from '@helpers'
+import { type IAttestationResponseRaw, structurizeResponse } from '../'
 import {
   AcademicYearModel,
   ExaminationTypeModel,
@@ -11,12 +12,11 @@ import {
   TermSubjectModel,
   TermTypeModel,
   detectTerm
-} from '@models'
-import { type IAttestationResponseRaw, structurizeResponse } from '../'
+} from '../../../../models'
 
 export const getAttestationFromDB = async (
   authData: ICacheData
-): Promise<string | AttestationResponse> => {
+): Promise<AttestationResponse | null> => {
   const currTermId = await detectTerm(authData)
   const dataFromDB = (await AcademicYearModel.findOne({
     include: [
@@ -48,5 +48,6 @@ export const getAttestationFromDB = async (
     ]
   })) as IAttestationResponseRaw | null
 
+  // fixme
   return structurizeResponse(dataFromDB, authData)
 }

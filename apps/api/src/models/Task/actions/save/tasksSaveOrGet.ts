@@ -1,16 +1,14 @@
 import type { Task } from '@diary-spo/shared'
 import { type ICacheData, retriesForError } from '@helpers'
-import {
-  type IScheduleModel,
-  type ITermDetectP,
-  deleteTasks,
-  markSaveOrGet,
-  requiredSaveOrGet
-} from '@models'
-import { markDelete } from '@models'
+
 import { objPropertyCopy } from 'src/helpers/objPropertyCopy'
 import { taskTypeSaveOrGet } from 'src/models/TaskType'
+import { markDelete, markSaveOrGet } from '../../../Mark'
+import { requiredSaveOrGet } from '../../../Required'
+import type { IScheduleModel } from '../../../Schedule'
+import type { ITermDetectP } from '../../../Term'
 import { TaskModel } from '../../model'
+import { deleteTasks } from '../delete'
 
 export const tasksSaveOrGet = async (
   tasks: Task[],

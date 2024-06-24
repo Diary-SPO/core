@@ -1,7 +1,7 @@
-import { TeacherModel, type TeacherModelType } from '@models'
 import { Op, type Optional } from 'sequelize'
+import { TeacherModel, type TeacherModelType } from '../../model'
 
-export const TeacherSaveOrGet = async (
+export const teacherSaveOrGet = async (
   teacher: Optional<TeacherModelType, 'id' | 'idFromDiary'> &
     Omit<TeacherModelType, 'id' | 'idFromDiary'>
 ): Promise<TeacherModelType> => {

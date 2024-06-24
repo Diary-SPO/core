@@ -1,5 +1,5 @@
 import type { ICacheData } from '@helpers'
-import { RequiredModel } from '@models'
+import { RequiredModel } from '../../model'
 
 export const requiredSaveOrGet = async (
   isRequired: boolean,

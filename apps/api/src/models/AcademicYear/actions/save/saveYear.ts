@@ -5,6 +5,7 @@ export const saveYear = async (
   year: number | undefined,
   currTermId: bigint
 ) => {
+  // todo: rewrite
   const find = await AcademicYearModel.findOne({
     include: {
       model: TermModel,

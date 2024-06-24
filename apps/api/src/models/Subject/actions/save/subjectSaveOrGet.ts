@@ -1,4 +1,4 @@
-import { type ISubjectModelType, SubjectModel } from '@models'
+import { type ISubjectModelType, SubjectModel } from '../../model'
 
 export const subjectSaveOrGet = async (
   subjectName: string

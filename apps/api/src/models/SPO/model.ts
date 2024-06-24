@@ -4,7 +4,7 @@ import { sequelize } from '@db'
 
 import type { IModelPrototype } from '../types'
 
-export type SPOModelType = {
+export interface SPOModelType {
   id: bigint
   abbreviation: string
   name: string

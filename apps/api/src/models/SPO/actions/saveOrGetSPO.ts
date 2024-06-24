@@ -1,5 +1,5 @@
-import { type ISPOModel, SPOModel, type SPOModelType } from '@models'
 import type { Optional } from 'sequelize'
+import { type ISPOModel, SPOModel, type SPOModelType } from '../model'
 
 export const saveOrGetSPO = async (
   data: Optional<SPOModelType, 'id'>

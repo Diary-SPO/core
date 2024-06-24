@@ -8,7 +8,7 @@ export const getGitCommitHash = async (): Promise<string | null> => {
     }))
   } catch {
     const path = './.git/refs/heads/main'
-    const file = await Bun.file(path)
+    const file = Bun.file(path)
     if (await file.exists()) {
       stdout = await file.text()
     } else {

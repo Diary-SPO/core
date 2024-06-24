@@ -1,5 +1,5 @@
 import type { ICacheData } from '@helpers'
-import { AdsModel } from '@models'
+import { AdsModel } from '../../model'
 
 export const adsGetFromDB = async (authData: ICacheData) =>
   AdsModel.findAll({

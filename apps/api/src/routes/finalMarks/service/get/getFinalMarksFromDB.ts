@@ -7,7 +7,7 @@ import {
   TermModel,
   TermSubjectModel,
   TermTypeModel
-} from '@models'
+} from '../../../../models'
 import type { RawFinalMark, RawFinalMarksFromDB, RawSubjectMark } from '../type'
 
 export const getFinalMarksFromDB = async (
@@ -54,6 +54,7 @@ export const getFinalMarksFromDB = async (
     ]
   })
 
+  // fixme
   return {
     subjectMarks: (await subjectMarks) as RawSubjectMark[],
     finalMarks: (await finalMarks) as RawFinalMark[]

@@ -1,6 +1,7 @@
 import type { PerformanceCurrent } from '@diary-spo/shared'
 import type { ICacheData } from '@helpers'
 import { formatDate } from '@utils'
+// fixme
 // с этим надо что-то делать
 import { getPerformanceCurrent } from 'src/routes/performance.current/service/get/getPerformanceCurrent'
 

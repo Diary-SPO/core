@@ -1,8 +1,4 @@
-import {
-  type MarkKeys,
-  type Subject,
-  TermSubjectExaminationKeys
-} from '@diary-spo/shared'
+import type { MarkKeys, Subject } from '@diary-spo/shared'
 import { type ICacheData, retriesForError } from '@helpers'
 import {
   TeacherSaveOrGet,
@@ -10,7 +6,7 @@ import {
   saveOrGetExaminationType,
   subjectSaveOrGet,
   termSubjectSaveOrGet
-} from '@models'
+} from '../../../../models'
 
 export const saveTermSubject = async (
   termSubjectExaminationTypeId: number | undefined,

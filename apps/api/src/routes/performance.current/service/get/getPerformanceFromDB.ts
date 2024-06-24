@@ -1,4 +1,5 @@
 import type { ICacheData } from '@helpers'
+import { Op } from 'sequelize'
 import {
   AbsenceModel,
   AbsenceTypeModel,
@@ -9,8 +10,7 @@ import {
   SubjectModel,
   TaskModel,
   detectTerm
-} from '@models'
-import { Op } from 'sequelize'
+} from '../../../../models'
 import { getFormattedResponse } from '../helpers'
 import type { IPerformanceFromDB } from '../types'
 

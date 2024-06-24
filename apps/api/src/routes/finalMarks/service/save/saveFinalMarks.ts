@@ -1,5 +1,7 @@
 import type { AcademicRecord } from '@diary-spo/shared'
 import type { ICacheData } from '@helpers'
+import { Op } from 'sequelize'
+import { saveOrGetAcademicYear } from 'src/models/AcademicYear/actions'
 import {
   type ITermSubjectModel,
   TermSubjectModel,
@@ -8,9 +10,7 @@ import {
   saveOrGetTerm,
   subjectSaveOrGet,
   termSubjectSaveOrGet
-} from '@models'
-import { Op } from 'sequelize'
-import { saveOrGetAcademicYear } from 'src/models/AcademicYear/actions'
+} from '../../../../models'
 
 export const saveFinalMarks = async (
   finalMarks: AcademicRecord,

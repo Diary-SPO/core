@@ -1,5 +1,5 @@
 import type { AbsenceTypesKeys } from '@diary-spo/shared'
-import { AbsenceTypeModel, type IAbsenceTypeModel } from '@models'
+import { AbsenceTypeModel, type IAbsenceTypeModel } from '../../model'
 
 export const absenceTypeSaveOrGet = async (
   name: AbsenceTypesKeys

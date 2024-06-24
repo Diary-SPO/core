@@ -1,5 +1,5 @@
 import type { LessonWorkTypeKeys } from '@diary-spo/shared'
-import { type ITaskTypeModel, TaskTypeModel } from '@models'
+import { type ITaskTypeModel, TaskTypeModel } from '../../model'
 
 export const taskTypeSaveOrGet = async (
   name: LessonWorkTypeKeys

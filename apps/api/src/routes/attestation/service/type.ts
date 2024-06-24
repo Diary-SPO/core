@@ -8,17 +8,21 @@ import type {
   TermSubjectExaminationTypeModelType,
   TermSubjectModelType,
   TermTypeModelType
-} from '@models'
+} from '../../../models'
 
 export type IAttestationResponseRaw = AcademicYearModelType & {
   termType: TermTypeModelType
-  terms: (TermModelType & {
-    termSubjects: (TermSubjectModelType & {
-      termSubjectExaminationType: TermSubjectExaminationTypeModelType
-      examinationType?: ExaminationTypeModelType
-      teacher?: TeacherModelType
-      markValue?: MarkValueModelType
-      subject: SubjectModelType
-    })[]
-  })[]
+  terms: Array<
+    TermModelType & {
+      termSubjects: Array<
+        TermSubjectModelType & {
+          termSubjectExaminationType: TermSubjectExaminationTypeModelType
+          examinationType?: ExaminationTypeModelType
+          teacher?: TeacherModelType
+          markValue?: MarkValueModelType
+          subject: SubjectModelType
+        }
+      >
+    }
+  >
 }

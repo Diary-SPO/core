@@ -20,7 +20,7 @@ export class NotFoundError extends ApiError {
 }
 
 export class UnauthorizedError extends ApiError {
-  constructor(message: string) {
+  constructor(message = 'An unauthorized error occurred') {
     super(message, API_CODES.UNAUTHORIZED)
     Object.setPrototypeOf(this, UnauthorizedError.prototype)
   }

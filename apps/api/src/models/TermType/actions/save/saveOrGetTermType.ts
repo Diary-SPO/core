@@ -1,4 +1,4 @@
-import { type ITermTypeModel, TermTypeModel } from '@models'
+import { type ITermTypeModel, TermTypeModel } from '../../model'
 
 export const saveOrGetTermType = async (
   name: string
