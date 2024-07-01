@@ -20,7 +20,7 @@
     "@vkontakte/vk-bridge": "^2.14.2",
     "@vkontakte/vk-bridge-react": "^1.0.1",
     "@vkontakte/vk-mini-apps-router": "1.4.3",
-    "@vkontakte/vkui": "6.0.2",
+    "@vkontakte/vkui": "6.2.0",
     "axios": "^1.7.2",
     "preact": "^10.22.0"
   },
