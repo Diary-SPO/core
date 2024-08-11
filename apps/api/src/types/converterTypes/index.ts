@@ -10,7 +10,6 @@ export function ResponseLoginFromDiaryUser(
   token: string
 ): ResponseLogin {
   return {
-    // fixme
     id: diaryUser.id,
     groupId: diaryUser.groupId,
     groupName: group.groupName,

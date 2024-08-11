@@ -1,23 +1,45 @@
 import { Elysia, t } from 'elysia'
 
-import ads from './ads'
-import attestation from './attestation'
-import finalMarks from './finalMarks'
-import hello from './hello'
-import lessons from './lessons'
-import login from './login'
-import logout from './logout'
-import organization from './organization'
-import performanceCurrent from './performance.current'
-
 import { API_CODES } from '@api'
-import { getCookieFromToken } from '@helpers'
 import { AuthService } from '../services/AuthService'
+import { getServerInfo } from './hello/helpers'
 import getLessons from './lessons/handler'
-import { getLessonsService } from './lessons/service'
+import postAuth from './login/handler'
 import getOrganization from './organization/handler'
 
+const AuthModel = new Elysia({ name: 'Model.Auth' }).model({
+  'auth.sign': t.Object({
+    login: t.String(),
+    isHash: t.Boolean(),
+    password: t.String({
+      minLength: 5
+    })
+  })
+})
+
+const AuthController = new Elysia({ prefix: '/auth' })
+  .use(AuthModel)
+  .post(
+    '/login',
+    ({ body: { login, password, isHash } }) =>
+      postAuth({ login, password, isHash }),
+    {
+      detail: {
+        tags: ['Auth']
+      },
+      body: 'auth.sign'
+    }
+  )
+
 export const routes = new Elysia()
+  // /** Роуты без проверки **/
+  .get('/', async () => await getServerInfo(), {
+    detail: {
+      tags: ['Home']
+    }
+  })
+  .use(AuthController)
+  //
   .use(AuthService)
   .guard({
     isSignIn: true
@@ -53,10 +75,6 @@ export const routes = new Elysia()
   // .use(ads)
   // .use(finalMarks)
   // .use(logout)
-
-  // /** Роуты без проверки **/
-  // .use(hello)
-  // .use(login)
 
   /** Обработка любых ошибок в кажом роуте **/
   .onError(({ set, code, path, error }) => {

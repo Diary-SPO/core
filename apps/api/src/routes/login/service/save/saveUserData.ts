@@ -15,14 +15,13 @@ export const saveUserData = async (
   login: string,
   password: string
 ) => {
+  const tenant = parsedRes.data.tenants[parsedRes.data.tenantName]
+  const student = tenant.studentRole.students[0]
+  const SPO = tenant.settings.organization
+
+  const setCookieHeader = parsedRes.headers.get('Set-Cookie')
+  const cookie = cookieExtractor(setCookieHeader ?? '')
   try {
-    const tenant = parsedRes.data.tenants[parsedRes.data.tenantName]
-    const student = tenant.studentRole.students[0]
-    const SPO = tenant.settings.organization
-
-    const setCookieHeader = parsedRes.headers.get('Set-Cookie')
-    const cookie = cookieExtractor(setCookieHeader ?? '')
-
     const detailedInfo = await fetcher<PersonResponse>({
       url: `${SERVER_URL}/services/security/account-settings`,
       cookie
@@ -44,7 +43,7 @@ export const saveUserData = async (
           ? SPO.legalAddress
           : SPO.address.mailAddress
 
-    await Promise.any([])
+    // await Promise.any([])
 
     const regSPO = await saveOrGetSPO({
       abbreviation: SPO.abbreviation,

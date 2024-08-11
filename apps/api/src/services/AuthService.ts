@@ -4,6 +4,7 @@ import { Elysia } from 'elysia'
 
 export const AuthService = new Elysia({ name: 'Service.Auth' })
   .derive({ as: 'scoped' }, async ({ headers: { secret } }) => {
+    console.log('secret', secret)
     if (!secret) throw new UnauthorizedError()
 
     return {
@@ -13,8 +14,10 @@ export const AuthService = new Elysia({ name: 'Service.Auth' })
     }
   })
   .macro(({ onBeforeHandle }) => ({
-    isSignIn(_value: boolean) {
+    isSignIn(value: boolean) {
       onBeforeHandle(({ Auth, error }) => {
+        console.log('value', value)
+        console.log('Auth', Auth)
         if (!Auth?.user) return error(401)
       })
     }

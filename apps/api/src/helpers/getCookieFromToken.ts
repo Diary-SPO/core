@@ -21,7 +21,7 @@ type IUserAuthInfo = AuthModelType & {
 }
 export type ICacheData = {
   cookie: string
-  idFromDiary: number
+  idFromDiary?: number
   localUserId: bigint
   groupId: bigint
   spoId: bigint
@@ -48,12 +48,13 @@ export const getCookieFromToken = async (
   }
 
   // TODO: сделать метод рядом с моделью для создания и использовать тут
-  const DiaryUserAuth = (await AuthModel.findOne({
+  const diaryUserAuth = (await AuthModel.findOne({
     where: {
       token
     },
     include: {
       model: DiaryUserModel,
+      as: 'diaryUser',
       required: true,
       include: [
         {
@@ -68,14 +69,13 @@ export const getCookieFromToken = async (
         }
       ]
     }
-    // TODO: fix it
   })) as IUserAuthInfo | null
 
-  if (!DiaryUserAuth) {
+  if (!diaryUserAuth) {
     throw new ApiError(API_ERRORS.INVALID_TOKEN, 401)
   }
 
-  const user = DiaryUserAuth.diaryUser
+  const user = diaryUserAuth.diaryUser
   const spoId = user.group.spo.id
 
   const {
@@ -117,7 +117,7 @@ export const getCookieFromToken = async (
  */
 const cacheGetter = async (token: string): Promise<ICacheData | null> => {
   const cacheCookie = await memoryCache.get<ICacheData>(token)
-
+  console.log('cacheCookie', cacheCookie)
   if (!cacheCookie) {
     return null
   }

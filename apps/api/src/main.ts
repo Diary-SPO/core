@@ -8,6 +8,8 @@ import { helmet } from 'elysia-helmet'
 import { getTimezone } from './config/getTimeZone'
 import { routes } from './routes'
 
+import './models/relations'
+
 // настраиваем сервер...
 const port = Bun.env.PORT ?? 3003
 
@@ -44,6 +46,8 @@ const app = new Elysia()
   .use(routes)
   .listen(port)
 
+sequelize.sync()
+
 console.log(
   `Backend running at http://${app.server?.hostname}:${app.server?.port}`
 )
@@ -56,7 +60,6 @@ console.log(
 )
 
 export type App = typeof app
-sequelize.sync()
 const workerURL = new URL('worker', import.meta.url).href
 new Worker(workerURL)
 console.log('===============', 'Worker running!', '===============')

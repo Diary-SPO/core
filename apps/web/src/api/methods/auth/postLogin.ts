@@ -8,7 +8,7 @@ export const postLogin = async (
   isHash: boolean
 ): ServerResponse<ResponseLogin> => {
   return makeRequest<ResponseLogin>(
-    '/login/',
+    '/auth/login/',
     'POST',
     JSON.stringify({
       login,

@@ -2,15 +2,11 @@ import { API_ERRORS, UnauthorizedError } from '@api'
 import { KEY } from '@config'
 import type { ResponseLogin } from '@diary-spo/shared'
 import { generateToken } from '@helpers'
-import {
-  DiaryUserModel,
-  GroupModel,
-  type IDiaryUserModel,
-  type IGroupModel,
-  type ISPOModel,
-  SPOModel
-} from '@models'
+
 import { ResponseLoginFromDiaryUser } from '@types'
+import { DiaryUserModel, type IDiaryUserModel } from '../../../models/DiaryUser'
+import { GroupModel, type IGroupModel } from '../../../models/Group'
+import { type ISPOModel, SPOModel } from '../../../models/SPO'
 
 type DiaryUserAuthInfo = IDiaryUserModel & {
   group: IGroupModel & {

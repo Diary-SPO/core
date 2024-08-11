@@ -1,5 +1,6 @@
 export interface Person {
-  id: number
+  // FIXME: probably should be without ?
+  id?: number | bigint
   firstName: string
   lastName: string
   middleName?: string

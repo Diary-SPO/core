@@ -10,6 +10,7 @@ export const structurizeResponse = async (
   if (!data || data.terms.length === 0) {
     return null
   }
+
   const term = data.terms[0]
   /* Поля для выдачи */
   const termType = data.termType.name
