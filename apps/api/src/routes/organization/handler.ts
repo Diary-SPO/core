@@ -1,15 +1,11 @@
 import type { Optional } from 'sequelize'
 
-import {
-  DiaryUserModel,
-  GroupModel,
-  SPOModel,
-  type SPOModelType
-} from '../../models'
-
 import { API_CODES, API_ERRORS, ApiError } from '@api'
 import { SERVER_URL } from '@config'
 import { HeadersWithCookie } from '@utils'
+import { DiaryUserModel } from '../../models/DiaryUser'
+import { GroupModel } from '../../models/Group'
+import { SPOModel, type SPOModelType } from '../../models/SPO'
 
 interface Data {
   cookie: string

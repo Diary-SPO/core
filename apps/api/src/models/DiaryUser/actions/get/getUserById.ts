@@ -1,5 +1,4 @@
 import { GroupModel, type GroupModelType } from '../../../Group'
-import { DiaryUserModel, type DiaryUserModelType } from '../../model'
 
 export type IUserInfo = DiaryUserModelType & { group?: GroupModelType }
 

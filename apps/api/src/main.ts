@@ -7,8 +7,6 @@ import { compression } from 'elysia-compression'
 import { helmet } from 'elysia-helmet'
 import { getTimezone } from './config/getTimeZone'
 import { routes } from './routes'
-import getOrganization from './routes/organization/handler'
-import { AuthService } from './services/AuthService'
 
 // настраиваем сервер...
 const port = Bun.env.PORT ?? 3003
@@ -43,23 +41,6 @@ const app = new Elysia()
   )
   // заголовки...
   .use(helmet())
-  // .use(AuthService)
-  // .guard({
-  //   isSignIn: true
-  // })
-  // .get(
-  //   '/organization',
-  //   ({
-  //     Auth: {
-  //       user: { localUserId, cookie }
-  //     }
-  //   }) => getOrganization({ userId: localUserId, cookie }),
-  //   {
-  //     detail: {
-  //       tags: ['Organization']
-  //     }
-  //   }
-  // )
   .use(routes)
   .listen(port)
 

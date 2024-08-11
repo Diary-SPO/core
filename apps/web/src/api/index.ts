@@ -1,8 +1,8 @@
+import { treaty } from '@elysiajs/eden'
 import type { App } from '../../../api/src/main.ts'
 
-export * from './methods'
 export * from './makeRequest.ts'
-import { treaty } from '@elysiajs/eden'
+export * from './methods'
 
 const client = treaty<App>('localhost:3000')
 const test = async (): Promise<void> => {
@@ -10,3 +10,4 @@ const test = async (): Promise<void> => {
   if (!data) return
   // data.
 }
+test()

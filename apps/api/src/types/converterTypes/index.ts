@@ -1,5 +1,7 @@
 import type { ResponseLogin } from '@diary-spo/shared'
-import type { IDiaryUserModel, IGroupModel, ISPOModel } from '../../models'
+import type { IDiaryUserModel } from '../../models/DiaryUser'
+import type { IGroupModel } from '../../models/Group'
+import type { ISPOModel } from '../../models/SPO'
 
 export function ResponseLoginFromDiaryUser(
   diaryUser: IDiaryUserModel,

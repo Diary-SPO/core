@@ -1,16 +1,15 @@
 import type { ICacheData } from '@helpers'
 import { Op } from 'sequelize'
-import {
-  AbsenceModel,
-  AbsenceTypeModel,
-  MarkModel,
-  MarkValueModel,
-  ScheduleModel,
-  ScheduleSubgroupModel,
-  SubjectModel,
-  TaskModel,
-  detectTerm
-} from '../../../../models'
+
+import { AbsenceModel } from '../../../../models/Absence'
+import { AbsenceTypeModel } from '../../../../models/AbsenceType'
+import { MarkModel } from '../../../../models/Mark'
+import { MarkValueModel } from '../../../../models/MarkValue'
+import { ScheduleModel } from '../../../../models/Schedule'
+import { ScheduleSubgroupModel } from '../../../../models/ScheduleSubgroup'
+import { SubjectModel } from '../../../../models/Subject'
+import { TaskModel } from '../../../../models/Task'
+import { detectTerm } from '../../../../models/Term'
 import { getFormattedResponse } from '../helpers'
 import type { IPerformanceFromDB } from '../types'
 
@@ -18,6 +17,7 @@ export const getPerformanceFromDB = async (authData: ICacheData) => {
   if (!authData.termStartDate) {
     await detectTerm(authData)
   }
+
   const termStartDate = authData.termStartDate
   const result = (await SubjectModel.findAll({
     include: {

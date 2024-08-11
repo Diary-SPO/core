@@ -1,14 +1,12 @@
 import type { MarkKeys } from '@diary-spo/shared'
-import type {
-  IAbsenceModel,
-  IAbsenceTypeModel,
-  IMarkModelType,
-  IMarkValueModelType,
-  IScheduleModel,
-  ISubjectModelType,
-  ITaskModel,
-  ScheduleSubgroupModelType
-} from '../../../models'
+import type { IAbsenceModel } from '../../../models/Absence'
+import type { IAbsenceTypeModel } from '../../../models/AbsenceType'
+import type { IMarkModelType } from '../../../models/Mark'
+import type { IMarkValueModelType } from '../../../models/MarkValue'
+import type { IScheduleModel } from '../../../models/Schedule'
+import type { ScheduleSubgroupModelType } from '../../../models/ScheduleSubgroup'
+import type { ISubjectModelType } from '../../../models/Subject'
+import type { ITaskModel } from '../../../models/Task'
 
 export type IPerformanceFromDB = ISubjectModelType & {
   schedules: IScheduleFull[]
@@ -16,9 +14,11 @@ export type IPerformanceFromDB = ISubjectModelType & {
 
 type IScheduleFull = IScheduleModel & {
   tasks: ITaskFull[]
-  absences: (IAbsenceModel & {
-    absenceType: IAbsenceTypeModel
-  })[]
+  absences: Array<
+    IAbsenceModel & {
+      absenceType: IAbsenceTypeModel
+    }
+  >
   scheduleSubgroups: ScheduleSubgroupModelType[]
 }
 

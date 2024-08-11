@@ -2,7 +2,7 @@ import type { Day, Lesson } from '@diary-spo/shared'
 import type { ICacheData } from '@helpers'
 import { formatDate } from '@utils'
 
-import type { ScheduleFromDB } from '../../../../models'
+import type { ScheduleFromDB } from '../../../../models/Schedule'
 import { getFormattedGradebook } from './getFormattedGradebook'
 import { getFormattedTimetable } from './getFormattedTimetable'
 

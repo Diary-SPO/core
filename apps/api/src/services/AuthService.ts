@@ -13,7 +13,7 @@ export const AuthService = new Elysia({ name: 'Service.Auth' })
     }
   })
   .macro(({ onBeforeHandle }) => ({
-    isSignIn(value: boolean) {
+    isSignIn(_value: boolean) {
       onBeforeHandle(({ Auth, error }) => {
         if (!Auth?.user) return error(401)
       })

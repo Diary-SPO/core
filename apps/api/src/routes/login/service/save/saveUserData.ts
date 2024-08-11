@@ -6,9 +6,9 @@ import { ResponseLoginFromDiaryUser } from '@types'
 import { type ApiResponse, cookieExtractor, error, fetcher } from '@utils'
 import {
   saveOrGetDiaryUser,
-  saveOrGetGroup,
-  saveOrGetSPO
-} from '../../../../models'
+  saveOrGetGroup
+} from '../../../../models/DiaryUser'
+import { saveOrGetSPO } from '../../../../models/SPO'
 
 export const saveUserData = async (
   parsedRes: ApiResponse<UserData>,

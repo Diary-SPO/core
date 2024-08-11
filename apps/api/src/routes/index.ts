@@ -11,7 +11,10 @@ import organization from './organization'
 import performanceCurrent from './performance.current'
 
 import { API_CODES } from '@api'
+import { getCookieFromToken } from '@helpers'
 import { AuthService } from '../services/AuthService'
+import getLessons from './lessons/handler'
+import { getLessonsService } from './lessons/service'
 import getOrganization from './organization/handler'
 
 export const routes = new Elysia()
@@ -19,6 +22,8 @@ export const routes = new Elysia()
   .guard({
     isSignIn: true
   })
+  // .use(organization)
+  // .use(lessons)
   .get(
     '/organization',
     ({
@@ -32,8 +37,17 @@ export const routes = new Elysia()
       }
     }
   )
-  // .use(organization)
-  // .use(lessons)
+  .get(
+    '/lessons/:startDate/:endDate',
+    ({ params: { startDate, endDate }, Auth: { user } }) =>
+      getLessons({ startDate, endDate, user }),
+    {
+      detail: {
+        tags: ['Lessons']
+      }
+    }
+  )
+
   // .use(performanceCurrent)
   // .use(attestation)
   // .use(ads)
