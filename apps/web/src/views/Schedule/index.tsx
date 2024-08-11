@@ -15,11 +15,11 @@ import {
   PullToRefresh,
   View
 } from '@vkontakte/vkui'
-import { endOfWeek, startOfWeek } from '@vkontakte/vkui/dist/lib/date'
 import { type FC, lazy, useEffect, useState } from 'preact/compat'
 
 import { getLessons } from '@api'
 
+import { endOfWeek, startOfWeek } from '@vkontakte/vkui/dist/lib/date'
 import type { Props } from '../types.ts'
 import { getWeekString } from './utils'
 

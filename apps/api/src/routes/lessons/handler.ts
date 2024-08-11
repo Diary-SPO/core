@@ -14,7 +14,7 @@ const getLessons = async ({
   startDate,
   endDate,
   user
-}: LessonsParams): Promise<Day[] | string> => {
+}: LessonsParams): Promise<Day[]> => {
   const formattedStartDate = formatDate(startDate)
   const formattedEndDate = formatDate(endDate)
 

@@ -12,7 +12,7 @@ export const getLessonsService = async (
   endDate: string,
   authData: ICacheData,
   notGetFromDB = false
-): Promise<Day[] | string> => {
+): Promise<Day[]> => {
   const path = `${SERVER_URL}/services/students/${authData.idFromDiary}/lessons/${startDate}/${endDate}`
 
   const response = await fetch(path, {
@@ -32,6 +32,7 @@ export const getLessonsService = async (
   // Сохраняем и отдаём
   const days: Day[] = await response.json()
   const term = detectTerm(authData)
+
   for (const day of days) {
     const backgroundProcess = async () =>
       daySave(day, authData, term).catch((err: string) =>
@@ -44,5 +45,6 @@ export const getLessonsService = async (
       backgroundProcess()
     }
   }
+
   return days
 }
