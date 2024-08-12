@@ -1,3 +1,4 @@
+import type { TermType } from '@diary-spo/shared'
 import { DataTypes } from 'sequelize'
 
 import { cache, enableCache, sequelize } from '@db'
@@ -6,7 +7,7 @@ import type { IModelPrototype } from '../types'
 
 export type TermTypeModelType = {
   id: number
-  name: string
+  name: TermType
 }
 
 export type ITermTypeModel = IModelPrototype<TermTypeModelType, 'id'>

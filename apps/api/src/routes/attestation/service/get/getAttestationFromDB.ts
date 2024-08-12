@@ -1,22 +1,20 @@
 import type { AttestationResponse } from '@diary-spo/shared'
 import type { ICacheData } from '@helpers'
-import {
-  AcademicYearModel,
-  ExaminationTypeModel,
-  MarkValueModel,
-  SubjectModel,
-  TeacherModel,
-  TermModel,
-  TermSubjectExaminationTypeModel,
-  TermSubjectModel,
-  TermTypeModel,
-  detectTerm
-} from '@models'
-import { type IAttestationResponseRaw, structurizeResponse } from '../'
+import { AcademicYearModel } from '../../../../models/AcademicYear'
+import { ExaminationTypeModel } from '../../../../models/Examination'
+import { MarkValueModel } from '../../../../models/MarkValue'
+import { SubjectModel } from '../../../../models/Subject'
+import { TeacherModel } from '../../../../models/Teacher'
+import { TermModel, detectTerm } from '../../../../models/Term'
+import { TermSubjectModel } from '../../../../models/TermSubject'
+import { TermSubjectExaminationTypeModel } from '../../../../models/TermSubjectExaminationType'
+import { TermTypeModel } from '../../../../models/TermType'
+import { structurizeResponse } from '../helpers'
+import type { IAttestationResponseRaw } from '../type'
 
 export const getAttestationFromDB = async (
   authData: ICacheData
-): Promise<string | AttestationResponse> => {
+): Promise<AttestationResponse | null> => {
   const currTermId = await detectTerm(authData)
   const dataFromDB = (await AcademicYearModel.findOne({
     include: [

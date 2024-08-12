@@ -37,7 +37,7 @@ const FinalMarks: FunctionalComponent<Props> = ({
           return
         }
 
-        const finalMarks = await getFinalMarks()
+        const { data: finalMarks } = await getFinalMarks()
 
         handleResponse(
           finalMarks,

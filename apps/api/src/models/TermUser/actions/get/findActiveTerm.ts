@@ -1,5 +1,6 @@
 import type { ICacheData } from '@helpers'
-import { TermModel } from 'src/models/import'
+
+import { TermModel } from '../../../Term'
 import { TermUserModel } from '../../model'
 
 export const findActiveTerm = async (authData: ICacheData) => {

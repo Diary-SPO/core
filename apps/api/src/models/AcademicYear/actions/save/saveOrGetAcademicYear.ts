@@ -1,7 +1,8 @@
 import type { AcademicYear } from '@diary-spo/shared'
 import { type ICacheData, objPropertyCopy, retriesForError } from '@helpers'
-import { saveOrGetTerm, saveOrGetTermType } from '@models'
-import { AcademicYearModel } from '@models'
+import { saveOrGetTerm } from '../../../Term'
+import { saveOrGetTermType } from '../../../TermType'
+import { AcademicYearModel } from '../../model'
 
 export const saveOrGetAcademicYear = async (
   academicYear: AcademicYear,

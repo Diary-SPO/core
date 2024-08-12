@@ -2,24 +2,26 @@ import { API_CODES, ApiError } from '@api'
 import { SERVER_URL } from '@config'
 import type { PersonResponse, UserData } from '@diary-spo/shared'
 import { generateToken } from '@helpers'
-// TODO: сделать папку с утилитами может
-import { saveOrGetDiaryUser, saveOrGetGroup, saveOrGetSPO } from '@models'
-import { ResponseLoginFromDiaryUser } from '@types'
 import { type ApiResponse, cookieExtractor, error, fetcher } from '@utils'
+import {
+  getFormattedDiaryUserData,
+  saveOrGetDiaryUser,
+  saveOrGetGroup
+} from '../../../../../models/DiaryUser'
+import { saveOrGetSPO } from '../../../../../models/SPO'
 
 export const saveUserData = async (
   parsedRes: ApiResponse<UserData>,
   login: string,
   password: string
 ) => {
+  const tenant = parsedRes.data.tenants[parsedRes.data.tenantName]
+  const student = tenant.studentRole.students[0]
+  const SPO = tenant.settings.organization
+
+  const setCookieHeader = parsedRes.headers.get('Set-Cookie')
+  const cookie = cookieExtractor(setCookieHeader ?? '')
   try {
-    const tenant = parsedRes.data.tenants[parsedRes.data.tenantName]
-    const student = tenant.studentRole.students[0]
-    const SPO = tenant.settings.organization
-
-    const setCookieHeader = parsedRes.headers.get('Set-Cookie')
-    const cookie = cookieExtractor(setCookieHeader ?? '')
-
     const detailedInfo = await fetcher<PersonResponse>({
       url: `${SERVER_URL}/services/security/account-settings`,
       cookie
@@ -78,7 +80,7 @@ export const saveUserData = async (
     const token = await generateToken(regDiaryUser.id)
 
     // Убираем все "приватные" поля из ответа
-    return ResponseLoginFromDiaryUser(regDiaryUser, regSPO, regGroup, token)
+    return getFormattedDiaryUserData(regDiaryUser, regSPO, regGroup, token)
   } catch (err) {
     error(err)
   }

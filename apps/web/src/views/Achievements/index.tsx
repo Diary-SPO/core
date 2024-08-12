@@ -82,7 +82,7 @@ const Achievements: FC<Props> = ({ id }) => {
     try {
       setIsError(false)
       setIsLoading(true)
-      const marks = await getPerformance()
+      const { data: marks } = await getPerformance()
 
       handleResponse(
         marks,

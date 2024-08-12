@@ -1,16 +1,10 @@
-import {
-  type MarkKeys,
-  type Subject,
-  TermSubjectExaminationKeys
-} from '@diary-spo/shared'
+import type { MarkKeys, Subject } from '@diary-spo/shared'
 import { type ICacheData, retriesForError } from '@helpers'
-import {
-  TeacherSaveOrGet,
-  markValueSaveOrGet,
-  saveOrGetExaminationType,
-  subjectSaveOrGet,
-  termSubjectSaveOrGet
-} from '@models'
+import { saveOrGetExaminationType } from '../../../../models/Examination'
+import { markValueSaveOrGet } from '../../../../models/MarkValue'
+import { subjectSaveOrGet } from '../../../../models/Subject'
+import { teacherSaveOrGet } from '../../../../models/Teacher'
+import { termSubjectSaveOrGet } from '../../../../models/TermSubject'
 
 export const saveTermSubject = async (
   termSubjectExaminationTypeId: number | undefined,
@@ -38,7 +32,7 @@ export const saveTermSubject = async (
     ? await retriesForError(saveOrGetExaminationType, [examinationType])
     : undefined
   const teacherFromDB = teacher
-    ? await retriesForError(TeacherSaveOrGet, [
+    ? await retriesForError(teacherSaveOrGet, [
         { ...teacher, spoId: authData.spoId }
       ])
     : undefined

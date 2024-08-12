@@ -1,6 +1,3 @@
-import type { NotificationsResponse } from '@diary-spo/shared'
-import type { ServerResponse } from '@types'
-import makeRequest from '../makeRequest'
+import { client } from '../client.ts'
 
-export const getAds = async (): ServerResponse<NotificationsResponse[]> =>
-  makeRequest<NotificationsResponse[]>('/ads')
+export const getAds = async () => client.ads.get()

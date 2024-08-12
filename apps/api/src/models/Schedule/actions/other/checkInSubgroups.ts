@@ -1,4 +1,4 @@
-import type { IScheduleSubgroupModelType } from '@models'
+import type { IScheduleSubgroupModelType } from '../../../ScheduleSubgroup'
 
 export const checkInSubgroups = (
   subgroups: IScheduleSubgroupModelType[],

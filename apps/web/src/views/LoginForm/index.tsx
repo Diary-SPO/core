@@ -80,7 +80,7 @@ const LoginForm: FC<Props> = ({ id }) => {
     try {
       const response = await postLogin(login, passwordHashed, true)
 
-      const data = handleResponse(
+      const { data } = handleResponse(
         response,
         () => setIsDataInvalid(true),
         undefined,

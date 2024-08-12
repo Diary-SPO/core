@@ -1,6 +1,6 @@
 import type { Subject, TermSubjectExaminationKeys } from '@diary-spo/shared'
 import { type ICacheData, retriesForError } from '@helpers'
-import { saveOrGetTermSubjectExaminationType } from '@models'
+import { saveOrGetTermSubjectExaminationType } from '../../../../models/TermSubjectExaminationType'
 import { saveTermSubject } from './saveTermSubject'
 
 export const saveTermSubjects = async (
@@ -15,7 +15,7 @@ export const saveTermSubjects = async (
     [type]
   )
 
-  for (const subjectSave of subjectsSave) {
+  for (const subjectSave of subjectsSave ?? []) {
     saveTermSubject(
       termSubjectExaminationType?.id,
       currTermId,

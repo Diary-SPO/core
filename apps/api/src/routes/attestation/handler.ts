@@ -1,22 +1,23 @@
 import type { AttestationResponse } from '@diary-spo/shared'
 import { getCookieFromToken } from '@helpers'
-import type { ContextWithID } from '@types'
+import type { Token } from '../../types'
 import {
   getAttestationFromDB,
   getAttestationFromDiary,
   saveAttestation
 } from './service'
 
+type Params = Token
+
 const getAttestation = async ({
-  request
-}: ContextWithID): Promise<AttestationResponse | string> => {
-  const authData = await getCookieFromToken(request.headers.toJSON().secret)
+  token
+}: Params): Promise<AttestationResponse | null> => {
+  const authData = await getCookieFromToken(token)
 
   const res = await getAttestationFromDiary(authData)
 
   if (!res) {
-    return await getAttestationFromDB(authData)
-    //throw new ApiError(API_ERRORS.DATA_NOT_FOUND, API_CODES.UNKNOWN_ERROR)
+    return getAttestationFromDB(authData)
   }
 
   saveAttestation(res, authData).catch((e) => console.error(e))

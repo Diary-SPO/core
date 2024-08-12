@@ -2,16 +2,18 @@ import { TIMEZONE } from '@config'
 import { sequelize } from '@db'
 import { cors } from '@elysiajs/cors'
 import { swagger } from '@elysiajs/swagger'
-import routes from '@routes'
 import { Elysia } from 'elysia'
 import { compression } from 'elysia-compression'
 import { helmet } from 'elysia-helmet'
 import { getTimezone } from './config/getTimeZone'
+import { routes } from './routes'
+
+import './models/relations'
 
 // настраиваем сервер...
 const port = Bun.env.PORT ?? 3003
+
 const app = new Elysia()
-  // документация...
   .use(
     swagger({
       path: '/documentation',
@@ -44,6 +46,8 @@ const app = new Elysia()
   .use(routes)
   .listen(port)
 
+sequelize.sync()
+
 console.log(
   `Backend running at http://${app.server?.hostname}:${app.server?.port}`
 )
@@ -55,7 +59,7 @@ console.log(
   }.`
 )
 
-sequelize.sync()
+export type App = typeof app
 const workerURL = new URL('worker', import.meta.url).href
 new Worker(workerURL)
 console.log('===============', 'Worker running!', '===============')

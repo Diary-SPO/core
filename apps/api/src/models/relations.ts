@@ -1,34 +1,32 @@
 import { forceSyncDatabase, sequelize } from '@db'
-import {
-  AbsenceModel,
-  AbsenceTypeModel,
-  AcademicYearModel,
-  AdsModel,
-  AuthModel,
-  ClassroomModel,
-  DiaryUserModel,
-  ExaminationTypeModel,
-  FinalMarkModel,
-  GroupModel,
-  LessonTypeModel,
-  MarkModel,
-  MarkValueModel,
-  RequiredModel,
-  SPOModel,
-  ScheduleModel,
-  ScheduleSubgroupModel,
-  SubgroupModel,
-  SubjectModel,
-  TaskModel,
-  TaskTypeModel,
-  TeacherModel,
-  TermModel,
-  TermSubjectExaminationTypeModel,
-  TermSubjectModel,
-  TermTypeModel,
-  TermUserModel,
-  ThemeModel
-} from './import'
+import { AbsenceModel } from './Absence'
+import { AbsenceTypeModel } from './AbsenceType'
+import { AcademicYearModel } from './AcademicYear'
+import { AdsModel } from './Ads'
+import { AuthModel } from './Auth'
+import { ClassroomModel } from './Classroom'
+import { DiaryUserModel } from './DiaryUser'
+import { ExaminationTypeModel } from './Examination'
+import { FinalMarkModel } from './FinalMark'
+import { GroupModel } from './Group'
+import { LessonTypeModel } from './LessonType'
+import { MarkModel } from './Mark'
+import { MarkValueModel } from './MarkValue'
+import { RequiredModel } from './Required'
+import { SPOModel } from './SPO'
+import { ScheduleModel } from './Schedule'
+import { ScheduleSubgroupModel } from './ScheduleSubgroup'
+import { SubgroupModel } from './Subgroup'
+import { SubjectModel } from './Subject'
+import { TaskModel } from './Task'
+import { TaskTypeModel } from './TaskType'
+import { TeacherModel } from './Teacher'
+import { TermModel } from './Term'
+import { TermSubjectModel } from './TermSubject'
+import { TermSubjectExaminationTypeModel } from './TermSubjectExaminationType'
+import { TermTypeModel } from './TermType'
+import { TermUserModel } from './TermUser'
+import { ThemeModel } from './Theme'
 
 // SPO <--->> Group
 SPOModel.hasMany(GroupModel)

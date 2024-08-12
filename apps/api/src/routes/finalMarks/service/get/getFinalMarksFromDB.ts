@@ -1,13 +1,12 @@
 import type { ICacheData } from '@helpers'
-import {
-  AcademicYearModel,
-  FinalMarkModel,
-  MarkValueModel,
-  SubjectModel,
-  TermModel,
-  TermSubjectModel,
-  TermTypeModel
-} from '@models'
+
+import { AcademicYearModel } from '../../../../models/AcademicYear'
+import { FinalMarkModel } from '../../../../models/FinalMark'
+import { MarkValueModel } from '../../../../models/MarkValue'
+import { SubjectModel } from '../../../../models/Subject'
+import { TermModel } from '../../../../models/Term'
+import { TermSubjectModel } from '../../../../models/TermSubject'
+import { TermTypeModel } from '../../../../models/TermType'
 import type { RawFinalMark, RawFinalMarksFromDB, RawSubjectMark } from '../type'
 
 export const getFinalMarksFromDB = async (
@@ -54,6 +53,7 @@ export const getFinalMarksFromDB = async (
     ]
   })
 
+  // fixme
   return {
     subjectMarks: (await subjectMarks) as RawSubjectMark[],
     finalMarks: (await finalMarks) as RawFinalMark[]

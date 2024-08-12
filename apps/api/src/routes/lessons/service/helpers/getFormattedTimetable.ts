@@ -1,5 +1,5 @@
 import type { Timetable } from '@diary-spo/shared'
-import type { ScheduleFromDB } from '@models'
+import type { ScheduleFromDB } from '../../../../models/Schedule'
 
 export const getFormattedTimetable = (rs: ScheduleFromDB): Timetable => {
   const { building, name: clName, idFromDiary: id } = rs.classroom

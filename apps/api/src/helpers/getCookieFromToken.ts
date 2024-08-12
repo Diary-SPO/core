@@ -1,16 +1,10 @@
 import { API_ERRORS, ApiError } from '@api'
-import type { Nullable } from '@diary-spo/shared'
-import {
-  AuthModel,
-  type AuthModelType,
-  DiaryUserModel,
-  type DiaryUserModelType,
-  GroupModel,
-  type GroupModelType,
-  SPOModel,
-  type SPOModelType
-} from '@models'
+import type { DiaryUserId, Nullable } from '@diary-spo/shared'
 import { caching } from 'cache-manager'
+import { AuthModel, type AuthModelType } from '../models/Auth'
+import { DiaryUserModel, type DiaryUserModelType } from '../models/DiaryUser'
+import { GroupModel, type GroupModelType } from '../models/Group'
+import { SPOModel, type SPOModelType } from '../models/SPO'
 
 const memoryCache = await caching('memory', {
   max: 1000,
@@ -54,12 +48,13 @@ export const getCookieFromToken = async (
   }
 
   // TODO: сделать метод рядом с моделью для создания и использовать тут
-  const DiaryUserAuth = (await AuthModel.findOne({
+  const diaryUserAuth = (await AuthModel.findOne({
     where: {
       token
     },
     include: {
       model: DiaryUserModel,
+      as: 'diaryUser',
       required: true,
       include: [
         {
@@ -74,14 +69,13 @@ export const getCookieFromToken = async (
         }
       ]
     }
-    // TODO: fix it
   })) as IUserAuthInfo | null
 
-  if (!DiaryUserAuth) {
+  if (!diaryUserAuth) {
     throw new ApiError(API_ERRORS.INVALID_TOKEN, 401)
   }
 
-  const user = DiaryUserAuth.diaryUser
+  const user = diaryUserAuth.diaryUser
   const spoId = user.group.spo.id
 
   const {
@@ -112,7 +106,7 @@ export const getCookieFromToken = async (
 
   await memoryCache.set(token, toSave)
 
-  return { ...toSave }
+  return toSave
 }
 
 /**

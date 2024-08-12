@@ -1,12 +1,10 @@
-import type {
-  IAcademicYearModel,
-  IFinalMarkModel,
-  MarkValueModelType,
-  SubjectModelType,
-  TermModelType,
-  TermSubjectModelType,
-  TermTypeModelType
-} from '@models'
+import type { IAcademicYearModel } from '../../../models/AcademicYear'
+import type { IFinalMarkModel } from '../../../models/FinalMark'
+import type { MarkValueModelType } from '../../../models/MarkValue'
+import type { SubjectModelType } from '../../../models/Subject'
+import type { TermModelType } from '../../../models/Term'
+import type { TermSubjectModelType } from '../../../models/TermSubject'
+import type { TermTypeModelType } from '../../../models/TermType'
 
 export type RawFinalMarksFromDB = {
   subjectMarks: Array<RawSubjectMark>
@@ -28,6 +26,6 @@ export type RawSubjectMark = IAcademicYearModel & {
 }
 
 export type RawFinalMark = IFinalMarkModel & {
-  subject: SubjectModelType
   markValue: MarkValueModelType
+  subject: SubjectModelType
 }

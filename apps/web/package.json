@@ -16,22 +16,24 @@
     "checkAll": "biome check . --apply-unsafe"
   },
   "dependencies": {
-    "@vkontakte/icons": "2.128.0",
-    "@vkontakte/vk-bridge": "^2.14.2",
+    "@vkontakte/icons": "2.129.0",
+    "@vkontakte/vk-bridge": "^2.15.0",
     "@vkontakte/vk-bridge-react": "^1.0.1",
-    "@vkontakte/vk-mini-apps-router": "1.4.3",
-    "@vkontakte/vkui": "6.3.0",
+    "@vkontakte/vk-mini-apps-router": "1.4.5",
+    "@vkontakte/vkui": "6.4.1",
+    "@elysiajs/eden": "1.1.2",
     "axios": "^1.7.2",
     "preact": "^10.22.0"
   },
   "devDependencies": {
     "@diary-spo/shared": "workspace:*",
-    "@happy-dom/global-registrator": "^14.12.0",
-    "@preact/preset-vite": "^2.8.2",
+    "@happy-dom/global-registrator": "^14.12.3",
+    "@preact/preset-vite": "^2.9.0",
     "@types/jsdom": "^21.1.7",
     "@vkontakte/vk-miniapps-deploy": "^0.1.8",
+    "elysia": "1.1.2",
     "gh-pages": "^6.1.1",
-    "vite": "^6.0.0-alpha.18"
+    "vite": "^6.0.0-alpha.19"
   },
   "browserslist": {
     "production": [">0.2%", "not dead", "not op_mini all"],

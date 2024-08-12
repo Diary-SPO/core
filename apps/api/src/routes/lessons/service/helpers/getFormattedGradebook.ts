@@ -1,7 +1,7 @@
 import type { Gradebook, Task } from '@diary-spo/shared'
-import type { ScheduleFromDB } from '@models'
+import type { ScheduleFromDB } from '../../../../models/Schedule'
 
-export const getFordattedGradebook = (
+export const getFormattedGradebook = (
   rd: ScheduleFromDB
 ): Gradebook | undefined => {
   if (rd.gradebookIdFromDiary) {

@@ -8,19 +8,19 @@ import { handleResponse } from './service/helpers'
 import { saveUserData } from './service/save'
 
 interface AuthContext {
-  body: {
-    login: string
-    password: string
-    isHash: boolean
-  }
+  login: string
+  password: string
+  isHash: boolean
 }
 
-const postAuth = async ({ body }: AuthContext): Promise<ResponseLogin> => {
-  let { login, password, isHash } = body
-
+const postAuth = async ({
+  login,
+  password,
+  isHash
+}: AuthContext): Promise<ResponseLogin> => {
   /** Если пароль передан в исходном виде, то хешируем его на сервере **/
   if (!isHash) {
-    password = await b64(body.password)
+    password = await b64(password)
   }
 
   const res = await fetcher<UserData>({
@@ -28,7 +28,6 @@ const postAuth = async ({ body }: AuthContext): Promise<ResponseLogin> => {
     method: 'POST',
     body: JSON.stringify({ login, password, isRemember: true })
   })
-
   const parsedRes = handleResponse(res)
 
   switch (parsedRes) {
@@ -46,16 +45,24 @@ const postAuth = async ({ body }: AuthContext): Promise<ResponseLogin> => {
     case 'UNKNOWN':
       throw new UnknownError('Unknown auth error')
     /** Сервер вернул корректные данные, сохраняем их в БД **/
-    default:
+    default: {
       /**
        * Если сетевой город поменял тип своего ответа, то мы бы хотели об этом узнать
        * Поэтому проверяем хотя бы наличие одного обязательного поля
        **/
+
       if (!parsedRes.data.tenants) {
         throw new UnknownError('Unreachable auth error')
       }
 
-      return saveUserData(parsedRes, login, password)
+      const userData = await saveUserData(parsedRes, login, password)
+
+      if (!userData) {
+        throw new UnknownError('Unreachable auth error')
+      }
+
+      return userData
+    }
   }
 }
 

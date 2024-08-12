@@ -19,10 +19,6 @@ export const useActiveTab = (
   isLoading: boolean,
   setIsLoading: (value: boolean) => void
 ) => {
-  if (isLoading) {
-    return
-  }
-
   let activeTabComponent = null
 
   switch (selected) {

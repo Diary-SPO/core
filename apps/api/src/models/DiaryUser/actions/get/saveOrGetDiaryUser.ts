@@ -1,9 +1,9 @@
+import type { Optional } from 'sequelize'
 import {
   DiaryUserModel,
   type DiaryUserModelType,
   type IDiaryUserModel
-} from '@models'
-import type { Optional } from 'sequelize'
+} from '../../model'
 
 export const saveOrGetDiaryUser = async (
   data: Optional<DiaryUserModelType, 'id'>

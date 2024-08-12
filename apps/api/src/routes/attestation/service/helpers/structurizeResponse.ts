@@ -1,7 +1,7 @@
 import type { ExaminationKeys, Subject } from '@diary-spo/shared'
 import type { ICacheData } from '@helpers'
-import type { TeacherModelType } from '@models'
 import type { IAttestationResponseRaw } from '../'
+import type { TeacherModelType } from '../../../../models/Teacher'
 
 export const structurizeResponse = async (
   data: IAttestationResponseRaw | null,
@@ -10,6 +10,7 @@ export const structurizeResponse = async (
   if (!data || data.terms.length === 0) {
     return null
   }
+
   const term = data.terms[0]
   /* Поля для выдачи */
   const termType = data.termType.name

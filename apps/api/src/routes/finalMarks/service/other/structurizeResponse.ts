@@ -10,7 +10,7 @@ import type { RawFinalMarksFromDB } from '../type'
 
 export const structurizeResponse = async (
   raw: RawFinalMarksFromDB,
-  authData: ICacheData
+  _authData: ICacheData
 ) => {
   const academicYears: AcademicYear[] = []
   const subjects: AttestationSubject[] = []
@@ -41,7 +41,7 @@ export const structurizeResponse = async (
         if (!subject) {
           const id = sub.idFromDiary ?? 0
           const name = sub.subject.name
-          const marks: any = new Object()
+          const marks = {}
           let finalMark: AttestationMark = {}
 
           for (const RawFinalMark of raw.finalMarks) {

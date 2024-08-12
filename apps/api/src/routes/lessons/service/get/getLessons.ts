@@ -1,10 +1,10 @@
-import { API_CODES, API_ERRORS, ApiError, ForbiddenError } from '@api'
+import { API_CODES, API_ERRORS, ForbiddenError } from '@api'
 import { SERVER_URL } from '@config'
 import type { Day } from '@diary-spo/shared'
 import type { ICacheData } from '@helpers'
-import { ScheduleGetFromDB, daySave } from '@models'
 import { HeadersWithCookie } from '@utils'
 import { detectTerm } from 'src/models/Term/actions/other/detectTerm'
+import { ScheduleGetFromDB, daySave } from '../../../../models/Schedule'
 import { getFormattedResponse } from '../helpers'
 
 export const getLessonsService = async (
@@ -12,9 +12,9 @@ export const getLessonsService = async (
   endDate: string,
   authData: ICacheData,
   notGetFromDB = false
-): Promise<Day[] | string> => {
+): Promise<Day[]> => {
   const path = `${SERVER_URL}/services/students/${authData.idFromDiary}/lessons/${startDate}/${endDate}`
-  console.log(path)
+
   const response = await fetch(path, {
     headers: HeadersWithCookie(authData.cookie)
   })
@@ -32,6 +32,7 @@ export const getLessonsService = async (
   // Сохраняем и отдаём
   const days: Day[] = await response.json()
   const term = detectTerm(authData)
+
   for (const day of days) {
     const backgroundProcess = async () =>
       daySave(day, authData, term).catch((err: string) =>
@@ -44,5 +45,6 @@ export const getLessonsService = async (
       backgroundProcess()
     }
   }
+
   return days
 }

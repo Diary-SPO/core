@@ -1,5 +1,5 @@
-import { ThemeModel } from '@models'
 import { Op } from 'sequelize'
+import { ThemeModel } from '../../model'
 
 export const deleteThemes = async (themes: string[], scheduleId: bigint) =>
   ThemeModel.destroy({

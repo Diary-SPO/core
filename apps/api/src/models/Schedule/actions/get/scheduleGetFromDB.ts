@@ -1,22 +1,21 @@
 import type { ICacheData } from '@helpers'
-import {
-  AbsenceModel,
-  AbsenceTypeModel,
-  ClassroomModel,
-  LessonTypeModel,
-  MarkModel,
-  MarkValueModel,
-  RequiredModel,
-  type ScheduleFromDB,
-  ScheduleModel,
-  ScheduleSubgroupModel,
-  SubjectModel,
-  TaskModel,
-  TaskTypeModel,
-  TeacherModel,
-  ThemeModel
-} from '@models'
+
 import { Op } from 'sequelize'
+import { AbsenceModel } from '../../../Absence'
+import { AbsenceTypeModel } from '../../../AbsenceType'
+import { ClassroomModel } from '../../../Classroom'
+import { LessonTypeModel } from '../../../LessonType'
+import { MarkModel } from '../../../Mark'
+import { MarkValueModel } from '../../../MarkValue'
+import { RequiredModel } from '../../../Required'
+import { ScheduleSubgroupModel } from '../../../ScheduleSubgroup'
+import { SubjectModel } from '../../../Subject'
+import { TaskModel } from '../../../Task'
+import { TaskTypeModel } from '../../../TaskType'
+import { TeacherModel } from '../../../Teacher'
+import { ThemeModel } from '../../../Theme'
+import { ScheduleModel } from '../../model'
+import type { ScheduleFromDB } from '../types'
 
 export const ScheduleGetFromDB = async (
   startDate: string,

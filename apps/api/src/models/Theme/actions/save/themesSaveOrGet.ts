@@ -1,4 +1,5 @@
-import { ThemeModel, deleteThemes } from '@models'
+import { ThemeModel } from '../../model'
+import { deleteThemes } from '../delete'
 
 export const themesSaveOrGet = async (themes: string[], scheduleId: bigint) => {
   const promises = []
