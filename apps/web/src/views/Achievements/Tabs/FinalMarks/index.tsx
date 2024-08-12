@@ -24,8 +24,6 @@ const FinalMarks: FunctionalComponent<Props> = ({
   const [finalMarksData, setFinalMarksData] =
     useState<Nullable<AcademicRecord>>(null)
 
-  console.log('finalMarksData', finalMarksData)
-
   useEffect(() => {
     const fetchData = async () => {
       setIsLoading(true)
@@ -71,8 +69,6 @@ const FinalMarks: FunctionalComponent<Props> = ({
   }
 
   if (!finalMarksData?.subjects?.length) {
-    console.log('finalMarksData', finalMarksData)
-
     return <Placeholder>Данных нет</Placeholder>
   }
 
