@@ -2,13 +2,13 @@ import { API_CODES, ApiError } from '@api'
 import { SERVER_URL } from '@config'
 import type { PersonResponse, UserData } from '@diary-spo/shared'
 import { generateToken } from '@helpers'
-import { ResponseLoginFromDiaryUser } from '@types'
 import { type ApiResponse, cookieExtractor, error, fetcher } from '@utils'
 import {
   saveOrGetDiaryUser,
   saveOrGetGroup
-} from '../../../../models/DiaryUser'
-import { saveOrGetSPO } from '../../../../models/SPO'
+} from '../../../../../models/DiaryUser'
+import { saveOrGetSPO } from '../../../../../models/SPO'
+import { ResponseLoginFromDiaryUser } from '../../../../../types'
 
 export const saveUserData = async (
   parsedRes: ApiResponse<UserData>,

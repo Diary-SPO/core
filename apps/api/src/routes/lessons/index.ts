@@ -1,19 +1,23 @@
 import { Elysia, t } from 'elysia'
+import { AuthService } from '../../services/AuthService'
 import getLessons from './handler'
 
-const schema = {
-  params: t.Object({
-    endDate: t.RegExp(/^\d{4}-\d{2}-\d{2}$/),
-    startDate: t.RegExp(/^\d{4}-\d{2}-\d{2}$/)
+export const LessonsController = new Elysia()
+  .use(AuthService)
+  .guard({
+    isSignIn: true
   })
-}
-
-const lessons = new Elysia().guard(schema, (app) =>
-  app.get('/lessons/:startDate/:endDate', getLessons, {
-    detail: {
-      tags: ['Student']
+  .get(
+    '/lessons/:startDate/:endDate',
+    ({ params: { startDate, endDate }, Auth: { user } }) =>
+      getLessons({ startDate, endDate, user }),
+    {
+      params: t.Object({
+        endDate: t.RegExp(/^\d{4}-\d{2}-\d{2}$/),
+        startDate: t.RegExp(/^\d{4}-\d{2}-\d{2}$/)
+      }),
+      detail: {
+        tags: ['Lessons']
+      }
     }
-  })
-)
-
-export default lessons
+  )

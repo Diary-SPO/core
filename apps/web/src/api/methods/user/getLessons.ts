@@ -9,6 +9,13 @@ export const getLessons = async (
 ): ServerResponse<Day[]> => {
   const formattedStartDate = formatDateForRequest(startDate)
   const formattedEndDate = formatDateForRequest(endDate)
+  const a = await client.index.get()
+
+  if (!a) {
+    return
+  }
+
+  console.log('a', a.data)
 
   const { data } = await client
     .lessons({ startDate: formattedStartDate })({ endDate: formattedEndDate })

@@ -1,8 +1,8 @@
 import { Elysia } from 'elysia'
-import { AuthPlugin, AuthService } from '../../services/AuthService'
+import { AuthService } from '../../services/AuthService'
 import getOrganization from './handler'
 
-const organization = new Elysia()
+export const OrganizationController = new Elysia()
   .use(AuthService)
   .guard({
     isSignIn: true
@@ -20,5 +20,3 @@ const organization = new Elysia()
       }
     }
   )
-
-export default organization

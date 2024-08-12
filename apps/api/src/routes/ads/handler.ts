@@ -1,9 +1,9 @@
 import { SERVER_URL } from '@config'
 import type { NotificationsResponse } from '@diary-spo/shared'
 import { getCookieFromToken } from '@helpers'
-import type { ContextWithID } from '@types'
 import { HeadersWithCookie } from '@utils'
 import { adsGetFromDB, saveAds } from 'src/models/Ads/actions'
+import type { ContextWithID } from '../../types'
 
 const getAds = async ({
   request

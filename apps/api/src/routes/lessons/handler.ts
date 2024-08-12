@@ -1,7 +1,7 @@
 import type { Day } from '@diary-spo/shared'
-import { type ICacheData, getCookieFromToken } from '@helpers'
-import type { IContext } from '@types'
+import type { ICacheData } from '@helpers'
 import { formatDate } from '@utils'
+import { ContextWithID } from '../../types'
 import { getLessonsService } from './service'
 
 interface LessonsParams {

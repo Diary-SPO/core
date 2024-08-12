@@ -50,7 +50,6 @@ const Schedule: FC<Props> = ({ id }) => {
   const [snackbar, showSnackbar] = useSnackbar()
 
   const handleGetLesson = async (start: Date, end: Date) => {
-    console.log('asdasd')
     setIsLoading(true)
     setIsError(false)
 

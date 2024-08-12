@@ -3,10 +3,13 @@ import { KEY } from '@config'
 import type { ResponseLogin } from '@diary-spo/shared'
 import { generateToken } from '@helpers'
 
-import { ResponseLoginFromDiaryUser } from '@types'
-import { DiaryUserModel, type IDiaryUserModel } from '../../../models/DiaryUser'
-import { GroupModel, type IGroupModel } from '../../../models/Group'
-import { type ISPOModel, SPOModel } from '../../../models/SPO'
+import {
+  DiaryUserModel,
+  type IDiaryUserModel
+} from '../../../../models/DiaryUser'
+import { GroupModel, type IGroupModel } from '../../../../models/Group'
+import { type ISPOModel, SPOModel } from '../../../../models/SPO'
+import { ResponseLoginFromDiaryUser } from '../../../../types'
 
 type DiaryUserAuthInfo = IDiaryUserModel & {
   group: IGroupModel & {
