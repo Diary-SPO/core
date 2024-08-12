@@ -1,14 +1,17 @@
 import { Elysia } from 'elysia'
-import getPerformanceCurrent from './handler'
+import { AuthPlugin } from '../../services/AuthService'
+import { getPerformanceCurrent } from './handler'
 
-const performanceCurrent = new Elysia().get(
-  '/performance.current/',
-  getPerformanceCurrent,
+export const PerformanceCurrentController = new Elysia().use(AuthPlugin).get(
+  '/performanceCurrent/',
+  ({
+    Auth: {
+      user: { token }
+    }
+  }) => getPerformanceCurrent({ token }),
   {
     detail: {
-      tags: ['Student']
+      tags: ['Current Performance']
     }
   }
 )
-
-export default performanceCurrent

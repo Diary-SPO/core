@@ -1,6 +1,3 @@
-import type { ServerResponse } from '@types'
-import makeRequest from '../../makeRequest.ts'
+import { client } from '../../client.ts'
 
-export const getLogout = async (): ServerResponse<{ success: boolean }> => {
-  return makeRequest<{ success: boolean }>('/logout/', 'GET')
-}
+export const getLogout = async () => client.auth.logout.get()

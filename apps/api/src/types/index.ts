@@ -1,10 +1,4 @@
-import type { Context } from 'elysia'
-
-export interface ContextWithID extends Omit<Context, 'params'> {
-  params: {
-    id: string
-  }
-}
+import type { With } from '@diary-spo/shared'
 
 export interface IServerInfo {
   status: string
@@ -13,3 +7,9 @@ export interface IServerInfo {
   backend: string
   commit: string
 }
+
+export interface Token {
+  token: string
+}
+
+export type WithToken<T> = With<T, Token>

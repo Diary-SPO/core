@@ -117,7 +117,7 @@ export const getCookieFromToken = async (
  */
 const cacheGetter = async (token: string): Promise<ICacheData | null> => {
   const cacheCookie = await memoryCache.get<ICacheData>(token)
-  console.log('cacheCookie', cacheCookie)
+
   if (!cacheCookie) {
     return null
   }

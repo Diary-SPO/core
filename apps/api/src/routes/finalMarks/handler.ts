@@ -1,15 +1,19 @@
 import type { AcademicRecord } from '@diary-spo/shared'
+
 import { getCookieFromToken } from '@helpers'
-import { detectTerm } from '../../models/Term'
-import type { ContextWithID } from '../../types'
 import { getFinalMarksFromDiary, saveFinalMarks } from './service'
 import { getFinalMarksFromDB } from './service/get/getFinalMarksFromDB'
 import { structurizeResponse } from './service/other'
 
+import { detectTerm } from '../../models/Term'
+import type { Token } from '../../types'
+
+type Params = Token
+
 const getFinalMarks = async ({
-  request
-}: ContextWithID): Promise<AcademicRecord | string> => {
-  const authData = await getCookieFromToken(request.headers.toJSON().secret)
+  token
+}: Params): Promise<AcademicRecord | string> => {
+  const authData = await getCookieFromToken(token)
 
   const finalMarks = await getFinalMarksFromDiary(authData)
 

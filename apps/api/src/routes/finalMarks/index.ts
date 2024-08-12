@@ -1,10 +1,17 @@
 import { Elysia } from 'elysia'
+import { AuthPlugin } from '../../services/AuthService'
 import getFinalMarks from './handler'
 
-const finalMarks = new Elysia().get('/final.marks/', getFinalMarks, {
-  detail: {
-    tags: ['Student']
+export const FinalMarksController = new Elysia().use(AuthPlugin).get(
+  '/finalMarks/',
+  ({
+    Auth: {
+      user: { token }
+    }
+  }) => getFinalMarks({ token }),
+  {
+    detail: {
+      tags: ['Student']
+    }
   }
-})
-
-export default finalMarks
+)

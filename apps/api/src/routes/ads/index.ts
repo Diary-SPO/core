@@ -1,10 +1,17 @@
 import { Elysia } from 'elysia'
-import getAds from './handler'
+import { AuthPlugin } from '../../services/AuthService'
+import { getAds } from './handler'
 
-const ads = new Elysia().get('/ads', getAds, {
-  detail: {
-    tags: ['Student']
+export const AdsController = new Elysia().use(AuthPlugin).get(
+  '/ads',
+  ({
+    Auth: {
+      user: { spoId, token }
+    }
+  }) => getAds({ token, spoId }),
+  {
+    detail: {
+      tags: ['Ads']
+    }
   }
-})
-
-export default ads
+)

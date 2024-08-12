@@ -15,7 +15,7 @@ export const saveTermSubjects = async (
     [type]
   )
 
-  for (const subjectSave of subjectsSave) {
+  for (const subjectSave of subjectsSave ?? []) {
     saveTermSubject(
       termSubjectExaminationType?.id,
       currTermId,

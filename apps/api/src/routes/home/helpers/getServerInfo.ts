@@ -1,7 +1,7 @@
 import * as process from 'node:process'
 import { SERVER_URL } from '@config'
 import type { IServerInfo } from '../../../types'
-import { getGitCommitHash } from './'
+import { getGitCommitHash } from './getGitCommitHash'
 
 export const getServerInfo = async (): Promise<IServerInfo> => {
   return {

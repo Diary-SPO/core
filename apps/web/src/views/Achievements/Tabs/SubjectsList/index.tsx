@@ -37,7 +37,7 @@ const SubjectList: FunctionalComponent<Props> = ({
       setIsError(false)
 
       try {
-        const attestation = await getAttestation()
+        const { data: attestation } = await getAttestation()
 
         handleResponse(
           attestation,
