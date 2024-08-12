@@ -43,8 +43,6 @@ export const saveUserData = async (
           ? SPO.legalAddress
           : SPO.address.mailAddress
 
-    // await Promise.any([])
-
     const regSPO = await saveOrGetSPO({
       abbreviation: SPO.abbreviation,
       name: SPO.name,
