@@ -12,7 +12,6 @@ export const routes = new Elysia()
   .use(AuthController)
   .use(OrganizationController)
   .use(LessonsController)
-
   /** Обработка любых ошибок в кажом роуте **/
   .onError(({ set, code, path, error }) => {
     if (Number(code)) {

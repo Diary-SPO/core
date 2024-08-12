@@ -1,12 +1,10 @@
 import { Elysia } from 'elysia'
-import { AuthService } from '../../services/AuthService'
+import { AuthPlugin } from '../../services/AuthService'
 import getOrganization from './handler'
 
 export const OrganizationController = new Elysia()
-  .use(AuthService)
-  .guard({
-    isSignIn: true
-  })
+  .use(AuthPlugin)
+
   .get(
     '/organization',
     ({

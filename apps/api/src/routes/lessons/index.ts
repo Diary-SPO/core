@@ -1,12 +1,9 @@
 import { Elysia, t } from 'elysia'
-import { AuthService } from '../../services/AuthService'
+import { AuthPlugin } from '../../services/AuthService'
 import getLessons from './handler'
 
 export const LessonsController = new Elysia()
-  .use(AuthService)
-  .guard({
-    isSignIn: true
-  })
+  .use(AuthPlugin)
   .get(
     '/lessons/:startDate/:endDate',
     ({ params: { startDate, endDate }, Auth: { user } }) =>
