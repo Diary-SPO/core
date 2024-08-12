@@ -1,5 +1,5 @@
 import { API_ERRORS, ApiError } from '@api'
-import type { Nullable } from '@diary-spo/shared'
+import type { DiaryUserId, Nullable } from '@diary-spo/shared'
 import { caching } from 'cache-manager'
 import { AuthModel, type AuthModelType } from '../models/Auth'
 import { DiaryUserModel, type DiaryUserModelType } from '../models/DiaryUser'
@@ -21,7 +21,7 @@ type IUserAuthInfo = AuthModelType & {
 }
 export type ICacheData = {
   cookie: string
-  idFromDiary?: number
+  idFromDiary: number
   localUserId: bigint
   groupId: bigint
   spoId: bigint
@@ -106,7 +106,7 @@ export const getCookieFromToken = async (
 
   await memoryCache.set(token, toSave)
 
-  return { ...toSave }
+  return toSave
 }
 
 /**

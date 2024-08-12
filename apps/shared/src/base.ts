@@ -1,5 +1,4 @@
 export interface Person {
-  // FIXME: probably should be without ?
   id?: number | bigint
   firstName: string
   lastName: string
@@ -7,3 +6,7 @@ export interface Person {
 }
 
 export type Nullable<T> = T | null
+
+export type With<T, K> = T & K
+
+export type DiaryUserId = number | bigint | undefined

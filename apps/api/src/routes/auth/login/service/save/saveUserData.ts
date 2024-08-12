@@ -4,11 +4,11 @@ import type { PersonResponse, UserData } from '@diary-spo/shared'
 import { generateToken } from '@helpers'
 import { type ApiResponse, cookieExtractor, error, fetcher } from '@utils'
 import {
+  getFormattedDiaryUserData,
   saveOrGetDiaryUser,
   saveOrGetGroup
 } from '../../../../../models/DiaryUser'
 import { saveOrGetSPO } from '../../../../../models/SPO'
-import { ResponseLoginFromDiaryUser } from '../../../../../types'
 
 export const saveUserData = async (
   parsedRes: ApiResponse<UserData>,
@@ -82,7 +82,7 @@ export const saveUserData = async (
     const token = await generateToken(regDiaryUser.id)
 
     // Убираем все "приватные" поля из ответа
-    return ResponseLoginFromDiaryUser(regDiaryUser, regSPO, regGroup, token)
+    return getFormattedDiaryUserData(regDiaryUser, regSPO, regGroup, token)
   } catch (err) {
     error(err)
   }
