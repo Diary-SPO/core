@@ -1,8 +1,8 @@
-import { Mark } from '@components'
 import { type Lesson, LessonWorkType } from '@diary-spo/shared'
-import { setDefaultMark } from '@utils'
 import { InfoRow, Separator, SimpleCell, Spacing, Text } from '@vkontakte/vkui'
 import { type FC, Fragment } from 'preact/compat'
+import { setDefaultMark } from '../../../../../../shared'
+import { Mark } from '../../../../../../shared/ui'
 
 interface ILessonTasks {
   tasks: Lesson['gradebook']['tasks']
