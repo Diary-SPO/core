@@ -1,6 +1,6 @@
-import { Context } from 'elysia'
-import { AuthModel } from '@models'
 import { NotFoundError } from '@api'
+import { AuthModel } from '@models'
+import type { Context } from 'elysia'
 
 export const isAdmin = async ({ request }): Context => {
   const user = await AuthModel.findOne({

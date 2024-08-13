@@ -1,13 +1,15 @@
 import type { PerformanceCurrent } from '@diary-spo/shared'
+
 import { getCookieFromToken } from '@helpers'
-import { ContextWithID } from '@types'
+
+import type { Token } from '../../types'
 import { getCurrPerformance } from './service'
 
-const getPerformanceCurrent = async ({
-  request
-}: ContextWithID): Promise<PerformanceCurrent | string> => {
-  const authData = await getCookieFromToken(request.headers.toJSON().secret)
-  return await getCurrPerformance(authData)
-}
+type Params = Token
 
-export default getPerformanceCurrent
+export const getPerformanceCurrent = async ({
+  token
+}: Params): Promise<PerformanceCurrent | string> => {
+  const authData = await getCookieFromToken(token)
+  return getCurrPerformance(authData)
+}

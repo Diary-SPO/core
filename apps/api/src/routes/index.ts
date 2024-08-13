@@ -1,48 +1,42 @@
 import { Elysia } from 'elysia'
 
-import ads from './ads'
-import attestation from './attestation'
-import finalMarks from './finalMarks'
-import hello from './hello'
-import lessons from './lessons'
-import login from './login'
-import organization from './organization'
-import performanceCurrent from './performance.current'
-import oauthGitHub from './admin/oauth/github'
+import { API_CODES } from '@api'
 
-import { headersSchema } from '@utils'
-import { errorHandler } from './helpers'
-import { isValidToken, isAdmin } from '../middlewares'
+import { AdsController } from './ads'
+import { AttestationController } from './attestation'
+import { AuthController } from './auth'
+import { FinalMarksController } from './finalMarks'
+import { HomeController } from './home'
+import { LessonsController } from './lessons'
+import { OrganizationController } from './organization'
+import { PerformanceCurrentController } from './performance.current'
 
 export const routes = new Elysia()
-  /** Роуты с проверкой на наличие secret поля **/
-  .guard(
-    {
-      beforeHandle: headersSchema,
-      beforeHandle: isValidToken
-    },
-    (app) =>
-      app
-        .use(organization)
-        .use(lessons)
-        .use(performanceCurrent)
-        .use(attestation)
-        .use(ads)
-        .use(finalMarks)
-  )
-  /** Роуты без проверки **/
-  .use(hello)
-  .use(login)
+  .use(HomeController)
+  .use(AuthController)
+  .use(OrganizationController)
+  .use(LessonsController)
+  .use(AdsController)
+  .use(AttestationController)
+  .use(FinalMarksController)
+  .use(PerformanceCurrentController)
   /** Обработка любых ошибок в кажом роуте **/
-  .onError(errorHandler)
+  .onError(({ set, code, path, error }) => {
+    if (Number(code)) {
+      set.status = Number(code)
+    }
 
-export const adminRoutes = new Elysia()
-  .guard(
-    {
-      beforeHandle: headersSchema,
-      beforeHandle: isAdmin
-    },
-    (app) => app.use(oauthGitHub)
-  )
-  /** Обработка любых ошибок в кажом роуте **/
-  .onError(errorHandler)
+    /** Не валидные данные в теле запроса **/
+    if (code === 'VALIDATION') {
+      const formattedError = JSON.parse(error.message)
+
+      return {
+        message: code,
+        code: API_CODES.BAD_REQUEST,
+        errors: formattedError.errors,
+        path
+      }
+    }
+
+    return { path, message: error.message, code: code }
+  })

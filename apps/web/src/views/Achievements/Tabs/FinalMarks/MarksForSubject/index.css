@@ -1,0 +1,10 @@
+.marksWrapper {
+  align-items: center;
+}
+
+.totalMark {
+  display: flex;
+  align-items: center;
+
+  margin-bottom: 10px;
+}

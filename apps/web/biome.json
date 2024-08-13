@@ -3,7 +3,12 @@
     "ignore": ["./dist"]
   },
   "linter": {
-    "ignore": ["./dist"]
+    "ignore": ["./dist"],
+    "rules": {
+      "suspicious": {
+        "noArrayIndexKey": "off"
+      }
+    }
   },
   "extends": ["../../biome.json"]
 }

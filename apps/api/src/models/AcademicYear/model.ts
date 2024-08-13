@@ -1,14 +1,17 @@
-import { sequelize } from '@db'
 import { DataTypes } from 'sequelize'
+
+import { sequelize } from '@db'
+
 import { GroupModel } from '../Group'
 import { TermTypeModel } from '../TermType'
-import { IModelPrototype } from '../types'
+import type { IModelPrototype } from '../types'
 
 export type AcademicYearModelType = {
-  id: number
+  id: bigint
   termTypeId: number
   number: number
-  groupId: number
+  year?: number
+  groupId: bigint
   idFromDiary: number
 }
 
@@ -18,12 +21,12 @@ export const AcademicYearModel = sequelize.define<IAcademicYearModel>(
   'academicYear',
   {
     id: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.BIGINT,
       autoIncrement: true,
       primaryKey: true
     },
     termTypeId: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.SMALLINT,
       allowNull: false,
       references: {
         model: TermTypeModel,
@@ -31,11 +34,15 @@ export const AcademicYearModel = sequelize.define<IAcademicYearModel>(
       }
     },
     number: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.SMALLINT,
       allowNull: false
     },
+    year: {
+      type: DataTypes.SMALLINT,
+      allowNull: true
+    },
     groupId: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.BIGINT,
       allowNull: false,
       references: {
         model: GroupModel,
@@ -46,11 +53,5 @@ export const AcademicYearModel = sequelize.define<IAcademicYearModel>(
       type: DataTypes.INTEGER,
       allowNull: false
     }
-  },
-  {
-    freezeTableName: true,
-    timestamps: false,
-    createdAt: false,
-    updatedAt: false
   }
 )

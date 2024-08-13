@@ -1,6 +1,6 @@
 import { sequelize } from '@db'
-import { PerformanceCurrent } from '@diary-spo/shared'
-import { ICacheData } from '@helpers'
+import type { PerformanceCurrent } from '@diary-spo/shared'
+import type { ICacheData } from '@helpers'
 import {
   GradebookModel,
   MarkModel,

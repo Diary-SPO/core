@@ -1,7 +1,9 @@
-import { cache, enableCache, sequelize } from '@db'
-import { LessonWorkType, LessonWorkTypeKeys } from '@diary-spo/shared'
+import { LessonWorkType, type LessonWorkTypeKeys } from '@diary-spo/shared'
 import { DataTypes } from 'sequelize'
-import { IModelPrototype } from '../types'
+
+import { cache, enableCache, sequelize } from '@db'
+
+import type { IModelPrototype } from '../types'
 
 export type TaskTypeModelType = {
   id: number
@@ -10,26 +12,18 @@ export type TaskTypeModelType = {
 
 export type ITaskTypeModel = IModelPrototype<TaskTypeModelType, 'id'>
 
-const taskTypeModel = sequelize.define<ITaskTypeModel>(
-  'taskType',
-  {
-    id: {
-      type: DataTypes.INTEGER,
-      autoIncrement: true,
-      primaryKey: true
-    },
-    name: {
-      type: DataTypes.STRING(...Object.keys(LessonWorkType)),
-      allowNull: false
-    }
+const taskTypeModel = sequelize.define<ITaskTypeModel>('taskType', {
+  id: {
+    type: DataTypes.SMALLINT,
+    autoIncrement: true,
+    primaryKey: true
   },
-  {
-    freezeTableName: true,
-    timestamps: false,
-    createdAt: false,
-    updatedAt: false
+  name: {
+    type: DataTypes.ENUM(...Object.keys(LessonWorkType)),
+    allowNull: false,
+    unique: true
   }
-)
+})
 
 export const TaskTypeModel = enableCache
   ? cache.init<ITaskTypeModel>(taskTypeModel)

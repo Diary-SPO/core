@@ -1,7 +1,7 @@
-import fs from 'fs'
+import fs from 'node:fs'
 import { PARAMS_INIT } from './params'
+import { rsa } from './rsa'
 import checkEnvVariables from './utils'
-import { getTimezone } from './getTimeZone'
 
 if (!fs.existsSync('.env')) {
   throw new Error(
@@ -11,9 +11,8 @@ if (!fs.existsSync('.env')) {
 
 checkEnvVariables(PARAMS_INIT)
 
-PARAMS_INIT.TIMEZONE = getTimezone(
-  PARAMS_INIT.TIMEZONE === '0' ? null : PARAMS_INIT.TIMEZONE
-)
+// Читаем или генерируем ключ
+export const KEY = await rsa(PARAMS_INIT.KEY_SCAN_PATH)
 
 export const {
   SERVER_URL,
@@ -22,11 +21,6 @@ export const {
   DATABASE_NAME,
   DATABASE_USERNAME,
   DATABASE_PASSWORD,
-  ENCRYPT_KEY,
-  TIMEZONE
+  TIMEZONE,
+  KEY_SCAN_PATH
 } = PARAMS_INIT
-
-export * from './types'
-export * from './env'
-export * from './constants'
-export * from './utils'

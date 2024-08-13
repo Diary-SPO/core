@@ -1,27 +1,32 @@
+import type { Optional } from 'sequelize'
+
 import { API_CODES, API_ERRORS, ApiError } from '@api'
 import { SERVER_URL } from '@config'
-import type { Organization } from '@diary-spo/shared'
-import { getCookieFromToken } from '@helpers'
-import { DiaryUserModel, GroupModel, SPOModel, SPOModelType } from '@models'
 import { HeadersWithCookie } from '@utils'
-import type { Context } from 'elysia'
-import { Optional } from 'sequelize'
-import { checkSameKeys } from '../../helpers/checkDataForObject'
+import { DiaryUserModel } from '../../models/DiaryUser'
+import { GroupModel } from '../../models/Group'
+import { SPOModel, type SPOModelType } from '../../models/SPO'
+
+interface Data {
+  cookie: string
+  userId: bigint
+}
 
 const getOrganization = async ({
-  request
-}: Context): Promise<Organization | Optional<SPOModelType, 'id'> | string> => {
-  const authData = await getCookieFromToken(request.headers.toJSON().secret)
+  cookie,
+  userId
+}: Data): Promise<Optional<SPOModelType, 'id'>> => {
   const path = `${SERVER_URL}/services/people/organization`
+
   const response = await fetch(path, {
-    headers: HeadersWithCookie(authData.cookie)
+    headers: HeadersWithCookie(cookie)
   }).then((res) => res.json())
 
   if (response) {
     /* Хотелось бы красиво по убыванию...
      * Но тогда будут не красиво "скакать" поля при разных ответах (от дневника и из базы)
      */
-    const saveData: Optional<SPOModelType, 'id'> = {
+    const saveData = {
       abbreviation: response.abbreviation,
       name: response.name,
       shortName: response.shortName,
@@ -35,28 +40,17 @@ const getOrganization = async ({
     }
 
     // Тут сохраняем в фоне, чтобы не задерживать
-    const record = SPOModel.findOne({
+    SPOModel.findOne({
       where: {
         organizationId: response.organizationId
-      },
-      attributes: {
-        exclude: ['id']
       }
-    }).then(() => {
-      if (!record || checkSameKeys(saveData, record)) {
+    }).then((result) => {
+      if (!result) {
         return
       }
-
-      SPOModel.update(
-        {
-          ...saveData
-        },
-        {
-          where: {
-            organizationId: response.organizationId
-          }
-        }
-      )
+      result.update({
+        ...saveData
+      })
     })
 
     // Отдаём данные
@@ -70,13 +64,10 @@ const getOrganization = async ({
         id: (
           await GroupModel.findByPk(
             (
-              await DiaryUserModel.findByPk(authData.localUserId)
+              await DiaryUserModel.findByPk(userId)
             )?.groupId
           )
         )?.spoId
-      },
-      attributes: {
-        exclude: ['id']
       }
     })
   )?.toJSON()

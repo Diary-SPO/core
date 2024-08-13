@@ -1,9 +1,8 @@
-import {
+import type {
   AbsenceTypesDescriptionKeys,
   AdditionalMarks,
   MarkKeys
 } from '@diary-spo/shared'
-import { AxiosResponse } from 'axios'
 
 export type Pages = 'schedule' | 'marks' | 'settings' | 'notifications'
 
@@ -11,8 +10,6 @@ export interface Storage {
   key: string
   value: string
 }
-
-export type ServerResponse<T = unknown> = Promise<T | AxiosResponse<any, any>>
 
 export const HTTP_STATUSES = {
   /** Ошибка авторизации **/
@@ -32,5 +29,3 @@ export type ReturnedMark =
   | 'ДЗ'
   | '.'
   | number
-
-export type Nullable<T> = T | null

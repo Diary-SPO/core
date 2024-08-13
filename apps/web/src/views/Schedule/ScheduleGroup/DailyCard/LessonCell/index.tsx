@@ -1,9 +1,11 @@
 import { Mark } from '@components'
-import { Gradebook, Lesson, Timetable } from '@diary-spo/shared'
+import type { Gradebook, Lesson, Timetable } from '@diary-spo/shared'
 import { isDistant, setDefaultMark } from '@utils'
 import { SimpleCell } from '@vkontakte/vkui'
-import { FC } from 'preact/compat'
+import type { FC } from 'preact/compat'
 import LessonSubtitle from './LessonSubtitle'
+
+import './index.css'
 
 interface ILessonCell {
   lesson: Lesson
@@ -48,6 +50,7 @@ const LessonCell: FC<ILessonCell> = ({
         handleLessonClick(name, endTime, startTime, timetable, gradebook)
       }
       key={startTime}
+      subhead={<div>{lessonTime}</div>}
       subtitle={
         <div>
           <div className='lessonSubtitle'>
@@ -67,7 +70,6 @@ const LessonCell: FC<ILessonCell> = ({
               )}
             </div>
           </div>
-          <div>{lessonTime}</div>
           <div>{teacherInfo}</div>
         </div>
       }

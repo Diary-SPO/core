@@ -1,6 +1,6 @@
-import { Lesson } from '@diary-spo/shared'
+import type { Lesson } from '@diary-spo/shared'
 import {
-  IUserInfo,
+  type IUserInfo,
   TeacherSaveOrGet,
   gradebookSaveOrGet,
   saveClassroom,
@@ -8,8 +8,8 @@ import {
   subgroupSaveOrGet,
   subjectSaveOrGet
 } from '@models'
-import { ScheduleModel } from './model'
 import { LogError } from 'src/LogError'
+import { ScheduleModel } from './model'
 
 export const LessonSave = async (
   lesson: Lesson,

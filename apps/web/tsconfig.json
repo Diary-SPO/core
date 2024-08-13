@@ -32,6 +32,9 @@
       "@libs": ["./src/libs"],
       "@hooks": ["./src/hooks"],
       "@types": ["./src/types"],
+      "@api": ["./src/api"],
+      "@routes": ["./src/routes"],
+      "@views": ["./src/views"]
     }
   },
   "include": ["src"],

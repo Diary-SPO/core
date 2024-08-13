@@ -9,13 +9,13 @@ describe('textToLink', () => {
 
     expect(Array.isArray(result)).toBe(true)
 
-    result.forEach((part) => {
+    for (const part of result) {
       if (typeof part === 'string') {
         expect(part).not.toMatch(/https?:\/\/\S+/)
       } else {
         expect(part.props.href).toBe('https://www.example.com.')
         expect(part.props.target).toBe('_blank')
       }
-    })
+    }
   })
 })

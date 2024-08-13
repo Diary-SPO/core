@@ -1,4 +1,4 @@
-import { GITHUB_OAUTH_URL, CLIENT_ID, REDIRECT_URL } from '@/config'
+import { CLIENT_ID, GITHUB_OAUTH_URL, REDIRECT_URL } from '@/config'
 
 export const getGitHubUrl = (from: string) => {
   const options = {

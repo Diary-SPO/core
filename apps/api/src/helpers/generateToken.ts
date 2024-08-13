@@ -1,15 +1,15 @@
 import { API_CODES, ApiError } from '@api'
-import { AuthModel } from '@models'
 import { formatDate } from '@utils'
 import { suid } from 'rand-token'
+import { AuthModel } from '../models/Auth'
 
 /**
  * Генерирует токен и вставляет в базу
  * В случае успеха возвращает токен, иначе выбрасывает ошибку
- * @param idDiaryUser
+ * @param diaryUserId
  * @returns {string} token
  */
-export const generateToken = async (idDiaryUser: number): Promise<string> => {
+export const generateToken = async (diaryUserId: bigint): Promise<string> => {
   // Генерируем токен
   const token = suid(16)
 
@@ -17,7 +17,7 @@ export const generateToken = async (idDiaryUser: number): Promise<string> => {
 
   // TODO: сделать метод рядом с моделью для создания и использовать тут
   await AuthModel.create({
-    idDiaryUser,
+    diaryUserId,
     token,
     lastUsedDate: formattedDate
   }).catch(() => {

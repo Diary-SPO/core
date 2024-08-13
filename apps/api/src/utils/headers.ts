@@ -10,9 +10,3 @@ export const HeadersWithCookie = (cookie: string): Headers => ({
   ...BaseHeaders,
   Cookie: cookie
 })
-
-export const headersSchema = {
-  headers: t.Object({
-    secret: t.String({ minLength: 16 })
-  })
-}

@@ -1,5 +1,5 @@
-import { FunctionComponent } from 'preact'
-import { CSSProperties, HTMLAttributes, ReactNode } from 'preact/compat'
+import type { FunctionComponent } from 'preact'
+import type { CSSProperties, HTMLAttributes, ReactNode } from 'preact/compat'
 import { colors, defaultColor } from './styles'
 
 type SubtitleColors =

@@ -1,7 +1,7 @@
 import { URL, fileURLToPath } from 'node:url'
 
 import vue from '@vitejs/plugin-vue'
-// import vueJsx from '@vitejs/plugin-vue-jsx'
+import vueJsx from '@vitejs/plugin-vue-jsx'
 import { defineConfig } from 'vite'
 
 import autoprefixer from 'autoprefixer'
@@ -12,8 +12,7 @@ export default defineConfig({
   server: {
     port: 5174
   },
-  // vueJsx() - пока не используется
-  plugins: [vue()],
+  plugins: [vue(), vueJsx()],
   css: {
     postcss: {
       plugins: [tailwind(), autoprefixer()]

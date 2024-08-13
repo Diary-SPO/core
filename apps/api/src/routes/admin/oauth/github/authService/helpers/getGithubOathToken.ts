@@ -1,8 +1,8 @@
-import { GitHubOauthToken } from './types'
-import axios from 'axios'
-import { CLIENT_ID, CLIENT_SECRET, REDIRECT_URL } from '@config'
 import { ApiError } from '@api'
+import { CLIENT_ID, CLIENT_SECRET, REDIRECT_URL } from '@config'
+import axios from 'axios'
 import qs from 'qs'
+import type { GitHubOauthToken } from './types'
 
 export const getGithubOathToken = async ({
   code

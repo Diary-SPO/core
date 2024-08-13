@@ -1,7 +1,7 @@
-import { PerformanceCurrent } from '@diary-spo/shared'
-import { SubjectMarksMap } from '@utils'
+import type { PerformanceCurrent } from '@diary-spo/shared'
+import type { SubjectMarksMatrix } from '@utils'
 
-/** createSubjectMarksMap */
+/** createSubjectMarksMatrix */
 
 export const mockData: PerformanceCurrent = {
   monthsWithDays: [
@@ -41,22 +41,28 @@ export const mockDataWithoutMarks: PerformanceCurrent = {
   ]
 }
 
-export const expectedMapDataWithoutMarks: SubjectMarksMap = {
-  'МДК 01.01': [
-    {
-      date: new Date().toLocaleDateString(),
-      marks: [],
-      absenceType: undefined
-    }
-  ]
-}
+export const expectedMapDataWithoutMarks: SubjectMarksMatrix = [
+  {
+    data: [
+      {
+        absenceType: undefined,
+        date: new Date().toLocaleDateString('ru'),
+        marks: []
+      }
+    ],
+    subjectName: 'МДК 01.01'
+  }
+]
 
-export const expectedMapData: SubjectMarksMap = {
-  'МДК 01.01': [
-    {
-      date: new Date().toLocaleDateString(),
-      marks: ['Five', 'Four'],
-      absenceType: undefined
-    }
-  ]
-}
+export const expectedMapData: SubjectMarksMatrix = [
+  {
+    data: [
+      {
+        absenceType: undefined,
+        date: new Date().toLocaleDateString('ru'),
+        marks: ['Five', 'Four']
+      }
+    ],
+    subjectName: 'МДК 01.01'
+  }
+]

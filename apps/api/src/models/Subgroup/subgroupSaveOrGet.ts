@@ -1,7 +1,7 @@
-import { Optional } from 'sequelize'
-import { checkSameKeys } from '../../helpers/checkDataForObject'
-import { SubgroupModel, SubgroupModelType } from './model'
+import type { Optional } from 'sequelize'
 import { LogError } from 'src/LogError'
+import { checkSameKeys } from '../../helpers/checkDataForObject'
+import { SubgroupModel, type SubgroupModelType } from './model'
 
 export const subgroupSaveOrGet = async (
   subgroup: Optional<SubgroupModelType, 'id'>

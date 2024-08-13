@@ -1,6 +1,6 @@
 import { checkSameKeys } from '@helpers'
-import { TeacherModel, TeacherModelType } from '@models'
-import { Optional } from 'sequelize'
+import { TeacherModel, type TeacherModelType } from '@models'
+import type { Optional } from 'sequelize'
 import { LogError } from 'src/LogError'
 
 export const TeacherSaveOrGet = async (

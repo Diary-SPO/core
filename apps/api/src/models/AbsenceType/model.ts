@@ -1,7 +1,9 @@
-import { cache, enableCache, sequelize } from '@db'
-import { AbsenceTypes, AbsenceTypesKeys } from '@diary-spo/shared'
+import { AbsenceTypes, type AbsenceTypesKeys } from '@diary-spo/shared'
 import { DataTypes } from 'sequelize'
-import { IModelPrototype } from '../types'
+
+import { cache, enableCache, sequelize } from '@db'
+
+import type { IModelPrototype } from '../types'
 
 export type AbsenceTypeModelType = {
   id: number
@@ -10,26 +12,18 @@ export type AbsenceTypeModelType = {
 
 export type IAbsenceTypeModel = IModelPrototype<AbsenceTypeModelType, 'id'>
 
-const absenceTypeModel = sequelize.define<IAbsenceTypeModel>(
-  'absenceType',
-  {
-    id: {
-      type: DataTypes.INTEGER,
-      autoIncrement: true,
-      primaryKey: true
-    },
-    name: {
-      type: DataTypes.ENUM(...Object.keys(AbsenceTypes)),
-      allowNull: false
-    }
+const absenceTypeModel = sequelize.define<IAbsenceTypeModel>('absenceType', {
+  id: {
+    type: DataTypes.SMALLINT,
+    autoIncrement: true,
+    primaryKey: true
   },
-  {
-    freezeTableName: true,
-    timestamps: false,
-    createdAt: false,
-    updatedAt: false
+  name: {
+    type: DataTypes.ENUM(...Object.keys(AbsenceTypes)),
+    allowNull: false,
+    unique: true
   }
-)
+})
 
 export const AbsenceTypeModel = enableCache
   ? cache.init<IAbsenceTypeModel>(absenceTypeModel)

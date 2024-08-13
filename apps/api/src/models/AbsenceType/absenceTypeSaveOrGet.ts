@@ -1,4 +1,4 @@
-import { AbsenceTypesKeys } from '@diary-spo/shared'
+import type { AbsenceTypesKeys } from '@diary-spo/shared'
 import { AbsenceTypeModel } from './model'
 
 export const AbsenceTypeSaveOrGet = async (name: AbsenceTypesKeys) => {

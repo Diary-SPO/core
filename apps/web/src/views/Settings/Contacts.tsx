@@ -1,6 +1,6 @@
-import { Avatar, Group, Header, Link, SimpleCell } from '@vkontakte/vkui'
 import { Icon28Users } from '@vkontakte/icons'
-import { diaryAva, winxAva } from '../../images/config.ts'
+import { Avatar, Group, Header, Link, SimpleCell } from '@vkontakte/vkui'
+import { diaryAva, winxAva } from '../../config/images.ts'
 
 const Contacts = () => {
   return (

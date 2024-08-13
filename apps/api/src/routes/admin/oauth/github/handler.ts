@@ -1,10 +1,10 @@
-import { Context } from 'elysia'
-import { getGithubOathToken, getGithubUser } from './authService'
-import { HttpStatusCode } from 'axios'
+import { NotFoundError } from '@api'
 import { REDIRECT_URL } from '@config'
 import { generateToken } from '@helpers'
 import { DiaryUserModel } from '@models'
-import { NotFoundError } from '@api'
+import { HttpStatusCode } from 'axios'
+import type { Context } from 'elysia'
+import { getGithubOathToken, getGithubUser } from './authService'
 
 interface AuthContext {
   query: {

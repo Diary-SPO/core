@@ -1,6 +1,6 @@
-import { GitHubUser } from './types'
-import axios from 'axios'
 import { ApiError } from '@api'
+import axios from 'axios'
+import type { GitHubUser } from './types'
 
 export const getGithubUser = async ({
   access_token

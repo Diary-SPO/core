@@ -1,4 +1,4 @@
-import { Lesson } from '@diary-spo/shared'
+import type { Lesson } from '@diary-spo/shared'
 
 export const mockLesson: Lesson = {
   name: 'Math',

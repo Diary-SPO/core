@@ -1,9 +1,9 @@
 import { GRAY, MODAL_PAGE_LESSON, VKUI_ACCENT_BG } from '@config'
-import { Day, Gradebook, Timetable } from '@diary-spo/shared'
+import type { Day, Gradebook, Timetable } from '@diary-spo/shared'
 import { useLessonModal } from '@store'
 import { useRouteNavigator } from '@vkontakte/vk-mini-apps-router'
 import { Card, Group, Placeholder } from '@vkontakte/vkui'
-import { FC, useCallback, useMemo } from 'preact/compat'
+import { type FC, useCallback, useMemo } from 'preact/compat'
 import LessonCell from './LessonCell'
 import LessonHeader from './LessonHeader.tsx'
 import { formatLessonDate, isToday } from './helpers.ts'
@@ -44,7 +44,7 @@ const DailyCard: FC<IDailyCard> = ({ lesson }) => {
   const currentDate = new Date()
   const lessonDate = new Date(lesson.date)
   const formattedLessonDate = formatLessonDate(lesson.date)
-  const lessonDayOfWeek = lessonDate.toLocaleString('default', {
+  const lessonDayOfWeek = lessonDate.toLocaleString('ru', {
     weekday: 'long'
   })
 

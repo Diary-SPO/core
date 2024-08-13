@@ -1,12 +1,12 @@
-import { Lesson } from '@diary-spo/shared'
+import type { Lesson } from '@diary-spo/shared'
 import { useLessonModal } from '@store'
 import { ModalPage, ModalPageHeader } from '@vkontakte/vkui'
-import { FC } from 'preact/compat'
+import type { FC } from 'preact/compat'
 import { useEffect, useState } from 'preact/hooks'
 import LessonGrade from './LessonGrade'
-import LessonMainInfo, { ILessonMainInfo } from './LessonMainInfo'
+import LessonMainInfo, { type ILessonMainInfo } from './LessonMainInfo'
 import LessonTimePlaceInfo, {
-  ILessonTimePlaceInfo
+  type ILessonTimePlaceInfo
 } from './LessonTimePlaceInfo'
 import { cleanData } from './data.ts'
 import { setLessonDetails } from './helpers.ts'

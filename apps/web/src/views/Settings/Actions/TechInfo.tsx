@@ -1,6 +1,6 @@
-import { Storage } from '@types'
+import type { Storage } from '@types'
 import { Group, Header, InfoRow, SimpleCell, Subhead } from '@vkontakte/vkui'
-import { FunctionComponent } from 'preact'
+import type { FunctionComponent } from 'preact'
 import { useEffect, useState } from 'preact/hooks'
 
 const TechInfo: FunctionComponent = () => {

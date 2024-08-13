@@ -1,4 +1,4 @@
-import { RouteWithoutRoot } from '@vkontakte/vk-mini-apps-router'
+import type { RouteWithoutRoot } from '@vkontakte/vk-mini-apps-router'
 import {
   MAIN_SETTINGS,
   PAGE_MAIN,

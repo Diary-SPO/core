@@ -1,10 +1,20 @@
 import { Elysia } from 'elysia'
+import { AuthPlugin } from '../../services/AuthService'
 import getOrganization from './handler'
 
-const organization = new Elysia().get('/organization', getOrganization, {
-  detail: {
-    tags: ['Student']
-  }
-})
+export const OrganizationController = new Elysia()
+  .use(AuthPlugin)
 
-export default organization
+  .get(
+    '/organization',
+    ({
+      Auth: {
+        user: { localUserId, cookie }
+      }
+    }) => getOrganization({ userId: localUserId, cookie }),
+    {
+      detail: {
+        tags: ['Organization']
+      }
+    }
+  )

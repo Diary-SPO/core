@@ -1,5 +1,5 @@
 import { Suspense } from '@components'
-import { Pages } from '@types'
+import type { Pages } from '@types'
 import {
   Icon28BookSpreadOutline,
   Icon28GraphOutline,
@@ -24,14 +24,15 @@ import {
   useAdaptivityConditionalRender,
   usePlatform
 } from '@vkontakte/vkui'
-import { FC, lazy } from 'preact/compat'
+import { type FC, lazy } from 'preact/compat'
+
 import {
   MAIN_SETTINGS,
   VIEW_MARKS,
   VIEW_NOTIFICATIONS,
   VIEW_SCHEDULE,
   VIEW_SETTINGS
-} from '../../../routes'
+} from '@routes'
 
 const Epic = lazy(() => import('./Epic'))
 import ModalRoot from './ModalRoot'

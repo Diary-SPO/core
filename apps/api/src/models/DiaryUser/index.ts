@@ -1,2 +1,3 @@
 export * from './model'
-export * from './getUserById'
+export * from './actions'
+export * from './methods'

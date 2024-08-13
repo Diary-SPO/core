@@ -1,4 +1,4 @@
-import { IUserInfo } from '../DiaryUser'
+import type { IUserInfo } from '../DiaryUser'
 import { RequiredModel } from './model'
 
 export const requiredSaveOrGet = async (

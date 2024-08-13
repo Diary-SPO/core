@@ -1,15 +1,17 @@
-import { sequelize } from '@db'
 import { DataTypes } from 'sequelize'
+
+import { sequelize } from '@db'
+
 import { SPOModel } from '../SPO'
-import { IModelPrototype } from '../types'
+import type { IModelPrototype } from '../types'
 
 export type TeacherModelType = {
-  id: number
-  spoId: number
+  id: bigint
+  spoId: bigint
   firstName: string
   lastName: string
   middleName?: string
-  idFromDiary: number
+  idFromDiary?: number
 }
 
 export type ITeacherModel = IModelPrototype<TeacherModelType, 'id'>
@@ -18,12 +20,12 @@ export const TeacherModel = sequelize.define<ITeacherModel>(
   'teacher',
   {
     id: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.BIGINT,
       autoIncrement: true,
       primaryKey: true
     },
     spoId: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.BIGINT,
       allowNull: false,
       references: {
         model: SPOModel,
@@ -44,13 +46,19 @@ export const TeacherModel = sequelize.define<ITeacherModel>(
     },
     idFromDiary: {
       type: DataTypes.INTEGER,
-      allowNull: false
+      allowNull: true
     }
   },
   {
-    freezeTableName: true,
-    timestamps: false,
-    createdAt: false,
-    updatedAt: false
+    indexes: [
+      {
+        unique: true,
+        fields: ['spoId', 'idFromDiary']
+      },
+      {
+        unique: true,
+        fields: ['spoId', 'firstName', 'lastName', 'middleName']
+      }
+    ]
   }
 )

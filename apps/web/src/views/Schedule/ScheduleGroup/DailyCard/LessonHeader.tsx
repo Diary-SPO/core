@@ -1,5 +1,5 @@
 import { Footnote, Header } from '@vkontakte/vkui'
-import { CSSProperties, FC } from 'preact/compat'
+import type { CSSProperties, FC } from 'preact/compat'
 
 interface ILessonHeader {
   lessonDayOfWeek: string | undefined

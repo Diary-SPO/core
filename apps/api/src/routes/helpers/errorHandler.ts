@@ -1,6 +1,6 @@
 import { API_CODES, API_ERRORS, BASE_API_ERRORS } from '@api'
 import { error as errorLog } from '@utils'
-import { ErrorHandler } from 'elysia'
+import type { ErrorHandler } from 'elysia'
 
 export const errorHandler: ErrorHandler = ({ set, code, error, path }) => {
   errorLog(error)

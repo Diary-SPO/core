@@ -5,18 +5,13 @@
     "moduleResolution": "node",
     "baseUrl": "./",
     "paths": {
-      "@types": ["src/types"],
       "@config": ["src/config"],
-      "@routes": ["src/routes"],
       "@utils": ["src/utils"],
       "@db": ["src/database"],
-      "@models": ["src/models"],
       "@helpers": ["src/helpers"],
-      "@api": ["src/ApiError"],
-    } ,
-    "types": [
-      "bun-types"
-    ],
+      "@api": ["src/ApiError"]
+    },
+    "types": ["bun-types"],
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
 

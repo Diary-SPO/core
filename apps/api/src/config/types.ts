@@ -27,8 +27,8 @@ export interface StringParams {
   DATABASE_NAME: string
   DATABASE_USERNAME: string
   DATABASE_PASSWORD: string
-  ENCRYPT_KEY: string // 32 символа
   TIMEZONE: string
+  KEY_SCAN_PATH: string
 }
 
 export type ParamsKeys = StringKeys<ParamsInit>

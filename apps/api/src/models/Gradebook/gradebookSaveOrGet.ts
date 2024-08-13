@@ -1,7 +1,7 @@
-import { Gradebook } from '@diary-spo/shared'
+import type { Gradebook } from '@diary-spo/shared'
 import {
   AbsenceTypeSaveOrGet,
-  IUserInfo,
+  type IUserInfo,
   ScheduleModel,
   ThemesSaveOrGet,
   lessonTypeSaveOrGet,

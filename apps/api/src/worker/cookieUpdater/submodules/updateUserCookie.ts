@@ -1,7 +1,7 @@
 import { SERVER_URL } from '@config'
-import { type UserData } from '@diary-spo/shared'
-import { IDiaryUserModel } from '@models'
+import type { UserData } from '@diary-spo/shared'
 import { cookieExtractor, fetcher, formatDate } from '@utils'
+import type { IDiaryUserModel } from '../../../models/DiaryUser'
 import { logger } from '../../utils/logger'
 
 const log = logger('cookie updater')

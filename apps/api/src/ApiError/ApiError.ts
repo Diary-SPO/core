@@ -1,4 +1,4 @@
-import { API_CODES, API_ERRORS, BASE_API_ERRORS } from './types'
+import { API_CODES } from './types'
 
 export class ApiError extends Error {
   code: number
@@ -12,22 +12,30 @@ export class ApiError extends Error {
   }
 }
 
-export class UnauthorizedError extends ApiError {
-  message: string
-
-  constructor(message: string = API_ERRORS.INVALID_TOKEN) {
-    super()
-    this.code = API_CODES.UNAUTHORIZED
-    this.message = message
+export class NotFoundError extends ApiError {
+  constructor(message: string) {
+    super(message, API_CODES.NOT_FOUND)
+    Object.setPrototypeOf(this, NotFoundError.prototype)
   }
 }
 
-export class NotFoundError extends ApiError {
-  message: string
+export class UnauthorizedError extends ApiError {
+  constructor(message = 'An unauthorized error occurred') {
+    super(message, API_CODES.UNAUTHORIZED)
+    Object.setPrototypeOf(this, UnauthorizedError.prototype)
+  }
+}
 
-  constructor(message: string = BASE_API_ERRORS.NOT_FOUND) {
-    super()
-    this.code = API_CODES.NOT_FOUND
-    this.message = message
+export class ForbiddenError extends ApiError {
+  constructor(message: string) {
+    super(message, API_CODES.FORBIDDEN)
+    Object.setPrototypeOf(this, ForbiddenError.prototype)
+  }
+}
+
+export class UnknownError extends ApiError {
+  constructor(message: string) {
+    super(message, API_CODES.UNKNOWN_ERROR)
+    Object.setPrototypeOf(this, UnknownError.prototype)
   }
 }

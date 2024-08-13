@@ -1,52 +1,47 @@
-import { sequelize } from '@db'
 import { DataTypes } from 'sequelize'
+
+import { sequelize } from '@db'
+
 import { DiaryUserModel } from '../DiaryUser'
 import { ScheduleModel } from '../Schedule'
 import { SubgroupModel } from '../Subgroup'
-import { IModelPrototypeNoId } from '../types'
+import type { IModelPrototypeNoId } from '../types'
 
 export type ScheduleSubgroupModelType = {
-  scheduleId: number
-  diaryUserId: number
-  subgroupId: number
+  scheduleId: bigint
+  diaryUserId: bigint
+  subgroupId: bigint
 }
 
 export type IScheduleSubgroupModelType =
   IModelPrototypeNoId<ScheduleSubgroupModelType>
 
 export const ScheduleSubgroupModel =
-  sequelize.define<IScheduleSubgroupModelType>(
-    'scheduleSubgroup',
-    {
-      scheduleId: {
-        type: DataTypes.INTEGER,
-        primaryKey: true,
-        references: {
-          model: ScheduleModel,
-          key: 'id'
-        }
+  sequelize.define<IScheduleSubgroupModelType>('scheduleSubgroup', {
+    scheduleId: {
+      type: DataTypes.BIGINT,
+      primaryKey: true,
+      references: {
+        model: ScheduleModel,
+        key: 'id'
       },
-      diaryUserId: {
-        type: DataTypes.INTEGER,
-        primaryKey: true,
-        references: {
-          model: DiaryUserModel,
-          key: 'id'
-        }
-      },
-      subgroupId: {
-        type: DataTypes.INTEGER,
-        primaryKey: true,
-        references: {
-          model: SubgroupModel,
-          key: 'id'
-        }
-      }
+      unique: 'scheduleSubgroup_unique'
     },
-    {
-      freezeTableName: true,
-      timestamps: false,
-      createdAt: false,
-      updatedAt: false
+    diaryUserId: {
+      type: DataTypes.BIGINT,
+      primaryKey: true,
+      references: {
+        model: DiaryUserModel,
+        key: 'id'
+      },
+      unique: 'scheduleSubgroup_unique'
+    },
+    subgroupId: {
+      type: DataTypes.BIGINT,
+      primaryKey: true,
+      references: {
+        model: SubgroupModel,
+        key: 'id'
+      }
     }
-  )
+  })

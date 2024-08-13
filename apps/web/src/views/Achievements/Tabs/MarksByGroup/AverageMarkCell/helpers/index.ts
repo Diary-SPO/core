@@ -1,6 +1,4 @@
-import { Grade, MarkKeys } from '@diary-spo/shared'
-
-import { Nullable } from '@types'
+import { Grade, type MarkKeys, type Nullable } from '@diary-spo/shared'
 
 /**
  * Функция 'calculateAverageMark' высчитывает средний балл учащегося до двух знаков после запятой.

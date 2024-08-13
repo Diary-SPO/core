@@ -1,0 +1,39 @@
+name: Deploy apps in development mode
+
+on:
+  issue_comment:
+    types: [created]
+
+jobs:
+  Deploy:
+    # Триггер на команду '/deploy' в Pull Request
+    if: |
+      github.event.issue.pull_request &&
+      contains(github.event.comment.body, '/deploy')
+    runs-on: self-hosted
+    services:
+      postgres:
+        image: postgres
+        env:
+          POSTGRES_PASSWORD: postgres
+    
+    steps:
+      - name: Checkout pull request branch
+        uses: actions/checkout@v3
+        with:
+          ref: refs/pull/${{ github.event.issue.number }}/head
+      
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v1
+      
+      - name: Install dependencies
+        run: bun i
+      
+      - name: Run apps
+        run: bun dev:all
+        env:
+          SERVER_URL: 'https://poo.tomedu.ru'
+          DATABASE_NAME:     'postgres'
+          DATABASE_USERNAME: 'postgres'
+          DATABASE_PASSWORD: 'postgres'
+          ENCRYPT_KEY: 'MySuperPassword!MySuperPassword!'

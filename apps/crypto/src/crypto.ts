@@ -1,4 +1,4 @@
-import * as crypto from 'crypto'
+import * as crypto from 'node:crypto'
 
 /**
  * Шифрует строку с использованием алгоритма AES-256-CTR.

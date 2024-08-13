@@ -1,3 +1,4 @@
+import { exit } from 'node:process'
 import {
   DATABASE_HOST,
   DATABASE_NAME,
@@ -7,10 +8,12 @@ import {
   TIMEZONE
 } from '@config'
 import { error } from '@utils'
-import { exit } from 'process'
+import { errorLogger } from '@utils'
+import pg from 'pg'
 import { Sequelize } from 'sequelize'
 import SequelizeSimpleCache from 'sequelize-simple-cache'
-import { errorLogger } from 'src/utils/errorLogger'
+
+pg.defaults.parseInt8 = true
 
 export const sequelize = new Sequelize({
   database: DATABASE_NAME,
@@ -25,8 +28,14 @@ export const sequelize = new Sequelize({
   pool: {
     max: 30,
     min: 1,
-    acquire: 30000, // К-ство миллисекунд, прежде чем выбросить ошибку
-    idle: 10000 // К-ство миллисекунд, прежде чем освободить "неактивное" соединение (время ожидания)
+    acquire: 60000, // К-ство миллисекунд, прежде чем выбросить ошибку
+    idle: 20000 // К-ство миллисекунд, прежде чем освободить "неактивное" соединение (время ожидания)
+  },
+  define: {
+    freezeTableName: true,
+    timestamps: false,
+    createdAt: false,
+    updatedAt: false
   }
 })
 
@@ -43,7 +52,7 @@ export const cache = new SequelizeSimpleCache({
 // Включить кеширование ?
 export const enableCache = false
 // Синхронизовать таблицы ?
-export const forceSyncDatabase = false
+export const forceSyncDatabase = true
 
 try {
   await sequelize.authenticate()

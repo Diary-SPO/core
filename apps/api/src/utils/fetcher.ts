@@ -1,5 +1,3 @@
-import fetch, { type Headers } from 'node-fetch'
-
 export type HTTPMethods = 'GET' | 'POST'
 
 export interface ApiResponse<T> {
@@ -31,6 +29,8 @@ export const fetcher = async <T>({
         Cookie: cookie ?? ''
       }
     })
+    //console.log(path)
+    console.log(url)
 
     if (!response.ok) {
       return response.status

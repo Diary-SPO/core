@@ -1,5 +1,5 @@
-import { Task } from '@diary-spo/shared'
-import { IUserInfo, TaskModel } from '@models'
+import type { Task } from '@diary-spo/shared'
+import { type IUserInfo, TaskModel } from '@models'
 import { requiredSaveOrGet } from '../Required'
 import { taskTypeSaveOrGet } from '../TaskType'
 

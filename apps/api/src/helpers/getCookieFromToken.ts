@@ -1,24 +1,36 @@
-import { ApiError } from '@api'
-import {
-  AuthModel,
-  AuthModelType,
-  DiaryUserModel,
-  DiaryUserModelType
-} from '@models'
+import { API_ERRORS, ApiError } from '@api'
+import type { DiaryUserId, Nullable } from '@diary-spo/shared'
 import { caching } from 'cache-manager'
+import { AuthModel, type AuthModelType } from '../models/Auth'
+import { DiaryUserModel, type DiaryUserModelType } from '../models/DiaryUser'
+import { GroupModel, type GroupModelType } from '../models/Group'
+import { SPOModel, type SPOModelType } from '../models/SPO'
 
 const memoryCache = await caching('memory', {
   max: 1000,
-  ttl: 30 * 1000 /*milliseconds*/,
-  refreshThreshold: 10 * 1000 /* как часто проверять в фоновом режиме */
+  ttl: 60 * 1000 /*milliseconds*/,
+  refreshThreshold: 30 * 1000 /* как часто проверять в фоновом режиме */
 })
 
-type IUserAuthInfo = AuthModelType & { diaryUser: DiaryUserModelType }
+type IUserAuthInfo = AuthModelType & {
+  diaryUser: DiaryUserModelType & {
+    group: GroupModelType & {
+      spo: SPOModelType
+    }
+  }
+}
 export type ICacheData = {
   cookie: string
   idFromDiary: number
-  localUserId: number
-  groupId: number
+  localUserId: bigint
+  groupId: bigint
+  spoId: bigint
+  token: string
+  firstName: string
+  lastName: string
+  middleName?: string
+  termLastUpdate?: Nullable<string>
+  termStartDate?: Nullable<string>
 }
 
 /**
@@ -36,29 +48,65 @@ export const getCookieFromToken = async (
   }
 
   // TODO: сделать метод рядом с моделью для создания и использовать тут
-  const DiaryUserAuth = (await AuthModel.findOne({
+  const diaryUserAuth = (await AuthModel.findOne({
     where: {
       token
     },
     include: {
       model: DiaryUserModel,
-      required: true
+      as: 'diaryUser',
+      required: true,
+      include: [
+        {
+          model: GroupModel,
+          required: true,
+          include: [
+            {
+              model: SPOModel,
+              required: true
+            }
+          ]
+        }
+      ]
     }
-    // TODO: fix it
   })) as IUserAuthInfo | null
 
-  if (!DiaryUserAuth) {
-    throw new ApiError('INVALID_TOKEN', 401)
+  if (!diaryUserAuth) {
+    throw new ApiError(API_ERRORS.INVALID_TOKEN, 401)
   }
 
-  const cookie = DiaryUserAuth.diaryUser.cookie
-  const idFromDiary = DiaryUserAuth.diaryUser.idFromDiary
-  const localUserId = DiaryUserAuth.idDiaryUser
-  const groupId = DiaryUserAuth.diaryUser.groupId
+  const user = diaryUserAuth.diaryUser
+  const spoId = user.group.spo.id
 
-  await memoryCache.set(token, { cookie, idFromDiary, localUserId, groupId })
+  const {
+    cookie,
+    idFromDiary,
+    groupId,
+    firstName,
+    lastName,
+    middleName,
+    termStartDate,
+    termLastDateUpdate: termLastUpdate,
+    id: localUserId
+  } = user
 
-  return { cookie, idFromDiary, localUserId, groupId }
+  const toSave = {
+    cookie,
+    idFromDiary,
+    localUserId,
+    groupId,
+    spoId,
+    firstName,
+    lastName,
+    middleName,
+    termLastUpdate,
+    termStartDate,
+    token
+  }
+
+  await memoryCache.set(token, toSave)
+
+  return toSave
 }
 
 /**
@@ -75,4 +123,12 @@ const cacheGetter = async (token: string): Promise<ICacheData | null> => {
   }
 
   return cacheCookie
+}
+
+export const updateCache = async (newCache: ICacheData) => {
+  await memoryCache.set(newCache.token, newCache)
+}
+
+export const deleteCache = async (token: string) => {
+  await memoryCache.del(token)
 }
