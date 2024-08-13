@@ -1,4 +1,3 @@
-import { ExplanationTooltip, Mark } from '@components'
 import {
   AbsenceTypes,
   AbsenceTypesDescription,
@@ -6,6 +5,7 @@ import {
 } from '@diary-spo/shared'
 import { Group, Header, SimpleCell } from '@vkontakte/vkui'
 import type { FC } from 'preact/compat'
+import { ExplanationTooltip, Mark } from '../../../../../../shared/ui'
 import LessonTasks from './LessonTasks'
 
 interface ILessonGrade {

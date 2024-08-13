@@ -1,4 +1,3 @@
-import type { Pages } from '@types'
 import {
   Icon28BookSpreadOutline,
   Icon28GraphOutline,
@@ -12,12 +11,13 @@ import {
 } from '@vkontakte/vkui'
 import type { FC } from 'preact/compat'
 
+import type { Pages } from '../../../../shared/types.ts'
 import {
   VIEW_MARKS,
   VIEW_NOTIFICATIONS,
   VIEW_SCHEDULE,
   VIEW_SETTINGS
-} from '@routes'
+} from '../../../routes'
 
 interface ITabbar {
   onStoryChange: (current: Pages) => void

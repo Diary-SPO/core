@@ -1,18 +1,17 @@
 import {
-  MAIN_SETTINGS,
-  VIEW_MARKS,
-  VIEW_NOTIFICATIONS,
-  VIEW_SCHEDULE,
-  VIEW_SETTINGS
-} from '@routes'
-import type { Pages } from '@types'
-import {
   useActiveVkuiLocation,
   useRouteNavigator
 } from '@vkontakte/vk-mini-apps-router'
 import { View, useAdaptivityConditionalRender } from '@vkontakte/vkui'
 import { Epic as VKUIEpic } from '@vkontakte/vkui/dist/components/Epic/Epic'
 import type { FC } from 'preact/compat'
+import {
+  MAIN_SETTINGS,
+  VIEW_MARKS,
+  VIEW_NOTIFICATIONS,
+  VIEW_SCHEDULE,
+  VIEW_SETTINGS
+} from '../../../routes'
 
 import {
   Achievements,
@@ -20,9 +19,11 @@ import {
   Notifications,
   Schedule,
   Settings
-} from '@views'
+} from '../../../../pages'
 
-import { Suspense } from '@components'
+import type { Pages } from '../../../../shared/types.ts'
+import { Suspense } from '../../../../shared/ui'
+
 import Tabbar from './Tabbar'
 
 interface IEpic {

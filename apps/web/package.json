@@ -16,14 +16,14 @@
     "checkAll": "biome check . --apply-unsafe"
   },
   "dependencies": {
+    "@elysiajs/eden": "1.1.2",
     "@vkontakte/icons": "2.129.0",
     "@vkontakte/vk-bridge": "^2.15.0",
     "@vkontakte/vk-bridge-react": "^1.0.1",
-    "@vkontakte/vk-mini-apps-router": "1.4.5",
-    "@vkontakte/vkui": "6.4.1",
-    "@elysiajs/eden": "1.1.2",
-    "axios": "^1.7.2",
-    "preact": "^10.22.0"
+    "@vkontakte/vk-mini-apps-router": "1.4.6",
+    "@vkontakte/vkui": "6.5.0",
+    "date-fns": "^3.6.0",
+    "preact": "^10.23.2"
   },
   "devDependencies": {
     "@diary-spo/shared": "workspace:*",

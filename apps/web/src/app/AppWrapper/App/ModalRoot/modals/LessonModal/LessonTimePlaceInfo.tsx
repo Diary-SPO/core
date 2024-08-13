@@ -1,7 +1,7 @@
-import { ExplanationTooltip } from '@components'
-import { isDistant } from '@utils'
 import { Group, Header, InfoRow, SimpleCell } from '@vkontakte/vkui'
 import { type FC, useMemo } from 'preact/compat'
+import { isDistant } from '../../../../../../shared'
+import { ExplanationTooltip } from '../../../../../../shared/ui'
 
 export interface ILessonTimePlaceInfo {
   classroomName?: string

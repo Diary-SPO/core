@@ -8,10 +8,10 @@ import {
 } from '@vkontakte/vkui'
 import { lazy } from 'preact/compat'
 
-import { Suspense } from '@components'
+import { Suspense } from '../../shared/ui'
+import { router } from '../routes/router'
 
-import { router } from '../../routes/router'
-import AuthProvider from './AuthProvider.tsx'
+import AuthProvider from '../providers/AuthProvider.tsx'
 
 const NotFoundCorrect = lazy(() => import('./NotFound'))
 const App = lazy(() => import('./App'))
