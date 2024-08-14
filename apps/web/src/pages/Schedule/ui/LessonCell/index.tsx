@@ -2,10 +2,10 @@ import type { Gradebook, Lesson, Timetable } from '@diary-spo/shared'
 import { SimpleCell } from '@vkontakte/vkui'
 import type { FC } from 'react'
 
-import { isDistant, setDefaultMark } from '../../../../../shared'
-import { Mark } from '../../../../../shared/ui'
+import { isDistant, setDefaultMark } from '../../../../shared'
+import { Mark } from '../../../../shared/ui'
 
-import LessonSubtitle from './LessonSubtitle'
+import LessonSubtitle from '../LessonSubtitle'
 
 import './index.css'
 

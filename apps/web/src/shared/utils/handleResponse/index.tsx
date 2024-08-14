@@ -1,3 +1,4 @@
+import type { Treaty } from '@elysiajs/eden/treaty2'
 import { Icon28ErrorCircleOutline } from '@vkontakte/icons'
 import { VKUI_RED } from '../../config'
 import type { SnackbarData } from '../../hooks'
@@ -11,7 +12,7 @@ import { isApiError } from '../isApiError'
 
 const errorIcon = <Icon28ErrorCircleOutline fill={VKUI_RED} />
 
-export const handleResponse = <T extends object>(
+export const handleResponse = <T extends Treaty.TreatyResponse<any>>(
   /** Ответ от сервера **/
   response: T,
   /** Функция, вызываемая при ошибке **/
@@ -26,7 +27,7 @@ export const handleResponse = <T extends object>(
   shouldCallErrorIfFatal = true,
   /** Надо ли вызывать errorCallback при 401 ошибке **/
   shouldCallErrorIfUnauth = false
-): T => {
+): T | undefined => {
   console.log('%c[handleResponse]', 'color: green', response)
 
   if (!response) {
@@ -43,7 +44,7 @@ export const handleResponse = <T extends object>(
    * P.S. В "хорошем" ответе нет поля statusText, а только нужные данные
    */
   if (!isApiError(response)) {
-    loadingCallback(false)
+    loadingCallback?.(false)
     return response
   }
 
@@ -51,11 +52,11 @@ export const handleResponse = <T extends object>(
 
   switch (response.status) {
     case HTTP_STATUSES.RATE_LIMIT:
-      limitExceededCallback()
+      limitExceededCallback?.()
       break
     case HTTP_STATUSES.UNAUTHORIZED:
       if (shouldCallErrorIfUnauth) {
-        errorCallback()
+        errorCallback?.()
         break
       }
 
@@ -68,7 +69,7 @@ export const handleResponse = <T extends object>(
       break
     case HTTP_STATUSES.TEAPOT: {
       if (shouldCallErrorIfFatal) {
-        errorCallback()
+        errorCallback?.()
       }
 
       showSnackbar?.({
@@ -79,11 +80,10 @@ export const handleResponse = <T extends object>(
       break
     }
     default: {
-      errorCallback()
+      errorCallback?.()
       break
     }
   }
 
-  loadingCallback(false)
-  return
+  loadingCallback?.(false)
 }

@@ -1,8 +1,8 @@
 import type { CSSProperties, FC } from 'react'
 
-import { VKUI_RED_BG, VKUI_VIOLET } from '../../../../../../shared/config'
+import { VKUI_RED_BG, VKUI_VIOLET } from '../../../shared/config'
 
-import { convertStringToTime, getTimeRemaining } from './helpers.ts'
+import { convertStringToTime, getTimeRemaining } from '../lib'
 
 interface ITimeRemaining {
   lessonDate: Date
@@ -31,7 +31,7 @@ const TimeRemaining: FC<ITimeRemaining> = ({
   const lessonEndDate = convertStringToTime(endTime, lessonDate)
   const lessonStartDate = convertStringToTime(startTime, lessonDate)
 
-  if (!lessonEndDate) {
+  if (!lessonEndDate || !lessonStartDate) {
     return null
   }
 

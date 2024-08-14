@@ -8,7 +8,7 @@ import { setDefaultMark, truncateString } from '../../../../shared'
 import { MODAL_PAGE_MARK } from '../../../../shared/config'
 import { Mark } from '../../../../shared/ui'
 
-import type { LessonGradesProps } from '../types.ts'
+import type { LessonGradesProps } from '../MarksByDay/types.ts'
 
 import './index.css'
 

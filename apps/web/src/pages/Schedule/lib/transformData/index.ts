@@ -1,9 +1,9 @@
-import type { Day } from '@diary-spo/shared'
-import type { MarkDetailed } from '../types.ts'
+import type { Day, Nullable } from '@diary-spo/shared'
+import type { MarkDetailed } from '../../model'
 
 export type MarksByDayMap = [string, MarkDetailed[]][]
 
-export const transformData = (lessonsState: Day[]): MarksByDayMap => {
+export const transformData = (lessonsState: Nullable<Day[]>): MarksByDayMap => {
   if (!lessonsState || !lessonsState?.length) {
     return []
   }
@@ -24,7 +24,7 @@ export const transformData = (lessonsState: Day[]): MarksByDayMap => {
 
       const existingTasks = resultMap.get(day) || []
 
-      for (const newTask of lesson.gradebook.tasks) {
+      for (const newTask of lesson.gradebook.tasks || []) {
         if (
           !existingTasks.some(
             (existingTask) => existingTask.task.id === newTask.id

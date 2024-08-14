@@ -1,10 +1,10 @@
 import { AbsenceTypes, type Gradebook, LessonType } from '@diary-spo/shared'
 import type { FC } from 'react'
 
-import { isDistant } from '../../../../../../shared'
-import { SubtitleWithBorder } from '../../../../../../shared/ui'
+import { isDistant } from '../../../../shared'
+import { SubtitleWithBorder } from '../../../../shared/ui'
 
-import TimeRemaining from './TimeRemaining.tsx'
+import TimeRemaining from '../TimeRemaining.tsx'
 
 import './index.css'
 

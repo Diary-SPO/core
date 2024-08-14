@@ -26,17 +26,16 @@ import {
   Suspense
 } from '../../shared/ui'
 import type { Props } from '../types.ts'
-import { transformData } from './MarksByDay/helpers'
-import { getWeekString } from './utils.ts'
 
-const ScheduleAsideButtons = lazy(() => import('./ScheduleAsideButtons.tsx'))
-const MarksByDay = lazy(() => import('./MarksByDay'))
-const ScheduleGroup = lazy(() => import('./ScheduleGroup'))
+import { getWeekString, transformData } from './lib'
+const ScheduleAsideButtons = lazy(() => import('./ui/ScheduleAsideButtons.tsx'))
+const MarksByDay = lazy(() => import('./ui/MarksByDay'))
+const ScheduleGroup = lazy(() => import('./ui/ScheduleGroup'))
 
 const Schedule: FC<Props> = ({ id }) => {
   /** Управление данными **/
   const newDate = new Date()
-  const cachedDate = new Date(localStorage.getItem('currentDate'))
+  const cachedDate = new Date(localStorage.getItem('currentDate') ?? '')
   const currentDate =
     cachedDate && cachedDate.getFullYear() >= 2023 ? cachedDate : newDate
 

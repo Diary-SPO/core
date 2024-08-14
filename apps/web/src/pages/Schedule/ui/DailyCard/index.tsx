@@ -1,7 +1,7 @@
 import type { Day, Gradebook, Timetable } from '@diary-spo/shared'
 import { useRouteNavigator } from '@vkontakte/vk-mini-apps-router'
 import { Card, Group, Placeholder } from '@vkontakte/vkui'
-import { type FC } from 'react'
+import type { FC } from 'react'
 
 import { useLessonModal } from '@store'
 
@@ -10,9 +10,10 @@ import {
   MODAL_PAGE_LESSON,
   VKUI_ACCENT_BG
 } from '../../../../shared/config'
-import LessonCell from './LessonCell'
-import LessonHeader from './LessonHeader.tsx'
-import { formatLessonDate, isToday } from './helpers.ts'
+import { isToday } from '../../lib'
+import { formatLessonDate } from '../../lib/formatLessonDate'
+import LessonCell from '../LessonCell'
+import LessonHeader from '../LessonHeader.tsx'
 
 interface IDailyCard {
   lesson: Day
@@ -82,7 +83,7 @@ const DailyCard: FC<IDailyCard> = ({ lesson }) => {
   ))
 
   return (
-    <Card className='lessonCard' key={lesson.date}>
+    <Card className='lessonCard' key={lesson.date.toString()}>
       <Group
         header={
           <LessonHeader

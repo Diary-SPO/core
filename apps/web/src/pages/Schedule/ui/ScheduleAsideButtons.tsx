@@ -7,9 +7,9 @@ import { endOfWeek } from 'date-fns/endOfWeek'
 import { startOfWeek } from 'date-fns/startOfWeek'
 import { type FC, useEffect, useState } from 'react'
 
-import type { SnackbarData } from '../../shared/hooks'
-import { ExplanationTooltip } from '../../shared/ui'
-import useDebouncedChangeWeek from './hooks/useDebouncedChangeWeek.tsx'
+import type { SnackbarData } from '../../../shared/hooks'
+import { ExplanationTooltip } from '../../../shared/ui'
+import { useDebouncedChangeWeek } from '../hooks'
 
 interface ScheduleAsideButtonsProps {
   handleGetLesson: (start: Date, end: Date) => void

@@ -1,6 +1,8 @@
 import type { Nullable } from '@diary-spo/shared'
 import { useState } from 'react'
 
+// add test
+
 /**
  * Функция 'useDebouncedChangeWeek' обрабатывает изменения недели с задержкой.
  * Принимает начальную и конечную даты, устанавливает значения текущей даты, начальной и конечной даты.
@@ -11,7 +13,7 @@ import { useState } from 'react'
 
 type SendToServerIfValid = (start: Date, end: Date) => void
 
-const useDebouncedChangeWeek = (
+export const useDebouncedChangeWeek = (
   startDate: Date,
   endDate: Date,
   setIsCurrent: (value: boolean) => void,
@@ -68,5 +70,3 @@ const useDebouncedChangeWeek = (
 
   return { handleButtonClick }
 }
-
-export default useDebouncedChangeWeek

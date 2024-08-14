@@ -2,7 +2,7 @@ import type { Day, Nullable } from '@diary-spo/shared'
 import { CardGrid } from '@vkontakte/vkui'
 import { type FC, memo } from 'react'
 
-import DailyCard from './DailyCard'
+import DailyCard from '../DailyCard'
 
 interface IScheduleGroup {
   lessonsState: Nullable<Day[]>

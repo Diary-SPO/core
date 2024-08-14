@@ -1,16 +1,4 @@
-import type { AxiosResponse } from 'axios'
+import type { Treaty } from '@elysiajs/eden/treaty2'
 
-export const isApiError = (data: unknown): data is AxiosResponse => {
-  const isObj = typeof data === 'object'
-  const isResponse = data instanceof Response
-
-  return (
-    !data ||
-    (isObj &&
-      (isResponse ||
-        ('status' in data &&
-          typeof data.status === 'number' &&
-          'statusText' in data &&
-          typeof data.statusText === 'string')))
-  )
-}
+export const isApiError = (data: unknown): data is Treaty.TreatyResponse<any> =>
+  !data || typeof data !== 'object' || 'error' in data

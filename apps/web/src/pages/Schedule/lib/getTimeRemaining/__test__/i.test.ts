@@ -1,7 +1,6 @@
 import { describe, expect, it } from 'bun:test'
-import { convertStringToTime, getTimeRemaining } from '../helpers.ts'
+import { getTimeRemaining } from '../index.ts'
 
-/** getTimeRemaining **/
 describe('getTimeRemaining', () => {
   it('должна возвращать null, если урок уже завершился', () => {
     const currentDate = new Date('2023-01-01T18:00:00')
@@ -51,19 +50,5 @@ describe('getTimeRemaining', () => {
     const result = getTimeRemaining(currentDate, endTime, startDate)
 
     expect(result).toBe('90 мин до конца')
-  })
-
-  /** convertStringToTime **/
-  it('должна конвертировать строку времени в объект Date', () => {
-    const baseDate = new Date(2023, 10, 1, 0, 0, 0)
-    const result = convertStringToTime('14:30', baseDate)
-    expect(result.getHours()).toBe(14)
-    expect(result.getMinutes()).toBe(30)
-  })
-
-  it('должна вернуть null для некорректного формата времени', () => {
-    const baseDate = new Date(2023, 10, 1, 0, 0, 0)
-    const result = convertStringToTime('25:70', baseDate)
-    expect(result).toBe(null)
   })
 })

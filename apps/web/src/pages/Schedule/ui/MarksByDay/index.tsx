@@ -1,8 +1,9 @@
 import { HorizontalScroll } from '@vkontakte/vkui'
-import type { MarksByDayMap } from './helpers'
-
 import { type FC, memo } from 'react'
-import LessonGrades from './LessonGrades'
+
+import type { MarksByDayMap } from '../../lib/transformData'
+
+import LessonGrades from '../LessonGrades'
 
 const MarksByDay: FC<{ lessonsState: MarksByDayMap }> = ({ lessonsState }) => (
   <HorizontalScroll

@@ -1,7 +1,6 @@
 import { describe, expect, it } from 'bun:test'
-import { formatLessonDate, isToday } from '../helpers.ts'
+import { isToday } from '../index.ts'
 
-/** isToday **/
 describe('isToday', () => {
   it('должна вернуть true для сегодняшней даты', () => {
     const today = new Date()
@@ -16,11 +15,4 @@ describe('isToday', () => {
 
     expect(isTodayFalse).toBe(false)
   })
-})
-
-/** formatLessonDate **/
-it('должна правильно форматировать дату урока', () => {
-  const date = new Date(2023, 10, 1)
-  const result = formatLessonDate(date)
-  expect(result).toBe('1 ноября 2023 г.')
 })
