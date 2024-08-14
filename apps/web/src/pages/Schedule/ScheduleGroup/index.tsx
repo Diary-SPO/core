@@ -5,7 +5,7 @@ import { memo } from 'preact/compat'
 import DailyCard from './DailyCard'
 
 interface IScheduleGroup {
-  lessonsState?: Nullable<Day[]>
+  lessonsState: Nullable<Day[]>
 }
 
 const ScheduleGroup: FunctionComponent<IScheduleGroup> = ({ lessonsState }) => (

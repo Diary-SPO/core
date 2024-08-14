@@ -26,6 +26,7 @@ import {
   Suspense
 } from '../../shared/ui'
 import type { Props } from '../types.ts'
+import { transformData } from './MarksByDay/helpers'
 import { getWeekString } from './utils.ts'
 
 const ScheduleAsideButtons = lazy(() => import('./ScheduleAsideButtons.tsx'))
@@ -136,9 +137,11 @@ const Schedule: FC<Props> = ({ id }) => {
 
   const shouldShowSpinner = isLoading && <PanelSpinner />
 
+  const data = transformData(lessonsState).reverse()
+
   const MarksByDayOrLoading = shouldShowSpinner || (
     <Suspense id='MarksByDay'>
-      <MarksByDay lessonsState={lessonsState} />
+      <MarksByDay lessonsState={data} />
     </Suspense>
   )
   const ScheduleOrLoading = shouldShowSpinner || (

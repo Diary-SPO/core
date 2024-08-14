@@ -1,9 +1,9 @@
 import type { Day } from '@diary-spo/shared'
 import type { MarkDetailed } from '../types.ts'
 
-export const transformData = (
-  lessonsState: Day[]
-): [string, MarkDetailed[]][] => {
+export type MarksByDayMap = [string, MarkDetailed[]][]
+
+export const transformData = (lessonsState: Day[]): MarksByDayMap => {
   if (!lessonsState || !lessonsState?.length) {
     return []
   }
