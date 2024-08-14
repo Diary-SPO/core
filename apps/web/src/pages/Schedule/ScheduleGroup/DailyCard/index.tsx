@@ -1,7 +1,7 @@
-import { type FC, useCallback } from 'react'
 import type { Day, Gradebook, Timetable } from '@diary-spo/shared'
 import { useRouteNavigator } from '@vkontakte/vk-mini-apps-router'
 import { Card, Group, Placeholder } from '@vkontakte/vkui'
+import { type FC } from 'react'
 
 import { useLessonModal } from '@store'
 
