@@ -63,6 +63,7 @@ const UserInfo: FC = () => {
     setIsLoading(false)
   }
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: all good
   useEffect(() => {
     getUserInfo()
   }, [])

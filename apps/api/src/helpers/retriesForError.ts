@@ -1,4 +1,8 @@
-type ArgumentTypes<F extends Function> = F extends (...args: infer A) => any
+//  biome-ignore lint/suspicious/noExplicitAny: несмотря на any, тут все типизировано
+type ArgumentTypes<F extends (...args: any[]) => any> = F extends (
+  ...args: infer A
+  //  biome-ignore lint/suspicious/noExplicitAny: несмотря на any, тут все типизировано
+) => any
   ? A
   : never
 
@@ -12,6 +16,7 @@ type ArgumentTypes<F extends Function> = F extends (...args: infer A) => any
  * @param sleep - Величина паузы до повторного вызова callback
  * @returns
  */
+//  biome-ignore lint/suspicious/noExplicitAny: несмотря на any, тут все типизировано
 export const retriesForError = async <C extends (...args: any) => any>(
   callback: C,
   callbackArguments: ArgumentTypes<C>,

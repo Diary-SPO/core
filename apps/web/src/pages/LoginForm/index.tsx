@@ -36,6 +36,7 @@ const LoginForm: FC<Props> = ({ id }) => {
 
   const [snackbar, showSnackbar] = useSnackbar()
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: all good
   useEffect(() => {
     const getUserCookie = async () => {
       const storageToken = localStorage.getItem('token')

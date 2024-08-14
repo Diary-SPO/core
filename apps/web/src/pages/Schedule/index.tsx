@@ -109,6 +109,7 @@ const Schedule: FC<Props> = ({ id }) => {
     await handleGetLesson(startDate, endDate)
   }
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: all good
   useEffect(() => {
     gettedLessons()
   }, [])

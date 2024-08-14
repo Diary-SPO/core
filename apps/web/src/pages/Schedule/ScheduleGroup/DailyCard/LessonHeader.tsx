@@ -5,7 +5,7 @@ interface ILessonHeader {
   lessonDayOfWeek: string | undefined
   formattedLessonDate: string
   displayDayStyles: CSSProperties
-  displayDay: string
+  displayDay: string | undefined
 }
 
 const LessonHeader: FC<ILessonHeader> = ({

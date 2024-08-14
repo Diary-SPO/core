@@ -23,6 +23,7 @@ const FinalMarks: FC<Props> = ({ setIsError, setIsLoading, isLoading }) => {
   const [finalMarksData, setFinalMarksData] =
     useState<Nullable<AcademicRecord>>(null)
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: all good
   useEffect(() => {
     const fetchData = async () => {
       setIsLoading(true)

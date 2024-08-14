@@ -111,6 +111,7 @@ const Achievements: FC<Props> = ({ id }) => {
     }
   }
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: all good
   useEffect(() => {
     fetchMarks()
   }, [])

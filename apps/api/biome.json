@@ -2,6 +2,7 @@
   "formatter": {
     "ignore": ["./dist"]
   },
+
   "linter": {
     "ignore": ["./dist"]
   },

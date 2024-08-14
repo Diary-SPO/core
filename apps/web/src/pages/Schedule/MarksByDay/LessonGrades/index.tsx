@@ -1,7 +1,7 @@
 import type { Task } from '@diary-spo/shared'
 import { useRouteNavigator } from '@vkontakte/vk-mini-apps-router'
 import { Header, HorizontalCell } from '@vkontakte/vkui'
-import { type FC, useCallback } from 'react'
+import type { FC } from 'react'
 
 import { useMarkModal } from '@store'
 import { setDefaultMark, truncateString } from '../../../../shared'
@@ -20,13 +20,10 @@ const LessonGrades: FC<LessonGradesProps> = ({ day, lessonGrades }) => {
   const routeNavigator = useRouteNavigator()
   const { setData } = useMarkModal()
 
-  const handleMarkClick = useCallback(
-    async (data: Task, lessonName: string) => {
-      setData({ data, lessonName })
-      await routeNavigator.showModal(MODAL_PAGE_MARK)
-    },
-    [day, lessonGrades.length]
-  )
+  const handleMarkClick = async (data: Task, lessonName: string) => {
+    setData({ data, lessonName })
+    await routeNavigator.showModal(MODAL_PAGE_MARK)
+  }
 
   return (
     <div key={day}>

@@ -24,7 +24,7 @@
     "dev:api:serve": "cd apps/api && bun serve",
     "lint": "biome lint . --apply",
     "format": "biome format . --write",
-    "checkAll": "biome check . --apply-unsafe",
+    "checkAll": "biome check . --write --unsafe",
     "build:web": "cd apps/web && bun run build",
     "build:api": "cd apps/api && bun run build",
     "prepare": "husky"

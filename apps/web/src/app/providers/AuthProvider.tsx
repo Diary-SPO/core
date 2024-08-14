@@ -11,6 +11,7 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
   const routeNavigator = useRouteNavigator()
   const { view: activeView, panel } = useActiveVkuiLocation()
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: all good
   useLayoutEffect(() => {
     const cookieValue = localStorage.getItem('token')
 

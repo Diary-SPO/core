@@ -3,18 +3,27 @@
   "formatter": {
     "indentStyle": "space",
     "indentWidth": 2,
-    "ignore": ["node_modules"]
+    "ignore": [
+      "node_modules",
+      "./apps/api/dist",
+      "./apps/admin/dist",
+      "./apps/web/dist",
+      "bun.lockb"
+    ]
   },
   "javascript": {
     "formatter": {
       "semicolons": "asNeeded",
       "quoteStyle": "single",
       "jsxQuoteStyle": "single",
-      "trailingComma": "none"
+      "trailingCommas": "none"
     }
   },
   "organizeImports": {
     "enabled": true
+  },
+  "files": {
+    "maxSize": 4096000
   },
   "linter": {
     "enabled": true,

@@ -4,7 +4,7 @@ import { Card, Group, Placeholder } from '@vkontakte/vkui'
 
 import { useLessonModal } from '@store'
 
-import { type FC, useCallback, useMemo } from 'react'
+import { type FC, useCallback } from 'react'
 import {
   GRAY,
   MODAL_PAGE_LESSON,
@@ -22,30 +22,27 @@ const DailyCard: FC<IDailyCard> = ({ lesson }) => {
   const routeNavigator = useRouteNavigator()
   const { setData } = useLessonModal()
 
-  const handleLessonClick = useCallback(
-    (
-      name: string,
-      endTime: string,
-      startTime: string,
-      timetable: Timetable,
-      gradebook: Gradebook | undefined
-    ) => {
-      const lessonId = lessonDate.toISOString()
-      const modalData = {
-        name,
-        endTime,
-        startTime,
-        timetable,
-        gradebook,
-        tasks: gradebook?.tasks,
-        lessonId
-      }
+  const handleLessonClick = (
+    name: string,
+    endTime: string,
+    startTime: string,
+    timetable: Timetable,
+    gradebook: Gradebook | undefined
+  ) => {
+    const lessonId = lessonDate.toISOString()
+    const modalData = {
+      name,
+      endTime,
+      startTime,
+      timetable,
+      gradebook,
+      tasks: gradebook?.tasks,
+      lessonId
+    }
 
-      setData(modalData)
-      routeNavigator.showModal(MODAL_PAGE_LESSON)
-    },
-    []
-  )
+    setData(modalData)
+    routeNavigator.showModal(MODAL_PAGE_LESSON)
+  }
 
   const currentDate = new Date()
   const lessonDate = new Date(lesson.date)
@@ -71,20 +68,18 @@ const DailyCard: FC<IDailyCard> = ({ lesson }) => {
   const displayDay = isLessonToday
     ? 'Сегодня'
     : dayEnded
-      ? ' День завершён'
+      ? 'День завершён'
       : undefined
 
   // @TODO: ??
-  const lessons = useMemo(() => {
-    return lesson.lessons?.map((lesson) => (
-      <LessonCell
-        key={lesson.lessonId ?? lesson.startTime}
-        lessonDate={lessonDate}
-        lesson={lesson}
-        handleLessonClick={handleLessonClick}
-      />
-    ))
-  }, [lessonDate])
+  const lessons = lesson.lessons?.map((lesson) => (
+    <LessonCell
+      key={lesson.lessonId ?? lesson.startTime}
+      lessonDate={lessonDate}
+      lesson={lesson}
+      handleLessonClick={handleLessonClick}
+    />
+  ))
 
   return (
     <Card className='lessonCard' key={lesson.date}>

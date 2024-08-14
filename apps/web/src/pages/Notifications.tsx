@@ -71,6 +71,7 @@ const Notifications: FC<Props> = ({ id }) => {
     }
   }
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: all good
   useEffect(() => {
     const cachedAds = localStorage.getItem('savedAds')
 

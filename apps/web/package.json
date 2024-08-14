@@ -13,7 +13,7 @@
     "deploy:vk": "vk-miniapps-deploy",
     "lint": "biome lint . --apply",
     "format": "biome format . --write",
-    "checkAll": "biome check . --apply-unsafe"
+    "checkAll": "biome check . --write --unsafe"
   },
   "dependencies": {
     "@elysiajs/eden": "1.1.2",
