@@ -1,10 +1,10 @@
 import type { Day, Gradebook, Timetable } from '@diary-spo/shared'
 import { useRouteNavigator } from '@vkontakte/vk-mini-apps-router'
 import { Card, Group, Placeholder } from '@vkontakte/vkui'
-import { type FC, useCallback, useMemo } from 'preact/compat'
 
 import { useLessonModal } from '@store'
 
+import { type FC, useCallback, useMemo } from 'react'
 import {
   GRAY,
   MODAL_PAGE_LESSON,
@@ -74,10 +74,11 @@ const DailyCard: FC<IDailyCard> = ({ lesson }) => {
       ? ' День завершён'
       : undefined
 
+  // @TODO: ??
   const lessons = useMemo(() => {
-    return lesson.lessons.map((lesson) => (
+    return lesson.lessons?.map((lesson) => (
       <LessonCell
-        key={lesson.lessonId}
+        key={lesson.lessonId ?? lesson.startTime}
         lessonDate={lessonDate}
         lesson={lesson}
         handleLessonClick={handleLessonClick}
@@ -97,7 +98,7 @@ const DailyCard: FC<IDailyCard> = ({ lesson }) => {
           />
         }
       >
-        {lesson.lessons.length ? lessons : <Placeholder>Пар нет</Placeholder>}
+        {lesson.lessons?.length ? lessons : <Placeholder>Пар нет</Placeholder>}
       </Group>
     </Card>
   )

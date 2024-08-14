@@ -1,10 +1,12 @@
 import { AbsenceTypes, type Gradebook, LessonType } from '@diary-spo/shared'
-import type { FC } from 'preact/compat'
+import type { FC } from 'react'
+
 import { isDistant } from '../../../../../../shared'
+import { SubtitleWithBorder } from '../../../../../../shared/ui'
+
 import TimeRemaining from './TimeRemaining.tsx'
 
 import './index.css'
-import { SubtitleWithBorder } from '../../../../../../shared/ui'
 
 interface ILessonSubtitle {
   cabinetName: string
@@ -39,11 +41,13 @@ const LessonSubtitle: FC<ILessonSubtitle> = ({
         </SubtitleWithBorder>
       )}
     </div>
-    <TimeRemaining
-      lessonDate={lessonDate}
-      startTime={startTime}
-      endTime={endTime}
-    />
+    {startTime && endTime && (
+      <TimeRemaining
+        lessonDate={lessonDate}
+        startTime={startTime}
+        endTime={endTime}
+      />
+    )}
   </div>
 )
 

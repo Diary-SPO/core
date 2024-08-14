@@ -1,6 +1,7 @@
 import { Icon20EducationOutline, Icon28BrainOutline } from '@vkontakte/icons'
 import { Group, Header, MiniInfoCell } from '@vkontakte/vkui'
-import { type FC, Fragment } from 'preact/compat'
+import type { FC } from 'react'
+
 import UserInfo from './UserInfo'
 import type { ISummary } from './types.ts'
 
@@ -24,7 +25,8 @@ const Summary: FC<ISummary> = ({
           </Header>
         }
       >
-        <Fragment>
+        {/*@TODO: ??*/}
+        <>
           <MiniInfoCell
             before={<Icon20EducationOutline className='icon' />}
             after={<Mark color={VIOLET} size='s' mark={totalNumberOfMarks} />}
@@ -58,7 +60,7 @@ const Summary: FC<ISummary> = ({
               )}
             </div>
           )}
-        </Fragment>
+        </>
       </Group>
     </>
   )

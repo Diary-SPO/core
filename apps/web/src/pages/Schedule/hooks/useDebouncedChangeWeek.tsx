@@ -1,5 +1,5 @@
 import type { Nullable } from '@diary-spo/shared'
-import { useCallback, useState } from 'preact/hooks'
+import { useState } from 'react'
 
 /**
  * Функция 'useDebouncedChangeWeek' обрабатывает изменения недели с задержкой.
@@ -21,31 +21,33 @@ const useDebouncedChangeWeek = (
   const [clickCount, setClickCount] = useState<number>(0)
   const [timeoutId, setTimeoutId] = useState<Nullable<number>>(null)
 
-  const debouncedChangeWeek = useCallback(
-    (direction: 'prev' | 'next', sendToServerIfValid: SendToServerIfValid) => {
-      localStorage.setItem('isCurrent', JSON.stringify(false))
-      setIsCurrent(false)
-      const newStartDate = new Date(startDate)
-      const newEndDate = new Date(endDate)
-      if (clickCount > 0) {
-        const weekDifference = clickCount * 7
-        newStartDate.setDate(newStartDate.getDate() + weekDifference)
-        newEndDate.setDate(newEndDate.getDate() + weekDifference)
-        setClickCount(0)
-      } else if (direction === 'prev') {
-        newStartDate.setDate(newStartDate.getDate() - 7)
-        newEndDate.setDate(newEndDate.getDate() - 7)
-      } else if (direction === 'next') {
-        newStartDate.setDate(newStartDate.getDate() + 7)
-        newEndDate.setDate(newEndDate.getDate() + 7)
-      }
+  const handleChangeWeek = (
+    direction: 'prev' | 'next',
+    sendToServerIfValid: SendToServerIfValid
+  ) => {
+    localStorage.setItem('isCurrent', JSON.stringify(false))
+    setIsCurrent(false)
+    const newStartDate = new Date(startDate)
+    const newEndDate = new Date(endDate)
 
-      sendToServerIfValid(newStartDate, newEndDate)
-      setStartDate(newStartDate)
-      setEndDate(newEndDate)
-    },
-    [clickCount, startDate, endDate, setIsCurrent, setStartDate, setEndDate]
-  )
+    if (clickCount > 0) {
+      const isPrev = direction === 'prev'
+      const weekDifference = clickCount * (isPrev ? -7 : 7)
+      newStartDate.setDate(newStartDate.getDate() + weekDifference)
+      newEndDate.setDate(newEndDate.getDate() + weekDifference)
+      setClickCount(0)
+    } else if (direction === 'prev') {
+      newStartDate.setDate(newStartDate.getDate() - 7)
+      newEndDate.setDate(newEndDate.getDate() - 7)
+    } else if (direction === 'next') {
+      newStartDate.setDate(newStartDate.getDate() + 7)
+      newEndDate.setDate(newEndDate.getDate() + 7)
+    }
+
+    sendToServerIfValid(newStartDate, newEndDate)
+    setStartDate(newStartDate)
+    setEndDate(newEndDate)
+  }
 
   const handleButtonClick = (
     direction: 'prev' | 'next',
@@ -57,7 +59,7 @@ const useDebouncedChangeWeek = (
     }
 
     const timeout = window.setTimeout(() => {
-      debouncedChangeWeek(direction, sendToServerIfValid)
+      handleChangeWeek(direction, sendToServerIfValid)
       setClickCount(0)
     }, 500)
 

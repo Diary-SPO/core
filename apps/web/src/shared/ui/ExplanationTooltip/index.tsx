@@ -1,6 +1,6 @@
 import { Icon16HelpOutline } from '@vkontakte/icons'
 import { Popover, Subhead } from '@vkontakte/vkui'
-import type { FC, ReactNode } from 'preact/compat'
+import type { FC, ReactNode } from 'react'
 
 interface ITooltipText {
   text?: ReactNode
@@ -11,14 +11,12 @@ import './index.css'
 
 const ExplanationTooltip: FC<ITooltipText> = ({ text, tooltipContent }) => {
   const textTooltip = (
-    //@ts-ignore типы React не совсем совместимы с Preact
     <Subhead className='explanationTooltipText' Component='h5'>
       {tooltipContent}
     </Subhead>
   )
 
   return (
-    //@ts-ignore типы React не совсем совместимы с Preact
     <div className='explanationTooltipWrapper'>
       {text}
       <Popover

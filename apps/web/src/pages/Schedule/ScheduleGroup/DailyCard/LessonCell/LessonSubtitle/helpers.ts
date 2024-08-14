@@ -56,4 +56,7 @@ export const getTimeRemaining = (
       (endTime.getTime() - currentDate.getTime()) / (1000 * 60)
     return `${Math.floor(remainingMinutes)} мин до конца`
   }
+
+  // TODO: ???
+  return ''
 }

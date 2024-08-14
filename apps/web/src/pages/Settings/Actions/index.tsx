@@ -6,7 +6,7 @@ import {
 import bridge from '@vkontakte/vk-bridge'
 import { useRouteNavigator } from '@vkontakte/vk-mini-apps-router'
 import { Alert, CellButton, Group, Header, Switch } from '@vkontakte/vkui'
-import { useEffect, useRef, useState } from 'preact/hooks'
+import { useEffect, useRef, useState } from 'react'
 
 import { logOut } from '../../../shared'
 import { useSnackbar } from '../../../shared/hooks'
@@ -48,7 +48,6 @@ const Actions = () => {
     showSnackbar({
       title: 'Выход',
       before: (
-        //@ts-ignore типы React не совсем совместимы с Preact
         <Icon28DoorArrowRightOutline color='var(--vkui--color_background_accent_themed)' />
       ),
       subtitle: 'После удаления всех данных вы попадёте на страницу авторизации'
@@ -99,17 +98,14 @@ const Actions = () => {
   return (
     <>
       <Group header={<Header mode='secondary'>Действия</Header>}>
-        {/*// @ts-ignore Типы не совместимы */}
         <CellButton
           Component='label'
-          //@ts-ignore типы React не совсем совместимы с Preact
           after={<Switch getRef={switchRef} />}
           onChange={() => setIsSwitchChecked(!isSwitchChecked)}
           before={<Icon28IncognitoOutline />}
         >
           Показывать тех. информацию
         </CellButton>
-        {/*// @ts-ignore Типы не совместимы */}
         <CellButton
           before={<Icon28DoorArrowRightOutline />}
           onClick={() => routeNavigator.showPopout(logOutPopup)}
@@ -117,7 +113,6 @@ const Actions = () => {
           Выйти
         </CellButton>
         {isHomeScreenSupported && (
-          // @ts-ignore Типы не совместимы
           <CellButton
             before={<Icon28HomeArrowDownOutline />}
             onClick={addToHomeScreen}

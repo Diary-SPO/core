@@ -22,7 +22,7 @@ import {
   useAdaptivityConditionalRender,
   usePlatform
 } from '@vkontakte/vkui'
-import { type FC, lazy } from 'preact/compat'
+import { type FC, lazy } from 'react'
 
 import type { Pages } from '../../../shared/types.ts'
 import { Suspense } from '../../../shared/ui'
@@ -82,7 +82,6 @@ const App: FC = () => {
             <Panel>
               {!isVKCOM && <PanelHeader />}
               <Group>
-                {/*// @ts-ignore Типы не совместимы */}
                 <Cell
                   onClick={() => onStoryChange(VIEW_SCHEDULE)}
                   hovered={panel === VIEW_SCHEDULE}
@@ -90,7 +89,6 @@ const App: FC = () => {
                 >
                   Главная
                 </Cell>
-                {/*// @ts-ignore Типы не совместимы */}
                 <Cell
                   onClick={() => onStoryChange(VIEW_MARKS)}
                   hovered={panel === VIEW_MARKS}
@@ -98,7 +96,6 @@ const App: FC = () => {
                 >
                   Успеваемость
                 </Cell>
-                {/*//@ts-ignore типы React не совсем совместимы с Preact*/}
                 <Cell
                   onClick={() => onStoryChange(VIEW_NOTIFICATIONS)}
                   hovered={panel === VIEW_NOTIFICATIONS}
@@ -106,7 +103,6 @@ const App: FC = () => {
                 >
                   Объявления
                 </Cell>
-                {/*// @ts-ignore Типы не совместимы */}
                 <Cell
                   onClick={() => onStoryChange(VIEW_SETTINGS)}
                   hovered={panel === VIEW_SETTINGS}

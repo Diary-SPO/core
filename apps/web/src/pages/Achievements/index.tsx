@@ -7,8 +7,7 @@ import {
   TabsItem,
   Tabs as VKUITabs
 } from '@vkontakte/vkui'
-import { type FC, Suspense } from 'preact/compat'
-import { useEffect, useState } from 'preact/hooks'
+import { type FC, Suspense, useEffect, useState } from 'react'
 import { handleResponse, isApiError, isNeedToUpdateCache } from '../../shared'
 
 import type { Props } from '../types.ts'
@@ -137,6 +136,8 @@ const Achievements: FC<Props> = ({ id }) => {
           <HorizontalScroll arrowSize='l'>
             {data.map((item) => (
               <TabsItem
+                aria-controls={item.type}
+                id={item.type}
                 key={item.type}
                 before={item.icon}
                 disabled={selected === item.type}

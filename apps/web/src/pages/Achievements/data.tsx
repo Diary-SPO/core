@@ -4,7 +4,8 @@ import {
   Icon28TextViewfinderOutline,
   Icon28UserCircleOutline
 } from '@vkontakte/icons'
-import type { ReactNode } from 'preact/compat'
+import type { ReactNode } from 'react'
+
 import type { Tabs } from './types.ts'
 
 interface DataType {

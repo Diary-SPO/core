@@ -1,6 +1,5 @@
 import { Panel } from '@vkontakte/vkui'
-import type { FunctionalComponent } from 'preact'
-import { lazy } from 'preact/compat'
+import { type FC, lazy } from 'react'
 
 import { PanelHeaderWithBack, Suspense } from '../../shared/ui'
 import type { Props } from '../types.ts'
@@ -10,7 +9,7 @@ const Actions = lazy(() => import('./Actions'))
 const FAQ = lazy(() => import('./FAQ'))
 const Footer = lazy(() => import('./Footer'))
 
-const Settings: FunctionalComponent<Props> = ({ id }) => {
+const Settings: FC<Props> = ({ id }) => {
   return (
     <Panel nav={id}>
       <PanelHeaderWithBack title='Настройки' />

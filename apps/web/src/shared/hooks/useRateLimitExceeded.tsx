@@ -1,7 +1,8 @@
-import type { Nullable } from '@diary-spo/shared'
 import { Icon28ErrorCircleOutline } from '@vkontakte/icons'
 import { Snackbar } from '@vkontakte/vkui'
-import { type ReactNode, useCallback, useState } from 'preact/compat'
+import { type ReactNode, useCallback, useState } from 'react'
+
+import type { Nullable } from '@diary-spo/shared'
 import { VKUI_RED } from '../config'
 
 /**

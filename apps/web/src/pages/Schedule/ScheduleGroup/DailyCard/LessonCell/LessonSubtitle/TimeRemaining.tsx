@@ -1,6 +1,7 @@
-import type { FunctionComponent } from 'preact'
-import type { CSSProperties } from 'preact/compat'
+import type { CSSProperties, FC } from 'react'
+
 import { VKUI_RED_BG, VKUI_VIOLET } from '../../../../../../shared/config'
+
 import { convertStringToTime, getTimeRemaining } from './helpers.ts'
 
 interface ITimeRemaining {
@@ -16,7 +17,7 @@ const timeRemainingStyles: CSSProperties = {
   borderRadius: '5px'
 }
 
-const TimeRemaining: FunctionComponent<ITimeRemaining> = ({
+const TimeRemaining: FC<ITimeRemaining> = ({
   lessonDate,
   startTime,
   endTime

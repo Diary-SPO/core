@@ -1,5 +1,5 @@
 import { Div, Group, Header, Spinner } from '@vkontakte/vkui'
-import { type FC, useMemo } from 'preact/compat'
+import { type FC, useMemo } from 'react'
 
 interface Props {
   text?: string

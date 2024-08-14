@@ -1,5 +1,5 @@
 import { Footnote, Header } from '@vkontakte/vkui'
-import type { CSSProperties, FC } from 'preact/compat'
+import type { CSSProperties, FC } from 'react'
 
 interface ILessonHeader {
   lessonDayOfWeek: string | undefined
@@ -17,7 +17,6 @@ const LessonHeader: FC<ILessonHeader> = ({
   <Header
     mode='secondary'
     aside={
-      // @ts-ignore Типы не совместимы
       displayDay && <Footnote style={displayDayStyles}>{displayDay}</Footnote>
     }
   >

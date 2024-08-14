@@ -1,4 +1,5 @@
-import type { FC } from 'preact/compat'
+import type { FC } from 'react'
+
 import type { SubjectMarksItem } from '../../../../../shared'
 
 import { renderMarksOrAbsence } from './helpers'

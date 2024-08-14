@@ -1,4 +1,4 @@
-import { lazy } from 'preact/compat'
+import { lazy } from 'react'
 
 const Schedule = lazy(() => import('./Schedule'))
 const Achievements = lazy(() => import('./Achievements'))

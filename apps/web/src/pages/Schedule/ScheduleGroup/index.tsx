@@ -1,14 +1,14 @@
 import type { Day, Nullable } from '@diary-spo/shared'
 import { CardGrid } from '@vkontakte/vkui'
-import type { FunctionComponent } from 'preact'
-import { memo } from 'preact/compat'
+import { type FC, memo } from 'react'
+
 import DailyCard from './DailyCard'
 
 interface IScheduleGroup {
-  lessonsState?: Nullable<Day[]>
+  lessonsState: Nullable<Day[]>
 }
 
-const ScheduleGroup: FunctionComponent<IScheduleGroup> = ({ lessonsState }) => (
+const ScheduleGroup: FC<IScheduleGroup> = ({ lessonsState }) => (
   <CardGrid style={{ overflowY: 'auto' }} size='l' spaced>
     {lessonsState?.length &&
       lessonsState.map((lesson, index) => (

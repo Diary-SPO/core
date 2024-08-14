@@ -1,7 +1,6 @@
 import type { AttestationResponse, Nullable } from '@diary-spo/shared'
 import { Placeholder } from '@vkontakte/vkui'
-import type { FunctionalComponent } from 'preact'
-import { useEffect, useState } from 'preact/hooks'
+import { type FC, useEffect, useState } from 'react'
 
 import {
   handleResponse,
@@ -20,11 +19,7 @@ interface Props {
   isLoading: boolean
 }
 
-const SubjectList: FunctionalComponent<Props> = ({
-  setIsError,
-  setIsLoading,
-  isLoading
-}) => {
+const SubjectList: FC<Props> = ({ setIsError, setIsLoading, isLoading }) => {
   const [attestationData, setAttestationData] =
     useState<Nullable<AttestationResponse>>(null)
 
@@ -73,6 +68,11 @@ const SubjectList: FunctionalComponent<Props> = ({
   }
 
   const data = processAttestationData(attestationData)
+
+  // @TODO: ??
+  if (!data) {
+    return <Placeholder>Данных нет</Placeholder>
+  }
 
   return (
     <div>

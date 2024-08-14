@@ -1,6 +1,5 @@
 import { Group, Header, Placeholder } from '@vkontakte/vkui'
-import type { FunctionalComponent } from 'preact'
-import { useEffect, useState } from 'preact/hooks'
+import { type FC, useEffect, useState } from 'react'
 
 import type { AcademicRecord, Nullable } from '@diary-spo/shared'
 
@@ -20,11 +19,7 @@ interface Props {
   isLoading: boolean
 }
 
-const FinalMarks: FunctionalComponent<Props> = ({
-  setIsError,
-  setIsLoading,
-  isLoading
-}) => {
+const FinalMarks: FC<Props> = ({ setIsError, setIsLoading, isLoading }) => {
   const [finalMarksData, setFinalMarksData] =
     useState<Nullable<AcademicRecord>>(null)
 

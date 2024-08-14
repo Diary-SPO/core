@@ -1,5 +1,5 @@
 import { Div, Popover, Subhead } from '@vkontakte/vkui'
-import type { FC } from 'preact/compat'
+import type { FC } from 'react'
 import { ExplanationTooltip, Mark } from '../../../../../../../shared/ui'
 
 import type { Term } from '../../types.ts'
@@ -26,10 +26,8 @@ export const MarkWithPopover: FC<{ term: Term }> = ({ term }) => {
           text={<>Оценка: {markComponent} </>}
         />
       ) : (
-        //@ts-ignore типы React не совсем совместимы с Preact
         <Subhead>Оценка: {markComponent} </Subhead>
       )}
-      {/*//@ts-ignore типы React не совсем совместимы с Preact*/}
       <Subhead>
         Курс: {term.course}, семестр: {term.semester}
       </Subhead>
