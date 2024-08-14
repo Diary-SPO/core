@@ -1,5 +1,5 @@
 import type { PerformanceCurrent } from '@diary-spo/shared'
-import { lazy } from 'preact/compat'
+import { lazy } from 'react'
 
 import { Suspense } from '../../../shared/ui'
 import type { Tabs } from '../types.ts'

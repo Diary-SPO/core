@@ -4,7 +4,7 @@ import {
   type FC,
   type HTMLAttributes,
   useMemo
-} from 'preact/compat'
+} from 'react'
 
 import type { ReturnedMark } from '../../types.ts'
 
@@ -34,10 +34,7 @@ const Mark: FC<IMark> = ({ mark, size = 'l', bottom, color, ...props }) => {
     borderRadius: borders[size]
   }
 
-  const Bottom = bottom && (
-    // @ts-ignore
-    <Footnote style={{ padding: 3 }}>{bottom}</Footnote>
-  )
+  const Bottom = bottom && <Footnote style={{ padding: 3 }}>{bottom}</Footnote>
 
   return useMemo(
     () => (

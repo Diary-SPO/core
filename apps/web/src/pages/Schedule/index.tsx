@@ -12,12 +12,12 @@ import {
   PullToRefresh,
   View
 } from '@vkontakte/vkui'
-import { type FC, lazy, useEffect, useState } from 'preact/compat'
 
 import { handleResponse, isApiError, isNeedToUpdateCache } from '../../shared'
 
 import { endOfWeek } from 'date-fns/endOfWeek'
 import { startOfWeek } from 'date-fns/startOfWeek'
+import { type FC, lazy, useEffect, useState } from 'react'
 import { getLessons } from '../../shared/api'
 import { useRateLimitExceeded, useSnackbar } from '../../shared/hooks'
 import {
@@ -62,6 +62,7 @@ const Schedule: FC<Props> = ({ id }) => {
     localStorage.setItem('currentDate', startDate.toString())
 
     try {
+      // @TODO: ??
       const data = await getLessons(start, end)
 
       handleResponse(
@@ -179,7 +180,8 @@ const Schedule: FC<Props> = ({ id }) => {
                     <Header
                       aside={ScheduleGroupAside}
                       mode='secondary'
-                      style='align-items: center;'
+                      // @TODO: ??
+                      style={{ alignItems: 'center' }}
                     >
                       {weekString}
                     </Header>

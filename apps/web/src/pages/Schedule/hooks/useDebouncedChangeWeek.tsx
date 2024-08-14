@@ -1,5 +1,5 @@
 import type { Nullable } from '@diary-spo/shared'
-import { useCallback, useState } from 'preact/hooks'
+import { useCallback, useState } from 'react'
 
 /**
  * Функция 'useDebouncedChangeWeek' обрабатывает изменения недели с задержкой.
@@ -28,11 +28,13 @@ const useDebouncedChangeWeek = (
       const newStartDate = new Date(startDate)
       const newEndDate = new Date(endDate)
       if (clickCount > 0) {
-        const weekDifference = clickCount * 7
+        const isPrev = direction === 'prev'
+        const weekDifference = clickCount * (isPrev ? -7 : 7)
         newStartDate.setDate(newStartDate.getDate() + weekDifference)
         newEndDate.setDate(newEndDate.getDate() + weekDifference)
         setClickCount(0)
       } else if (direction === 'prev') {
+        console.log('direction', direction)
         newStartDate.setDate(newStartDate.getDate() - 7)
         newEndDate.setDate(newEndDate.getDate() - 7)
       } else if (direction === 'next') {
@@ -51,6 +53,7 @@ const useDebouncedChangeWeek = (
     direction: 'prev' | 'next',
     sendToServerIfValid: SendToServerIfValid
   ) => {
+    console.log('direction2', direction)
     setClickCount((prevCount) => prevCount + 1)
     if (timeoutId) {
       clearTimeout(timeoutId)

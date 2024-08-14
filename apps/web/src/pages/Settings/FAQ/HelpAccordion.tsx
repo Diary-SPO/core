@@ -1,7 +1,6 @@
 import type { Nullable } from '@diary-spo/shared'
 import { Accordion, Div, Text } from '@vkontakte/vkui'
-import type { FC, ReactNode } from 'preact/compat'
-import { useState } from 'preact/hooks'
+import { type FC, type ReactNode, useState } from 'react'
 
 interface IHelpAccordion {
   id: number
@@ -20,12 +19,9 @@ const HelpAccordion: FC<IHelpAccordion> = ({ id, title, detail }) => {
       expanded={openId === id}
       onChange={(e) => (e ? setOpenId(id) : setOpenId(null))}
     >
-      {/*//@ts-ignore типы React не совсем совместимы с Preact */}
       <Accordion.Summary>{title}</Accordion.Summary>
-      {/*//@ts-ignore типы React не совсем совместимы с Preact */}
       <Accordion.Content>
         <Div style={infoStyle}>
-          {/*//@ts-ignore типы React не совсем совместимы с Preact */}
           <Text>{detail}</Text>
         </Div>
       </Accordion.Content>

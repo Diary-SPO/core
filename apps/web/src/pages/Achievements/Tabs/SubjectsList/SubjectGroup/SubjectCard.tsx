@@ -1,12 +1,12 @@
 import { Examinations, type Subject } from '@diary-spo/shared'
 import { Card, CardGrid, Div, InfoRow, Subhead, Title } from '@vkontakte/vkui'
-import type { FunctionalComponent } from 'preact'
+import type { FC } from 'react'
 
 export interface ISubjectCard {
   subject: Subject
 }
 
-const SubjectCard: FunctionalComponent<ISubjectCard> = ({ subject }) => (
+const SubjectCard: FC<ISubjectCard> = ({ subject }) => (
   <CardGrid key={subject.id} size='l'>
     <Card mode='shadow'>
       <Div>
@@ -17,6 +17,7 @@ const SubjectCard: FunctionalComponent<ISubjectCard> = ({ subject }) => (
         <InfoRow header='Тип аттестации'>
           {/*// @ts-ignore*/}
           <Subhead Component='h5'>
+            {/*@TODO: ??*/}
             {Examinations[subject.examinationType]}
           </Subhead>
         </InfoRow>
@@ -28,6 +29,7 @@ const SubjectCard: FunctionalComponent<ISubjectCard> = ({ subject }) => (
             Object.keys(subject.marks[subject.id]).length > 0
               ? Object.keys(subject.marks[subject.id]).map((studentId) => (
                   <span key={studentId}>
+                    {/*@TODO: ??*/}
                     {subject.marks[subject.id][studentId]}
                   </span>
                 ))

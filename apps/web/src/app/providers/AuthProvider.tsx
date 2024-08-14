@@ -2,12 +2,12 @@ import {
   useActiveVkuiLocation,
   useRouteNavigator
 } from '@vkontakte/vk-mini-apps-router'
-import type { VNode } from 'preact'
-import { useLayoutEffect } from 'preact/hooks'
+import { type ReactNode, useLayoutEffect } from 'react'
 
 import { MAIN_SETTINGS, PAGE_SCHEDULE } from '../routes'
 
-const AuthProvider = ({ children }: { children: VNode }) => {
+// @TODO: refactor this
+const AuthProvider = ({ children }: { children: ReactNode }) => {
   const routeNavigator = useRouteNavigator()
   const { view: activeView, panel } = useActiveVkuiLocation()
 

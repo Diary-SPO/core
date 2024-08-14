@@ -1,6 +1,7 @@
 import { LessonType, type LessonTypeKeys } from '@diary-spo/shared'
 import { Group, Header, InfoRow, SimpleCell } from '@vkontakte/vkui'
-import type { FC } from 'preact/compat'
+import type { FC } from 'react'
+
 import { textToLink } from '../../../../../../shared'
 import { ExplanationTooltip } from '../../../../../../shared/ui'
 

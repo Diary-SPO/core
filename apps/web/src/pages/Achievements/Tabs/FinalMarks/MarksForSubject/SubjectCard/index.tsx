@@ -7,29 +7,27 @@ import {
   MiniInfoCell,
   Title
 } from '@vkontakte/vkui'
-import type { FC } from 'preact/compat'
+import type { FC } from 'react'
+
+import { Mark } from '../../../../../../shared/ui'
+import type { Term, TermMark } from '../types.ts'
 
 import { MarkWithPopover } from './MarkWithPopover'
 
-import type { Term, TermMark } from '../types.ts'
-
 import './index.css'
-import { Mark } from '../../../../../../shared/ui'
 
 export const SubjectCard: FC<{
   subjectName: string
   finalMark: TermMark
   terms: Term[]
 }> = ({ subjectName, finalMark, terms }) => (
-  <CardGrid size='l' mode='plain'>
+  <CardGrid size='l'>
     <Card mode='shadow'>
       <Div>
-        {/*//@ts-ignore типы React не совсем совместимы с Preact*/}
         <Title level='3' Component='h3'>
           {subjectName}
         </Title>
       </Div>
-      {/*//@ts-ignore типы React не совсем совместимы с Preact*/}
       <HorizontalCell>
         {terms
           .filter(({ mark }) => mark !== '')

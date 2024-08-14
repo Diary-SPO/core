@@ -9,7 +9,7 @@ import {
   Tabbar as VKUITabbar,
   useAdaptivityConditionalRender
 } from '@vkontakte/vkui'
-import type { FC } from 'preact/compat'
+import type { FC } from 'react'
 
 import type { Pages } from '../../../../shared/types.ts'
 import {
@@ -30,7 +30,6 @@ const Tabbar: FC<ITabbar> = ({ onStoryChange, activeView }) => {
   return (
     viewWidth.tabletMinus && (
       <VKUITabbar className={viewWidth.tabletMinus.className}>
-        {/*//@ts-ignore типы React не совсем совместимы с Preact*/}
         <TabbarItem
           onClick={() => onStoryChange(VIEW_SCHEDULE)}
           selected={activeView === VIEW_SCHEDULE}
@@ -39,7 +38,6 @@ const Tabbar: FC<ITabbar> = ({ onStoryChange, activeView }) => {
         >
           <Icon28HomeOutline />
         </TabbarItem>
-        {/*//@ts-ignore типы React не совсем совместимы с Preact*/}
         <TabbarItem
           onClick={() => onStoryChange(VIEW_MARKS)}
           selected={activeView === VIEW_MARKS}
@@ -48,7 +46,6 @@ const Tabbar: FC<ITabbar> = ({ onStoryChange, activeView }) => {
         >
           <Icon28GraphOutline />
         </TabbarItem>
-        {/*//@ts-ignore типы React не совсем совместимы с Preact*/}
         <TabbarItem
           onClick={() => onStoryChange(VIEW_NOTIFICATIONS)}
           selected={activeView === VIEW_NOTIFICATIONS}
@@ -57,7 +54,6 @@ const Tabbar: FC<ITabbar> = ({ onStoryChange, activeView }) => {
         >
           <Icon28BookSpreadOutline />
         </TabbarItem>
-        {/*//@ts-ignore типы React не совсем совместимы с Preact*/}
         <TabbarItem
           onClick={() => onStoryChange(VIEW_SETTINGS)}
           selected={activeView === VIEW_SETTINGS}

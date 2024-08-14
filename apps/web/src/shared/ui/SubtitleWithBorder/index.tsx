@@ -1,5 +1,4 @@
-import type { FunctionComponent } from 'preact'
-import type { CSSProperties, HTMLAttributes, ReactNode } from 'preact/compat'
+import type { CSSProperties, FC, HTMLAttributes, ReactNode } from 'react'
 import { colors, defaultColor } from './styles.ts'
 
 type SubtitleColors =
@@ -12,12 +11,13 @@ type SubtitleColors =
   | 'default'
 
 interface ISubtitleWithBorder extends HTMLAttributes<HTMLDivElement> {
-  children: ReactNode | string
+  children: ReactNode
   color?: SubtitleColors
   style?: CSSProperties
 }
 
 const getColorStyles = (color: SubtitleColors) => {
+  // @TODO: ?
   const colorStyle = colors[color] ?? defaultColor
   return {
     display: 'inline-block',
@@ -27,7 +27,7 @@ const getColorStyles = (color: SubtitleColors) => {
   }
 }
 
-const SubtitleWithBorder: FunctionComponent<ISubtitleWithBorder> = ({
+const SubtitleWithBorder: FC<ISubtitleWithBorder> = ({
   children,
   color = 'default',
   style,

@@ -1,4 +1,4 @@
-import type { FC } from 'preact/compat'
+import type { FC } from 'react'
 
 import { buildSubjectMatrix } from './helpers'
 import type { MarksForSubjectProps } from './types.ts'

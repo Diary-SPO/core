@@ -9,7 +9,8 @@ import {
   Placeholder,
   Title
 } from '@vkontakte/vkui'
-import type { FC } from 'preact/compat'
+import type { FC } from 'react'
+
 import { createSubjectMarksMatrix } from '../../../../shared'
 
 import AverageMarkCell from './AverageMarkCell'
@@ -36,7 +37,6 @@ export const MarksByGroup: FC<IMarksByGroup> = ({ marksForSubject }) => {
         <CardGrid key={i} size='l'>
           <Card mode='shadow'>
             <Div>
-              {/*//@ts-ignore типы React не совсем совместимы с Preact*/}
               <Title level='3' Component='h3'>
                 {subjectName}
               </Title>

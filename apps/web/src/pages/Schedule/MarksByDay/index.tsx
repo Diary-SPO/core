@@ -1,13 +1,10 @@
 import { HorizontalScroll } from '@vkontakte/vkui'
-import type { FunctionalComponent } from 'preact'
-import { memo } from 'preact/compat'
 import type { MarksByDayMap } from './helpers'
 
+import { type FC, memo } from 'react'
 import LessonGrades from './LessonGrades'
 
-const MarksByDay: FunctionalComponent<{ lessonsState: MarksByDayMap }> = ({
-  lessonsState
-}) => (
+const MarksByDay: FC<{ lessonsState: MarksByDayMap }> = ({ lessonsState }) => (
   <HorizontalScroll
     showArrows
     getScrollToLeft={(i) => i - 120}
@@ -15,7 +12,7 @@ const MarksByDay: FunctionalComponent<{ lessonsState: MarksByDayMap }> = ({
   >
     <div style={{ marginLeft: 10, display: 'flex', gap: 10 }}>
       {lessonsState.map(([day, lessonGrades]) => (
-        <LessonGrades day={day} lessonGrades={lessonGrades} />
+        <LessonGrades key={day} day={day} lessonGrades={lessonGrades} />
       ))}
     </div>
   </HorizontalScroll>

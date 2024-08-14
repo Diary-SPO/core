@@ -6,7 +6,7 @@ import {
   ConfigProvider,
   usePlatform
 } from '@vkontakte/vkui'
-import { lazy } from 'preact/compat'
+import { lazy } from 'react'
 
 import { Suspense } from '../../shared/ui'
 import { router } from '../routes/router'

@@ -1,6 +1,7 @@
 import type { Nullable, Subject } from '@diary-spo/shared'
 import { Group, Header } from '@vkontakte/vkui'
-import type { FunctionalComponent } from 'preact'
+import type { FC } from 'react'
+
 import SubjectCard from './SubjectCard.tsx'
 
 export interface ISubjectGroup {
@@ -10,7 +11,7 @@ export interface ISubjectGroup {
   year: Nullable<number>
 }
 
-const SubjectGroup: FunctionalComponent<ISubjectGroup> = ({
+const SubjectGroup: FC<ISubjectGroup> = ({
   semesterKey,
   subjects,
   studentName,

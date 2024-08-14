@@ -4,7 +4,7 @@ import {
   type Lesson
 } from '@diary-spo/shared'
 import { Group, Header, SimpleCell } from '@vkontakte/vkui'
-import type { FC } from 'preact/compat'
+import type { FC } from 'react'
 import { ExplanationTooltip, Mark } from '../../../../../../shared/ui'
 import LessonTasks from './LessonTasks'
 

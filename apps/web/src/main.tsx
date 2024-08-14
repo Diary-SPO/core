@@ -1,5 +1,5 @@
-import { render } from 'preact'
-import { lazy } from 'preact/compat'
+import { lazy } from 'react'
+import { createRoot } from 'react-dom/client'
 
 import { Suspense } from './shared/ui'
 
@@ -8,9 +8,10 @@ import './app/styles/index.css'
 
 const AppWrapper = lazy(() => import('./app/AppWrapper'))
 
-render(
+const app = document.getElementById('app')
+
+createRoot(app!).render(
   <Suspense id='RootAppWrapper' mode='screen'>
     <AppWrapper />
-  </Suspense>,
-  document.getElementById('app')!
+  </Suspense>
 )

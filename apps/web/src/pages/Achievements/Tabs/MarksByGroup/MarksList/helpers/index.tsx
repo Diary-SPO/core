@@ -1,17 +1,23 @@
-import { type AbsenceType, AbsenceTypes, Grade } from '@diary-spo/shared'
-import type { ReactNode } from 'preact/compat'
+import {
+  type AbsenceType,
+  AbsenceTypes,
+  Grade,
+  type MarkKeys
+} from '@diary-spo/shared'
+import type { ReactNode } from 'react'
+
 import { Mark } from '../../../../../../shared/ui'
 
 // TODO: create tests
 export const renderMarksOrAbsence = (
-  markValues: string[],
-  absenceType: AbsenceType
+  markValues: Array<MarkKeys>,
+  absenceType?: AbsenceType
 ): ReactNode => {
   if (markValues.length) {
     return markValues.map((mark, index) => (
       <Mark
         key={index}
-        mark={Grade[mark] || AbsenceTypes[absenceType]}
+        mark={Grade[mark] || (absenceType && AbsenceTypes[absenceType]) || 0}
         size='s'
       />
     ))

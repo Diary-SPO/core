@@ -8,7 +8,7 @@ import {
   Div,
   usePlatform
 } from '@vkontakte/vkui'
-import type { CSSProperties, FC } from 'preact/compat'
+import type { CSSProperties, FC } from 'react'
 
 export const notFoundStyle: CSSProperties = {
   display: 'flex',

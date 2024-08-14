@@ -5,7 +5,8 @@ import {
 import { Button, ButtonGroup, IconButton } from '@vkontakte/vkui'
 import { endOfWeek } from 'date-fns/endOfWeek'
 import { startOfWeek } from 'date-fns/startOfWeek'
-import { type FC, useEffect, useState } from 'preact/compat'
+import { type FC, useEffect, useState } from 'react'
+
 import type { SnackbarData } from '../../shared/hooks'
 import { ExplanationTooltip } from '../../shared/ui'
 import useDebouncedChangeWeek from './hooks/useDebouncedChangeWeek.tsx'
@@ -112,7 +113,6 @@ const ScheduleAsideButtons: FC<ScheduleAsideButtonsProps> = ({
       }}
       gap='s'
     >
-      {/*// @ts-ignore Типы React не совместимы с Preact*/}
       <IconButton
         aria-label='Prev'
         onClick={() => debouncedHandleButtonClick('prev', handleGetLesson)}
@@ -120,7 +120,6 @@ const ScheduleAsideButtons: FC<ScheduleAsideButtonsProps> = ({
         <Icon16ArrowLeftOutline />
       </IconButton>
       <div style={{ display: 'flex', alignItems: 'center' }}>
-        {/*// @ts-ignore Типы React не совместимы с Preact*/}
         <Button
           size='m'
           mode='secondary'
@@ -132,7 +131,6 @@ const ScheduleAsideButtons: FC<ScheduleAsideButtonsProps> = ({
         <ExplanationTooltip tooltipContent='Вернёт вас на текущую неделю' />
       </div>
 
-      {/*// @ts-ignore Типы React не совместимы с Preact*/}
       <IconButton
         aria-label='Next'
         onClick={() => debouncedHandleButtonClick('next', handleGetLesson)}

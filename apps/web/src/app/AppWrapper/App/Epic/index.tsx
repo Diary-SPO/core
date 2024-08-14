@@ -4,7 +4,6 @@ import {
 } from '@vkontakte/vk-mini-apps-router'
 import { View, useAdaptivityConditionalRender } from '@vkontakte/vkui'
 import { Epic as VKUIEpic } from '@vkontakte/vkui/dist/components/Epic/Epic'
-import type { FC } from 'preact/compat'
 import {
   MAIN_SETTINGS,
   VIEW_MARKS,
@@ -24,6 +23,7 @@ import {
 import type { Pages } from '../../../../shared/types.ts'
 import { Suspense } from '../../../../shared/ui'
 
+import type { FC } from 'react'
 import Tabbar from './Tabbar'
 
 interface IEpic {

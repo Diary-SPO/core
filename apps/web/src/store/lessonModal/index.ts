@@ -1,5 +1,6 @@
 import type { Lesson } from '@diary-spo/shared'
-import { useSyncExternalStore } from 'preact/compat'
+import { useSyncExternalStore } from 'react'
+
 import { createStore } from '../store'
 
 const modalStore = createStore<Lesson>({ initialState: undefined })

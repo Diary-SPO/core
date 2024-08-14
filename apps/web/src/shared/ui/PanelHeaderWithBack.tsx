@@ -3,14 +3,12 @@ import {
   useRouteNavigator
 } from '@vkontakte/vk-mini-apps-router'
 import { PanelHeader, PanelHeaderBack } from '@vkontakte/vkui'
-import type { FunctionalComponent } from 'preact'
 
+import type { FC } from 'react'
 import { MAIN_SETTINGS } from '../../app/routes'
 import { BETA_VERSION, IS_DEV } from '../config'
 
-const PanelHeaderWithBack: FunctionalComponent<{ title: string }> = ({
-  title
-}) => {
+const PanelHeaderWithBack: FC<{ title: string }> = ({ title }) => {
   const routeNavigator = useRouteNavigator()
   const { panel } = useActiveVkuiLocation()
 
@@ -20,7 +18,6 @@ const PanelHeaderWithBack: FunctionalComponent<{ title: string }> = ({
     <PanelHeader
       before={
         !isLoginForm && (
-          // @ts-ignore Типы не совместимы
           <PanelHeaderBack onClick={() => routeNavigator.back()} />
         )
       }

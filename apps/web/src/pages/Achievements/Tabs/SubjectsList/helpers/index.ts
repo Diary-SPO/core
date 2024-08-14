@@ -6,13 +6,21 @@ export const processAttestationData = (data: Nullable<AttestationResponse>) => {
     return
   }
 
-  const student = data?.students[0]
+  const student = data?.students?.[0]
+
+  // @TODO: ??
+  if (!student) {
+    return
+  }
 
   const semesters: Record<string, Subject[]> = {}
-  const studentName = `${student.lastName} ${student.firstName.slice(
-    0,
-    1
-  )}. ${student.middleName.slice(0, 1)}.`
+
+  let studentName = `${student.lastName} ${student.firstName.slice(0, 1)}.`
+
+  if (student.middleName) {
+    studentName += ` ${student.middleName.slice(0, 1)}.`
+  }
+
   const year = data.year
 
   const semesterKey = `Семестр ${data.termNumber}`

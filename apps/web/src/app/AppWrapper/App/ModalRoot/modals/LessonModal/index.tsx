@@ -1,8 +1,9 @@
 import type { Lesson } from '@diary-spo/shared'
-import { useLessonModal } from '@store'
 import { ModalPage, ModalPageHeader } from '@vkontakte/vkui'
-import type { FC } from 'preact/compat'
-import { useEffect, useState } from 'preact/hooks'
+import { type FC, useEffect, useState } from 'react'
+
+import { useLessonModal } from '@store'
+
 import LessonGrade from './LessonGrade'
 import LessonMainInfo, { type ILessonMainInfo } from './LessonMainInfo'
 import LessonTimePlaceInfo, {
@@ -26,17 +27,19 @@ const LessonModal: FC<ILessonModal> = ({ id }) => {
   >({})
 
   useEffect(() => {
-    if (modal) {
-      const {
-        lessonData: newLessonData,
-        lessonMainInfo: newLessonMainInfo,
-        lessonTimePlaceInfo: newLessonTimePlaceInfo
-      } = setLessonDetails(modal)
-
-      setLessonData(newLessonData)
-      setLessonMainInfo(newLessonMainInfo)
-      setLessonTimePlaceInfo(newLessonTimePlaceInfo)
+    if (!modal) {
+      return
     }
+
+    const {
+      lessonData: newLessonData,
+      lessonMainInfo: newLessonMainInfo,
+      lessonTimePlaceInfo: newLessonTimePlaceInfo
+    } = setLessonDetails(modal)
+    // @TODO: FIX
+    setLessonData(newLessonData)
+    setLessonMainInfo(newLessonMainInfo)
+    setLessonTimePlaceInfo(newLessonTimePlaceInfo)
   }, [modal])
 
   return (
@@ -45,8 +48,8 @@ const LessonModal: FC<ILessonModal> = ({ id }) => {
       <LessonMainInfo lessonMainInfo={lessonMainInfo} />
       <LessonTimePlaceInfo lessonTimePlaceInfo={lessonTimePlaceInfo} />
       <LessonGrade
-        tasks={lessonData.gradebook.tasks}
-        absenceType={lessonData.gradebook.absenceType}
+        tasks={lessonData.gradebook?.tasks}
+        absenceType={lessonData.gradebook?.absenceType}
       />
     </ModalPage>
   )

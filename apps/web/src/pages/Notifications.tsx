@@ -11,14 +11,17 @@ import {
   Text,
   Title
 } from '@vkontakte/vkui'
-import type { FC } from 'preact/compat'
-import { useEffect, useState } from 'preact/hooks'
+import { type FC, useEffect, useState } from 'react'
 
 import { handleResponse, isApiError } from '../shared'
 import { getAds } from '../shared/api'
 import { VKUI_RED } from '../shared/config'
 import { useSnackbar } from '../shared/hooks'
-import { PanelHeaderWithBack, SubtitleWithBorder } from '../shared/ui'
+import {
+  ErrorPlaceholder,
+  PanelHeaderWithBack,
+  SubtitleWithBorder
+} from '../shared/ui'
 import type { Props } from './types.ts'
 
 const updateCache = (ads: NotificationsResponse[]) => {
@@ -132,11 +135,9 @@ const Notifications: FC<Props> = ({ id }) => {
         >
           <Card mode='shadow'>
             <Div>
-              {/*//@ts-ignore типы React не совсем совместимы с Preact*/}
               <Title level='3' Component='h3'>
                 {title}
               </Title>
-              {/*//@ts-ignore типы React не совсем совместимы с Preact*/}
               <Text>{text}</Text>
             </Div>
           </Card>

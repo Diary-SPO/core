@@ -4,7 +4,7 @@ import {
   Icon20StatisticsOutline
 } from '@vkontakte/icons'
 import { MiniInfoCell } from '@vkontakte/vkui'
-import type { FC } from 'preact/compat'
+import type { FC } from 'react'
 
 import { calculateAverageMark } from './helpers'
 

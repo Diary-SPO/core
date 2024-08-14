@@ -1,7 +1,7 @@
 import type { Nullable } from '@diary-spo/shared'
 import { Icon28InfoCircleOutline } from '@vkontakte/icons'
 import { Snackbar, type SnackbarProps } from '@vkontakte/vkui'
-import { type ReactNode, useCallback, useState } from 'preact/compat'
+import { type ReactNode, useCallback, useState } from 'react'
 
 import { VKUI_ACCENT_BG } from '../config'
 

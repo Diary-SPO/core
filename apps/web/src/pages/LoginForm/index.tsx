@@ -14,14 +14,13 @@ import {
   Link,
   Panel
 } from '@vkontakte/vkui'
-import type { ChangeEvent, FC } from 'preact/compat'
-import { useEffect, useState } from 'preact/hooks'
+import { type ChangeEvent, type FC, useEffect, useState } from 'react'
 
 import { handleResponse, isApiError } from '../../shared'
 
 import { VIEW_SCHEDULE } from '../../app/routes'
 import { postLogin } from '../../shared/api'
-import { VKUI_RED } from '../../shared/config'
+import { ADMIN_PAGE, VKUI_RED } from '../../shared/config'
 import { useSnackbar } from '../../shared/hooks'
 import { PanelHeaderWithBack } from '../../shared/ui'
 import type { Props } from '../types.ts'
@@ -90,6 +89,7 @@ const LoginForm: FC<Props> = ({ id }) => {
         true
       )
 
+      // @TODO: ??
       if (isApiError(data) || !data.token) {
         return
       }
@@ -149,7 +149,6 @@ const LoginForm: FC<Props> = ({ id }) => {
       <Group>
         {Banner}
         <form method='post' onSubmit={handleLogin}>
-          {/*//@ts-ignore типы React не совсем совместимы с Preact*/}
           <FormItem
             required
             htmlFor='userLogin'
@@ -159,7 +158,6 @@ const LoginForm: FC<Props> = ({ id }) => {
             bottomId='login-type'
           >
             <Input
-              //@ts-ignore типы React не совсем совместимы с Preact
               required
               aria-labelledby='login-type'
               id='userLogin'
@@ -170,7 +168,6 @@ const LoginForm: FC<Props> = ({ id }) => {
               onChange={onChange}
             />
           </FormItem>
-          {/*//@ts-ignore типы React не совсем совместимы с Preact*/}
           <FormItem
             top='Пароль'
             htmlFor='pass'
@@ -180,7 +177,6 @@ const LoginForm: FC<Props> = ({ id }) => {
             bottom={isPasswordEmpty || passwordTopText}
           >
             <Input
-              //@ts-ignore типы React не совсем совместимы с Preact
               name='password'
               id='pass'
               type='password'
@@ -188,13 +184,12 @@ const LoginForm: FC<Props> = ({ id }) => {
               onChange={onChange}
             />
           </FormItem>
-          {/*//@ts-ignore типы React не совсем совместимы с Preact*/}
           <FormItem>
-            {/*//@ts-ignore типы React не совсем совместимы с Preact*/}
             <Button
               type='submit'
               size='l'
               stretched
+              /*@TODO: ??*/
               onClick={handleLogin}
               disabled={isDisabled}
               before={<Icon28DoorArrowLeftOutline />}
@@ -203,7 +198,6 @@ const LoginForm: FC<Props> = ({ id }) => {
             </Button>
           </FormItem>
           <Div>
-            {/*//@ts-ignore Типы не совместимы*/}
             <Link href={ADMIN_PAGE}>Портал администратора</Link>
           </Div>
         </form>

@@ -1,5 +1,6 @@
 import { Group, Header, InfoRow, SimpleCell } from '@vkontakte/vkui'
-import { type FC, useMemo } from 'preact/compat'
+import { type FC, useMemo } from 'react'
+
 import { isDistant } from '../../../../../../shared'
 import { ExplanationTooltip } from '../../../../../../shared/ui'
 
@@ -9,9 +10,11 @@ export interface ILessonTimePlaceInfo {
   endTime?: string | Date
 }
 
-const LessonTimePlaceInfo: FC<{
+interface Props {
   lessonTimePlaceInfo: ILessonTimePlaceInfo
-}> = ({ lessonTimePlaceInfo }) => {
+}
+
+const LessonTimePlaceInfo: FC<Props> = ({ lessonTimePlaceInfo }) => {
   const header = useMemo(
     () => (
       <ExplanationTooltip
@@ -48,11 +51,9 @@ const LessonTimePlaceInfo: FC<{
 
   return (
     <Group header={<Header mode='tertiary'>Куда бежать</Header>}>
-      {/*// @ts-ignore Типы не совместимы*/}
       <SimpleCell>
         <InfoRow header={header}>{className}</InfoRow>
       </SimpleCell>
-      {/*// @ts-ignore Типы не совместимы*/}
       <SimpleCell>
         <InfoRow header={timeTooltip}>
           {lessonTimePlaceInfo.startTime} - {lessonTimePlaceInfo.endTime}

@@ -1,12 +1,13 @@
 import type { Gradebook, Lesson, Timetable } from '@diary-spo/shared'
 import { SimpleCell } from '@vkontakte/vkui'
-import type { FC } from 'preact/compat'
+import type { FC } from 'react'
 
 import { isDistant, setDefaultMark } from '../../../../../shared'
+import { Mark } from '../../../../../shared/ui'
+
 import LessonSubtitle from './LessonSubtitle'
 
 import './index.css'
-import { Mark } from '../../../../../shared/ui'
 
 interface ILessonCell {
   lesson: Lesson
@@ -39,12 +40,15 @@ const LessonCell: FC<ILessonCell> = ({
       }`
     : 'Нет данных'
 
-  const teacherInfo = timetable?.teacher
-    ? `${timetable.teacher?.lastName} ${timetable.teacher?.firstName[0]}. ${timetable.teacher?.middleName[0]}.`
+  let teacherInfo = timetable?.teacher
+    ? `${timetable.teacher?.lastName} ${timetable.teacher?.firstName[0]}.`
     : 'Не указан'
 
+  if (timetable?.teacher?.middleName) {
+    teacherInfo += ` ${timetable.teacher?.middleName[0]}.`
+  }
+
   return (
-    // @ts-ignore Типы не совместимы
     <SimpleCell
       className='lesson'
       onClick={() =>

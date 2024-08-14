@@ -10,8 +10,8 @@ import {
   Text,
   Title
 } from '@vkontakte/vkui'
-import type { FunctionComponent } from 'preact'
-import { useEffect, useState } from 'preact/compat'
+import { type FC, useEffect, useState } from 'react'
+
 import { winxAva } from '../../../../../shared/config/images.ts'
 
 import './index.css'
@@ -23,7 +23,7 @@ interface UserData {
   org: string
 }
 
-const UserInfo: FunctionComponent = () => {
+const UserInfo: FC = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false)
   const [userData, setUserData] = useState<UserData>({
     name: '',
@@ -48,6 +48,7 @@ const UserInfo: FunctionComponent = () => {
     }
 
     const newUserData = localStorage.getItem('data')
+    // @TODO: ??
     const parsedUserData = JSON.parse(newUserData) as UserData
 
     setUserData({
@@ -79,20 +80,16 @@ const UserInfo: FunctionComponent = () => {
   return (
     <Group mode='plain' header={header}>
       <Gradient mode='tint' className='userInfo__Wrapper'>
-        {/*// @ts-ignore типы не совместимы*/}
         <Avatar size={96} src={winxAva} />
-        {/*//@ts-ignore типы React не совсем совместимы с Preact*/}
         <Title className='userInfo__Title' level='2' weight='2' Component='h2'>
           {userData.name}
         </Title>
-        {/*//@ts-ignore типы React не совсем совместимы с Preact*/}
         <Text className='userInfo__Text'>Студент ({userData.group})</Text>
       </Gradient>
       <Group
         mode='plain'
         header={<Header mode='tertiary'>Учебное заведение</Header>}
       >
-        {/*// @ts-ignore Типы не совместимы */}
         <SimpleCell before={<Icon28SchoolOutline />} subtitle={userData.city}>
           {userData.org}
         </SimpleCell>

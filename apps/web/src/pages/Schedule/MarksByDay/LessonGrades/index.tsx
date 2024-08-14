@@ -1,22 +1,18 @@
 import type { Task } from '@diary-spo/shared'
 import { useRouteNavigator } from '@vkontakte/vk-mini-apps-router'
 import { Header, HorizontalCell } from '@vkontakte/vkui'
-import type { FunctionalComponent } from 'preact'
-import { useCallback } from 'preact/hooks'
+import { type FC, useCallback } from 'react'
 
 import { useMarkModal } from '@store'
 import { setDefaultMark, truncateString } from '../../../../shared'
+import { MODAL_PAGE_MARK } from '../../../../shared/config'
+import { Mark } from '../../../../shared/ui'
 
 import type { LessonGradesProps } from '../types.ts'
 
 import './index.css'
-import { MODAL_PAGE_MARK } from '../../../../shared/config'
-import { Mark } from '../../../../shared/ui'
 
-const LessonGrades: FunctionalComponent<LessonGradesProps> = ({
-  day,
-  lessonGrades
-}) => {
+const LessonGrades: FC<LessonGradesProps> = ({ day, lessonGrades }) => {
   if (!lessonGrades.length) {
     return undefined
   }
