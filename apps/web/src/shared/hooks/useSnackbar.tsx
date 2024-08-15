@@ -36,6 +36,7 @@ export const useSnackbar = (): [
             <Icon28InfoCircleOutline fill={VKUI_ACCENT_BG} />
           )
         }
+        offsetY={50}
         action={snackbarData.action}
         onActionClick={snackbarData.onActionClick}
         duration={snackbarData.duration}

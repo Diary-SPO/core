@@ -3,7 +3,7 @@ import { AuthPlugin } from '../../services/AuthService'
 import getAttestation from './handler'
 
 export const AttestationController = new Elysia().use(AuthPlugin).get(
-  '/attestation/',
+  '/attestation',
   ({
     Auth: {
       user: { token }

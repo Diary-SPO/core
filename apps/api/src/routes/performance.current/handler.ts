@@ -9,7 +9,7 @@ type Params = Token
 
 export const getPerformanceCurrent = async ({
   token
-}: Params): Promise<PerformanceCurrent | string> => {
+}: Params): Promise<PerformanceCurrent> => {
   const authData = await getCookieFromToken(token)
   return getCurrPerformance(authData)
 }

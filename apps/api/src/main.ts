@@ -1,10 +1,12 @@
-import { TIMEZONE } from '@config'
-import { sequelize } from '@db'
 import { cors } from '@elysiajs/cors'
 import { swagger } from '@elysiajs/swagger'
 import { Elysia } from 'elysia'
 import { compression } from 'elysia-compression'
 import { helmet } from 'elysia-helmet'
+
+import { TIMEZONE } from '@config'
+import { sequelize } from '@db'
+
 import { getTimezone } from './config/getTimeZone'
 import { routes } from './routes'
 
@@ -17,6 +19,10 @@ const app = new Elysia()
   .use(
     swagger({
       path: '/documentation',
+      autoDarkMode: true,
+      scalarConfig: {
+        theme: 'purple'
+      },
       documentation: {
         info: {
           title: 'Документация к api.spo-diary.ru',
@@ -42,7 +48,11 @@ const app = new Elysia()
     })
   )
   // заголовки...
-  .use(helmet())
+  .use(
+    helmet({
+      contentSecurityPolicy: false
+    })
+  )
   .use(routes)
   .listen(port)
 

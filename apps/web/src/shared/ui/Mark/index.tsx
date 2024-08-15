@@ -1,10 +1,5 @@
 import { Footnote } from '@vkontakte/vkui'
-import {
-  type CSSProperties,
-  type FC,
-  type HTMLAttributes,
-  useMemo
-} from 'react'
+import type { CSSProperties, FC, HTMLAttributes } from 'react'
 
 import type { ReturnedMark } from '../../types.ts'
 
@@ -26,7 +21,13 @@ interface IMark extends Omit<HTMLAttributes<HTMLDivElement>, 'size'> {
   style?: CSSProperties
 }
 
-const Mark: FC<IMark> = ({ mark, size = 'l', bottom, color, ...props }) => {
+export const Mark: FC<IMark> = ({
+  mark,
+  size = 'l',
+  bottom,
+  color,
+  ...props
+}) => {
   const style: CSSProperties = {
     padding: sizes[size],
     background: color ?? getBackgroundColor(mark),
@@ -36,17 +37,12 @@ const Mark: FC<IMark> = ({ mark, size = 'l', bottom, color, ...props }) => {
 
   const Bottom = bottom && <Footnote style={{ padding: 3 }}>{bottom}</Footnote>
 
-  return useMemo(
-    () => (
-      <div {...props}>
-        <div className='markRoot' style={style}>
-          {mark}
-        </div>
-        {Bottom}
+  return (
+    <div {...props}>
+      <div className='markRoot' style={style}>
+        {mark}
       </div>
-    ),
-    [mark, bottom, size]
+      {Bottom}
+    </div>
   )
 }
-
-export default Mark

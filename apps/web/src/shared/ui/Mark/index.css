@@ -3,4 +3,6 @@
   display: inline-block;
   min-width: 20px;
   box-sizing: border-box;
+
+  font-weight: 400;
 }

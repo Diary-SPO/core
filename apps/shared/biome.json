@@ -10,7 +10,7 @@
       "semicolons": "asNeeded",
       "quoteStyle": "single",
       "jsxQuoteStyle": "single",
-      "trailingComma": "none"
+      "trailingCommas": "none"
     }
   },
   "organizeImports": {

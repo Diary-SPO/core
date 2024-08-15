@@ -27,7 +27,7 @@ const getColorStyles = (color: SubtitleColors) => {
   }
 }
 
-const SubtitleWithBorder: FC<ISubtitleWithBorder> = ({
+export const SubtitleWithBorder: FC<ISubtitleWithBorder> = ({
   children,
   color = 'default',
   style,
@@ -44,5 +44,3 @@ const SubtitleWithBorder: FC<ISubtitleWithBorder> = ({
     </div>
   )
 }
-
-export default SubtitleWithBorder

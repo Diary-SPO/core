@@ -25,7 +25,9 @@ export const createStore = <T>({ initialState }: TStore<T>) => {
     state: initialState,
     setState: (newValue: State) => {
       store.state = newValue
-      store.listeners.forEach((listener) => listener())
+      for (const listener of store.listeners) {
+        listener()
+      }
     },
     getState: (): State => store.state,
     listeners: new Set<ListenerCallback>(),

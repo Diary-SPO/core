@@ -22,7 +22,7 @@ const SpinnerWrapper: FC<ISpinner> = ({ size, mode }) => {
   }
 }
 
-const Suspense: FC<ISuspense> = ({
+export const Suspense: FC<ISuspense> = ({
   children,
   size = 'regular',
   id,
@@ -32,5 +32,3 @@ const Suspense: FC<ISuspense> = ({
     {children}
   </ReactSuspense>
 )
-
-export default Suspense

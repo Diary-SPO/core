@@ -35,7 +35,6 @@ const LessonGrade: FC<ILessonGrade> = ({ tasks, absenceType }) => {
     <Group header={header}>
       {hasTasks && <LessonTasks tasks={tasks} />}
       {absenceType && (
-        // @ts-ignore Типы не совместимы
         <SimpleCell after={mark}>
           {AbsenceTypesDescription[AbsenceTypes[absenceType]]}
         </SimpleCell>

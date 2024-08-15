@@ -1,15 +1,6 @@
-import ExplanationTooltip from './ExplanationTooltip'
-import Mark from './Mark'
-import PanelHeaderWithBack from './PanelHeaderWithBack.tsx'
-import SubtitleWithBorder from './SubtitleWithBorder'
-import Suspense from './Suspense.tsx'
-
-export {
-  SubtitleWithBorder,
-  Mark,
-  Suspense,
-  PanelHeaderWithBack,
-  ExplanationTooltip
-}
-
-export { ErrorPlaceholder } from './ErrorPlaceholder.tsx'
+export { ExplanationTooltip } from './ExplanationTooltip'
+export { Mark } from './Mark'
+export { PanelHeaderWithBack } from './PanelHeaderWithBack'
+export { SubtitleWithBorder } from './SubtitleWithBorder'
+export { Suspense } from './Suspense'
+export { ErrorPlaceholder } from './ErrorPlaceholder'

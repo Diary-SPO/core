@@ -3,7 +3,7 @@ import { AuthPlugin } from '../../services/AuthService'
 import { getPerformanceCurrent } from './handler'
 
 export const PerformanceCurrentController = new Elysia().use(AuthPlugin).get(
-  '/performanceCurrent/',
+  '/performanceCurrent',
   ({
     Auth: {
       user: { token }

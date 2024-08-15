@@ -23,6 +23,7 @@ const SubjectList: FC<Props> = ({ setIsError, setIsLoading, isLoading }) => {
   const [attestationData, setAttestationData] =
     useState<Nullable<AttestationResponse>>(null)
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: all good
   useEffect(() => {
     const data = localStorage.getItem('attestationData')
 

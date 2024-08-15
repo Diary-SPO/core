@@ -3,7 +3,7 @@ import { AuthPlugin } from '../../services/AuthService'
 import getFinalMarks from './handler'
 
 export const FinalMarksController = new Elysia().use(AuthPlugin).get(
-  '/finalMarks/',
+  '/finalMarks',
   ({
     Auth: {
       user: { token }

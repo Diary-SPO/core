@@ -7,12 +7,10 @@ export const ErrorPlaceholder: FC<{ onClick?: () => void }> = ({ onClick }) => (
     action={
       <ButtonGroup mode='vertical' align='center'>
         {onClick && (
-          // @ts-ignore Типы не совместимы
           <Button size='s' onClick={() => onClick()}>
             Попробовать снова
           </Button>
         )}
-        {/*// @ts-ignore Типы не совместимы */}
         <Link href='https://vk.me/diary_spo' target='_blank'>
           Сообщить о проблеме
         </Link>

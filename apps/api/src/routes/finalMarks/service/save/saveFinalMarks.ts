@@ -1,7 +1,8 @@
 import type { AcademicRecord } from '@diary-spo/shared'
 import type { ICacheData } from '@helpers'
 import { Op } from 'sequelize'
-import { saveOrGetAcademicYear } from 'src/models/AcademicYear/actions'
+
+import { saveOrGetAcademicYear } from '../../../../models/AcademicYear'
 import { saveOrGetFinalMark } from '../../../../models/FinalMark'
 import { markValueSaveOrGet } from '../../../../models/MarkValue'
 import { subjectSaveOrGet } from '../../../../models/Subject'
@@ -19,7 +20,7 @@ export const saveFinalMarks = async (
   const promises: Promise<ITermSubjectModel>[] = []
   const notDeleted: ITermSubjectModel[] = []
 
-  finalMarks.subjects.forEach(async (subject) => {
+  for (const subject of finalMarks.subjects) {
     const finalMark = subject.finalMark?.value
     const name = subject.name
     const marks = subject.marks
@@ -69,11 +70,12 @@ export const saveFinalMarks = async (
     const idMarkFromDB = finalMark
       ? (await markValueSaveOrGet(finalMark)).id
       : undefined
-    saveOrGetFinalMark(idMarkFromDB ?? null, subjectFromDB.id, authData)
-  })
+
+    await saveOrGetFinalMark(idMarkFromDB ?? null, subjectFromDB.id, authData)
+  }
 
   await Promise.all(promises)
-  deleteNotIn(notDeleted, authData)
+  await deleteNotIn(notDeleted, authData)
 }
 
 function searchAcademicAndSemesterById(
