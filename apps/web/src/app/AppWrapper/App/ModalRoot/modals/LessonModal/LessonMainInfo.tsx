@@ -28,23 +28,21 @@ const LessonMainInfo: FC<{ lessonMainInfo: Partial<ILessonMainInfo> }> = ({
     ? lessonMainInfo.themes.map((theme) => textToLink(theme))
     : 'Не указана'
 
-  const lessonType = LessonType[lessonMainInfo.lessonType] ?? 'Не указан'
+  const lessonType =
+    (lessonMainInfo.lessonType && LessonType[lessonMainInfo.lessonType]) ??
+    'Не указан'
 
   return (
     <Group header={header}>
-      {/*// @ts-ignore Типы не совместимы*/}
       <SimpleCell multiline>
         <InfoRow header='Предмет'>{lessonMainInfo.name}</InfoRow>
       </SimpleCell>
-      {/*// @ts-ignore Типы не совместимы*/}
       <SimpleCell>
         <InfoRow header='Тип занятия'>{lessonType}</InfoRow>
       </SimpleCell>
-      {/*// @ts-ignore Типы не совместимы*/}
       <SimpleCell multiline>
         <InfoRow header='Тема'>{theme}</InfoRow>
       </SimpleCell>
-      {/*// @ts-ignore Типы не совместимы*/}
       <SimpleCell>
         <InfoRow header='Преподаватель'>{lessonMainInfo.teacherName}</InfoRow>
       </SimpleCell>

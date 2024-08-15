@@ -10,19 +10,16 @@ const SubjectCard: FC<ISubjectCard> = ({ subject }) => (
   <CardGrid key={subject.id} size='l'>
     <Card mode='shadow'>
       <Div>
-        {/*// @ts-ignore*/}
         <Title level='3' Component='h3'>
           {subject.name}
         </Title>
         <InfoRow header='Тип аттестации'>
-          {/*// @ts-ignore*/}
           <Subhead Component='h5'>
             {/*@TODO: ??*/}
             {Examinations[subject.examinationType]}
           </Subhead>
         </InfoRow>
         <InfoRow header='Оценки'>
-          {/*// @ts-ignore*/}
           <Subhead Component='h5'>
             {/*// TODO: перенести в функцию*/}
             {subject.marks[subject.id] &&

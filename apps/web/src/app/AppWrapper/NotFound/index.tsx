@@ -41,11 +41,9 @@ const NotFound: FC = () => {
       isWebView={vkBridge.isWebView()}
       platform={platform}
     >
-      {/*@ts-ignore Типы не совместимы*/}
       <AppRoot safeAreaInsets={vkBridgeInsets}>
         <Div style={notFoundStyle}>
           <h1 style={text}>404</h1>
-          {/*// @ts-ignore Типы не совместимы */}
           <Button
             onClick={() => routeNavigator.replace('/')}
             size='l'

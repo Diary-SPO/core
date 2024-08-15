@@ -25,8 +25,9 @@ export const createStore = <T>({ initialState }: TStore<T>) => {
     state: initialState,
     setState: (newValue: State) => {
       store.state = newValue
-      // /** biome-ignore lint/complexity/noForEach */
-      store.listeners.forEach((listener) => listener())
+      for (const listener of store.listeners) {
+        listener()
+      }
     },
     getState: (): State => store.state,
     listeners: new Set<ListenerCallback>(),

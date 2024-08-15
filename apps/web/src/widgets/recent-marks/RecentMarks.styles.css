@@ -1,0 +1,5 @@
+.recentMarks__wrapper {
+    margin-left: 10px;
+    display: flex;
+    gap: 10px;
+}

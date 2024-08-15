@@ -7,3 +7,6 @@ export * from './utils/truncateString'
 export * from './utils/isDistant'
 export * from './utils/isApiError'
 export * from './utils/isNeedToUpdateCache'
+
+export { withSpinner } from './hocs'
+export { unreachable } from './utils/unreachable'

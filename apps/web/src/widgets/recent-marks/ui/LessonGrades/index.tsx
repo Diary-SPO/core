@@ -8,13 +8,21 @@ import { setDefaultMark, truncateString } from '../../../../shared'
 import { MODAL_PAGE_MARK } from '../../../../shared/config'
 import { Mark } from '../../../../shared/ui'
 
-import type { LessonGradesProps } from '../MarksByDay/types.ts'
-
 import './index.css'
 
-const LessonGrades: FC<LessonGradesProps> = ({ day, lessonGrades }) => {
+interface LessonGradesProps {
+  day: string
+  lessonGrades: MarkDetailed[]
+}
+
+interface MarkDetailed {
+  lessonName: string
+  task: Task
+}
+
+export const LessonGrades: FC<LessonGradesProps> = ({ day, lessonGrades }) => {
   if (!lessonGrades.length) {
-    return undefined
+    return
   }
 
   const routeNavigator = useRouteNavigator()
@@ -33,7 +41,6 @@ const LessonGrades: FC<LessonGradesProps> = ({ day, lessonGrades }) => {
       <div className='flex'>
         {lessonGrades.map(({ lessonName, task }) => (
           <div className='marksWrapper flex' key={`${lessonName}_${task.id}`}>
-            {/*@ts-ignore Типы не совместимы*/}
             <HorizontalCell
               onClick={() => handleMarkClick(task, lessonName)}
               className='markWrapper'
@@ -49,5 +56,3 @@ const LessonGrades: FC<LessonGradesProps> = ({ day, lessonGrades }) => {
     </div>
   )
 }
-
-export default LessonGrades

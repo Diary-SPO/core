@@ -1,5 +1,1 @@
-export type {
-  MarkDetailed,
-  LessonGradesProps,
-  IPerformanceCurrent
-} from './types'
+export type { IPerformanceCurrent } from './types'

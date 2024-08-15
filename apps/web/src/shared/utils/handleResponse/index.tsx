@@ -1,4 +1,3 @@
-import type { Treaty } from '@elysiajs/eden/treaty2'
 import { Icon28ErrorCircleOutline } from '@vkontakte/icons'
 import { VKUI_RED } from '../../config'
 import type { SnackbarData } from '../../hooks'
@@ -12,7 +11,7 @@ import { isApiError } from '../isApiError'
 
 const errorIcon = <Icon28ErrorCircleOutline fill={VKUI_RED} />
 
-export const handleResponse = <T extends Treaty.TreatyResponse<any>>(
+export const handleResponse = <T extends object>(
   /** Ответ от сервера **/
   response: T,
   /** Функция, вызываемая при ошибке **/

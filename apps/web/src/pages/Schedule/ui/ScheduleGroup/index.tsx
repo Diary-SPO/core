@@ -1,6 +1,6 @@
 import type { Day, Nullable } from '@diary-spo/shared'
 import { CardGrid } from '@vkontakte/vkui'
-import { type FC, memo } from 'react'
+import type { FC } from 'react'
 
 import DailyCard from '../DailyCard'
 
@@ -17,4 +17,4 @@ const ScheduleGroup: FC<IScheduleGroup> = ({ lessonsState }) => (
   </CardGrid>
 )
 
-export default memo(ScheduleGroup)
+export default ScheduleGroup

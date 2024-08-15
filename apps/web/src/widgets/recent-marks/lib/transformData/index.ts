@@ -1,5 +1,5 @@
 import type { Day, Nullable } from '@diary-spo/shared'
-import type { MarkDetailed } from '../../model'
+import type { MarkDetailed } from '../../../../pages/Schedule/model'
 
 export type MarksByDayMap = [string, MarkDetailed[]][]
 

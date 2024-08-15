@@ -16,7 +16,6 @@ export const textToLink = (name: string) => {
   return parts.map((part, index) => {
     if (part.match(urlRegex)) {
       return (
-        // @ts-ignore Типы не совместимы
         <Link key={index} href={part} target='_blank'>
           {part}
         </Link>

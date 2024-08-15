@@ -1,9 +1,9 @@
-export * from './getAds.ts'
+export { getAds } from './getAds.ts'
 
-export * from './user/getLessons.ts'
-export * from './user/getFinalMarks.ts'
-export * from './user/getPerformance.ts'
-export * from './user/getAttestation.ts'
+export { getUserLessons } from './user/getLessons.ts'
+export { getFinalMarks } from './user/getFinalMarks.ts'
+export { getPerformance } from './user/getPerformance.ts'
+export { getAttestation } from './user/getAttestation.ts'
 
-export * from './auth/postLogin.ts'
-export * from './auth/getLogout.ts'
+export { postLogin } from './auth/postLogin.ts'
+export { getLogout } from './auth/getLogout.ts'

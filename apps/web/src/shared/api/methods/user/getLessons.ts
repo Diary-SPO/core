@@ -5,9 +5,7 @@ export const getUserLessons = async (startDate: Date, endDate: Date) => {
   const formattedStartDate = formatDateForRequest(startDate)
   const formattedEndDate = formatDateForRequest(endDate)
 
-  const { data } = await client
+  return client
     .lessons({ startDate: formattedStartDate })({ endDate: formattedEndDate })
     .get()
-
-  return data
 }
