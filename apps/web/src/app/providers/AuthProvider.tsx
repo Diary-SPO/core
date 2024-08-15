@@ -1,29 +1,39 @@
-import {
-  useActiveVkuiLocation,
-  useRouteNavigator
-} from '@vkontakte/vk-mini-apps-router'
-import { type ReactNode, useLayoutEffect } from 'react'
+import { useActiveVkuiLocation } from '@vkontakte/vk-mini-apps-router'
+import { type ReactNode, useLayoutEffect, useState } from 'react'
 
-import { MAIN_SETTINGS, PAGE_SCHEDULE } from '../routes'
+import { ScreenSpinner } from '@vkontakte/vkui'
+import { LoginForm } from '../../pages'
+import { MAIN_SETTINGS } from '../routes'
 
 // @TODO: refactor this
 const AuthProvider = ({ children }: { children: ReactNode }) => {
-  const routeNavigator = useRouteNavigator()
   const { view: activeView, panel } = useActiveVkuiLocation()
+
+  const [isLoginAllowed, setIsLoginAllowed] = useState(false)
+  const [isLoading, setIsLoading] = useState(false)
 
   // biome-ignore lint/correctness/useExhaustiveDependencies: all good
   useLayoutEffect(() => {
     const cookieValue = localStorage.getItem('token')
 
-    const onRoute = async () => {
-      if (!cookieValue) {
-        await routeNavigator.replace('/')
-        return
-      }
+    const onRoute = () => {
+      setIsLoginAllowed(false)
+      setIsLoading(true)
 
-      if (panel === MAIN_SETTINGS) {
-        await routeNavigator.replace(PAGE_SCHEDULE)
-        return
+      try {
+        if (!cookieValue) {
+          setIsLoginAllowed(false)
+          return
+        }
+
+        if (panel === MAIN_SETTINGS) {
+          setIsLoginAllowed(true)
+          return
+        }
+
+        setIsLoginAllowed(true)
+      } finally {
+        setIsLoading(false)
       }
 
       return
@@ -31,6 +41,14 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
 
     onRoute()
   }, [activeView, panel])
+
+  if (isLoading) {
+    return <ScreenSpinner />
+  }
+
+  if (!isLoginAllowed) {
+    return <LoginForm id={MAIN_SETTINGS} />
+  }
 
   return children
 }

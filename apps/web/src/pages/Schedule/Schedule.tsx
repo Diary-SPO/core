@@ -1,21 +1,25 @@
 import type { Day } from '@diary-spo/shared'
 import { Div, Group, Header, PullToRefresh } from '@vkontakte/vkui'
-
-import { isNeedToUpdateCache, withSpinner } from '../../shared'
-
 import { endOfWeek } from 'date-fns/endOfWeek'
 import { startOfWeek } from 'date-fns/startOfWeek'
 import { type FC, useEffect, useState } from 'react'
-import { ErrorPlaceholder, Suspense } from '../../shared/ui'
+
+import {
+  ErrorPlaceholder,
+  Suspense,
+  isNeedToUpdateCache,
+  withSpinner
+} from '../../shared'
+
+import { RecentMarks } from '../../widgets'
 import type { Props } from '../types.ts'
+
+import { useScheduleData } from './api'
+import { Layout } from './layout'
+import { getWeekString } from './lib'
 
 import ScheduleAsideButtons from './ui/ScheduleAsideButtons.tsx'
 import ScheduleGroup from './ui/ScheduleGroup'
-
-import { RecentMarks } from '../../widgets'
-import { useScheduleData } from './api/useScheduleData.tsx'
-import { Layout } from './layout'
-import { getWeekString } from './lib'
 
 const Schedule: FC<Props> = ({ id }) => {
   /** Управление данными **/
@@ -71,16 +75,14 @@ const Schedule: FC<Props> = ({ id }) => {
     )
 
   const ScheduleGroupAside = (
-    <Suspense id='ScheduleAsideButtons'>
-      <ScheduleAsideButtons
-        handleGetLesson={getActualUserLessons}
-        showSnackbar={showSnackbar}
-        endDate={endDate}
-        startDate={startDate}
-        setEndDate={setEndDate}
-        setStartDate={setStartDate}
-      />
-    </Suspense>
+    <ScheduleAsideButtons
+      handleGetLesson={getActualUserLessons}
+      showSnackbar={showSnackbar}
+      endDate={endDate}
+      startDate={startDate}
+      setEndDate={setEndDate}
+      setStartDate={setStartDate}
+    />
   )
 
   const RecentMarksWithSpinner = withSpinner(RecentMarks)
@@ -92,43 +94,41 @@ const Schedule: FC<Props> = ({ id }) => {
     </Header>
   )
 
+  if (isError) {
+    return <ErrorPlaceholder onClick={getLessons} />
+  }
+
   return (
     <Layout id={id}>
       <PullToRefresh onRefresh={getLessons} isFetching={isLoading}>
-        {isError ? (
-          <ErrorPlaceholder onClick={getLessons} />
-        ) : (
-          <Div>
-            <Suspense id='MarksByDay'>
-              <Group header={MarksHeader}>
-                <RecentMarksWithSpinner
-                  lessonsState={lessonsState}
-                  shouldShowSpinner={isLoading}
-                  shouldReverse
-                />
-              </Group>
-            </Suspense>
-            <Suspense id='ScheduleGroup' mode='screen'>
-              <Group
-                header={
-                  <Header
-                    aside={ScheduleGroupAside}
-                    mode='secondary'
-                    // @TODO: ??
-                    style={{ alignItems: 'center' }}
-                  >
-                    {weekString}
-                  </Header>
-                }
-              >
-                <ScheduleGroupWithSpinner
-                  shouldShowSpinner={isLoading}
-                  lessonsState={lessonsState}
-                />
-              </Group>
-            </Suspense>
-          </Div>
-        )}
+        <Div>
+          <Group header={MarksHeader}>
+            <RecentMarksWithSpinner
+              lessonsState={lessonsState}
+              shouldShowSpinner={isLoading}
+              shouldReverse
+            />
+          </Group>
+          <Suspense id='ScheduleGroup' mode='screen'>
+            <Group
+              header={
+                <Header
+                  aside={ScheduleGroupAside}
+                  mode='secondary'
+                  // @TODO: ??
+                  style={{ alignItems: 'center' }}
+                >
+                  {weekString}
+                </Header>
+              }
+            >
+              <ScheduleGroupWithSpinner
+                shouldShowSpinner={isLoading}
+                lessonsState={lessonsState}
+              />
+            </Group>
+          </Suspense>
+        </Div>
         {snackbar}
         {rateSnackbar}
       </PullToRefresh>

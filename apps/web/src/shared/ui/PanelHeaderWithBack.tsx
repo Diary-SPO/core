@@ -8,7 +8,7 @@ import type { FC } from 'react'
 import { MAIN_SETTINGS } from '../../app/routes'
 import { BETA_VERSION, IS_DEV } from '../config'
 
-const PanelHeaderWithBack: FC<{ title: string }> = ({ title }) => {
+export const PanelHeaderWithBack: FC<{ title: string }> = ({ title }) => {
   const routeNavigator = useRouteNavigator()
   const { panel } = useActiveVkuiLocation()
 
@@ -26,5 +26,3 @@ const PanelHeaderWithBack: FC<{ title: string }> = ({ title }) => {
     </PanelHeader>
   )
 }
-
-export default PanelHeaderWithBack

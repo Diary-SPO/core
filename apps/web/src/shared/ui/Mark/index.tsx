@@ -21,7 +21,13 @@ interface IMark extends Omit<HTMLAttributes<HTMLDivElement>, 'size'> {
   style?: CSSProperties
 }
 
-const Mark: FC<IMark> = ({ mark, size = 'l', bottom, color, ...props }) => {
+export const Mark: FC<IMark> = ({
+  mark,
+  size = 'l',
+  bottom,
+  color,
+  ...props
+}) => {
   const style: CSSProperties = {
     padding: sizes[size],
     background: color ?? getBackgroundColor(mark),
@@ -40,5 +46,3 @@ const Mark: FC<IMark> = ({ mark, size = 'l', bottom, color, ...props }) => {
     </div>
   )
 }
-
-export default Mark

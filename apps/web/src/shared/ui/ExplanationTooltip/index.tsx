@@ -9,7 +9,10 @@ interface ITooltipText {
 
 import './index.css'
 
-const ExplanationTooltip: FC<ITooltipText> = ({ text, tooltipContent }) => {
+export const ExplanationTooltip: FC<ITooltipText> = ({
+  text,
+  tooltipContent
+}) => {
   const textTooltip = (
     <Subhead className='explanationTooltipText' Component='h5'>
       {tooltipContent}
@@ -29,5 +32,3 @@ const ExplanationTooltip: FC<ITooltipText> = ({ text, tooltipContent }) => {
     </div>
   )
 }
-
-export default ExplanationTooltip

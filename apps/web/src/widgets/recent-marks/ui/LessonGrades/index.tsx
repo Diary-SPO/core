@@ -4,9 +4,7 @@ import { Header, HorizontalCell } from '@vkontakte/vkui'
 import type { FC } from 'react'
 
 import { useMarkModal } from '@store'
-import { setDefaultMark, truncateString } from '../../../../shared'
-import { MODAL_PAGE_MARK } from '../../../../shared/config'
-import { Mark } from '../../../../shared/ui'
+import { Mark, setDefaultMark, truncateString } from '../../../../shared'
 
 import './index.css'
 

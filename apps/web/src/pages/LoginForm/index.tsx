@@ -16,14 +16,14 @@ import {
 } from '@vkontakte/vkui'
 import { type ChangeEvent, type FC, useEffect, useState } from 'react'
 
-import { handleResponse, isApiError } from '../../shared'
-
 import { VIEW_SCHEDULE } from '../../app/routes'
+import { PanelHeaderWithBack, handleResponse, isApiError } from '../../shared'
 import { postLogin } from '../../shared/api'
 import { ADMIN_PAGE, VKUI_RED } from '../../shared/config'
 import { useSnackbar } from '../../shared/hooks'
-import { PanelHeaderWithBack } from '../../shared/ui'
+
 import type { Props } from '../types.ts'
+
 import { loginPattern, saveData } from './helpers'
 
 const LoginForm: FC<Props> = ({ id }) => {
