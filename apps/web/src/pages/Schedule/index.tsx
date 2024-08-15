@@ -18,7 +18,7 @@ import { handleResponse, isApiError, isNeedToUpdateCache } from '../../shared'
 import { endOfWeek } from 'date-fns/endOfWeek'
 import { startOfWeek } from 'date-fns/startOfWeek'
 import { type FC, lazy, useEffect, useState } from 'react'
-import { getLessons } from '../../shared/api'
+import { getUserLessons } from '../../shared/api'
 import { useRateLimitExceeded, useSnackbar } from '../../shared/hooks'
 import {
   ErrorPlaceholder,
@@ -62,7 +62,7 @@ const Schedule: FC<Props> = ({ id }) => {
 
     try {
       // @TODO: ??
-      const data = await getLessons(start, end)
+      const data = await getUserLessons(start, end)
 
       handleResponse(
         data,
@@ -80,38 +80,34 @@ const Schedule: FC<Props> = ({ id }) => {
       }
 
       setLessons(data)
+      localStorage.setItem('lastLessonsFetchTime', Date.now().toString())
       localStorage.setItem('savedLessons', JSON.stringify(data))
     } finally {
       setIsLoading(false)
     }
   }
 
-  /** Используется при ручном обновлении страницы */
-  const handleReloadData = () => {
-    gettedLessons(true)
-  }
+  const getLessons = async () => handleGetLesson(startDate, endDate)
 
-  const gettedLessons = async (isHandle?: boolean) => {
+  const getDataOnMount = () => {
     const savedLessons = localStorage.getItem('savedLessons')
 
-    if (savedLessons && !isNeedToUpdateCache('lastFetchTime') && !isHandle) {
-      showSnackbar({
-        layout: 'vertical',
-        action: 'Загрузить новые',
-        onActionClick: handleReloadData,
-        title: 'Данные взяты из кеша'
-      })
-      setLessons(JSON.parse(savedLessons) as Day[])
+    if (!savedLessons || isNeedToUpdateCache('lastLessonsFetchTime')) {
+      getLessons()
       return
     }
 
-    await handleGetLesson(startDate, endDate)
+    showSnackbar({
+      layout: 'vertical',
+      action: 'Загрузить новые',
+      onActionClick: getLessons,
+      title: 'Данные взяты из кеша'
+    })
+    setLessons(JSON.parse(savedLessons) as Day[])
   }
 
   // biome-ignore lint/correctness/useExhaustiveDependencies: all good
-  useEffect(() => {
-    gettedLessons()
-  }, [])
+  useEffect(getDataOnMount, [])
 
   const weekString = getWeekString(startDate, endDate)
 
@@ -166,9 +162,9 @@ const Schedule: FC<Props> = ({ id }) => {
     >
       <Panel nav={id}>
         <PanelHeaderWithBack title='Главная' />
-        <PullToRefresh onRefresh={handleReloadData} isFetching={isLoading}>
+        <PullToRefresh onRefresh={getLessons} isFetching={isLoading}>
           {isError ? (
-            <ErrorPlaceholder onClick={handleReloadData} />
+            <ErrorPlaceholder onClick={getLessons} />
           ) : (
             <Div>
               <Suspense id='MarksByDay'>

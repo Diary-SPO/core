@@ -1,4 +1,3 @@
-// export * from './getCollegeInfo'
 export * from './getAds.ts'
 
 export * from './user/getLessons.ts'

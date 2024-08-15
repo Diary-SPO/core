@@ -46,7 +46,7 @@ const Achievements: FC<Props> = ({ id }) => {
     saveStatisticsData(marks)
     setMarksForSubject(marks)
 
-    localStorage.setItem('lastFetchTime', String(Date.now()))
+    localStorage.setItem('lastMarksFetchTime', String(Date.now()))
     localStorage.setItem('savedMarks', JSON.stringify(marks))
   }
 
@@ -62,10 +62,8 @@ const Achievements: FC<Props> = ({ id }) => {
     const savedMarks = localStorage.getItem('savedMarks')
 
     /** Проверяем есть ли кеш и не нужно ли его обновить **/
-    if (savedMarks && !isNeedToUpdateCache('lastFetchTime') && !isHandle) {
+    if (savedMarks && !isNeedToUpdateCache('lastMarksFetchTime') && !isHandle) {
       const marks = JSON.parse(savedMarks)
-
-      saveData(marks)
 
       showSnackbar({
         title: 'Оценки взяты из кеша',
@@ -73,6 +71,7 @@ const Achievements: FC<Props> = ({ id }) => {
         action: 'Загрузить новые',
         before: <Icon28InfoCircle fill={VKUI_ACCENT_BG} />
       })
+      saveData(marks)
 
       return
     }

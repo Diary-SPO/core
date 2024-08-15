@@ -6,12 +6,12 @@ export type Sizes = 'l' | 's'
 type R = Record<Sizes, string>
 
 export const sizes: R = {
-  l: '10px 30px',
+  l: '15px 30px',
   s: '5px 10px'
 }
 
 export const fontSizes: R = {
-  l: '2.5rem',
+  l: '3rem',
   s: '1rem'
 }
 
