@@ -40,7 +40,7 @@ export const handleResponse = <T extends object>(
   /**
    * Если нам пришел ответ от сервера с ошибкой
    *
-   * P.S. В "хорошем" ответе нет поля statusText, а только нужные данные
+   * P.S. В "хорошем" ответе нет поля error, а только нужные данные
    */
   if (!isApiError(response)) {
     loadingCallback?.(false)

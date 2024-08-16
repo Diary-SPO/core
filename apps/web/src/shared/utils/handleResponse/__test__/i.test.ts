@@ -1,8 +1,8 @@
 import { describe, expect, it, jest } from 'bun:test'
-import { handleResponse } from '../../../index.tsx'
-import { HTTP_STATUSES } from '../../../types.ts'
 
-/** handleResponse **/
+import { HTTP_STATUSES } from '../../../types.ts'
+import { handleResponse } from '../index.tsx'
+
 describe('handleResponse', () => {
   it('should handle non-Response input', () => {
     const mockData = { message: 'Success' }
@@ -21,7 +21,7 @@ describe('handleResponse', () => {
     const limitExceededCallback = jest.fn()
     const loadingCallback = jest.fn()
     const result = handleResponse(
-      new Response('', { status: HTTP_STATUSES.RATE_LIMIT }),
+      { status: HTTP_STATUSES.RATE_LIMIT, error: 'error' },
       undefined,
       limitExceededCallback,
       loadingCallback
@@ -35,7 +35,7 @@ describe('handleResponse', () => {
     const showSnackbarMock = jest.fn()
     const loadingCallback = jest.fn()
     const result = handleResponse(
-      new Response('', { status: HTTP_STATUSES.UNAUTHORIZED }),
+      { status: HTTP_STATUSES.UNAUTHORIZED, error: 'error' },
       undefined,
       undefined,
       loadingCallback,
@@ -52,7 +52,7 @@ describe('handleResponse', () => {
     const showSnackbarMock = jest.fn()
     const loadingCallback = jest.fn()
     const result = handleResponse(
-      new Response('', { status: HTTP_STATUSES.UNAUTHORIZED }),
+      { status: HTTP_STATUSES.UNAUTHORIZED, error: 'error' },
       errorCallback,
       undefined,
       loadingCallback,
@@ -71,7 +71,7 @@ describe('handleResponse', () => {
     const showSnackbarMock = jest.fn()
     const loadingCallback = jest.fn()
     const result = handleResponse(
-      new Response('', { status: HTTP_STATUSES.TEAPOT }),
+      { status: HTTP_STATUSES.TEAPOT, error: 'error' },
       undefined,
       undefined,
       loadingCallback,
@@ -88,7 +88,7 @@ describe('handleResponse', () => {
     const showSnackbarMock = jest.fn()
     const loadingCallback = jest.fn()
     const result = handleResponse(
-      new Response('', { status: HTTP_STATUSES.TEAPOT }),
+      { status: HTTP_STATUSES.TEAPOT, error: 'error' },
       errorCallback,
       undefined,
       loadingCallback,
@@ -104,7 +104,7 @@ describe('handleResponse', () => {
     const errorCallback = jest.fn()
     const loadingCallback = jest.fn()
     const result = handleResponse(
-      new Response('', { status: HTTP_STATUSES.INTERNAL }),
+      { status: HTTP_STATUSES.INTERNAL, error: 'error' },
       errorCallback,
       undefined,
       loadingCallback
