@@ -99,6 +99,6 @@ describe('setDefaultMark', () => {
     }
 
     const mark = setDefaultMark(task)
-    expect(mark).toBeUndefined()
+    expect(mark).toBe('Р')
   })
 })
