@@ -8,7 +8,7 @@
     "build": "NODE_ENV=production bunx --bun vite build",
     "preview": "bunx --bun vite preview",
     "serve": "bun run build && bun preview",
-    "predeploy": "bun run build --env-file=.env.production",
+    "predeploy": "bun run build",
     "deploy:gh": "gh-pages -d dist",
     "deploy:vk": "vk-miniapps-deploy",
     "lint": "biome lint . --apply",
