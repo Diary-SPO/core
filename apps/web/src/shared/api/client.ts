@@ -7,6 +7,7 @@ export const client = treaty<App>('http://localhost:3003', {
     const headers = new Headers()
 
     headers.append('secret', localStorage.getItem('token') || '')
+    headers.append('Content-type', 'application/json')
     options.headers = headers
   }
 })
