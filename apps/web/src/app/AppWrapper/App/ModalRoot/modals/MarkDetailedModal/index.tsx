@@ -8,11 +8,12 @@ import {
   SimpleCell
 } from '@vkontakte/vkui'
 import { setDefaultMark } from '../../../../../../shared'
-import { Mark } from '../../../../../../shared/ui'
+import { Mark } from '../../../../../../shared'
 
 const MarkDetailedModal = ({ id }: { id: string }) => {
   const { modalData } = useMarkModal()
 
+  const mark = setDefaultMark(modalData.data)
   return (
     <ModalPage id={id} size={500} dynamicContentHeight>
       <ModalPageHeader>Подробнее об оценке</ModalPageHeader>
@@ -23,14 +24,13 @@ const MarkDetailedModal = ({ id }: { id: string }) => {
         <SimpleCell multiline>
           <InfoRow header='Тема'>{modalData.data.topic}</InfoRow>
         </SimpleCell>
-        <SimpleCell
-          multiline
-          after={<Mark size='s' mark={setDefaultMark(modalData.data)} />}
-        >
+        <SimpleCell multiline after={<Mark size='s' mark={mark} />}>
           <InfoRow header='Тип оценки'>
-            {LessonWorkType[modalData.data.type] ??
-              (modalData.data.isRequired && !modalData.data.mark && 'Долг') ??
-              'Неизвестен'}
+            {mark === 'Р'
+              ? 'Оценка не выставлена'
+              : LessonWorkType[modalData.data.type] ??
+                (modalData.data.isRequired && !modalData.data.mark && 'Долг') ??
+                'Неизвестен'}
           </InfoRow>
         </SimpleCell>
       </Group>
