@@ -18,5 +18,9 @@ export const setDefaultMark = (task: Task): ReturnedMark => {
     return 'ДЗ'
   }
 
+  if (!task.isRequired && !task.mark) {
+    return 'Р'
+  }
+
   return Grade[task.mark]
 }

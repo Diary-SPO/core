@@ -1,3 +1,4 @@
+import type { Nullable } from '@diary-spo/shared'
 import { GRAY, GREEN, ORANGE, RED, VIOLET } from '../../config'
 import type { ReturnedMark } from '../../types.ts'
 
@@ -25,12 +26,13 @@ export const borders: R = {
  * При этом оценка может быть строкой в случае, если это ДЗ / Долг / Опоздание / Н-ка.
  */
 
-export const getBackgroundColor = (score?: ReturnedMark): string => {
+export const getBackgroundColor = (score?: Nullable<ReturnedMark>): string => {
   const numberScore = Number(score)
 
   if (Number.isNaN(numberScore)) {
     switch (score) {
       case 'Зч':
+      case 'Р':
       case 'ДЗ':
         return VIOLET
       case 'О':
