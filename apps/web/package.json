@@ -4,10 +4,10 @@
   "version": "8.0.0",
   "type": "module",
   "scripts": {
-    "dev": "bunx --bun vite --mode development",
-    "build": "bunx --bun vite build --mode production",
+    "dev": "bunx --bun vite",
+    "build": "NODE_ENV=production bunx --bun vite build",
     "preview": "bunx --bun vite preview",
-    "serve": "bun run build --mode production && bun preview",
+    "serve": "bun run build && bun preview",
     "predeploy": "bun run build --env-file=.env.production",
     "deploy:gh": "gh-pages -d dist",
     "deploy:vk": "vk-miniapps-deploy",
@@ -17,25 +17,25 @@
   },
   "dependencies": {
     "@elysiajs/eden": "1.1.2",
-    "@vkontakte/icons": "2.129.0",
+    "@vkontakte/icons": "2.137.0",
     "@vkontakte/vk-bridge": "^2.15.0",
     "@vkontakte/vk-bridge-react": "^1.0.1",
     "@vkontakte/vk-mini-apps-router": "1.4.6",
-    "@vkontakte/vkui": "6.5.0",
+    "@vkontakte/vkui": "6.6.0",
     "date-fns": "^3.6.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1"
   },
   "devDependencies": {
     "@diary-spo/shared": "workspace:*",
-    "@happy-dom/global-registrator": "^14.12.3",
+    "@happy-dom/global-registrator": "^15.7.3",
     "@types/jsdom": "^21.1.7",
     "@vkontakte/vk-miniapps-deploy": "^0.1.8",
     "elysia": "1.1.2",
     "gh-pages": "^6.1.1",
-    "@types/react": "^18.3.3",
+    "@types/react": "^18.3.5",
     "@types/react-dom": "^18.3.0",
-    "vite": "^6.0.0-alpha.19"
+    "vite": "^6.0.0-alpha.23"
   },
   "browserslist": {
     "production": [">0.2%", "not dead", "not op_mini all"],

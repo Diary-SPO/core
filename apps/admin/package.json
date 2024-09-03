@@ -18,21 +18,21 @@
     "clsx": "^2.1.1",
     "lucide-vue-next": "^0.417.0",
     "pinia": "^2.2.2",
-    "radix-vue": "^1.9.4",
+    "radix-vue": "^1.9.5",
     "tailwind-merge": "^2.5.2",
     "tailwindcss-animate": "^1.0.7",
     "vee-validate": "^4.13.2",
-    "vue": "^3.4.38",
+    "vue": "^3.5.0",
     "vue-router": "^4.4.3",
     "zod": "^3.23.8"
   },
   "devDependencies": {
-    "@vitejs/plugin-vue": "^5.1.2",
+    "@vitejs/plugin-vue": "^5.1.3",
     "@vitejs/plugin-vue-jsx": "^3.1.0",
     "@vue/test-utils": "^2.4.6",
     "@vue/tsconfig": "^0.5.1",
     "autoprefixer": "^10.4.20",
-    "jsdom": "^24.1.1",
+    "jsdom": "^24.1.3",
     "prettier": "^3.3.3",
     "tailwindcss": "^3.4.10"
   }

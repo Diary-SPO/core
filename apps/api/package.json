@@ -29,6 +29,6 @@
     "@types/node-rsa": "^1.1.4",
     "@diary-spo/shared": "workspace:*",
     "@elysiajs/swagger": "^1.1.1",
-    "@types/pg": "^8.11.6"
+    "@types/pg": "^8.11.8"
   }
 }
