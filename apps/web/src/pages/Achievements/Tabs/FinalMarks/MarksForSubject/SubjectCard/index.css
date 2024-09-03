@@ -4,3 +4,8 @@
 
   margin-bottom: 10px;
 }
+
+.terms {
+  /* Unset the VKUI rule */
+  max-inline-size: unset;
+}

@@ -8,7 +8,7 @@ export interface ISubjectGroup {
   semesterKey: string
   subjects: Subject[]
   studentName: Nullable<string>
-  year: Nullable<number>
+  year?: Nullable<number>
 }
 
 const SubjectGroup: FC<ISubjectGroup> = ({
@@ -25,7 +25,7 @@ const SubjectGroup: FC<ISubjectGroup> = ({
       <Header
         style={{ alignItems: 'center' }}
         mode='tertiary'
-        aside={`${studentName}, ${year}`}
+        aside={`${studentName}${year}` && `, ${year}`}
       >
         {semesterKey}
       </Header>
