@@ -5,6 +5,7 @@ import type { FC } from 'react'
 
 import { useMarkModal } from '@store'
 import { Mark, setDefaultMark, truncateString } from '../../../../shared'
+import { MODAL_PAGE_MARK } from '../../../../shared/config'
 
 import './index.css'
 

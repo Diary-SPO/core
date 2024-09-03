@@ -1,7 +1,7 @@
 import type { PerformanceCurrent } from '@diary-spo/shared'
 import { lazy } from 'react'
 
-import { Suspense } from '../../../shared/ui'
+import { Suspense } from '../../../shared'
 import type { Tabs } from '../types.ts'
 
 const Summary = lazy(() => import('../Tabs/Summary'))
@@ -36,6 +36,7 @@ export const useActiveTab = (
     case 'current':
       activeTabComponent = (
         <Suspense id='MarksByGroup'>
+          {/*TODO: fix*/}
           <MarksByGroup marksForSubject={marksForSubject} />
         </Suspense>
       )

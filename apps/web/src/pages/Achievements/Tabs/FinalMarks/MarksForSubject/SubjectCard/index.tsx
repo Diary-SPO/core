@@ -9,7 +9,7 @@ import {
 } from '@vkontakte/vkui'
 import type { FC } from 'react'
 
-import { Mark } from '../../../../../../shared/ui'
+import { Mark } from '../../../../../../shared'
 import type { Term, TermMark } from '../types.ts'
 
 import { MarkWithPopover } from './MarkWithPopover'
@@ -28,7 +28,7 @@ export const SubjectCard: FC<{
           {subjectName}
         </Title>
       </Div>
-      <HorizontalCell>
+      <HorizontalCell className='terms'>
         {terms
           .filter(({ mark }) => mark !== '')
           .map((term) => (

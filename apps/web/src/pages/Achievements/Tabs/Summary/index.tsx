@@ -6,8 +6,8 @@ import UserInfo from './UserInfo'
 import type { ISummary } from './types.ts'
 
 import './index.css'
+import { Mark } from '../../../../shared'
 import { VIOLET } from '../../../../shared/config'
-import { Mark } from '../../../../shared/ui'
 
 const Summary: FC<ISummary> = ({
   markCounts,
@@ -29,7 +29,9 @@ const Summary: FC<ISummary> = ({
         <>
           <MiniInfoCell
             before={<Icon20EducationOutline className='icon' />}
-            after={<Mark color={VIOLET} size='s' mark={totalNumberOfMarks} />}
+            after={
+              <Mark color={VIOLET} size='s' mark={totalNumberOfMarks || 0} />
+            }
           >
             Суммарное количество оценок:
           </MiniInfoCell>
@@ -41,7 +43,7 @@ const Summary: FC<ISummary> = ({
                 height={20}
               />
             }
-            after={<Mark size='s' mark={averageMark} />}
+            after={<Mark size='s' mark={averageMark || 0} />}
           >
             Общий средний балл:
           </MiniInfoCell>

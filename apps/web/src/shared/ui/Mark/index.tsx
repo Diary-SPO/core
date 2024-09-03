@@ -1,3 +1,4 @@
+import type { Nullable } from '@diary-spo/shared'
 import { Footnote } from '@vkontakte/vkui'
 import type { CSSProperties, FC, HTMLAttributes } from 'react'
 
@@ -14,7 +15,7 @@ import {
 import './index.css'
 
 interface IMark extends Omit<HTMLAttributes<HTMLDivElement>, 'size'> {
-  mark?: ReturnedMark
+  mark?: Nullable<ReturnedMark>
   size?: Sizes
   bottom?: string
   color?: string

@@ -1,4 +1,5 @@
 import type { ResponseLogin } from '@diary-spo/shared'
+import { setToken } from '../../../shared/api/client.ts'
 
 export const saveData = (basePath: ResponseLogin) => {
   const userId = String(basePath.id)
@@ -20,6 +21,7 @@ export const saveData = (basePath: ResponseLogin) => {
     group
   }
 
+  setToken(token)
   localStorage.setItem('data', JSON.stringify(userData))
 }
 
