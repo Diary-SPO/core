@@ -1,1 +1,0 @@
-import{r as n,A as s,aH as i}from"./index-BRK_dWDI.js";import{u as o}from"./useIsClient-rB5SNlEQ.js";function f(t=!0){const{hasPointer:e}=n.useContext(s);return!o(!(t||e===void 0))||e!==void 0?e:i}export{f as u};

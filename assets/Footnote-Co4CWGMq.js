@@ -1,0 +1,1 @@
+import{j as c,c as m}from"./index-DQiKpSs9.js";import{m as r}from"./env-CJI0wOj_.js";const F="_Footnote_1p3lo_1",o={Footnote:F,"Footnote--caps":"_Footnote--caps_1p3lo_8"},_=({className:t,caps:s,Component:n="span",normalize:e=!0,inline:a=!1,...p})=>c.jsx(r,{Component:n,normalize:e,inline:a,className:m(t,o.Footnote,s&&o["Footnote--caps"]),...p});export{_ as F};
