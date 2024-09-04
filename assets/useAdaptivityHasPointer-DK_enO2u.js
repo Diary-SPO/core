@@ -1,1 +1,0 @@
-import{r as n,A as s,ac as i}from"./index-BjKfafOL.js";import{a6 as o}from"./index-C_7eDFt2.js";function c(t=!0){const{hasPointer:e}=n.useContext(s);return!o(!(t||e===void 0))||e!==void 0?e:i}export{c as u};
