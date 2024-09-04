@@ -14,7 +14,7 @@ import {
   Link,
   Panel
 } from '@vkontakte/vkui'
-import { type ChangeEvent, type FC, useEffect, useState } from 'react'
+import { type ChangeEvent, type FC, useLayoutEffect, useState } from 'react'
 
 import { VIEW_SCHEDULE } from '../../app/routes'
 import { PanelHeaderWithBack, handleResponse, isApiError } from '../../shared'
@@ -24,6 +24,7 @@ import { useSnackbar } from '../../shared/hooks'
 
 import type { Props } from '../types.ts'
 
+import { getToken } from '../../shared/api/client.ts'
 import { loginPattern, saveData } from './helpers'
 
 const LoginForm: FC<Props> = ({ id }) => {
@@ -37,9 +38,10 @@ const LoginForm: FC<Props> = ({ id }) => {
   const [snackbar, showSnackbar] = useSnackbar()
 
   // biome-ignore lint/correctness/useExhaustiveDependencies: all good
-  useEffect(() => {
+  useLayoutEffect(() => {
     const getUserCookie = async () => {
-      const storageToken = localStorage.getItem('token')
+      setIsLoading(true)
+      const storageToken = localStorage.getItem('token') || getToken()
 
       if (!storageToken) {
         showSnackbar({
@@ -47,7 +49,12 @@ const LoginForm: FC<Props> = ({ id }) => {
           subtitle: 'Заполни форму и войди в дневник',
           title: 'О вас нет данных, ты кто такой?'
         })
+        setIsLoading(false)
+        return
       }
+
+      setIsLoading(false)
+      await routeNavigator.replace(`/${VIEW_SCHEDULE}`)
     }
 
     getUserCookie()
@@ -104,7 +111,7 @@ const LoginForm: FC<Props> = ({ id }) => {
 
       await routeNavigator.replace(`/${VIEW_SCHEDULE}`)
     } catch (error) {
-      console.log(error)
+      console.error(error)
     } finally {
       setIsLoading(false)
     }

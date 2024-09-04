@@ -11,6 +11,11 @@ let globalToken: string | null = null
 export const setToken = (token: string) => {
   globalToken = token
 }
+
+export const getToken = (): string | null => {
+  return globalToken
+}
+
 // @TODO: move to config
 export const client = treaty<App>(API_URL, {
   onRequest: (_path, options) => {
