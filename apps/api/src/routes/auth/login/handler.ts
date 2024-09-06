@@ -3,10 +3,10 @@ import { SERVER_URL } from '@config'
 import { b64 } from '@diary-spo/crypto'
 import type { ResponseLogin, UserData } from '@diary-spo/shared'
 
+import { fetcher } from 'src/utils/fetcher'
 import { offlineAuth } from './service'
 import { handleResponse } from './service/helpers'
 import { saveUserData } from './service/save'
-import { fetcher } from 'src/utils/fetcher'
 
 interface AuthContext {
   login: string
@@ -24,9 +24,12 @@ const postAuth = async ({
     password = await b64(password)
   }
 
-  const rawResponse = await fetcher.post(`${SERVER_URL}/services/security/login`, {
-    json: { login, password, isRemember: true }
-  })
+  const rawResponse = await fetcher.post(
+    `${SERVER_URL}/services/security/login`,
+    {
+      json: { login, password, isRemember: true }
+    }
+  )
 
   const res = await rawResponse.json<UserData>()
 

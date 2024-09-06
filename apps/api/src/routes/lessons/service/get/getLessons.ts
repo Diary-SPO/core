@@ -4,9 +4,9 @@ import type { Day } from '@diary-spo/shared'
 import type { ICacheData } from '@helpers'
 import { HeadersWithCookie } from '@utils'
 import { detectTerm } from 'src/models/Term/actions/other/detectTerm'
+import { fetcher } from 'src/utils/fetcher'
 import { ScheduleGetFromDB, daySave } from '../../../../models/Schedule'
 import { getFormattedResponse } from '../helpers'
-import { fetcher } from 'src/utils/fetcher'
 
 export const getLessonsService = async (
   startDate: string,

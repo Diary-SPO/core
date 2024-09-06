@@ -5,8 +5,8 @@ import { getCookieFromToken } from '@helpers'
 import { HeadersWithCookie } from '@utils'
 
 import { adsGetFromDB, saveAds } from 'src/models/Ads/actions'
-import type { WithToken } from '../../types'
 import { fetcher } from 'src/utils/fetcher'
+import type { WithToken } from '../../types'
 
 type Params = WithToken<{
   spoId: bigint
