@@ -25,7 +25,7 @@ const SubjectGroup: FC<ISubjectGroup> = ({
       <Header
         style={{ alignItems: 'center' }}
         mode='tertiary'
-        aside={`${studentName}${year}` && `, ${year}`}
+        aside={studentName + (year ? `, ${year}` : '')}
       >
         {semesterKey}
       </Header>
