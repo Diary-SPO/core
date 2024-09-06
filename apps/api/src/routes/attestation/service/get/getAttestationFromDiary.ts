@@ -12,8 +12,7 @@ export const getAttestationFromDiary = async (
 
   return ky
     .get(path, {
-      headers: HeadersWithCookie(authData.cookie),
-      timeout: 10000 // 10 seconds
+      headers: HeadersWithCookie(authData.cookie)
     })
     .json()
 }

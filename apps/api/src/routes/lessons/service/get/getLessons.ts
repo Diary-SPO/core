@@ -3,10 +3,10 @@ import { SERVER_URL } from '@config'
 import type { Day } from '@diary-spo/shared'
 import type { ICacheData } from '@helpers'
 import { HeadersWithCookie } from '@utils'
-import ky from 'ky'
 import { detectTerm } from 'src/models/Term/actions/other/detectTerm'
 import { ScheduleGetFromDB, daySave } from '../../../../models/Schedule'
 import { getFormattedResponse } from '../helpers'
+import { fetcher } from 'src/utils/fetcher'
 
 export const getLessonsService = async (
   startDate: string,
@@ -16,9 +16,8 @@ export const getLessonsService = async (
 ): Promise<Day[]> => {
   const path = `${SERVER_URL}/services/students/${authData.idFromDiary}/lessons/${startDate}/${endDate}`
 
-  const response = await ky.get(path, {
-    headers: HeadersWithCookie(authData.cookie),
-    timeout: 10000 // 10 seconds
+  const response = await fetcher.get(path, {
+    headers: HeadersWithCookie(authData.cookie)
   })
 
   if (response.status === API_CODES.FORBIDDEN) {

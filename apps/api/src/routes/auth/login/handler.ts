@@ -2,10 +2,11 @@ import { API_ERRORS, NotFoundError, UnknownError } from '@api'
 import { SERVER_URL } from '@config'
 import { b64 } from '@diary-spo/crypto'
 import type { ResponseLogin, UserData } from '@diary-spo/shared'
-import ky from 'ky'
+
 import { offlineAuth } from './service'
 import { handleResponse } from './service/helpers'
 import { saveUserData } from './service/save'
+import { fetcher } from 'src/utils/fetcher'
 
 interface AuthContext {
   login: string
@@ -23,14 +24,11 @@ const postAuth = async ({
     password = await b64(password)
   }
 
-  const rawResponse = await ky.post(`${SERVER_URL}/services/security/login`, {
-    json: { login, password, isRemember: true },
-    timeout: 10000 // 10 seconds
+  const rawResponse = await fetcher.post(`${SERVER_URL}/services/security/login`, {
+    json: { login, password, isRemember: true }
   })
 
-  const res = rawResponse.ok
-    ? await rawResponse.json<UserData>()
-    : rawResponse.status
+  const res = await rawResponse.json<UserData>()
 
   const parsedRes = handleResponse(res)
 

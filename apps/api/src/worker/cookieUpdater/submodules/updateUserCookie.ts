@@ -19,16 +19,11 @@ export const updateUserCookie = async (
       login: user.login,
       password: user.password,
       isRemember: true
-    }),
-    timeout: 10000 // 10 seconds
+    })
   })
 
-  const res = rawResponse.ok
-    ? await rawResponse.json<UserData>()
-    : rawResponse.status
-
   // Если дневник вернул что-то другое...
-  if (typeof res === 'number') {
+  if (!rawResponse.ok) {
     log('WORKER: Что-то не так... Дневник ответил чем-то другим ?')
     return
   }

@@ -3,13 +3,13 @@ import { SERVER_URL } from '@config'
 import type { PersonResponse, UserData } from '@diary-spo/shared'
 import { generateToken } from '@helpers'
 import { cookieExtractor, error } from '@utils'
-import ky from 'ky'
 import {
   getFormattedDiaryUserData,
   saveOrGetDiaryUser,
   saveOrGetGroup
 } from '../../../../../models/DiaryUser'
 import { saveOrGetSPO } from '../../../../../models/SPO'
+import { fetcher } from 'src/utils/fetcher'
 
 export const saveUserData = async (
   parsedRes: UserData,
@@ -23,25 +23,16 @@ export const saveUserData = async (
 
   const cookie = cookieExtractor(setCookieHeader ?? '')
   try {
-    const rawResponse = await ky.get(
+    const rawResponse = await fetcher.get(
       `${SERVER_URL}/services/security/account-settings`,
       {
         headers: {
           Cookie: cookie
-        },
-        timeout: 10000 // 10 seconds
+        }
       }
     )
-    const detailedInfo = rawResponse.ok
-      ? await rawResponse.json<PersonResponse>()
-      : rawResponse.status
 
-    if (typeof detailedInfo === 'number') {
-      throw new ApiError(
-        'Error get detailed info!',
-        API_CODES.INTERNAL_SERVER_ERROR
-      )
-    }
+    const detailedInfo = await rawResponse.json<PersonResponse>()
 
     const person = detailedInfo.persons[0]
 
