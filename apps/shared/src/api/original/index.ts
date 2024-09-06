@@ -17,7 +17,7 @@ export interface Organization {
   name: string
   shortName: string
   abbreviation: string
-  legalStatus: string
+  legalStatus: 'StateFinanced' | string
   address: {
     region: string
     // Example: 'г. Томск'
@@ -87,6 +87,16 @@ export interface Organization {
       communityToken: string
     }
   }
+}
+
+export interface DashboardSubject {
+  id: number
+  mark: number
+  name: string
+}
+
+export interface Dashboard {
+  subjects: Array<DashboardSubject>
 }
 
 export type TenantName = string
@@ -170,7 +180,8 @@ export const AbsenceTypes: Record<
   AbsenceTypesDescriptionKeys
 > = {
   IsAbsent: 'Н',
-  IsLate: 'О'
+  IsLate: 'О',
+  IsAbsentByNotValidReason: 'НП'
 }
 
 export const AbsenceTypesDescription: Record<
@@ -178,7 +189,8 @@ export const AbsenceTypesDescription: Record<
   string
 > = {
   Н: 'Отсутствие',
-  О: 'Опоздание'
+  О: 'Опоздание',
+  НП: 'Неуважительное причина'
 }
 
 export type TMark = MarkKeys
@@ -216,19 +228,26 @@ export interface Gradebook {
   absenceType?: AbsenceType
 }
 
-export interface Lesson {
-  lessonId?: string
-  endTime: string
-  startTime: string
-  name: string | null
-  timetable: Timetable
-  gradebook?: Gradebook
-  tasks?: Task[]
-}
+export type Lesson =
+  | {
+      endTime: string
+      startTime: string
+    }
+  | {
+      endTime: string
+      startTime: string
+      lessonId?: string
+      tasks: Task[]
+      name: string | null
+      timetable: Timetable
+      gradebook: Gradebook
+    }
 
 export interface Day {
   date: Date | string
   lessons: Lesson[] | null
+  isHoliday: boolean
+  isShort: boolean
 }
 
 export interface IMark {
