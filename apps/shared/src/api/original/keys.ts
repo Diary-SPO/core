@@ -30,9 +30,12 @@ export type LessonTypeKeys =
   | 'SportStandarts'
   | ''
 
-export type AbsenceTypesKeys = 'IsAbsent' | 'IsLate'
+export type AbsenceTypesKeys =
+  | 'IsAbsent'
+  | 'IsLate'
+  | 'IsAbsentByNotValidReason'
 
-export type AbsenceTypesDescriptionKeys = 'Н' | 'О'
+export type AbsenceTypesDescriptionKeys = 'Н' | 'О' | 'НП'
 export type AdditionalMarks = 'Д' | 'Зч'
 export type ExaminationKeys = 'DifferentiatedTest' | 'Test' | 'Exam' | 'Other'
 export type TermSubjectExaminationKeys =

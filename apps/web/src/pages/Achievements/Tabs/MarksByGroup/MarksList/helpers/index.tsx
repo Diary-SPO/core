@@ -6,7 +6,7 @@ import {
 } from '@diary-spo/shared'
 import type { ReactNode } from 'react'
 
-import { Mark } from '../../../../../../shared/ui'
+import { Mark } from '../../../../../../shared'
 
 // TODO: create tests
 export const renderMarksOrAbsence = (

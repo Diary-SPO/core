@@ -1,13 +1,15 @@
 import type { Person } from '../../base.ts'
 
 export interface PersonResponse {
-  persons: Array<Person & {
-    login: string
-    phone: string
-    birthday: string
-    isTrusted: boolean
-    isEsiaBound: boolean
-  }>
+  persons: Array<
+    Person & {
+      login: string
+      phone: string
+      birthday: string
+      isTrusted: boolean
+      isEsiaBound: boolean
+    }
+  >
 }
 
 /**
