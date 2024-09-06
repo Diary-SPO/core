@@ -4,6 +4,7 @@ import type { Day } from '@diary-spo/shared'
 import type { ICacheData } from '@helpers'
 import { HeadersWithCookie } from '@utils'
 import { detectTerm } from 'src/models/Term/actions/other/detectTerm'
+import { fetcher } from 'src/utils/fetcher'
 import { ScheduleGetFromDB, daySave } from '../../../../models/Schedule'
 import { getFormattedResponse } from '../helpers'
 
@@ -15,7 +16,7 @@ export const getLessonsService = async (
 ): Promise<Day[]> => {
   const path = `${SERVER_URL}/services/students/${authData.idFromDiary}/lessons/${startDate}/${endDate}`
 
-  const response = await fetch(path, {
+  const response = await fetcher.get(path, {
     headers: HeadersWithCookie(authData.cookie)
   })
 

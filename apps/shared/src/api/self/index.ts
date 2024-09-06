@@ -1,13 +1,13 @@
 import type { Person } from '../../base.ts'
 
 export interface PersonResponse {
-  person: Person & {
+  persons: Array<Person & {
     login: string
     phone: string
     birthday: string
     isTrusted: boolean
     isEsiaBound: boolean
-  }
+  }>
 }
 
 /**

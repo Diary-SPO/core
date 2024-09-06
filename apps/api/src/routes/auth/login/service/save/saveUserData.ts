@@ -2,7 +2,8 @@ import { API_CODES, ApiError } from '@api'
 import { SERVER_URL } from '@config'
 import type { PersonResponse, UserData } from '@diary-spo/shared'
 import { generateToken } from '@helpers'
-import { type ApiResponse, cookieExtractor, error, fetcher } from '@utils'
+import { cookieExtractor, error } from '@utils'
+import { fetcher } from 'src/utils/fetcher'
 import {
   getFormattedDiaryUserData,
   saveOrGetDiaryUser,
@@ -11,30 +12,29 @@ import {
 import { saveOrGetSPO } from '../../../../../models/SPO'
 
 export const saveUserData = async (
-  parsedRes: ApiResponse<UserData>,
+  parsedRes: UserData,
   login: string,
-  password: string
+  password: string,
+  setCookieHeader: string
 ) => {
-  const tenant = parsedRes.data.tenants[parsedRes.data.tenantName]
+  const tenant = parsedRes.tenants[parsedRes.tenantName]
   const student = tenant.studentRole.students[0]
   const SPO = tenant.settings.organization
 
-  const setCookieHeader = parsedRes.headers.get('Set-Cookie')
   const cookie = cookieExtractor(setCookieHeader ?? '')
   try {
-    const detailedInfo = await fetcher<PersonResponse>({
-      url: `${SERVER_URL}/services/security/account-settings`,
-      cookie
-    })
+    const rawResponse = await fetcher.get(
+      `${SERVER_URL}/services/security/account-settings`,
+      {
+        headers: {
+          Cookie: cookie
+        }
+      }
+    )
 
-    if (typeof detailedInfo === 'number') {
-      throw new ApiError(
-        'Error get detailed info!',
-        API_CODES.INTERNAL_SERVER_ERROR
-      )
-    }
+    const detailedInfo = await rawResponse.json<PersonResponse>()
 
-    const person = detailedInfo.data.person
+    const person = detailedInfo.persons[0]
 
     const spoAddress =
       SPO.actualAddress.length > 5

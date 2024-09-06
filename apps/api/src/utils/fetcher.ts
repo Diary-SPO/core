@@ -1,46 +1,5 @@
-export type HTTPMethods = 'GET' | 'POST'
+import ky from 'ky'
 
-export interface ApiResponse<T> {
-  data: T
-  headers: Headers
-  status: number
-}
-
-interface Params {
-  url: string
-  method?: HTTPMethods
-  body?: any
-  cookie?: string
-}
-
-export const fetcher = async <T>({
-  url,
-  method = 'GET',
-  body,
-  cookie
-}: Params): Promise<ApiResponse<T> | number> => {
-  try {
-    const response = await fetch(url, {
-      method,
-      body,
-      headers: {
-        'Content-Type': 'application/json;charset=UTF-8',
-        Cookie: cookie ?? ''
-      }
-    })
-    //console.log(path)
-    console.log(url)
-
-    if (!response.ok) {
-      return response.status
-    }
-
-    return {
-      data: (await response.json()) as T,
-      headers: response.headers,
-      status: response.status
-    }
-  } catch (error) {
-    return 500
-  }
-}
+export const fetcher = ky.extend({
+  timeout: 10000 // 10 seconds
+})
