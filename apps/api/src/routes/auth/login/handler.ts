@@ -2,7 +2,7 @@ import { API_ERRORS, NotFoundError, UnknownError } from '@api'
 import { SERVER_URL } from '@config'
 import { b64 } from '@diary-spo/crypto'
 import type { ResponseLogin, UserData } from '@diary-spo/shared'
-import { fetcher } from '@utils'
+import ky from 'ky'
 import { offlineAuth } from './service'
 import { handleResponse } from './service/helpers'
 import { saveUserData } from './service/save'
@@ -23,11 +23,15 @@ const postAuth = async ({
     password = await b64(password)
   }
 
-  const res = await fetcher<UserData>({
-    url: `${SERVER_URL}/services/security/login`,
-    method: 'POST',
-    body: JSON.stringify({ login, password, isRemember: true })
+  const rawResponse = await ky.post(`${SERVER_URL}/services/security/login`, {
+    json: { login, password, isRemember: true },
+    timeout: 10000 // 10 seconds
   })
+
+  const res = rawResponse.ok
+    ? await rawResponse.json<UserData>()
+    : rawResponse.status
+
   const parsedRes = handleResponse(res)
 
   switch (parsedRes) {
@@ -51,11 +55,18 @@ const postAuth = async ({
        * Поэтому проверяем хотя бы наличие одного обязательного поля
        **/
 
-      if (!parsedRes.data.tenants) {
-        throw new UnknownError('Unreachable auth error')
+      const setCookieHeader = rawResponse.headers.get('Set-Cookie')
+
+      if (!parsedRes.tenants || !setCookieHeader) {
+        throw new UnknownError(`Unreachable auth error${parsedRes}`)
       }
 
-      const userData = await saveUserData(parsedRes, login, password)
+      const userData = await saveUserData(
+        parsedRes,
+        login,
+        password,
+        setCookieHeader
+      )
 
       if (!userData) {
         throw new UnknownError('Unreachable auth error')

@@ -1,6 +1,7 @@
 import { SERVER_URL } from '@config'
 import type { UserData } from '@diary-spo/shared'
-import { cookieExtractor, fetcher, formatDate } from '@utils'
+import { cookieExtractor, formatDate } from '@utils'
+import ky from 'ky'
 import type { IDiaryUserModel } from '../../../models/DiaryUser'
 import { logger } from '../../utils/logger'
 
@@ -13,15 +14,18 @@ export const updateUserCookie = async (
   console.log('Обновляю cookie пользователя', userInfo)
 
   // 1. Авторизируемся
-  const res = await fetcher<UserData>({
-    url: `${SERVER_URL}/services/security/login`,
-    method: 'POST',
+  const rawResponse = await ky.post(`${SERVER_URL}/services/security/login`, {
     body: JSON.stringify({
       login: user.login,
       password: user.password,
       isRemember: true
-    })
+    }),
+    timeout: 10000 // 10 seconds
   })
+
+  const res = rawResponse.ok
+    ? await rawResponse.json<UserData>()
+    : rawResponse.status
 
   // Если дневник вернул что-то другое...
   if (typeof res === 'number') {
@@ -30,7 +34,7 @@ export const updateUserCookie = async (
   }
 
   // 2. Подготавливаем куку
-  const setCookieHeader = res.headers.get('Set-Cookie')
+  const setCookieHeader = rawResponse.headers.get('Set-Cookie')
   const cookie = cookieExtractor(setCookieHeader ?? '')
 
   // 3. Обновляем куку и дату обновления
