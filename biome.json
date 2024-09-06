@@ -5,6 +5,7 @@
     "indentWidth": 2,
     "ignore": [
       "node_modules",
+      "network-city",
       "./apps/api/dist",
       "./apps/admin/dist",
       "./apps/web/dist",
