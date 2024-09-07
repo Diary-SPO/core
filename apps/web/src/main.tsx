@@ -1,6 +1,5 @@
 import { lazy } from 'react'
 import { createRoot } from 'react-dom/client'
-
 import { Suspense } from './shared/ui'
 
 import '@vkontakte/vkui/dist/cssm/styles/themes.css'
