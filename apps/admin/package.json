@@ -22,7 +22,7 @@
     "tailwind-merge": "^2.5.2",
     "tailwindcss-animate": "^1.0.7",
     "vee-validate": "^4.13.2",
-    "vue": "^3.5.0",
+    "vue": "^3.5.3",
     "vue-router": "^4.4.3",
     "zod": "^3.23.8"
   },

@@ -1,14 +1,13 @@
 {
   "name": "@diary-spo/core",
-  "version": "3.0.0",
+  "version": "3.1.0",
   "author": "diary-spo",
   "dependencies": {
-    "bun": "^1.1.26"
+    "bun": "^1.1.27"
   },
   "devDependencies": {
     "@biomejs/biome": "^1.8.3",
-    "@types/bun": "^1.1.8",
-    "bun-types": "^1.1.26",
+    "bun-types": "^1.1.27",
     "concurrently": "^8.2.2",
     "husky": "^9.1.5",
     "lint-staged": "^15.2.10",
