@@ -6,6 +6,10 @@ const { publicVars } = loadEnv({ prefixes: ['VITE_'] })
 
 export default defineConfig({
   plugins: [pluginReact()],
+  output: {
+    polyfill: 'usage',
+    minify: true
+  },
   server: {
     port: 5173
   },

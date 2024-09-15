@@ -28,9 +28,9 @@
   },
   "devDependencies": {
     "@diary-spo/shared": "workspace:*",
-    "@happy-dom/global-registrator": "^15.7.3",
-    "@rsbuild/core": "^1.0.1-rc.5",
-    "@rsbuild/plugin-react": "^1.0.1-rc.5",
+    "@happy-dom/global-registrator": "^15.7.4",
+    "@rsbuild/core": "^1.0.4",
+    "@rsbuild/plugin-react": "^1.0.2",
     "@types/jsdom": "^21.1.7",
     "@types/react": "^18.3.5",
     "@types/react-dom": "^18.3.0",
