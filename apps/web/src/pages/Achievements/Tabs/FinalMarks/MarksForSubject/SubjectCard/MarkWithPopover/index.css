@@ -2,12 +2,10 @@
   cursor: help;
 }
 
-
 .marksGap {
   display: inline;
   margin-left: 5px;
 }
-
 
 .popoverWrapper {
   cursor: pointer;
