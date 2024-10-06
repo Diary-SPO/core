@@ -22,16 +22,16 @@
     "elysia-helmet": "^2.0.0",
     "ky": "^1.7.2",
     "node-rsa": "^1.1.1",
-    "pg": "^8.12.0",
+    "pg": "^8.13.0",
     "pg-hstore": "^2.3.4",
     "rand-token": "^1.0.1",
-    "sequelize": "^6.37.3",
+    "sequelize": "^6.37.4",
     "sequelize-simple-cache": "^1.3.5"
   },
   "devDependencies": {
     "@types/node-rsa": "^1.1.4",
     "@diary-spo/shared": "workspace:*",
-    "@elysiajs/swagger": "^1.1.1",
+    "@elysiajs/swagger": "^1.1.3",
     "@types/pg": "^8.11.10"
   }
 }
