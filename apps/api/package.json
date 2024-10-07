@@ -17,7 +17,7 @@
     "@diary-spo/crypto": "workspace:*",
     "@elysiajs/cors": "^1.1.1",
     "cache-manager": "^5.7.6",
-    "elysia": "1.1.12",
+    "elysia": "1.1.18",
     "elysia-compression": "^0.0.7",
     "elysia-helmet": "^2.0.0",
     "ky": "^1.7.2",
