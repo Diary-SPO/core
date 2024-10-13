@@ -5,7 +5,7 @@
     "indentWidth": 2,
     "ignore": [
       "node_modules",
-      "network-city",
+      "./apps/network-city",
       "./apps/api/dist",
       "./apps/admin/dist",
       "./apps/web/dist",
@@ -39,6 +39,7 @@
     },
     "ignore": [
       "node_modules",
+      "./apps/network-city",
       "./apps/api/dist",
       "./apps/admin/dist",
       "./apps/web/dist",

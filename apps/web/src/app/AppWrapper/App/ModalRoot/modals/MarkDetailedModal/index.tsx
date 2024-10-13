@@ -28,9 +28,9 @@ const MarkDetailedModal = ({ id }: { id: string }) => {
           <InfoRow header='Тип оценки'>
             {mark === 'Р'
               ? 'Оценка не выставлена'
-              : LessonWorkType[modalData.data.type] ??
+              : (LessonWorkType[modalData.data.type] ??
                 (modalData.data.isRequired && !modalData.data.mark && 'Долг') ??
-                'Неизвестен'}
+                'Неизвестен')}
           </InfoRow>
         </SimpleCell>
       </Group>

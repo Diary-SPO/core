@@ -1,3 +1,3 @@
 # Web
 
-TODO
+A web interface of Diary SPO

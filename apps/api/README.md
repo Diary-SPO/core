@@ -44,11 +44,10 @@ Create file with name `.env` in project root (or where server runs).
 File has the following syntax:
 
 ```ini
-# Адрес сервера дневника
-SERVER_URL='адрес_целевого_дневника'
+SERVER_URL='original_diary_api'
 
-# Порт этого сервера (не обязательно)
-PORT=ваш_порт # по умолчанию 3003
+
+PORT=port # 3003 by default 
 ```
 
 Here is a possible example of your file:

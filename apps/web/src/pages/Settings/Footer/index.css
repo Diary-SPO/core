@@ -1,9 +1,9 @@
 .footer {
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .footerSubheader {
-    margin-right: 5px;
+  margin-right: 5px;
 }
