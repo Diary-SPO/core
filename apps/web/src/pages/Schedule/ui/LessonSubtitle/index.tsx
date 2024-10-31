@@ -1,4 +1,9 @@
-import { AbsenceTypes, type Gradebook, LessonType } from '@diary-spo/shared'
+import {
+  AbsenceTypes,
+  AbsenceTypesColors,
+  type Gradebook,
+  LessonType
+} from '@diary-spo/shared'
 import type { FC } from 'react'
 
 import { isDistant } from '../../../../shared'
@@ -34,9 +39,7 @@ const LessonSubtitle: FC<ILessonSubtitle> = ({
         </SubtitleWithBorder>
       )}
       {gradebook?.absenceType && (
-        <SubtitleWithBorder
-          color={gradebook.absenceType === 'IsLate' ? 'yellow' : 'red'}
-        >
+        <SubtitleWithBorder color={AbsenceTypesColors[gradebook?.absenceType]}>
           {AbsenceTypes[gradebook?.absenceType]}
         </SubtitleWithBorder>
       )}

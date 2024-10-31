@@ -181,8 +181,20 @@ export const AbsenceTypes: Record<
 > = {
   IsAbsent: 'Н',
   IsLate: 'О',
-  IsAbsentByNotValidReason: 'НП'
+  IsAbsentByNotValidReason: 'НП',
+  SickLeave: 'Б',
+  IsAbsentByValidReason: 'УП'
 }
+
+export const AbsenceTypesColors: Record<AbsenceTypesKeys, ColorKeys> = {
+  IsAbsent: 'red',
+  IsLate: 'yellow',
+  IsAbsentByNotValidReason: 'red',
+  SickLeave: 'blue',
+  IsAbsentByValidReason: 'blue'
+}
+
+export type ColorKeys = 'red' | 'yellow' | 'blue'
 
 export const AbsenceTypesDescription: Record<
   AbsenceTypesDescriptionKeys,
@@ -190,7 +202,9 @@ export const AbsenceTypesDescription: Record<
 > = {
   Н: 'Отсутствие',
   О: 'Опоздание',
-  НП: 'Неуважительное причина'
+  НП: 'Неуважительное причина',
+  УП: 'Уважительная причина',
+  Б: 'Пропуск по болезни'
 }
 
 export type TMark = MarkKeys
@@ -204,6 +218,7 @@ export interface Task {
   isRequired: boolean
   mark: MarkKeys
   topic?: string
+  condition: string
   type: TLesson
 }
 

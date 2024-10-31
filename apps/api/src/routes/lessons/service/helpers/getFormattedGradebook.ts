@@ -9,13 +9,14 @@ export const getFormattedGradebook = (
     const lessonType = rd.lessonType.name
     // Подготавливаем таски
     const tasks: Task[] = rd.tasks?.map((t) => {
-      const { idFromDiary: id, topic } = t
+      const { idFromDiary: id, topic, condition } = t
       const type = t.taskType.name
       const isRequired = t.requireds?.[0].isRequired ?? false
-      const mark = t.marks?.[0].markValue.value ?? undefined
+      const mark = t.marks?.[0]?.markValue?.value ?? undefined
       return {
         id,
         topic,
+        condition,
         type,
         isRequired,
         mark,

@@ -15,11 +15,11 @@ export const updateUserCookie = async (
 
   // 1. Авторизируемся
   const rawResponse = await ky.post(`${SERVER_URL}/services/security/login`, {
-    body: JSON.stringify({
+    json: {
       login: user.login,
       password: user.password,
       isRemember: true
-    })
+    }
   })
 
   // Если дневник вернул что-то другое...

@@ -31,6 +31,7 @@ export const tasksSaveOrGet = async (
       scheduleId,
       topic: task?.topic ?? 'Не указано',
       idFromDiary: task.id,
+      condition: task.condition ?? '',
       taskTypeId
     }
     const promise = TaskModel.findOrCreate({

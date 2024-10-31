@@ -34,8 +34,10 @@ export type AbsenceTypesKeys =
   | 'IsAbsent'
   | 'IsLate'
   | 'IsAbsentByNotValidReason'
+  | 'IsAbsentByValidReason'
+  | 'SickLeave'
 
-export type AbsenceTypesDescriptionKeys = 'Н' | 'О' | 'НП'
+export type AbsenceTypesDescriptionKeys = 'Н' | 'О' | 'НП' | 'УП' | 'Б'
 export type AdditionalMarks = 'Д' | 'Зч'
 export type ExaminationKeys = 'DifferentiatedTest' | 'Test' | 'Exam' | 'Other'
 export type TermSubjectExaminationKeys =
