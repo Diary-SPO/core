@@ -5,6 +5,7 @@ type SubtitleColors =
   | 'red'
   | 'green'
   | 'yellow'
+  | 'blue'
   | 'red-outline'
   | 'green-outline'
   | 'yellow-outline'

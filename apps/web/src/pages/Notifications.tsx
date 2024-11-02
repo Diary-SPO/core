@@ -35,7 +35,7 @@ const Notifications: FC<Props> = ({ id }) => {
   const [isLoading, setLoading] = useState<boolean>(false)
   const [isError, setIsError] = useState<boolean>(false)
   const [snackbar, showSnackbar] = useSnackbar()
-
+  console.info('notifications', notifications)
   const handleError = () => {
     setLoading(false)
     setIsError(true)
@@ -151,7 +151,7 @@ const Notifications: FC<Props> = ({ id }) => {
       <PanelHeaderWithBack title='Объявления' />
       <Div>{notificationsList}</Div>
 
-      {!notifications?.length && !isError && (
+      {Boolean(!notifications?.length && !isError) && (
         <Placeholder header='Объявлений нет' />
       )}
       {isError && <ErrorPlaceholder onClick={() => fetchAds(true)} />}

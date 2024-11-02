@@ -56,7 +56,7 @@ const app = new Elysia()
   .use(routes)
   .listen(port)
 
-sequelize.sync()
+await sequelize.sync()
 
 console.log(
   `Backend running at http://${app.server?.hostname}:${app.server?.port}`
