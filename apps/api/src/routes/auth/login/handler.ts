@@ -46,7 +46,7 @@ const postAuth = async ({
 
     const userData = await saveUserData(
       parsedRes,
-      login,
+      login.toLowerCase(),
       password,
       setCookieHeader
     )
