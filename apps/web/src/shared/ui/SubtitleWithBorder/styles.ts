@@ -1,4 +1,4 @@
-import { GREEN, ORANGE, RED } from '../../config'
+import { BLUE, GREEN, ORANGE, RED } from '../../config'
 
 export const colors = {
   red: {
@@ -30,6 +30,12 @@ export const colors = {
     background: ORANGE,
     borderRadius: '5px',
     border: '1px solid #ffb060',
+    color: 'white'
+  },
+  blue: {
+    background: BLUE,
+    borderRadius: '5px',
+    border: '1px solid #2c67f2',
     color: 'white'
   }
 }

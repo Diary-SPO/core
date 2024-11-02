@@ -11,6 +11,7 @@ export type TaskModelType = {
   scheduleId: bigint
   taskTypeId: number
   topic: string
+  condition: string | null
   idFromDiary: number
 }
 
@@ -42,6 +43,10 @@ export const TaskModel = sequelize.define<ITaskModel>('task', {
   topic: {
     type: DataTypes.TEXT,
     allowNull: false
+  },
+  condition: {
+    type: DataTypes.TEXT,
+    allowNull: true
   },
   idFromDiary: {
     type: DataTypes.INTEGER,
