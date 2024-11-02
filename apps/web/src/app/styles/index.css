@@ -9,15 +9,16 @@
 }
 
 .lesson > div > div > span {
-    width: 100%;
+  width: 100%;
 }
 
 .recentMarks {
-    padding-inline: 10px;
+  padding-inline: 10px;
 }
 
-.marksWrapper > div::before, .marksWrapper > div::after {
-    content: none !important;
+.marksWrapper > div::before,
+.marksWrapper > div::after {
+  content: none !important;
 }
 
 main {

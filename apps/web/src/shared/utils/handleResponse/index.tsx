@@ -27,7 +27,7 @@ export const handleResponse = <T extends object>(
   /** Надо ли вызывать errorCallback при 401 ошибке **/
   shouldCallErrorIfUnauth = false
 ): T | undefined => {
-  console.log('%c[handleResponse]', 'color: green', response)
+  // console.log('%c[handleResponse]', 'color: green', response)
 
   if (!response) {
     showSnackbar?.({
