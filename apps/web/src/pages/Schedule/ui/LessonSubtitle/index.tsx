@@ -6,8 +6,7 @@ import {
 } from '@diary-spo/shared'
 import type { FC } from 'react'
 
-import { isDistant } from '../../../../shared'
-import { SubtitleWithBorder } from '../../../../shared/ui'
+import { SubtitleWithBorder, isDistant } from '../../../../shared'
 
 import TimeRemaining from '../TimeRemaining.tsx'
 

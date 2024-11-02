@@ -1,4 +1,4 @@
-import { KEY } from '../config'
+import { KEY } from '@config'
 
 export const decode = (str: string) => {
   const key_decrypt = KEY.decrypt(str)

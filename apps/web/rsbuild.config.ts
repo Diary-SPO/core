@@ -1,11 +1,16 @@
 import path from 'node:path'
 import { defineConfig, loadEnv } from '@rsbuild/core'
+import { pluginBasicSsl } from '@rsbuild/plugin-basic-ssl'
 import { pluginReact } from '@rsbuild/plugin-react'
 
 const { publicVars } = loadEnv({ prefixes: ['VITE_'] })
 
 export default defineConfig({
-  plugins: [pluginReact()],
+  plugins: [pluginReact(), pluginBasicSsl()],
+  output: {
+    polyfill: 'usage',
+    minify: true
+  },
   server: {
     port: 5173
   },

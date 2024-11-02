@@ -10,7 +10,7 @@
 
 .explanationTooltipText {
   padding: 8px;
-  color: var(--vkui--color_text_primary)
+  color: var(--vkui--color_text_primary);
 }
 
 .explanationTooltipPopover {
