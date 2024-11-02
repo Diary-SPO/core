@@ -218,7 +218,7 @@ export interface Task {
   isRequired: boolean
   mark: MarkKeys
   topic?: string
-  condition: string
+  condition: string | null
   type: TLesson
 }
 
