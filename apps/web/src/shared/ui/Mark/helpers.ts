@@ -1,5 +1,5 @@
 import type { Nullable } from '@diary-spo/shared'
-import { GRAY, GREEN, ORANGE, RED, VIOLET } from '../../config'
+import { BLUE, GRAY, GREEN, ORANGE, RED, VIOLET } from '../../config'
 import type { ReturnedMark } from '../../types.ts'
 
 export type Sizes = 'l' | 's'
@@ -39,7 +39,11 @@ export const getBackgroundColor = (score?: Nullable<ReturnedMark>): string => {
         return ORANGE
       case 'Н':
       case 'Д':
+      case 'НП':
         return RED
+      case 'Б':
+      case 'УП':
+        return BLUE
       default:
         return GRAY
     }

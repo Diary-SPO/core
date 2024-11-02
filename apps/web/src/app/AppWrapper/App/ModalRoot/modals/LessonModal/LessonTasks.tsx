@@ -25,9 +25,11 @@ const Task: FC<Props> = ({ task, index }) => (
       <InfoRow style={{ marginTop: 10 }} header='Тема'>
         <Text>{task?.topic}</Text>
       </InfoRow>
-      {task?.condition && (<InfoRow style={{marginTop: 10}} header='Описание'>
-        <Text>{task?.condition}</Text>
-      </InfoRow>)}
+      {task?.condition && (
+        <InfoRow style={{ marginTop: 10 }} header='Описание'>
+          <Text>{task?.condition}</Text>
+        </InfoRow>
+      )}
     </SimpleCell>
 
     <Spacing size={16}>
