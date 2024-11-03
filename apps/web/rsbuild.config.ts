@@ -12,8 +12,8 @@ export default defineConfig({
     minify: true
   },
   server: {
-    port: 5173
-    // base: './'
+    port: 5173,
+    base: import.meta.env.VITE_MODE === 'prod' ? './' : undefined
   },
   html: {
     template: './index.html'
