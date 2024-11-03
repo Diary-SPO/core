@@ -6,7 +6,6 @@ import { type FC, useEffect, useState } from 'react'
 
 import {
   ErrorPlaceholder,
-  Suspense,
   isNeedToUpdateCache,
   withSpinner
 } from '../../shared'
@@ -109,25 +108,23 @@ const Schedule: FC<Props> = ({ id }) => {
               shouldReverse
             />
           </Group>
-          <Suspense id='ScheduleGroup' mode='screen'>
-            <Group
-              header={
-                <Header
-                  aside={ScheduleGroupAside}
-                  mode='secondary'
-                  // @TODO: ??
-                  style={{ alignItems: 'center' }}
-                >
-                  {weekString}
-                </Header>
-              }
-            >
-              <ScheduleGroupWithSpinner
-                shouldShowSpinner={isLoading}
-                lessonsState={lessonsState}
-              />
-            </Group>
-          </Suspense>
+          <Group
+            header={
+              <Header
+                aside={ScheduleGroupAside}
+                mode='secondary'
+                // @TODO: ??
+                style={{ alignItems: 'center' }}
+              >
+                {weekString}
+              </Header>
+            }
+          >
+            <ScheduleGroupWithSpinner
+              shouldShowSpinner={isLoading}
+              lessonsState={lessonsState}
+            />
+          </Group>
         </Div>
         {snackbar}
         {rateSnackbar}

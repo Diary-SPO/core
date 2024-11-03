@@ -8,11 +8,12 @@ const { publicVars } = loadEnv({ prefixes: ['VITE_'] })
 export default defineConfig({
   plugins: [pluginReact(), pluginBasicSsl()],
   output: {
-    polyfill: 'usage',
+    // polyfill: 'usage',
     minify: true
   },
   server: {
-    port: 5173
+    port: 5173,
+    base: import.meta.env.VITE_MODE === 'prod' ? './' : undefined
   },
   html: {
     template: './index.html'

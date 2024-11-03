@@ -96,60 +96,59 @@ const Notifications: FC<Props> = ({ id }) => {
     )
   }
 
-  const notificationsList =
-    notifications?.length &&
-    notifications?.map(
-      ({
-        title,
-        id: _id,
-        date,
-        isForEmployees,
-        isForParents,
-        isForStudents,
-        text
-      }) => (
-        <Group
-          key={_id}
-          description={
-            <div style={{ display: 'flex', gap: 10 }}>
-              {isForEmployees && (
-                <SubtitleWithBorder>Для работников</SubtitleWithBorder>
-              )}
-
-              {isForParents && (
-                <SubtitleWithBorder color='yellow-outline'>
-                  Для родителей
-                </SubtitleWithBorder>
-              )}
-              {isForStudents && (
-                <SubtitleWithBorder color='green-outline'>
-                  Для студентов
-                </SubtitleWithBorder>
-              )}
-            </div>
-          }
-          header={
-            <Header mode='tertiary'>
-              {new Date(date).toLocaleDateString()}
-            </Header>
-          }
-        >
-          <Card mode='shadow'>
-            <Div>
-              <Title level='3' Component='h3'>
-                {title}
-              </Title>
-              <Text>{text}</Text>
-            </Div>
-          </Card>
-        </Group>
-      )
-    )
-
   return (
     <Panel nav={id}>
       <PanelHeaderWithBack title='Объявления' />
-      <Div>{notificationsList}</Div>
+      <Div>
+        {Boolean(notifications?.length) &&
+          notifications?.map(
+            ({
+              title,
+              id: _id,
+              date,
+              isForEmployees,
+              isForParents,
+              isForStudents,
+              text
+            }) => (
+              <Group
+                key={_id}
+                description={
+                  <div style={{ display: 'flex', gap: 10 }}>
+                    {isForEmployees && (
+                      <SubtitleWithBorder>Для работников</SubtitleWithBorder>
+                    )}
+
+                    {isForParents && (
+                      <SubtitleWithBorder color='yellow-outline'>
+                        Для родителей
+                      </SubtitleWithBorder>
+                    )}
+                    {isForStudents && (
+                      <SubtitleWithBorder color='green-outline'>
+                        Для студентов
+                      </SubtitleWithBorder>
+                    )}
+                  </div>
+                }
+                header={
+                  <Header mode='tertiary'>
+                    {new Date(date).toLocaleDateString()}
+                  </Header>
+                }
+              >
+                <Card mode='shadow'>
+                  <Div>
+                    <Title level='3' Component='h3'>
+                      {title}
+                    </Title>
+                    <Text>{text}</Text>
+                  </Div>
+                </Card>
+              </Group>
+            )
+          )}
+      </Div>
 
       {Boolean(!notifications?.length && !isError) && (
         <Placeholder header='Объявлений нет' />
