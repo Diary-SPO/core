@@ -205,9 +205,6 @@ const LoginForm: FC<Props> = ({ id }) => {
               {isLoading ? 'Пытаюсь войти...' : 'Войти'}
             </Button>
           </FormItem>
-          <Div>
-            <Link href={ADMIN_PAGE}>Портал администратора</Link>
-          </Div>
         </form>
         {snackbar}
       </Group>

@@ -8,10 +8,11 @@ import {
 } from '@vkontakte/vkui'
 import { lazy } from 'react'
 
+import { Suspense } from '../../shared'
 import { router } from '../routes/router'
 
-const NotFoundCorrect = lazy(() => import('./NotFound'))
-const App = lazy(() => import('./App'))
+import App from './App'
+import NotFoundCorrect from './NotFound'
 
 vkBridge.send('VKWebAppInit')
 
@@ -27,7 +28,9 @@ const AppWrapper = () => {
           platform={platform}
           isWebView={vkBridge.isWebView()}
         >
-          <App />
+          <Suspense id='App' mode='screen'>
+            <App />
+          </Suspense>
         </ConfigProvider>
       </RouterProvider>
     </AdaptivityProvider>

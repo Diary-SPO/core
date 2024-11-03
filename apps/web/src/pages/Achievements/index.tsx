@@ -7,7 +7,7 @@ import {
   TabsItem,
   Tabs as VKUITabs
 } from '@vkontakte/vkui'
-import { type FC, Suspense, useEffect, useState } from 'react'
+import { type FC, useEffect, useState } from 'react'
 import { handleResponse, isApiError, isNeedToUpdateCache } from '../../shared'
 
 import type { Props } from '../types.ts'
@@ -19,7 +19,11 @@ import type { Tabs } from './types.ts'
 import { getPerformance } from '../../shared/api'
 import { VKUI_ACCENT_BG, VKUI_RED } from '../../shared/config'
 import { useRateLimitExceeded, useSnackbar } from '../../shared/hooks'
-import { ErrorPlaceholder, PanelHeaderWithBack } from '../../shared/ui'
+import {
+  ErrorPlaceholder,
+  PanelHeaderWithBack,
+  Suspense
+} from '../../shared/ui'
 import LoadingData from './LoadingData.tsx'
 import { useActiveTab } from './hooks/useActiveTab.tsx'
 
@@ -153,9 +157,7 @@ const Achievements: FC<Props> = ({ id }) => {
         {isLoading && <LoadingData />}
       </PullToRefresh>
 
-      {!isLoading && !isError && (
-        <Suspense fallback='Загрузка...'>{activeTab}</Suspense>
-      )}
+      {!isLoading && !isError && <Suspense id='tab'>{activeTab}</Suspense>}
 
       {isError && <ErrorPlaceholder />}
 

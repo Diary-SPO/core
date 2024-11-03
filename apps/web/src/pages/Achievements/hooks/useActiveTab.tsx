@@ -1,13 +1,11 @@
 import type { PerformanceCurrent } from '@diary-spo/shared'
-import { lazy } from 'react'
 
-import { Suspense } from '../../../shared'
 import type { Tabs } from '../types.ts'
 
-const Summary = lazy(() => import('../Tabs/Summary'))
-const FinalMarks = lazy(() => import('../Tabs/FinalMarks'))
-const MarksByGroup = lazy(() => import('../Tabs/MarksByGroup'))
-const SubjectsList = lazy(() => import('../Tabs/SubjectsList'))
+import FinalMarks from '../Tabs/FinalMarks'
+import MarksByGroup from '../Tabs/MarksByGroup'
+import SubjectsList from '../Tabs/SubjectsList'
+import Summary from '../Tabs/Summary'
 
 export const useActiveTab = (
   selected: Tabs,
@@ -19,53 +17,35 @@ export const useActiveTab = (
   isLoading: boolean,
   setIsLoading: (value: boolean) => void
 ) => {
-  let activeTabComponent = null
-
   switch (selected) {
     case 'summary':
-      activeTabComponent = (
-        <Suspense id='UserInfo'>
-          <Summary
-            totalNumberOfMarks={totalNumberOfMarks}
-            averageMark={averageMark}
-            markCounts={markCounts}
-          />
-        </Suspense>
+      return (
+        <Summary
+          totalNumberOfMarks={totalNumberOfMarks}
+          averageMark={averageMark}
+          markCounts={markCounts}
+        />
       )
-      break
     case 'current':
-      activeTabComponent = (
-        <Suspense id='MarksByGroup'>
-          {/*TODO: fix*/}
-          <MarksByGroup marksForSubject={marksForSubject} />
-        </Suspense>
-      )
-      break
+      // TODO: fix
+      return <MarksByGroup marksForSubject={marksForSubject} />
     case 'finalMarks':
-      activeTabComponent = (
-        <Suspense id='FinalMarks'>
-          <FinalMarks
-            setIsError={setIsError}
-            isLoading={isLoading}
-            setIsLoading={setIsLoading}
-          />
-        </Suspense>
+      return (
+        <FinalMarks
+          setIsError={setIsError}
+          isLoading={isLoading}
+          setIsLoading={setIsLoading}
+        />
       )
-      break
     case 'attestation':
-      activeTabComponent = (
-        <Suspense id='AttestationTab'>
-          <SubjectsList
-            setIsError={setIsError}
-            isLoading={isLoading}
-            setIsLoading={setIsLoading}
-          />
-        </Suspense>
+      return (
+        <SubjectsList
+          setIsError={setIsError}
+          isLoading={isLoading}
+          setIsLoading={setIsLoading}
+        />
       )
-      break
     default:
-      break
+      return null
   }
-
-  return <main className='activeTabWrapper'>{activeTabComponent}</main>
 }

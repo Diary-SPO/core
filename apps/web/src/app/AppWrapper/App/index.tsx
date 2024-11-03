@@ -22,10 +22,9 @@ import {
   useAdaptivityConditionalRender,
   usePlatform
 } from '@vkontakte/vkui'
-import { type FC, lazy } from 'react'
+import type { FC } from 'react'
 
 import type { Pages } from '../../../shared/types.ts'
-import { Suspense } from '../../../shared/ui'
 import {
   MAIN_SETTINGS,
   VIEW_MARKS,
@@ -35,7 +34,7 @@ import {
 } from '../../routes'
 import ModalRoot from './ModalRoot'
 
-const Epic = lazy(() => import('./Epic'))
+import Epic from './Epic'
 
 const App: FC = () => {
   const routeNavigator = useRouteNavigator()
@@ -113,11 +112,9 @@ const App: FC = () => {
             </Panel>
           </SplitCol>
         )}
-        <Suspense id='Epic'>
-          <SplitCol width='100%' maxWidth='700px' stretchedOnMobile autoSpaced>
-            <Epic onStoryChange={onStoryChange} />
-          </SplitCol>
-        </Suspense>
+        <SplitCol width='100%' maxWidth='700px' stretchedOnMobile autoSpaced>
+          <Epic onStoryChange={onStoryChange} />
+        </SplitCol>
       </SplitLayout>
     </AppRoot>
   )

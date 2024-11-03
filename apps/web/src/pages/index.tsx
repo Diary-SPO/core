@@ -1,9 +1,7 @@
-import { lazy } from 'react'
-
-const Schedule = lazy(() => import('./Schedule/Schedule.tsx'))
-const Achievements = lazy(() => import('./Achievements'))
-const Settings = lazy(() => import('./Settings'))
-const LoginForm = lazy(() => import('./LoginForm'))
-const Notifications = lazy(() => import('./Notifications.tsx'))
+import Achievements from './Achievements'
+import LoginForm from './LoginForm'
+import Notifications from './Notifications.tsx'
+import Schedule from './Schedule/Schedule.tsx'
+import Settings from './Settings'
 
 export { Achievements, Schedule, Settings, LoginForm, Notifications }

@@ -21,7 +21,6 @@ import {
 } from '../../../../pages'
 
 import type { Pages } from '../../../../shared/types.ts'
-import { Suspense } from '../../../../shared/ui'
 
 import type { FC } from 'react'
 import Tabbar from './Tabbar'
@@ -50,21 +49,11 @@ const Epic: FC<IEpic> = ({ onStoryChange }) => {
         activePanel={activePanel}
         onSwipeBack={() => routeNavigator.back()}
       >
-        <Suspense id={MAIN_SETTINGS} mode='screen'>
-          <LoginForm id={MAIN_SETTINGS} />
-        </Suspense>
-        <Suspense id={VIEW_SCHEDULE} mode='screen'>
-          <Schedule id={VIEW_SCHEDULE} />
-        </Suspense>
-        <Suspense id={VIEW_MARKS} mode='screen'>
-          <Achievements id={VIEW_MARKS} />
-        </Suspense>
-        <Suspense id={VIEW_NOTIFICATIONS} mode='screen'>
-          <Notifications id={VIEW_NOTIFICATIONS} />
-        </Suspense>
-        <Suspense id={VIEW_SETTINGS} mode='screen'>
-          <Settings id={VIEW_SETTINGS} />
-        </Suspense>
+        <LoginForm id={MAIN_SETTINGS} />
+        <Schedule id={VIEW_SCHEDULE} />
+        <Achievements id={VIEW_MARKS} />
+        <Notifications id={VIEW_NOTIFICATIONS} />
+        <Settings id={VIEW_SETTINGS} />
       </View>
     </VKUIEpic>
   )

@@ -1,24 +1,22 @@
 import { Panel } from '@vkontakte/vkui'
-import { type FC, lazy } from 'react'
+import type { FC } from 'react'
 
-import { PanelHeaderWithBack, Suspense } from '../../shared/ui'
+import { PanelHeaderWithBack } from '../../shared'
 import type { Props } from '../types.ts'
 
-const Contacts = lazy(() => import('./Contacts.tsx'))
-const Actions = lazy(() => import('./Actions'))
-const FAQ = lazy(() => import('./FAQ'))
-const Footer = lazy(() => import('./Footer'))
+import Actions from './Actions'
+import Contacts from './Contacts.tsx'
+import FAQ from './FAQ'
+import Footer from './Footer'
 
 const Settings: FC<Props> = ({ id }) => {
   return (
     <Panel nav={id}>
       <PanelHeaderWithBack title='Настройки' />
-      <Suspense id='Settings_FACF'>
-        <FAQ />
-        <Actions />
-        <Contacts />
-        <Footer />
-      </Suspense>
+      <FAQ />
+      <Actions />
+      <Contacts />
+      <Footer />
     </Panel>
   )
 }
