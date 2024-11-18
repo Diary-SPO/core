@@ -21,7 +21,7 @@
     "@vkontakte/icons": "2.137.0",
     "@vkontakte/vk-bridge": "^2.15.2",
     "@vkontakte/vk-bridge-react": "^1.0.1",
-    "@vkontakte/vk-mini-apps-router": "1.4.6",
+    "@vkontakte/vk-mini-apps-router": "1.7.0",
     "@vkontakte/vkui": "6.6.0",
     "date-fns": "^3.6.0",
     "react": "^18.3.1",
