@@ -1,10 +1,12 @@
 import { API_ERRORS, ApiError } from '@api'
-import type { DiaryUserId, Nullable } from '@diary-spo/shared'
+import type { Nullable } from '@diary-spo/shared'
 import { caching } from 'cache-manager'
 import { AuthModel, type AuthModelType } from '../models/Auth'
 import { DiaryUserModel, type DiaryUserModelType } from '../models/DiaryUser'
 import { GroupModel, type GroupModelType } from '../models/Group'
 import { SPOModel, type SPOModelType } from '../models/SPO'
+import { formatDate } from '@utils'
+import { authSaveUseDate } from 'src/models/Auth/actions/save'
 
 const memoryCache = await caching('memory', {
   max: 1000,
@@ -74,6 +76,9 @@ export const getCookieFromToken = async (
   if (!diaryUserAuth) {
     throw new ApiError(API_ERRORS.INVALID_TOKEN, 401)
   }
+
+  if(diaryUserAuth.lastUsedDate !== formatDate(new Date()))
+    authSaveUseDate(token, new Date())
 
   const user = diaryUserAuth.diaryUser
   const spoId = user.group.spo.id
