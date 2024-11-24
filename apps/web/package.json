@@ -14,7 +14,10 @@
     "deploy:vk": "vk-miniapps-deploy",
     "lint": "biome lint . --apply",
     "format": "biome format . --write",
-    "checkAll": "biome check . --write --unsafe"
+    "checkAll": "biome check . --write --unsafe",
+    "buildIcons": "bun tauri icon ./src-tauri/icons/app-icon.png",
+    "generateWindowsBuildKey": "bunx tauri signer generate -w ./src-tauri/keys/forUpdate.key",
+    "generateAndroidKey": "keytool -genkey -v -keystore ./src-tauri/keys/upload-keystore.jks -keyalg RSA -keysize 2048 -validity 10000 -alias upload"
   },
   "dependencies": {
     "@elysiajs/eden": "1.1.3",
