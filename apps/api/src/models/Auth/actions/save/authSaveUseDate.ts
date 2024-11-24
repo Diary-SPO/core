@@ -5,11 +5,13 @@ export const authSaveUseDate = async (
   token: string,
   date: Date
 ): Promise<[affectedCount: number]> =>
-  AuthModel.update({
-    lastUsedDate: formatDate(date)
-  },
+  AuthModel.update(
+    {
+      lastUsedDate: formatDate(date)
+    },
     {
       where: {
         token
       }
-    })
+    }
+  )

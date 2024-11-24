@@ -42,4 +42,3 @@ coverage
 /target
 /Cargo.lock
 /apps/web/build.zip
-bun.lockb
