@@ -1,16 +1,16 @@
-import {Task} from '@diary-spo/shared'
+import type { Task } from '@diary-spo/shared'
 import { type ICacheData, retriesForError } from '@helpers'
 
 import { objPropertyCopy } from 'src/helpers/objPropertyCopy'
 import { taskTypeSaveOrGet } from 'src/models/TaskType'
 import { addNewMarkEvent } from '../../../../worker/notificator/bot'
-import {markDelete, markGetByData, markSaveOrGet} from '../../../Mark'
+import { markDelete, markGetByData, markSaveOrGet } from '../../../Mark'
+import { markValueGetById } from '../../../MarkValue/actions/get/markValueGetById'
 import { requiredSaveOrGet } from '../../../Required'
 import type { IScheduleModel } from '../../../Schedule'
 import type { ITermDetectP } from '../../../Term'
 import { TaskModel } from '../../model'
 import { deleteTasks } from '../delete'
-import {markValueGetById} from "../../../MarkValue/actions/get/markValueGetById";
 
 export const tasksSaveOrGet = async (
   tasks: Task[],
@@ -93,14 +93,16 @@ export const tasksSaveOrGet = async (
             systemInitiator
           )
         } else {
-          let deletedMarkRaw = await markGetByData(taskId, authData)
+          const deletedMarkRaw = await markGetByData(taskId, authData)
 
           markDelete(taskId, authData).then(async (count) => {
             // Игнорируем не системные инициализаторы (т.е. если пользователь уже сам посмотрел)
             if (count > 0 && systemInitiator && deletedMarkRaw) {
-              let markValue = await markValueGetById(deletedMarkRaw.markValueId)
+              const markValue = await markValueGetById(
+                deletedMarkRaw.markValueId
+              )
               if (markValue)
-                  // Регистрируем событие удаления оценки
+                // Регистрируем событие удаления оценки
                 addNewMarkEvent({
                   mark: markValue.value,
                   task,

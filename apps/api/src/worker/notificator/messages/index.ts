@@ -1,15 +1,16 @@
-import {EventDetailedInfo} from "../types/EventDetailedInfo";
-import {buildAddMarkMessage} from "./templates/addMark";
-import {buildDeleteMarkMessage} from "./templates/deleteMark";
-import {buildUpdateMarkMessage} from "./templates/updateMark";
+import type { EventDetailedInfo } from '../types/EventDetailedInfo'
+import { buildAddMarkMessage } from './templates/addMark'
+import { buildDeleteMarkMessage } from './templates/deleteMark'
+import { buildUpdateMarkMessage } from './templates/updateMark'
 
 const messages = {
-    'ADD': buildAddMarkMessage,
-    'DELETE': buildDeleteMarkMessage,
-    'UPDATE': buildUpdateMarkMessage
+  ADD: buildAddMarkMessage,
+  DELETE: buildDeleteMarkMessage,
+  UPDATE: buildUpdateMarkMessage
 }
 
-export const buildMessageByEvent = (info: EventDetailedInfo) => messages[info.status](info)
+export const buildMessageByEvent = (info: EventDetailedInfo) =>
+  messages[info.status](info)
 
 export * from './helpers'
 

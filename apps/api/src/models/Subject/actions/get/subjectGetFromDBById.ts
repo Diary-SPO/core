@@ -1,7 +1,8 @@
-import {SubjectModel} from "../../model";
+import { SubjectModel } from '../../model'
 
-export const subjectGetFromDBById = (subjectId: bigint) => SubjectModel.findOne({
+export const subjectGetFromDBById = (subjectId: bigint) =>
+  SubjectModel.findOne({
     where: {
-        id: subjectId
+      id: subjectId
     }
-})
+  })

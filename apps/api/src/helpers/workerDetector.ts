@@ -1,5 +1,5 @@
-let isWorker: boolean = false;
+let isWorker = false
 
-export const setIsWorker = (value: boolean) => isWorker = value;
+export const setIsWorker = (value: boolean) => (isWorker = value)
 
-export const getIsWorker = () => isWorker;
+export const getIsWorker = () => isWorker

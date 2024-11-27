@@ -1,7 +1,8 @@
-import {MarkValueModel} from "../../model";
+import { MarkValueModel } from '../../model'
 
-export const markValueGetById = async (markValueId: number) => MarkValueModel.findOne({
+export const markValueGetById = async (markValueId: number) =>
+  MarkValueModel.findOne({
     where: {
-        id: markValueId
+      id: markValueId
     }
-})
+  })

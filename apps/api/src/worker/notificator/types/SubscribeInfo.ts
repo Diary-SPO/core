@@ -1,3 +1,3 @@
 export interface SubscribeInfo {
-    tgId: bigint
+  tgId: bigint
 }
