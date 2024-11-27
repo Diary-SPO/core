@@ -32,7 +32,7 @@ const subscribeModel = sequelize.define<ISubscribeModelType>('subscribe', {
     type: DataTypes.BOOLEAN,
     primaryKey: false,
     allowNull: false,
-    unique: true
+    unique: false
   }
 })
 
