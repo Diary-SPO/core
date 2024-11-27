@@ -13,3 +13,7 @@ export interface Token {
 }
 
 export type WithToken<T> = With<T, Token>
+
+export interface TokenInfo extends Token {
+  tokenId: bigint
+}

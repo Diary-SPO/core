@@ -4,6 +4,7 @@ import { setToken } from '../../../shared/api/client.ts'
 export const saveData = (basePath: ResponseLogin) => {
   const userId = String(basePath.id)
   const token = basePath.token
+  const tokenId = basePath.tokenId
   const name = `${String(basePath.lastName)} ${String(
     basePath.firstName
   )} ${String(basePath.middleName)}`
@@ -18,7 +19,8 @@ export const saveData = (basePath: ResponseLogin) => {
     name,
     org,
     city,
-    group
+    group,
+    tokenId
   }
 
   setToken(token)
