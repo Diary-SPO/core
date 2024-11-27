@@ -1,25 +1,27 @@
 // @ts-ignore
 import { b64 } from '@diary-spo/crypto'
-import type TelegramBot from 'node-telegram-bot-api'
 import { AuthModel } from '../../../../models/Auth'
 import { DiaryUserModel } from '../../../../models/DiaryUser'
 import { SubscribeModel } from '../../../../models/Subscribe'
 import { INTERVAL_RUN } from '../../config'
+import {Telegram} from "puregram";
 
-export const registerLogic = (bot: TelegramBot | null) => {
+export const registerLogic = (bot: Telegram | null) => {
   if (!bot) return
-  bot.on('message', async (msg) => {
+  bot.updates.on('message', async (msg) => {
     const chatId = msg.chat.id
 
-    if (!msg.text) bot.sendMessage(chatId, 'Такое сообщение не поддерживается')
+    if (!msg.text) {
+      msg.reply('Такое сообщение не поддерживается')
+      return
+    }
 
     const command = (msg.text ?? '').split(' ')
 
     switch (command[0]) {
       case '/subscribe': {
         if (command.length < 2) {
-          bot.sendMessage(
-            chatId,
+          msg.reply(
             'Передайте вторым параметром актуальный токен, чтобы подписаться на уведомления'
           )
           return
@@ -30,8 +32,7 @@ export const registerLogic = (bot: TelegramBot | null) => {
         try {
           tokenSecure = atob(command[1])
         } catch {
-          bot.sendMessage(
-            chatId,
+          msg.reply(
             'Вы что-то не то шлёте и всё ломаете. В бан захотели?'
           )
           return
@@ -39,8 +40,7 @@ export const registerLogic = (bot: TelegramBot | null) => {
         const secureTokenParams = tokenSecure.split(':')
 
         if (secureTokenParams.length !== 2 && !Number(secureTokenParams[0])) {
-          bot.sendMessage(
-            chatId,
+          msg.reply(
             'У вашего токена неверная структура. В бан захотел(-а)?'
           )
           return
@@ -53,7 +53,7 @@ export const registerLogic = (bot: TelegramBot | null) => {
         })
 
         if (!auth) {
-          bot.sendMessage(chatId, 'Переданная авторизация не найдена ...')
+          msg.reply('Переданная авторизация не найдена ...')
           return
         }
 
@@ -65,8 +65,7 @@ export const registerLogic = (bot: TelegramBot | null) => {
         const secureToken = await b64(JSON.stringify(tokenObject))
 
         if (secureToken !== secureTokenParams[1]) {
-          bot.sendMessage(
-            chatId,
+          msg.reply(
             `Ваш токен какой-то не такой. Если вы ничего не трогали, то проблема у нас.\nПожалуйста, покажите это сообщение разработчикам.\nDebug info: ${btoa(
               JSON.stringify({
                 tokenSecure,
@@ -84,8 +83,7 @@ export const registerLogic = (bot: TelegramBot | null) => {
         })
 
         if (subscribes.length >= 1) {
-          bot.sendMessage(
-            chatId,
+          msg.reply(
             'Вы уже подписаны на уведомления. Сначала отпишитесь (/unsubscribe)'
           )
           return
@@ -103,8 +101,7 @@ export const registerLogic = (bot: TelegramBot | null) => {
           }
         })
 
-        bot.sendMessage(
-          chatId,
+        msg.reply(
           `<b><i>${user?.firstName} ${user?.lastName}!</i></b> Вы успешно подписались на уведомления.\nПрежде чем Вы начнёте получать уведомления, нам нужно извлечь все ваши оценки (это просиходит примерно каждые <b>${INTERVAL_RUN} секунд</b>).\nПо окончанию подготовительных процедур, мы уведомим Вас о готовности принимать уведомления.\nСпасибо, что выбираете нас!`,
           { parse_mode: 'HTML' }
         )
@@ -116,14 +113,12 @@ export const registerLogic = (bot: TelegramBot | null) => {
             tgId: chatId
           }
         })
-        bot.sendMessage(
-          chatId,
+        msg.reply(
           'Вы успешно отписались от всех аккаунтов. Можете привязать новый (/subscribe)'
         )
         break
       default:
-        bot.sendMessage(
-          chatId,
+        msg.reply(
           'Этой команды нету, но есть такие:' +
             '\n/subscribe <code>[token]</code> — подписаться на уведомления по токену' +
             '\n/unsubscribe — отписаться от уведомлений',

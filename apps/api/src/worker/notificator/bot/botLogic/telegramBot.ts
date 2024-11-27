@@ -1,12 +1,15 @@
 import { BOT_TOKEN } from '@config'
-import TelegramBot from 'node-telegram-bot-api'
 import { registerLogic } from './registerLogic'
+import {Telegram} from "puregram";
 
 const token = BOT_TOKEN
 
 export const bot =
   Bun.main.includes('main.ts') || token === 'IGNORE'
     ? null
-    : new TelegramBot(token, { polling: true })
+    : Telegram.fromToken(token)
 
-if (bot) registerLogic(bot)
+if (bot) {
+    registerLogic(bot)
+    bot.updates.startPolling()
+}

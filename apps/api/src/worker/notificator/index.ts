@@ -38,10 +38,10 @@ export const notificatorChecker = async (): Promise<void> => {
         if (!bot) return
         subscribe.preActionsIsSuccess = true
         subscribe.save()
-        bot.sendMessage(
-          String(subscribe.tgId),
-          'Мы загрузили ваши оценки. Теперь вы будете получать уведомления!'
-        )
+        bot.api.sendMessage({
+          chat_id: String(subscribe.tgId),
+          text: 'Мы загрузили ваши оценки. Теперь вы будете получать уведомления!'
+        })
       })
       continue
     }
