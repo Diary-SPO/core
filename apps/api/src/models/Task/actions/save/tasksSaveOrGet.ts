@@ -3,6 +3,7 @@ import { type ICacheData, retriesForError } from '@helpers'
 
 import { objPropertyCopy } from 'src/helpers/objPropertyCopy'
 import { taskTypeSaveOrGet } from 'src/models/TaskType'
+import { addNewMarkEvent } from '../../../../helpers/notificationController'
 import { markDelete, markSaveOrGet } from '../../../Mark'
 import { requiredSaveOrGet } from '../../../Required'
 import type { IScheduleModel } from '../../../Schedule'
@@ -14,7 +15,8 @@ export const tasksSaveOrGet = async (
   tasks: Task[],
   schedule: IScheduleModel,
   authData: ICacheData,
-  termPromise?: ITermDetectP
+  termPromise?: ITermDetectP,
+  systemInitiator = false
 ) => {
   const promises = []
   const scheduleId = schedule.id
@@ -80,9 +82,29 @@ export const tasksSaveOrGet = async (
 
         // На всякий який (ну и пустышки не берём)
         if (task.mark) {
-          markSaveOrGet(task.mark, schedule, taskId, termId, authData)
+          markSaveOrGet(
+            task.mark,
+            schedule,
+            taskId,
+            termId,
+            authData,
+            task,
+            systemInitiator
+          )
         } else {
-          markDelete(taskId, authData)
+          markDelete(taskId, authData).then((count) => {
+            // Игнорируем не системные инициализаторы (т.е. если пользователь уже сам посмотрел)
+            if (count > 0 && systemInitiator)
+              // Регистрируем событие удаления оценки
+              addNewMarkEvent({
+                mark: task.mark,
+                task,
+                diaryUserId: authData.localUserId,
+                status: 'DELETE',
+                eventDatetime: new Date(),
+                previousMarkId: null
+              })
+          })
         }
 
         return taskReturn

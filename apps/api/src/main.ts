@@ -4,7 +4,7 @@ import { Elysia } from 'elysia'
 import { compression } from 'elysia-compression'
 import { helmet } from 'elysia-helmet'
 
-import { TIMEZONE } from '@config'
+import { BOT_TOKEN, TIMEZONE } from '@config'
 import { sequelize } from '@db'
 
 import { getTimezone } from './config/getTimeZone'

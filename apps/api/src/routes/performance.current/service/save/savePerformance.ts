@@ -10,7 +10,8 @@ import { getPerformanceFromDB } from '../get'
  */
 export const savePerformance = async (
   performance: PerformanceCurrent,
-  authData: ICacheData
+  authData: ICacheData,
+  systemInitiator = false
 ) => {
   // Вытягиваем данные из БД, чтобы потом сравнивать
   const dataFromDatabase = await getPerformanceFromDB(authData)
@@ -63,7 +64,8 @@ export const savePerformance = async (
       String(group.startDate),
       String(group.endDate),
       authData,
-      true
+      true,
+      systemInitiator
     )
   }
 }
