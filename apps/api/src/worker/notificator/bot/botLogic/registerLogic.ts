@@ -2,6 +2,7 @@ import { getCookieFromToken } from '@helpers'
 import type TelegramBot from 'node-telegram-bot-api'
 import { DiaryUserModel } from '../../../../models/DiaryUser'
 import { SubscribeModel } from '../../../../models/Subscribe'
+import {INTERVAL_RUN} from "../../config";
 
 export const registerLogic = (bot: TelegramBot | null) => {
   if (!bot) return
@@ -46,7 +47,8 @@ export const registerLogic = (bot: TelegramBot | null) => {
 
         await SubscribeModel.create({
           diaryUserId: auth.localUserId,
-          tgId: BigInt(chatId)
+          tgId: BigInt(chatId),
+          preActionsIsSuccess: false
         })
 
         const user = await DiaryUserModel.findOne({
@@ -57,7 +59,11 @@ export const registerLogic = (bot: TelegramBot | null) => {
 
         bot.sendMessage(
           chatId,
-          `Вы подписались на аккаунт c ФИО => ${user?.firstName} ${user?.lastName} ${user?.middleName}`
+          `<b><i>${user?.firstName} ${user?.lastName}!</i></b> Вы успешно подписались на уведомления.`
+          + `\nПрежде чем Вы начнёте получать уведомления, нам нужно извлечь все ваши оценки (это просиходит примерно каждые <b>${INTERVAL_RUN} секунд</b>).`
+          + `\nПо окончанию подготовительных процедур, мы уведомим Вас о готовности принимать уведомления.`
+          + `\nСпасибо, что выбираете нас!`,
+            {parse_mode: 'HTML'}
         )
         break
       }
@@ -73,7 +79,12 @@ export const registerLogic = (bot: TelegramBot | null) => {
         )
         break
       default:
-        bot.sendMessage(chatId, 'Такой команды нету')
+        bot.sendMessage(chatId,
+            `Этой команды нету, но есть такие:`
+            + `\n/subscribe <code>[token]</code> — подписаться на уведомления по токену`
+            + `\n/unsubscribe — отписаться от уведомлений`,
+            {parse_mode:"HTML"}
+        )
         break
     }
   })

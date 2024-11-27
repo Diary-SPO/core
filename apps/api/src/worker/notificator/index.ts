@@ -5,6 +5,7 @@ import { getCurrPerformance } from '../../routes/performance.current/service'
 import { checkInterval } from '../utils/checkInterval'
 import { logger } from '../utils/logger'
 import { INTERVAL_RUN } from './config'
+import {bot} from "./bot";
 
 let lastRunning: Date | null = null
 const log = logger('notificator')
@@ -32,6 +33,18 @@ export const notificatorChecker = async (): Promise<void> => {
 
     const cacheData = await getCookieFromToken(auth.token)
 
+    if (!subscribe.preActionsIsSuccess) {
+      getCurrPerformance(cacheData, false).then(() => {
+        if (!bot)
+          return
+        subscribe.preActionsIsSuccess = true
+        subscribe.save()
+        bot.sendMessage(String(subscribe.tgId), `Мы загрузили ваши оценки. Теперь вы будете получать уведомления!`)
+      })
+      continue
+    }
+
     await getCurrPerformance(cacheData, true)
   }
+  log(`Проход завершён. Следующий через ${INTERVAL_RUN} секунд`)
 }

@@ -8,6 +8,7 @@ import type { IModelPrototypeNoId } from '../types'
 export type SubscribeModelType = {
   diaryUserId: bigint
   tgId: bigint
+  preActionsIsSuccess: boolean
 }
 
 export type ISubscribeModelType = IModelPrototypeNoId<SubscribeModelType>
@@ -24,6 +25,12 @@ const subscribeModel = sequelize.define<ISubscribeModelType>('subscribe', {
   tgId: {
     type: DataTypes.BIGINT,
     primaryKey: true,
+    allowNull: false,
+    unique: true
+  },
+  preActionsIsSuccess: {
+    type: DataTypes.BOOLEAN,
+    primaryKey: false,
     allowNull: false,
     unique: true
   }
