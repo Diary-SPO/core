@@ -1,13 +1,10 @@
 import { getCookieFromToken } from '@helpers'
-import { getMarkEvent } from '../../helpers/notificationController'
 import { AuthModel } from '../../models/Auth'
-import { DiaryUserModel } from '../../models/DiaryUser'
 import { SubscribeModel } from '../../models/Subscribe'
 import { getCurrPerformance } from '../../routes/performance.current/service'
 import { checkInterval } from '../utils/checkInterval'
 import { logger } from '../utils/logger'
 import { INTERVAL_RUN } from './config'
-import { sendEvent } from './messages'
 
 let lastRunning: Date | null = null
 const log = logger('notificator')
@@ -36,14 +33,5 @@ export const notificatorChecker = async (): Promise<void> => {
     const cacheData = await getCookieFromToken(auth.token)
 
     await getCurrPerformance(cacheData, true)
-  }
-
-  let markEvent = getMarkEvent()
-  console.log(markEvent)
-
-  while (markEvent) {
-    await sendEvent(markEvent)
-    // Запрашиваем следующие событие
-    markEvent = getMarkEvent()
   }
 }

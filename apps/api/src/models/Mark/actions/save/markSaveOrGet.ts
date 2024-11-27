@@ -1,7 +1,7 @@
 import type { MarkKeys, Task } from '@diary-spo/shared'
 import { type ICacheData, retriesForError } from '@helpers'
 import { formatDate } from '@utils'
-import { addNewMarkEvent } from '../../../../helpers/notificationController'
+import { addNewMarkEvent } from '../../../../worker/notificator/bot'
 import { markValueSaveOrGet } from '../../../MarkValue'
 import type { IScheduleModel } from '../../../Schedule'
 import { markSaveOrGetUnSafe } from './markSaveOrGetUnSafe'
