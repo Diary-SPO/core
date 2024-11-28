@@ -17,5 +17,8 @@ export const sendMarkEvent = async (event: MarkEvent) => {
 
   if (!bot || !message) return
 
-  bot.sendMessage(String(subscribe.tgId), message)
+  bot.api.sendMessage({
+   chat_id: String(subscribe.tgId),
+   text: message
+  })
 }
