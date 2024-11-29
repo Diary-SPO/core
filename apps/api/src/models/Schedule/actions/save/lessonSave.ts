@@ -27,13 +27,15 @@ import type { ScheduleWhere } from '../types'
  * @param lesson - Занятие для сохранения
  * @param authData - Данные, предоставленные клиентом для авторизации
  * @param termPromise
+ * @param systemInitiator
  * @returns Promise<IScheduleModel | null>
  */
 export const lessonSave = async (
   date: Date,
   lesson: Lesson,
   authData: ICacheData,
-  termPromise?: ITermDetectP
+  termPromise?: ITermDetectP,
+  systemInitiator = false
 ): Promise<IScheduleModel | null> => {
   /**
    * Пропускаем пустые занятия типа:
@@ -124,7 +126,7 @@ export const lessonSave = async (
 
   /**
    * Если расписание есть в базе, то
-   * пробуем поменять поля и если они поменялись, то
+   * пробуем сравнить поля и если они поменялись, то
    * он (метод save) сделает запрос для сохранения
    */
   if (!isCreated) {
@@ -165,7 +167,7 @@ export const lessonSave = async (
     const schedule = await promiseToReturn
     retriesForError(
       tasksSaveOrGet,
-      [gradebook.tasks, schedule, authData, termPromise],
+      [gradebook.tasks, schedule, authData, termPromise, systemInitiator],
       2
     )
   }

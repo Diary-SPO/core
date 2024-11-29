@@ -8,7 +8,8 @@ import { lessonSave } from './lessonSave'
 export const daySave = async (
   day: Day,
   authData: ICacheData,
-  termPromise?: ITermDetectP
+  termPromise?: ITermDetectP,
+  systemInitiator = false
 ) => {
   if (!day.lessons) {
     return
@@ -19,7 +20,7 @@ export const daySave = async (
   for (const lesson of day.lessons) {
     const promise = retriesForError(
       lessonSave,
-      [new Date(day.date), lesson, authData, termPromise],
+      [new Date(day.date), lesson, authData, termPromise, systemInitiator],
       3,
       1000
     ) //lessonSave(day.date, lesson, authData, termPromise)

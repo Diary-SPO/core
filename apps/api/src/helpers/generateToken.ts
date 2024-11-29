@@ -2,6 +2,7 @@ import { API_CODES, ApiError } from '@api'
 import { formatDate } from '@utils'
 import { suid } from 'rand-token'
 import { AuthModel } from '../models/Auth'
+import type { TokenInfo } from '../types'
 
 /**
  * Генерирует токен и вставляет в базу
@@ -9,14 +10,16 @@ import { AuthModel } from '../models/Auth'
  * @param diaryUserId
  * @returns {string} token
  */
-export const generateToken = async (diaryUserId: bigint): Promise<string> => {
+export const generateToken = async (
+  diaryUserId: bigint
+): Promise<TokenInfo> => {
   // Генерируем токен
   const token = suid(16)
 
   const formattedDate = formatDate(new Date().toISOString())
 
   // TODO: сделать метод рядом с моделью для создания и использовать тут
-  await AuthModel.create({
+  const auth = await AuthModel.create({
     diaryUserId,
     token,
     lastUsedDate: formattedDate
@@ -24,5 +27,8 @@ export const generateToken = async (diaryUserId: bigint): Promise<string> => {
     throw new ApiError('Error insert token!', API_CODES.INTERNAL_SERVER_ERROR)
   })
 
-  return token
+  return {
+    token,
+    tokenId: auth.id
+  }
 }

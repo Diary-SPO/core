@@ -29,6 +29,7 @@ export interface StringParams {
   DATABASE_PASSWORD: string
   TIMEZONE: string
   KEY_SCAN_PATH: string
+  BOT_TOKEN: string
 }
 
 export type ParamsKeys = StringKeys<ParamsInit>

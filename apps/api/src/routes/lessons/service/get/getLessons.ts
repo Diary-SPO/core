@@ -12,8 +12,9 @@ export const getLessonsService = async (
   startDate: string,
   endDate: string,
   authData: ICacheData,
-  notGetFromDB = false
-): Promise<Day[]> => {
+  notGetFromDB = false,
+  systemInitiator = false
+): Promise<Day[] | null> => {
   const path = `${SERVER_URL}/services/students/${authData.idFromDiary}/lessons/${startDate}/${endDate}`
 
   const response = await fetcher.get(path, {
@@ -25,6 +26,7 @@ export const getLessonsService = async (
   }
 
   if (!response.ok && !notGetFromDB) {
+    if (systemInitiator) return null
     // Получаем из базы
     const rawSchedule = await ScheduleGetFromDB(startDate, endDate, authData)
     return getFormattedResponse(rawSchedule, startDate, endDate, authData)
@@ -36,7 +38,7 @@ export const getLessonsService = async (
 
   for (const day of days) {
     const backgroundProcess = async () =>
-      daySave(day, authData, term).catch((err: string) =>
+      daySave(day, authData, term, systemInitiator).catch((err: string) =>
         console.error(`Ошибка сохранения расписания: ${err}`)
       )
 

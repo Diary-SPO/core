@@ -3,7 +3,9 @@ import { type ICacheData, retriesForError } from '@helpers'
 
 import { objPropertyCopy } from 'src/helpers/objPropertyCopy'
 import { taskTypeSaveOrGet } from 'src/models/TaskType'
-import { markDelete, markSaveOrGet } from '../../../Mark'
+import { addNewMarkEvent } from '../../../../worker/notificator/bot'
+import { markDelete, markGetByData, markSaveOrGet } from '../../../Mark'
+import { markValueGetById } from '../../../MarkValue/actions/get/markValueGetById'
 import { requiredSaveOrGet } from '../../../Required'
 import type { IScheduleModel } from '../../../Schedule'
 import type { ITermDetectP } from '../../../Term'
@@ -14,7 +16,8 @@ export const tasksSaveOrGet = async (
   tasks: Task[],
   schedule: IScheduleModel,
   authData: ICacheData,
-  termPromise?: ITermDetectP
+  termPromise?: ITermDetectP,
+  systemInitiator = false
 ) => {
   const promises = []
   const scheduleId = schedule.id
@@ -80,9 +83,36 @@ export const tasksSaveOrGet = async (
 
         // На всякий який (ну и пустышки не берём)
         if (task.mark) {
-          markSaveOrGet(task.mark, schedule, taskId, termId, authData)
+          markSaveOrGet(
+            task.mark,
+            schedule,
+            taskId,
+            termId,
+            authData,
+            task,
+            systemInitiator
+          )
         } else {
-          markDelete(taskId, authData)
+          const deletedMarkRaw = await markGetByData(taskId, authData)
+
+          markDelete(taskId, authData).then(async (count) => {
+            // Игнорируем не системные инициализаторы (т.е. если пользователь уже сам посмотрел)
+            if (count > 0 && systemInitiator && deletedMarkRaw) {
+              const markValue = await markValueGetById(
+                deletedMarkRaw.markValueId
+              )
+              if (markValue)
+                // Регистрируем событие удаления оценки
+                addNewMarkEvent({
+                  mark: markValue.value,
+                  task,
+                  diaryUserId: authData.localUserId,
+                  status: 'DELETE',
+                  eventDatetime: new Date(),
+                  previousMarkId: null
+                })
+            }
+          })
         }
 
         return taskReturn

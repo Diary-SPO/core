@@ -1,4 +1,5 @@
 import type { ResponseLogin } from '@diary-spo/shared'
+import type { TokenInfo } from '../../types'
 import type { IGroupModel } from '../Group'
 import type { ISPOModel } from '../SPO'
 import type { IDiaryUserModel } from './model'
@@ -7,7 +8,7 @@ export const getFormattedDiaryUserData = (
   diaryUser: IDiaryUserModel,
   spo: ISPOModel,
   group: IGroupModel,
-  token: string
+  token: TokenInfo
 ): ResponseLogin => ({
   id: diaryUser.id,
   groupId: diaryUser.groupId,
@@ -23,5 +24,6 @@ export const getFormattedDiaryUserData = (
   lastName: diaryUser.lastName,
   middleName: diaryUser.middleName,
   spoId: spo.id,
-  token
+  token: token.token,
+  tokenId: token.tokenId
 })
