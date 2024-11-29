@@ -1,3 +1,4 @@
+import type { ApiResponseError } from 'puregram/lib/types/interfaces'
 import { buildMessageByEvent } from '../../messages'
 import type { MarkEvent } from '../../types/MarkEvent'
 import { bot } from '../botLogic'
@@ -17,8 +18,12 @@ export const sendMarkEvent = async (event: MarkEvent) => {
 
   if (!bot || !message) return
 
-  bot.api.sendMessage({
-   chat_id: String(subscribe.tgId),
-   text: message
-  })
+  const res = (await bot.api.sendMessage({
+    chat_id: String(subscribe.tgId),
+    text: message,
+    suppress: true
+  })) as ApiResponseError
+
+  if (!res)
+    console.error('[PUREGRAM] => error send message =>', JSON.stringify(res))
 }

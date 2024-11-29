@@ -35,7 +35,13 @@ export const notificatorChecker = async (): Promise<void> => {
 
     if (!subscribe.preActionsIsSuccess) {
       getCurrPerformance(cacheData, false).then(() => {
-        if (!bot) return
+        log(
+          `Извлёк первичные оценки для ${cacheData.localUserId} юзера ${cacheData.firstName} ${cacheData.lastName} ${cacheData.middleName}`
+        )
+        if (!bot) {
+          log('С ботом что-то не так, не отправляю сообщение о готовности')
+          return
+        }
         subscribe.preActionsIsSuccess = true
         subscribe.save()
         bot.api.sendMessage({
@@ -46,6 +52,7 @@ export const notificatorChecker = async (): Promise<void> => {
       continue
     }
 
+    log(`Проверяю обновления для ${cacheData.localUserId}`)
     await getCurrPerformance(cacheData, true)
   }
   log(`Проход завершён. Следующий через ${INTERVAL_RUN} секунд`)

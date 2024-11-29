@@ -1,15 +1,21 @@
 import { BOT_TOKEN } from '@config'
+import { Telegram } from 'puregram'
 import { registerLogic } from './registerLogic'
-import {Telegram} from "puregram";
 
 const token = BOT_TOKEN
 
 export const bot =
   Bun.main.includes('main.ts') || token === 'IGNORE'
     ? null
-    : Telegram.fromToken(token)
+    : Telegram.fromToken(token, {
+        apiRetryLimit: -1
+      })
 
 if (bot) {
-    registerLogic(bot)
-    bot.updates.startPolling()
+  bot.onError((err) => {
+    console.error('ОЧЕНЬ СТРАШНАЯ ОШИБКА В PUREGRAM:', err)
+    return err
+  })
+  registerLogic(bot)
+  bot.updates.startPolling()
 }
