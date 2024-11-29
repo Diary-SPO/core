@@ -4,18 +4,25 @@ import { registerLogic } from './registerLogic'
 
 const token = BOT_TOKEN
 
-export const bot =
-  Bun.main.includes('main.ts') || token === 'IGNORE'
-    ? null
-    : Telegram.fromToken(token, {
-        apiRetryLimit: -1
-      })
+let bot = null
 
-if (bot) {
+// Подключаем бота, только если мы в воркере
+if (Bun.main.includes('worker') && token !== 'IGNORE') {
+  bot = Telegram.fromToken(token, {
+    apiRetryLimit: -1
+  })
+
+  // Отлавливаем ошибки, если таковые имеются
   bot.onError((err) => {
     console.error('ОЧЕНЬ СТРАШНАЯ ОШИБКА В PUREGRAM:', err)
     return err
   })
+
+  // Регистрируем команды к боту, на которые отвечаем
   registerLogic(bot)
+
+  // Слушаем входящие сообщения
   bot.updates.startPolling()
 }
+
+export { bot }

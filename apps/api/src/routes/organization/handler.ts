@@ -2,6 +2,7 @@ import type { Optional } from 'sequelize'
 
 import { API_CODES, API_ERRORS, ApiError } from '@api'
 import { SERVER_URL } from '@config'
+import type { Organization } from '@diary-spo/shared'
 import { HeadersWithCookie } from '@utils'
 import { fetcher } from 'src/utils/fetcher'
 import { DiaryUserModel } from '../../models/DiaryUser'
@@ -19,11 +20,11 @@ const getOrganization = async ({
 }: Data): Promise<Optional<SPOModelType, 'id'>> => {
   const path = `${SERVER_URL}/services/people/organization`
 
-  const response = await fetcher
-    .get(path, {
+  const response = await (
+    await fetcher.get(path, {
       headers: HeadersWithCookie(cookie)
     })
-    .json<any>()
+  ).json<Organization>()
 
   if (response) {
     /* Хотелось бы красиво по убыванию...

@@ -1,10 +1,10 @@
 // @ts-ignore
 import { b64 } from '@diary-spo/crypto'
+import type { Telegram } from 'puregram'
 import { AuthModel } from '../../../../models/Auth'
 import { DiaryUserModel } from '../../../../models/DiaryUser'
 import { SubscribeModel } from '../../../../models/Subscribe'
 import { INTERVAL_RUN } from '../../config'
-import {Telegram} from "puregram";
 
 export const registerLogic = (bot: Telegram | null) => {
   if (!bot) return
@@ -32,17 +32,13 @@ export const registerLogic = (bot: Telegram | null) => {
         try {
           tokenSecure = atob(command[1])
         } catch {
-          msg.reply(
-            'Вы что-то не то шлёте и всё ломаете. В бан захотели?'
-          )
+          msg.reply('Вы что-то не то шлёте и всё ломаете. В бан захотели?')
           return
         }
         const secureTokenParams = tokenSecure.split(':')
 
         if (secureTokenParams.length !== 2 && !Number(secureTokenParams[0])) {
-          msg.reply(
-            'У вашего токена неверная структура. В бан захотел(-а)?'
-          )
+          msg.reply('У вашего токена неверная структура. В бан захотел(-а)?')
           return
         }
 
