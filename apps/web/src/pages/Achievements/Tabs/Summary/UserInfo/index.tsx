@@ -1,10 +1,12 @@
 import { Icon28SchoolOutline } from '@vkontakte/icons'
 import {
   Avatar,
+  Button,
   Div,
   Gradient,
   Group,
   Header,
+  Placeholder,
   SimpleCell,
   Spinner,
   Text,
@@ -15,6 +17,9 @@ import { type FC, useEffect, useState } from 'react'
 import { winxAva } from '../../../../../shared/config/images.ts'
 
 import './index.css'
+import { useRouteNavigator } from '@vkontakte/vk-mini-apps-router'
+import { MODAL_PAGE_USER_EDIT } from '../../../../../shared/config'
+import { useUserEditModal } from '../../../../../store/userEditModal'
 
 interface UserData {
   city: string
@@ -68,6 +73,18 @@ const UserInfo: FC = () => {
     getUserInfo()
   }, [])
 
+  const { setData } = useUserEditModal()
+  const routeNavigator = useRouteNavigator()
+
+  const handleEditUserButtonClick = () => {
+    const modalData = {
+      name: userData.name
+    }
+
+    setData(modalData)
+    routeNavigator.showModal(MODAL_PAGE_USER_EDIT)
+  }
+
   if (isLoading) {
     return (
       <Div>
@@ -81,11 +98,22 @@ const UserInfo: FC = () => {
   return (
     <Group mode='plain' header={header}>
       <Gradient mode='tint' className='userInfo__Wrapper'>
-        <Avatar size={96} src={winxAva} />
-        <Title className='userInfo__Title' level='2' weight='2' Component='h2'>
-          {userData.name}
-        </Title>
-        <Text className='userInfo__Text'>Студент ({userData.group})</Text>
+        <Avatar size={96} src='https://mangabuff.ru/img/avatars/x150/806.gif' />
+        <Placeholder
+          header={userData.name}
+          className='userInfo__Content'
+          action={
+            <Button
+              size='m'
+              mode='secondary'
+              onClick={handleEditUserButtonClick}
+            >
+              Редактировать
+            </Button>
+          }
+        >
+          Студент ({userData.group})
+        </Placeholder>
       </Gradient>
       <Group
         mode='plain'
