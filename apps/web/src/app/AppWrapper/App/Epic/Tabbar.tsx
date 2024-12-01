@@ -1,4 +1,5 @@
 import {
+  Icon24StorefrontOutline,
   Icon28BookSpreadOutline,
   Icon28GraphOutline,
   Icon28HomeOutline,
@@ -13,6 +14,7 @@ import type { FC } from 'react'
 
 import type { Pages } from '../../../../shared/types.ts'
 import {
+  VIEW_MARKET,
   VIEW_MARKS,
   VIEW_NOTIFICATIONS,
   VIEW_SCHEDULE,
@@ -53,6 +55,14 @@ const Tabbar: FC<ITabbar> = ({ onStoryChange, activeView }) => {
           text='Объявления'
         >
           <Icon28BookSpreadOutline />
+        </TabbarItem>
+        <TabbarItem
+          onClick={() => onStoryChange(VIEW_MARKET)}
+          selected={activeView === VIEW_MARKET}
+          data-story={VIEW_MARKET}
+          text='Магазин'
+        >
+          <Icon24StorefrontOutline />
         </TabbarItem>
         <TabbarItem
           onClick={() => onStoryChange(VIEW_SETTINGS)}

@@ -1,0 +1,8 @@
+.select-avatar {
+  border: solid 2px var(--vkui--color_icon_accent_themed);
+  padding: 3px;
+}
+
+.select-avatar_badge {
+  color: var(--vkui--color_icon_accent_themed);
+}

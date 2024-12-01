@@ -2,16 +2,18 @@ import { useSyncExternalStore } from 'react'
 
 import { createStore } from '../store'
 
-type ModalProps = {}
+interface ModalProps {
+  id: string
+}
 
 // TODO: add data
 const modalStore = createStore<ModalProps>({
   initialState: {
-    name: ''
+    id: ''
   }
 })
 
-export const useUserEditModal = () => {
+export const useMarketFiltersModal = () => {
   const modal = useSyncExternalStore(modalStore.subscribe, modalStore.getState)
 
   return {

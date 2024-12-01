@@ -8,13 +8,9 @@ import {
   Header,
   Placeholder,
   SimpleCell,
-  Spinner,
-  Text,
-  Title
+  Spinner
 } from '@vkontakte/vkui'
 import { type FC, useEffect, useState } from 'react'
-
-import { winxAva } from '../../../../../shared/config/images.ts'
 
 import './index.css'
 import { useRouteNavigator } from '@vkontakte/vk-mini-apps-router'

@@ -4,12 +4,12 @@ import {
   Group,
   Header,
   ModalPage,
-  ModalPageHeader,
-  Separator,
-  SimpleCell,
-  Spacing
+  ModalPageHeader
 } from '@vkontakte/vkui'
-import { useUserEditModal } from '../../../../../../store/userEditModal'
+import './index.css'
+import { Icon16DoneCircle, Icon56MarketOutline } from '@vkontakte/icons'
+import { useState } from 'react'
+
 const urls = [
   'https://mangabuff.ru/img/avatars/x150/806.gif',
   'https://mangabuff.ru/img/avatars/x150/1209.gif',
@@ -30,26 +30,77 @@ const urls = [
 ]
 
 const UserEditModal = ({ id }: { id: string }) => {
-  const { modalData } = useUserEditModal()
+  const [selectAva, setSelectAva] = useState(urls[0])
+
+  const selectCurrAva = (url: string) => {
+    setSelectAva(url)
+  }
   return (
     <ModalPage id={id} size={500} dynamicContentHeight>
       <ModalPageHeader>Сменить аву</ModalPageHeader>
       <Group>
-        <Group header={<Header mode='secondary'>Текущая ава</Header>}>
-          <SimpleCell before={<Avatar src={urls[0]} />}>
-            {modalData.name}
-          </SimpleCell>
+        {/*<Group>*/}
+        {/*	<RichCell*/}
+        {/*		before={<Avatar size={48} src={selectAva}/>}*/}
+        {/*		caption="Вы великолепны 😉"*/}
+        {/*		after={*/}
+        {/*      <Tooltip text='Кредиты — это то, сколько вы нам должны'>*/}
+        {/*        <label>*/}
+        {/*          1 256{' '}*/}
+        {/*          <Icon28MoneyWadOutline height={20} style={{*/}
+        {/*            display: 'inline-block',*/}
+        {/*            verticalAlign: 'text-top',*/}
+        {/*          }}/>*/}
+        {/*        </label>*/}
+        {/*      </Tooltip>*/}
+        {/*		}*/}
+        {/*		afterCaption="Кредиты 👆"*/}
+        {/*		actions={*/}
+        {/*			<ButtonGroup mode="horizontal" gap="s" stretched>*/}
+        {/*				<Tooltip text='История списания и зачисления кредитов'>*/}
+        {/*					<Button*/}
+        {/*						mode="secondary"*/}
+        {/*						size="s">*/}
+        {/*						История*/}
+        {/*					</Button>*/}
+        {/*				</Tooltip>*/}
+        {/*			</ButtonGroup>*/}
+        {/*		}*/}
+        {/*		multiline*/}
+        {/*	>*/}
+        {/*		Евгений Малинин{' '}*/}
+        {/*		<Icon20CheckShieldGreen*/}
+        {/*			style={{*/}
+        {/*				display: 'inline-block',*/}
+        {/*				verticalAlign: 'text-top',*/}
+        {/*			}}*/}
+        {/*		/>*/}
+        {/*	</RichCell>*/}
+        {/*</Group>*/}
+
+        <Group header={<Header mode='secondary'>Мои аватарки</Header>}>
+          <Flex margin='auto' gap='2xl' justify='center'>
+            {urls.map((url, index) => (
+              <Avatar
+                key={index}
+                size={110}
+                src={url}
+                onClick={() => selectCurrAva(url)}
+                className={selectAva === url ? 'select-avatar' : ''}
+              >
+                <Avatar.Badge
+                  hidden={selectAva !== url}
+                  className='select-avatar_badge'
+                >
+                  <Icon16DoneCircle height={25} width={25} />
+                </Avatar.Badge>
+              </Avatar>
+            ))}
+            <Avatar size={110}>
+              <Icon56MarketOutline />
+            </Avatar>
+          </Flex>
         </Group>
-
-        <Spacing size={24}>
-          <Separator />
-        </Spacing>
-
-        <Flex margin='auto' gap='2xl' justify='center'>
-          {urls.map((url, index) => (
-            <Avatar key={index} size={110} src={url} />
-          ))}
-        </Flex>
       </Group>
     </ModalPage>
   )

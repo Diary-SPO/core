@@ -1,4 +1,5 @@
 import {
+  Icon24StorefrontOutline,
   Icon28BookSpreadOutline,
   Icon28GraphOutline,
   Icon28HomeOutline,
@@ -27,6 +28,7 @@ import type { FC } from 'react'
 import type { Pages } from '../../../shared/types.ts'
 import {
   MAIN_SETTINGS,
+  VIEW_MARKET,
   VIEW_MARKS,
   VIEW_NOTIFICATIONS,
   VIEW_SCHEDULE,
@@ -100,6 +102,13 @@ const App: FC = () => {
                   before={<Icon28BookSpreadOutline />}
                 >
                   Объявления
+                </Cell>
+                <Cell
+                  onClick={() => onStoryChange(VIEW_MARKET)}
+                  hovered={panel === VIEW_MARKET}
+                  before={<Icon24StorefrontOutline />}
+                >
+                  Магазин
                 </Cell>
                 <Cell
                   onClick={() => onStoryChange(VIEW_SETTINGS)}

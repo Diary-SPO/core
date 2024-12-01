@@ -6,6 +6,7 @@ import { View, useAdaptivityConditionalRender } from '@vkontakte/vkui'
 import { Epic as VKUIEpic } from '@vkontakte/vkui/dist/components/Epic/Epic'
 import {
   MAIN_SETTINGS,
+  VIEW_MARKET,
   VIEW_MARKS,
   VIEW_NOTIFICATIONS,
   VIEW_SCHEDULE,
@@ -23,6 +24,7 @@ import {
 import type { Pages } from '../../../../shared/types.ts'
 
 import type { FC } from 'react'
+import Market from '../../../../pages/Market'
 import Tabbar from './Tabbar'
 
 interface IEpic {
@@ -53,6 +55,7 @@ const Epic: FC<IEpic> = ({ onStoryChange }) => {
         <Schedule id={VIEW_SCHEDULE} />
         <Achievements id={VIEW_MARKS} />
         <Notifications id={VIEW_NOTIFICATIONS} />
+        <Market id={VIEW_MARKET} />
         <Settings id={VIEW_SETTINGS} />
       </View>
     </VKUIEpic>
