@@ -21,7 +21,7 @@ const TechInfo: FC = () => {
       header={
         <Header
           mode='secondary'
-          aside={<Subhead Component='h5'>Хранится в LocalStorage</Subhead>}
+          after={<Subhead Component='h5'>Хранится в LocalStorage</Subhead>}
         >
           Кеш
         </Header>

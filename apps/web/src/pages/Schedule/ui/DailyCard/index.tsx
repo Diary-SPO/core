@@ -75,7 +75,7 @@ const DailyCard: FC<IDailyCard> = ({ lesson }) => {
   // @TODO: ??
   const lessons = lesson.lessons?.map((lesson) => (
     <LessonCell
-      key={lesson.lessonId ?? lesson.startTime}
+      key={'lessonId' in lesson ? lesson.lessonId : lesson.startTime}
       lessonDate={lessonDate}
       lesson={lesson}
       handleLessonClick={handleLessonClick}

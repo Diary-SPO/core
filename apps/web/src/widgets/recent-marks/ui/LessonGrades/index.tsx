@@ -34,22 +34,21 @@ export const LessonGrades: FC<LessonGradesProps> = ({ day, lessonGrades }) => {
 
   return (
     <div key={day}>
-      <Header mode='secondary' className='recentMarks'>
+      <Header size='s' className='recentMarks'>
         {day}
       </Header>
       <div className='flex'>
         {lessonGrades.map(({ lessonName, task }) => (
-          <div className='marksWrapper flex' key={`${lessonName}_${task.id}`}>
-            <HorizontalCell
-              onClick={() => handleMarkClick(task, lessonName)}
-              className='markWrapper'
-            >
-              <Mark
-                bottom={truncateString(lessonName, 18)}
-                mark={setDefaultMark(task)}
-              />
-            </HorizontalCell>
-          </div>
+          <HorizontalCell
+            size='xl'
+            onClick={() => handleMarkClick(task, lessonName)}
+            className='markWrapper'
+          >
+            <Mark
+              bottom={truncateString(lessonName, 18)}
+              mark={setDefaultMark(task)}
+            />
+          </HorizontalCell>
         ))}
       </div>
     </div>
