@@ -21,7 +21,7 @@ const filters: FC<Props> = ({ openModal }) => {
           <SubnavigationButton
             before={<Icon24Filter />}
             selected={true}
-            expandable
+            chevron
             after={
               <Counter size='s'>
                 <VisuallyHidden>Применено: </VisuallyHidden>

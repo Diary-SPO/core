@@ -3,7 +3,7 @@ import {
   useRouteNavigator
 } from '@vkontakte/vk-mini-apps-router'
 import { View, useAdaptivityConditionalRender } from '@vkontakte/vkui'
-import { Epic as VKUIEpic } from '@vkontakte/vkui/dist/components/Epic/Epic'
+import { Epic as VKUIEpic } from '@vkontakte/vkui'
 import {
   MAIN_SETTINGS,
   VIEW_MARKET,

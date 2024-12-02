@@ -96,7 +96,7 @@ const UserInfo: FC = () => {
       <Gradient mode='tint' className='userInfo__Wrapper'>
         <Avatar size={96} src='https://mangabuff.ru/img/avatars/x150/806.gif' />
         <Placeholder
-          header={userData.name}
+          title={userData.name}
           className='userInfo__Content'
           action={
             <Button

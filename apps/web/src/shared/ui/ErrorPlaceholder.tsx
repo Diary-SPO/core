@@ -3,7 +3,7 @@ import type { FC } from 'react'
 
 export const ErrorPlaceholder: FC<{ onClick?: () => void }> = ({ onClick }) => (
   <Placeholder
-    header='Ошибка при загрузке'
+    title='Ошибка при загрузке'
     action={
       <ButtonGroup mode='vertical' align='center'>
         {onClick && (

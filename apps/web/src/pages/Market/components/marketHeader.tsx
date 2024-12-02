@@ -4,6 +4,7 @@ import {
   Button,
   ButtonGroup,
   Group,
+  OnboardingTooltip,
   RichCell,
   Tooltip
 } from '@vkontakte/vkui'
@@ -34,9 +35,9 @@ const MarketHeader = () => {
     <Group>
       <RichCell
         before={<Avatar size={48} src={selectAva} />}
-        caption='Вы великолепны 😉'
+        extraSubtitle='Вы великолепны 😉'
         after={
-          <Tooltip text='Кредиты — это то, сколько вы нам должны'>
+          <Tooltip subtitle='Кредиты — это то, сколько вы нам должны'>
             <label>
               1 256{' '}
               <Icon28MoneyWadOutline
@@ -52,7 +53,7 @@ const MarketHeader = () => {
         afterCaption='Кредиты 👆'
         actions={
           <ButtonGroup mode='horizontal' gap='s' stretched>
-            <Tooltip text='История списания и зачисления кредитов'>
+            <Tooltip subtitle='История списания и зачисления кредитов'>
               <Button mode='secondary' size='s'>
                 История
               </Button>

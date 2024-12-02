@@ -26,9 +26,9 @@ export const MarkWithPopover: FC<{ term: Term }> = ({ term }) => {
           text={<>Оценка: {markComponent} </>}
         />
       ) : (
-        <Subhead>Оценка: {markComponent} </Subhead>
+        <Subhead Component='h5'>Оценка: {markComponent} </Subhead>
       )}
-      <Subhead>
+      <Subhead Component='h5'>
         Курс: {term.course}, семестр: {term.semester}
       </Subhead>
     </Div>

@@ -32,7 +32,7 @@ const filtersModal: FC<Props> = ({ id }) => {
   return (
     <ModalPage id={id} header={<ModalPageHeader>Фильтры</ModalPageHeader>}>
       <FormLayoutGroup>
-        <FormItem top='Тип изображения'>
+        <FormItem top='Тип изображения' topComponent='h5'>
           <RadioGroup>
             {avaTypes.types.map((value) => {
               return (
@@ -50,7 +50,7 @@ const filtersModal: FC<Props> = ({ id }) => {
           </RadioGroup>
         </FormItem>
 
-        <FormItem top='Кто изображён'>
+        <FormItem top='Кто изображён' topComponent='h5'>
           <RadioGroup>
             {avaTypes.pictured.map((value) => {
               return (

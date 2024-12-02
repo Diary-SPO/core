@@ -42,8 +42,8 @@ const Actions = () => {
       ]}
       actionsLayout='horizontal'
       onClose={() => routeNavigator.hidePopout()}
-      header='Выход'
-      text='Вы уверены, что хотите выйти из аккаунта?'
+      title='Выход'
+      description='Вы уверены, что хотите выйти из аккаунта?'
     />
   )
 

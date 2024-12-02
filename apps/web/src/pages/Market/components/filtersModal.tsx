@@ -66,7 +66,7 @@ const filtersModal: FC<Props> = ({
         }
       >
         <FormLayoutGroup>
-          <FormItem top='Тип изображения'>
+          <FormItem top='Тип изображения' topComponent='h5'>
             <RadioGroup>
               {avaTypes.types.map((value) => {
                 return (
@@ -75,7 +75,7 @@ const filtersModal: FC<Props> = ({
                     value={value}
                     name='type'
                     checked={selectedType === value}
-                    onClick={() => selectType(value)}
+                    onChange={() => selectType(value)}
                   >
                     {value}
                   </Radio>
@@ -84,7 +84,7 @@ const filtersModal: FC<Props> = ({
             </RadioGroup>
           </FormItem>
 
-          <FormItem top='Кто изображён'>
+          <FormItem top='Кто изображён' topComponent='h5'>
             <RadioGroup>
               {avaTypes.pictured.map((value) => {
                 return (
@@ -93,7 +93,7 @@ const filtersModal: FC<Props> = ({
                     value={value}
                     name='pictured'
                     checked={selectedPictured === value}
-                    onClick={() => selectPictured(value)}
+                    onChange={() => selectPictured(value)}
                   >
                     {value}
                   </Radio>
