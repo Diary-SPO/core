@@ -198,5 +198,5 @@ SubscribeModel.belongsTo(DiaryUserModel)
 
 if (forceSyncDatabase) {
   console.log('Syncing database...')
-  await sequelize.sync({})
+  await sequelize.sync({force: true})
 }
