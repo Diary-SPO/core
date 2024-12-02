@@ -1,5 +1,4 @@
 import { Icon24Filter } from '@vkontakte/icons'
-import { useRouteNavigator } from '@vkontakte/vk-mini-apps-router'
 import {
   Counter,
   Group,
@@ -8,21 +7,13 @@ import {
   SubnavigationButton,
   VisuallyHidden
 } from '@vkontakte/vkui'
-import { MODAL_PAGE_MARKET_FILTERS } from '../../../shared/config'
-import { useMarketFiltersModal } from '../../../store/marketFiltersModal'
+import type { FC } from 'react'
 
-const filters = () => {
-  const { setData } = useMarketFiltersModal()
-  const routeNavigator = useRouteNavigator()
+interface Props {
+  openModal: () => void
+}
 
-  const openMarketFiltersModal = () => {
-    setData({
-      id: 'filters'
-    })
-
-    routeNavigator.showModal(MODAL_PAGE_MARKET_FILTERS)
-  }
-
+const filters: FC<Props> = ({ openModal }) => {
   return (
     <>
       <Group header={<Header mode='tertiary'>Фильтры</Header>}>
@@ -37,7 +28,7 @@ const filters = () => {
                 {0}
               </Counter>
             }
-            onClick={openMarketFiltersModal}
+            onClick={openModal}
           >
             Фильтры
           </SubnavigationButton>

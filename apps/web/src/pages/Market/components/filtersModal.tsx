@@ -1,9 +1,7 @@
 import { Icon24Dismiss } from '@vkontakte/icons'
 import {
-  Button,
   FormItem,
   FormLayoutGroup,
-  ModalCard,
   ModalPage,
   ModalPageHeader,
   ModalRoot,

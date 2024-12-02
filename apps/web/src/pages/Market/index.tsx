@@ -1,9 +1,10 @@
 import { Icon20AddCircleFillGreen } from '@vkontakte/icons'
-import { Avatar, Flex, Group, Header, Panel } from '@vkontakte/vkui'
-import type { FC } from 'react'
+import { Avatar, Flex, Group, Header, Panel, View } from '@vkontakte/vkui'
+import { type FC, useState } from 'react'
 import { PanelHeaderWithBack } from '../../shared'
 import type { Props } from '../types.ts'
 import Filters from './components/filters.tsx'
+import FiltersModal from './components/filtersModal.tsx'
 import MarketHeader from './components/marketHeader.tsx'
 
 const urls = [
@@ -26,23 +27,42 @@ const urls = [
 ]
 
 const Market: FC<Props> = () => {
+  const [activePanel, setActivePanel] = useState('market')
+
+  // ФИЛЬТРЫ
+  const [filtersModalOpened, setFiltersModalOpened] = useState(false)
+  const openMarketFiltersModal = () => {
+    setFiltersModalOpened(true)
+  }
+
+  const closeMarketFiltersModal = () => {
+    setFiltersModalOpened(false)
+  }
+
   return (
-    <>
-      <PanelHeaderWithBack title='Магазин' />
-      <MarketHeader />
-      <Filters />
-      <Group header={<Header mode='secondary'>Полка аватарок</Header>}>
-        <Flex margin='auto' gap='2xl' justify='center'>
-          {urls.map((url, index) => (
-            <Avatar key={index} size={110} src={url}>
-              <Avatar.Badge className='select-avatar_badge'>
-                <Icon20AddCircleFillGreen height={25} width={25} />
-              </Avatar.Badge>
-            </Avatar>
-          ))}
-        </Flex>
-      </Group>
-    </>
+    <View activePanel={activePanel}>
+      <Panel id='market'>
+        <PanelHeaderWithBack title='Магазин' />
+        <MarketHeader />
+        <Filters openModal={openMarketFiltersModal} />
+        <Group header={<Header mode='secondary'>Полка аватарок</Header>}>
+          <Flex margin='auto' gap='2xl' justify='center'>
+            {urls.map((url, index) => (
+              <Avatar key={index} size={110} src={url}>
+                <Avatar.Badge className='select-avatar_badge'>
+                  <Icon20AddCircleFillGreen height={25} width={25} />
+                </Avatar.Badge>
+              </Avatar>
+            ))}
+          </Flex>
+        </Group>
+        <FiltersModal
+          filtersModalOpened={filtersModalOpened}
+          MODAL_NAME='filters'
+          closeModal={closeMarketFiltersModal}
+        />
+      </Panel>
+    </View>
   )
 }
 
