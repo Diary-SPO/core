@@ -7,6 +7,7 @@ import { formatDate } from '@utils'
 
 import { GroupModel } from '../Group'
 import type { IModelPrototype } from '../types'
+import {AvatarModel} from "../Avatar";
 
 // REMOVE IT
 // ?
@@ -26,6 +27,7 @@ export type DiaryUserModelType = {
   termStartDate?: Nullable<string>
   isAdmin: boolean
   idFromDiary: number
+  avatarId: bigint
 }
 
 export type IDiaryUserModel = IModelPrototype<DiaryUserModelType, 'id'>
@@ -124,6 +126,13 @@ export const DiaryUserModel = sequelize.define<IDiaryUserModel>('diaryUser', {
     allowNull: false,
     defaultValue: false,
     comment: 'Признак администратора'
+  },
+  avatarId: {
+    type: DataTypes.BIGINT,
+    allowNull: true,
+    references: {
+      model: AvatarModel
+    }
   },
   idFromDiary: {
     type: DataTypes.INTEGER,

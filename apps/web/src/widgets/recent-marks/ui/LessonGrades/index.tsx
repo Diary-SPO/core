@@ -40,6 +40,7 @@ export const LessonGrades: FC<LessonGradesProps> = ({ day, lessonGrades }) => {
       <div className='flex'>
         {lessonGrades.map(({ lessonName, task }) => (
           <HorizontalCell
+            key={task.id}
             size='xl'
             onClick={() => handleMarkClick(task, lessonName)}
             className='markWrapper'

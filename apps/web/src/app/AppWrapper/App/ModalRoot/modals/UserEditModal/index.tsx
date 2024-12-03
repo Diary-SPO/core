@@ -1,16 +1,22 @@
 import {
-  Avatar, Div,
+  Avatar,
+  Div,
   Flex,
   Group,
   Header,
   ModalPage,
-  ModalPageHeader, Text
+  ModalPageHeader,
+  Text
 } from '@vkontakte/vkui'
 import './index.css'
-import {Icon16DoneCircle, Icon28ShoppingCartOutline, Icon56MarketOutline} from '@vkontakte/icons'
+import {
+  Icon16DoneCircle,
+  Icon28ShoppingCartOutline,
+  Icon56MarketOutline
+} from '@vkontakte/icons'
+import { useRouteNavigator } from '@vkontakte/vk-mini-apps-router'
 import { useState } from 'react'
-import {useRouteNavigator} from "@vkontakte/vk-mini-apps-router";
-import {PAGE_MARKET} from "../../../../../routes";
+import { PAGE_MARKET } from '../../../../../routes'
 
 const urls = [
   'https://mangabuff.ru/img/avatars/x150/806.gif',
@@ -106,7 +112,7 @@ const UserEditModal = ({ id }: { id: string }) => {
             ))}
             <Avatar size={110} onClick={openMarket}>
               <Flex direction='column' align='center'>
-                <Icon28ShoppingCartOutline height={50} width={50}/>
+                <Icon28ShoppingCartOutline height={50} width={50} />
                 <Text>Купить ещё</Text>
               </Flex>
             </Avatar>

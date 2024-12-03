@@ -28,6 +28,10 @@ import { TermSubjectExaminationTypeModel } from './TermSubjectExaminationType'
 import { TermTypeModel } from './TermType'
 import { TermUserModel } from './TermUser'
 import { ThemeModel } from './Theme'
+import {AvatarModel} from "./Avatar";
+import {UserAvatarModel} from "./UserAvatar";
+import {AvatarTagModel} from "./AvatarTag";
+import {TagModel} from "./Tag";
 
 // SPO <--->> Group
 SPOModel.hasMany(GroupModel)
@@ -193,10 +197,27 @@ TermSubjectModel.belongsTo(TeacherModel)
 DiaryUserModel.hasMany(TermSubjectModel)
 TermSubjectModel.belongsTo(DiaryUserModel)
 
+// DiaryUser <-->> Subscribe
 DiaryUserModel.hasMany(SubscribeModel)
 SubscribeModel.belongsTo(DiaryUserModel)
 
+// Avatar <-->> UserAvatar
+AvatarModel.hasMany(UserAvatarModel)
+UserAvatarModel.belongsTo(AvatarModel)
+
+// Avatar <-->> DiaryUser
+AvatarModel.hasMany(DiaryUserModel)
+DiaryUserModel.belongsTo(AvatarModel)
+
+// Avatar <-->> AvatarTag
+AvatarModel.hasMany(AvatarTagModel)
+AvatarTagModel.belongsTo(AvatarModel)
+
+// Tag <-->> AvatarTag
+TagModel.hasMany(AvatarTagModel)
+AvatarTagModel.belongsTo(TagModel)
+
 if (forceSyncDatabase) {
   console.log('Syncing database...')
-  await sequelize.sync({ alter: true })
+  await sequelize.sync()
 }

@@ -109,17 +109,19 @@ const Actions = () => {
         >
           Показывать тех. информацию
         </CellButton>
-        <CellButton
-          before={<Icon28Notifications />}
-          onClick={async () =>
-            window.open(
-              `${TG_BOT_URL}?text=/subscribe ${await getSecureToken()}`,
-              '_blank'
-            )
-          }
-        >
-          Подключить уведомления
-        </CellButton>
+        {TG_BOT_URL !== 'IGNORE' && (
+          <CellButton
+            before={<Icon28Notifications />}
+            onClick={async () =>
+              window.open(
+                `${TG_BOT_URL}?text=/subscribe ${await getSecureToken()}`,
+                '_blank'
+              )
+            }
+          >
+            Подключить уведомления
+          </CellButton>
+        )}
         <CellButton
           before={<Icon28DoorArrowRightOutline />}
           onClick={() => routeNavigator.showPopout(logOutPopup)}

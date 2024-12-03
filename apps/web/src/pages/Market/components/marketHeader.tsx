@@ -1,4 +1,4 @@
-import {Icon28DiamondOutline} from '@vkontakte/icons'
+import { Icon28DiamondOutline } from '@vkontakte/icons'
 import {
   Avatar,
   Button,
@@ -51,7 +51,10 @@ const MarketHeader = () => {
         }
         actions={
           <ButtonGroup mode='horizontal' gap='s' stretched>
-            <Tooltip placement='right' description='История списания и зачисления кредитов'>
+            <Tooltip
+              placement='right'
+              description='История списания и зачисления кредитов'
+            >
               <Button mode='secondary' size='s'>
                 История операций
               </Button>

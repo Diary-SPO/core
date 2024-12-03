@@ -10,6 +10,7 @@ import { HomeController } from './home'
 import { LessonsController } from './lessons'
 import { OrganizationController } from './organization'
 import { PerformanceCurrentController } from './performance.current'
+import {MarketAvatars} from "./marketAvatars";
 
 export const routes = new Elysia()
   .use(HomeController)
@@ -20,6 +21,7 @@ export const routes = new Elysia()
   .use(AttestationController)
   .use(FinalMarksController)
   .use(PerformanceCurrentController)
+  .use(MarketAvatars)
   /** Обработка любых ошибок в кажом роуте **/
   .onError(({ set, code, path, error }) => {
     if (Number(code)) {
