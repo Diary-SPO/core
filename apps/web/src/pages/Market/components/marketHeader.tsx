@@ -37,7 +37,7 @@ const MarketHeader = () => {
         before={<Avatar size={48} src={selectAva} />}
         extraSubtitle='Вы великолепны 😉'
         after={
-          <Tooltip subtitle='Кредиты — это то, сколько вы нам должны'>
+          <Tooltip description='Кредиты — это то, сколько вы нам должны'>
             <label>
               1 256{' '}
               <Icon28MoneyWadOutline
@@ -53,7 +53,7 @@ const MarketHeader = () => {
         afterCaption='Кредиты 👆'
         actions={
           <ButtonGroup mode='horizontal' gap='s' stretched>
-            <Tooltip subtitle='История списания и зачисления кредитов'>
+            <Tooltip placement='right' description='История списания и зачисления кредитов'>
               <Button mode='secondary' size='s'>
                 История
               </Button>

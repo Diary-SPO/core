@@ -1,14 +1,16 @@
 import {
-  Avatar,
+  Avatar, Div,
   Flex,
   Group,
   Header,
   ModalPage,
-  ModalPageHeader
+  ModalPageHeader, Text
 } from '@vkontakte/vkui'
 import './index.css'
-import { Icon16DoneCircle, Icon56MarketOutline } from '@vkontakte/icons'
+import {Icon16DoneCircle, Icon28ShoppingCartOutline, Icon56MarketOutline} from '@vkontakte/icons'
 import { useState } from 'react'
+import {useRouteNavigator} from "@vkontakte/vk-mini-apps-router";
+import {PAGE_MARKET} from "../../../../../routes";
 
 const urls = [
   'https://mangabuff.ru/img/avatars/x150/806.gif',
@@ -31,10 +33,16 @@ const urls = [
 
 const UserEditModal = ({ id }: { id: string }) => {
   const [selectAva, setSelectAva] = useState(urls[0])
+  const navigation = useRouteNavigator()
 
   const selectCurrAva = (url: string) => {
     setSelectAva(url)
   }
+
+  const openMarket = () => {
+    navigation.push(PAGE_MARKET)
+  }
+
   return (
     <ModalPage id={id} size={500} dynamicContentHeight>
       <ModalPageHeader>Сменить аву</ModalPageHeader>
@@ -78,7 +86,7 @@ const UserEditModal = ({ id }: { id: string }) => {
         {/*	</RichCell>*/}
         {/*</Group>*/}
 
-        <Group header={<Header mode='secondary'>Мои аватарки</Header>}>
+        <Group header={<Header>Мои аватарки</Header>}>
           <Flex margin='auto' gap='2xl' justify='center'>
             {urls.map((url, index) => (
               <Avatar
@@ -96,8 +104,11 @@ const UserEditModal = ({ id }: { id: string }) => {
                 </Avatar.Badge>
               </Avatar>
             ))}
-            <Avatar size={110}>
-              <Icon56MarketOutline />
+            <Avatar size={110} onClick={openMarket}>
+              <Flex direction='column' align='center'>
+                <Icon28ShoppingCartOutline height={50} width={50}/>
+                <Text>Купить ещё</Text>
+              </Flex>
             </Avatar>
           </Flex>
         </Group>
