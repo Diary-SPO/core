@@ -1,85 +1,84 @@
-import { Icon20AddCircleFillGreen } from '@vkontakte/icons'
-import { Avatar, Flex, Group, Header, Panel, View } from '@vkontakte/vkui'
-import { type FC, useState } from 'react'
-import { PanelHeaderWithBack } from '../../shared'
-import type { Props } from '../types.ts'
-import Filters from './components/filters.tsx'
-import FiltersModal from './components/filtersModal.tsx'
+import {Panel, View} from '@vkontakte/vkui'
+import {type FC, useState} from 'react'
+import {PanelHeaderWithBack} from '../../shared'
+import Filters from './components/filtersPanel.tsx'
 import MarketHeader from './components/marketHeader.tsx'
+import AvatarsPanel from "./components/avatarsPanel.tsx";
 
-const url = 'https://mangabuff.ru/img/avatars/x150'
-
-const data = {
-  avatars: [
-    {
-      isAnimated: true,
-      filename: '806.gif',
-      tags: ['Девушка'],
-      price: 0
-    },
-    {
-      isAnimated: true,
-      filename: '1209.gif',
-      tags: ['Парень'],
-      price: 0
-    },
-    {
-      isAnimated: false,
-      filename: '689.jpg',
-      tags: ['Девушка'],
-      price: 0
-    },
-    {
-      isAnimated: false,
-      filename: '688.jpg',
-      tags: ['Девушка'],
-      price: 0
-    }
-  ]
+interface Props {
 }
 
+const avatars = [
+	{
+		isAnimated: true,
+		filename: '806.gif',
+		tags: ['Девушка'],
+		price: 0
+	},
+	{
+		isAnimated: false,
+		filename: '1209.gif',
+		tags: ['Парень'],
+		price: 250
+	},
+	{
+		isAnimated: false,
+		filename: '689.jpg',
+		tags: ['Девушка'],
+		price: 350
+	},
+	{
+		isAnimated: false,
+		filename: '688.jpg',
+		tags: ['Девушка'],
+		price: 1000
+	}
+]
+
+const tags: string[] = []
+avatars.forEach(avatar => {
+	avatar.tags.forEach((tag) => {
+		if (!tags.includes(tag))
+			tags.push(tag)
+	})
+})
+
 const Market: FC<Props> = () => {
-  const [activePanel, setActivePanel] = useState('market')
+	const [activePanel] = useState('market')
 
-  // ФИЛЬТРЫ
-  const [filtersModalOpened, setFiltersModalOpened] = useState(false)
-  const openMarketFiltersModal = () => {
-    setFiltersModalOpened(true)
-  }
+	// ФИЛЬТРЫ
+	const [isAnimated, setIsAnimated] = useState(true)
+	const [isStatic, setIsStatic] = useState(true)
+	const [selectedTags, setSelectedTags] = useState<string[]>([])
 
-  const closeMarketFiltersModal = () => {
-    setFiltersModalOpened(false)
-  }
+	const changeIsAnimated = () => {
+		setIsAnimated(!isAnimated)
+	}
 
-  const getUrlPath = (avatarData) => {
-    return `${url}/${avatarData.filename}`
-  }
+	const changeIsStatic = () => {
+		setIsStatic(!isStatic)
+	}
 
-  return (
-    <View activePanel={activePanel}>
-      <Panel id='market'>
-        <PanelHeaderWithBack title='Магазин' />
-        <MarketHeader />
-        <Filters openModal={openMarketFiltersModal} />
-        <Group header={<Header>Полка аватарок</Header>}>
-          <Flex margin='auto' gap='2xl' justify='center'>
-            {data.avatars.map((avatarData, index) => (
-              <Avatar key={index} size={110} src={getUrlPath(avatarData)}>
-                <Avatar.Badge className='select-avatar_badge'>
-                  <Icon20AddCircleFillGreen height={25} width={25} />
-                </Avatar.Badge>
-              </Avatar>
-            ))}
-          </Flex>
-        </Group>
-        <FiltersModal
-          filtersModalOpened={filtersModalOpened}
-          MODAL_NAME='filters'
-          closeModal={closeMarketFiltersModal}
-        />
-      </Panel>
-    </View>
-  )
+	return (
+		<View activePanel={activePanel}>
+			<Panel id='market'>
+				<PanelHeaderWithBack title='Магазин'/>
+				<MarketHeader/>
+				<Filters isAnimated={isAnimated}
+								 isStatic={isStatic}
+								 changeIsAnimated={changeIsAnimated}
+								 changeIsStatic={changeIsStatic}
+								 avatars={avatars}
+								 setSelectedTags={setSelectedTags}
+								 selectedTags={selectedTags}
+								 tags={tags}/>
+				<AvatarsPanel avatars={avatars}
+											isStatic={isStatic}
+											isAnimated={isAnimated}
+											selectedTags={selectedTags}/>
+			</Panel>
+		</View>
+	)
 }
 
 export default Market

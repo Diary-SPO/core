@@ -1,10 +1,9 @@
-import { Icon20CheckShieldGreen, Icon28MoneyWadOutline } from '@vkontakte/icons'
+import {Icon28DiamondOutline} from '@vkontakte/icons'
 import {
   Avatar,
   Button,
   ButtonGroup,
   Group,
-  OnboardingTooltip,
   RichCell,
   Tooltip
 } from '@vkontakte/vkui'
@@ -30,17 +29,17 @@ const urls = [
 ]
 
 const MarketHeader = () => {
-  const [selectAva, setSelectAva] = useState(urls[0])
+  const [selectAva] = useState(urls[0])
   return (
     <Group>
       <RichCell
         before={<Avatar size={48} src={selectAva} />}
         extraSubtitle='Вы великолепны 😉'
         after={
-          <Tooltip description='Кредиты — это то, сколько вы нам должны'>
+          <Tooltip description='Алмазы — это то, что вы получаете за активность в приложении'>
             <label>
               1 256{' '}
-              <Icon28MoneyWadOutline
+              <Icon28DiamondOutline
                 height={20}
                 style={{
                   display: 'inline-block',
@@ -50,12 +49,11 @@ const MarketHeader = () => {
             </label>
           </Tooltip>
         }
-        afterCaption='Кредиты 👆'
         actions={
           <ButtonGroup mode='horizontal' gap='s' stretched>
             <Tooltip placement='right' description='История списания и зачисления кредитов'>
               <Button mode='secondary' size='s'>
-                История
+                История операций
               </Button>
             </Tooltip>
           </ButtonGroup>
