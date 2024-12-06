@@ -57,7 +57,8 @@ const app = new Elysia()
   )
   .use(staticPlugin({
     assets: 'src/uploads',
-    prefix: 'uploads'
+    prefix: 'uploads',
+    staticLimit: 1_000_000
   }))
   .use(routes)
   .listen(port)

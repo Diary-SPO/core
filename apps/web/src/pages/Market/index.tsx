@@ -1,15 +1,15 @@
 import type { AvatarData } from '@diary-spo/shared'
-import { Panel, View } from '@vkontakte/vkui'
+import {Panel, Placeholder, PullToRefresh, View} from '@vkontakte/vkui'
 import { type FC, useEffect, useState } from 'react'
-import { PanelHeaderWithBack } from '../../shared'
+import {isApiError, PanelHeaderWithBack} from '../../shared'
 import { client } from '../../shared/api/client.ts'
-import AvatarsPanel from './components/avatarsPanel.tsx'
-import Filters from './components/filtersPanel.tsx'
-import MarketHeader from './components/marketHeader.tsx'
+import {HeaderPanel, FiltersPanel, AvatarsPanel} from './components'
+import {Icon56HourglassErrorBadgeOutline} from "@vkontakte/icons";
 
 type Props = {}
+const offset = 15
 
-const Market: FC<Props> = () => {
+export const Market: FC<Props> = () => {
   const [activePanel] = useState('market')
 
   // ФИЛЬТРЫ
@@ -17,7 +17,13 @@ const Market: FC<Props> = () => {
   const [isStatic, setIsStatic] = useState(true)
   const [selectedTags, setSelectedTags] = useState<string[]>([])
   const [tags, setTags] = useState<string[]>([])
-  const [avatars, setAvatars] = useState<AvatarData[]>([])
+  const [getAvatars, setGetAvatars] = useState<AvatarData[]>([])
+  const [getShowsAvatars, setShowsAvatars] = useState(15)
+
+  // Статусы загрузки аватарок
+  const [isGetAvatarsError, setIsGetAvatarsError] = useState(false)
+  const [getIsLoading, setIsLoading] = useState(false)
+  const [getIsForceLoading, setIsForceLoading] = useState(true)
 
   const changeIsAnimated = () => {
     setIsAnimated(!isAnimated)
@@ -28,23 +34,40 @@ const Market: FC<Props> = () => {
   }
 
   // Стучимся к серверу
-  const getAvatarsFromServer = async (): Promise<void> => {
-    const avatars = await client.marketAvatars({ page: 1 }).get()
+  const getAvatarsFromServer = async (isForce = getAvatars.length <= 0): Promise<void> => {
+    if (isForce) {
+      setGetAvatars([])
+      setShowsAvatars(offset)
+    }
 
-    const data = avatars.data
+    setIsLoading(true)
+    setIsForceLoading(isForce)
+    setIsGetAvatarsError(false)
 
-    if (!data) return
+    try {
+      const {data} = await client.marketAvatars.get()
+      if (!data) return
 
-    const tagsToSave: string[] = []
+      if (isApiError(data)) {
+        new Error('Ошибка от api')
+      }
 
-    avatars.data.forEach((avatar) => {
-      avatar.tags.forEach((tag) => {
-        if (!tagsToSave.includes(tag)) tagsToSave.push(tag)
+      const tagsToSave: string[] = []
+
+      data.forEach((avatar) => {
+        avatar.tags.forEach((tag) => {
+          if (!tagsToSave.includes(tag)) tagsToSave.push(tag)
+        })
       })
-    })
 
-    setTags(tagsToSave)
-    setAvatars(data)
+      setTags(tagsToSave)
+      setGetAvatars(data)
+    } catch {
+      setIsGetAvatarsError(true)
+    } finally {
+      setIsLoading(false)
+      setIsForceLoading(false)
+    }
   }
 
   useEffect(() => {
@@ -54,27 +77,54 @@ const Market: FC<Props> = () => {
   return (
     <View activePanel={activePanel}>
       <Panel id='market'>
-        <PanelHeaderWithBack title='Магазин' />
-        <MarketHeader />
-        <Filters
-          isAnimated={isAnimated}
-          isStatic={isStatic}
-          changeIsAnimated={changeIsAnimated}
-          changeIsStatic={changeIsStatic}
-          avatars={avatars}
-          setSelectedTags={setSelectedTags}
-          selectedTags={selectedTags}
-          tags={tags}
-        />
-        <AvatarsPanel
-          avatars={avatars}
-          isStatic={isStatic}
-          isAnimated={isAnimated}
-          selectedTags={selectedTags}
-        />
+        <PullToRefresh onRefresh={() => getAvatarsFromServer(true)}>
+          <PanelHeaderWithBack title='Магазин'/>
+          {
+            isGetAvatarsError ?
+              <Placeholder>
+                <Placeholder.Icon>
+                  <Icon56HourglassErrorBadgeOutline/>
+                </Placeholder.Icon>
+                <Placeholder.Title>
+                  Ошибка выполнения запроса
+                </Placeholder.Title>
+                <Placeholder.Description>
+                  Возможно, сервер сейчас не может обработать запрос
+                </Placeholder.Description>
+              </Placeholder>
+              :
+              <>
+                <HeaderPanel
+                  isLoading={getIsLoading}
+                  isError={isGetAvatarsError}/>
+                <FiltersPanel
+                  isAnimated={isAnimated}
+                  isStatic={isStatic}
+                  changeIsAnimated={changeIsAnimated}
+                  changeIsStatic={changeIsStatic}
+                  avatars={getAvatars}
+                  setSelectedTags={setSelectedTags}
+                  selectedTags={selectedTags}
+                  tags={tags}
+                  isLoading={getIsLoading}
+                  isError={isGetAvatarsError}
+                />
+                <AvatarsPanel
+                  avatars={getAvatars}
+                  isStatic={isStatic}
+                  isAnimated={isAnimated}
+                  isError={isGetAvatarsError}
+                  isLoading={getIsLoading}
+                  isForceLoading={getIsForceLoading}
+                  selectedTags={selectedTags}
+                  getShowsAvatars={getShowsAvatars}
+                  setShowsAvatars={setShowsAvatars}
+                  offset={offset}
+                />
+              </>
+          }
+        </PullToRefresh>
       </Panel>
     </View>
   )
 }
-
-export default Market

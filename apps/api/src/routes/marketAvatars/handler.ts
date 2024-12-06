@@ -4,22 +4,16 @@ import {ITagModelType, TagModel, TagModelType} from "../../models/Tag";
 import {AvatarTagModel, AvatarTagModelType, IAvatarTagModelType} from "../../models/AvatarTag";
 import {sequelize} from "@db";
 
-interface MarketAvatarsParams {
-	page: number
-}
-
 type IAvatarsFromDB = IAvatarModelType & {
 	avatarTags: (IAvatarTagModelType & {
 		tag: ITagModelType
 	})[]
 }
 
-const elementsForPage = 100
+// TODO: ВЫНЕСТИ ВСЁ КРАСИВЕНЬКО ТУТ И ТАМ
 
-const getMarketAvatars = async ({page}: MarketAvatarsParams): Promise<AvatarData[]> => {
+const getMarketAvatars = async (): Promise<AvatarData[]> => {
 	const avatars = await AvatarModel.findAll({
-		limit: elementsForPage,
-		offset: elementsForPage * (page - 1),
 		include: [
 			{
 				model: AvatarTagModel,

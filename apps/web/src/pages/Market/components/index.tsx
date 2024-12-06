@@ -1,3 +1,3 @@
-export * from './marketHeader.tsx'
-export * from './filtersModal.tsx'
-export * from './filtersPanel.tsx'
+export * from './HeaderPanel.tsx'
+export * from './FiltersPanel.tsx'
+export * from './AvatarsPanel.tsx'

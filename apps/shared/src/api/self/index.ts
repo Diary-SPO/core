@@ -31,7 +31,7 @@ export type ResponseLogin = Person & {
   tokenId: bigint
 }
 
-export interface AvatarData {
+export type AvatarData = {
   isAnimated: boolean
   filename: string
   tags: string[]

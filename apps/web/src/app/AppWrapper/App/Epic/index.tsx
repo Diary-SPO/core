@@ -24,7 +24,7 @@ import {
 import type { Pages } from '../../../../shared/types.ts'
 
 import type { FC } from 'react'
-import Market from '../../../../pages/Market'
+import { Market } from '../../../../pages/Market'
 import Tabbar from './Tabbar'
 
 interface IEpic {
