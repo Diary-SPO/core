@@ -2,9 +2,7 @@ import { DataTypes } from 'sequelize'
 
 import { cache, enableCache, sequelize } from '@db'
 
-import { SPOModel } from '../SPO'
 import type { IModelPrototype } from '../types'
-import {AvatarModel} from "../Avatar";
 
 // REMOVE IT
 // ?

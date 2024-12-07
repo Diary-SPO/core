@@ -7,7 +7,8 @@ import {
   Counter,
   Group,
   Header,
-  Separator, Skeleton,
+  Separator,
+  Skeleton,
   SubnavigationBar,
   SubnavigationButton,
   VisuallyHidden
@@ -15,16 +16,16 @@ import {
 import type { FC } from 'react'
 
 interface Props {
-	avatars: AvatarData[]
-	isAnimated: boolean
-	isStatic: boolean
-	changeIsAnimated: () => void
-	changeIsStatic: () => void
-	setSelectedTags: (tags: string[]) => void
-	selectedTags: string[]
-	tags: string[]
-	isLoading: boolean
-	isError: boolean
+  avatars: AvatarData[]
+  isAnimated: boolean
+  isStatic: boolean
+  changeIsAnimated: () => void
+  changeIsStatic: () => void
+  setSelectedTags: (tags: string[]) => void
+  selectedTags: string[]
+  tags: string[]
+  isLoading: boolean
+  isError: boolean
 }
 
 export const FiltersPanel: FC<Props> = ({
@@ -36,7 +37,7 @@ export const FiltersPanel: FC<Props> = ({
   setSelectedTags,
   selectedTags,
   tags,
-	isLoading,
+  isLoading,
   isError
 }) => {
   const changeSelectTag = (tag: string) => {
@@ -53,75 +54,70 @@ export const FiltersPanel: FC<Props> = ({
   }
 
   return (
-    <Group header={
-      <Header>
-        { isLoading ?
-          <Skeleton width={67} height={20}/>
-          : "Фильтры"
-        }
-      </Header>
-    }>
-      {isLoading ?
-        (
-          <SubnavigationBar>
-            <Skeleton width={189} height={36}/>
-            <Skeleton width={150} height={36}/>
-          </SubnavigationBar>
-        )
-        :
-        (
-          <SubnavigationBar>
-            <SubnavigationButton
-              before={<Icon24VideoCircleOutline/>}
-              selected={isAnimated}
-              onClick={changeIsAnimated}
-              mode='primary'
-              after={
-                <Counter size='s'>
-                  <VisuallyHidden>Применено: </VisuallyHidden>
-                  {avatars.filter((avatar) => avatar.isAnimated).length}
-                </Counter>
-              }
-            >
-              Анимированные
-            </SubnavigationButton>
-
-            <SubnavigationButton
-              before={<Icon24PhotosStackOutline/>}
-              selected={isStatic}
-              onClick={changeIsStatic}
-              mode='primary'
-              after={
-                <Counter size='s'>
-                  <VisuallyHidden>Применено: </VisuallyHidden>
-                  {avatars.filter((avatar) => !avatar.isAnimated).length}
-                </Counter>
-              }
-            >
-              Статичные
-            </SubnavigationButton>
-
-            {Boolean(tags.length) && <Separator direction='vertical'/>}
-
-            {tags.map((tag) => (
-              <SubnavigationButton
-                key={tag}
-                onClick={() => changeSelectTag(tag)}
-                selected={selectedTags.includes(tag)}
-                mode='primary'
-                after={
-                  <Counter size='s'>
-                    <VisuallyHidden>Применено: </VisuallyHidden>
-                    {avatars.filter((avatar) => avatar.tags.includes(tag)).length}
-                  </Counter>
-                }
-              >
-                {tag}
-              </SubnavigationButton>
-            ))}
-          </SubnavigationBar>
-        )
+    <Group
+      header={
+        <Header>
+          {isLoading ? <Skeleton width={67} height={20} /> : 'Фильтры'}
+        </Header>
       }
+    >
+      {isLoading ? (
+        <SubnavigationBar>
+          <Skeleton width={189} height={36} />
+          <Skeleton width={150} height={36} />
+        </SubnavigationBar>
+      ) : (
+        <SubnavigationBar>
+          <SubnavigationButton
+            before={<Icon24VideoCircleOutline />}
+            selected={isAnimated}
+            onClick={changeIsAnimated}
+            mode='primary'
+            after={
+              <Counter size='s'>
+                <VisuallyHidden>Применено: </VisuallyHidden>
+                {avatars.filter((avatar) => avatar.isAnimated).length}
+              </Counter>
+            }
+          >
+            Анимированные
+          </SubnavigationButton>
+
+          <SubnavigationButton
+            before={<Icon24PhotosStackOutline />}
+            selected={isStatic}
+            onClick={changeIsStatic}
+            mode='primary'
+            after={
+              <Counter size='s'>
+                <VisuallyHidden>Применено: </VisuallyHidden>
+                {avatars.filter((avatar) => !avatar.isAnimated).length}
+              </Counter>
+            }
+          >
+            Статичные
+          </SubnavigationButton>
+
+          {Boolean(tags.length) && <Separator direction='vertical' />}
+
+          {tags.map((tag) => (
+            <SubnavigationButton
+              key={tag}
+              onClick={() => changeSelectTag(tag)}
+              selected={selectedTags.includes(tag)}
+              mode='primary'
+              after={
+                <Counter size='s'>
+                  <VisuallyHidden>Применено: </VisuallyHidden>
+                  {avatars.filter((avatar) => avatar.tags.includes(tag)).length}
+                </Counter>
+              }
+            >
+              {tag}
+            </SubnavigationButton>
+          ))}
+        </SubnavigationBar>
+      )}
     </Group>
   )
 }

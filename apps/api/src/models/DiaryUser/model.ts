@@ -5,9 +5,9 @@ import { KEY } from '@config'
 import { sequelize } from '@db'
 import { formatDate } from '@utils'
 
+import { AvatarModel } from '../Avatar'
 import { GroupModel } from '../Group'
 import type { IModelPrototype } from '../types'
-import {AvatarModel} from "../Avatar";
 
 // REMOVE IT
 // ?

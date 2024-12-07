@@ -8,9 +8,9 @@ import { AuthController } from './auth'
 import { FinalMarksController } from './finalMarks'
 import { HomeController } from './home'
 import { LessonsController } from './lessons'
+import { MarketAvatars } from './marketAvatars'
 import { OrganizationController } from './organization'
 import { PerformanceCurrentController } from './performance.current'
-import {MarketAvatars} from "./marketAvatars";
 
 export const routes = new Elysia()
   .use(HomeController)

@@ -2,10 +2,9 @@ import { DataTypes } from 'sequelize'
 
 import { cache, enableCache, sequelize } from '@db'
 
-import { SPOModel } from '../SPO'
-import type {IModelPrototype, IModelPrototypeNoId} from '../types'
-import {AvatarModel} from "../Avatar";
-import {DiaryUserModel} from "../DiaryUser";
+import { AvatarModel } from '../Avatar'
+import { DiaryUserModel } from '../DiaryUser'
+import type { IModelPrototypeNoId } from '../types'
 
 // REMOVE IT
 // ?

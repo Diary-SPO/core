@@ -11,8 +11,8 @@ import { getTimezone } from './config/getTimeZone'
 import { routes } from './routes'
 
 import './models/relations'
-import staticPlugin from "@elysiajs/static";
-import {syncDatabaseForDecorations} from "./helpers/syncDatabaseForDecorations";
+import staticPlugin from '@elysiajs/static'
+import { syncDatabaseForDecorations } from './helpers/syncDatabaseForDecorations'
 
 // настраиваем сервер...
 const port = Bun.env.PORT ?? 3003
@@ -55,11 +55,13 @@ const app = new Elysia()
       contentSecurityPolicy: false
     })
   )
-  .use(staticPlugin({
-    assets: 'src/uploads',
-    prefix: 'uploads',
-    staticLimit: 1_000_000
-  }))
+  .use(
+    staticPlugin({
+      assets: 'src/uploads',
+      prefix: 'uploads',
+      staticLimit: 1_000_000
+    })
+  )
   .use(routes)
   .listen(port)
 

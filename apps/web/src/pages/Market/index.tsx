@@ -1,10 +1,10 @@
 import type { AvatarData } from '@diary-spo/shared'
-import {Panel, Placeholder, PullToRefresh, View} from '@vkontakte/vkui'
+import { Icon56HourglassErrorBadgeOutline } from '@vkontakte/icons'
+import { Panel, Placeholder, PullToRefresh, View } from '@vkontakte/vkui'
 import { type FC, useEffect, useState } from 'react'
-import {isApiError, PanelHeaderWithBack} from '../../shared'
+import { PanelHeaderWithBack, isApiError } from '../../shared'
 import { client } from '../../shared/api/client.ts'
-import {HeaderPanel, FiltersPanel, AvatarsPanel} from './components'
-import {Icon56HourglassErrorBadgeOutline} from "@vkontakte/icons";
+import { AvatarsPanel, FiltersPanel, HeaderPanel } from './components'
 
 type Props = {}
 const offset = 15
@@ -34,7 +34,9 @@ export const Market: FC<Props> = () => {
   }
 
   // Стучимся к серверу
-  const getAvatarsFromServer = async (isForce = getAvatars.length <= 0): Promise<void> => {
+  const getAvatarsFromServer = async (
+    isForce = getAvatars.length <= 0
+  ): Promise<void> => {
     if (isForce) {
       setGetAvatars([])
       setShowsAvatars(offset)
@@ -45,7 +47,7 @@ export const Market: FC<Props> = () => {
     setIsGetAvatarsError(false)
 
     try {
-      const {data} = await client.marketAvatars.get()
+      const { data } = await client.marketAvatars.get()
       if (!data) return
 
       if (isApiError(data)) {
@@ -78,51 +80,49 @@ export const Market: FC<Props> = () => {
     <View activePanel={activePanel}>
       <Panel id='market'>
         <PullToRefresh onRefresh={() => getAvatarsFromServer(true)}>
-          <PanelHeaderWithBack title='Магазин'/>
-          {
-            isGetAvatarsError ?
-              <Placeholder>
-                <Placeholder.Icon>
-                  <Icon56HourglassErrorBadgeOutline/>
-                </Placeholder.Icon>
-                <Placeholder.Title>
-                  Ошибка выполнения запроса
-                </Placeholder.Title>
-                <Placeholder.Description>
-                  Возможно, сервер сейчас не может обработать запрос
-                </Placeholder.Description>
-              </Placeholder>
-              :
-              <>
-                <HeaderPanel
-                  isLoading={getIsLoading}
-                  isError={isGetAvatarsError}/>
-                <FiltersPanel
-                  isAnimated={isAnimated}
-                  isStatic={isStatic}
-                  changeIsAnimated={changeIsAnimated}
-                  changeIsStatic={changeIsStatic}
-                  avatars={getAvatars}
-                  setSelectedTags={setSelectedTags}
-                  selectedTags={selectedTags}
-                  tags={tags}
-                  isLoading={getIsLoading}
-                  isError={isGetAvatarsError}
-                />
-                <AvatarsPanel
-                  avatars={getAvatars}
-                  isStatic={isStatic}
-                  isAnimated={isAnimated}
-                  isError={isGetAvatarsError}
-                  isLoading={getIsLoading}
-                  isForceLoading={getIsForceLoading}
-                  selectedTags={selectedTags}
-                  getShowsAvatars={getShowsAvatars}
-                  setShowsAvatars={setShowsAvatars}
-                  offset={offset}
-                />
-              </>
-          }
+          <PanelHeaderWithBack title='Магазин' />
+          {isGetAvatarsError ? (
+            <Placeholder>
+              <Placeholder.Icon>
+                <Icon56HourglassErrorBadgeOutline />
+              </Placeholder.Icon>
+              <Placeholder.Title>Ошибка выполнения запроса</Placeholder.Title>
+              <Placeholder.Description>
+                Возможно, сервер сейчас не может обработать запрос
+              </Placeholder.Description>
+            </Placeholder>
+          ) : (
+            <>
+              <HeaderPanel
+                isLoading={getIsLoading}
+                isError={isGetAvatarsError}
+              />
+              <FiltersPanel
+                isAnimated={isAnimated}
+                isStatic={isStatic}
+                changeIsAnimated={changeIsAnimated}
+                changeIsStatic={changeIsStatic}
+                avatars={getAvatars}
+                setSelectedTags={setSelectedTags}
+                selectedTags={selectedTags}
+                tags={tags}
+                isLoading={getIsLoading}
+                isError={isGetAvatarsError}
+              />
+              <AvatarsPanel
+                avatars={getAvatars}
+                isStatic={isStatic}
+                isAnimated={isAnimated}
+                isError={isGetAvatarsError}
+                isLoading={getIsLoading}
+                isForceLoading={getIsForceLoading}
+                selectedTags={selectedTags}
+                getShowsAvatars={getShowsAvatars}
+                setShowsAvatars={setShowsAvatars}
+                offset={offset}
+              />
+            </>
+          )}
         </PullToRefresh>
       </Panel>
     </View>

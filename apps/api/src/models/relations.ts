@@ -4,6 +4,8 @@ import { AbsenceTypeModel } from './AbsenceType'
 import { AcademicYearModel } from './AcademicYear'
 import { AdsModel } from './Ads'
 import { AuthModel } from './Auth'
+import { AvatarModel } from './Avatar'
+import { AvatarTagModel } from './AvatarTag'
 import { ClassroomModel } from './Classroom'
 import { DiaryUserModel } from './DiaryUser'
 import { ExaminationTypeModel } from './Examination'
@@ -19,6 +21,7 @@ import { ScheduleSubgroupModel } from './ScheduleSubgroup'
 import { SubgroupModel } from './Subgroup'
 import { SubjectModel } from './Subject'
 import { SubscribeModel } from './Subscribe'
+import { TagModel } from './Tag'
 import { TaskModel } from './Task'
 import { TaskTypeModel } from './TaskType'
 import { TeacherModel } from './Teacher'
@@ -28,10 +31,7 @@ import { TermSubjectExaminationTypeModel } from './TermSubjectExaminationType'
 import { TermTypeModel } from './TermType'
 import { TermUserModel } from './TermUser'
 import { ThemeModel } from './Theme'
-import {AvatarModel} from "./Avatar";
-import {UserAvatarModel} from "./UserAvatar";
-import {AvatarTagModel} from "./AvatarTag";
-import {TagModel} from "./Tag";
+import { UserAvatarModel } from './UserAvatar'
 
 // SPO <--->> Group
 SPOModel.hasMany(GroupModel)
