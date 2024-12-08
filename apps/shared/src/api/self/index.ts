@@ -30,3 +30,11 @@ export type ResponseLogin = Person & {
   token: string
   tokenId: bigint
 }
+
+export type AvatarData = {
+  id: bigint
+  isAnimated: boolean
+  filename: string
+  tags: string[]
+  price: number
+}

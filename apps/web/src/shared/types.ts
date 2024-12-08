@@ -4,7 +4,12 @@ import type {
   MarkKeys
 } from '@diary-spo/shared'
 
-export type Pages = 'schedule' | 'marks' | 'settings' | 'notifications'
+export type Pages =
+  | 'schedule'
+  | 'marks'
+  | 'settings'
+  | 'notifications'
+  | 'market'
 
 export interface Storage {
   key: string

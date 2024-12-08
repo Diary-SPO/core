@@ -4,6 +4,8 @@ import { AbsenceTypeModel } from './AbsenceType'
 import { AcademicYearModel } from './AcademicYear'
 import { AdsModel } from './Ads'
 import { AuthModel } from './Auth'
+import { AvatarModel } from './Avatar'
+import { AvatarTagModel } from './AvatarTag'
 import { ClassroomModel } from './Classroom'
 import { DiaryUserModel } from './DiaryUser'
 import { ExaminationTypeModel } from './Examination'
@@ -19,6 +21,7 @@ import { ScheduleSubgroupModel } from './ScheduleSubgroup'
 import { SubgroupModel } from './Subgroup'
 import { SubjectModel } from './Subject'
 import { SubscribeModel } from './Subscribe'
+import { TagModel } from './Tag'
 import { TaskModel } from './Task'
 import { TaskTypeModel } from './TaskType'
 import { TeacherModel } from './Teacher'
@@ -28,6 +31,8 @@ import { TermSubjectExaminationTypeModel } from './TermSubjectExaminationType'
 import { TermTypeModel } from './TermType'
 import { TermUserModel } from './TermUser'
 import { ThemeModel } from './Theme'
+import { UserAvatarModel } from './UserAvatar'
+import {BalanceOperationModel} from "./BalanceOperation";
 
 // SPO <--->> Group
 SPOModel.hasMany(GroupModel)
@@ -193,10 +198,31 @@ TermSubjectModel.belongsTo(TeacherModel)
 DiaryUserModel.hasMany(TermSubjectModel)
 TermSubjectModel.belongsTo(DiaryUserModel)
 
+// DiaryUser <-->> Subscribe
 DiaryUserModel.hasMany(SubscribeModel)
 SubscribeModel.belongsTo(DiaryUserModel)
 
+// Avatar <-->> UserAvatar
+AvatarModel.hasMany(UserAvatarModel)
+UserAvatarModel.belongsTo(AvatarModel)
+
+// Avatar <-->> DiaryUser
+AvatarModel.hasMany(DiaryUserModel)
+DiaryUserModel.belongsTo(AvatarModel)
+
+// Avatar <-->> AvatarTag
+AvatarModel.hasMany(AvatarTagModel)
+AvatarTagModel.belongsTo(AvatarModel)
+
+// Tag <-->> AvatarTag
+TagModel.hasMany(AvatarTagModel)
+AvatarTagModel.belongsTo(TagModel)
+
+// DiaryUser <-->> BalanceOperation
+DiaryUserModel.hasMany(BalanceOperationModel)
+BalanceOperationModel.belongsTo(DiaryUserModel)
+
 if (forceSyncDatabase) {
   console.log('Syncing database...')
-  await sequelize.sync({})
+  await sequelize.sync()
 }

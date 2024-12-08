@@ -1,3 +1,5 @@
+import { ApiError } from '@api'
+import { HTTP_STATUSES } from '@diary-spo/web/src/shared/types'
 import ky, { type Input, type KyResponse, type Options } from 'ky'
 
 const defaultKy = ky.extend({
@@ -23,11 +25,15 @@ const localFetcher = async (
     }
   } catch {}
 
+  if (!result) {
+    throw new ApiError('Internal', HTTP_STATUSES.INTERNAL)
+  }
+
   return {
-    ok: result ? result.ok : false,
-    status: result ? result.status : 0,
-    headers: result ? result.headers : ({} as Headers),
-    json: async <T>() => (result as KyResponse).json<T>()
+    ok: result.ok,
+    status: result.status,
+    headers: result.headers,
+    json: async <T>() => result.json<T>()
   }
 }
 

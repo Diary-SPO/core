@@ -6,10 +6,10 @@
   "author": "scffs",
   "license": "MIT",
   "dependencies": {
-    "bun": "^1.1.34"
+    "bun": "^1.1.38"
   },
   "devDependencies": {
-    "bun-types": "^1.1.34"
+    "bun-types": "^1.1.38"
   },
   "exports": {
     ".": "./src/index.ts"

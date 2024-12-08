@@ -37,7 +37,7 @@ const NotFound: FC = () => {
   const vkBridgeInsets = useInsets() || undefined
   return (
     <ConfigProvider
-      appearance={vkBridgeAppearance}
+      colorScheme={vkBridgeAppearance}
       isWebView={vkBridge.isWebView()}
       platform={platform}
     >

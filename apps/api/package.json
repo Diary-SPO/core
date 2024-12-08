@@ -17,8 +17,11 @@
   "dependencies": {
     "@diary-spo/crypto": "workspace:*",
     "@elysiajs/cors": "^1.1.1",
+    "@elysiajs/static": "^1.1.1",
+    "@types/cli-progress": "^3.11.6",
     "@types/node-telegram-bot-api": "^0.64.7",
     "cache-manager": "^5.7.6",
+    "cli-progress": "^3.12.0",
     "elysia": "1.1.21",
     "elysia-compression": "^0.0.7",
     "elysia-helmet": "^2.0.0",
@@ -34,7 +37,7 @@
   "devDependencies": {
     "@types/node-rsa": "^1.1.4",
     "@diary-spo/shared": "workspace:*",
-    "@elysiajs/swagger": "^1.1.5",
+    "@elysiajs/swagger": "^1.1.6",
     "@types/pg": "^8.11.10"
   }
 }

@@ -47,10 +47,13 @@ const LessonModal: FC<ILessonModal> = ({ id }) => {
       <ModalPageHeader>Подробнее о паре</ModalPageHeader>
       <LessonMainInfo lessonMainInfo={lessonMainInfo} />
       <LessonTimePlaceInfo lessonTimePlaceInfo={lessonTimePlaceInfo} />
-      <LessonGrade
-        tasks={lessonData.gradebook?.tasks}
-        absenceType={lessonData.gradebook?.absenceType}
-      />
+
+      {'gradebook' in lessonData && (
+        <LessonGrade
+          tasks={lessonData.gradebook?.tasks}
+          absenceType={lessonData.gradebook?.absenceType}
+        />
+      )}
     </ModalPage>
   )
 }

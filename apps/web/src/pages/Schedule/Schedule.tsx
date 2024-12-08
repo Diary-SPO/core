@@ -68,8 +68,10 @@ const Schedule: FC<Props> = ({ id }) => {
   const isNoMarks =
     lessonsState?.length &&
     !lessonsState?.some((day) =>
-      day.lessons?.some((lesson) =>
-        lesson.gradebook?.tasks?.some((task) => task.mark)
+      day.lessons?.some(
+        (lesson) =>
+          'gradebook' in lesson &&
+          lesson.gradebook?.tasks?.some((task) => task.mark)
       )
     )
 
@@ -88,9 +90,7 @@ const Schedule: FC<Props> = ({ id }) => {
   const ScheduleGroupWithSpinner = withSpinner(ScheduleGroup)
 
   const MarksHeader = (
-    <Header mode='secondary'>
-      Оценки за неделю {isNoMarks && 'отсутствуют'}
-    </Header>
+    <Header size='s'>Оценки за неделю {isNoMarks && 'отсутствуют'}</Header>
   )
 
   if (isError) {
@@ -111,8 +111,8 @@ const Schedule: FC<Props> = ({ id }) => {
           <Group
             header={
               <Header
-                aside={ScheduleGroupAside}
-                mode='secondary'
+                after={ScheduleGroupAside}
+                size='s'
                 // @TODO: ??
                 style={{ alignItems: 'center' }}
               >

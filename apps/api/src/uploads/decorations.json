@@ -1,0 +1,16 @@
+{
+  "avatars": [
+    {
+      "isAnimated": true,
+      "filename": "1.gif",
+      "tags": ["Девушка"],
+      "price": 2500
+    },
+    {
+      "isAnimated": false,
+      "filename": "2.jpg",
+      "tags": ["Парень", "Эпично"],
+      "price": 1500
+    }
+  ]
+}

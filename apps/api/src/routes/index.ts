@@ -8,6 +8,7 @@ import { AuthController } from './auth'
 import { FinalMarksController } from './finalMarks'
 import { HomeController } from './home'
 import { LessonsController } from './lessons'
+import {BuyAvatar, MarketAvatars, UserAvatars, UserInfo, UserSaveAvatar} from './market'
 import { OrganizationController } from './organization'
 import { PerformanceCurrentController } from './performance.current'
 
@@ -20,6 +21,11 @@ export const routes = new Elysia()
   .use(AttestationController)
   .use(FinalMarksController)
   .use(PerformanceCurrentController)
+  .use(MarketAvatars)
+  .use(UserInfo)
+  .use(BuyAvatar)
+  .use(UserAvatars)
+  .use(UserSaveAvatar)
   /** Обработка любых ошибок в кажом роуте **/
   .onError(({ set, code, path, error }) => {
     if (Number(code)) {

@@ -46,3 +46,5 @@ package-lock.json
 # IDE files
 /.idea
 
+#uploads
+src/uploads/avatars

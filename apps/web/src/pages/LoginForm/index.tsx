@@ -134,11 +134,11 @@ const LoginForm: FC<Props> = ({ id }) => {
         : 'Введите корректный пароль'
 
   const Banner = isDataInvalid ? (
-    <FormStatus header='Некорректные данные' mode='error'>
+    <FormStatus title='Некорректные данные' mode='error'>
       Проверьте правильность логина и пароля
     </FormStatus>
   ) : (
-    <FormStatus header='Нам можно доверять' mode='default'>
+    <FormStatus title='Нам можно доверять' mode='default'>
       Мы бережно передаем ваши данные и храним в зашифрованном виде
     </FormStatus>
   )

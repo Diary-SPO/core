@@ -149,9 +149,8 @@ const Notifications: FC<Props> = ({ id }) => {
             )
           )}
       </Div>
-
       {Boolean(!notifications?.length && !isError) && (
-        <Placeholder header='Объявлений нет' />
+        <Placeholder title='Объявлений нет' />
       )}
       {isError && <ErrorPlaceholder onClick={() => fetchAds(true)} />}
       {snackbar}

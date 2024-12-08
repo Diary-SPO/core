@@ -1,16 +1,17 @@
 import {
+  type AbsenceType,
   AbsenceTypes,
   AbsenceTypesDescription,
-  type Lesson
+  type Task
 } from '@diary-spo/shared'
 import { Group, Header, SimpleCell } from '@vkontakte/vkui'
 import type { FC } from 'react'
-import { ExplanationTooltip, Mark } from '../../../../../../shared/ui'
+import { ExplanationTooltip, Mark } from '../../../../../../shared'
 import LessonTasks from './LessonTasks'
 
 interface ILessonGrade {
-  tasks: Lesson['gradebook']['tasks']
-  absenceType: Lesson['gradebook']['absenceType']
+  tasks?: Task[]
+  absenceType?: AbsenceType
 }
 
 const LessonGrade: FC<ILessonGrade> = ({ tasks, absenceType }) => {
@@ -21,7 +22,7 @@ const LessonGrade: FC<ILessonGrade> = ({ tasks, absenceType }) => {
   }
 
   const header = (
-    <Header mode='tertiary'>
+    <Header size='m'>
       <ExplanationTooltip
         text='Успеваемость'
         tooltipContent='Информация может быть неактуальной. При возникновении неточностей можете обратиться к нам'
@@ -29,12 +30,12 @@ const LessonGrade: FC<ILessonGrade> = ({ tasks, absenceType }) => {
     </Header>
   )
 
-  const mark = <Mark mark={AbsenceTypes[absenceType]} size='s' />
+  const mark = absenceType && <Mark mark={AbsenceTypes[absenceType]} size='s' />
 
   return (
     <Group header={header}>
       {hasTasks && <LessonTasks tasks={tasks} />}
-      {absenceType && (
+      {mark && (
         <SimpleCell after={mark}>
           {AbsenceTypesDescription[AbsenceTypes[absenceType]]}
         </SimpleCell>
