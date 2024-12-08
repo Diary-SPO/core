@@ -16,6 +16,10 @@ import './index.css'
 import { useRouteNavigator } from '@vkontakte/vk-mini-apps-router'
 import { MODAL_PAGE_USER_EDIT } from '../../../../../shared/config'
 import { useUserEditModal } from '../../../../../store/userEditModal'
+import {client} from "../../../../../shared/api/client.ts";
+import {isApiError} from "../../../../../shared";
+import {getUrlPath} from "../../../../Market/components/AvatarsBlock/getUrlPath.tsx";
+import {winxAva} from "../../../../../shared/config/images.ts";
 
 interface UserData {
   city: string
@@ -69,17 +73,38 @@ const UserInfo: FC = () => {
     getUserInfo()
   }, [])
 
+
+  const [userInfoIsLoading, setUserInfoIsLoading] = useState(true)
+  const [userAvatarFilename, setUserAvatarFilename] = useState<string|null|undefined>(undefined)
   const { setData } = useUserEditModal()
   const routeNavigator = useRouteNavigator()
 
   const handleEditUserButtonClick = () => {
-    const modalData = {
-      name: userData.name
-    }
-
-    setData(modalData)
+    setData({
+      setAvatarFilename: (value: string) => setUserAvatarFilename(value)
+    })
     routeNavigator.showModal(MODAL_PAGE_USER_EDIT)
   }
+
+
+  const loadUserInfoFromServer = async () => {
+    setUserInfoIsLoading(true)
+
+    try {
+      const { data } = await client.userInfo.get()
+
+      if (data === null || isApiError(data))
+        throw new Error('Ошибка с сервера')
+
+      setUserAvatarFilename(data.avatar)
+    } finally {
+      setUserInfoIsLoading(false)
+    }
+  }
+
+  useEffect(() => {
+    loadUserInfoFromServer()
+  }, []);
 
   if (isLoading) {
     return (
@@ -94,7 +119,7 @@ const UserInfo: FC = () => {
   return (
     <Group mode='plain' header={header}>
       <Gradient mode='tint' className='userInfo__Wrapper'>
-        <Avatar size={96} src='https://mangabuff.ru/img/avatars/x150/806.gif' />
+        <Avatar size={96} src={userAvatarFilename ? getUrlPath(userAvatarFilename) : (userAvatarFilename === null ? winxAva : undefined)} />
         <Placeholder
           title={userData.name}
           className='userInfo__Content'

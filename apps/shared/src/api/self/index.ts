@@ -32,6 +32,7 @@ export type ResponseLogin = Person & {
 }
 
 export type AvatarData = {
+  id: bigint
   isAnimated: boolean
   filename: string
   tags: string[]

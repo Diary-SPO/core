@@ -18,22 +18,23 @@ import {
   Tooltip
 } from '@vkontakte/vkui'
 import React, { type FC, useState } from 'react'
-import { API_URL } from '../../../shared/config'
+import {getUrlPath} from "./getUrlPath.tsx";
+import {balanceFormatter} from "../HeaderBlock/balanceFormatter.tsx";
 
 interface Props {
   avatars: AvatarData[]
   isStatic: boolean
   isAnimated: boolean
-  isError: boolean
   isLoading: boolean
   isForceLoading: boolean
   selectedTags: string[]
   getShowsAvatars: number
   setShowsAvatars: (showsAvatars: number) => void
+  onClickAvatarHandler: (avatar: AvatarData) => void
+  getUserBalance: number
   offset: number
 }
-
-const url = `${API_URL}/uploads/avatars/`
+import './index.css'
 
 export const AvatarsPanel: FC<Props> = ({
   avatars,
@@ -44,14 +45,11 @@ export const AvatarsPanel: FC<Props> = ({
   isForceLoading,
   getShowsAvatars,
   setShowsAvatars,
-  offset,
-  isError
+  onClickAvatarHandler,
+  getUserBalance,
+  offset
 }) => {
   const [isNotZeroElements, setIsNotZeroElements] = useState(true)
-
-  const getUrlPath = (avatarData: AvatarData) => {
-    return `${url}/${avatarData.filename}`
-  }
 
   const filteredAvatars = (isFull = false) => {
     const filtered = avatars.filter((avatar) => {
@@ -70,7 +68,8 @@ export const AvatarsPanel: FC<Props> = ({
 
     if (isNotZeroElements !== isNotZero) setIsNotZeroElements(isNotZero)
 
-    if (filtered.length <= offset) setShowsAvatars(offset)
+    // Проверка avatars.length нужна, чтобы не сетать стэйт во время отрисовки, а то ошибочка вылазит
+    if (filtered.length <= offset && avatars.length) setShowsAvatars(offset)
 
     return isFull ? filtered : filtered.splice(0, getShowsAvatars)
   }
@@ -82,19 +81,25 @@ export const AvatarsPanel: FC<Props> = ({
     )
   }
 
+  const colorIcon = ({avatar}: {avatar: AvatarData}) => <Icon16DiamondOutline color={avatar.price > getUserBalance ? 'red' : undefined}/>
+
   const skeletons = new Array(7).fill(null)
   const AvatarPreviewComponent = ({ avatar }: { avatar: AvatarData }) => {
     return (
-      <Avatar size={110} src={getUrlPath(avatar)} style={{ isolation: 'auto' }}>
+      <Avatar onClick={() => onClickAvatarHandler(avatar)} size={110} src={getUrlPath(avatar)} style={{ isolation: 'auto' }}>
         <Avatar.Badge className='select-avatar_badge'>
           <Tooltip
-            title={avatar.price ? `${avatar.price} алмазов` : 'Бесплатно'}
+            title={avatar.price ? `${balanceFormatter(avatar.price)} алмазов` : 'Бесплатно'}
           >
             <ToolButton
-              IconCompact={avatar.price ? Icon16DiamondOutline : Icon16Gift}
-              IconRegular={avatar.price ? Icon16DiamondOutline : Icon16Gift}
+              IconCompact={avatar.price ? () => colorIcon({avatar}) : Icon16Gift}
+              IconRegular={avatar.price ? () => undefined : Icon16Gift}
             >
-              {avatar.price || null}
+              {
+                avatar.price > 0 &&
+                <label
+                  className={avatar.price > getUserBalance ? 'no-money' : ''}>{balanceFormatter(avatar.price)}</label>
+              }
             </ToolButton>
           </Tooltip>
         </Avatar.Badge>

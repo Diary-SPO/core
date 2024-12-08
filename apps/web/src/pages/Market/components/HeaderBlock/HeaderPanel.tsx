@@ -8,17 +8,20 @@ import {
   Skeleton,
   Tooltip
 } from '@vkontakte/vkui'
-import { type FC, useState } from 'react'
-
-const urls = ['https://mangabuff.ru/img/avatars/x150/806.gif']
+import { type FC } from 'react'
+import {Nullable} from "@diary-spo/shared";
+import {winxAva} from "../../../../shared/config/images.ts";
+import {balanceFormatter} from "./balanceFormatter.tsx";
+import {getUrlPath} from "../AvatarsBlock/getUrlPath.tsx";
 
 interface Props {
-  isError: boolean
   isLoading: boolean
+  username: string
+  avatar: Nullable<string>
+  balance: number
 }
 
-export const HeaderPanel: FC<Props> = ({ isLoading, isError }) => {
-  const [selectAva] = useState(urls[0])
+export const HeaderPanel: FC<Props> = ({ isLoading, username, avatar, balance }) => {
   return (
     <Group>
       {isLoading ? (
@@ -37,12 +40,12 @@ export const HeaderPanel: FC<Props> = ({ isLoading, isError }) => {
         </RichCell>
       ) : (
         <RichCell
-          before={<Avatar size={48} src={selectAva} />}
+          before={<Avatar size={48} src={avatar ? getUrlPath(avatar) : winxAva} />}
           extraSubtitle='Вы великолепны 😉'
           after={
             <Tooltip description='Алмазы — это то, что вы получаете за активность в приложении'>
               <label>
-                1 256{' '}
+                {balanceFormatter(balance)}{' '}
                 <Icon28DiamondOutline
                   height={20}
                   style={{
@@ -67,7 +70,7 @@ export const HeaderPanel: FC<Props> = ({ isLoading, isError }) => {
           }
           multiline
         >
-          Евгений Малинин{' '}
+          {username}{' '}
         </RichCell>
       )}
     </Group>

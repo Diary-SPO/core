@@ -1,3 +1,2 @@
-export * from './HeaderPanel.tsx'
-export * from './FiltersPanel.tsx'
-export * from './AvatarsPanel.tsx'
+export * from './AvatarsBlock'
+export * from './HeaderBlock'

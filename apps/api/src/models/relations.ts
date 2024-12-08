@@ -32,6 +32,7 @@ import { TermTypeModel } from './TermType'
 import { TermUserModel } from './TermUser'
 import { ThemeModel } from './Theme'
 import { UserAvatarModel } from './UserAvatar'
+import {BalanceOperationModel} from "./BalanceOperation";
 
 // SPO <--->> Group
 SPOModel.hasMany(GroupModel)
@@ -216,6 +217,10 @@ AvatarTagModel.belongsTo(AvatarModel)
 // Tag <-->> AvatarTag
 TagModel.hasMany(AvatarTagModel)
 AvatarTagModel.belongsTo(TagModel)
+
+// DiaryUser <-->> BalanceOperation
+DiaryUserModel.hasMany(BalanceOperationModel)
+BalanceOperationModel.belongsTo(DiaryUserModel)
 
 if (forceSyncDatabase) {
   console.log('Syncing database...')

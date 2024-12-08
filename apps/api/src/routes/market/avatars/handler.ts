@@ -1,11 +1,11 @@
 import { sequelize } from '@db'
 import type { AvatarData } from '@diary-spo/shared'
-import { AvatarModel, type IAvatarModelType } from '../../models/Avatar'
+import { AvatarModel, type IAvatarModelType } from '../../../models/Avatar'
 import {
   AvatarTagModel,
   type IAvatarTagModelType
-} from '../../models/AvatarTag'
-import { type ITagModelType, TagModel } from '../../models/Tag'
+} from '../../../models/AvatarTag'
+import { type ITagModelType, TagModel } from '../../../models/Tag'
 
 type IAvatarsFromDB = IAvatarModelType & {
   avatarTags: (IAvatarTagModelType & {
@@ -30,6 +30,7 @@ const getMarketAvatars = async (): Promise<AvatarData[]> => {
 
   for (const avatar of avatars)
     formattedResult.push({
+      id: avatar.id,
       filename: avatar.filename,
       tags: avatar.avatarTags.map((avatarTag) => avatarTag.tag.value),
       isAnimated: avatar.isAnimated,

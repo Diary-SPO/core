@@ -1,124 +1,169 @@
 import {
   Avatar,
-  Div,
   Flex,
   Group,
   Header,
   ModalPage,
-  ModalPageHeader,
+  ModalPageHeader, Placeholder, Skeleton,
   Text
 } from '@vkontakte/vkui'
 import './index.css'
 import {
-  Icon16DoneCircle,
-  Icon28ShoppingCartOutline,
-  Icon56MarketOutline
+  Icon16DoneCircle, Icon16SyncCircleFillBlack, Icon24Repeat,
+  Icon28ShoppingCartOutline, Icon56HourglassErrorBadgeOutline
 } from '@vkontakte/icons'
 import { useRouteNavigator } from '@vkontakte/vk-mini-apps-router'
-import { useState } from 'react'
+import {useState} from 'react'
 import { PAGE_MARKET } from '../../../../../routes'
+import {AvatarData} from "@diary-spo/shared";
+import {getUrlPath} from "../../../../../../pages/Market/components/AvatarsBlock/getUrlPath.tsx";
+import {winxAva} from "../../../../../../shared/config/images.ts";
+import {client} from "../../../../../../shared/api/client.ts";
+import {isApiError} from "../../../../../../shared";
+import {useUserEditModal} from "../../../../../../store/userEditModal";
 
-const urls = [
-  'https://mangabuff.ru/img/avatars/x150/806.gif',
-  'https://mangabuff.ru/img/avatars/x150/1209.gif',
-  'https://mangabuff.ru/img/avatars/x150/689.jpg',
-  'https://mangabuff.ru/img/avatars/x150/688.jpg',
-  'https://mangabuff.ru/img/avatars/x150/685.gif',
-  'https://mangabuff.ru/img/avatars/x150/682.jpg',
-  'https://mangabuff.ru/img/avatars/x150/476.jpg',
-  'https://mangabuff.ru/img/avatars/x150/477.jpg',
-  'https://mangabuff.ru/img/avatars/x150/478.jpg',
-  'https://mangabuff.ru/img/avatars/x150/479.jpg',
-  'https://mangabuff.ru/img/avatars/x150/480.jpg',
-  'https://mangabuff.ru/img/avatars/x150/482.jpg',
-  'https://mangabuff.ru/img/avatars/x150/483.jpg',
-  'https://mangabuff.ru/img/avatars/x150/484.jpg',
-  'https://mangabuff.ru/img/avatars/x150/485.jpg',
-  'https://mangabuff.ru/img/avatars/x150/652.jpg'
+const defaultCollection: AvatarData[] = [
+  {
+    id: BigInt(-1),
+    filename: winxAva,
+    price: 0,
+    isAnimated: false,
+    tags: ['стандартная']
+  }
 ]
 
 const UserEditModal = ({ id }: { id: string }) => {
-  const [selectAva, setSelectAva] = useState(urls[0])
+  const { modalData } = useUserEditModal()
+  const [selectAva, setSelectAva] = useState<AvatarData|null>(null)
   const navigation = useRouteNavigator()
 
-  const selectCurrAva = (url: string) => {
-    setSelectAva(url)
-  }
+  const [getAvatars, setAvatars] = useState<AvatarData[]>(defaultCollection)
 
   const openMarket = () => {
     navigation.push(PAGE_MARKET)
   }
 
-  return (
-    <ModalPage id={id} size={500} dynamicContentHeight>
-      <ModalPageHeader>Сменить аву</ModalPageHeader>
-      <Group>
-        {/*<Group>*/}
-        {/*	<RichCell*/}
-        {/*		before={<Avatar size={48} src={selectAva}/>}*/}
-        {/*		caption="Вы великолепны 😉"*/}
-        {/*		after={*/}
-        {/*      <Tooltip text='Кредиты — это то, сколько вы нам должны'>*/}
-        {/*        <label>*/}
-        {/*          1 256{' '}*/}
-        {/*          <Icon28MoneyWadOutline height={20} style={{*/}
-        {/*            display: 'inline-block',*/}
-        {/*            verticalAlign: 'text-top',*/}
-        {/*          }}/>*/}
-        {/*        </label>*/}
-        {/*      </Tooltip>*/}
-        {/*		}*/}
-        {/*		afterCaption="Кредиты 👆"*/}
-        {/*		actions={*/}
-        {/*			<ButtonGroup mode="horizontal" gap="s" stretched>*/}
-        {/*				<Tooltip text='История списания и зачисления кредитов'>*/}
-        {/*					<Button*/}
-        {/*						mode="secondary"*/}
-        {/*						size="s">*/}
-        {/*						История*/}
-        {/*					</Button>*/}
-        {/*				</Tooltip>*/}
-        {/*			</ButtonGroup>*/}
-        {/*		}*/}
-        {/*		multiline*/}
-        {/*	>*/}
-        {/*		Евгений Малинин{' '}*/}
-        {/*		<Icon20CheckShieldGreen*/}
-        {/*			style={{*/}
-        {/*				display: 'inline-block',*/}
-        {/*				verticalAlign: 'text-top',*/}
-        {/*			}}*/}
-        {/*		/>*/}
-        {/*	</RichCell>*/}
-        {/*</Group>*/}
+  // Работаем с сервером
+  const [isAvatarLoading, setIsAvatarLoading] = useState(false)
+  const [isErrorLoading, setIsErrorLoading] = useState(false)
+  const [isSaveNewAvatarLoading, setIsSaveNewAvatarLoading] = useState(false)
 
-        <Group header={<Header>Мои аватарки</Header>}>
-          <Flex margin='auto' gap='2xl' justify='center'>
-            {urls.map((url, index) => (
-              <Avatar
-                key={index}
-                size={110}
-                src={url}
-                onClick={() => selectCurrAva(url)}
-                className={selectAva === url ? 'select-avatar' : ''}
-              >
-                <Avatar.Badge
-                  hidden={selectAva !== url}
-                  className='select-avatar_badge'
-                >
-                  <Icon16DoneCircle height={25} width={25} />
-                </Avatar.Badge>
-              </Avatar>
-            ))}
-            <Avatar size={110} onClick={openMarket}>
-              <Flex direction='column' align='center'>
-                <Icon28ShoppingCartOutline height={50} width={50} />
-                <Text>Купить ещё</Text>
+  const loadAvatarsFromServer = async () => {
+    setIsAvatarLoading(true)
+    setIsErrorLoading(false)
+    try {
+      const { data } = await client.userAvatars.get()
+
+      if (data === null || isApiError(data))
+        throw new Error('Ошибка с сервера')
+
+      const activeAvatar = data.find((avatar) => avatar.isActive)
+      if (activeAvatar)
+        setSelectAva(activeAvatar)
+
+      setAvatars([...defaultCollection, ...data])
+    } catch {
+      setIsErrorLoading(true)
+    } finally {
+      setIsAvatarLoading(false)
+    }
+  }
+
+  const selectNewAvatar = async (avatar: AvatarData) => {
+    const currentSelectAva = selectAva
+    setIsSaveNewAvatarLoading(true)
+    setSelectAva(avatar)
+
+    try {
+      const response = await client.userSaveAvatar.post({avatarId: `${avatar.id}`})
+
+      if (response.status != 200)
+        throw new Error('Ошибка с сервера')
+
+      modalData.setAvatarFilename(avatar.filename === winxAva ? null : avatar.filename)
+    } catch {
+      setSelectAva(currentSelectAva)
+    } finally {
+      setIsSaveNewAvatarLoading(false)
+    }
+  }
+
+  const skeletons = new Array(7).fill(null)
+
+  return (
+    <ModalPage id={id}
+               size={500}
+               dynamicContentHeight
+               onClosed={() => {
+                 setIsAvatarLoading(true)
+                 setIsErrorLoading(false)
+                 setAvatars(defaultCollection)
+               }}
+               onOpened={() => {
+                 setSelectAva(defaultCollection[0])
+                 loadAvatarsFromServer()
+               }}
+    >
+      <ModalPageHeader>Сменить аву</ModalPageHeader>
+      {
+        isErrorLoading ?
+          <Placeholder>
+            <Placeholder.Icon>
+              <Icon56HourglassErrorBadgeOutline/>
+            </Placeholder.Icon>
+            <Placeholder.Title>Ошибка выполнения запроса</Placeholder.Title>
+            <Placeholder.Description>
+              Возможно, сервер сейчас не может обработать запрос
+            </Placeholder.Description>
+          </Placeholder>
+          :
+          <Group>
+            <Group header={<Header>Мои аватарки</Header>}>
+              <Flex margin='auto' gap='2xl' justify='center'>
+                {
+                  isAvatarLoading
+                    ?
+                    skeletons.map((_, index) => (
+                      <Skeleton
+                        key={index}
+                        width={110}
+                        height={110}
+                        borderRadius={100}
+                      />
+                    ))
+                    : getAvatars.map((avatar, index) => (
+                      <Avatar
+                        key={index}
+                        size={110}
+                        src={avatar.filename != winxAva ? getUrlPath(avatar) : winxAva}
+                        onClick={() => selectNewAvatar(avatar)}
+                        className={selectAva === avatar ? 'select-avatar' : ''}
+                      >
+                        <Avatar.Badge
+                          hidden={selectAva !== avatar}
+                          className='select-avatar_badge'
+                        >
+                          {
+                            isSaveNewAvatarLoading
+                              ? <Icon16SyncCircleFillBlack height={25} width={25}/>
+                              : <Icon16DoneCircle height={25} width={25}/>
+                          }
+                        </Avatar.Badge>
+                      </Avatar>
+                    ))}
+                {
+                  !isAvatarLoading &&
+                  <Avatar size={110} onClick={openMarket}>
+                    <Flex direction='column' align='center'>
+                      <Icon28ShoppingCartOutline height={50} width={50}/>
+                      <Text>Купить ещё</Text>
+                    </Flex>
+                  </Avatar>
+                }
               </Flex>
-            </Avatar>
-          </Flex>
-        </Group>
-      </Group>
+            </Group>
+          </Group>
+      }
     </ModalPage>
   )
 }

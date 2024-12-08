@@ -27,7 +27,7 @@ export type DiaryUserModelType = {
   termStartDate?: Nullable<string>
   isAdmin: boolean
   idFromDiary: number
-  avatarId: bigint
+  avatarId: Nullable<bigint>
 }
 
 export type IDiaryUserModel = IModelPrototype<DiaryUserModelType, 'id'>

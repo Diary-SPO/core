@@ -4,13 +4,17 @@ import { Panel, Placeholder, PullToRefresh, View } from '@vkontakte/vkui'
 import { type FC, useEffect, useState } from 'react'
 import { PanelHeaderWithBack, isApiError } from '../../shared'
 import { client } from '../../shared/api/client.ts'
-import { AvatarsPanel, FiltersPanel, HeaderPanel } from './components'
+import {AvatarsPanel, FiltersPanel, HeaderPanel} from './components'
+import {useBuyModal} from "@store";
+import {useRouteNavigator} from "@vkontakte/vk-mini-apps-router";
+import {MODAL_PAGE_BUY} from "../../shared/config";
 
 type Props = {}
 const offset = 15
 
 export const Market: FC<Props> = () => {
   const [activePanel] = useState('market')
+  const routeNavigator = useRouteNavigator()
 
   // ФИЛЬТРЫ
   const [isAnimated, setIsAnimated] = useState(true)
@@ -33,8 +37,45 @@ export const Market: FC<Props> = () => {
     setIsStatic(!isStatic)
   }
 
+  const getAvatarsFromServer = async () => {
+    const { data } = await client.marketAvatars.get()
+    if (!data) return
+
+    if (isApiError(data)) {
+      new Error('Ошибка от api')
+    }
+
+    const tagsToSave: string[] = []
+
+    data.forEach((avatar) => {
+      avatar.tags.forEach((tag) => {
+        if (!tagsToSave.includes(tag)) tagsToSave.push(tag)
+      })
+    })
+
+    setTags(tagsToSave)
+    setGetAvatars(data)
+  }
+
+  // Статусы загрузки кошелька
+  const [getUserName, setUserName] = useState('')
+  const [getUserAvatar, setUserAvatar] = useState<string|null>(null)
+  const [getUserBalance, setUserBalance] = useState(0)
+
+  const getUserInfoFromServer = async () => {
+    const { data } = await client.userInfo.get()
+
+    if (data === null || isApiError(data)) {
+      throw new Error('Ошибка от api')
+    }
+
+    setUserName(`${data.firstName} ${data.lastName}`)
+    setUserAvatar(data.avatar)
+    setUserBalance(data.balance)
+  }
+
   // Стучимся к серверу
-  const getAvatarsFromServer = async (
+  const getDataFromServer = async (
     isForce = getAvatars.length <= 0
   ): Promise<void> => {
     if (isForce) {
@@ -47,23 +88,8 @@ export const Market: FC<Props> = () => {
     setIsGetAvatarsError(false)
 
     try {
-      const { data } = await client.marketAvatars.get()
-      if (!data) return
-
-      if (isApiError(data)) {
-        new Error('Ошибка от api')
-      }
-
-      const tagsToSave: string[] = []
-
-      data.forEach((avatar) => {
-        avatar.tags.forEach((tag) => {
-          if (!tagsToSave.includes(tag)) tagsToSave.push(tag)
-        })
-      })
-
-      setTags(tagsToSave)
-      setGetAvatars(data)
+      await getUserInfoFromServer()
+      await getAvatarsFromServer()
     } catch {
       setIsGetAvatarsError(true)
     } finally {
@@ -73,13 +99,25 @@ export const Market: FC<Props> = () => {
   }
 
   useEffect(() => {
-    getAvatarsFromServer()
+    getDataFromServer()
   }, [])
+
+  const {setData} = useBuyModal()
+
+  // Покупка
+  const onClickAvatarHandler = (avatar: AvatarData) => {
+    setData({
+      avatar,
+      balance: getUserBalance,
+      setBalance: setUserBalance
+    })
+    routeNavigator.showModal(MODAL_PAGE_BUY)
+  }
 
   return (
     <View activePanel={activePanel}>
       <Panel id='market'>
-        <PullToRefresh onRefresh={() => getAvatarsFromServer(true)}>
+        <PullToRefresh onRefresh={() => getDataFromServer(true)}>
           <PanelHeaderWithBack title='Магазин' />
           {isGetAvatarsError ? (
             <Placeholder>
@@ -95,7 +133,9 @@ export const Market: FC<Props> = () => {
             <>
               <HeaderPanel
                 isLoading={getIsLoading}
-                isError={isGetAvatarsError}
+                username={getUserName}
+                avatar={getUserAvatar}
+                balance={getUserBalance}
               />
               <FiltersPanel
                 isAnimated={isAnimated}
@@ -113,12 +153,13 @@ export const Market: FC<Props> = () => {
                 avatars={getAvatars}
                 isStatic={isStatic}
                 isAnimated={isAnimated}
-                isError={isGetAvatarsError}
                 isLoading={getIsLoading}
                 isForceLoading={getIsForceLoading}
                 selectedTags={selectedTags}
                 getShowsAvatars={getShowsAvatars}
                 setShowsAvatars={setShowsAvatars}
+                onClickAvatarHandler={onClickAvatarHandler}
+                getUserBalance={getUserBalance}
                 offset={offset}
               />
             </>

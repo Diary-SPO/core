@@ -21,14 +21,16 @@ const userAvatarModel = sequelize.define<IUserAvatarModelType>('userAvatar', {
     references: {
       model: AvatarModel
     },
-    allowNull: false
+    allowNull: false,
+    primaryKey: true
   },
   diaryUserId: {
     type: DataTypes.BIGINT,
     references: {
       model: DiaryUserModel
     },
-    allowNull: false
+    allowNull: false,
+    primaryKey: true
   }
 })
 

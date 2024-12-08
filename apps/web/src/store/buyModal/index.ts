@@ -1,19 +1,24 @@
+import type {AvatarData, Nullable} from '@diary-spo/shared'
 import { useSyncExternalStore } from 'react'
 
 import { createStore } from '../store'
 
 interface ModalProps {
-  setAvatarFilename: (name: string|null) => void
+  avatar: Nullable<AvatarData>
+  balance: Nullable<number>
+  setBalance: (balance: number) => void
 }
 
 // TODO: add data
 const modalStore = createStore<ModalProps>({
   initialState: {
-    setAvatarFilename: (name) => null
+    avatar: null,
+    balance: null,
+    setBalance: (balance: number) => null
   }
 })
 
-export const useUserEditModal = () => {
+export const useBuyModal = () => {
   const modal = useSyncExternalStore(modalStore.subscribe, modalStore.getState)
 
   return {
