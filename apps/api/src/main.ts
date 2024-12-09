@@ -43,6 +43,13 @@ const app = new Elysia()
       origin: true
     })
   )
+  .use(
+    staticPlugin({
+      assets: 'src/uploads',
+      prefix: 'uploads',
+      staticLimit: 1_000_000
+    })
+  )
   // сжатие...
   .use(
     compression({
@@ -57,13 +64,6 @@ const app = new Elysia()
   .use(
     helmet({
       contentSecurityPolicy: false
-    })
-  )
-  .use(
-    staticPlugin({
-      assets: 'src/uploads',
-      prefix: 'uploads',
-      staticLimit: 1_000_000
     })
   )
   .use(routes)
