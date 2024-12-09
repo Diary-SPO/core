@@ -1,18 +1,9 @@
-import {Nullable} from "@diary-spo/shared"
 import {UserAvatarModel} from "../../../models/UserAvatar";
 import {API_CODES, API_ERRORS, ApiError} from "@api";
 import {DiaryUserModel} from "../../../models/DiaryUser";
 
-type MarketUserInfo = {
-	firstName: string
-	lastName: string
-	avatar: Nullable<string>
-	balance: number
-}
-
-const userSaveAvatar = async (localUserId: bigint, stringAvatarId: string): Promise<void> => {
-	const avatarId = BigInt(stringAvatarId)
-	const avatarIsSetNull = avatarId === BigInt(-1)
+const userSaveAvatar = async (localUserId: bigint, avatarId: number): Promise<void> => {
+	const avatarIsSetNull = avatarId === -1
 
 	if (!avatarIsSetNull) {
 		const userAvatar = await UserAvatarModel.findOne({where: {avatarId}})

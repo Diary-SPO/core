@@ -8,7 +8,7 @@ import type { IModelPrototype } from '../types'
 // REMOVE IT
 // ?
 export type AvatarModelType = {
-  id: bigint
+  id: number
   filename: string
   price: number
   isAnimated: boolean
@@ -18,7 +18,7 @@ export type IAvatarModelType = IModelPrototype<AvatarModelType, 'id'>
 
 const avatarModel = sequelize.define<IAvatarModelType>('avatar', {
   id: {
-    type: DataTypes.BIGINT,
+    type: DataTypes.INTEGER,
     primaryKey: true,
     autoIncrement: true
   },

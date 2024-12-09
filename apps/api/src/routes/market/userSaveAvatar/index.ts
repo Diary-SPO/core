@@ -14,6 +14,6 @@ export const UserSaveAvatar = new Elysia()
       tags: ['market']
     },
     body: t.Object({
-      avatarId: t.String()
+      avatarId: t.Numeric()
     })
   })

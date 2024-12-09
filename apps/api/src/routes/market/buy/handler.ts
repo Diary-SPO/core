@@ -10,8 +10,7 @@ type OperationStatus = {
 
 // TODO: ВЫНЕСТИ ВСЁ КРАСИВЕНЬКО ТУТ И ТАМ
 
-const buyAvatar = async (localUserId: bigint, strAvatarId: string): Promise<OperationStatus> => {
-	const avatarId = BigInt(strAvatarId)
+const buyAvatar = async (localUserId: bigint, avatarId: number): Promise<OperationStatus> => {
 	const currentBalance = await BalanceOperationModel.sum('amount', {where: {diaryUserId: localUserId}})
 	const avatar = await AvatarModel.findOne({where: {id: avatarId}})
 

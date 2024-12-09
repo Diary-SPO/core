@@ -27,7 +27,7 @@ export type DiaryUserModelType = {
   termStartDate?: Nullable<string>
   isAdmin: boolean
   idFromDiary: number
-  avatarId: Nullable<bigint>
+  avatarId: Nullable<number>
 }
 
 export type IDiaryUserModel = IModelPrototype<DiaryUserModelType, 'id'>
@@ -128,7 +128,7 @@ export const DiaryUserModel = sequelize.define<IDiaryUserModel>('diaryUser', {
     comment: 'Признак администратора'
   },
   avatarId: {
-    type: DataTypes.BIGINT,
+    type: DataTypes.INTEGER,
     allowNull: true,
     references: {
       model: AvatarModel

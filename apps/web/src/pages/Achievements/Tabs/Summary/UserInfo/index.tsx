@@ -7,7 +7,7 @@ import {
   Group,
   Header,
   Placeholder,
-  SimpleCell,
+  SimpleCell, Skeleton,
   Spinner
 } from '@vkontakte/vkui'
 import { type FC, useEffect, useState } from 'react'
@@ -75,13 +75,14 @@ const UserInfo: FC = () => {
 
 
   const [userInfoIsLoading, setUserInfoIsLoading] = useState(true)
+  const [avatarImgIsLoading, setAvatarImgIsLoading] = useState(true)
   const [userAvatarFilename, setUserAvatarFilename] = useState<string|null|undefined>(undefined)
   const { setData } = useUserEditModal()
   const routeNavigator = useRouteNavigator()
 
   const handleEditUserButtonClick = () => {
     setData({
-      setAvatarFilename: (value: string) => setUserAvatarFilename(value)
+      setAvatarFilename: (value: string|null) => setUserAvatarFilename(value)
     })
     routeNavigator.showModal(MODAL_PAGE_USER_EDIT)
   }
@@ -119,7 +120,10 @@ const UserInfo: FC = () => {
   return (
     <Group mode='plain' header={header}>
       <Gradient mode='tint' className='userInfo__Wrapper'>
-        <Avatar size={96} src={userAvatarFilename ? getUrlPath(userAvatarFilename) : (userAvatarFilename === null ? winxAva : undefined)} />
+          <Skeleton width={96} height={96} borderRadius={100} hidden={!avatarImgIsLoading}/>
+           <Avatar size={96}
+                      src={userAvatarFilename ? getUrlPath(userAvatarFilename) : (userAvatarFilename === null ? winxAva : undefined)}
+                      onLoad={() => setAvatarImgIsLoading(false)} hidden={avatarImgIsLoading}/>
         <Placeholder
           title={userData.name}
           className='userInfo__Content'

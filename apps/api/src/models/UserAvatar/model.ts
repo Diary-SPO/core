@@ -9,7 +9,7 @@ import type { IModelPrototypeNoId } from '../types'
 // REMOVE IT
 // ?
 export type UserAvatarModelType = {
-  avatarId: bigint
+  avatarId: number
   diaryUserId: bigint
 }
 
@@ -17,7 +17,7 @@ export type IUserAvatarModelType = IModelPrototypeNoId<UserAvatarModelType>
 
 const userAvatarModel = sequelize.define<IUserAvatarModelType>('userAvatar', {
   avatarId: {
-    type: DataTypes.BIGINT,
+    type: DataTypes.INTEGER,
     references: {
       model: AvatarModel
     },

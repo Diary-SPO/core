@@ -13,6 +13,10 @@ import { routes } from './routes'
 import './models/relations'
 import staticPlugin from '@elysiajs/static'
 import { syncDatabaseForDecorations } from './helpers/syncDatabaseForDecorations'
+import {crutchesInit} from "./helpers/crutches";
+
+// Подключаем костыли
+crutchesInit()
 
 // настраиваем сервер...
 const port = Bun.env.PORT ?? 3003

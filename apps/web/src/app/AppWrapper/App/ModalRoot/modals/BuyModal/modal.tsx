@@ -33,18 +33,19 @@ export const BuyModal: FC<Props> = ({id}) => {
 		setIsError(false)
 		setIsLoading(true)
 		try {
-			const { data } = await client.buyAvatar.post({avatarId: `${modalData.avatar.id}`})
+			const { data } = await client.buyAvatar.post({avatarId: modalData.avatar.id})
 
 			if (data === null || isApiError(data))
 				throw new Error('Ошибка с сервера')
 
 			if (data.isSuccess) {
 				setIsSuccessBuy(true)
+				const newBalance = data.currentBalance - modalData.avatar.price
+				modalData.setBalance(newBalance)
+				modalData.balance = newBalance
 			} else if (modalData.balance ?? 0 >= modalData.avatar.price) {
 				setIsAlreadyBuy(true)
 			}
-
-			modalData.setBalance(data.currentBalance)
 		} catch {
 			setIsError(true)
 		} finally {

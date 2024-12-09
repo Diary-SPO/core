@@ -35,6 +35,7 @@ interface Props {
   offset: number
 }
 import './index.css'
+import {MemorizedAvatarPreview} from "./AvatarPreviewComponent.tsx";
 
 export const AvatarsPanel: FC<Props> = ({
   avatars,
@@ -81,33 +82,7 @@ export const AvatarsPanel: FC<Props> = ({
     )
   }
 
-  const colorIcon = ({avatar}: {avatar: AvatarData}) => <Icon16DiamondOutline color={avatar.price > getUserBalance ? 'red' : undefined}/>
-
   const skeletons = new Array(7).fill(null)
-  const AvatarPreviewComponent = ({ avatar }: { avatar: AvatarData }) => {
-    return (
-      <Avatar onClick={() => onClickAvatarHandler(avatar)} size={110} src={getUrlPath(avatar)} style={{ isolation: 'auto' }}>
-        <Avatar.Badge className='select-avatar_badge'>
-          <Tooltip
-            title={avatar.price ? `${balanceFormatter(avatar.price)} алмазов` : 'Бесплатно'}
-          >
-            <ToolButton
-              IconCompact={avatar.price ? () => colorIcon({avatar}) : Icon16Gift}
-              IconRegular={avatar.price ? () => undefined : Icon16Gift}
-            >
-              {
-                avatar.price > 0 &&
-                <label
-                  className={avatar.price > getUserBalance ? 'no-money' : ''}>{balanceFormatter(avatar.price)}</label>
-              }
-            </ToolButton>
-          </Tooltip>
-        </Avatar.Badge>
-      </Avatar>
-    )
-  }
-
-  const MemorizedAvatarPreview = React.memo(AvatarPreviewComponent)
 
   return (
     <Group
@@ -132,7 +107,7 @@ export const AvatarsPanel: FC<Props> = ({
               />
             ))
           : filteredAvatars().map((avatar, index) => (
-              <MemorizedAvatarPreview avatar={avatar} key={index} />
+              <MemorizedAvatarPreview avatar={avatar} key={index} onClickAvatarHandler={() => onClickAvatarHandler(avatar)} getUserBalance={getUserBalance} />
             ))}
         {!isNotZeroElements && !isLoading && (
           <Placeholder>

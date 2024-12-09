@@ -9,7 +9,7 @@ import {
 } from '@vkontakte/vkui'
 import './index.css'
 import {
-  Icon16DoneCircle, Icon16SyncCircleFillBlack, Icon24Repeat,
+  Icon16DoneCircle, Icon16SyncCircleFillBlack,
   Icon28ShoppingCartOutline, Icon56HourglassErrorBadgeOutline
 } from '@vkontakte/icons'
 import { useRouteNavigator } from '@vkontakte/vk-mini-apps-router'
@@ -21,10 +21,11 @@ import {winxAva} from "../../../../../../shared/config/images.ts";
 import {client} from "../../../../../../shared/api/client.ts";
 import {isApiError} from "../../../../../../shared";
 import {useUserEditModal} from "../../../../../../store/userEditModal";
+import {PreviewAvatarLoading} from "./PreviewAvatarLoading.tsx";
 
 const defaultCollection: AvatarData[] = [
   {
-    id: BigInt(-1),
+    id: -1,
     filename: winxAva,
     price: 0,
     isAnimated: false,
@@ -75,7 +76,7 @@ const UserEditModal = ({ id }: { id: string }) => {
     setSelectAva(avatar)
 
     try {
-      const response = await client.userSaveAvatar.post({avatarId: `${avatar.id}`})
+      const response = await client.userSaveAvatar.post({avatarId: avatar.id})
 
       if (response.status != 200)
         throw new Error('Ошибка с сервера')
@@ -132,24 +133,12 @@ const UserEditModal = ({ id }: { id: string }) => {
                       />
                     ))
                     : getAvatars.map((avatar, index) => (
-                      <Avatar
-                        key={index}
-                        size={110}
-                        src={avatar.filename != winxAva ? getUrlPath(avatar) : winxAva}
-                        onClick={() => selectNewAvatar(avatar)}
-                        className={selectAva === avatar ? 'select-avatar' : ''}
-                      >
-                        <Avatar.Badge
-                          hidden={selectAva !== avatar}
-                          className='select-avatar_badge'
-                        >
-                          {
-                            isSaveNewAvatarLoading
-                              ? <Icon16SyncCircleFillBlack height={25} width={25}/>
-                              : <Icon16DoneCircle height={25} width={25}/>
-                          }
-                        </Avatar.Badge>
-                      </Avatar>
+                      <PreviewAvatarLoading key={index}
+                                            selectAva={selectAva}
+                                            selectNewAvatar={selectNewAvatar}
+                                            isSaveNewAvatarLoading={isSaveNewAvatarLoading}
+                                            avatar={avatar}
+                      />
                     ))}
                 {
                   !isAvatarLoading &&

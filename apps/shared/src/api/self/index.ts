@@ -32,9 +32,13 @@ export type ResponseLogin = Person & {
 }
 
 export type AvatarData = {
-  id: bigint
+  id: number
   isAnimated: boolean
   filename: string
   tags: string[]
   price: number
+}
+
+export type LoadedAvatarData = AvatarData & {
+  isLoaded: undefined | boolean
 }
