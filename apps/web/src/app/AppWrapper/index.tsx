@@ -6,7 +6,6 @@ import {
   ConfigProvider,
   usePlatform
 } from '@vkontakte/vkui'
-import { lazy } from 'react'
 
 import { Suspense } from '../../shared'
 import { router } from '../routes/router'
@@ -24,7 +23,7 @@ const AppWrapper = () => {
     <AdaptivityProvider>
       <RouterProvider router={router} notFound={<NotFoundCorrect />}>
         <ConfigProvider
-          appearance={vkBridgeAppearance}
+          colorScheme={vkBridgeAppearance}
           platform={platform}
           isWebView={vkBridge.isWebView()}
         >

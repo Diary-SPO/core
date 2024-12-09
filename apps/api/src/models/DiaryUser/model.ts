@@ -5,6 +5,7 @@ import { KEY } from '@config'
 import { sequelize } from '@db'
 import { formatDate } from '@utils'
 
+import { AvatarModel } from '../Avatar'
 import { GroupModel } from '../Group'
 import type { IModelPrototype } from '../types'
 
@@ -26,6 +27,7 @@ export type DiaryUserModelType = {
   termStartDate?: Nullable<string>
   isAdmin: boolean
   idFromDiary: number
+  avatarId: Nullable<number>
 }
 
 export type IDiaryUserModel = IModelPrototype<DiaryUserModelType, 'id'>
@@ -124,6 +126,13 @@ export const DiaryUserModel = sequelize.define<IDiaryUserModel>('diaryUser', {
     allowNull: false,
     defaultValue: false,
     comment: 'Признак администратора'
+  },
+  avatarId: {
+    type: DataTypes.INTEGER,
+    allowNull: true,
+    references: {
+      model: AvatarModel
+    }
   },
   idFromDiary: {
     type: DataTypes.INTEGER,

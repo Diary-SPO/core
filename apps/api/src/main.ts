@@ -4,13 +4,18 @@ import { Elysia } from 'elysia'
 import { compression } from 'elysia-compression'
 import { helmet } from 'elysia-helmet'
 
-import { BOT_TOKEN, TIMEZONE } from '@config'
+import { TIMEZONE } from '@config'
 import { sequelize } from '@db'
 
 import { getTimezone } from './config/getTimeZone'
 import { routes } from './routes'
 
 import './models/relations'
+import { syncDatabaseForDecorations } from './helpers/syncDatabaseForDecorations'
+import {crutchesInit} from "./helpers/crutches";
+
+// Подключаем костыли
+crutchesInit()
 
 // настраиваем сервер...
 const port = Bun.env.PORT ?? 3003
@@ -68,6 +73,8 @@ console.log(
     getTimezone() !== TIMEZONE ? ' (задана через .env)' : ''
   }.`
 )
+
+await syncDatabaseForDecorations()
 
 export type App = typeof app
 const workerURL = new URL('worker', import.meta.url).href

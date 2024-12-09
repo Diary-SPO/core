@@ -30,3 +30,15 @@ export type ResponseLogin = Person & {
   token: string
   tokenId: bigint
 }
+
+export type AvatarData = {
+  id: number
+  isAnimated: boolean
+  filename: string
+  tags: string[]
+  price: number
+}
+
+export type LoadedAvatarData = AvatarData & {
+  isLoaded: undefined | boolean
+}

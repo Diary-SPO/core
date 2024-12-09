@@ -1,5 +1,5 @@
 import { Icon20EducationOutline, Icon28BrainOutline } from '@vkontakte/icons'
-import { Group, Header, MiniInfoCell } from '@vkontakte/vkui'
+import { Flex, Group, Header, MiniInfoCell } from '@vkontakte/vkui'
 import type { FC } from 'react'
 
 import UserInfo from './UserInfo'
@@ -48,19 +48,20 @@ const Summary: FC<ISummary> = ({
             Общий средний балл:
           </MiniInfoCell>
           {markCounts && (
-            <div className='marksCount'>
-              {[2, 3, 4, 5].map(
+            <Flex justify='space-evenly'>
+              {[5, 4, 3, 2].map(
                 (mark) =>
                   markCounts[mark] > 0 && (
                     <MiniInfoCell
                       key={mark}
                       before={<Mark mark={mark} size='s' />}
+                      style={{ minWidth: 70 }}
                     >
                       x {markCounts[mark]}
                     </MiniInfoCell>
                   )
               )}
-            </div>
+            </Flex>
           )}
         </>
       </Group>

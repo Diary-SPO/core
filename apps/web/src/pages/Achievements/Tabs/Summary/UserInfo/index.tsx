@@ -1,20 +1,25 @@
 import { Icon28SchoolOutline } from '@vkontakte/icons'
 import {
   Avatar,
+  Button,
   Div,
   Gradient,
   Group,
   Header,
-  SimpleCell,
-  Spinner,
-  Text,
-  Title
+  Placeholder,
+  SimpleCell, Skeleton,
+  Spinner
 } from '@vkontakte/vkui'
 import { type FC, useEffect, useState } from 'react'
 
-import { winxAva } from '../../../../../shared/config/images.ts'
-
 import './index.css'
+import { useRouteNavigator } from '@vkontakte/vk-mini-apps-router'
+import { MODAL_PAGE_USER_EDIT } from '../../../../../shared/config'
+import { useUserEditModal } from '../../../../../store/userEditModal'
+import {client} from "../../../../../shared/api/client.ts";
+import {isApiError} from "../../../../../shared";
+import {getUrlPath} from "../../../../Market/components/AvatarsBlock/getUrlPath.tsx";
+import {winxAva} from "../../../../../shared/config/images.ts";
 
 interface UserData {
   city: string
@@ -68,6 +73,40 @@ const UserInfo: FC = () => {
     getUserInfo()
   }, [])
 
+
+  const [userInfoIsLoading, setUserInfoIsLoading] = useState(true)
+  const [avatarImgIsLoading, setAvatarImgIsLoading] = useState(true)
+  const [userAvatarFilename, setUserAvatarFilename] = useState<string|null|undefined>(undefined)
+  const { setData } = useUserEditModal()
+  const routeNavigator = useRouteNavigator()
+
+  const handleEditUserButtonClick = () => {
+    setData({
+      setAvatarFilename: (value: string|null) => setUserAvatarFilename(value)
+    })
+    routeNavigator.showModal(MODAL_PAGE_USER_EDIT)
+  }
+
+
+  const loadUserInfoFromServer = async () => {
+    setUserInfoIsLoading(true)
+
+    try {
+      const { data } = await client.userInfo.get()
+
+      if (data === null || isApiError(data))
+        throw new Error('Ошибка с сервера')
+
+      setUserAvatarFilename(data.avatar)
+    } finally {
+      setUserInfoIsLoading(false)
+    }
+  }
+
+  useEffect(() => {
+    loadUserInfoFromServer()
+  }, []);
+
   if (isLoading) {
     return (
       <Div>
@@ -81,11 +120,25 @@ const UserInfo: FC = () => {
   return (
     <Group mode='plain' header={header}>
       <Gradient mode='tint' className='userInfo__Wrapper'>
-        <Avatar size={96} src={winxAva} />
-        <Title className='userInfo__Title' level='2' weight='2' Component='h2'>
-          {userData.name}
-        </Title>
-        <Text className='userInfo__Text'>Студент ({userData.group})</Text>
+          <Skeleton width={96} height={96} borderRadius={100} hidden={!avatarImgIsLoading}/>
+           <Avatar size={96}
+                      src={userAvatarFilename ? getUrlPath(userAvatarFilename) : (userAvatarFilename === null ? winxAva : undefined)}
+                      onLoad={() => setAvatarImgIsLoading(false)} hidden={avatarImgIsLoading}/>
+        <Placeholder
+          title={userData.name}
+          className='userInfo__Content'
+          action={
+            <Button
+              size='m'
+              mode='secondary'
+              onClick={handleEditUserButtonClick}
+            >
+              Редактировать
+            </Button>
+          }
+        >
+          Студент ({userData.group})
+        </Placeholder>
       </Gradient>
       <Group
         mode='plain'

@@ -42,8 +42,8 @@ const Actions = () => {
       ]}
       actionsLayout='horizontal'
       onClose={() => routeNavigator.hidePopout()}
-      header='Выход'
-      text='Вы уверены, что хотите выйти из аккаунта?'
+      title='Выход'
+      description='Вы уверены, что хотите выйти из аккаунта?'
     />
   )
 
@@ -109,17 +109,19 @@ const Actions = () => {
         >
           Показывать тех. информацию
         </CellButton>
-        <CellButton
-          before={<Icon28Notifications />}
-          onClick={async () =>
-            window.open(
-              `${TG_BOT_URL}?text=/subscribe ${await getSecureToken()}`,
-              '_blank'
-            )
-          }
-        >
-          Подключить уведомления
-        </CellButton>
+        {TG_BOT_URL !== 'IGNORE' && (
+          <CellButton
+            before={<Icon28Notifications />}
+            onClick={async () =>
+              window.open(
+                `${TG_BOT_URL}?text=/subscribe ${await getSecureToken()}`,
+                '_blank'
+              )
+            }
+          >
+            Подключить уведомления
+          </CellButton>
+        )}
         <CellButton
           before={<Icon28DoorArrowRightOutline />}
           onClick={() => routeNavigator.showPopout(logOutPopup)}

@@ -1,14 +1,28 @@
 import type { Nullable, PerformanceCurrent } from '@diary-spo/shared'
-import { Icon28ErrorCircleOutline, Icon28InfoCircle } from '@vkontakte/icons'
 import {
-  HorizontalScroll,
+  Icon16Dropdown,
+  Icon24Done,
+  Icon28ErrorCircleOutline,
+  Icon28InfoCircle
+} from '@vkontakte/icons'
+import {
   Panel,
+  PanelHeader,
+  PanelHeaderBack,
+  PanelHeaderContent,
+  PanelHeaderContext,
   PullToRefresh,
-  TabsItem,
-  Tabs as VKUITabs
+  SimpleCell,
+  SplitLayout,
+  usePlatform
 } from '@vkontakte/vkui'
-import { type FC, useEffect, useState } from 'react'
-import { handleResponse, isApiError, isNeedToUpdateCache } from '../../shared'
+import React, { type FC, useEffect, useState } from 'react'
+import {
+  PanelHeaderWithBack,
+  handleResponse,
+  isApiError,
+  isNeedToUpdateCache
+} from '../../shared'
 
 import type { Props } from '../types.ts'
 
@@ -16,14 +30,11 @@ import { data } from './data.tsx'
 import { formatStatisticsData } from './helpers.ts'
 import type { Tabs } from './types.ts'
 
+import { useRouteNavigator } from '@vkontakte/vk-mini-apps-router'
 import { getPerformance } from '../../shared/api'
 import { VKUI_ACCENT_BG, VKUI_RED } from '../../shared/config'
 import { useRateLimitExceeded, useSnackbar } from '../../shared/hooks'
-import {
-  ErrorPlaceholder,
-  PanelHeaderWithBack,
-  Suspense
-} from '../../shared/ui'
+import { ErrorPlaceholder, Suspense } from '../../shared/ui'
 import LoadingData from './LoadingData.tsx'
 import { useActiveTab } from './hooks/useActiveTab.tsx'
 
@@ -120,6 +131,21 @@ const Achievements: FC<Props> = ({ id }) => {
   }, [])
 
   const [selected, setSelected] = useState<Tabs>('summary')
+  const [contextOpened, setContextOpened] = React.useState(false)
+  const [mode, setMode] = React.useState(selected)
+  const platform = usePlatform()
+  const hasHeader = platform !== 'vkcom'
+  const routeNavigator = useRouteNavigator()
+
+  const toggleContext = () => {
+    setContextOpened((prev) => !prev)
+  }
+  const select = (e) => {
+    const mode = e.currentTarget.dataset.mode
+    setSelected(mode)
+    setMode(mode)
+    requestAnimationFrame(toggleContext)
+  }
 
   const activeTab = useActiveTab(
     selected,
@@ -134,35 +160,80 @@ const Achievements: FC<Props> = ({ id }) => {
 
   return (
     <Panel nav={id}>
-      <PanelHeaderWithBack title='Успеваемость' />
       <PullToRefresh onRefresh={() => fetchMarks(true)} isFetching={isLoading}>
-        <VKUITabs mode='default'>
-          <HorizontalScroll arrowSize='l'>
-            {data.map((item) => (
-              <TabsItem
-                aria-controls={item.type}
-                id={item.type}
-                key={item.type}
-                before={item.icon}
-                disabled={selected === item.type}
-                selected={selected === item.type}
-                onClick={() => setSelected(item.type)}
+        {/*<VKUITabs mode='default'>*/}
+        {/*  <HorizontalScroll arrowSize='l'>*/}
+        {/*    {data.map((item) => (*/}
+        {/*      <TabsItem*/}
+        {/*        aria-controls={item.type}*/}
+        {/*        id={item.type}*/}
+        {/*        key={item.type}*/}
+        {/*        before={item.icon}*/}
+        {/*        disabled={selected === item.type}*/}
+        {/*        selected={selected === item.type}*/}
+        {/*        onClick={() => setSelected(item.type)}*/}
+        {/*      >*/}
+        {/*        {item.text}*/}
+        {/*      </TabsItem>*/}
+        {/*    ))}*/}
+        {/*  </HorizontalScroll>*/}
+        {/*</VKUITabs>*/}
+
+        <SplitLayout
+          center
+          header={hasHeader && <PanelHeader delimiter='none' />}
+        >
+          <Panel id='context'>
+            <PanelHeader
+              before={<PanelHeaderBack onClick={() => routeNavigator.back()} />}
+            >
+              <PanelHeaderContent
+                aside={
+                  <Icon16Dropdown
+                    style={{
+                      transform: `rotate(${contextOpened ? '180deg' : '0'})`
+                    }}
+                  />
+                }
+                onClick={toggleContext}
               >
-                {item.text}
-              </TabsItem>
-            ))}
-          </HorizontalScroll>
-        </VKUITabs>
+                {data.map((tab) => (
+                  <div key={tab.type} hidden={mode !== tab.type}>
+                    {tab.text}
+                  </div>
+                ))}
+              </PanelHeaderContent>
+            </PanelHeader>
+            <PanelHeaderContext opened={contextOpened} onClose={toggleContext}>
+              {data.map((tab) => (
+                <SimpleCell
+                  before={tab.icon}
+                  after={
+                    mode === tab.type ? (
+                      <Icon24Done fill='var(--vkui--color_icon_accent)' />
+                    ) : null
+                  }
+                  onClick={select}
+                  data-mode={tab.type}
+                  key={tab.type}
+                >
+                  {tab.text}
+                </SimpleCell>
+              ))}
+            </PanelHeaderContext>
+            {!isLoading && !isError && (
+              <Suspense id='tab'>{activeTab}</Suspense>
+            )}
+
+            {isError && <ErrorPlaceholder />}
+          </Panel>
+        </SplitLayout>
+
+        {snackbar}
+        {rateSnackbar}
 
         {isLoading && <LoadingData />}
       </PullToRefresh>
-
-      {!isLoading && !isError && <Suspense id='tab'>{activeTab}</Suspense>}
-
-      {isError && <ErrorPlaceholder />}
-
-      {snackbar}
-      {rateSnackbar}
     </Panel>
   )
 }
