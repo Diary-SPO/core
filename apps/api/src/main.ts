@@ -4,14 +4,13 @@ import { Elysia } from 'elysia'
 import { compression } from 'elysia-compression'
 import { helmet } from 'elysia-helmet'
 
-import { BOT_TOKEN, TIMEZONE } from '@config'
+import { TIMEZONE } from '@config'
 import { sequelize } from '@db'
 
 import { getTimezone } from './config/getTimeZone'
 import { routes } from './routes'
 
 import './models/relations'
-import staticPlugin from '@elysiajs/static'
 import { syncDatabaseForDecorations } from './helpers/syncDatabaseForDecorations'
 import {crutchesInit} from "./helpers/crutches";
 
@@ -41,13 +40,6 @@ const app = new Elysia()
   .use(
     cors({
       origin: true
-    })
-  )
-  .use(
-    staticPlugin({
-      assets: 'src/uploads',
-      prefix: 'uploads',
-      staticLimit: 1_000_000
     })
   )
   // сжатие...

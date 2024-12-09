@@ -11,6 +11,7 @@ import { LessonsController } from './lessons'
 import {BuyAvatar, MarketAvatars, UserAvatars, UserInfo, UserSaveAvatar} from './market'
 import { OrganizationController } from './organization'
 import { PerformanceCurrentController } from './performance.current'
+import {StaticController} from "./static";
 
 export const routes = new Elysia()
   .use(HomeController)
@@ -26,6 +27,7 @@ export const routes = new Elysia()
   .use(BuyAvatar)
   .use(UserAvatars)
   .use(UserSaveAvatar)
+  .use(StaticController)
   /** Обработка любых ошибок в кажом роуте **/
   .onError(({ set, code, path, error }) => {
     if (Number(code)) {
