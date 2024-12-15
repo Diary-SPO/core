@@ -17,6 +17,8 @@
   "dependencies": {
     "@diary-spo/crypto": "workspace:*",
     "@elysiajs/cors": "^1.1.1",
+    "@mtcute/bun": "^0.18.0-rc.5",
+    "@mtcute/dispatcher": "^0.18.0-rc.5",
     "cache-manager": "^5.7.6",
     "elysia": "1.1.21",
     "elysia-compression": "^0.0.7",

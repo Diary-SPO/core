@@ -18,6 +18,7 @@ import { ScheduleModel } from './Schedule'
 import { ScheduleSubgroupModel } from './ScheduleSubgroup'
 import { SubgroupModel } from './Subgroup'
 import { SubjectModel } from './Subject'
+import { SubscribeModel } from './Subscribe'
 import { TaskModel } from './Task'
 import { TaskTypeModel } from './TaskType'
 import { TeacherModel } from './Teacher'
@@ -191,6 +192,9 @@ TermSubjectModel.belongsTo(TeacherModel)
 // DiaryUser <-->> TermSubject
 DiaryUserModel.hasMany(TermSubjectModel)
 TermSubjectModel.belongsTo(DiaryUserModel)
+
+DiaryUserModel.hasMany(SubscribeModel)
+SubscribeModel.belongsTo(DiaryUserModel)
 
 if (forceSyncDatabase) {
   console.log('Syncing database...')

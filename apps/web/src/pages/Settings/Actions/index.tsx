@@ -1,7 +1,8 @@
 import {
   Icon28DoorArrowRightOutline,
   Icon28HomeArrowDownOutline,
-  Icon28IncognitoOutline
+  Icon28IncognitoOutline,
+  Icon28Notifications
 } from '@vkontakte/icons'
 import bridge from '@vkontakte/vk-bridge'
 import { useRouteNavigator } from '@vkontakte/vk-mini-apps-router'
@@ -11,6 +12,8 @@ import { useEffect, useRef, useState } from 'react'
 import { logOut } from '../../../shared'
 import { useSnackbar } from '../../../shared/hooks'
 
+import { getSecureToken } from '../../../shared/api/client.ts'
+import { TG_BOT_URL } from '../../../shared/config'
 import TechInfo from './TechInfo.tsx'
 
 const Actions = () => {
@@ -105,6 +108,17 @@ const Actions = () => {
           before={<Icon28IncognitoOutline />}
         >
           Показывать тех. информацию
+        </CellButton>
+        <CellButton
+          before={<Icon28Notifications />}
+          onClick={async () =>
+            window.open(
+              `${TG_BOT_URL}?text=/subscribe ${await getSecureToken()}`,
+              '_blank'
+            )
+          }
+        >
+          Подключить уведомления
         </CellButton>
         <CellButton
           before={<Icon28DoorArrowRightOutline />}

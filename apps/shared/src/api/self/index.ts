@@ -28,4 +28,5 @@ export type ResponseLogin = Person & {
   birthday: string
   groupName: string
   token: string
+  tokenId: bigint
 }
