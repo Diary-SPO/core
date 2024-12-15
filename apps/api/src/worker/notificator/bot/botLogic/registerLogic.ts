@@ -1,18 +1,21 @@
 // @ts-ignore
 import { b64 } from '@diary-spo/crypto'
-import type { Telegram } from 'puregram'
 import { AuthModel } from '../../../../models/Auth'
 import { DiaryUserModel } from '../../../../models/DiaryUser'
 import { SubscribeModel } from '../../../../models/Subscribe'
 import { INTERVAL_RUN } from '../../config'
+import {html, TelegramClient} from "@mtcute/bun";
+import {Dispatcher} from "@mtcute/dispatcher";
 
-export const registerLogic = (bot: Telegram | null) => {
+export const registerLogic = (bot: Dispatcher<never> | null) => {
   if (!bot) return
-  bot.updates.on('message', async (msg) => {
+  bot.onNewMessage(async (msg) => {
     const chatId = msg.chat.id
 
+    console.log(`Входящее сообщение от ${msg.chat.id} (${msg.chat.username}): ${msg.text}`)
+
     if (!msg.text) {
-      msg.reply('Такое сообщение не поддерживается')
+      msg.answerText('Такое сообщение не поддерживается')
       return
     }
 
@@ -21,7 +24,7 @@ export const registerLogic = (bot: Telegram | null) => {
     switch (command[0]) {
       case '/subscribe': {
         if (command.length < 2) {
-          msg.reply(
+          msg.answerText(
             'Передайте вторым параметром актуальный токен, чтобы подписаться на уведомления'
           )
           return
@@ -32,13 +35,13 @@ export const registerLogic = (bot: Telegram | null) => {
         try {
           tokenSecure = atob(command[1])
         } catch {
-          msg.reply('Вы что-то не то шлёте и всё ломаете. В бан захотели?')
+          msg.answerText('Вы что-то не то шлёте и всё ломаете. В бан захотели?')
           return
         }
         const secureTokenParams = tokenSecure.split(':')
 
         if (secureTokenParams.length !== 2 && !Number(secureTokenParams[0])) {
-          msg.reply('У вашего токена неверная структура. В бан захотел(-а)?')
+          msg.answerText('У вашего токена неверная структура. В бан захотел(-а)?')
           return
         }
 
@@ -49,7 +52,7 @@ export const registerLogic = (bot: Telegram | null) => {
         })
 
         if (!auth) {
-          msg.reply('Переданная авторизация не найдена ...')
+          msg.answerText('Переданная авторизация не найдена ...')
           return
         }
 
@@ -61,7 +64,7 @@ export const registerLogic = (bot: Telegram | null) => {
         const secureToken = await b64(JSON.stringify(tokenObject))
 
         if (secureToken !== secureTokenParams[1]) {
-          msg.reply(
+          msg.answerText(
             `Ваш токен какой-то не такой. Если вы ничего не трогали, то проблема у нас.\nПожалуйста, покажите это сообщение разработчикам.\nDebug info: ${btoa(
               JSON.stringify({
                 tokenSecure,
@@ -79,7 +82,7 @@ export const registerLogic = (bot: Telegram | null) => {
         })
 
         if (subscribes.length >= 1) {
-          msg.reply(
+          msg.answerText(
             'Вы уже подписаны на уведомления. Сначала отпишитесь (/unsubscribe)'
           )
           return
@@ -97,9 +100,8 @@ export const registerLogic = (bot: Telegram | null) => {
           }
         })
 
-        msg.reply(
-          `<b><i>${user?.firstName} ${user?.lastName}!</i></b> Вы успешно подписались на уведомления.\nПрежде чем Вы начнёте получать уведомления, нам нужно извлечь все ваши оценки (это просиходит примерно каждые <b>${INTERVAL_RUN} секунд</b>).\nПо окончанию подготовительных процедур, мы уведомим Вас о готовности принимать уведомления.\nСпасибо, что выбираете нас!`,
-          { parse_mode: 'HTML' }
+        msg.answerText(
+          html`<b><i>${user?.firstName} ${user?.lastName}!</i></b> Вы успешно подписались на уведомления.\nПрежде чем Вы начнёте получать уведомления, нам нужно извлечь все ваши оценки (это просиходит примерно каждые <b>${INTERVAL_RUN} секунд</b>).\nПо окончанию подготовительных процедур, мы уведомим Вас о готовности принимать уведомления.\nСпасибо, что выбираете нас!`
         )
         break
       }
@@ -109,16 +111,15 @@ export const registerLogic = (bot: Telegram | null) => {
             tgId: chatId
           }
         })
-        msg.reply(
+        msg.answerText(
           'Вы успешно отписались от всех аккаунтов. Можете привязать новый (/subscribe)'
         )
         break
       default:
-        msg.reply(
-          'Этой команды нету, но есть такие:' +
-            '\n/subscribe <code>[token]</code> — подписаться на уведомления по токену' +
-            '\n/unsubscribe — отписаться от уведомлений',
-          { parse_mode: 'HTML' }
+        msg.answerText(
+          html(`Этой команды нету, но есть такие:` +
+            `<br>/subscribe <code>[token]</code> — подписаться на уведомления по токену` +
+            `<br>/unsubscribe — отписаться от уведомлений`)
         )
         break
     }

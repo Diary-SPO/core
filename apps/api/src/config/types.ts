@@ -19,6 +19,7 @@ type StringKeys<T> = keyof {
 export interface NumericParams {
   PORT: number
   DATABASE_PORT: number
+  API_ID: number
 }
 
 export interface StringParams {
@@ -30,6 +31,7 @@ export interface StringParams {
   TIMEZONE: string
   KEY_SCAN_PATH: string
   BOT_TOKEN: string
+  API_HASH: string
 }
 
 export type ParamsKeys = StringKeys<ParamsInit>

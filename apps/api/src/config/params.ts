@@ -11,5 +11,7 @@ export const PARAMS_INIT: ParamsInit = {
   DATABASE_PASSWORD: '',
   TIMEZONE: getTimezone(),
   KEY_SCAN_PATH: './',
-  BOT_TOKEN: ''
+  BOT_TOKEN: '',
+  API_ID: 0,
+  API_HASH: ''
 }

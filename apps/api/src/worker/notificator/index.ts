@@ -4,7 +4,7 @@ import { SubscribeModel } from '../../models/Subscribe'
 import { getCurrPerformance } from '../../routes/performance.current/service'
 import { checkInterval } from '../utils/checkInterval'
 import { logger } from '../utils/logger'
-import { bot } from './bot'
+import {bot} from './bot'
 import { INTERVAL_RUN } from './config'
 
 let lastRunning: Date | null = null
@@ -44,10 +44,7 @@ export const notificatorChecker = async (): Promise<void> => {
         }
         subscribe.preActionsIsSuccess = true
         subscribe.save()
-        bot.api.sendMessage({
-          chat_id: String(subscribe.tgId),
-          text: 'Мы загрузили ваши оценки. Теперь вы будете получать уведомления!'
-        })
+        bot.sendText(Number(subscribe.tgId), 'Мы загрузили ваши оценки. Теперь вы будете получать уведомления!')
       })
       continue
     }

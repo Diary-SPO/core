@@ -1,28 +1,30 @@
-import { BOT_TOKEN } from '@config'
-import { Telegram } from 'puregram'
+import {API_HASH, API_ID, BOT_TOKEN} from '@config'
 import { registerLogic } from './registerLogic'
+import {TelegramClient} from "@mtcute/bun";
+import {Dispatcher} from "@mtcute/dispatcher";
 
 const token = BOT_TOKEN
 
-let bot = null
+let bot: null|TelegramClient = null
 
 // Подключаем бота, только если мы в воркере
 if (Bun.main.includes('worker') && token !== 'IGNORE') {
-  bot = Telegram.fromToken(token, {
-    apiRetryLimit: -1
+  const tg = new TelegramClient({
+    apiId: API_ID,
+    apiHash: API_HASH
   })
 
-  // Отлавливаем ошибки, если таковые имеются
-  bot.onError((err) => {
-    console.error('ОЧЕНЬ СТРАШНАЯ ОШИБКА В PUREGRAM:', err)
-    return err
-  })
+  const dp = Dispatcher.for(tg)
 
   // Регистрируем команды к боту, на которые отвечаем
-  registerLogic(bot)
+  registerLogic(dp)
 
-  // Слушаем входящие сообщения
-  bot.updates.startPolling()
+  // Запускаем бота
+  await tg.start({
+    botToken: BOT_TOKEN
+  })
+
+  bot = tg
 }
 
 export { bot }
