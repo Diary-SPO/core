@@ -17,7 +17,7 @@
   "dependencies": {
     "@diary-spo/crypto": "workspace:*",
     "@elysiajs/cors": "^1.1.1",
-    "cache-manager": "^5.7.6",
+    "cache-manager": "^6.3.1",
     "elysia": "1.1.21",
     "elysia-compression": "^0.0.7",
     "elysia-helmet": "^2.0.0",
