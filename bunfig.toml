@@ -1,2 +1,5 @@
 [test]
 preload = "./apps/web/happydom.ts"
+
+[install]
+saveTextLockfile = true
