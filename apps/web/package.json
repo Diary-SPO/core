@@ -35,7 +35,7 @@
     "@rsbuild/plugin-basic-ssl": "^1.1.1",
     "@rsbuild/plugin-react": "^1.1.0",
     "@types/jsdom": "^21.1.7",
-    "@types/react": "^18.3.18",
+    "@types/react": "^19.0.8",
     "@types/react-dom": "^18.3.5",
     "@vkontakte/vk-miniapps-deploy": "^0.1.9",
     "elysia": "1.1.21",
