@@ -30,7 +30,7 @@
   },
   "devDependencies": {
     "@diary-spo/shared": "workspace:*",
-    "@happy-dom/global-registrator": "^15.11.7",
+    "@happy-dom/global-registrator": "^16.8.1",
     "@rsbuild/core": "^1.2.3",
     "@rsbuild/plugin-basic-ssl": "^1.1.1",
     "@rsbuild/plugin-react": "^1.1.0",
