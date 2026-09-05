@@ -24,7 +24,7 @@ import { useSnackbar } from '../../shared/hooks'
 
 import type { Props } from '../types.ts'
 
-import { getToken } from '../../shared/api/client.ts'
+import { getToken } from '../../shared/api/token.ts'
 import { loginPattern, saveData } from './helpers'
 
 const LoginForm: FC<Props> = ({ id }) => {
