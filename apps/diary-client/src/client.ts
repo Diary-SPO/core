@@ -27,7 +27,7 @@ export class DiaryClientError extends Error {
 
 export interface LoginInput {
   login: string
-  /** poo.tomedu.ru expects the same SHA-256/base64 value used by the web app. */
+  /**SHA-256/base64 */
   password: string
 }
 

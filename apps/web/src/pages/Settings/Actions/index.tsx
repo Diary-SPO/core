@@ -44,7 +44,7 @@ const Actions = () => {
     />
   )
 
-  const handleLogOut = () => {
+  const handleLogOut = async () => {
     showSnackbar({
       title: 'Выход',
       before: (
@@ -53,14 +53,12 @@ const Actions = () => {
       subtitle: 'После удаления всех данных вы попадёте на страницу авторизации'
     })
 
-    setTimeout(async () => {
-      try {
-        await logOut()
-        await routeNavigator.replace('/')
-      } catch (error) {
-        console.error('Error during logout:', error)
-      }
-    }, 1500)
+    try {
+      await logOut()
+      await routeNavigator.replace('/')
+    } catch (error) {
+      console.error('Error during logout:', error)
+    }
   }
 
   const addToHomeScreen = () => {

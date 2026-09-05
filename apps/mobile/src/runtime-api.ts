@@ -3,7 +3,8 @@ import {
   DiaryClient,
   DiaryClientError,
   type DiaryHttpRequest,
-  type DiaryHttpTransport
+  type DiaryHttpTransport,
+  extractAuthCookie
 } from '@diary-spo/diary-client'
 import type {
   ApiResponse,
@@ -11,15 +12,41 @@ import type {
 } from '../../web/src/shared/api/runtime/types.ts'
 
 const baseUrl = import.meta.env.VITE_DIARY_URL || 'https://poo.tomedu.ru'
+const cookieStorageKey = 'directDiaryCookies'
+
+const getStoredCookie = (): string =>
+  localStorage.getItem(cookieStorageKey) ?? ''
+
+const getResponseCookies = (headers: Record<string, string>) => {
+  const setCookie = Object.entries(headers).find(
+    ([key]) => key.toLowerCase() === 'set-cookie'
+  )?.[1]
+  return extractAuthCookie(setCookie ?? '')
+}
 
 const transport: DiaryHttpTransport = {
   async request<T>({ method, url, headers, body }: DiaryHttpRequest) {
+    const isLoginRequest = url.endsWith('/services/security/login')
+    const storedCookie = getStoredCookie()
+    const shouldUseStoredCookie = !isLoginRequest && storedCookie
+
     const response = await CapacitorHttp.request({
       method,
       url,
-      headers,
+      headers: {
+        ...headers,
+        ...(shouldUseStoredCookie ? { Cookie: storedCookie } : {})
+      },
       data: body
     })
+
+    if (response.status >= 200 && response.status < 300 && isLoginRequest) {
+      const responseCookies = getResponseCookies(response.headers)
+
+      if (responseCookies) {
+        localStorage.setItem(cookieStorageKey, responseCookies)
+      }
+    }
 
     return {
       data: response.data as T,
@@ -28,6 +55,18 @@ const transport: DiaryHttpTransport = {
     }
   },
   async clearSession() {
+    const storedCookie = getStoredCookie()
+    localStorage.removeItem(cookieStorageKey)
+
+    const cookieKeys = storedCookie
+      .split(';')
+      .map((cookie) => cookie.trim().split('=', 1)[0])
+      .filter(Boolean)
+
+    for (const key of cookieKeys) {
+      await CapacitorCookies.deleteCookie({ url: baseUrl, key })
+    }
+    await CapacitorCookies.clearCookies({ url: baseUrl })
     await CapacitorCookies.clearAllCookies()
   }
 }
@@ -48,8 +87,6 @@ const success = <T>(data: T): ApiResponse<T> => ({
 const failure = <T>(error: unknown): ApiResponse<T> => {
   const status = error instanceof DiaryClientError ? error.status : 520
   return {
-    // Consumers inspect `error` before using data. Keeping the generic shape
-    // aligned with Eden avoids runtime-specific branches throughout the UI.
     data: null as T,
     error: { status, value: error },
     status

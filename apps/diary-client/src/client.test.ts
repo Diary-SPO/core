@@ -2,6 +2,7 @@ import { describe, expect, test } from 'bun:test'
 import type { UserData } from '@diary-spo/shared'
 
 import { DiaryClient, DiaryClientError } from './client.ts'
+import { extractAuthCookie } from './cookies.ts'
 import type {
   DiaryHttpRequest,
   DiaryHttpResponse,
@@ -79,6 +80,38 @@ class MockTransport implements DiaryHttpTransport {
 }
 
 describe('DiaryClient', () => {
+  test('extracts the same authentication cookies from a combined header', () => {
+    const header =
+      '.AspNetCore.Session=session; path=/; httponly, UID=user; path=/, .AspNetCore.Cookies=auth%2Fvalue; expires=Sat, 05 Sep 2027 00:00:00 GMT; httponly'
+
+    const cookie = extractAuthCookie(header)
+
+    expect(cookie).toContain('.AspNetCore.Session=session')
+    expect(cookie).toContain('UID=user')
+    expect(cookie).toContain('.AspNetCore.Cookies=auth%2Fvalue')
+  })
+
+  test('keeps every chunk of a chunked ASP.NET authentication cookie', () => {
+    const header =
+      'UID=user-id; path=/, .AspNetCore.Cookies=chunks-2; path=/; httponly, .AspNetCore.CookiesC1=first-part; path=/; httponly, .AspNetCore.CookiesC2=second-part; path=/; httponly'
+
+    const cookie = extractAuthCookie(header)
+
+    expect(cookie).toContain('UID=user-id')
+    expect(cookie).toContain('.AspNetCore.Cookies=chunks-2')
+    expect(cookie).toContain('.AspNetCore.CookiesC1=first-part')
+    expect(cookie).toContain('.AspNetCore.CookiesC2=second-part')
+  })
+
+  test('keeps cookies without relying on a fixed list of names', () => {
+    const header =
+      'UID=user; path=/, FutureAuthCookie=value; expires=Sat, 05 Sep 2027 00:00:00 GMT; httponly'
+
+    expect(extractAuthCookie(header)).toBe(
+      'UID=user; FutureAuthCookie=value'
+    )
+  })
+
   test('logs in, keeps the selected student and builds diary paths', async () => {
     const transport = new MockTransport()
     const client = new DiaryClient('https://poo.tomedu.ru/', transport)
