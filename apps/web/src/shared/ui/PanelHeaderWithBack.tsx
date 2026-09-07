@@ -8,7 +8,15 @@ import type { FC } from 'react'
 import { MAIN_SETTINGS } from '../../app/routes'
 import { BETA_VERSION, IS_DEV } from '../config'
 
-export const PanelHeaderWithBack: FC<{ title: string }> = ({ title }) => {
+interface PanelHeaderWithBackProps {
+  title: string
+  showBack?: boolean
+}
+
+export const PanelHeaderWithBack: FC<PanelHeaderWithBackProps> = ({
+  title,
+  showBack = true
+}) => {
   const routeNavigator = useRouteNavigator()
   const { panel } = useActiveVkuiLocation()
 
@@ -17,6 +25,7 @@ export const PanelHeaderWithBack: FC<{ title: string }> = ({ title }) => {
   return (
     <PanelHeader
       before={
+        showBack &&
         !isLoginForm && (
           <PanelHeaderBack onClick={() => routeNavigator.back()} />
         )

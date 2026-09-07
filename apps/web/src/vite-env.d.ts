@@ -2,6 +2,9 @@
 interface ImportMetaEnv {
   readonly VITE_APP_TITLE: string
   readonly VITE_SERVER_URLS: string
+  readonly VITE_SERVER_URL: string
+  readonly VITE_DIARY_URL: string
+  readonly VITE_DIARY_SOURCE: 'server' | 'direct'
 
   readonly VITE_MODE: 'prod' | 'dev'
   readonly VITE_NODE_ENV: 'production' | 'development'

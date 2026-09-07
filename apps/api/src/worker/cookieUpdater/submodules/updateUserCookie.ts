@@ -1,5 +1,4 @@
 import { SERVER_URL } from '@config'
-import type { UserData } from '@diary-spo/shared'
 import { cookieExtractor, formatDate } from '@utils'
 import ky from 'ky'
 import type { IDiaryUserModel } from '../../../models/DiaryUser'

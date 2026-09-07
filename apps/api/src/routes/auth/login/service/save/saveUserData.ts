@@ -1,4 +1,3 @@
-import { API_CODES, ApiError } from '@api'
 import { SERVER_URL } from '@config'
 import type { PersonResponse, UserData } from '@diary-spo/shared'
 import { generateToken } from '@helpers'

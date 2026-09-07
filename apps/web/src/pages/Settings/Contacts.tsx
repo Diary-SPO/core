@@ -4,7 +4,7 @@ import { diaryAva, winxAva } from '../../shared/config/images.ts'
 
 const Contacts = () => {
   return (
-    <Group header={<Header mode='tertiary'>Контакты</Header>}>
+    <Group header={<Header size='m'>Контакты</Header>}>
       <SimpleCell
         before={
           <Avatar size={48} fallbackIcon={<Icon28Users />} src={winxAva} />

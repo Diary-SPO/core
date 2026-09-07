@@ -5,7 +5,7 @@ export const mockLesson: Lesson = {
   startTime: '2023-01-01T10:00:00',
   endTime: '2023-01-01T11:30:00',
   timetable: {
-    classroom: { id: 1, building: 'A', name: '101' },
+    classroom: { id: 1, buildingName: 'A', name: '101' },
     teacher: { id: 2, lastName: 'Smith', firstName: 'John', middleName: 'Doe' }
   },
   gradebook: {
@@ -21,7 +21,7 @@ export const mockLessonInvalid: Lesson = {
   startTime: '',
   name: 'Math',
   timetable: {
-    classroom: { id: 1, building: 'A', name: '' }
+    classroom: { id: 1, buildingName: 'A', name: '' }
   },
   gradebook: {
     absenceType: 'IsAbsent',
@@ -46,7 +46,7 @@ export const expectedLessonDetailsValid = {
     timetable: {
       classroom: {
         id: 0,
-        building: '',
+        buildingName: 'A',
         name: '101'
       },
       teacher: {
@@ -68,7 +68,7 @@ export const expectedLessonDetailsValid = {
   lessonTimePlaceInfo: {
     startTime: '2023-01-01T10:00:00',
     endTime: '2023-01-01T11:30:00',
-    classroomName: '101'
+    classroomName: 'A, каб. 101'
   }
 }
 
@@ -85,7 +85,7 @@ export const expectedLessonDetailsInvalid = {
     timetable: {
       classroom: {
         id: 0,
-        building: '',
+        buildingName: 'A',
         name: 'Нет кабинета'
       },
       teacher: {
@@ -107,6 +107,6 @@ export const expectedLessonDetailsInvalid = {
   lessonTimePlaceInfo: {
     startTime: 'Ошибка',
     endTime: 'Ошибка',
-    classroomName: 'Нет кабинета'
+    classroomName: 'A'
   }
 }

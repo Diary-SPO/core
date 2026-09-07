@@ -6,7 +6,7 @@
     "bun": "^1.2.0"
   },
   "devDependencies": {
-    "@biomejs/biome": "^1.9.4",
+    "@biomejs/biome": "2.5.6",
     "bun-types": "^1.2.0",
     "concurrently": "^9.1.2",
     "husky": "^9.1.7",
@@ -23,15 +23,19 @@
     "dev:all": "concurrently \"bun dev:api\" \"bun dev:web\"",
     "dev:web:preview": "cd apps/web && bun preview",
     "dev:api:serve": "cd apps/api && bun serve",
-    "lint": "biome lint . --apply",
+    "lint": "biome lint . --write",
     "format": "biome format . --write",
-    "checkAll": "biome check . --write --unsafe",
+    "checkAll": "biome check . --skip=assist/source/organizeImports",
+    "checkAll:fix": "biome check . --write --unsafe --skip=assist/source/organizeImports",
     "build:web": "cd apps/web && bun run build",
     "build:api": "cd apps/api && bun run build",
+    "build:mobile": "cd apps/mobile && bun run build",
+    "build:mobile:android": "cd apps/mobile && bun run build:android",
+    "sync:mobile": "cd apps/mobile && bun run sync",
     "prepare": "husky"
   },
   "lint-staged": {
-    "*": "bun run checkAll"
+    "*.{js,jsx,ts,tsx,mjs,cjs,json,jsonc,css,scss}": "biome check --write"
   },
   "workspaces": ["apps/*"]
 }

@@ -1,0 +1,27 @@
+{
+  "name": "@diary-spo/mobile",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "build": "rsbuild build",
+    "build:android": "bun run sync && cd android && ./gradlew assembleDebug",
+    "sync": "bun run build && cap sync android",
+    "open:android": "cap open android",
+    "run:android": "bun run sync && cap run android"
+  },
+  "dependencies": {
+    "@capacitor/android": "8.5.1",
+    "@capacitor/core": "8.5.1",
+    "@diary-spo/crypto": "workspace:*",
+    "@diary-spo/diary-client": "workspace:*",
+    "@diary-spo/shared": "workspace:*",
+    "@diary-spo/web": "workspace:*"
+  },
+  "devDependencies": {
+    "@capacitor/cli": "8.5.1",
+    "@rsbuild/core": "^1.2.3",
+    "@rsbuild/plugin-react": "^1.1.0",
+    "typescript": "^5.7.3"
+  }
+}

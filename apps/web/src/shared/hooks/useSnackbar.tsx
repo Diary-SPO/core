@@ -30,7 +30,7 @@ export const useSnackbar = (): [
     setSnackbar(
       <Snackbar
         layout={snackbarData.layout || 'vertical'}
-        onClose={() => setSnackbar(null)}
+        onClosed={() => setSnackbar(null)}
         before={
           snackbarData.before || (
             <Icon28InfoCircleOutline fill={VKUI_ACCENT_BG} />

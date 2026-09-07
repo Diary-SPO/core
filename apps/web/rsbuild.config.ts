@@ -21,6 +21,10 @@ export default defineConfig({
   source: {
     define: publicVars,
     alias: {
+      '@runtime-api': path.resolve(
+        __dirname,
+        './src/shared/api/runtime/server.ts'
+      ),
       '@vkontakte/vkui$': '@vkontakte/vkui/dist/cssm',
       '@utils': path.resolve(__dirname, './src/utils'),
       '@types': path.resolve(__dirname, './src/types'),

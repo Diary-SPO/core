@@ -6,12 +6,10 @@ import {
 import { useRouteNavigator } from '@vkontakte/vk-mini-apps-router'
 import {
   Button,
-  Div,
   FormItem,
   FormStatus,
   Group,
   Input,
-  Link,
   Panel
 } from '@vkontakte/vkui'
 import { type ChangeEvent, type FC, useLayoutEffect, useState } from 'react'
@@ -19,12 +17,12 @@ import { type ChangeEvent, type FC, useLayoutEffect, useState } from 'react'
 import { VIEW_SCHEDULE } from '../../app/routes'
 import { PanelHeaderWithBack, handleResponse, isApiError } from '../../shared'
 import { postLogin } from '../../shared/api'
-import { ADMIN_PAGE, VKUI_RED } from '../../shared/config'
+import { VKUI_RED } from '../../shared/config'
 import { useSnackbar } from '../../shared/hooks'
 
 import type { Props } from '../types.ts'
 
-import { getToken } from '../../shared/api/client.ts'
+import { getToken } from '../../shared/api/token.ts'
 import { loginPattern, saveData } from './helpers'
 
 const LoginForm: FC<Props> = ({ id }) => {
@@ -134,11 +132,11 @@ const LoginForm: FC<Props> = ({ id }) => {
         : 'Введите корректный пароль'
 
   const Banner = isDataInvalid ? (
-    <FormStatus header='Некорректные данные' mode='error'>
+    <FormStatus title='Некорректные данные' mode='error'>
       Проверьте правильность логина и пароля
     </FormStatus>
   ) : (
-    <FormStatus header='Нам можно доверять' mode='default'>
+    <FormStatus title='Нам можно доверять' mode='default'>
       Мы бережно передаем ваши данные и храним в зашифрованном виде
     </FormStatus>
   )
