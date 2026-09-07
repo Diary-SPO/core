@@ -22,7 +22,7 @@
     "elysia-compression": "^0.0.7",
     "elysia-helmet": "^2.0.0",
     "ky": "^1.7.4",
-    "node-rsa": "^1.1.1",
+    "node-rsa": "^2.0.0",
     "pg": "^8.13.1",
     "pg-hstore": "^2.3.4",
     "rand-token": "^1.0.1",
