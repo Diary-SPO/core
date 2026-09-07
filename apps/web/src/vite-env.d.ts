@@ -5,6 +5,9 @@ interface ImportMetaEnv {
   readonly VITE_SERVER_URL: string
   readonly VITE_DIARY_URL: string
   readonly VITE_DIARY_SOURCE: 'server' | 'direct'
+  readonly VITE_PRIVACY_POLICY_URL?: string
+  readonly VITE_USER_AGREEMENT_URL?: string
+  readonly VITE_PERSONAL_DATA_CONSENT_URL?: string
 
   readonly VITE_MODE: 'prod' | 'dev'
   readonly VITE_NODE_ENV: 'production' | 'development'

@@ -9,6 +9,7 @@ import Contacts from './Contacts.tsx'
 import FAQ from './FAQ'
 import Footer from './Footer'
 import GradeNotifications from './GradeNotifications.tsx'
+import Legal from './Legal.tsx'
 
 const Settings: FC<Props> = ({ id }) => {
   return (
@@ -17,6 +18,7 @@ const Settings: FC<Props> = ({ id }) => {
       <FAQ />
       <GradeNotifications />
       <Actions />
+      <Legal />
       <Contacts />
       <Footer />
     </Panel>

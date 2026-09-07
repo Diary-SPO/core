@@ -1,4 +1,4 @@
-package ru.diaryspo.mobile;
+package io.github.diaryspo;
 
 import com.getcapacitor.BridgeActivity;
 

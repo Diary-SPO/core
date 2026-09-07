@@ -29,6 +29,15 @@ export default defineConfig({
       'import.meta.env.VITE_DIARY_URL': JSON.stringify(
         process.env.VITE_DIARY_URL ?? 'https://poo.tomedu.ru'
       ),
+      'import.meta.env.VITE_PRIVACY_POLICY_URL': JSON.stringify(
+        process.env.VITE_PRIVACY_POLICY_URL ?? ''
+      ),
+      'import.meta.env.VITE_USER_AGREEMENT_URL': JSON.stringify(
+        process.env.VITE_USER_AGREEMENT_URL ?? ''
+      ),
+      'import.meta.env.VITE_PERSONAL_DATA_CONSENT_URL': JSON.stringify(
+        process.env.VITE_PERSONAL_DATA_CONSENT_URL ?? ''
+      ),
       'import.meta.env.VITE_SERVER_URL': JSON.stringify(''),
       'import.meta.env.VITE_ADMIN_PAGE_URL': JSON.stringify(''),
       'import.meta.env.VITE_BETA_VERSION': JSON.stringify('false')

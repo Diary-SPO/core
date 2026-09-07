@@ -3,7 +3,7 @@ import {
   Card,
   CardGrid,
   Div,
-  HorizontalCell,
+  HorizontalScroll,
   MiniInfoCell,
   Title
 } from '@vkontakte/vkui'
@@ -28,16 +28,18 @@ export const SubjectCard: FC<{
           {subjectName}
         </Title>
       </Div>
-      <HorizontalCell className='terms'>
-        {terms
-          .filter(({ mark }) => mark !== '')
-          .map((term) => (
-            <MarkWithPopover
-              key={`${term.course}-${term.semester}`}
-              term={term}
-            />
-          ))}
-      </HorizontalCell>
+      <HorizontalScroll>
+        <div className='terms'>
+          {terms
+            .filter(({ mark }) => mark !== '')
+            .map((term) => (
+              <MarkWithPopover
+                key={`${term.course}-${term.semester}`}
+                term={term}
+              />
+            ))}
+        </div>
+      </HorizontalScroll>
       <MiniInfoCell
         textWrap='full'
         className='totalMark'

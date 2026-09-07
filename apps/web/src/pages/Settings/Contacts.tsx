@@ -9,7 +9,7 @@ const Contacts = () => {
         before={
           <Avatar size={48} fallbackIcon={<Icon28Users />} src={winxAva} />
         }
-        subtitle='Наша группа | Любые вопросы'
+        subtitle='Поддержка и обратная связь'
       >
         <Link target='_blank' href='https://vk.com/diary_spo'>
           Дневник СПО

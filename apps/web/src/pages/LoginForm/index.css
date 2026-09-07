@@ -1,0 +1,8 @@
+.loginLegalDocuments__privacy {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0 0 8px;
+  font-size: 16px;
+  line-height: 20px;
+}

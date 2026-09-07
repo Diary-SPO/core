@@ -1,7 +1,7 @@
 import type { CapacitorConfig } from '@capacitor/cli'
 
 const config: CapacitorConfig = {
-  appId: 'ru.diaryspo.mobile',
+  appId: 'io.github.diaryspo',
   appName: 'Дневник СПО',
   webDir: 'dist',
   android: {
@@ -12,7 +12,7 @@ const config: CapacitorConfig = {
       autoStart: true,
       event: 'gradeCheck',
       interval: 15,
-      label: 'ru.diaryspo.mobile.grade-check',
+      label: 'io.github.diaryspo.grade-check',
       repeat: true,
       src: 'runners/grade-runner.js'
     }

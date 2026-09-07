@@ -6,7 +6,7 @@ import type {
   BackgroundGradeSettings
 } from '../../web/src/shared/api/runtime/types.ts'
 
-const RUNNER_LABEL = 'ru.diaryspo.mobile.grade-check'
+const RUNNER_LABEL = 'io.github.diaryspo.grade-check'
 const SETTINGS_STORAGE_KEY = 'backgroundGradeSettings'
 const DEFAULT_SETTINGS: BackgroundGradeSettings = {
   enabled: false,

@@ -7,6 +7,10 @@ import {
 import type { PerformanceCurrent } from '@diary-spo/shared'
 
 import { shouldRunGradeCheck } from './grade-check-schedule.ts'
+import {
+  getRunnerStoredValue,
+  type RunnerKeyValueStore
+} from './runner-storage.ts'
 
 interface RunnerSettings {
   enabled: boolean
@@ -31,8 +35,7 @@ interface RunnerGlobal {
   ): void
 }
 
-declare const CapacitorKV: {
-  get(key: string): { value: string | null }
+declare const CapacitorKV: RunnerKeyValueStore & {
   remove(key: string): void
   set(key: string, value: string): void
 }
@@ -65,7 +68,7 @@ const DEFAULT_SETTINGS: RunnerSettings = {
   enabled: false,
   intervalMinutes: 30
 }
-const stored = (key: string) => CapacitorKV.get(key).value
+const stored = (key: string) => getRunnerStoredValue(CapacitorKV, key)
 
 const parseSettings = (): RunnerSettings => {
   const value = stored(STORAGE.settings)

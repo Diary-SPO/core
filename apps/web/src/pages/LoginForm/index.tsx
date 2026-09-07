@@ -1,29 +1,38 @@
 import { b64 } from '@diary-spo/crypto'
 import {
+  Icon24DocumentTextOutline,
   Icon28DoorArrowLeftOutline,
   Icon28ErrorCircleOutline
 } from '@vkontakte/icons'
 import { useRouteNavigator } from '@vkontakte/vk-mini-apps-router'
 import {
   Button,
+  Checkbox,
   FormItem,
   FormStatus,
   Group,
   Input,
+  Link,
   Panel
 } from '@vkontakte/vkui'
 import { type ChangeEvent, type FC, useLayoutEffect, useState } from 'react'
 
 import { VIEW_SCHEDULE } from '../../app/routes'
-import { PanelHeaderWithBack, handleResponse, isApiError } from '../../shared'
+import { handleResponse, isApiError, PanelHeaderWithBack } from '../../shared'
 import { postLogin } from '../../shared/api'
-import { VKUI_RED } from '../../shared/config'
-import { useSnackbar } from '../../shared/hooks'
-
-import type { Props } from '../types.ts'
-
 import { getToken } from '../../shared/api/token.ts'
+import {
+  DIARY_SOURCE,
+  PERSONAL_DATA_CONSENT_URL,
+  PRIVACY_POLICY_URL,
+  USER_AGREEMENT_URL,
+  VKUI_RED
+} from '../../shared/config'
+import { useSnackbar } from '../../shared/hooks'
+import type { Props } from '../types.ts'
 import { loginPattern, saveData } from './helpers'
+
+import './index.css'
 
 const LoginForm: FC<Props> = ({ id }) => {
   const routeNavigator = useRouteNavigator()
@@ -32,6 +41,13 @@ const LoginForm: FC<Props> = ({ id }) => {
   const [password, setPassword] = useState<string>('')
   const [isDataInvalid, setIsDataInvalid] = useState<boolean>(false)
   const [isLoading, setIsLoading] = useState<boolean>(false)
+  const [isAgreementAccepted, setIsAgreementAccepted] = useState<boolean>(false)
+  const [isPersonalDataConsentAccepted, setIsPersonalDataConsentAccepted] =
+    useState<boolean>(false)
+
+  const hasLegalDocuments = Boolean(
+    PRIVACY_POLICY_URL && USER_AGREEMENT_URL && PERSONAL_DATA_CONSENT_URL
+  )
 
   const [snackbar, showSnackbar] = useSnackbar()
 
@@ -75,6 +91,14 @@ const LoginForm: FC<Props> = ({ id }) => {
     setIsLoading(true)
 
     e.preventDefault()
+    if (
+      hasLegalDocuments &&
+      (!isAgreementAccepted || !isPersonalDataConsentAccepted)
+    ) {
+      setIsLoading(false)
+      return
+    }
+
     if (!loginPattern.test(login)) {
       setIsDataInvalid(true)
       return
@@ -82,10 +106,22 @@ const LoginForm: FC<Props> = ({ id }) => {
 
     const passwordHashed = await b64(password)
 
+    if (hasLegalDocuments) {
+      localStorage.setItem(
+        'legalAcceptance',
+        JSON.stringify({
+          acceptedAt: new Date().toISOString(),
+          personalDataConsentUrl: PERSONAL_DATA_CONSENT_URL,
+          privacyPolicyUrl: PRIVACY_POLICY_URL,
+          userAgreementUrl: USER_AGREEMENT_URL
+        })
+      )
+    }
+
     try {
       const response = await postLogin(login, passwordHashed, true)
 
-      const { data } = handleResponse(
+      const handledResponse = handleResponse(
         response,
         () => setIsDataInvalid(true),
         undefined,
@@ -94,6 +130,9 @@ const LoginForm: FC<Props> = ({ id }) => {
         false,
         true
       )
+      if (!handledResponse) return
+
+      const { data } = handledResponse
 
       // @TODO: ??
       if (isApiError(data) || !data.token) {
@@ -136,8 +175,17 @@ const LoginForm: FC<Props> = ({ id }) => {
       Проверьте правильность логина и пароля
     </FormStatus>
   ) : (
-    <FormStatus title='Нам можно доверять' mode='default'>
-      Мы бережно передаем ваши данные и храним в зашифрованном виде
+    <FormStatus
+      title={
+        DIARY_SOURCE === 'direct'
+          ? 'Неофициальный клиент'
+          : 'Нам можно доверять'
+      }
+      mode='default'
+    >
+      {DIARY_SOURCE === 'direct'
+        ? 'Данные для входа передаются напрямую в электронный дневник. Приложение не сохраняет введённый пароль.'
+        : 'Мы бережно передаем ваши данные и храним в зашифрованном виде'}
     </FormStatus>
   )
 
@@ -147,7 +195,12 @@ const LoginForm: FC<Props> = ({ id }) => {
       ? 'valid'
       : 'error'
   const isDisabled =
-    !password || !login || !loginPattern.test(login) || isLoading
+    !password ||
+    !login ||
+    !loginPattern.test(login) ||
+    isLoading ||
+    (hasLegalDocuments &&
+      (!isAgreementAccepted || !isPersonalDataConsentAccepted))
 
   return (
     <Panel nav={id}>
@@ -190,6 +243,53 @@ const LoginForm: FC<Props> = ({ id }) => {
               onChange={onChange}
             />
           </FormItem>
+          {hasLegalDocuments && (
+            <FormItem top='Документы и согласия'>
+              <Link
+                className='loginLegalDocuments__privacy'
+                href={PRIVACY_POLICY_URL}
+                target='_blank'
+                rel='noreferrer'
+              >
+                <Icon24DocumentTextOutline aria-hidden />
+                <span>Политика конфиденциальности</span>
+              </Link>
+              <Checkbox
+                required
+                checked={isAgreementAccepted}
+                onChange={(event) =>
+                  setIsAgreementAccepted(event.currentTarget.checked)
+                }
+              >
+                Принимаю{' '}
+                <Link
+                  href={USER_AGREEMENT_URL}
+                  target='_blank'
+                  rel='noreferrer'
+                  onClick={(event) => event.stopPropagation()}
+                >
+                  пользовательское соглашение
+                </Link>
+              </Checkbox>
+              <Checkbox
+                required
+                checked={isPersonalDataConsentAccepted}
+                onChange={(event) =>
+                  setIsPersonalDataConsentAccepted(event.currentTarget.checked)
+                }
+              >
+                Даю{' '}
+                <Link
+                  href={PERSONAL_DATA_CONSENT_URL}
+                  target='_blank'
+                  rel='noreferrer'
+                  onClick={(event) => event.stopPropagation()}
+                >
+                  согласие на обработку персональных данных
+                </Link>
+              </Checkbox>
+            </FormItem>
+          )}
           <FormItem>
             <Button
               type='submit'

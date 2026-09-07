@@ -115,7 +115,11 @@ export const diaryApi: DiaryApi = {
     execute(async () => {
       const response = await client.login({ login, password })
       const cookie = getStoredCookie()
-      await syncBackgroundGradeSession(cookie, Number(response.id))
+      try {
+        await syncBackgroundGradeSession(cookie, Number(response.id))
+      } catch (error) {
+        console.error('Unable to sync background grade session', error)
+      }
       return response
     }),
   logout: () =>

@@ -12,6 +12,18 @@ bun --cwd apps/mobile run open:android
 
 Override the upstream URL for a build with `VITE_DIARY_URL`.
 
+For a publication build, copy `.env.example` to `.env` and set public links to
+the final legal documents:
+
+```dotenv
+VITE_PRIVACY_POLICY_URL=https://example.org/privacy
+VITE_USER_AGREEMENT_URL=https://example.org/terms
+VITE_PERSONAL_DATA_CONSENT_URL=https://example.org/consent
+```
+
+When all three links are configured, the login form requires the user to accept
+the user agreement and separately consent to personal data processing.
+
 ## Background grade notifications
 
 The Android build can poll the diary directly and display a separate local
