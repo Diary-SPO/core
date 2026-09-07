@@ -9,9 +9,10 @@
     "build:fresh": "bun exec 'rm -rf dist' && bun build ./src/main.ts ./src/worker --outdir dist --minify --target bun",
     "serve": "bun run build && bun run ./dist/main.js",
     "serve:fresh": "bun run build:fresh && bun run ./dist/main.js",
-    "lint": "biome lint . --apply",
+    "lint": "biome lint . --write",
     "format": "biome format . --write",
-    "checkAll": "biome check . --write --unsafe",
+    "checkAll": "biome check . --skip=assist/source/organizeImports",
+    "checkAll:fix": "biome check . --write --unsafe --skip=assist/source/organizeImports",
     "cli": "bun run ./src/cli"
   },
   "dependencies": {

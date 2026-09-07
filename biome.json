@@ -1,15 +1,16 @@
 {
-  "$schema": "https://biomejs.dev/schemas/1.8.1/schema.json",
+  "$schema": "https://biomejs.dev/schemas/2.5.6/schema.json",
   "formatter": {
     "indentStyle": "space",
     "indentWidth": 2,
-    "ignore": [
-      "node_modules",
-      "./apps/network-city",
-      "./apps/api/dist",
-      "./apps/admin/dist",
-      "./apps/web/dist",
-      "bun.lockb"
+    "includes": [
+      "**",
+      "!**/node_modules",
+      "!apps/network-city",
+      "!apps/api/dist",
+      "!apps/admin/dist",
+      "!apps/web/dist",
+      "!**/bun.lockb"
     ]
   },
   "javascript": {
@@ -20,10 +21,28 @@
       "trailingCommas": "none"
     }
   },
-  "organizeImports": {
-    "enabled": true
-  },
+  "overrides": [
+    {
+      "includes": ["**/package.json"],
+      "json": {
+        "formatter": {
+          "expand": "auto"
+        }
+      }
+    }
+  ],
+  "assist": { "actions": { "source": { "organizeImports": "on" } } },
   "files": {
+    "includes": [
+      "**",
+      "!!**/node_modules",
+      "!!**/dist",
+      "!!**/build",
+      "!!**/.gradle",
+      "!!apps/mobile/android/app/src/main/assets/public",
+      "!!apps/network-city",
+      "!!**/bun.lockb"
+    ],
     "maxSize": 4096000
   },
   "linter": {
@@ -35,15 +54,16 @@
       "suspicious": {
         "noArrayIndexKey": "off"
       },
-      "recommended": true
+      "preset": "recommended"
     },
-    "ignore": [
-      "node_modules",
-      "./apps/network-city",
-      "./apps/api/dist",
-      "./apps/admin/dist",
-      "./apps/web/dist",
-      "bun.lockb"
+    "includes": [
+      "**",
+      "!**/node_modules",
+      "!apps/network-city",
+      "!apps/api/dist",
+      "!apps/admin/dist",
+      "!apps/web/dist",
+      "!**/bun.lockb"
     ]
   }
 }

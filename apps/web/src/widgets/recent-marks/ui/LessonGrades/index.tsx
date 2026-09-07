@@ -1,9 +1,8 @@
 import type { Task } from '@diary-spo/shared'
+import { useMarkModal } from '@store'
 import { useRouteNavigator } from '@vkontakte/vk-mini-apps-router'
 import { Header, HorizontalCell } from '@vkontakte/vkui'
 import type { FC } from 'react'
-
-import { useMarkModal } from '@store'
 import { Mark, setDefaultMark, truncateString } from '../../../../shared'
 import { MODAL_PAGE_MARK } from '../../../../shared/config'
 
@@ -20,12 +19,12 @@ interface MarkDetailed {
 }
 
 export const LessonGrades: FC<LessonGradesProps> = ({ day, lessonGrades }) => {
+  const routeNavigator = useRouteNavigator()
+  const { setData } = useMarkModal()
+
   if (!lessonGrades.length) {
     return
   }
-
-  const routeNavigator = useRouteNavigator()
-  const { setData } = useMarkModal()
 
   const handleMarkClick = async (data: Task, lessonName: string) => {
     setData({ data, lessonName })

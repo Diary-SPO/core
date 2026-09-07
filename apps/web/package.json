@@ -12,9 +12,10 @@
     "predeploy": "bun run build",
     "deploy:gh": "gh-pages -d dist",
     "deploy:vk": "vk-miniapps-deploy",
-    "lint": "biome lint . --apply",
+    "lint": "biome lint . --write",
     "format": "biome format . --write",
-    "checkAll": "biome check . --write --unsafe"
+    "checkAll": "biome check . --skip=assist/source/organizeImports",
+    "checkAll:fix": "biome check . --write --unsafe --skip=assist/source/organizeImports"
   },
   "dependencies": {
     "@elysiajs/eden": "1.1.3",

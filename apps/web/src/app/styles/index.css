@@ -22,7 +22,7 @@
 }
 
 main {
-  animation: show .5s forwards ease-in;
+  animation: show 0.5s forwards ease-in;
 }
 
 @keyframes show {
