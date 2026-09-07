@@ -107,9 +107,7 @@ describe('DiaryClient', () => {
     const header =
       'UID=user; path=/, FutureAuthCookie=value; expires=Sat, 05 Sep 2027 00:00:00 GMT; httponly'
 
-    expect(extractAuthCookie(header)).toBe(
-      'UID=user; FutureAuthCookie=value'
-    )
+    expect(extractAuthCookie(header)).toBe('UID=user; FutureAuthCookie=value')
   })
 
   test('logs in, keeps the selected student and builds diary paths', async () => {
