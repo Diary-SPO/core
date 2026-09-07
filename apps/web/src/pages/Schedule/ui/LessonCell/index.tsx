@@ -51,7 +51,7 @@ const LessonCell: FC<ILessonCell> = ({
         handleLessonClick(name, endTime, startTime, timetable, gradebook)
       }
       key={startTime}
-      subhead={<div>{lessonTime}</div>}
+      overTitle={<div>{lessonTime}</div>}
       subtitle={
         <div>
           <div className='lessonSubtitle'>

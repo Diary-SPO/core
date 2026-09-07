@@ -21,7 +21,7 @@ const LessonGrade: FC<ILessonGrade> = ({ tasks, absenceType }) => {
   }
 
   const header = (
-    <Header mode='tertiary'>
+    <Header size='m'>
       <ExplanationTooltip
         text='Успеваемость'
         tooltipContent='Информация может быть неактуальной. При возникновении неточностей можете обратиться к нам'

@@ -20,9 +20,7 @@ const Summary: FC<ISummary> = ({
 
       <Group
         header={
-          <Header mode='tertiary'>
-            Статистика {!markCounts && 'отсутствует'}
-          </Header>
+          <Header size='m'>Статистика {!markCounts && 'отсутствует'}</Header>
         }
       >
         {/*@TODO: ??*/}

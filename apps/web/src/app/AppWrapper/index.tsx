@@ -24,7 +24,7 @@ const AppWrapper = () => {
     <AdaptivityProvider>
       <RouterProvider router={router} notFound={<NotFoundCorrect />}>
         <ConfigProvider
-          appearance={vkBridgeAppearance}
+          colorScheme={vkBridgeAppearance}
           platform={platform}
           isWebView={vkBridge.isWebView()}
         >

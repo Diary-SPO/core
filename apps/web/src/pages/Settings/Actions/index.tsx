@@ -38,9 +38,9 @@ const Actions = () => {
         }
       ]}
       actionsLayout='horizontal'
-      onClose={() => routeNavigator.hidePopout()}
-      header='Выход'
-      text='Вы уверены, что хотите выйти из аккаунта?'
+      onClosed={() => routeNavigator.hidePopout()}
+      title='Выход'
+      description='Вы уверены, что хотите выйти из аккаунта?'
     />
   )
 
@@ -95,10 +95,10 @@ const Actions = () => {
 
   return (
     <>
-      <Group header={<Header mode='secondary'>Действия</Header>}>
+      <Group header={<Header size='s'>Действия</Header>}>
         <CellButton
           Component='label'
-          after={<Switch getRef={switchRef} />}
+          after={<Switch slotProps={{ input: { getRootRef: switchRef } }} />}
           onChange={() => setIsSwitchChecked(!isSwitchChecked)}
           before={<Icon28IncognitoOutline />}
         >

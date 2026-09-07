@@ -76,7 +76,7 @@ const UserInfo: FC = () => {
     )
   }
 
-  const header = <Header mode='tertiary'>Личная информация</Header>
+  const header = <Header size='m'>Личная информация</Header>
 
   return (
     <Group mode='plain' header={header}>
@@ -87,10 +87,7 @@ const UserInfo: FC = () => {
         </Title>
         <Text className='userInfo__Text'>Студент ({userData.group})</Text>
       </Gradient>
-      <Group
-        mode='plain'
-        header={<Header mode='tertiary'>Учебное заведение</Header>}
-      >
+      <Group mode='plain' header={<Header size='m'>Учебное заведение</Header>}>
         <SimpleCell before={<Icon28SchoolOutline />} subtitle={userData.city}>
           {userData.org}
         </SimpleCell>

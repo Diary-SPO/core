@@ -16,7 +16,7 @@ const LessonMainInfo: FC<{ lessonMainInfo: Partial<ILessonMainInfo> }> = ({
   lessonMainInfo
 }) => {
   const header = (
-    <Header mode='tertiary'>
+    <Header size='m'>
       <ExplanationTooltip
         text='Основная информация'
         tooltipContent='Вся информация берется из оригинального дневника и отображается здесь'

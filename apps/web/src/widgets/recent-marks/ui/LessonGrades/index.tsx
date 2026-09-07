@@ -34,7 +34,7 @@ export const LessonGrades: FC<LessonGradesProps> = ({ day, lessonGrades }) => {
 
   return (
     <div key={day}>
-      <Header mode='secondary' className='recentMarks'>
+      <Header size='s' className='recentMarks'>
         {day}
       </Header>
       <div className='flex'>
@@ -43,6 +43,7 @@ export const LessonGrades: FC<LessonGradesProps> = ({ day, lessonGrades }) => {
             <HorizontalCell
               onClick={() => handleMarkClick(task, lessonName)}
               className='markWrapper'
+              size='auto'
             >
               <Mark
                 bottom={truncateString(lessonName, 18)}
