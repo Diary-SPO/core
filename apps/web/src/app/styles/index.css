@@ -1,11 +1,11 @@
 /* Для PC / Tablet */
 .lessonCard > section {
-  padding-bottom: 10px !important;
+  padding-bottom: 10px;
 }
 
 /* Не рисуем лишний блок из VKUI */
 .lessonCard > div {
-  display: none !important;
+  display: none;
 }
 
 .lesson > div > div > span {
@@ -18,7 +18,7 @@
 
 .marksWrapper > div::before,
 .marksWrapper > div::after {
-  content: none !important;
+  content: none;
 }
 
 main {
