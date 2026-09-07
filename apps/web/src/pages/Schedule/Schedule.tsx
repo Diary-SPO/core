@@ -66,11 +66,9 @@ const Schedule: FC<Props> = ({ id }) => {
   const weekString = getWeekString(startDate, endDate)
 
   const isNoMarks =
-    lessonsState?.length &&
+    Boolean(lessonsState?.length) &&
     !lessonsState?.some((day) =>
-      day.lessons?.some((lesson) =>
-        lesson.gradebook?.tasks?.some((task) => task.mark)
-      )
+      day.lessons?.some((lesson) => (lesson.gradebook?.tasks?.length ?? 0) > 0)
     )
 
   const ScheduleGroupAside = (
@@ -88,7 +86,7 @@ const Schedule: FC<Props> = ({ id }) => {
   const ScheduleGroupWithSpinner = withSpinner(ScheduleGroup)
 
   const MarksHeader = (
-    <Header size='s'>Оценки за неделю {isNoMarks && 'отсутствуют'}</Header>
+    <Header size='s'>Оценки за неделю{isNoMarks ? ' отсутствуют' : ''}</Header>
   )
 
   if (isError) {
