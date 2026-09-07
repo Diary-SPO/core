@@ -10,6 +10,13 @@ import type {
   ApiResponse,
   DiaryApi
 } from '../../web/src/shared/api/runtime/types.ts'
+import {
+  backgroundGradeNotifications,
+  clearBackgroundGradeSession,
+  syncBackgroundGradeSession
+} from './background-grade-notifications.ts'
+
+export { backgroundGradeNotifications }
 
 const baseUrl = import.meta.env.VITE_DIARY_URL || 'https://poo.tomedu.ru'
 const cookieStorageKey = 'directDiaryCookies'
@@ -104,12 +111,31 @@ const execute = async <T>(
 }
 
 export const diaryApi: DiaryApi = {
-  login: (login, password) => execute(() => client.login({ login, password })),
-  logout: () => execute(() => client.logout()),
+  login: (login, password) =>
+    execute(async () => {
+      const response = await client.login({ login, password })
+      const cookie = getStoredCookie()
+      await syncBackgroundGradeSession(cookie, Number(response.id))
+      return response
+    }),
+  logout: () =>
+    execute(async () => {
+      try {
+        return await client.logout()
+      } finally {
+        await clearBackgroundGradeSession()
+      }
+    }),
   getLessons: (startDate, endDate) =>
     execute(() => client.getLessons(startDate, endDate)),
   getPerformance: () => execute(() => client.getPerformance()),
   getAttestation: () => execute(() => client.getAttestation()),
   getFinalMarks: () => execute(() => client.getFinalMarks()),
   getAds: () => execute(() => client.getAds())
+}
+
+if (storedStudentId > 0 && getStoredCookie()) {
+  void syncBackgroundGradeSession(getStoredCookie(), storedStudentId).catch(
+    (error) => console.error('Unable to sync background grade session', error)
+  )
 }

@@ -1,5 +1,16 @@
 import { client } from '../client.ts'
-import type { DiaryApi } from './types.ts'
+import type { BackgroundGradeNotifications, DiaryApi } from './types.ts'
+
+const defaultBackgroundSettings = {
+  enabled: false,
+  intervalMinutes: 30 as const
+}
+
+export const backgroundGradeNotifications: BackgroundGradeNotifications = {
+  supported: false,
+  getSettings: () => defaultBackgroundSettings,
+  setSettings: async () => defaultBackgroundSettings
+}
 
 export const diaryApi: DiaryApi = {
   login: (login, password, isHash) =>

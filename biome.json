@@ -39,7 +39,7 @@
       "!!**/dist",
       "!!**/build",
       "!!**/.gradle",
-      "!!apps/mobile/android/app/src/main/assets/public",
+      "!!apps/mobile/android/app/src/main/assets",
       "!!apps/network-city",
       "!!**/bun.lockb"
     ],

@@ -6,6 +6,16 @@ const config: CapacitorConfig = {
   webDir: 'dist',
   android: {
     allowMixedContent: false
+  },
+  plugins: {
+    BackgroundRunner: {
+      autoStart: true,
+      event: 'gradeCheck',
+      interval: 15,
+      label: 'ru.diaryspo.mobile.grade-check',
+      repeat: true,
+      src: 'runners/grade-runner.js'
+    }
   }
 }
 

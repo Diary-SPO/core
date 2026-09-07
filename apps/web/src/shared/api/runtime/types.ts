@@ -29,3 +29,21 @@ export interface DiaryApi {
   getFinalMarks(): Promise<ApiResponse<AcademicRecord>>
   getAds(): Promise<ApiResponse<NotificationsResponse[]>>
 }
+
+export const BACKGROUND_GRADE_INTERVALS = [15, 30, 60, 120] as const
+
+export type BackgroundGradeInterval =
+  (typeof BACKGROUND_GRADE_INTERVALS)[number]
+
+export interface BackgroundGradeSettings {
+  enabled: boolean
+  intervalMinutes: BackgroundGradeInterval
+}
+
+export interface BackgroundGradeNotifications {
+  readonly supported: boolean
+  getSettings(): BackgroundGradeSettings
+  setSettings(
+    settings: BackgroundGradeSettings
+  ): Promise<BackgroundGradeSettings>
+}
