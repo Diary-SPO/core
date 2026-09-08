@@ -44,3 +44,25 @@ bun --cwd apps/mobile run build:android
 ```
 
 The APK is written to `android/app/build/outputs/apk/debug/`.
+
+## Release signing
+
+Local release signing uses these files, which are excluded from Git:
+
+- `android/signing/diaryspo-release.jks` — the release signing key;
+- `android/keystore.properties` — the key alias and passwords.
+
+Back up both files in a secure location. Losing the signing key or its passwords
+will make it impossible to publish updates signed with the same key.
+
+After updating `versionCode` and `versionName` in `android/app/build.gradle`,
+build the signed release artifacts with:
+
+```bash
+bun --cwd apps/mobile run sync
+cd apps/mobile/android
+./gradlew assembleRelease bundleRelease
+```
+
+The signed APK is written to `app/build/outputs/apk/release/`, and the signed AAB
+is written to `app/build/outputs/bundle/release/`.
