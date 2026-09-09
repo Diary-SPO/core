@@ -24,12 +24,18 @@ const cookieStorageKey = 'directDiaryCookies'
 const getStoredCookie = (): string =>
   localStorage.getItem(cookieStorageKey) ?? ''
 
-const getResponseCookies = (headers: Record<string, string>) => {
-  const setCookie = Object.entries(headers).find(
-    ([key]) => key.toLowerCase() === 'set-cookie'
-  )?.[1]
-  return extractAuthCookie(setCookie ?? '')
-}
+const getResponseCookies = (responses: Record<string, string>[]) =>
+  extractAuthCookie(
+    responses
+      .map(
+        (headers) =>
+          Object.entries(headers).find(
+            ([key]) => key.toLowerCase() === 'set-cookie'
+          )?.[1]
+      )
+      .filter((header): header is string => Boolean(header))
+      .join(', ')
+  )
 
 const transport: DiaryHttpTransport = {
   async request<T>({ method, url, headers, body }: DiaryHttpRequest) {
@@ -46,14 +52,6 @@ const transport: DiaryHttpTransport = {
       },
       data: body
     })
-
-    if (response.status >= 200 && response.status < 300 && isLoginRequest) {
-      const responseCookies = getResponseCookies(response.headers)
-
-      if (responseCookies) {
-        localStorage.setItem(cookieStorageKey, responseCookies)
-      }
-    }
 
     return {
       data: response.data as T,
@@ -113,14 +111,23 @@ const execute = async <T>(
 export const diaryApi: DiaryApi = {
   login: (login, password) =>
     execute(async () => {
-      const response = await client.login({ login, password })
+      await client.logout()
+
+      const { user, responseHeaders } = await client.login({ login, password })
+      const responseCookies = getResponseCookies(responseHeaders)
+
+      if (!responseCookies) {
+        throw new DiaryClientError('Login response has no cookies', 502)
+      }
+
+      localStorage.setItem(cookieStorageKey, responseCookies)
       const cookie = getStoredCookie()
       try {
-        await syncBackgroundGradeSession(cookie, Number(response.id))
+        await syncBackgroundGradeSession(cookie, Number(user.id))
       } catch (error) {
         console.error('Unable to sync background grade session', error)
       }
-      return response
+      return user
     }),
   logout: () =>
     execute(async () => {

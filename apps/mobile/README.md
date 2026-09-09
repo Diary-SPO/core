@@ -1,68 +1,57 @@
-# Mobile
+# DiarySPO Mobile
 
-Android application built from the existing React UI with Capacitor. Unlike the
-regular web build, its `@runtime-api` alias points to a native Capacitor HTTP
-adapter and talks directly to `https://poo.tomedu.ru`.
+Android-приложение электронного дневника на React и Capacitor. Показывает расписание и оценки, напрямую получает данные с `https://poo.tomedu.ru` и умеет уведомлять об изменениях оценок в фоне.
+
+## Требования
+
+- Bun;
+- JDK 21 или новее;
+- Android SDK 36;
+- настроенные `JAVA_HOME` и `ANDROID_HOME`.
+
+Установите зависимости из корня репозитория:
 
 ```bash
 bun install
-bun --cwd apps/mobile run sync
-bun --cwd apps/mobile run open:android
 ```
 
-Override the upstream URL for a build with `VITE_DIARY_URL`.
+Скопируйте `apps/mobile/.env.example` в `apps/mobile/.env`. Для публикации
+укажите в нём итоговые ссылки на юридические документы. При необходимости адрес
+дневника можно изменить через `VITE_DIARY_URL`.
 
-For a publication build, copy `.env.example` to `.env` and set public links to
-the final legal documents:
+## Debug APK
 
-```dotenv
-VITE_PRIVACY_POLICY_URL=https://example.org/privacy
-VITE_USER_AGREEMENT_URL=https://example.org/terms
-VITE_PERSONAL_DATA_CONSENT_URL=https://example.org/consent
-```
-
-When all three links are configured, the login form requires the user to accept
-the user agreement and separately consent to personal data processing.
-
-## Background grade notifications
-
-The Android build can poll the diary directly and display a separate local
-notification for every grade that is added, changed, or removed. Users enable the feature and select
-a 15, 30, 60, or 120 minute daytime interval in Settings. The default selection
-is 30 minutes. Between 20:00 and 06:00, network checks are limited to once every
-120 minutes.
-
-Android schedules the runner every 15 minutes, but execution is inexact and can
-be delayed by Doze mode or vendor battery restrictions. The first successful
-check only saves a baseline and does not create notifications.
-
-To build a debug APK from the command line, install JDK 21+ and Android SDK 36,
-set `JAVA_HOME` and `ANDROID_HOME`, then run:
+Из корня репозитория выполните:
 
 ```bash
-bun --cwd apps/mobile run build:android
+bun run --cwd apps/mobile build:android
 ```
 
-The APK is written to `android/app/build/outputs/apk/debug/`.
+Готовый APK: `apps/mobile/android/app/build/outputs/apk/debug/app-debug.apk`.
 
-## Release signing
+## Release APK и AAB
 
-Local release signing uses these files, which are excluded from Git:
+Перед сборкой:
 
-- `android/signing/diaryspo-release.jks` — the release signing key;
-- `android/keystore.properties` — the key alias and passwords.
+1. Увеличьте `versionCode` и обновите `versionName` в
+   `apps/mobile/android/app/build.gradle`.
+2. Проверьте наличие файлов подписи:
+   - `apps/mobile/android/signing/diaryspo-release.jks`;
+   - `apps/mobile/android/keystore.properties`.
 
-Back up both files in a secure location. Losing the signing key or its passwords
-will make it impossible to publish updates signed with the same key.
-
-After updating `versionCode` and `versionName` in `android/app/build.gradle`,
-build the signed release artifacts with:
+Из корня репозитория выполните:
 
 ```bash
-bun --cwd apps/mobile run sync
+bun run --cwd apps/mobile sync
 cd apps/mobile/android
-./gradlew assembleRelease bundleRelease
+./gradlew clean assembleRelease bundleRelease
 ```
 
-The signed APK is written to `app/build/outputs/apk/release/`, and the signed AAB
-is written to `app/build/outputs/bundle/release/`.
+Готовые файлы:
+
+- `apps/mobile/android/app/build/outputs/apk/release/app-release.apk`;
+- `apps/mobile/android/app/build/outputs/bundle/release/app-release.aab`.
+
+Файлы `diaryspo-release.jks` и `keystore.properties` не коммитятся. Храните их
+в защищённой резервной копии: без прежнего ключа нельзя выпустить обновление
+приложения с той же подписью.

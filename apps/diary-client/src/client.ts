@@ -9,7 +9,7 @@ import type {
   UserData
 } from '@diary-spo/shared'
 
-import type { DiaryHttpTransport } from './transport.ts'
+import type { DiaryHttpResponse, DiaryHttpTransport } from './transport.ts'
 
 const JSON_HEADERS = {
   'Content-Type': 'application/json;charset=UTF-8'
@@ -31,6 +31,11 @@ export interface LoginInput {
   password: string
 }
 
+export interface DiaryLoginResult {
+  user: ResponseLogin
+  responseHeaders: Record<string, string>[]
+}
+
 export class DiaryClient {
   private studentId: number | null = null
 
@@ -39,11 +44,20 @@ export class DiaryClient {
     private readonly transport: DiaryHttpTransport
   ) {}
 
-  async login({ login, password }: LoginInput): Promise<ResponseLogin> {
-    const auth = await this.request<UserData>('/services/security/login', {
-      method: 'POST',
-      body: { login, password, isRemember: true }
-    })
+  async login({ login, password }: LoginInput): Promise<DiaryLoginResult> {
+    const responseHeaders: Record<string, string>[] = []
+    const collectHeaders = (response: DiaryHttpResponse<unknown>) => {
+      responseHeaders.push(response.headers)
+    }
+
+    const auth = await this.request<UserData>(
+      '/services/security/login',
+      {
+        method: 'POST',
+        body: { login, password, isRemember: true }
+      },
+      collectHeaders
+    )
 
     const tenant = auth.tenants[auth.tenantName]
     const student = tenant?.studentRole.students[0]
@@ -56,30 +70,35 @@ export class DiaryClient {
     this.studentId = student.id
 
     const account = await this.request<PersonResponse>(
-      '/services/security/account-settings'
+      '/services/security/account-settings',
+      {},
+      collectHeaders
     )
     const person = account.persons[0]
 
     return {
-      id: BigInt(student.id),
-      groupId: BigInt(student.groupId),
-      groupName: student.groupName,
-      organization: {
-        abbreviation: organization.abbreviation,
-        addressSettlement:
-          organization.actualAddress ||
-          organization.legalAddress ||
-          organization.address.mailAddress
+      user: {
+        id: BigInt(student.id),
+        groupId: BigInt(student.groupId),
+        groupName: student.groupName,
+        organization: {
+          abbreviation: organization.abbreviation,
+          addressSettlement:
+            organization.actualAddress ||
+            organization.legalAddress ||
+            organization.address.mailAddress
+        },
+        login: login.toLowerCase(),
+        phone: person?.phone,
+        birthday: person?.birthday ?? '',
+        firstName: person?.firstName ?? student.firstName,
+        lastName: person?.lastName ?? student.lastName,
+        middleName: person?.middleName ?? student.middleName,
+        // This is only a local logged-in marker. Direct requests use the native
+        // cookie jar and never send this value over the network.
+        token: 'direct-session'
       },
-      login: login.toLowerCase(),
-      phone: person?.phone,
-      birthday: person?.birthday ?? '',
-      firstName: person?.firstName ?? student.firstName,
-      lastName: person?.lastName ?? student.lastName,
-      middleName: person?.middleName ?? student.middleName,
-      // This is only a local logged-in marker. Direct requests use the native
-      // cookie jar and never send this value over the network.
-      token: 'direct-session'
+      responseHeaders
     }
   }
 
@@ -131,7 +150,8 @@ export class DiaryClient {
 
   private async request<T>(
     path: string,
-    options: { method?: 'GET' | 'POST'; body?: unknown } = {}
+    options: { method?: 'GET' | 'POST'; body?: unknown } = {},
+    onResponse?: (response: DiaryHttpResponse<T>) => void
   ): Promise<T> {
     const response = await this.transport.request<T>({
       method: options.method ?? 'GET',
@@ -139,6 +159,8 @@ export class DiaryClient {
       headers: JSON_HEADERS,
       body: options.body
     })
+
+    onResponse?.(response)
 
     if (response.status < 200 || response.status >= 300) {
       throw new DiaryClientError(

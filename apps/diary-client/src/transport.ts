@@ -13,9 +13,6 @@ export interface DiaryHttpResponse<T> {
   headers: Record<string, string>
 }
 
-/**
- * Транспорт. Отвечает за хранилище cookie
- */
 export interface DiaryHttpTransport {
   request<T>(request: DiaryHttpRequest): Promise<DiaryHttpResponse<T>>
   clearSession?(): Promise<void>

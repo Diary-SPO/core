@@ -71,7 +71,15 @@ class MockTransport implements DiaryHttpTransport {
           }
         : []
 
-    return { data: data as T, status: 200, headers: {} }
+    return {
+      data: data as T,
+      status: 200,
+      headers: {
+        'set-cookie': request.url.endsWith('/services/security/login')
+          ? 'Session=session'
+          : 'Auth=authenticated'
+      }
+    }
   }
 
   async clearSession() {
@@ -114,7 +122,10 @@ describe('DiaryClient', () => {
     const transport = new MockTransport()
     const client = new DiaryClient('https://poo.tomedu.ru/', transport)
 
-    const user = await client.login({ login: 'IVAN', password: 'hash' })
+    const { user, responseHeaders } = await client.login({
+      login: 'IVAN',
+      password: 'hash'
+    })
     await client.getLessons('2026-09-01', '2026-09-07')
 
     expect(user.groupName).toBe('ИС-1')
@@ -125,6 +136,10 @@ describe('DiaryClient', () => {
       password: 'hash',
       isRemember: true
     })
+    expect(responseHeaders).toEqual([
+      { 'set-cookie': 'Session=session' },
+      { 'set-cookie': 'Auth=authenticated' }
+    ])
     expect(transport.requests[2].url).toBe(
       'https://poo.tomedu.ru/services/students/7/lessons/2026-09-01/2026-09-07'
     )
