@@ -20,7 +20,8 @@ export interface DiaryApi {
   login(
     login: string,
     password: string,
-    isHash: boolean
+    isHash: boolean,
+    diaryUrl?: string
   ): Promise<ApiResponse<ResponseLogin>>
   logout(): Promise<ApiResponse<{ success: boolean }>>
   getLessons(startDate: string, endDate: string): Promise<ApiResponse<Day[]>>

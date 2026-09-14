@@ -18,8 +18,22 @@ import {
 
 export { backgroundGradeNotifications }
 
-const baseUrl = import.meta.env.VITE_DIARY_URL || 'https://poo.tomedu.ru'
+const defaultBaseUrl = import.meta.env.VITE_DIARY_URL || 'https://poo.tomedu.ru'
 const cookieStorageKey = 'directDiaryCookies'
+const baseUrlStorageKey = 'directDiaryBaseUrl'
+
+const normalizeBaseUrl = (value: string): string => {
+  const url = new URL(value)
+  if (url.protocol !== 'https:') {
+    throw new DiaryClientError('Diary URL must use HTTPS', 400)
+  }
+
+  return url.origin
+}
+
+let activeBaseUrl = normalizeBaseUrl(
+  localStorage.getItem(baseUrlStorageKey) || defaultBaseUrl
+)
 
 const getStoredCookie = (): string =>
   localStorage.getItem(cookieStorageKey) ?? ''
@@ -37,7 +51,7 @@ const getResponseCookies = (responses: Record<string, string>[]) =>
       .join(', ')
   )
 
-const transport: DiaryHttpTransport = {
+const createTransport = (baseUrl: string): DiaryHttpTransport => ({
   async request<T>({ method, url, headers, body }: DiaryHttpRequest) {
     const isLoginRequest = url.endsWith('/services/security/login')
     const storedCookie = getStoredCookie()
@@ -74,9 +88,12 @@ const transport: DiaryHttpTransport = {
     await CapacitorCookies.clearCookies({ url: baseUrl })
     await CapacitorCookies.clearAllCookies()
   }
-}
+})
 
-const client = new DiaryClient(baseUrl, transport)
+const createClient = (baseUrl: string) =>
+  new DiaryClient(baseUrl, createTransport(baseUrl))
+
+let client = createClient(activeBaseUrl)
 
 const storedStudentId = Number(localStorage.getItem('id'))
 if (Number.isInteger(storedStudentId) && storedStudentId > 0) {
@@ -109,25 +126,45 @@ const execute = async <T>(
 }
 
 export const diaryApi: DiaryApi = {
-  login: (login, password) =>
+  login: (login, password, _isHash, diaryUrl) =>
     execute(async () => {
       await client.logout()
 
-      const { user, responseHeaders } = await client.login({ login, password })
-      const responseCookies = getResponseCookies(responseHeaders)
+      const nextBaseUrl = normalizeBaseUrl(diaryUrl || activeBaseUrl)
+      const nextClient = createClient(nextBaseUrl)
 
-      if (!responseCookies) {
-        throw new DiaryClientError('Login response has no cookies', 502)
-      }
+      if (nextBaseUrl !== activeBaseUrl) await nextClient.logout()
 
-      localStorage.setItem(cookieStorageKey, responseCookies)
-      const cookie = getStoredCookie()
       try {
-        await syncBackgroundGradeSession(cookie, Number(user.id))
+        const { user, responseHeaders } = await nextClient.login({
+          login,
+          password
+        })
+        const responseCookies = getResponseCookies(responseHeaders)
+
+        if (!responseCookies) {
+          throw new DiaryClientError('Login response has no cookies', 502)
+        }
+
+        activeBaseUrl = nextBaseUrl
+        client = nextClient
+        localStorage.setItem(baseUrlStorageKey, activeBaseUrl)
+        localStorage.setItem(cookieStorageKey, responseCookies)
+        const cookie = getStoredCookie()
+        try {
+          await syncBackgroundGradeSession(
+            cookie,
+            Number(user.id),
+            activeBaseUrl
+          )
+        } catch (error) {
+          console.error('Unable to sync background grade session', error)
+        }
+        return user
       } catch (error) {
-        console.error('Unable to sync background grade session', error)
+        await nextClient.logout()
+        throw error
       }
-      return user
     }),
   logout: () =>
     execute(async () => {
@@ -146,7 +183,11 @@ export const diaryApi: DiaryApi = {
 }
 
 if (storedStudentId > 0 && getStoredCookie()) {
-  void syncBackgroundGradeSession(getStoredCookie(), storedStudentId).catch(
-    (error) => console.error('Unable to sync background grade session', error)
+  void syncBackgroundGradeSession(
+    getStoredCookie(),
+    storedStudentId,
+    activeBaseUrl
+  ).catch((error) =>
+    console.error('Unable to sync background grade session', error)
   )
 }

@@ -43,12 +43,13 @@ const dispatch = (event: string, details: Record<string, unknown> = {}) =>
 
 export const syncBackgroundGradeSession = async (
   cookie: string,
-  studentId: number
+  studentId: number,
+  baseUrl: string
 ) => {
   if (!Capacitor.isNativePlatform()) return
 
   await dispatch('gradeSessionSync', {
-    baseUrl: import.meta.env.VITE_DIARY_URL || 'https://poo.tomedu.ru',
+    baseUrl,
     cookie,
     settings: localStorage.getItem(SETTINGS_STORAGE_KEY),
     studentId
@@ -88,8 +89,12 @@ export const backgroundGradeNotifications: BackgroundGradeNotifications = {
 
       const cookie = localStorage.getItem('directDiaryCookies') ?? ''
       const studentId = Number(localStorage.getItem('id'))
+      const baseUrl =
+        localStorage.getItem('directDiaryBaseUrl') ||
+        import.meta.env.VITE_DIARY_URL ||
+        'https://poo.tomedu.ru'
       if (cookie && Number.isInteger(studentId) && studentId > 0) {
-        await syncBackgroundGradeSession(cookie, studentId)
+        await syncBackgroundGradeSession(cookie, studentId, baseUrl)
       }
 
       if (nextSettings.enabled) await dispatch('gradeCheck')

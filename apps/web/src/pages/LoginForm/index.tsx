@@ -8,6 +8,8 @@ import { useRouteNavigator } from '@vkontakte/vk-mini-apps-router'
 import {
   Button,
   Checkbox,
+  CustomSelect,
+  CustomSelectOption,
   FormItem,
   FormStatus,
   Group,
@@ -15,14 +17,24 @@ import {
   Link,
   Panel
 } from '@vkontakte/vkui'
-import { type ChangeEvent, type FC, useLayoutEffect, useState } from 'react'
+import {
+  type ChangeEvent,
+  type FC,
+  useLayoutEffect,
+  useMemo,
+  useState
+} from 'react'
 
 import { VIEW_SCHEDULE } from '../../app/routes'
 import { handleResponse, isApiError, PanelHeaderWithBack } from '../../shared'
 import { postLogin } from '../../shared/api'
 import { getToken } from '../../shared/api/token.ts'
 import {
+  DEFAULT_DIARY_URL,
   DIARY_SOURCE,
+  diaryRegionMatches,
+  getDiaryDomain,
+  getSortedDiaryRegions,
   PERSONAL_DATA_CONSENT_URL,
   PRIVACY_POLICY_URL,
   USER_AGREEMENT_URL,
@@ -39,6 +51,8 @@ const LoginForm: FC<Props> = ({ id }) => {
 
   const [login, setLogin] = useState<string>('')
   const [password, setPassword] = useState<string>('')
+  const [diaryUrl, setDiaryUrl] = useState<string>(DEFAULT_DIARY_URL)
+  const [regionQuery, setRegionQuery] = useState<string>('')
   const [isDataInvalid, setIsDataInvalid] = useState<boolean>(false)
   const [isLoading, setIsLoading] = useState<boolean>(false)
   const [isAgreementAccepted, setIsAgreementAccepted] = useState<boolean>(false)
@@ -50,6 +64,18 @@ const LoginForm: FC<Props> = ({ id }) => {
   )
 
   const [snackbar, showSnackbar] = useSnackbar()
+  const diaryRegionOptions = useMemo(
+    () =>
+      getSortedDiaryRegions().map((region) => ({
+        ...region,
+        label: region.name,
+        value: region.url
+      })),
+    []
+  )
+  const hasMatchingRegions = diaryRegionOptions.some((region) =>
+    diaryRegionMatches(regionQuery, region)
+  )
 
   // biome-ignore lint/correctness/useExhaustiveDependencies: all good
   useLayoutEffect(() => {
@@ -121,7 +147,7 @@ const LoginForm: FC<Props> = ({ id }) => {
     }
 
     try {
-      const response = await postLogin(login, passwordHashed, true)
+      const response = await postLogin(login, passwordHashed, true, diaryUrl)
 
       const handledResponse = handleResponse(
         response,
@@ -210,6 +236,54 @@ const LoginForm: FC<Props> = ({ id }) => {
       <Group>
         {Banner}
         <form method='post' onSubmit={handleLogin}>
+          {DIARY_SOURCE === 'direct' && (
+            <FormItem
+              required
+              htmlFor='diaryRegion'
+              top='Регион или город'
+              bottom='Поиск работает по названию и адресу дневника'
+            >
+              <CustomSelect
+                id='diaryRegion'
+                name='diaryRegion'
+                searchable
+                value={diaryUrl}
+                options={diaryRegionOptions}
+                placeholder='Выберите регион'
+                emptyText='Регион не найден'
+                filterFn={(query, region) => diaryRegionMatches(query, region)}
+                onInputChange={(event) =>
+                  setRegionQuery(event.currentTarget.value)
+                }
+                onChange={(event) => setDiaryUrl(event.currentTarget.value)}
+                renderOption={({ option, ...props }) => (
+                  <CustomSelectOption
+                    {...props}
+                    description={getDiaryDomain(option.url)}
+                  />
+                )}
+                renderDropdown={({ defaultDropdownContent }) => (
+                  <>
+                    {defaultDropdownContent}
+                    {regionQuery.trim() && !hasMatchingRegions && (
+                      <div className='loginRegion__request'>
+                        <Button
+                          Component='a'
+                          href='https://vk.me/diary_spo'
+                          target='_blank'
+                          rel='noreferrer'
+                          size='m'
+                          stretched
+                        >
+                          Попросить добавить регион
+                        </Button>
+                      </div>
+                    )}
+                  </>
+                )}
+              />
+            </FormItem>
+          )}
           <FormItem
             required
             htmlFor='userLogin'
