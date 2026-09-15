@@ -19,12 +19,27 @@ bun install
 укажите в нём итоговые ссылки на юридические документы. При необходимости адрес
 дневника можно изменить через `VITE_DIARY_URL`.
 
+Для отправки статистики запусков и сессий в AppMetrica передайте Android API key
+при сборке одним из способов:
+
+```bash
+export APPMETRICA_API_KEY=ваш_api_key
+```
+
+или добавьте параметр `-PAPPMETRICA_API_KEY=ваш_api_key` к вызову Gradle. Без
+ключа приложение собирается, но AppMetrica не инициализируется.
+
 ## Debug APK
 
 Из корня репозитория выполните:
 
 ```bash
 bun run --cwd apps/mobile build:android
+```
+
+Если с метрикой:
+```bash
+APPMETRICA_API_KEY='ваш_api_key' bun run --cwd apps/mobile build:android
 ```
 
 Готовый APK: `apps/mobile/android/app/build/outputs/apk/debug/app-debug.apk`.
@@ -45,6 +60,13 @@ bun run --cwd apps/mobile build:android
 bun run --cwd apps/mobile sync
 cd apps/mobile/android
 ./gradlew clean assembleRelease bundleRelease
+```
+
+Если с метрикой:
+```bash
+bun run --cwd apps/mobile sync
+cd apps/mobile/android
+APPMETRICA_API_KEY='ваш_api_key' ./gradlew clean assembleRelease bundleRelease
 ```
 
 Готовые файлы:
