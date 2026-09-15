@@ -37,6 +37,14 @@ export const setLessonDetails = (lesson: Lesson) => {
   } = lesson
 
   const formattedName = formatLessonName(name)
+  const teacherName = [
+    timetable?.teacher?.lastName,
+    timetable?.teacher?.firstName,
+    timetable?.teacher?.middleName
+  ]
+    .map((namePart) => namePart?.trim())
+    .filter(Boolean)
+    .join(' ')
 
   return {
     lessonData: {
@@ -68,9 +76,7 @@ export const setLessonDetails = (lesson: Lesson) => {
       name: formattedName,
       lessonType: gradebook?.lessonType,
       themes: gradebook?.themes,
-      teacherName: timetable?.teacher?.firstName
-        ? `${timetable.teacher.lastName} ${timetable.teacher.firstName} ${timetable.teacher.middleName}`
-        : 'Не указан'
+      teacherName: teacherName || 'Не указан'
     },
     lessonTimePlaceInfo: {
       startTime: startTime || 'Ошибка',

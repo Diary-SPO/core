@@ -20,6 +20,47 @@ describe('setLessonDetails', () => {
 
     expect(result).toEqual(expectedLessonDetailsInvalid)
   })
+
+  it('не должна выводить undefined, если у преподавателя нет отчества', () => {
+    const result = setLessonDetails({
+      ...mockLesson,
+      timetable: {
+        ...mockLesson.timetable,
+        teacher: {
+          ...mockLesson.timetable.teacher,
+          middleName: undefined
+        }
+      }
+    })
+
+    expect(result.lessonMainInfo.teacherName).toBe('Smith John')
+  })
+
+  it('должна выводить только заполненные части ФИО преподавателя', () => {
+    const teacherNames = [
+      {
+        teacher: { id: 2, lastName: 'Smith', firstName: '', middleName: 'Doe' },
+        expected: 'Smith Doe'
+      },
+      {
+        teacher: { id: 2, lastName: '', firstName: 'John', middleName: '' },
+        expected: 'John'
+      },
+      {
+        teacher: { id: 2, lastName: ' ', firstName: '', middleName: undefined },
+        expected: 'Не указан'
+      }
+    ]
+
+    for (const { teacher, expected } of teacherNames) {
+      const result = setLessonDetails({
+        ...mockLesson,
+        timetable: { ...mockLesson.timetable, teacher }
+      })
+
+      expect(result.lessonMainInfo.teacherName).toBe(expected)
+    }
+  })
 })
 
 /** formatLessonName **/
