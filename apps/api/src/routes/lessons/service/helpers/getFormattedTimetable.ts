@@ -6,7 +6,7 @@ export const getFormattedTimetable = (rs: ScheduleFromDB): Timetable => {
   const { firstName, lastName, middleName } = rs.teacher
   return {
     classroom: {
-      building,
+      buildingName: building,
       name: clName,
       id
     },

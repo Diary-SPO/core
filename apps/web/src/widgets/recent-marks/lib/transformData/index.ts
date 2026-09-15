@@ -4,7 +4,7 @@ import type { MarkDetailed } from '../../../../pages/Schedule/model'
 export type MarksByDayMap = [string, MarkDetailed[]][]
 
 export const transformData = (lessonsState: Nullable<Day[]>): MarksByDayMap => {
-  if (!lessonsState || !lessonsState?.length) {
+  if (!lessonsState?.length) {
     return []
   }
 

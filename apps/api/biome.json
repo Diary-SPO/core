@@ -1,10 +1,11 @@
 {
+  "root": false,
   "formatter": {
-    "ignore": ["./dist"]
+    "includes": ["**", "!dist"]
   },
 
   "linter": {
-    "ignore": ["./dist"]
+    "includes": ["**", "!dist"]
   },
   "extends": ["../../biome.json"]
 }

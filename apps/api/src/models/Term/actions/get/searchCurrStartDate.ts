@@ -1,4 +1,3 @@
-import type { PerformanceCurrent } from '@diary-spo/shared'
 import type { ICacheData } from '@helpers'
 import { formatDate } from '@utils'
 // fixme
@@ -6,9 +5,8 @@ import { formatDate } from '@utils'
 import { getPerformanceCurrent } from 'src/routes/performance.current/service/get/getPerformanceCurrent'
 
 export const searchCurrStartDate = async (authDate: ICacheData) => {
-  const performance = await getPerformanceCurrent(authDate).then(
-    (r) => r.json() as unknown as PerformanceCurrent
-  )
+  const performance = await getPerformanceCurrent(authDate)
+  if (!performance) return null
   let minDate: string | null = null
   for (const DWMFS of performance.daysWithMarksForSubject) {
     if (!DWMFS.daysWithMarks) {

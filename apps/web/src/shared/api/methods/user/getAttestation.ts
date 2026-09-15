@@ -1,3 +1,3 @@
-import { client } from '../../client.ts'
+import { diaryApi } from '@runtime-api'
 
-export const getAttestation = async () => client.attestation.get()
+export const getAttestation = async () => diaryApi.getAttestation()

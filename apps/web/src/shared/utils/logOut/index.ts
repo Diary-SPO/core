@@ -5,6 +5,9 @@
 import { getLogout } from '../../api'
 
 export const logOut = async () => {
-  await getLogout()
-  localStorage.clear()
+  try {
+    await getLogout()
+  } finally {
+    localStorage.clear()
+  }
 }

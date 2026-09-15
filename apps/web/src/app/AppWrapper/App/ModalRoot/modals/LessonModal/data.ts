@@ -10,7 +10,7 @@ export const cleanData: Lesson = {
   },
   timetable: {
     classroom: {
-      building: '',
+      buildingName: '',
       id: 0,
       name: ''
     },

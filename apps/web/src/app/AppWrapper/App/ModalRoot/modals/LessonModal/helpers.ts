@@ -1,5 +1,7 @@
 import type { Lesson } from '@diary-spo/shared'
 
+import { formatClassroomLocation } from '../../../../../../shared'
+
 /**
  * Функция 'formatLessonName' форматирует название урока, добавляя к нему дополнительную информацию, если есть разделитель '/'.
  * Если переданная строка 'name' содержит '/', функция разбивает её на части, берёт первую часть и добавляет к ней оставшиеся части в скобках.
@@ -49,7 +51,7 @@ export const setLessonDetails = (lesson: Lesson) => {
       timetable: {
         classroom: {
           id: 0,
-          building: '',
+          buildingName: timetable?.classroom?.buildingName || '',
           name: timetable?.classroom?.name || 'Нет кабинета'
         },
         teacher: {
@@ -73,7 +75,7 @@ export const setLessonDetails = (lesson: Lesson) => {
     lessonTimePlaceInfo: {
       startTime: startTime || 'Ошибка',
       endTime: endTime || 'Ошибка',
-      classroomName: timetable?.classroom?.name || 'Нет кабинета'
+      classroomName: formatClassroomLocation(timetable?.classroom)
     }
   }
 }

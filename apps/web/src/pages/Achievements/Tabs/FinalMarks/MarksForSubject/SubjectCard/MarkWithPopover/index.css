@@ -1,10 +1,10 @@
 .markPopoverContentWrapper {
+  flex: 0 0 auto;
   cursor: help;
 }
 
 .marksGap {
-  display: inline;
-  margin-left: 5px;
+  display: inline-block;
 }
 
 .popoverWrapper {
