@@ -88,7 +88,11 @@ const UserInfo: FC = () => {
         <Text className='userInfo__Text'>Студент ({userData.group})</Text>
       </Gradient>
       <Group mode='plain' header={<Header size='m'>Учебное заведение</Header>}>
-        <SimpleCell before={<Icon28SchoolOutline />} subtitle={userData.city}>
+        <SimpleCell
+          multiline
+          before={<Icon28SchoolOutline />}
+          subtitle={userData.city}
+        >
           {userData.org}
         </SimpleCell>
       </Group>
