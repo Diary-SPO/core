@@ -22,6 +22,10 @@ export const DIARY_REGIONS: DiaryRegion[] = [
     url: 'https://poo.e-yakutia.ru'
   },
   {
+    name: 'Республика Бурятия',
+    url: 'https://spo.obr03.ru'
+  },
+  {
     name: 'Приморский край',
     url: 'https://poo.prim-edu.ru'
   },
