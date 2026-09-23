@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'bun:test'
 import { formatLessonName, setLessonDetails } from '../helpers.ts'
+import { getLessonMarkDescription } from '../LessonTasks.tsx'
 import {
   expectedLessonDetailsInvalid,
   expectedLessonDetailsValid,
@@ -60,6 +61,18 @@ describe('setLessonDetails', () => {
 
       expect(result.lessonMainInfo.teacherName).toBe(expected)
     }
+  })
+})
+
+describe('getLessonMarkDescription', () => {
+  it('расшифровывает оценки и обозначения в подробностях пары', () => {
+    expect(getLessonMarkDescription(5)).toBe('Оценка 5 — отлично')
+    expect(getLessonMarkDescription('Зч')).toBe('Зачёт')
+    expect(getLessonMarkDescription('Д')).toBe('Долг')
+    expect(getLessonMarkDescription('НП')).toBe(
+      'Пропуск по неуважительной причине'
+    )
+    expect(getLessonMarkDescription(undefined)).toBeUndefined()
   })
 })
 

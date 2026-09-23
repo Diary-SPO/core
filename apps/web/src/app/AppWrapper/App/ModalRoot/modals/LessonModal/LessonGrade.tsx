@@ -5,8 +5,8 @@ import {
 } from '@diary-spo/shared'
 import { Group, Header, SimpleCell } from '@vkontakte/vkui'
 import type { FC } from 'react'
-import { ExplanationTooltip, Mark } from '../../../../../../shared/ui'
-import LessonTasks from './LessonTasks'
+import { ExplanationTooltip } from '../../../../../../shared/ui'
+import LessonTasks, { LessonMark } from './LessonTasks'
 
 interface ILessonGrade {
   tasks: Lesson['gradebook']['tasks']
@@ -29,7 +29,7 @@ const LessonGrade: FC<ILessonGrade> = ({ tasks, absenceType }) => {
     </Header>
   )
 
-  const mark = <Mark mark={AbsenceTypes[absenceType]} size='s' />
+  const mark = <LessonMark mark={AbsenceTypes[absenceType]} />
 
   return (
     <Group header={header}>
