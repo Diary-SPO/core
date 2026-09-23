@@ -2,7 +2,7 @@ import { type Lesson, LessonWorkType } from '@diary-spo/shared'
 import { InfoRow, Separator, SimpleCell, Spacing, Text } from '@vkontakte/vkui'
 import { type FC, Fragment } from 'react'
 
-import { setDefaultMark } from '../../../../../../shared'
+import { setDefaultMark, textToLink } from '../../../../../../shared'
 import { Mark } from '../../../../../../shared/ui'
 
 // @TODO: ??
@@ -27,7 +27,7 @@ const Task: FC<Props> = ({ task, index }) => (
       </InfoRow>
       {task?.condition && (
         <InfoRow style={{ marginTop: 10 }} header='Описание'>
-          <Text>{task?.condition}</Text>
+          <Text>{textToLink(task.condition)}</Text>
         </InfoRow>
       )}
     </SimpleCell>
