@@ -96,7 +96,7 @@ const Task: FC<Props> = ({ task, index }) => (
 
     <SimpleCell multiline>
       <InfoRow style={{ marginTop: 10 }} header='Тема'>
-        <Text>{task?.topic}</Text>
+        <Text>{textToLink(task?.topic)}</Text>
       </InfoRow>
       {task?.condition && (
         <InfoRow style={{ marginTop: 10 }} header='Описание'>
