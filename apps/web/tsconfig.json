@@ -23,6 +23,7 @@
 
     "baseUrl": ".",
     "paths": {
+      "@native-back-button": ["./src/shared/lib/useNativeBackButton.ts"],
       "@runtime-api": ["./src/shared/api/runtime/server.ts"],
       "@utils": ["./src/utils"],
       "@components": ["./src/components"],

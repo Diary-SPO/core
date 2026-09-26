@@ -19,6 +19,10 @@ export default defineConfig({
       index: path.resolve(webRoot, 'src/main.tsx')
     },
     alias: {
+      '@native-back-button': path.resolve(
+        __dirname,
+        './src/useNativeBackButton.ts'
+      ),
       '@runtime-api': path.resolve(__dirname, './src/runtime-api.ts'),
       '@store': path.resolve(webRoot, './src/store'),
       '@vkontakte/vkui$': '@vkontakte/vkui/dist/cssm'

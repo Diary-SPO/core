@@ -27,6 +27,10 @@ export default defineConfig({
   source: {
     define: { ...optionalPublicVars, ...publicVars },
     alias: {
+      '@native-back-button': path.resolve(
+        __dirname,
+        './src/shared/lib/useNativeBackButton.ts'
+      ),
       '@runtime-api': path.resolve(
         __dirname,
         './src/shared/api/runtime/server.ts'
