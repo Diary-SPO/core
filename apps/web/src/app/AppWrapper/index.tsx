@@ -6,9 +6,14 @@ import {
   ConfigProvider,
   usePlatform
 } from '@vkontakte/vkui'
-import { lazy } from 'react'
+import { useEffect, useState } from 'react'
 
 import { Suspense } from '../../shared'
+import {
+  getThemePreference,
+  THEME_CHANGE_EVENT,
+  type ThemePreference
+} from '../../shared/config'
 import { router } from '../routes/router'
 
 import App from './App'
@@ -19,12 +24,27 @@ vkBridge.send('VKWebAppInit')
 const AppWrapper = () => {
   const platform = usePlatform()
   const vkBridgeAppearance = useAppearance() || undefined
+  const [themePreference, setThemePreference] =
+    useState<ThemePreference>(getThemePreference)
+
+  useEffect(() => {
+    const handleThemeChange = (event: Event) => {
+      setThemePreference((event as CustomEvent<ThemePreference>).detail)
+    }
+
+    window.addEventListener(THEME_CHANGE_EVENT, handleThemeChange)
+    return () =>
+      window.removeEventListener(THEME_CHANGE_EVENT, handleThemeChange)
+  }, [])
+
+  const colorScheme =
+    themePreference === 'auto' ? vkBridgeAppearance : themePreference
 
   return (
     <AdaptivityProvider>
       <RouterProvider router={router} notFound={<NotFoundCorrect />}>
         <ConfigProvider
-          appearance={vkBridgeAppearance}
+          colorScheme={colorScheme}
           platform={platform}
           isWebView={vkBridge.isWebView()}
         >

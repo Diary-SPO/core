@@ -16,7 +16,7 @@ export const saveTermSubject = async (
   const teacher = subjectSave.teacher
   const name = subjectSave.name
   const id = subjectSave.id
-  let markValue = undefined
+  let markValue
 
   // Если есть оценка, то берём
   for (const mark of Object.keys(subjectSave.marks)) {

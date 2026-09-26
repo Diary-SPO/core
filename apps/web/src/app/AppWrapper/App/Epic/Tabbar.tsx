@@ -34,7 +34,7 @@ const Tabbar: FC<ITabbar> = ({ onStoryChange, activeView }) => {
           onClick={() => onStoryChange(VIEW_SCHEDULE)}
           selected={activeView === VIEW_SCHEDULE}
           data-story={VIEW_SCHEDULE}
-          text='Главная'
+          label='Главная'
         >
           <Icon28HomeOutline />
         </TabbarItem>
@@ -42,7 +42,7 @@ const Tabbar: FC<ITabbar> = ({ onStoryChange, activeView }) => {
           onClick={() => onStoryChange(VIEW_MARKS)}
           selected={activeView === VIEW_MARKS}
           data-story={VIEW_MARKS}
-          text='Успеваемость'
+          label='Успеваемость'
         >
           <Icon28GraphOutline />
         </TabbarItem>
@@ -50,7 +50,7 @@ const Tabbar: FC<ITabbar> = ({ onStoryChange, activeView }) => {
           onClick={() => onStoryChange(VIEW_NOTIFICATIONS)}
           selected={activeView === VIEW_NOTIFICATIONS}
           data-story={VIEW_NOTIFICATIONS}
-          text='Объявления'
+          label='Объявления'
         >
           <Icon28BookSpreadOutline />
         </TabbarItem>
@@ -58,7 +58,7 @@ const Tabbar: FC<ITabbar> = ({ onStoryChange, activeView }) => {
           onClick={() => onStoryChange(VIEW_SETTINGS)}
           selected={activeView === VIEW_SETTINGS}
           data-story={VIEW_SETTINGS}
-          text='Настройки'
+          label='Настройки'
         >
           <Icon28SettingsOutline />
         </TabbarItem>

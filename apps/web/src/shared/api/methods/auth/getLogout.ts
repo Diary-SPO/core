@@ -1,3 +1,3 @@
-import { client } from '../../client.ts'
+import { diaryApi } from '@runtime-api'
 
-export const getLogout = async () => client.auth.logout.get()
+export const getLogout = async () => diaryApi.logout()

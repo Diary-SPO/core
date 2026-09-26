@@ -10,7 +10,7 @@ export const teacherSaveOrGet = async (
   // будет искать/сохранять, а другая
   // чисто spoId + names
   return TeacherModel.findOrCreate({
-    // @ts-ignore
+    // @ts-expect-error
     where: {
       spoId: teacher.spoId,
       [Op.or]: [

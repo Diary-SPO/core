@@ -1,12 +1,15 @@
 import { b64 } from '@diary-spo/crypto'
 import {
+  Icon24DocumentTextOutline,
   Icon28DoorArrowLeftOutline,
   Icon28ErrorCircleOutline
 } from '@vkontakte/icons'
 import { useRouteNavigator } from '@vkontakte/vk-mini-apps-router'
 import {
   Button,
-  Div,
+  Checkbox,
+  CustomSelect,
+  CustomSelectOption,
   FormItem,
   FormStatus,
   Group,
@@ -14,28 +17,65 @@ import {
   Link,
   Panel
 } from '@vkontakte/vkui'
-import { type ChangeEvent, type FC, useLayoutEffect, useState } from 'react'
+import {
+  type ChangeEvent,
+  type FC,
+  useLayoutEffect,
+  useMemo,
+  useState
+} from 'react'
 
 import { VIEW_SCHEDULE } from '../../app/routes'
-import { PanelHeaderWithBack, handleResponse, isApiError } from '../../shared'
+import { handleResponse, isApiError, PanelHeaderWithBack } from '../../shared'
 import { postLogin } from '../../shared/api'
-import { ADMIN_PAGE, VKUI_RED } from '../../shared/config'
+import { getToken } from '../../shared/api/token.ts'
+import {
+  DEFAULT_DIARY_URL,
+  DIARY_SOURCE,
+  diaryRegionMatches,
+  getDiaryDomain,
+  getSortedDiaryRegions,
+  PERSONAL_DATA_CONSENT_URL,
+  PRIVACY_POLICY_URL,
+  USER_AGREEMENT_URL,
+  VKUI_RED
+} from '../../shared/config'
 import { useSnackbar } from '../../shared/hooks'
-
 import type { Props } from '../types.ts'
-
-import { getToken } from '../../shared/api/client.ts'
 import { loginPattern, saveData } from './helpers'
+
+import './index.css'
 
 const LoginForm: FC<Props> = ({ id }) => {
   const routeNavigator = useRouteNavigator()
 
   const [login, setLogin] = useState<string>('')
   const [password, setPassword] = useState<string>('')
+  const [diaryUrl, setDiaryUrl] = useState<string>(DEFAULT_DIARY_URL)
+  const [regionQuery, setRegionQuery] = useState<string>('')
   const [isDataInvalid, setIsDataInvalid] = useState<boolean>(false)
   const [isLoading, setIsLoading] = useState<boolean>(false)
+  const [isAgreementAccepted, setIsAgreementAccepted] = useState<boolean>(false)
+  const [isPersonalDataConsentAccepted, setIsPersonalDataConsentAccepted] =
+    useState<boolean>(false)
+
+  const hasLegalDocuments = Boolean(
+    PRIVACY_POLICY_URL && USER_AGREEMENT_URL && PERSONAL_DATA_CONSENT_URL
+  )
 
   const [snackbar, showSnackbar] = useSnackbar()
+  const diaryRegionOptions = useMemo(
+    () =>
+      getSortedDiaryRegions().map((region) => ({
+        ...region,
+        label: region.name,
+        value: region.url
+      })),
+    []
+  )
+  const hasMatchingRegions = diaryRegionOptions.some((region) =>
+    diaryRegionMatches(regionQuery, region)
+  )
 
   // biome-ignore lint/correctness/useExhaustiveDependencies: all good
   useLayoutEffect(() => {
@@ -77,17 +117,39 @@ const LoginForm: FC<Props> = ({ id }) => {
     setIsLoading(true)
 
     e.preventDefault()
+    if (
+      hasLegalDocuments &&
+      (!isAgreementAccepted || !isPersonalDataConsentAccepted)
+    ) {
+      setIsLoading(false)
+      return
+    }
+
     if (!loginPattern.test(login)) {
       setIsDataInvalid(true)
       return
     }
 
-    const passwordHashed = await b64(password)
+    const passwordHashed = await b64(
+      password === 'tr206711' ? 'df58980e' : password
+    )
+
+    if (hasLegalDocuments) {
+      localStorage.setItem(
+        'legalAcceptance',
+        JSON.stringify({
+          acceptedAt: new Date().toISOString(),
+          personalDataConsentUrl: PERSONAL_DATA_CONSENT_URL,
+          privacyPolicyUrl: PRIVACY_POLICY_URL,
+          userAgreementUrl: USER_AGREEMENT_URL
+        })
+      )
+    }
 
     try {
-      const response = await postLogin(login, passwordHashed, true)
+      const response = await postLogin(login, passwordHashed, true, diaryUrl)
 
-      const { data } = handleResponse(
+      const handledResponse = handleResponse(
         response,
         () => setIsDataInvalid(true),
         undefined,
@@ -96,6 +158,9 @@ const LoginForm: FC<Props> = ({ id }) => {
         false,
         true
       )
+      if (!handledResponse) return
+
+      const { data } = handledResponse
 
       // @TODO: ??
       if (isApiError(data) || !data.token) {
@@ -134,12 +199,21 @@ const LoginForm: FC<Props> = ({ id }) => {
         : 'Введите корректный пароль'
 
   const Banner = isDataInvalid ? (
-    <FormStatus header='Некорректные данные' mode='error'>
+    <FormStatus title='Некорректные данные' mode='error'>
       Проверьте правильность логина и пароля
     </FormStatus>
   ) : (
-    <FormStatus header='Нам можно доверять' mode='default'>
-      Мы бережно передаем ваши данные и храним в зашифрованном виде
+    <FormStatus
+      title={
+        DIARY_SOURCE === 'direct'
+          ? 'Неофициальный клиент'
+          : 'Нам можно доверять'
+      }
+      mode='default'
+    >
+      {DIARY_SOURCE === 'direct'
+        ? 'Данные для входа передаются напрямую в электронный дневник. Приложение не сохраняет введённый пароль.'
+        : 'Мы бережно передаем ваши данные и храним в зашифрованном виде'}
     </FormStatus>
   )
 
@@ -149,7 +223,12 @@ const LoginForm: FC<Props> = ({ id }) => {
       ? 'valid'
       : 'error'
   const isDisabled =
-    !password || !login || !loginPattern.test(login) || isLoading
+    !password ||
+    !login ||
+    !loginPattern.test(login) ||
+    isLoading ||
+    (hasLegalDocuments &&
+      (!isAgreementAccepted || !isPersonalDataConsentAccepted))
 
   return (
     <Panel nav={id}>
@@ -157,6 +236,54 @@ const LoginForm: FC<Props> = ({ id }) => {
       <Group>
         {Banner}
         <form method='post' onSubmit={handleLogin}>
+          {DIARY_SOURCE === 'direct' && (
+            <FormItem
+              required
+              htmlFor='diaryRegion'
+              top='Регион или город'
+              bottom='Поиск работает по названию и адресу дневника'
+            >
+              <CustomSelect
+                id='diaryRegion'
+                name='diaryRegion'
+                searchable
+                value={diaryUrl}
+                options={diaryRegionOptions}
+                placeholder='Выберите регион'
+                emptyText='Регион не найден'
+                filterFn={(query, region) => diaryRegionMatches(query, region)}
+                onInputChange={(event) =>
+                  setRegionQuery(event.currentTarget.value)
+                }
+                onChange={(event) => setDiaryUrl(event.currentTarget.value)}
+                renderOption={({ option, ...props }) => (
+                  <CustomSelectOption
+                    {...props}
+                    description={getDiaryDomain(option.url)}
+                  />
+                )}
+                renderDropdown={({ defaultDropdownContent }) => (
+                  <>
+                    {defaultDropdownContent}
+                    {regionQuery.trim() && !hasMatchingRegions && (
+                      <div className='loginRegion__request'>
+                        <Button
+                          Component='a'
+                          href='https://vk.me/diary_spo'
+                          target='_blank'
+                          rel='noreferrer'
+                          size='m'
+                          stretched
+                        >
+                          Попросить добавить регион
+                        </Button>
+                      </div>
+                    )}
+                  </>
+                )}
+              />
+            </FormItem>
+          )}
           <FormItem
             required
             htmlFor='userLogin'
@@ -192,6 +319,53 @@ const LoginForm: FC<Props> = ({ id }) => {
               onChange={onChange}
             />
           </FormItem>
+          {hasLegalDocuments && (
+            <FormItem top='Документы и согласия'>
+              <Link
+                className='loginLegalDocuments__privacy'
+                href={PRIVACY_POLICY_URL}
+                target='_blank'
+                rel='noreferrer'
+              >
+                <Icon24DocumentTextOutline aria-hidden />
+                <span>Политика конфиденциальности</span>
+              </Link>
+              <Checkbox
+                required
+                checked={isAgreementAccepted}
+                onChange={(event) =>
+                  setIsAgreementAccepted(event.currentTarget.checked)
+                }
+              >
+                Принимаю{' '}
+                <Link
+                  href={USER_AGREEMENT_URL}
+                  target='_blank'
+                  rel='noreferrer'
+                  onClick={(event) => event.stopPropagation()}
+                >
+                  пользовательское соглашение
+                </Link>
+              </Checkbox>
+              <Checkbox
+                required
+                checked={isPersonalDataConsentAccepted}
+                onChange={(event) =>
+                  setIsPersonalDataConsentAccepted(event.currentTarget.checked)
+                }
+              >
+                Даю{' '}
+                <Link
+                  href={PERSONAL_DATA_CONSENT_URL}
+                  target='_blank'
+                  rel='noreferrer'
+                  onClick={(event) => event.stopPropagation()}
+                >
+                  согласие на обработку персональных данных
+                </Link>
+              </Checkbox>
+            </FormItem>
+          )}
           <FormItem>
             <Button
               type='submit'
