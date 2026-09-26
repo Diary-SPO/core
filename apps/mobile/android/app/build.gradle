@@ -21,7 +21,7 @@ android {
         applicationId "io.github.diaryspo"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 5
+        versionCode 6
         versionName "1.2.1"
         buildConfigField "String", "APPMETRICA_API_KEY", groovy.json.JsonOutput.toJson(appMetricaApiKey)
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
