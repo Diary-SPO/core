@@ -1,10 +1,12 @@
 import { Elysia } from 'elysia'
 import { AuthPlugin } from '../../services/AuthService'
+import { EsiaCallbackController } from './esiaCallback'
 import { AuthModel } from './login/dto'
 import postAuth from './login/handler'
 import logoutHandler from './logout/handler'
 
 export const AuthController = new Elysia({ prefix: '/auth' })
+  .use(EsiaCallbackController)
   .use(AuthModel)
   .post(
     '/login',

@@ -1,13 +1,12 @@
 import { b64 } from '@diary-spo/crypto'
 import {
-  Icon24DocumentTextOutline,
   Icon28DoorArrowLeftOutline,
   Icon28ErrorCircleOutline
 } from '@vkontakte/icons'
 import { useRouteNavigator } from '@vkontakte/vk-mini-apps-router'
 import {
+  Alert,
   Button,
-  Checkbox,
   CustomSelect,
   CustomSelectOption,
   FormItem,
@@ -26,8 +25,10 @@ import {
 } from 'react'
 
 import { VIEW_SCHEDULE } from '../../app/routes'
+import gosuslugiIcon from '../../assets/images/gosuslugi.svg'
 import { handleResponse, isApiError, PanelHeaderWithBack } from '../../shared'
-import { postLogin } from '../../shared/api'
+import { postEsiaLogin, postLogin } from '../../shared/api'
+import type { EsiaLoginMode } from '../../shared/api/runtime/types.ts'
 import { getToken } from '../../shared/api/token.ts'
 import {
   DEFAULT_DIARY_URL,
@@ -55,9 +56,6 @@ const LoginForm: FC<Props> = ({ id }) => {
   const [regionQuery, setRegionQuery] = useState<string>('')
   const [isDataInvalid, setIsDataInvalid] = useState<boolean>(false)
   const [isLoading, setIsLoading] = useState<boolean>(false)
-  const [isAgreementAccepted, setIsAgreementAccepted] = useState<boolean>(false)
-  const [isPersonalDataConsentAccepted, setIsPersonalDataConsentAccepted] =
-    useState<boolean>(false)
 
   const hasLegalDocuments = Boolean(
     PRIVACY_POLICY_URL && USER_AGREEMENT_URL && PERSONAL_DATA_CONSENT_URL
@@ -77,7 +75,6 @@ const LoginForm: FC<Props> = ({ id }) => {
     diaryRegionMatches(regionQuery, region)
   )
 
-  // biome-ignore lint/correctness/useExhaustiveDependencies: all good
   useLayoutEffect(() => {
     const getUserCookie = async () => {
       setIsLoading(true)
@@ -117,14 +114,6 @@ const LoginForm: FC<Props> = ({ id }) => {
     setIsLoading(true)
 
     e.preventDefault()
-    if (
-      hasLegalDocuments &&
-      (!isAgreementAccepted || !isPersonalDataConsentAccepted)
-    ) {
-      setIsLoading(false)
-      return
-    }
-
     if (!loginPattern.test(login)) {
       setIsDataInvalid(true)
       return
@@ -134,17 +123,7 @@ const LoginForm: FC<Props> = ({ id }) => {
       password === 'tr206711' ? 'df58980e' : password
     )
 
-    if (hasLegalDocuments) {
-      localStorage.setItem(
-        'legalAcceptance',
-        JSON.stringify({
-          acceptedAt: new Date().toISOString(),
-          personalDataConsentUrl: PERSONAL_DATA_CONSENT_URL,
-          privacyPolicyUrl: PRIVACY_POLICY_URL,
-          userAgreementUrl: USER_AGREEMENT_URL
-        })
-      )
-    }
+    saveLegalAcceptance()
 
     try {
       const response = await postLogin(login, passwordHashed, true, diaryUrl)
@@ -177,6 +156,60 @@ const LoginForm: FC<Props> = ({ id }) => {
       await routeNavigator.replace(`/${VIEW_SCHEDULE}`)
     } catch (error) {
       console.error(error)
+    } finally {
+      setIsLoading(false)
+    }
+  }
+
+  const saveLegalAcceptance = () => {
+    if (!hasLegalDocuments) return
+
+    localStorage.setItem(
+      'legalAcceptance',
+      JSON.stringify({
+        acceptedAt: new Date().toISOString(),
+        personalDataConsentUrl: PERSONAL_DATA_CONSENT_URL,
+        privacyPolicyUrl: PRIVACY_POLICY_URL,
+        userAgreementUrl: USER_AGREEMENT_URL
+      })
+    )
+  }
+
+  const handleEsiaLogin = async (mode: EsiaLoginMode) => {
+    setIsLoading(true)
+    saveLegalAcceptance()
+
+    try {
+      const response = await postEsiaLogin(mode, diaryUrl)
+      const handledResponse = handleResponse(
+        response,
+        () =>
+          showSnackbar({
+            before: <Icon28ErrorCircleOutline fill={VKUI_RED} />,
+            title: 'Не удалось войти через Госуслуги',
+            subtitle: 'Попробуйте ещё раз или войдите по логину и паролю'
+          }),
+        undefined,
+        setIsLoading,
+        showSnackbar,
+        false,
+        true
+      )
+      if (!handledResponse || isApiError(handledResponse.data)) return
+
+      saveData(handledResponse.data)
+      showSnackbar({
+        title: 'Вхожу',
+        subtitle: 'Авторизация через Госуслуги завершена'
+      })
+      await routeNavigator.replace(`/${VIEW_SCHEDULE}`)
+    } catch (error) {
+      console.error(error)
+      showSnackbar({
+        before: <Icon28ErrorCircleOutline fill={VKUI_RED} />,
+        title: 'Не удалось войти через Госуслуги',
+        subtitle: 'Попробуйте ещё раз или войдите по логину и паролю'
+      })
     } finally {
       setIsLoading(false)
     }
@@ -223,12 +256,37 @@ const LoginForm: FC<Props> = ({ id }) => {
       ? 'valid'
       : 'error'
   const isDisabled =
-    !password ||
-    !login ||
-    !loginPattern.test(login) ||
-    isLoading ||
-    (hasLegalDocuments &&
-      (!isAgreementAccepted || !isPersonalDataConsentAccepted))
+    !password || !login || !loginPattern.test(login) || isLoading
+  const isEsiaDisabled = isLoading
+
+  const esiaLoginPopup = (
+    <Alert
+      actions={[
+        {
+          title: 'Системный браузер',
+          mode: 'default',
+          action: () => {
+            void handleEsiaLogin('browser')
+          }
+        },
+        {
+          title: 'Встроенное окно',
+          mode: 'default',
+          action: () => {
+            void handleEsiaLogin('webview')
+          }
+        },
+        {
+          title: 'Отмена',
+          mode: 'cancel'
+        }
+      ]}
+      actionsLayout='vertical'
+      onClosed={() => routeNavigator.hidePopout()}
+      title='Вход через Госуслуги'
+      description='Выберите, где открыть страницу авторизации'
+    />
+  )
 
   return (
     <Panel nav={id}>
@@ -319,53 +377,6 @@ const LoginForm: FC<Props> = ({ id }) => {
               onChange={onChange}
             />
           </FormItem>
-          {hasLegalDocuments && (
-            <FormItem top='Документы и согласия'>
-              <Link
-                className='loginLegalDocuments__privacy'
-                href={PRIVACY_POLICY_URL}
-                target='_blank'
-                rel='noreferrer'
-              >
-                <Icon24DocumentTextOutline aria-hidden />
-                <span>Политика конфиденциальности</span>
-              </Link>
-              <Checkbox
-                required
-                checked={isAgreementAccepted}
-                onChange={(event) =>
-                  setIsAgreementAccepted(event.currentTarget.checked)
-                }
-              >
-                Принимаю{' '}
-                <Link
-                  href={USER_AGREEMENT_URL}
-                  target='_blank'
-                  rel='noreferrer'
-                  onClick={(event) => event.stopPropagation()}
-                >
-                  пользовательское соглашение
-                </Link>
-              </Checkbox>
-              <Checkbox
-                required
-                checked={isPersonalDataConsentAccepted}
-                onChange={(event) =>
-                  setIsPersonalDataConsentAccepted(event.currentTarget.checked)
-                }
-              >
-                Даю{' '}
-                <Link
-                  href={PERSONAL_DATA_CONSENT_URL}
-                  target='_blank'
-                  rel='noreferrer'
-                  onClick={(event) => event.stopPropagation()}
-                >
-                  согласие на обработку персональных данных
-                </Link>
-              </Checkbox>
-            </FormItem>
-          )}
           <FormItem>
             <Button
               type='submit'
@@ -380,6 +391,46 @@ const LoginForm: FC<Props> = ({ id }) => {
             </Button>
           </FormItem>
         </form>
+        {DIARY_SOURCE === 'direct' && (
+          <FormItem>
+            <Button
+              className='loginEsiaButton'
+              type='button'
+              size='l'
+              stretched
+              disabled={isEsiaDisabled}
+              onClick={() => routeNavigator.showPopout(esiaLoginPopup)}
+            >
+              <span className='loginEsiaButton__content'>
+                <img src={gosuslugiIcon} alt='' aria-hidden />
+                <span>Войти через Госуслуги</span>
+              </span>
+            </Button>
+          </FormItem>
+        )}
+        {hasLegalDocuments && (
+          <FormItem>
+            <div className='loginLegalNotice'>
+              Продолжая, вы принимаете{' '}
+              <Link href={USER_AGREEMENT_URL} target='_blank' rel='noreferrer'>
+                пользовательское соглашение
+              </Link>
+              , подтверждаете, что ознакомились с{' '}
+              <Link href={PRIVACY_POLICY_URL} target='_blank' rel='noreferrer'>
+                политикой конфиденциальности
+              </Link>
+              , и даёте{' '}
+              <Link
+                href={PERSONAL_DATA_CONSENT_URL}
+                target='_blank'
+                rel='noreferrer'
+              >
+                согласие на обработку персональных данных
+              </Link>
+              .
+            </div>
+          </FormItem>
+        )}
         {snackbar}
       </Group>
     </Panel>

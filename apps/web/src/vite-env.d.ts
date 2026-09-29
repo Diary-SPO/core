@@ -4,6 +4,7 @@ interface ImportMetaEnv {
   readonly VITE_SERVER_URLS: string
   readonly VITE_SERVER_URL: string
   readonly VITE_DIARY_URL: string
+  readonly VITE_ESIA_REDIRECT_URI?: string
   readonly VITE_DIARY_SOURCE: 'server' | 'direct'
   readonly VITE_PRIVACY_POLICY_URL?: string
   readonly VITE_USER_AGREEMENT_URL?: string

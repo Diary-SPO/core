@@ -17,6 +17,14 @@ export const diaryApi: DiaryApi = {
     client.auth.login.post({ login, password, isHash }) as ReturnType<
       DiaryApi['login']
     >,
+  loginWithEsia: async () => ({
+    data: null as never,
+    error: {
+      status: 501,
+      value: new Error('ESIA login is not enabled for the web build')
+    },
+    status: 501
+  }),
   logout: () => client.auth.logout.get() as ReturnType<DiaryApi['logout']>,
   getLessons: (startDate, endDate) =>
     client.lessons({ startDate })({ endDate }).get() as ReturnType<

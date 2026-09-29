@@ -36,6 +36,22 @@ export interface DiaryLoginResult {
   responseHeaders: Record<string, string>[]
 }
 
+export interface EsiaSettings {
+  bindEsiaUrl: string | null
+  fromEsia: boolean
+  isAvailable: boolean
+  esiaOnly: boolean
+  loginUrl: string | null
+  logoutUrl: string | null
+  redirectUri: string | null
+  useSaml: boolean
+}
+
+export interface EsiaLoginStart {
+  loginUrl: string
+  responseHeaders: Record<string, string>[]
+}
+
 export class DiaryClient {
   private studentId: number | null = null
 
@@ -59,47 +75,75 @@ export class DiaryClient {
       collectHeaders
     )
 
-    const tenant = auth.tenants[auth.tenantName]
-    const student = tenant?.studentRole.students[0]
-    const organization = tenant?.settings.organization
-
-    if (!student || !organization || typeof student.id !== 'number') {
-      throw new DiaryClientError('Unexpected login response', 502)
-    }
-
-    this.studentId = student.id
-
     const account = await this.request<PersonResponse>(
       '/services/security/account-settings',
       {},
       collectHeaders
     )
-    const person = account.persons[0]
+
+    return this.createLoginResult(auth, account, responseHeaders, login)
+  }
+
+  async prepareEsiaLogin(redirectUri: string): Promise<EsiaLoginStart> {
+    const settingsResponse = await this.requestWithResponse<EsiaSettings>(
+      '/services/security/esia-settings'
+    )
+    const { data: settings } = settingsResponse
+
+    if (!settings.isAvailable || !settings.loginUrl) {
+      throw new DiaryClientError('ESIA login is not available', 404)
+    }
+
+    const loginUrl = new URL(settings.loginUrl)
+    loginUrl.searchParams.set('redirect_uri', redirectUri)
 
     return {
-      user: {
-        id: BigInt(student.id),
-        groupId: BigInt(student.groupId),
-        groupName: student.groupName,
-        organization: {
-          abbreviation: organization.abbreviation,
-          addressSettlement:
-            organization.actualAddress ||
-            organization.legalAddress ||
-            organization.address.mailAddress
-        },
-        login: login.toLowerCase(),
-        phone: person?.phone,
-        birthday: person?.birthday ?? '',
-        firstName: person?.firstName ?? student.firstName,
-        lastName: person?.lastName ?? student.lastName,
-        middleName: person?.middleName ?? student.middleName,
-        // This is only a local logged-in marker. Direct requests use the native
-        // cookie jar and never send this value over the network.
-        token: 'direct-session'
-      },
-      responseHeaders
+      loginUrl: loginUrl.toString(),
+      responseHeaders: [settingsResponse.headers]
     }
+  }
+
+  async completeEsiaLogin(callbackUrl: string): Promise<DiaryLoginResult> {
+    const callback = new URL(callbackUrl)
+    const error = callback.searchParams.get('error')
+    const code = callback.searchParams.get('code')
+
+    if (error) {
+      throw new DiaryClientError(`ESIA login failed: ${error}`, 401)
+    }
+    if (!code) {
+      throw new DiaryClientError('ESIA callback has no authorization code', 400)
+    }
+
+    const diaryCallbackParams = new URLSearchParams()
+    for (const key of ['code', 'scope', 'session_state']) {
+      const value = callback.searchParams.get(key)
+      if (value) diaryCallbackParams.set(key, value)
+    }
+
+    const responseHeaders: Record<string, string>[] = []
+    const collectHeaders = (response: DiaryHttpResponse<unknown>) => {
+      responseHeaders.push(response.headers)
+    }
+
+    await this.request<unknown>(
+      `/services/esia/login?${diaryCallbackParams.toString()}`,
+      {},
+      collectHeaders
+    )
+
+    const auth = await this.request<UserData>(
+      '/services/security/get-esia-tenants',
+      {},
+      collectHeaders
+    )
+    const account = await this.request<PersonResponse>(
+      '/services/security/account-settings',
+      {},
+      collectHeaders
+    )
+
+    return this.createLoginResult(auth, account, responseHeaders)
   }
 
   async logout(): Promise<{ success: true }> {
@@ -148,11 +192,53 @@ export class DiaryClient {
     return this.studentId
   }
 
-  private async request<T>(
+  private createLoginResult(
+    auth: UserData,
+    account: PersonResponse,
+    responseHeaders: Record<string, string>[],
+    login?: string
+  ): DiaryLoginResult {
+    const tenant = auth.tenants[auth.tenantName]
+    const student = tenant?.studentRole.students[0]
+    const organization = tenant?.settings.organization
+    const person = account.persons[0]
+
+    if (!student || !organization || typeof student.id !== 'number') {
+      throw new DiaryClientError('Unexpected login response', 502)
+    }
+
+    this.studentId = student.id
+
+    return {
+      user: {
+        id: BigInt(student.id),
+        groupId: BigInt(student.groupId),
+        groupName: student.groupName,
+        organization: {
+          abbreviation: organization.abbreviation,
+          addressSettlement:
+            organization.actualAddress ||
+            organization.legalAddress ||
+            organization.address.mailAddress
+        },
+        login: (login ?? person?.login ?? '').toLowerCase(),
+        phone: person?.phone,
+        birthday: person?.birthday ?? '',
+        firstName: person?.firstName ?? student.firstName,
+        lastName: person?.lastName ?? student.lastName,
+        middleName: person?.middleName ?? student.middleName,
+        // This is only a local logged-in marker. Direct requests use the native
+        // cookie jar and never send this value over the network.
+        token: 'direct-session'
+      },
+      responseHeaders
+    }
+  }
+
+  private async requestWithResponse<T>(
     path: string,
-    options: { method?: 'GET' | 'POST'; body?: unknown } = {},
-    onResponse?: (response: DiaryHttpResponse<T>) => void
-  ): Promise<T> {
+    options: { method?: 'GET' | 'POST'; body?: unknown } = {}
+  ): Promise<DiaryHttpResponse<T>> {
     const response = await this.transport.request<T>({
       method: options.method ?? 'GET',
       url: `${this.baseUrl.replace(/\/$/, '')}${path}`,
@@ -160,14 +246,24 @@ export class DiaryClient {
       body: options.body
     })
 
-    onResponse?.(response)
-
     if (response.status < 200 || response.status >= 300) {
       throw new DiaryClientError(
         `Diary request failed with status ${response.status}`,
         response.status
       )
     }
+
+    return response
+  }
+
+  private async request<T>(
+    path: string,
+    options: { method?: 'GET' | 'POST'; body?: unknown } = {},
+    onResponse?: (response: DiaryHttpResponse<T>) => void
+  ): Promise<T> {
+    const response = await this.requestWithResponse<T>(path, options)
+
+    onResponse?.(response)
 
     return response.data
   }

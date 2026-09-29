@@ -29,6 +29,9 @@ export default defineConfig({
       'import.meta.env.VITE_DIARY_URL': JSON.stringify(
         process.env.VITE_DIARY_URL ?? 'https://poo.tomedu.ru'
       ),
+      'import.meta.env.VITE_ESIA_REDIRECT_URI': JSON.stringify(
+        process.env.VITE_ESIA_REDIRECT_URI ?? 'io.github.diaryspo://esia'
+      ),
       'import.meta.env.VITE_PRIVACY_POLICY_URL': JSON.stringify(
         process.env.VITE_PRIVACY_POLICY_URL ?? ''
       ),

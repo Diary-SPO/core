@@ -1,10 +1,39 @@
-.loginLegalDocuments__privacy {
-  display: inline-flex;
+.loginEsiaButton.loginEsiaButton {
+  color: #0066b3;
+  border: 1px solid #c5d9e8;
+  background-color: #fff;
+  box-shadow: 0 2px 8px rgb(0 102 179 / 10%);
+}
+
+.loginEsiaButton.loginEsiaButton:hover {
+  color: #00599c;
+  background-color: #f5faff;
+}
+
+.loginEsiaButton.loginEsiaButton:active {
+  background-color: #eaf4fb;
+}
+
+.loginEsiaButton__content {
+  display: flex;
+  width: 100%;
   align-items: center;
   gap: 8px;
-  margin: 0 0 8px;
-  font-size: 16px;
-  line-height: 20px;
+  justify-content: center;
+}
+
+.loginEsiaButton__content img {
+  width: 24px;
+  height: 24px;
+  border-radius: 6px;
+  object-fit: contain;
+}
+
+.loginLegalNotice {
+  color: var(--vkui--color_text_secondary);
+  font-size: 13px;
+  line-height: 18px;
+  text-align: center;
 }
 
 .loginRegion__request {

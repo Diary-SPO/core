@@ -23,6 +23,10 @@ export interface DiaryApi {
     isHash: boolean,
     diaryUrl?: string
   ): Promise<ApiResponse<ResponseLogin>>
+  loginWithEsia(
+    mode: EsiaLoginMode,
+    diaryUrl?: string
+  ): Promise<ApiResponse<ResponseLogin>>
   logout(): Promise<ApiResponse<{ success: boolean }>>
   getLessons(startDate: string, endDate: string): Promise<ApiResponse<Day[]>>
   getPerformance(): Promise<ApiResponse<PerformanceCurrent>>
@@ -30,6 +34,8 @@ export interface DiaryApi {
   getFinalMarks(): Promise<ApiResponse<AcademicRecord>>
   getAds(): Promise<ApiResponse<NotificationsResponse[]>>
 }
+
+export type EsiaLoginMode = 'browser' | 'webview'
 
 export const BACKGROUND_GRADE_INTERVALS = [15, 30, 60, 120] as const
 

@@ -2,7 +2,7 @@ import { describe, expect, test } from 'bun:test'
 import type { UserData } from '@diary-spo/shared'
 
 import { DiaryClient, DiaryClientError } from './client.ts'
-import { extractAuthCookie } from './cookies.ts'
+import { extractAuthCookie, mergeAuthCookies } from './cookies.ts'
 import type {
   DiaryHttpRequest,
   DiaryHttpResponse,
@@ -52,24 +52,37 @@ class MockTransport implements DiaryHttpTransport {
   async request<T>(request: DiaryHttpRequest): Promise<DiaryHttpResponse<T>> {
     this.requests.push(request)
 
-    const data = request.url.endsWith('/services/security/login')
-      ? userData
-      : request.url.endsWith('/services/security/account-settings')
-        ? {
-            persons: [
-              {
-                firstName: 'Иван',
-                lastName: 'Иванов',
-                middleName: 'Иванович',
-                login: 'ivan',
-                phone: '+70000000000',
-                birthday: '2000-01-01',
-                isTrusted: true,
-                isEsiaBound: false
-              }
-            ]
-          }
-        : []
+    const data = request.url.endsWith('/services/security/esia-settings')
+      ? {
+          isAvailable: true,
+          loginUrl:
+            'https://esia.example/authorize?client_id=spo&redirect_uri=https%3A%2F%2Fpoo.tomedu.ru%2Fservices%2Fesia%2Flogin&sign=signed',
+          bindEsiaUrl: null,
+          fromEsia: false,
+          esiaOnly: false,
+          logoutUrl: null,
+          redirectUri: null,
+          useSaml: false
+        }
+      : request.url.endsWith('/services/security/login') ||
+          request.url.endsWith('/services/security/get-esia-tenants')
+        ? userData
+        : request.url.endsWith('/services/security/account-settings')
+          ? {
+              persons: [
+                {
+                  firstName: 'Иван',
+                  lastName: 'Иванов',
+                  middleName: 'Иванович',
+                  login: 'ivan',
+                  phone: '+70000000000',
+                  birthday: '2000-01-01',
+                  isTrusted: true,
+                  isEsiaBound: false
+                }
+              ]
+            }
+          : []
 
     return {
       data: data as T,
@@ -118,6 +131,15 @@ describe('DiaryClient', () => {
     expect(extractAuthCookie(header)).toBe('UID=user; FutureAuthCookie=value')
   })
 
+  test('merges cookies and keeps the newest value', () => {
+    expect(
+      mergeAuthCookies(
+        '.AspNetCore.Session=initial; UID=old',
+        'UID=current; .AspNetCore.Cookies=auth'
+      )
+    ).toBe('.AspNetCore.Session=initial; UID=current; .AspNetCore.Cookies=auth')
+  })
+
   test('logs in, keeps the selected student and builds diary paths', async () => {
     const transport = new MockTransport()
     const client = new DiaryClient('https://poo.tomedu.ru/', transport)
@@ -158,5 +180,40 @@ describe('DiaryClient', () => {
     await client.logout()
 
     expect(transport.cleared).toBe(true)
+  })
+
+  test('prepares ESIA login without losing signed parameters', async () => {
+    const client = new DiaryClient('https://poo.tomedu.ru', new MockTransport())
+
+    const result = await client.prepareEsiaLogin(
+      'https://api.spo-diary.ru/auth/esia/callback?target=mobile'
+    )
+    const loginUrl = new URL(result.loginUrl)
+
+    expect(loginUrl.searchParams.get('redirect_uri')).toBe(
+      'https://api.spo-diary.ru/auth/esia/callback?target=mobile'
+    )
+    expect(loginUrl.searchParams.get('sign')).toBe('signed')
+    expect(result.responseHeaders).toEqual([
+      { 'set-cookie': 'Auth=authenticated' }
+    ])
+  })
+
+  test('completes ESIA callback through Network City', async () => {
+    const transport = new MockTransport()
+    const client = new DiaryClient('https://poo.tomedu.ru', transport)
+
+    const { user } = await client.completeEsiaLogin(
+      'https://api.spo-diary.ru/auth/esia/callback?target=webview&code=authorization-code&session_state=state'
+    )
+
+    expect(user.id).toBe(7n)
+    expect(user.login).toBe('ivan')
+    expect(transport.requests[0].url).toBe(
+      'https://poo.tomedu.ru/services/esia/login?code=authorization-code&session_state=state'
+    )
+    expect(transport.requests[1].url).toBe(
+      'https://poo.tomedu.ru/services/security/get-esia-tenants'
+    )
   })
 })

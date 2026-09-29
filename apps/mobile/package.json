@@ -13,8 +13,10 @@
   },
   "dependencies": {
     "@capacitor/android": "8.5.1",
+    "@capacitor/app": "^8.0.0",
     "@capacitor/background-runner": "3.0.0",
     "@capacitor/core": "8.5.1",
+    "@capacitor/inappbrowser": "^4.0.3",
     "@diary-spo/crypto": "workspace:*",
     "@diary-spo/diary-client": "workspace:*",
     "@diary-spo/shared": "workspace:*",
