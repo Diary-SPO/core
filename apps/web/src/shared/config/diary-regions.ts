@@ -66,6 +66,10 @@ export const DIARY_REGIONS: DiaryRegion[] = [
     url: DEFAULT_DIARY_URL
   },
   {
+    name: 'Тульская область',
+    url: 'https://spo1.edu71.ru'
+  },
+  {
     name: 'Ульяновская область',
     url: 'https://spo.cit73.ru'
   },
