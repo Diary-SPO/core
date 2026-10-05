@@ -3,6 +3,9 @@ apply plugin: 'com.android.application'
 def appMetricaApiKey = providers.gradleProperty('APPMETRICA_API_KEY')
     .orElse(providers.environmentVariable('APPMETRICA_API_KEY'))
     .getOrElse('')
+def installSource = providers.gradleProperty('INSTALL_SOURCE')
+    .orElse(providers.environmentVariable('INSTALL_SOURCE'))
+    .getOrElse('unknown')
 def keystorePropertiesFile = rootProject.file('keystore.properties')
 def keystoreProperties = new Properties()
 
@@ -24,6 +27,9 @@ android {
         versionCode 6
         versionName "1.2.1"
         buildConfigField "String", "APPMETRICA_API_KEY", groovy.json.JsonOutput.toJson(appMetricaApiKey)
+        // Канал распространения: rustore | github | landing. Уходит в AppMetrica
+        // событием install_source, чтобы источники установок различались.
+        buildConfigField "String", "INSTALL_SOURCE", groovy.json.JsonOutput.toJson(installSource)
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         aaptOptions {
              // Files and dirs to omit from the packaged assets dir, modified to accommodate modern web apps.

@@ -1,0 +1,203 @@
+name: Mobile release + landing
+
+# Сборка Android-приложения и публикация лендинга.
+# Запуск: push в main / pre-main или вручную.
+#
+# Что происходит:
+# 1. Три сборки с подстановкой секрета APPMETRICA_API_KEY и метки канала
+#    INSTALL_SOURCE (rustore | github | landing). Канал уходит в AppMetrica
+#    событием install_source, поэтому в метрике видны 3 источника установок.
+# 2. Создание GitHub-релиза: main -> релиз vX.Y.Z, pre-main -> пререлиз.
+#    В релиз летит только app-github.apk. AAB для RuStore остаётся артефактом
+#    сборки (задел под будущую автопубликацию в RuStore).
+# 3. APK для лендинга (канал landing) едет артефактом в job лендинга,
+#    кладётся в public/ и попадает в dist рядом с сайтом.
+# 4. Сборка лендинга и деплой в gh-pages: main -> корень,
+#    pre-main -> подпапка pre/.
+#
+# Нужные секреты репозитория:
+#   APPMETRICA_API_KEY      ключ AppMetrica
+#   ANDROID_KEYSTORE_BASE64 release-keystore в base64
+#   ANDROID_KEY_ALIAS       alias ключа
+#   ANDROID_STORE_PASSWORD  пароль keystore
+#   ANDROID_KEY_PASSWORD    пароль ключа
+
+on:
+  push:
+    branches:
+      - main
+      - pre-main
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: mobile-release-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  android:
+    runs-on: ubuntu-latest
+    outputs:
+      tag: ${{ steps.ver.outputs.tag }}
+      prerelease: ${{ steps.ver.outputs.prerelease }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+
+      - name: Setup JDK 21
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+
+      - name: Setup Android SDK
+        uses: android-actions/setup-android@v3
+
+      - name: Install dependencies
+        run: bun install
+
+      - name: Write mobile .env (public links)
+        run: |
+          cat > apps/mobile/.env <<'EOF'
+          VITE_DIARY_URL=https://poo.tomedu.ru
+          VITE_PRIVACY_POLICY_URL=https://disk.yandex.ru/i/q3875_7h9oPdvA
+          VITE_USER_AGREEMENT_URL=https://disk.yandex.ru/i/ylPeDklUN5GVCQ
+          VITE_PERSONAL_DATA_CONSENT_URL=https://disk.yandex.ru/i/oxnrYLEWNJY7bQ
+          EOF
+
+      - name: Restore release keystore
+        env:
+          KEYSTORE_B64: ${{ secrets.ANDROID_KEYSTORE_BASE64 }}
+          STORE_PASSWORD: ${{ secrets.ANDROID_STORE_PASSWORD }}
+          KEY_ALIAS: ${{ secrets.ANDROID_KEY_ALIAS }}
+          KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}
+        run: |
+          echo "$KEYSTORE_B64" | base64 -d > apps/mobile/android/signing/ci-release.jks
+          cat > apps/mobile/android/keystore.properties <<EOF
+          storeFile=signing/ci-release.jks
+          storePassword=$STORE_PASSWORD
+          keyAlias=$KEY_ALIAS
+          keyPassword=$KEY_PASSWORD
+          EOF
+
+      - name: Sync web bundle into Capacitor
+        run: |
+          chmod +x apps/mobile/android/gradlew
+          bun run --cwd apps/mobile sync
+
+      - name: Read version and release tag
+        id: ver
+        run: |
+          VER=$(grep -oP 'versionName "\K[^"]+' apps/mobile/android/app/build.gradle)
+          echo "version=$VER" >> "$GITHUB_OUTPUT"
+          if [ '${{ github.ref_name }}' = 'main' ]; then
+            TAG="v$VER"
+            echo "prerelease=false" >> "$GITHUB_OUTPUT"
+          else
+            TAG="v$VER-pre.${{ github.run_number }}"
+            echo "prerelease=true" >> "$GITHUB_OUTPUT"
+          fi
+          echo "tag=$TAG" >> "$GITHUB_OUTPUT"
+
+      # Важно: каждый артефакт переименовываем сразу после своей сборки,
+      # т.к. следующий assembleRelease перезапишет app-release.apk.
+      - name: Build AAB for RuStore
+        working-directory: apps/mobile/android
+        run: >
+          ./gradlew bundleRelease
+          -PAPPMETRICA_API_KEY='${{ secrets.APPMETRICA_API_KEY }}'
+          -PINSTALL_SOURCE=rustore
+        env:
+          APPMETRICA_API_KEY: ${{ secrets.APPMETRICA_API_KEY }}
+
+      - name: Stash RuStore AAB
+        run: |
+          mkdir -p release-files
+          mv apps/mobile/android/app/build/outputs/bundle/release/app-release.aab release-files/app-rustore.aab
+
+      - name: Build APK for GitHub release
+        working-directory: apps/mobile/android
+        run: >
+          ./gradlew assembleRelease
+          -PAPPMETRICA_API_KEY='${{ secrets.APPMETRICA_API_KEY }}'
+          -PINSTALL_SOURCE=github
+        env:
+          APPMETRICA_API_KEY: ${{ secrets.APPMETRICA_API_KEY }}
+
+      - name: Stash GitHub APK
+        run: mv apps/mobile/android/app/build/outputs/apk/release/app-release.apk release-files/app-github.apk
+
+      - name: Build APK for landing
+        working-directory: apps/mobile/android
+        run: >
+          ./gradlew assembleRelease
+          -PAPPMETRICA_API_KEY='${{ secrets.APPMETRICA_API_KEY }}'
+          -PINSTALL_SOURCE=landing
+        env:
+          APPMETRICA_API_KEY: ${{ secrets.APPMETRICA_API_KEY }}
+
+      - name: Stash landing APK
+        run: |
+          mv apps/mobile/android/app/build/outputs/apk/release/app-release.apk release-files/app-landing.apk
+          ls -la release-files/
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: android-${{ steps.ver.outputs.tag }}
+          path: release-files/
+
+      - name: Upload landing APK for the landing job
+        uses: actions/upload-artifact@v4
+        with:
+          name: landing-apk
+          path: release-files/app-landing.apk
+
+      - name: Publish GitHub release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ steps.ver.outputs.tag }}
+          name: ${{ steps.ver.outputs.tag }}
+          prerelease: ${{ steps.ver.outputs.prerelease == 'true' }}
+          generate_release_notes: true
+          files: release-files/app-github.apk
+
+  landing:
+    needs: android
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+
+      - name: Install dependencies
+        run: bun install
+
+      - name: Fetch landing APK from the android job
+        uses: actions/download-artifact@v4
+        with:
+          name: landing-apk
+          path: apps/landing/public/
+
+      - name: Build landing
+        run: bun run --cwd apps/landing build
+
+      - name: Deploy to gh-pages
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_branch: gh-pages
+          publish_dir: apps/landing/dist
+          destination_dir: ${{ github.ref_name == 'main' && '' || 'pre' }}
+          keep_files: true
