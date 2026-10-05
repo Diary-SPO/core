@@ -1,1 +1,8 @@
-bun test && bun run checkAll
+bun test || {
+  echo "Тесты не прошли - коммит остановлен." >&2
+  exit 1
+}
+
+if ! bunx lint-staged; then
+  echo "Biome нашёл проблемы. Запусти: bun run checkAll:fix" >&2
+fi

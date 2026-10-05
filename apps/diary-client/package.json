@@ -1,0 +1,12 @@
+{
+  "name": "@diary-spo/diary-client",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "exports": {
+    ".": "./index.ts"
+  },
+  "dependencies": {
+    "@diary-spo/shared": "workspace:*"
+  }
+}

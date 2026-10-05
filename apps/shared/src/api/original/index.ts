@@ -225,7 +225,8 @@ export interface Task {
 export type Teacher = Person
 
 export interface Classroom {
-  building: string
+  buildingName: string
+  buildingId?: number
   id: number
   name: string
 }

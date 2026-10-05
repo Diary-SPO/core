@@ -15,8 +15,8 @@ const LessonHeader: FC<ILessonHeader> = ({
   displayDay
 }) => (
   <Header
-    mode='secondary'
-    aside={
+    size='s'
+    after={
       displayDay && <Footnote style={displayDayStyles}>{displayDay}</Footnote>
     }
   >

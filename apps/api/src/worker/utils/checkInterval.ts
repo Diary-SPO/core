@@ -2,7 +2,7 @@ export const checkInterval = (
   lastDatetimeRunning: Date,
   interval: number
 ): boolean => {
-  const currTime = new Date().getTime()
+  const currTime = Date.now()
   const lastTime = lastDatetimeRunning.getTime()
   const median = (currTime - lastTime) / 1000
 

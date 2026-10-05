@@ -9,7 +9,7 @@ interface IScheduleGroup {
 }
 
 const ScheduleGroup: FC<IScheduleGroup> = ({ lessonsState }) => (
-  <CardGrid style={{ overflowY: 'auto' }} size='l' spaced>
+  <CardGrid style={{ overflowY: 'auto' }} size='l' padding>
     {lessonsState?.length &&
       lessonsState.map((lesson, index) => (
         <DailyCard key={`${lesson.date}_${index}`} lesson={lesson} />

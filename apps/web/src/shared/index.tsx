@@ -1,4 +1,5 @@
 export { handleResponse } from './utils/handleResponse'
+export { formatClassroomLocation } from './utils/formatClassroomLocation'
 export { logOut } from './utils/logOut'
 export { createSubjectMarksMatrix } from './utils/marks/createSubjectMarksMap.ts'
 export { setDefaultMark } from './utils/marks/setDefaultMark.ts'
