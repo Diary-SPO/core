@@ -54,6 +54,10 @@ const FAQ = [
     a: 'Действующая учётная запись электронного дневника: регион, логин и пароль, которые выдаёт учебная организация.'
   },
   {
+    q: 'Подойдёт ли приложение школьникам?',
+    a: 'Нет. Дневник СПО работает только с модулем ПОО системы «Сетевой город. Образование»: колледжи, техникумы, училища. Школьные дневники не поддерживаются.'
+  },
+  {
     q: 'Сколько стоит? Есть ли реклама?',
     a: 'Бесплатно, без рекламы и встроенных покупок.'
   },
@@ -62,31 +66,6 @@ const FAQ = [
     a: 'Перед входом нужно принять политику конфиденциальности и пользовательское соглашение — так требуют правила публикации.'
   }
 ]
-
-function RuStoreIcon() {
-  return (
-    <svg
-      width='20'
-      height='20'
-      viewBox='0 0 24 24'
-      fill='none'
-      aria-hidden='true'
-    >
-      <path
-        d='M5 8h14l-1.2 8.2a2 2 0 0 1-2 1.8H8.2a2 2 0 0 1-2-1.8L5 8Z'
-        stroke='currentColor'
-        strokeWidth='1.8'
-        strokeLinejoin='round'
-      />
-      <path
-        d='M8.5 10V6.5a3.5 3.5 0 0 1 7 0V10'
-        stroke='currentColor'
-        strokeWidth='1.8'
-        strokeLinecap='round'
-      />
-    </svg>
-  )
-}
 
 function ApkIcon() {
   return (
@@ -207,7 +186,7 @@ export function App() {
   const [activeFeature, setActiveFeature] = useState(0)
   const [paused, setPaused] = useState(false)
   const [openFaq, setOpenFaq] = useState<number | null>(0)
-  const [copied, setCopied] = useState(false)
+  const [copied, setCopied] = useState<'ok' | 'err' | null>(null)
   const pageRef = useReveal()
 
   useEffect(() => {
@@ -237,12 +216,29 @@ export function App() {
   }, [webModal])
 
   const copyApk = async () => {
+    const done = (ok: boolean) => {
+      setCopied(ok ? 'ok' : 'err')
+      setTimeout(() => setCopied(null), 2200)
+    }
     try {
       await navigator.clipboard.writeText(LINKS.apk)
-      setCopied(true)
-      setTimeout(() => setCopied(false), 2000)
+      done(true)
+      return
     } catch {
-      setCopied(false)
+      // clipboard API недоступен (http, старый браузер) — пробуем fallback
+    }
+    try {
+      const ta = document.createElement('textarea')
+      ta.value = LINKS.apk
+      ta.style.position = 'fixed'
+      ta.style.opacity = '0'
+      document.body.appendChild(ta)
+      ta.select()
+      const ok = document.execCommand('copy')
+      document.body.removeChild(ta)
+      done(ok)
+    } catch {
+      done(false)
     }
   }
 
@@ -262,7 +258,7 @@ export function App() {
             <a href='#download'>Скачать</a>
             <a href='#faq'>Вопросы</a>
           </nav>
-          <a className='btn btn-sm btn-primary' href='#download'>
+          <a className='btn btn-sm btn-primary header-cta' href='#download'>
             <ApkIcon /> Скачать
           </a>
         </div>
@@ -294,7 +290,13 @@ export function App() {
                   target='_blank'
                   rel='noreferrer'
                 >
-                  <RuStoreIcon /> Скачать в RuStore
+                  <img
+                    className='btn-icon'
+                    src='./rustore.svg'
+                    alt=''
+                    aria-hidden='true'
+                  />{' '}
+                  Скачать в RuStore
                 </a>
                 <a className='btn btn-lg' href={LINKS.apk}>
                   <ApkIcon /> APK
@@ -311,20 +313,6 @@ export function App() {
                 Бесплатно · без рекламы · нужен логин и пароль от электронного
                 дневника
               </p>
-              <dl className='hero-stats'>
-                <div>
-                  <dt>Все регионы</dt>
-                  <dd>выбор портала на входе</dd>
-                </div>
-                <div>
-                  <dt>Расписание</dt>
-                  <dd>неделя и кабинеты</dd>
-                </div>
-                <div>
-                  <dt>Оценки</dt>
-                  <dd>и уведомления</dd>
-                </div>
-              </dl>
             </div>
             <div className='hero-visual reveal'>
               <img
@@ -332,6 +320,134 @@ export function App() {
                 alt='Котик — маскот приложения Дневник СПО'
                 fetchPriority='high'
               />
+            </div>
+          </div>
+          <dl className='container hero-stats reveal'>
+            <div>
+              <span className='stat-icon' aria-hidden='true'>
+                <svg width='20' height='20' viewBox='0 0 24 24' fill='none'>
+                  <circle
+                    cx='12'
+                    cy='12'
+                    r='8.5'
+                    stroke='currentColor'
+                    strokeWidth='1.8'
+                  />
+                  <path
+                    d='M3.5 12h17M12 3.5c2.5 2.4 3.8 5.2 3.8 8.5s-1.3 6.1-3.8 8.5c-2.5-2.4-3.8-5.2-3.8-8.5S9.5 5.9 12 3.5Z'
+                    stroke='currentColor'
+                    strokeWidth='1.5'
+                  />
+                </svg>
+              </span>
+              <dt>Все регионы</dt>
+              <dd>выбор портала Сетевого города на экране входа</dd>
+            </div>
+            <div>
+              <span className='stat-icon' aria-hidden='true'>
+                <svg width='20' height='20' viewBox='0 0 24 24' fill='none'>
+                  <rect
+                    x='4'
+                    y='5.5'
+                    width='16'
+                    height='15'
+                    rx='2.5'
+                    stroke='currentColor'
+                    strokeWidth='1.8'
+                  />
+                  <path
+                    d='M4 10h16M8.5 3.5v4M15.5 3.5v4'
+                    stroke='currentColor'
+                    strokeWidth='1.8'
+                    strokeLinecap='round'
+                  />
+                </svg>
+              </span>
+              <dt>Расписание на неделю</dt>
+              <dd>пары, кабинеты, преподаватели, кнопка «Домой»</dd>
+            </div>
+            <div>
+              <span className='stat-icon' aria-hidden='true'>
+                <svg width='20' height='20' viewBox='0 0 24 24' fill='none'>
+                  <path
+                    d='M4 19.5 9.5 14l3.5 3.5L20 10'
+                    stroke='currentColor'
+                    strokeWidth='1.8'
+                    strokeLinecap='round'
+                    strokeLinejoin='round'
+                  />
+                  <path
+                    d='M15 10h5v5'
+                    stroke='currentColor'
+                    strokeWidth='1.8'
+                    strokeLinecap='round'
+                    strokeLinejoin='round'
+                  />
+                </svg>
+              </span>
+              <dt>Оценки и статистика</dt>
+              <dd>текущие, итоговые, средний балл, уведомления</dd>
+            </div>
+            <div>
+              <span className='stat-icon' aria-hidden='true'>
+                <svg width='20' height='20' viewBox='0 0 24 24' fill='none'>
+                  <path
+                    d='M4 10v4h3l6 4V6l-6 4H4Z'
+                    stroke='currentColor'
+                    strokeWidth='1.8'
+                    strokeLinejoin='round'
+                  />
+                  <path
+                    d='M16.5 9.5a4 4 0 0 1 0 5M19 7a8 8 0 0 1 0 10'
+                    stroke='currentColor'
+                    strokeWidth='1.8'
+                    strokeLinecap='round'
+                  />
+                </svg>
+              </span>
+              <dt>Объявления колледжа</dt>
+              <dd>графики занятий и новости в один клик</dd>
+            </div>
+          </dl>
+        </section>
+
+        <section className='container spo-section'>
+          <div className='spo-banner reveal'>
+            <div className='spo-col spo-yes'>
+              <span className='spo-mark' aria-hidden='true'>
+                <svg width='18' height='18' viewBox='0 0 24 24' fill='none'>
+                  <path
+                    d='m5 12.5 4.5 4.5L19 7.5'
+                    stroke='currentColor'
+                    strokeWidth='2.5'
+                    strokeLinecap='round'
+                    strokeLinejoin='round'
+                  />
+                </svg>
+              </span>
+              <div>
+                <b>Подойдёт вам, если вы студент</b>
+                <p>
+                  колледжа, техникума или училища — приложение работает с
+                  модулем ПОО системы «Сетевой город. Образование»
+                </p>
+              </div>
+            </div>
+            <div className='spo-col spo-no'>
+              <span className='spo-mark' aria-hidden='true'>
+                <svg width='18' height='18' viewBox='0 0 24 24' fill='none'>
+                  <path
+                    d='M7 7l10 10M17 7 7 17'
+                    stroke='currentColor'
+                    strokeWidth='2.5'
+                    strokeLinecap='round'
+                  />
+                </svg>
+              </span>
+              <div>
+                <b>Не подойдёт школьникам</b>
+                <p>школьный модуль Сетевого города не поддерживается</p>
+              </div>
             </div>
           </div>
         </section>
@@ -420,7 +536,13 @@ export function App() {
                   target='_blank'
                   rel='noreferrer'
                 >
-                  <RuStoreIcon /> RuStore
+                  <img
+                    className='btn-icon'
+                    src='./rustore.svg'
+                    alt=''
+                    aria-hidden='true'
+                  />{' '}
+                  RuStore
                 </a>
                 <a className='btn btn-lg' href={LINKS.apk}>
                   <ApkIcon /> APK напрямую
@@ -433,9 +555,17 @@ export function App() {
                   <WebIcon /> Веб-версия
                 </button>
               </div>
-              <button className='copy-link' type='button' onClick={copyApk}>
+              <button
+                className={`copy-link${copied === 'ok' ? ' is-ok' : copied === 'err' ? ' is-err' : ''}`}
+                type='button'
+                onClick={copyApk}
+              >
                 <CopyIcon />{' '}
-                {copied ? 'Ссылка скопирована!' : 'Скопировать ссылку на APK'}
+                {copied === 'ok'
+                  ? 'Ссылка скопирована!'
+                  : copied === 'err'
+                    ? 'Не удалось скопировать — зажмите ссылку в адресной строке'
+                    : 'Скопировать ссылку на APK'}
               </button>
             </div>
             <img
@@ -492,11 +622,51 @@ export function App() {
             </div>
           </div>
           <div className='footer-links'>
-            <a href={LINKS.vk} target='_blank' rel='noreferrer'>
-              Поддержка VK
+            <div className='socials'>
+              <a
+                href={LINKS.vk}
+                target='_blank'
+                rel='noreferrer'
+                aria-label='Группа Дневника СПО во VK'
+              >
+                <span className='sr-only'>Группа Дневника СПО во VK</span>
+                <svg
+                  width='20'
+                  height='20'
+                  viewBox='0 0 24 24'
+                  fill='currentColor'
+                  aria-hidden='true'
+                >
+                  <path d='M12.93 17.5c-5.4 0-8.5-3.7-8.63-9.9h2.7c.09 4.54 2.1 6.46 3.69 6.86V7.6h2.55v3.9c1.56-.17 3.2-1.95 3.75-3.9h2.55c-.71 2.7-2.55 4.7-3.8 5.32 1.25.6 3.25 2.14 4.01 4.58h-2.8c-.6-1.9-2.1-3.37-4.34-3.58v3.58h-.65Z' />
+                </svg>
+              </a>
+              <a
+                href={LINKS.github}
+                target='_blank'
+                rel='noreferrer'
+                aria-label='Исходный код на GitHub'
+              >
+                <span className='sr-only'>Исходный код на GitHub</span>
+                <svg
+                  width='20'
+                  height='20'
+                  viewBox='0 0 24 24'
+                  fill='currentColor'
+                  aria-hidden='true'
+                >
+                  <path d='M12 2.5A9.5 9.5 0 0 0 2.5 12c0 4.2 2.72 7.76 6.5 9.02.48.09.65-.2.65-.46v-1.63c-2.65.58-3.21-1.13-3.21-1.13-.43-1.1-1.06-1.4-1.06-1.4-.86-.6.07-.58.07-.58.95.07 1.46.98 1.46.98.85 1.46 2.24 1.04 2.78.8.09-.63.33-1.04.6-1.28-2.11-.24-4.33-1.06-4.33-4.7 0-1.04.37-1.9.98-2.56-.1-.25-.42-1.22.09-2.54 0 0 .8-.25 2.62.98a9.1 9.1 0 0 1 4.76 0c1.82-1.23 2.62-.98 2.62-.98.51 1.32.19 2.29.09 2.54.61.66.98 1.52.98 2.56 0 3.65-2.23 4.45-4.35 4.69.35.3.65.88.65 1.78v2.64c0 .26.17.56.66.46A9.5 9.5 0 0 0 21.5 12 9.5 9.5 0 0 0 12 2.5Z' />
+                </svg>
+              </a>
+            </div>
+            <a href={LINKS.privacy} target='_blank' rel='noreferrer'>
+              Политика конфиденциальности
             </a>
-            <a href={LINKS.privacy}>Политика конфиденциальности</a>
-            <a href={LINKS.agreement}>Пользовательское соглашение</a>
+            <a href={LINKS.agreement} target='_blank' rel='noreferrer'>
+              Пользовательское соглашение
+            </a>
+            <a href={LINKS.consent} target='_blank' rel='noreferrer'>
+              Согласие на обработку данных
+            </a>
           </div>
         </div>
       </footer>
