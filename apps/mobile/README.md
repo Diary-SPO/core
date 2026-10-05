@@ -94,10 +94,13 @@ Workflow `.github/workflows/release-mobile.yml` запускается на push
 событием `install_source` при первом запуске (`DiaryApplication`).
 
 `main` публикует релиз `vX.Y.Z` (версия из `build.gradle`) и лендинг в корень
-`gh-pages`; `pre-main` — пререлиз `vX.Y.Z-pre.N` и лендинг в `gh-pages/pre/`.
+`gh-pages`; `pre-main` — canary-пререлиз `vX.Y.Z-canary.N` (тот же суффикс
+зашит в `versionName` внутри APK) и лендинг в `gh-pages/pre/`.
 
 Секреты репозитория: `APPMETRICA_API_KEY`, `ANDROID_KEYSTORE_BASE64`,
 `ANDROID_KEY_ALIAS`, `ANDROID_STORE_PASSWORD`, `ANDROID_KEY_PASSWORD`.
 Keystore для CI можно получить из боевого: `base64 -w0 diaryspo-release.jks`.
 Локальная сборка канала вручную: `./gradlew assembleRelease
--PAPPMETRICA_API_KEY=... -PINSTALL_SOURCE=landing`.
+-PAPPMETRICA_API_KEY=... -PINSTALL_SOURCE=landing`. Суффикс версии (для
+canary): `-PVERSION_SUFFIX=-canary.1`. Без суффикса собирается чистый
+релизный `versionName`.

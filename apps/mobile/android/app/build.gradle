@@ -6,6 +6,9 @@ def appMetricaApiKey = providers.gradleProperty('APPMETRICA_API_KEY')
 def installSource = providers.gradleProperty('INSTALL_SOURCE')
     .orElse(providers.environmentVariable('INSTALL_SOURCE'))
     .getOrElse('unknown')
+def versionSuffix = providers.gradleProperty('VERSION_SUFFIX')
+    .orElse(providers.environmentVariable('VERSION_SUFFIX'))
+    .getOrElse('')
 def keystorePropertiesFile = rootProject.file('keystore.properties')
 def keystoreProperties = new Properties()
 
@@ -25,7 +28,7 @@ android {
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 6
-        versionName "1.2.1"
+        versionName "1.2.1${versionSuffix}"
         buildConfigField "String", "APPMETRICA_API_KEY", groovy.json.JsonOutput.toJson(appMetricaApiKey)
         // Канал распространения: rustore | github | landing. Уходит в AppMetrica
         // событием install_source, чтобы источники установок различались.
