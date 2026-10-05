@@ -20,8 +20,8 @@ const TechInfo: FC = () => {
     <Group
       header={
         <Header
-          mode='secondary'
-          aside={<Subhead Component='h5'>Хранится в LocalStorage</Subhead>}
+          size='s'
+          after={<Subhead Component='h5'>Хранится в LocalStorage</Subhead>}
         >
           Кеш
         </Header>

@@ -1,4 +1,4 @@
 .markWrapper {
+  flex: 0 0 auto;
   text-align: center;
-  max-width: min-content !important;
 }

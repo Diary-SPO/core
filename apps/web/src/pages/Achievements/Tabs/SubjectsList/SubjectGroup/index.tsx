@@ -24,8 +24,8 @@ const SubjectGroup: FC<ISubjectGroup> = ({
     header={
       <Header
         style={{ alignItems: 'center' }}
-        mode='tertiary'
-        aside={studentName + (year ? `, ${year}` : '')}
+        size='m'
+        after={studentName + (year ? `, ${year}` : '')}
       >
         {semesterKey}
       </Header>

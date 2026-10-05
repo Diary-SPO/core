@@ -65,10 +65,8 @@ const App: FC = () => {
   return (
     <AppRoot safeAreaInsets={vkBridgeInsets}>
       <SplitLayout
-        popout={routerPopout}
-        modal={modals}
         header={!isVKCOM && <PanelHeader delimiter='none' />}
-        style={{ justifyContent: 'center' }}
+        slotProps={{ content: { style: { justifyContent: 'center' } } }}
       >
         {viewWidth.tabletPlus && panel !== MAIN_SETTINGS && (
           <SplitCol
@@ -115,6 +113,8 @@ const App: FC = () => {
         <SplitCol width='100%' maxWidth='700px' stretchedOnMobile autoSpaced>
           <Epic onStoryChange={onStoryChange} />
         </SplitCol>
+        {routerPopout}
+        {modals}
       </SplitLayout>
     </AppRoot>
   )

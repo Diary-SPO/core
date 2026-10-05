@@ -76,7 +76,7 @@ const FinalMarks: FC<Props> = ({ setIsError, setIsLoading, isLoading }) => {
     <Group
       mode='plain'
       className='tableWrapper'
-      header={<Header mode='tertiary'>Для подробностей нажми на оценку</Header>}
+      header={<Header size='m'>Для подробностей нажми на оценку</Header>}
     >
       <MarksForSubject data={finalMarksData} />
     </Group>

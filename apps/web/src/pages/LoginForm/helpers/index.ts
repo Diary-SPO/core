@@ -1,5 +1,5 @@
 import type { ResponseLogin } from '@diary-spo/shared'
-import { setToken } from '../../../shared/api/client.ts'
+import { setToken } from '../../../shared/api/token.ts'
 
 export const saveData = (basePath: ResponseLogin) => {
   const userId = String(basePath.id)

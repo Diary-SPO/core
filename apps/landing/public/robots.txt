@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://diary-spo.github.io/core/sitemap.xml

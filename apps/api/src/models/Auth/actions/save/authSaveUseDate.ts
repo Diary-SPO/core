@@ -1,5 +1,5 @@
 import { formatDate } from '@utils'
-import { AuthModel, IAuthModel } from '../../model'
+import { AuthModel } from '../../model'
 
 export const authSaveUseDate = async (
   token: string,

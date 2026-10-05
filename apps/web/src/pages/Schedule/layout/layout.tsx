@@ -30,7 +30,7 @@ export const Layout: FC<Props> = ({ id, children, ...rest }) => {
       {...rest}
     >
       <Panel nav={id}>
-        <PanelHeaderWithBack title='Главная' />
+        <PanelHeaderWithBack title='Главная' showBack={false} />
         {children}
       </Panel>
     </View>

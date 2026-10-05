@@ -39,7 +39,7 @@ export const lessonSave = async (
    * Пропускаем пустые занятия типа:
    * { "startTime": "8:30", "endTime": "10:45" }
    */
-  if (Object.keys(lesson).length <= 2 || !lesson.name) {
+  if (!('name' in lesson) || !lesson.name) {
     return null
   }
 
@@ -68,11 +68,12 @@ export const lessonSave = async (
   }
 
   if (lesson.timetable.classroom) {
+    const sourceClassroom = lesson.timetable.classroom
     const classroom = {
-      ...lesson.timetable.classroom,
-      id: undefined,
+      building: sourceClassroom.buildingName,
+      name: sourceClassroom.name,
       spoId: authData.spoId,
-      idFromDiary: lesson.timetable.classroom?.id
+      idFromDiary: sourceClassroom.id
     }
     classroomId = (await retriesForError(saveClassroom, [classroom], 2)).id
   }

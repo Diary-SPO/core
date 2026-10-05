@@ -1,12 +1,8 @@
-import { client } from '../../client.ts'
+import { diaryApi } from '@runtime-api'
 
 export const postLogin = async (
   login: string,
   password: string,
-  isHash: boolean
-) =>
-  client.auth.login.post({
-    login: login,
-    password: password,
-    isHash: isHash
-  })
+  isHash: boolean,
+  diaryUrl?: string
+) => diaryApi.login(login, password, isHash, diaryUrl)

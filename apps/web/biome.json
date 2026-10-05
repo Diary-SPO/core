@@ -1,9 +1,10 @@
 {
+  "root": false,
   "formatter": {
-    "ignore": ["./dist"]
+    "includes": ["**", "!dist"]
   },
   "linter": {
-    "ignore": ["./dist"],
+    "includes": ["**", "!dist"],
     "rules": {
       "correctness": {
         "useExhaustiveDependencies": "off"
