@@ -4,34 +4,34 @@ import { LINKS } from './config'
 const FEATURES = [
   {
     color: '#e5482f',
-    accent: '#ffd9d2',
+    bg: './showcase/bg-red.svg',
     title: 'Наглядное расписание на неделю',
     text: 'Пары по дням: время, корпус, кабинет, преподаватель. Листайте неделю и возвращайтесь кнопкой «Домой».',
-    img: './screenshots/c5e36473-c17c-4498-a6c7-2ed8a39ed2d1.png',
+    img: './showcase/phone-schedule.webp',
     alt: 'Экран расписания на неделю в приложении Дневник СПО'
   },
   {
     color: '#0a9b4d',
-    accent: '#d3f2df',
+    bg: './showcase/bg-green.svg',
     title: 'Подробная информация о паре',
     text: 'Предмет, тип занятия, аудитория, время и успеваемость — всё в карточке «Подробнее о паре».',
-    img: './screenshots/27c5c34a-29ec-4312-a0bd-28e2a5b83684.png',
+    img: './showcase/phone-lesson.webp',
     alt: 'Карточка подробной информации о паре'
   },
   {
     color: '#3b3bbf',
-    accent: '#dedeff',
+    bg: './showcase/bg-purple.svg',
     title: 'Детальная статистика успеваемости',
     text: 'Общий и средний балл, количество оценок, текущие и итоговые. Видно, что подтянуть.',
-    img: './screenshots/e80be220-99a5-4d95-ba2a-a33655437481.png',
+    img: './showcase/phone-grades.webp',
     alt: 'Экран статистики успеваемости студента'
   },
   {
     color: '#9333ea',
-    accent: '#ecd9ff',
+    bg: './showcase/bg-violet.svg',
     title: 'Объявления в один клик',
     text: 'Графики занятий, переносы и новости колледжа без похода в браузер Сетевого города.',
-    img: './screenshots/ae1458f6-5c94-40b3-9eb0-5896aac1a3ab.png',
+    img: './showcase/phone-news.webp',
     alt: 'Экран объявлений учебной организации'
   }
 ]
@@ -101,6 +101,29 @@ function WebIcon() {
         d='M3.5 12h17M12 3.5c2.5 2.4 3.8 5.2 3.8 8.5s-1.3 6.1-3.8 8.5c-2.5-2.4-3.8-5.2-3.8-8.5S9.5 5.9 12 3.5Z'
         stroke='currentColor'
         strokeWidth='1.5'
+      />
+    </svg>
+  )
+}
+
+function ThemeIcon({ dark }: { dark: boolean }) {
+  return dark ? (
+    <svg width='18' height='18' viewBox='0 0 24 24' fill='none' aria-hidden='true'>
+      <circle cx='12' cy='12' r='4.5' stroke='currentColor' strokeWidth='1.8' />
+      <path
+        d='M12 2.5v2.5M12 19v2.5M2.5 12H5M19 12h2.5M5 5l1.8 1.8M17.2 17.2 19 19M19 5l-1.8 1.8M6.8 17.2 5 19'
+        stroke='currentColor'
+        strokeWidth='1.8'
+        strokeLinecap='round'
+      />
+    </svg>
+  ) : (
+    <svg width='18' height='18' viewBox='0 0 24 24' fill='none' aria-hidden='true'>
+      <path
+        d='M20 14.5A8 8 0 0 1 9.5 4 8 8 0 1 0 20 14.5Z'
+        stroke='currentColor'
+        strokeWidth='1.8'
+        strokeLinejoin='round'
       />
     </svg>
   )
@@ -187,6 +210,13 @@ export function App() {
   const [paused, setPaused] = useState(false)
   const [openFaq, setOpenFaq] = useState<number | null>(0)
   const [copied, setCopied] = useState<'ok' | 'err' | null>(null)
+  const [theme, setTheme] = useState<'light' | 'dark'>(() => {
+    const saved = localStorage.getItem('landing-theme')
+    if (saved === 'light' || saved === 'dark') return saved
+    return window.matchMedia('(prefers-color-scheme: dark)').matches
+      ? 'dark'
+      : 'light'
+  })
   const pageRef = useReveal()
 
   useEffect(() => {
@@ -205,6 +235,11 @@ export function App() {
     )
     return () => clearInterval(t)
   }, [paused, webModal, activeFeature])
+
+  useEffect(() => {
+    document.documentElement.dataset.theme = theme
+    localStorage.setItem('landing-theme', theme)
+  }, [theme])
 
   useEffect(() => {
     if (!webModal) return
@@ -258,6 +293,19 @@ export function App() {
             <a href='#download'>Скачать</a>
             <a href='#faq'>Вопросы</a>
           </nav>
+          <button
+            className='btn btn-sm btn-ghost theme-toggle'
+            type='button'
+            aria-label={
+              theme === 'dark'
+                ? 'Переключить на светлую тему'
+                : 'Переключить на тёмную тему'
+            }
+            aria-pressed={theme === 'dark'}
+            onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
+          >
+            <ThemeIcon dark={theme === 'dark'} />
+          </button>
           <a className='btn btn-sm btn-primary header-cta' href='#download'>
             <ApkIcon /> Скачать
           </a>
@@ -487,7 +535,7 @@ export function App() {
             </div>
             <div
               className='showcase-shot'
-              style={{ background: feature.accent }}
+              style={{ backgroundImage: `url(${feature.bg})` }}
               key={feature.img}
             >
               <img
