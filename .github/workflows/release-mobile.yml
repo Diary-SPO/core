@@ -34,6 +34,8 @@ on:
 
 permissions:
   contents: write
+  id-token: write
+  attestations: write
 
 concurrency:
   group: mobile-release-${{ github.ref }}
@@ -170,6 +172,18 @@ jobs:
         run: |
           mv apps/mobile/android/app/build/outputs/apk/release/app-release.apk release-files/app-landing.apk
           ls -la release-files/
+
+      - name: Generate SBOM for release files
+        uses: anchore/sbom-action@v0
+        with:
+          path: release-files/
+          format: spdx-json
+          output-file: release-files/sbom.spdx.json
+
+      - name: Attest build provenance
+        uses: actions/attest-build-provenance@v2
+        with:
+          subject-path: 'release-files/app-github.apk, release-files/app-landing.apk, release-files/app-rustore.aab'
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
