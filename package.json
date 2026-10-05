@@ -30,6 +30,7 @@
     "build:web": "cd apps/web && bun run build",
     "build:api": "cd apps/api && bun run build",
     "build:mobile": "cd apps/mobile && bun run build",
+    "build:landing": "cd apps/landing && bun run build",
     "build:mobile:android": "cd apps/mobile && bun run build:android",
     "sync:mobile": "cd apps/mobile && bun run sync",
     "prepare": "husky"
