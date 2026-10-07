@@ -5,7 +5,6 @@ import {
 } from '@vkontakte/icons'
 import { useRouteNavigator } from '@vkontakte/vk-mini-apps-router'
 import {
-  Alert,
   Button,
   CustomSelect,
   CustomSelectOption,
@@ -28,7 +27,6 @@ import { VIEW_SCHEDULE } from '../../app/routes'
 import gosuslugiIcon from '../../assets/images/gosuslugi.svg'
 import { handleResponse, isApiError, PanelHeaderWithBack } from '../../shared'
 import { postEsiaLogin, postLogin } from '../../shared/api'
-import type { EsiaLoginMode } from '../../shared/api/runtime/types.ts'
 import { getToken } from '../../shared/api/token.ts'
 import {
   DEFAULT_DIARY_URL,
@@ -175,12 +173,12 @@ const LoginForm: FC<Props> = ({ id }) => {
     )
   }
 
-  const handleEsiaLogin = async (mode: EsiaLoginMode) => {
+  const handleEsiaLogin = async () => {
     setIsLoading(true)
     saveLegalAcceptance()
 
     try {
-      const response = await postEsiaLogin(mode, diaryUrl)
+      const response = await postEsiaLogin(diaryUrl)
       const handledResponse = handleResponse(
         response,
         () =>
@@ -258,35 +256,6 @@ const LoginForm: FC<Props> = ({ id }) => {
   const isDisabled =
     !password || !login || !loginPattern.test(login) || isLoading
   const isEsiaDisabled = isLoading
-
-  const esiaLoginPopup = (
-    <Alert
-      actions={[
-        {
-          title: 'Системный браузер',
-          mode: 'default',
-          action: () => {
-            void handleEsiaLogin('browser')
-          }
-        },
-        {
-          title: 'Встроенное окно',
-          mode: 'default',
-          action: () => {
-            void handleEsiaLogin('webview')
-          }
-        },
-        {
-          title: 'Отмена',
-          mode: 'cancel'
-        }
-      ]}
-      actionsLayout='vertical'
-      onClosed={() => routeNavigator.hidePopout()}
-      title='Вход через Госуслуги'
-      description='Выберите, где открыть страницу авторизации'
-    />
-  )
 
   return (
     <Panel nav={id}>
@@ -399,7 +368,7 @@ const LoginForm: FC<Props> = ({ id }) => {
               size='l'
               stretched
               disabled={isEsiaDisabled}
-              onClick={() => routeNavigator.showPopout(esiaLoginPopup)}
+              onClick={() => void handleEsiaLogin()}
             >
               <span className='loginEsiaButton__content'>
                 <img src={gosuslugiIcon} alt='' aria-hidden />

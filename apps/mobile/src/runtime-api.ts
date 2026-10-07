@@ -1,8 +1,7 @@
-import { App } from '@capacitor/app'
 import type { PluginListenerHandle } from '@capacitor/core'
 import { CapacitorCookies, CapacitorHttp } from '@capacitor/core'
 import {
-  DefaultSystemBrowserOptions,
+  DefaultAndroidWebViewOptions,
   DefaultWebViewOptions,
   InAppBrowser
 } from '@capacitor/inappbrowser'
@@ -16,8 +15,7 @@ import {
 } from '@diary-spo/diary-client'
 import type {
   ApiResponse,
-  DiaryApi,
-  EsiaLoginMode
+  DiaryApi
 } from '../../web/src/shared/api/runtime/types.ts'
 import {
   backgroundGradeNotifications,
@@ -30,10 +28,6 @@ export { backgroundGradeNotifications }
 const defaultBaseUrl = import.meta.env.VITE_DIARY_URL || 'https://poo.tomedu.ru'
 const cookieStorageKey = 'directDiaryCookies'
 const baseUrlStorageKey = 'directDiaryBaseUrl'
-const esiaRedirectUri =
-  import.meta.env.VITE_ESIA_REDIRECT_URI || 'io.github.diaryspo://esia'
-const esiaCallbackProtocol = 'io.github.diaryspo:'
-const esiaCallbackHost = 'esia'
 
 const normalizeBaseUrl = (value: string): string => {
   const url = new URL(value)
@@ -82,62 +76,109 @@ const persistCookies = (...cookies: string[]) => {
   }
 }
 
-const getEsiaRedirectUri = (mode: EsiaLoginMode): string => {
-  if (mode === 'webview' && esiaRedirectUri === 'io.github.diaryspo://esia') {
-    return 'intent://esia#Intent;scheme=io.github.diaryspo;package=io.github.diaryspo;end'
-  }
+const getDiaryHost = (baseUrl: string): string => new URL(baseUrl).hostname
 
-  const url = new URL(esiaRedirectUri)
-  return url.toString()
-}
-
-const isEsiaCallback = (value: string, mode: EsiaLoginMode): boolean => {
+const isDiaryUrl = (value: string, baseUrl: string): boolean => {
   try {
-    const url = new URL(value)
-    const isAppCallback =
-      url.protocol === esiaCallbackProtocol && url.hostname === esiaCallbackHost
-    return isAppCallback
+    return new URL(value).hostname === getDiaryHost(baseUrl)
   } catch {
     return false
   }
 }
 
-const waitForEsiaCallback = async (
-  mode: EsiaLoginMode,
+// Auth-тикет появляется только после логина.
+const hasDiaryAuthCookies = (cookie: string): boolean =>
+  cookie.includes('.AspNetCore.Cookies')
+
+const parseCookiePairs = (cookieString: string): Array<[string, string]> => {
+  const pairs: Array<[string, string]> = []
+  for (const part of cookieString.split(';')) {
+    const trimmed = part.trim()
+    const separator = trimmed.indexOf('=')
+    if (separator <= 0) continue
+    pairs.push([trimmed.slice(0, separator), trimmed.slice(separator + 1)])
+  }
+  return pairs
+}
+
+// WebView и CapacitorHttp делят куки только вручную.
+const syncCookiesToNative = async (
+  baseUrl: string,
+  ...cookies: string[]
+): Promise<void> => {
+  for (const cookieString of cookies.filter(Boolean)) {
+    for (const [key, value] of parseCookiePairs(cookieString)) {
+      try {
+        await CapacitorCookies.setCookie({ url: baseUrl, key, value })
+      } catch (error) {
+        console.warn('Unable to sync cookie to native jar', key, error)
+      }
+    }
+  }
+}
+
+const waitForEsiaWebViewLogin = async (
+  baseUrl: string,
   loginUrl: string
 ): Promise<string> =>
   new Promise((resolve, reject) => {
     let settled = false
     const handles: PluginListenerHandle[] = []
+    let sawEsia = false
 
     const cleanup = async () => {
       await Promise.all(handles.map((handle) => handle.remove()))
     }
-    const finish = async (callbackUrl: string) => {
-      if (settled || !isEsiaCallback(callbackUrl, mode)) return
-      settled = true
-      await cleanup()
-      if (mode === 'webview') await InAppBrowser.close()
-      resolve(callbackUrl)
-    }
-    const cancel = async () => {
+    const finish = async (cookie: string) => {
       if (settled) return
       settled = true
       await cleanup()
-      reject(new DiaryClientError('ESIA login was cancelled', 499))
+      await InAppBrowser.close()
+      resolve(cookie)
+    }
+    const cancel = async (error?: unknown) => {
+      if (settled) return
+      settled = true
+      await cleanup()
+      reject(
+        error instanceof Error
+          ? error
+          : new DiaryClientError('ESIA login was cancelled', 499)
+      )
+    }
+
+    const checkDiaryNavigation = async (url: string) => {
+      if (!isDiaryUrl(url, baseUrl)) {
+        sawEsia = true
+        return
+      }
+      // Игнорируем дневник до ухода в ЕСИА.
+      if (!sawEsia) return
+      try {
+        const parsed = new URL(url)
+        if (parsed.searchParams.get('error')) {
+          await cancel(
+            new DiaryClientError(
+              `ESIA login failed: ${parsed.searchParams.get('error')}`,
+              401
+            )
+          )
+          await InAppBrowser.close()
+          return
+        }
+      } catch {}
+      const cookie = await getNativeCookies(baseUrl)
+      if (hasDiaryAuthCookies(cookie)) {
+        await finish(cookie)
+      }
     }
 
     void (async () => {
       handles.push(
-        await App.addListener('appUrlOpen', ({ url }) => {
-          void finish(url)
-        })
-      )
-      handles.push(
         await InAppBrowser.addListener(
           'browserPageNavigationCompleted',
           ({ url }) => {
-            if (url) void finish(url)
+            if (url) void checkDiaryNavigation(url)
           }
         )
       )
@@ -149,29 +190,23 @@ const waitForEsiaCallback = async (
         })
       )
 
-      if (mode === 'webview') {
-        await InAppBrowser.openInWebView({
-          url: loginUrl,
-          options: {
-            ...DefaultWebViewOptions,
-            showURL: true,
-            showToolbar: true,
-            clearCache: false,
-            clearSessionCache: false
-          }
-        })
-        return
-      }
-
-      await InAppBrowser.openInSystemBrowser({
+      // Без общего процесса куки WebView недоступны.
+      await InAppBrowser.openInWebView({
         url: loginUrl,
-        options: DefaultSystemBrowserOptions
+        options: {
+          ...DefaultWebViewOptions,
+          showURL: true,
+          showToolbar: true,
+          clearCache: false,
+          clearSessionCache: false,
+          android: {
+            ...DefaultAndroidWebViewOptions,
+            isIsolated: false
+          }
+        }
       })
     })().catch(async (error) => {
-      if (settled) return
-      settled = true
-      await cleanup()
-      reject(error)
+      await cancel(error)
     })
   })
 
@@ -294,7 +329,7 @@ export const diaryApi: DiaryApi = {
         throw error
       }
     }),
-  loginWithEsia: (mode, diaryUrl) =>
+  loginWithEsia: (diaryUrl?: string) =>
     execute(async () => {
       await client.logout()
 
@@ -304,9 +339,8 @@ export const diaryApi: DiaryApi = {
       if (nextBaseUrl !== activeBaseUrl) await nextClient.logout()
 
       try {
-        const { loginUrl, responseHeaders } = await nextClient.prepareEsiaLogin(
-          getEsiaRedirectUri(mode)
-        )
+        const { loginUrl, responseHeaders } =
+          await nextClient.prepareEsiaLogin()
         const settingsCookies = getResponseCookies(responseHeaders)
 
         persistCookies(settingsCookies, await getNativeCookies(nextBaseUrl))
@@ -316,10 +350,18 @@ export const diaryApi: DiaryApi = {
             502
           )
         }
+        await syncCookiesToNative(nextBaseUrl, getStoredCookie())
 
-        const callbackUrl = await waitForEsiaCallback(mode, loginUrl)
+        const webViewCookies = await waitForEsiaWebViewLogin(
+          nextBaseUrl,
+          loginUrl
+        )
+
+        persistCookies(webViewCookies, await getNativeCookies(nextBaseUrl))
+        await syncCookiesToNative(nextBaseUrl, getStoredCookie())
+
         const { user, responseHeaders: loginResponseHeaders } =
-          await nextClient.completeEsiaLogin(callbackUrl)
+          await nextClient.finishEsiaLogin()
 
         persistCookies(
           getResponseCookies(loginResponseHeaders),

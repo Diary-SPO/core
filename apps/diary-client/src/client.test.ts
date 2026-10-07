@@ -182,16 +182,14 @@ describe('DiaryClient', () => {
     expect(transport.cleared).toBe(true)
   })
 
-  test('prepares ESIA login without losing signed parameters', async () => {
+  test('prepares ESIA login without touching the signed loginUrl', async () => {
     const client = new DiaryClient('https://poo.tomedu.ru', new MockTransport())
 
-    const result = await client.prepareEsiaLogin(
-      'https://api.spo-diary.ru/auth/esia/callback?target=mobile'
-    )
+    const result = await client.prepareEsiaLogin()
     const loginUrl = new URL(result.loginUrl)
 
-    expect(loginUrl.searchParams.get('redirect_uri')).toBe(
-      'https://api.spo-diary.ru/auth/esia/callback?target=mobile'
+    expect(result.loginUrl).toBe(
+      'https://esia.example/authorize?client_id=spo&redirect_uri=https%3A%2F%2Fpoo.tomedu.ru%2Fservices%2Fesia%2Flogin&sign=signed'
     )
     expect(loginUrl.searchParams.get('sign')).toBe('signed')
     expect(result.responseHeaders).toEqual([
@@ -199,20 +197,15 @@ describe('DiaryClient', () => {
     ])
   })
 
-  test('completes ESIA callback through Network City', async () => {
+  test('finishes ESIA login via tenants without code exchange', async () => {
     const transport = new MockTransport()
     const client = new DiaryClient('https://poo.tomedu.ru', transport)
 
-    const { user } = await client.completeEsiaLogin(
-      'https://api.spo-diary.ru/auth/esia/callback?target=webview&code=authorization-code&session_state=state'
-    )
+    const { user } = await client.finishEsiaLogin()
 
     expect(user.id).toBe(7n)
     expect(user.login).toBe('ivan')
     expect(transport.requests[0].url).toBe(
-      'https://poo.tomedu.ru/services/esia/login?code=authorization-code&session_state=state'
-    )
-    expect(transport.requests[1].url).toBe(
       'https://poo.tomedu.ru/services/security/get-esia-tenants'
     )
   })
