@@ -22,6 +22,7 @@ import {
   clearBackgroundGradeSession,
   syncBackgroundGradeSession
 } from './background-grade-notifications.ts'
+import { getDiaryCookies, setDiaryCookie } from './diary-cookies.ts'
 
 export { backgroundGradeNotifications }
 
@@ -59,10 +60,17 @@ const getResponseCookies = (responses: Record<string, string>[]) =>
   )
 
 const getNativeCookies = async (baseUrl: string): Promise<string> => {
-  const cookies = await CapacitorCookies.getCookies({ url: baseUrl })
-  return Object.entries(cookies)
-    .map(([key, value]) => `${key}=${value}`)
-    .join('; ')
+  // Auth-куки ставятся по http, читаем оба варианта схемы.
+  const urls = [baseUrl, baseUrl.replace(/^https:/, 'http:')]
+  const parts: string[] = []
+  for (const url of urls) {
+    try {
+      parts.push(await getDiaryCookies(url))
+    } catch (error) {
+      console.warn('Unable to read native cookies', url, error)
+    }
+  }
+  return mergeAuthCookies(...parts.filter(Boolean))
 }
 
 const persistCookies = (...cookies: string[]) => {
@@ -86,9 +94,9 @@ const isDiaryUrl = (value: string, baseUrl: string): boolean => {
   }
 }
 
-// Auth-тикет появляется только после логина.
+// UID выставляет сам дневник как маркер входа, до логина её нет.
 const hasDiaryAuthCookies = (cookie: string): boolean =>
-  cookie.includes('.AspNetCore.Cookies')
+  /(?:^|;\s*)(UID|\.AspNetCore\.Cookies)=/.test(cookie)
 
 const parseCookiePairs = (cookieString: string): Array<[string, string]> => {
   const pairs: Array<[string, string]> = []
@@ -106,12 +114,15 @@ const syncCookiesToNative = async (
   baseUrl: string,
   ...cookies: string[]
 ): Promise<void> => {
+  const urls = [baseUrl, baseUrl.replace(/^https:/, 'http:')]
   for (const cookieString of cookies.filter(Boolean)) {
     for (const [key, value] of parseCookiePairs(cookieString)) {
-      try {
-        await CapacitorCookies.setCookie({ url: baseUrl, key, value })
-      } catch (error) {
-        console.warn('Unable to sync cookie to native jar', key, error)
+      for (const url of urls) {
+        try {
+          await setDiaryCookie(url, key, value)
+        } catch (error) {
+          console.warn('Unable to sync cookie to native jar', key, error)
+        }
       }
     }
   }
@@ -168,6 +179,12 @@ const waitForEsiaWebViewLogin = async (
         }
       } catch {}
       const cookie = await getNativeCookies(baseUrl)
+      const keys = cookie
+        .split(';')
+        .map((part) => part.trim().split('=', 1)[0])
+        .filter(Boolean)
+        .join(',')
+      console.log('[esia] diary navigation', url.slice(0, 80), 'cookies:', keys)
       if (hasDiaryAuthCookies(cookie)) {
         await finish(cookie)
       }
