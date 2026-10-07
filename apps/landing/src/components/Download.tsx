@@ -10,12 +10,13 @@ export function Download({ onWebClick }: DownloadProps) {
   const [copied, setCopied] = useState<'ok' | 'err' | null>(null)
 
   const copyApk = async () => {
+    const absoluteUrl = new URL(LINKS.apk, window.location.href).href
     const done = (ok: boolean) => {
       setCopied(ok ? 'ok' : 'err')
       setTimeout(() => setCopied(null), 2200)
     }
     try {
-      await navigator.clipboard.writeText(LINKS.apk)
+      await navigator.clipboard.writeText(absoluteUrl)
       done(true)
       return
     } catch {
@@ -23,7 +24,7 @@ export function Download({ onWebClick }: DownloadProps) {
     }
     try {
       const ta = document.createElement('textarea')
-      ta.value = LINKS.apk
+      ta.value = absoluteUrl
       ta.style.position = 'fixed'
       ta.style.opacity = '0'
       document.body.appendChild(ta)

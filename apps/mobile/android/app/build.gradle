@@ -28,7 +28,7 @@ android {
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 6
-        versionName "1.2.1${versionSuffix}"
+        versionName "1.2.1" + versionSuffix
         buildConfigField "String", "APPMETRICA_API_KEY", groovy.json.JsonOutput.toJson(appMetricaApiKey)
         // Канал распространения: rustore | github | landing. Уходит в AppMetrica
         // событием install_source, чтобы источники установок различались.
