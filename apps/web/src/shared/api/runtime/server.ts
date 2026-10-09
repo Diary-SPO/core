@@ -1,5 +1,9 @@
 import { client } from '../client.ts'
-import type { BackgroundGradeNotifications, DiaryApi } from './types.ts'
+import type {
+  BackgroundGradeNotifications,
+  DiaryApi,
+  ShareContentOptions
+} from './types.ts'
 
 const defaultBackgroundSettings = {
   enabled: false,
@@ -10,6 +14,16 @@ export const backgroundGradeNotifications: BackgroundGradeNotifications = {
   supported: false,
   getSettings: () => defaultBackgroundSettings,
   setSettings: async () => defaultBackgroundSettings
+}
+
+export const shareContent = async (
+  options: ShareContentOptions
+): Promise<boolean> => {
+  if (!navigator.share) return false
+
+  const { title, text, url } = options
+  await navigator.share({ title, text, url })
+  return true
 }
 
 export const diaryApi: DiaryApi = {

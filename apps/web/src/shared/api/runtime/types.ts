@@ -51,3 +51,10 @@ export interface BackgroundGradeNotifications {
     settings: BackgroundGradeSettings
   ): Promise<BackgroundGradeSettings>
 }
+
+export interface ShareContentOptions {
+  title?: string
+  text?: string
+  url?: string
+  dialogTitle?: string
+}

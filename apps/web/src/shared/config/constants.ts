@@ -4,6 +4,10 @@ export const THIRD_SEC = 30 * SECOND
 export const MODAL_PAGE_LESSON = 'lesson'
 export const MODAL_PAGE_MARK = 'mark'
 export const MODAL_PAGE_REGION = 'diary-region'
+export const MODAL_PAGE_RECOMMEND_APP = 'recommend-app'
+
+// Временно включено для проверки модалки при каждом новом запуске приложения.
+export const RECOMMENDATION_PROMPT_TEST_MODE = true
 
 export type ThemePreference = 'auto' | 'light' | 'dark'
 

@@ -5,6 +5,7 @@ import {
   DefaultWebViewOptions,
   InAppBrowser
 } from '@capacitor/inappbrowser'
+import { Share } from '@capacitor/share'
 import {
   DiaryClient,
   DiaryClientError,
@@ -15,7 +16,8 @@ import {
 } from '@diary-spo/diary-client'
 import type {
   ApiResponse,
-  DiaryApi
+  DiaryApi,
+  ShareContentOptions
 } from '../../web/src/shared/api/runtime/types.ts'
 import {
   backgroundGradeNotifications,
@@ -25,6 +27,16 @@ import {
 import { getDiaryCookies, setDiaryCookie } from './diary-cookies.ts'
 
 export { backgroundGradeNotifications }
+
+export const shareContent = async (
+  options: ShareContentOptions
+): Promise<boolean> => {
+  const { value: canShare } = await Share.canShare()
+  if (!canShare) return false
+
+  await Share.share(options)
+  return true
+}
 
 const defaultBaseUrl = import.meta.env.VITE_DIARY_URL || 'https://poo.tomedu.ru'
 const cookieStorageKey = 'directDiaryCookies'
