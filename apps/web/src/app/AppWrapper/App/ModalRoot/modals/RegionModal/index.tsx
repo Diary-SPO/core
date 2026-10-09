@@ -4,7 +4,6 @@ import {
   Avatar,
   Button,
   Cell,
-  Flex,
   Group,
   Header,
   ModalPage,
@@ -66,20 +65,20 @@ const RegionModal: FC<IRegionModal> = ({ id }) => {
           <Cell
             key={region.url}
             before={
-              <Flex align='center' gap='s'>
-                <Radio
-                  name='diary-region'
-                  checked={selectedUrl === region.url}
-                  onChange={() => chooseRegion(region.url)}
-                  onClick={(event) => event.stopPropagation()}
-                />
-                <Avatar
-                  size={28}
-                  src={region.emblem}
-                  alt={region.name}
-                  withTransparentBackground
-                />
-              </Flex>
+              <Radio
+                name='diary-region'
+                checked={selectedUrl === region.url}
+                onChange={() => chooseRegion(region.url)}
+                onClick={(event) => event.stopPropagation()}
+              />
+            }
+            after={
+              <Avatar
+                size={28}
+                src={region.emblem}
+                alt={region.name}
+                withTransparentBackground
+              />
             }
             onClick={() => chooseRegion(region.url)}
             subtitle={getDiaryDomain(region.url)}
