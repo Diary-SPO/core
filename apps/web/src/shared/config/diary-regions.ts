@@ -1,9 +1,33 @@
+import altaiEmblem from '../../assets/images/regions/altai.png'
+import buryatiaEmblem from '../../assets/images/regions/buryatia.png'
+import chelyabinskEmblem from '../../assets/images/regions/chelyabinsk.png'
+import ingushetiaEmblem from '../../assets/images/regions/ingushetia.png'
+import kalugaEmblem from '../../assets/images/regions/kaluga.png'
+import kamchatkaEmblem from '../../assets/images/regions/kamchatka.png'
+import karachayEmblem from '../../assets/images/regions/karachay.png'
+import komiEmblem from '../../assets/images/regions/komi.png'
+import krasnodarEmblem from '../../assets/images/regions/krasnodar.png'
+import primorskyEmblem from '../../assets/images/regions/primorsky.png'
+import sakhaEmblem from '../../assets/images/regions/sakha.png'
+import samaraEmblem from '../../assets/images/regions/samara.png'
+import tomskEmblem from '../../assets/images/regions/tomsk.png'
+import tulaEmblem from '../../assets/images/regions/tula.png'
+import ulyanovskEmblem from '../../assets/images/regions/ulyanovsk.gif'
+import volgogradEmblem from '../../assets/images/regions/volgograd.png'
+import yamalEmblem from '../../assets/images/regions/yamal.png'
+import zabaykalskyEmblem from '../../assets/images/regions/zabaykalsky.png'
+
 export interface DiaryRegion {
   name: string
   url: string
   /**
-   * Города региона и латиничные варианты названий.
-   * Используются для поиска и для сопоставления GeoIP-ответа с регионом.
+   * Герб региона (поле `emblem`).
+   * Гербы субъектов РФ — госсимволы (общественное достояние, PD-RU-exempt),
+   * файлы взяты с Wikimedia Commons и ужаты до 96px.
+   */
+  emblem: string
+  /**
+   * Города региона и латиничные варианты названий для поиска.
    */
   aliases: string[]
 }
@@ -17,26 +41,31 @@ export const DIARY_REGIONS: DiaryRegion[] = [
   {
     name: 'Алтайский край',
     url: 'https://netspo.edu22.info',
+    emblem: altaiEmblem,
     aliases: ['барнаул', 'бийск', 'рубцовск', 'barnaul', 'biysk', 'altai']
   },
   {
     name: 'Волгоградская область',
     url: 'https://spo.volganet.ru',
+    emblem: volgogradEmblem,
     aliases: ['волгоград', 'волжский', 'камышин', 'volgograd', 'volzhsky']
   },
   {
     name: 'Забайкальский край',
     url: 'https://poo.zabedu.ru',
+    emblem: zabaykalskyEmblem,
     aliases: ['чита', 'chita', 'zabaikalsky', 'zabaykalsky']
   },
   {
     name: 'Калужская область',
     url: 'https://spo.admoblkaluga.ru',
+    emblem: kalugaEmblem,
     aliases: ['калуга', 'обнинск', 'kaluga', 'obninsk']
   },
   {
     name: 'Камчатский край',
     url: 'https://prof.sgo41.ru',
+    emblem: kamchatkaEmblem,
     aliases: [
       'петропавловск-камчатский',
       'петропавловск',
@@ -48,11 +77,13 @@ export const DIARY_REGIONS: DiaryRegion[] = [
   {
     name: 'Карачаево-Черкесская Республика',
     url: 'https://poo.kchgov.ru',
+    emblem: karachayEmblem,
     aliases: ['черкесск', 'карачаевск', 'cherkessk', 'cherkes', 'karachay']
   },
   {
     name: 'Краснодарский край',
     url: 'https://spo.rso23.ru',
+    emblem: krasnodarEmblem,
     aliases: [
       'краснодар',
       'сочи',
@@ -66,6 +97,7 @@ export const DIARY_REGIONS: DiaryRegion[] = [
   {
     name: 'Приморский край',
     url: 'https://poo.prim-edu.ru',
+    emblem: primorskyEmblem,
     aliases: [
       'владивосток',
       'находка',
@@ -79,51 +111,61 @@ export const DIARY_REGIONS: DiaryRegion[] = [
   {
     name: 'Республика Бурятия',
     url: 'https://spo.obr03.ru',
+    emblem: buryatiaEmblem,
     aliases: ['улан-удэ', 'ulan-ude', 'buryatia']
   },
   {
     name: 'Республика Ингушетия',
     url: 'https://poo.edu-ri.ru',
+    emblem: ingushetiaEmblem,
     aliases: ['магас', 'назрань', 'magas', 'nazran', 'ingushetia']
   },
   {
     name: 'Республика Коми',
     url: 'https://giseo-spo.rkomi.ru',
+    emblem: komiEmblem,
     aliases: ['сыктывкар', 'ухта', 'воркута', 'syktyvkar', 'ukhta', 'komi']
   },
   {
     name: 'Республика Саха (Якутия)',
     url: 'https://poo.e-yakutia.ru',
+    emblem: sakhaEmblem,
     aliases: ['якутск', 'yakutsk', 'yakutia', 'sakha']
   },
   {
     name: 'Самарская область',
     url: 'https://spo.asurso.ru',
+    emblem: samaraEmblem,
     aliases: ['самара', 'тольятти', 'сызрань', 'samara', 'tolyatti']
   },
   {
     name: 'Томская область',
     url: DEFAULT_DIARY_URL,
+    emblem: tomskEmblem,
     aliases: ['томск', 'северск', 'tomsk', 'seversk']
   },
   {
     name: 'Тульская область',
     url: 'https://spo1.edu71.ru',
+    emblem: tulaEmblem,
     aliases: ['тула', 'новомосковск', 'tula']
   },
   {
     name: 'Ульяновская область',
     url: 'https://spo.cit73.ru',
+    emblem: ulyanovskEmblem,
     aliases: ['ульяновск', 'димитровград', 'ulyanovsk']
   },
   {
     name: 'Челябинская область',
     url: 'https://poo.edu-74.ru',
+    emblem: chelyabinskEmblem,
     aliases: ['челябинск', 'магнитогорск', 'chelyabinsk', 'magnitogorsk']
   },
   {
     name: 'Ямало-Ненецкий АО',
     url: 'https://spo.yanao.ru',
+    emblem: yamalEmblem,
     aliases: [
       'салехард',
       'новый уренгой',
@@ -160,55 +202,3 @@ export const getSortedDiaryRegions = (): DiaryRegion[] =>
   [...DIARY_REGIONS].sort((left, right) =>
     left.name.localeCompare(right.name, 'ru-RU', { sensitivity: 'base' })
   )
-
-export interface GeoIpGuess {
-  city?: string | null
-  region?: string | null
-}
-
-const MIN_GEO_TOKEN_LENGTH = 4
-
-const geoTextMatchesAlias = (geoText: string, alias: string): boolean => {
-  const normalizedAlias = normalizeRegionText(alias)
-  if (normalizedAlias.length < MIN_GEO_TOKEN_LENGTH) return false
-
-  return geoText.includes(normalizedAlias) || normalizedAlias.includes(geoText)
-}
-
-const regionMatchesGeoText = (
-  region: DiaryRegion,
-  geoText: string
-): boolean => {
-  const normalizedGeo = normalizeRegionText(geoText)
-  if (normalizedGeo.length < MIN_GEO_TOKEN_LENGTH) return false
-
-  return (
-    region.aliases.some((alias) => geoTextMatchesAlias(normalizedGeo, alias)) ||
-    geoTextMatchesAlias(normalizedGeo, region.name)
-  )
-}
-
-/**
- * Подбирает регион дневника по городу/региону из GeoIP-ответа.
- * Сначала ищет совпадение по городу, затем по региону.
- */
-export const findDiaryRegionByGeo = (
-  geo: GeoIpGuess | null | undefined
-): DiaryRegion | undefined => {
-  if (!geo) return undefined
-
-  const { city, region } = geo
-
-  if (city) {
-    const byCity = DIARY_REGIONS.find((item) =>
-      regionMatchesGeoText(item, city)
-    )
-    if (byCity) return byCity
-  }
-
-  if (region) {
-    return DIARY_REGIONS.find((item) => regionMatchesGeoText(item, region))
-  }
-
-  return undefined
-}

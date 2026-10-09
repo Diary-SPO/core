@@ -4,7 +4,6 @@ import {
   DEFAULT_DIARY_URL,
   DIARY_REGIONS,
   diaryRegionMatches,
-  findDiaryRegionByGeo,
   getSortedDiaryRegions
 } from './diary-regions.ts'
 
@@ -66,23 +65,10 @@ describe('diary regions', () => {
     expect(diaryRegionMatches('самара', krasnodar)).toBe(false)
   })
 
-  test('matches regions by geoip city and region', () => {
-    expect(
-      findDiaryRegionByGeo({ city: 'Tomsk', region: 'Tomsk Oblast' })?.url
-    ).toBe(DEFAULT_DIARY_URL)
-    expect(
-      findDiaryRegionByGeo({ city: 'Sochi', region: 'Krasnodar Krai' })?.url
-    ).toBe('https://spo.rso23.ru')
-    expect(findDiaryRegionByGeo({ city: 'Северск', region: null })?.url).toBe(
-      DEFAULT_DIARY_URL
-    )
-  })
+  test('every region has a unique emblem', () => {
+    const emblems = DIARY_REGIONS.map(({ emblem }) => emblem)
 
-  test('returns undefined for unknown or empty geo', () => {
-    expect(
-      findDiaryRegionByGeo({ city: 'Moscow', region: 'Moscow' })
-    ).toBeUndefined()
-    expect(findDiaryRegionByGeo(null)).toBeUndefined()
-    expect(findDiaryRegionByGeo({})).toBeUndefined()
+    expect(emblems.every((emblem) => emblem.trim().length > 0)).toBe(true)
+    expect(new Set(emblems).size).toBe(DIARY_REGIONS.length)
   })
 })

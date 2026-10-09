@@ -1,10 +1,10 @@
 import { useDiaryRegion } from '@store'
 import { useRouteNavigator } from '@vkontakte/vk-mini-apps-router'
 import {
+  Avatar,
   Button,
   Cell,
-  Div,
-  Footnote,
+  Flex,
   Group,
   Header,
   ModalPage,
@@ -27,17 +27,12 @@ interface IRegionModal {
 
 const RegionModal: FC<IRegionModal> = ({ id }) => {
   const routeNavigator = useRouteNavigator()
-  const { selectedUrl, suggestedUrl, selectRegion } = useDiaryRegion()
+  const { selectedUrl, selectRegion } = useDiaryRegion()
   const [query, setQuery] = useState<string>('')
 
   const regions = useMemo(() => getSortedDiaryRegions(), [])
-  const suggestedRegion =
-    regions.find((region) => region.url === suggestedUrl) ?? null
-  const showsSuggested =
-    suggestedRegion !== null && diaryRegionMatches(query, suggestedRegion)
-  const visibleRegions = regions.filter(
-    (region) =>
-      diaryRegionMatches(query, region) && region.url !== suggestedRegion?.url
+  const visibleRegions = regions.filter((region) =>
+    diaryRegionMatches(query, region)
   )
 
   const chooseRegion = (url: string) => {
@@ -66,40 +61,25 @@ const RegionModal: FC<IRegionModal> = ({ id }) => {
           placeholder='Город или регион'
         />
       </div>
-      {showsSuggested && suggestedRegion && (
-        <Group header={<Header>Ваш регион</Header>}>
-          <Cell
-            before={
-              <Radio
-                name='diary-region'
-                checked={selectedUrl === suggestedRegion.url}
-                onChange={() => chooseRegion(suggestedRegion.url)}
-                onClick={(event) => event.stopPropagation()}
-              />
-            }
-            onClick={() => chooseRegion(suggestedRegion.url)}
-            subtitle={getDiaryDomain(suggestedRegion.url)}
-          >
-            {suggestedRegion.name}
-          </Cell>
-          <Div>
-            <Footnote>
-              Определили по IP-адресу — проверьте, что регион ваш
-            </Footnote>
-          </Div>
-        </Group>
-      )}
       <Group header={<Header>Все регионы</Header>}>
         {visibleRegions.map((region) => (
           <Cell
             key={region.url}
             before={
-              <Radio
-                name='diary-region'
-                checked={selectedUrl === region.url}
-                onChange={() => chooseRegion(region.url)}
-                onClick={(event) => event.stopPropagation()}
-              />
+              <Flex align='center' gap='s'>
+                <Radio
+                  name='diary-region'
+                  checked={selectedUrl === region.url}
+                  onChange={() => chooseRegion(region.url)}
+                  onClick={(event) => event.stopPropagation()}
+                />
+                <Avatar
+                  size={28}
+                  src={region.emblem}
+                  alt={region.name}
+                  withTransparentBackground
+                />
+              </Flex>
             }
             onClick={() => chooseRegion(region.url)}
             subtitle={getDiaryDomain(region.url)}
@@ -107,7 +87,7 @@ const RegionModal: FC<IRegionModal> = ({ id }) => {
             {region.name}
           </Cell>
         ))}
-        {visibleRegions.length === 0 && !showsSuggested && (
+        {visibleRegions.length === 0 && (
           <Placeholder
             title='Регион не найден'
             action={
