@@ -7,11 +7,11 @@ import {
 } from '@vkontakte/icons'
 import { useRouteNavigator } from '@vkontakte/vk-mini-apps-router'
 import {
-  Avatar,
   Button,
   FormItem,
   FormStatus,
   Group,
+  Image,
   Input,
   Link,
   Panel
@@ -269,11 +269,13 @@ const LoginForm: FC<Props> = ({ id }) => {
                 placeholder='Выберите регион'
                 before={
                   selectedRegion ? (
-                    <Avatar
+                    <Image
                       size={24}
                       src={selectedRegion.emblem}
                       alt={selectedRegion.name}
+                      borderRadius='s'
                       withTransparentBackground
+                      noBorder
                     />
                   ) : (
                     <Icon24PlaceOutline />

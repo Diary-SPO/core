@@ -1,11 +1,11 @@
 import { useDiaryRegion } from '@store'
 import { useRouteNavigator } from '@vkontakte/vk-mini-apps-router'
 import {
-  Avatar,
   Button,
   Cell,
   Group,
   Header,
+  Image,
   ModalPage,
   ModalPageHeader,
   Placeholder,
@@ -73,11 +73,13 @@ const RegionModal: FC<IRegionModal> = ({ id }) => {
               />
             }
             after={
-              <Avatar
+              <Image
                 size={28}
                 src={region.emblem}
                 alt={region.name}
+                borderRadius='s'
                 withTransparentBackground
+                noBorder
               />
             }
             onClick={() => chooseRegion(region.url)}
