@@ -4,6 +4,7 @@ import {
   DEFAULT_DIARY_URL,
   DIARY_REGIONS,
   diaryRegionMatches,
+  findDiaryRegionByGeo,
   getSortedDiaryRegions
 } from './diary-regions.ts'
 
@@ -50,5 +51,38 @@ describe('diary regions', () => {
     expect(diaryRegionMatches('томск', tomsk)).toBe(true)
     expect(diaryRegionMatches('poo.tomedu.ru', tomsk)).toBe(true)
     expect(diaryRegionMatches('краснодар', tomsk)).toBe(false)
+  })
+
+  test('finds regions by city aliases', () => {
+    const krasnodar = DIARY_REGIONS.find(
+      ({ url }) => url === 'https://spo.rso23.ru'
+    )
+
+    expect(krasnodar).toBeDefined()
+    if (!krasnodar) throw new Error('Krasnodar region is missing')
+
+    expect(diaryRegionMatches('сочи', krasnodar)).toBe(true)
+    expect(diaryRegionMatches('sochi', krasnodar)).toBe(true)
+    expect(diaryRegionMatches('самара', krasnodar)).toBe(false)
+  })
+
+  test('matches regions by geoip city and region', () => {
+    expect(
+      findDiaryRegionByGeo({ city: 'Tomsk', region: 'Tomsk Oblast' })?.url
+    ).toBe(DEFAULT_DIARY_URL)
+    expect(
+      findDiaryRegionByGeo({ city: 'Sochi', region: 'Krasnodar Krai' })?.url
+    ).toBe('https://spo.rso23.ru')
+    expect(findDiaryRegionByGeo({ city: 'Северск', region: null })?.url).toBe(
+      DEFAULT_DIARY_URL
+    )
+  })
+
+  test('returns undefined for unknown or empty geo', () => {
+    expect(
+      findDiaryRegionByGeo({ city: 'Moscow', region: 'Moscow' })
+    ).toBeUndefined()
+    expect(findDiaryRegionByGeo(null)).toBeUndefined()
+    expect(findDiaryRegionByGeo({})).toBeUndefined()
   })
 })

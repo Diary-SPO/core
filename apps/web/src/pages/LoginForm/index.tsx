@@ -1,13 +1,13 @@
 import { b64 } from '@diary-spo/crypto'
 import {
+  Icon16Dropdown,
+  Icon24PlaceOutline,
   Icon28DoorArrowLeftOutline,
   Icon28ErrorCircleOutline
 } from '@vkontakte/icons'
 import { useRouteNavigator } from '@vkontakte/vk-mini-apps-router'
 import {
   Button,
-  CustomSelect,
-  CustomSelectOption,
   FormItem,
   FormStatus,
   Group,
@@ -18,6 +18,7 @@ import {
 import {
   type ChangeEvent,
   type FC,
+  useEffect,
   useLayoutEffect,
   useMemo,
   useState
@@ -29,17 +30,19 @@ import { handleResponse, isApiError, PanelHeaderWithBack } from '../../shared'
 import { postEsiaLogin, postLogin } from '../../shared/api'
 import { getToken } from '../../shared/api/token.ts'
 import {
-  DEFAULT_DIARY_URL,
   DIARY_SOURCE,
-  diaryRegionMatches,
+  findDiaryRegionByGeo,
   getDiaryDomain,
   getSortedDiaryRegions,
+  MODAL_PAGE_REGION,
   PERSONAL_DATA_CONSENT_URL,
   PRIVACY_POLICY_URL,
   USER_AGREEMENT_URL,
   VKUI_RED
 } from '../../shared/config'
 import { useSnackbar } from '../../shared/hooks'
+import { fetchGeoIpLocation } from '../../shared/utils/geoIp'
+import { useDiaryRegion } from '../../store/diaryRegion'
 import type { Props } from '../types.ts'
 import { loginPattern, saveData } from './helpers'
 
@@ -50,28 +53,35 @@ const LoginForm: FC<Props> = ({ id }) => {
 
   const [login, setLogin] = useState<string>('')
   const [password, setPassword] = useState<string>('')
-  const [diaryUrl, setDiaryUrl] = useState<string>(DEFAULT_DIARY_URL)
-  const [regionQuery, setRegionQuery] = useState<string>('')
   const [isDataInvalid, setIsDataInvalid] = useState<boolean>(false)
   const [isLoading, setIsLoading] = useState<boolean>(false)
+
+  const {
+    selectedUrl: diaryUrl,
+    suggestedUrl,
+    geoStatus,
+    setGeoLoading,
+    setGeoSuggestion,
+    setGeoFailed
+  } = useDiaryRegion()
 
   const hasLegalDocuments = Boolean(
     PRIVACY_POLICY_URL && USER_AGREEMENT_URL && PERSONAL_DATA_CONSENT_URL
   )
 
   const [snackbar, showSnackbar] = useSnackbar()
-  const diaryRegionOptions = useMemo(
-    () =>
-      getSortedDiaryRegions().map((region) => ({
-        ...region,
-        label: region.name,
-        value: region.url
-      })),
-    []
-  )
-  const hasMatchingRegions = diaryRegionOptions.some((region) =>
-    diaryRegionMatches(regionQuery, region)
-  )
+  const diaryRegions = useMemo(() => getSortedDiaryRegions(), [])
+  const selectedRegion = diaryRegions.find((region) => region.url === diaryUrl)
+  const selectedRegionName = selectedRegion
+    ? `${selectedRegion.name} (${getDiaryDomain(selectedRegion.url)})`
+    : ''
+  const isSuggestedRegion = suggestedUrl !== null && diaryUrl === suggestedUrl
+  const regionHint =
+    geoStatus === 'loading'
+      ? 'Определяем регион по IP…'
+      : isSuggestedRegion
+        ? 'Регион определён по IP — нажмите, чтобы изменить'
+        : 'Нажмите, чтобы выбрать регион'
 
   useLayoutEffect(() => {
     const getUserCookie = async () => {
@@ -93,6 +103,31 @@ const LoginForm: FC<Props> = ({ id }) => {
     }
 
     getUserCookie()
+  }, [])
+
+  useEffect(() => {
+    if (geoStatus !== 'idle') return
+    setGeoLoading()
+
+    const applyGeoSuggestion = async () => {
+      try {
+        const geo = await fetchGeoIpLocation()
+        console.info('[geo-ip] location:', JSON.stringify(geo))
+        if (!geo || (geo.countryCode && geo.countryCode !== 'RU')) {
+          setGeoSuggestion(null)
+          return
+        }
+        const match = findDiaryRegionByGeo({
+          city: geo.city,
+          region: geo.region
+        })
+        setGeoSuggestion(match?.url ?? null)
+      } catch {
+        setGeoFailed()
+      }
+    }
+
+    void applyGeoSuggestion()
   }, [])
 
   const onChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -264,50 +299,21 @@ const LoginForm: FC<Props> = ({ id }) => {
         {Banner}
         <form method='post' onSubmit={handleLogin}>
           {DIARY_SOURCE === 'direct' && (
-            <FormItem
-              required
-              htmlFor='diaryRegion'
-              top='Регион или город'
-              bottom='Поиск работает по названию и адресу дневника'
-            >
-              <CustomSelect
-                id='diaryRegion'
-                name='diaryRegion'
-                searchable
-                value={diaryUrl}
-                options={diaryRegionOptions}
+            <FormItem required top='Регион или город' bottom={regionHint}>
+              <Input
+                readOnly
+                value={selectedRegionName}
                 placeholder='Выберите регион'
-                emptyText='Регион не найден'
-                filterFn={(query, region) => diaryRegionMatches(query, region)}
-                onInputChange={(event) =>
-                  setRegionQuery(event.currentTarget.value)
-                }
-                onChange={(event) => setDiaryUrl(event.currentTarget.value)}
-                renderOption={({ option, ...props }) => (
-                  <CustomSelectOption
-                    {...props}
-                    description={getDiaryDomain(option.url)}
-                  />
-                )}
-                renderDropdown={({ defaultDropdownContent }) => (
-                  <>
-                    {defaultDropdownContent}
-                    {regionQuery.trim() && !hasMatchingRegions && (
-                      <div className='loginRegion__request'>
-                        <Button
-                          Component='a'
-                          href='https://vk.me/diary_spo'
-                          target='_blank'
-                          rel='noreferrer'
-                          size='m'
-                          stretched
-                        >
-                          Попросить добавить регион
-                        </Button>
-                      </div>
-                    )}
-                  </>
-                )}
+                before={<Icon24PlaceOutline />}
+                after={<Icon16Dropdown />}
+                onClick={() => routeNavigator.showModal(MODAL_PAGE_REGION)}
+                onKeyDown={(event) => {
+                  if (event.key === 'Enter' || event.key === ' ') {
+                    event.preventDefault()
+                    routeNavigator.showModal(MODAL_PAGE_REGION)
+                  }
+                }}
+                aria-label='Выбрать регион дневника'
               />
             </FormItem>
           )}
