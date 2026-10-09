@@ -43,7 +43,7 @@ export const MarksByGroup: FC<IMarksByGroup> = ({ marksForSubject }) => {
             </Div>
 
             <HorizontalScroll>
-              <MarksList marks={data} />
+              <MarksList marks={data} subjectName={subjectName} />
             </HorizontalScroll>
 
             <AverageMarkCell marks={data.flatMap((item) => item.marks)} />
