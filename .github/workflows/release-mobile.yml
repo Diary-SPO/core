@@ -230,12 +230,23 @@ jobs:
       - name: Build landing
         run: bun run --cwd apps/landing build
 
-      - name: Deploy to diary-spo.github.io
+      - name: Deploy production landing to diary-spo.github.io
+        if: github.ref_name == 'main'
         uses: peaceiris/actions-gh-pages@v4
         with:
           personal_token: ${{ secrets.PAGES_DEPLOY_TOKEN }}
           external_repository: Diary-SPO/diary-spo.github.io
           publish_branch: main
           publish_dir: apps/landing/dist
-          destination_dir: ${{ github.ref_name == 'main' && '' || 'pre' }}
+          keep_files: true
+
+      - name: Deploy preview landing to diary-spo.github.io/pre
+        if: github.ref_name == 'pre-main'
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          personal_token: ${{ secrets.PAGES_DEPLOY_TOKEN }}
+          external_repository: Diary-SPO/diary-spo.github.io
+          publish_branch: main
+          publish_dir: apps/landing/dist
+          destination_dir: pre
           keep_files: true
