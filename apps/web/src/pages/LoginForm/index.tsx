@@ -1,17 +1,17 @@
 import { b64 } from '@diary-spo/crypto'
 import {
+  Icon16Dropdown,
+  Icon24PlaceOutline,
   Icon28DoorArrowLeftOutline,
   Icon28ErrorCircleOutline
 } from '@vkontakte/icons'
 import { useRouteNavigator } from '@vkontakte/vk-mini-apps-router'
 import {
-  Alert,
   Button,
-  CustomSelect,
-  CustomSelectOption,
   FormItem,
   FormStatus,
   Group,
+  Image,
   Input,
   Link,
   Panel
@@ -28,20 +28,19 @@ import { VIEW_SCHEDULE } from '../../app/routes'
 import gosuslugiIcon from '../../assets/images/gosuslugi.svg'
 import { handleResponse, isApiError, PanelHeaderWithBack } from '../../shared'
 import { postEsiaLogin, postLogin } from '../../shared/api'
-import type { EsiaLoginMode } from '../../shared/api/runtime/types.ts'
 import { getToken } from '../../shared/api/token.ts'
 import {
-  DEFAULT_DIARY_URL,
   DIARY_SOURCE,
-  diaryRegionMatches,
   getDiaryDomain,
   getSortedDiaryRegions,
+  MODAL_PAGE_REGION,
   PERSONAL_DATA_CONSENT_URL,
   PRIVACY_POLICY_URL,
   USER_AGREEMENT_URL,
   VKUI_RED
 } from '../../shared/config'
 import { useSnackbar } from '../../shared/hooks'
+import { useDiaryRegion } from '../../store/diaryRegion'
 import type { Props } from '../types.ts'
 import { loginPattern, saveData } from './helpers'
 
@@ -52,28 +51,21 @@ const LoginForm: FC<Props> = ({ id }) => {
 
   const [login, setLogin] = useState<string>('')
   const [password, setPassword] = useState<string>('')
-  const [diaryUrl, setDiaryUrl] = useState<string>(DEFAULT_DIARY_URL)
-  const [regionQuery, setRegionQuery] = useState<string>('')
   const [isDataInvalid, setIsDataInvalid] = useState<boolean>(false)
   const [isLoading, setIsLoading] = useState<boolean>(false)
+
+  const { selectedUrl: diaryUrl } = useDiaryRegion()
 
   const hasLegalDocuments = Boolean(
     PRIVACY_POLICY_URL && USER_AGREEMENT_URL && PERSONAL_DATA_CONSENT_URL
   )
 
   const [snackbar, showSnackbar] = useSnackbar()
-  const diaryRegionOptions = useMemo(
-    () =>
-      getSortedDiaryRegions().map((region) => ({
-        ...region,
-        label: region.name,
-        value: region.url
-      })),
-    []
-  )
-  const hasMatchingRegions = diaryRegionOptions.some((region) =>
-    diaryRegionMatches(regionQuery, region)
-  )
+  const diaryRegions = useMemo(() => getSortedDiaryRegions(), [])
+  const selectedRegion = diaryRegions.find((region) => region.url === diaryUrl)
+  const selectedRegionName = selectedRegion
+    ? `${selectedRegion.name} (${getDiaryDomain(selectedRegion.url)})`
+    : ''
 
   useLayoutEffect(() => {
     const getUserCookie = async () => {
@@ -175,12 +167,12 @@ const LoginForm: FC<Props> = ({ id }) => {
     )
   }
 
-  const handleEsiaLogin = async (mode: EsiaLoginMode) => {
+  const handleEsiaLogin = async () => {
     setIsLoading(true)
     saveLegalAcceptance()
 
     try {
-      const response = await postEsiaLogin(mode, diaryUrl)
+      const response = await postEsiaLogin(diaryUrl)
       const handledResponse = handleResponse(
         response,
         () =>
@@ -259,35 +251,6 @@ const LoginForm: FC<Props> = ({ id }) => {
     !password || !login || !loginPattern.test(login) || isLoading
   const isEsiaDisabled = isLoading
 
-  const esiaLoginPopup = (
-    <Alert
-      actions={[
-        {
-          title: 'Системный браузер',
-          mode: 'default',
-          action: () => {
-            void handleEsiaLogin('browser')
-          }
-        },
-        {
-          title: 'Встроенное окно',
-          mode: 'default',
-          action: () => {
-            void handleEsiaLogin('webview')
-          }
-        },
-        {
-          title: 'Отмена',
-          mode: 'cancel'
-        }
-      ]}
-      actionsLayout='vertical'
-      onClosed={() => routeNavigator.hidePopout()}
-      title='Вход через Госуслуги'
-      description='Выберите, где открыть страницу авторизации'
-    />
-  )
-
   return (
     <Panel nav={id}>
       <PanelHeaderWithBack title='Авторизация' />
@@ -297,48 +260,36 @@ const LoginForm: FC<Props> = ({ id }) => {
           {DIARY_SOURCE === 'direct' && (
             <FormItem
               required
-              htmlFor='diaryRegion'
               top='Регион или город'
-              bottom='Поиск работает по названию и адресу дневника'
+              bottom='Нажмите, чтобы выбрать регион'
             >
-              <CustomSelect
-                id='diaryRegion'
-                name='diaryRegion'
-                searchable
-                value={diaryUrl}
-                options={diaryRegionOptions}
+              <Input
+                readOnly
+                value={selectedRegionName}
                 placeholder='Выберите регион'
-                emptyText='Регион не найден'
-                filterFn={(query, region) => diaryRegionMatches(query, region)}
-                onInputChange={(event) =>
-                  setRegionQuery(event.currentTarget.value)
+                before={
+                  selectedRegion ? (
+                    <Image
+                      size={24}
+                      src={selectedRegion.emblem}
+                      alt={selectedRegion.name}
+                      borderRadius='s'
+                      withTransparentBackground
+                      noBorder
+                    />
+                  ) : (
+                    <Icon24PlaceOutline />
+                  )
                 }
-                onChange={(event) => setDiaryUrl(event.currentTarget.value)}
-                renderOption={({ option, ...props }) => (
-                  <CustomSelectOption
-                    {...props}
-                    description={getDiaryDomain(option.url)}
-                  />
-                )}
-                renderDropdown={({ defaultDropdownContent }) => (
-                  <>
-                    {defaultDropdownContent}
-                    {regionQuery.trim() && !hasMatchingRegions && (
-                      <div className='loginRegion__request'>
-                        <Button
-                          Component='a'
-                          href='https://vk.me/diary_spo'
-                          target='_blank'
-                          rel='noreferrer'
-                          size='m'
-                          stretched
-                        >
-                          Попросить добавить регион
-                        </Button>
-                      </div>
-                    )}
-                  </>
-                )}
+                after={<Icon16Dropdown />}
+                onClick={() => routeNavigator.showModal(MODAL_PAGE_REGION)}
+                onKeyDown={(event) => {
+                  if (event.key === 'Enter' || event.key === ' ') {
+                    event.preventDefault()
+                    routeNavigator.showModal(MODAL_PAGE_REGION)
+                  }
+                }}
+                aria-label='Выбрать регион дневника'
               />
             </FormItem>
           )}
@@ -399,7 +350,7 @@ const LoginForm: FC<Props> = ({ id }) => {
               size='l'
               stretched
               disabled={isEsiaDisabled}
-              onClick={() => routeNavigator.showPopout(esiaLoginPopup)}
+              onClick={() => void handleEsiaLogin()}
             >
               <span className='loginEsiaButton__content'>
                 <img src={gosuslugiIcon} alt='' aria-hidden />

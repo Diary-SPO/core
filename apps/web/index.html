@@ -7,7 +7,25 @@
       name="viewport"
       content="width=device-width, initial-scale=1, shrink-to-fit=no, user-scalable=no, viewport-fit=cover"
     />
+    <meta name="theme-color" content="#ffffff" />
+    <meta
+      name="theme-color"
+      content="#19191a"
+      media="(prefers-color-scheme: dark)"
+    />
     <title>Дневник СПО</title>
+    <script>
+      try {
+        var savedTheme = localStorage.getItem('themePreference')
+        var isDark =
+          savedTheme === 'dark' ||
+          (savedTheme !== 'light' &&
+            window.matchMedia('(prefers-color-scheme: dark)').matches)
+        document.documentElement.style.background = isDark
+          ? '#19191a'
+          : '#ffffff'
+      } catch (e) {}
+    </script>
   </head>
   <body>
     <div id="app"></div>

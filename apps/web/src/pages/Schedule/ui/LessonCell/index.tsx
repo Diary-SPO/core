@@ -12,6 +12,7 @@ import './index.css'
 interface ILessonCell {
   lesson: Lesson
   lessonDate: Date
+  anchorId?: string
   handleLessonClick: (
     name: string,
     endTime: string,
@@ -24,6 +25,7 @@ interface ILessonCell {
 const LessonCell: FC<ILessonCell> = ({
   lessonDate,
   lesson,
+  anchorId,
   handleLessonClick
 }) => {
   const { name, endTime, startTime, timetable, gradebook } = lesson
@@ -46,6 +48,7 @@ const LessonCell: FC<ILessonCell> = ({
 
   return (
     <SimpleCell
+      id={anchorId}
       className='lesson'
       onClick={() =>
         handleLessonClick(name, endTime, startTime, timetable, gradebook)

@@ -93,6 +93,11 @@ Workflow `.github/workflows/release-mobile.yml` запускается на push
 Канал запекается в `BuildConfig.INSTALL_SOURCE` и отправляется в AppMetrica
 событием `install_source` при первом запуске (`DiaryApplication`).
 
+Проверяемость сборок: для всех трёх файлов генерируется SLSA-аттестация
+(`actions/attest-build-provenance`, проверка: `gh attestation verify
+<файл> --owner Diary-SPO`) и SPDX SBOM (`release-files/sbom.spdx.json`
+в артефактах сборки).
+
 `main` публикует релиз `vX.Y.Z` (версия из `build.gradle`) и лендинг в корень
 `gh-pages`; `pre-main` — canary-пререлиз `vX.Y.Z-canary.N` (тот же суффикс
 зашит в `versionName` внутри APK) и лендинг в `gh-pages/pre/`.
