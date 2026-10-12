@@ -83,6 +83,7 @@ emulator avd="Diary_API_36":
     setsid nohup {{ sdk }}/emulator/emulator -avd {{ avd }} > /tmp/opencode/emulator.log 2>&1 < /dev/null &
     {{ adb }} wait-for-device
     {{ adb }} shell 'while [ -z "$(getprop sys.boot_completed)" ]; do sleep 2; done; echo booted'
+    {{ adb }} shell wm density 280
 
 # Установить debug APK
 install-debug apk=apk_debug:

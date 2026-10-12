@@ -7,7 +7,7 @@ export const MODAL_PAGE_REGION = 'diary-region'
 export const MODAL_PAGE_RECOMMEND_APP = 'recommend-app'
 
 // Временно включено для проверки модалки при каждом новом запуске приложения.
-export const RECOMMENDATION_PROMPT_TEST_MODE = true
+export const RECOMMENDATION_PROMPT_TEST_MODE = false
 
 export type ThemePreference = 'auto' | 'light' | 'dark'
 
