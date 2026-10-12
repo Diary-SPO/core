@@ -23,10 +23,7 @@ export interface DiaryApi {
     isHash: boolean,
     diaryUrl?: string
   ): Promise<ApiResponse<ResponseLogin>>
-  loginWithEsia(
-    mode: EsiaLoginMode,
-    diaryUrl?: string
-  ): Promise<ApiResponse<ResponseLogin>>
+  loginWithEsia(diaryUrl?: string): Promise<ApiResponse<ResponseLogin>>
   logout(): Promise<ApiResponse<{ success: boolean }>>
   getLessons(startDate: string, endDate: string): Promise<ApiResponse<Day[]>>
   getPerformance(): Promise<ApiResponse<PerformanceCurrent>>
@@ -35,7 +32,7 @@ export interface DiaryApi {
   getAds(): Promise<ApiResponse<NotificationsResponse[]>>
 }
 
-export type EsiaLoginMode = 'browser' | 'webview'
+export type EsiaLoginMode = 'webview'
 
 export const BACKGROUND_GRADE_INTERVALS = [15, 30, 60, 120] as const
 
@@ -53,4 +50,11 @@ export interface BackgroundGradeNotifications {
   setSettings(
     settings: BackgroundGradeSettings
   ): Promise<BackgroundGradeSettings>
+}
+
+export interface ShareContentOptions {
+  title?: string
+  text?: string
+  url?: string
+  dialogTitle?: string
 }

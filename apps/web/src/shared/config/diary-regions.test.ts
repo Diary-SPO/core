@@ -51,4 +51,24 @@ describe('diary regions', () => {
     expect(diaryRegionMatches('poo.tomedu.ru', tomsk)).toBe(true)
     expect(diaryRegionMatches('краснодар', tomsk)).toBe(false)
   })
+
+  test('finds regions by city aliases', () => {
+    const krasnodar = DIARY_REGIONS.find(
+      ({ url }) => url === 'https://spo.rso23.ru'
+    )
+
+    expect(krasnodar).toBeDefined()
+    if (!krasnodar) throw new Error('Krasnodar region is missing')
+
+    expect(diaryRegionMatches('сочи', krasnodar)).toBe(true)
+    expect(diaryRegionMatches('sochi', krasnodar)).toBe(true)
+    expect(diaryRegionMatches('самара', krasnodar)).toBe(false)
+  })
+
+  test('every region has a unique emblem', () => {
+    const emblems = DIARY_REGIONS.map(({ emblem }) => emblem)
+
+    expect(emblems.every((emblem) => emblem.trim().length > 0)).toBe(true)
+    expect(new Set(emblems).size).toBe(DIARY_REGIONS.length)
+  })
 })

@@ -84,7 +84,7 @@ export class DiaryClient {
     return this.createLoginResult(auth, account, responseHeaders, login)
   }
 
-  async prepareEsiaLogin(redirectUri: string): Promise<EsiaLoginStart> {
+  async prepareEsiaLogin(): Promise<EsiaLoginStart> {
     const settingsResponse = await this.requestWithResponse<EsiaSettings>(
       '/services/security/esia-settings'
     )
@@ -94,43 +94,19 @@ export class DiaryClient {
       throw new DiaryClientError('ESIA login is not available', 404)
     }
 
-    const loginUrl = new URL(settings.loginUrl)
-    loginUrl.searchParams.set('redirect_uri', redirectUri)
-
+    // redirect_uri покрыт sign, подмена ломает авторизацию.
     return {
-      loginUrl: loginUrl.toString(),
+      loginUrl: settings.loginUrl,
       responseHeaders: [settingsResponse.headers]
     }
   }
 
-  async completeEsiaLogin(callbackUrl: string): Promise<DiaryLoginResult> {
-    const callback = new URL(callbackUrl)
-    const error = callback.searchParams.get('error')
-    const code = callback.searchParams.get('code')
-
-    if (error) {
-      throw new DiaryClientError(`ESIA login failed: ${error}`, 401)
-    }
-    if (!code) {
-      throw new DiaryClientError('ESIA callback has no authorization code', 400)
-    }
-
-    const diaryCallbackParams = new URLSearchParams()
-    for (const key of ['code', 'scope', 'session_state']) {
-      const value = callback.searchParams.get(key)
-      if (value) diaryCallbackParams.set(key, value)
-    }
-
+  async finishEsiaLogin(): Promise<DiaryLoginResult> {
+    // Код уже обменян в WebView, забираем tenants и профиль.
     const responseHeaders: Record<string, string>[] = []
     const collectHeaders = (response: DiaryHttpResponse<unknown>) => {
       responseHeaders.push(response.headers)
     }
-
-    await this.request<unknown>(
-      `/services/esia/login?${diaryCallbackParams.toString()}`,
-      {},
-      collectHeaders
-    )
 
     const auth = await this.request<UserData>(
       '/services/security/get-esia-tenants',

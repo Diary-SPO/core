@@ -1,10 +1,9 @@
 import type { Day, Gradebook, Timetable } from '@diary-spo/shared'
+import { useLessonModal } from '@store'
 import { useRouteNavigator } from '@vkontakte/vk-mini-apps-router'
 import { Card, Group, Placeholder } from '@vkontakte/vkui'
 import type { FC } from 'react'
-
-import { useLessonModal } from '@store'
-
+import { dayAnchorId, lessonAnchorId, toISODate } from '../../../../shared'
 import {
   GRAY,
   MODAL_PAGE_LESSON,
@@ -73,17 +72,23 @@ const DailyCard: FC<IDailyCard> = ({ lesson }) => {
       : undefined
 
   // @TODO: ??
-  const lessons = lesson.lessons?.map((lesson) => (
+  const dateISO = toISODate(lessonDate)
+  const lessons = lesson.lessons?.map((lesson, lessonIndex) => (
     <LessonCell
       key={lesson.lessonId ?? lesson.startTime}
       lessonDate={lessonDate}
       lesson={lesson}
+      anchorId={lessonAnchorId(dateISO, lessonIndex)}
       handleLessonClick={handleLessonClick}
     />
   ))
 
   return (
-    <Card className='lessonCard' key={lesson.date.toString()}>
+    <Card
+      className='lessonCard'
+      key={lesson.date.toString()}
+      id={dayAnchorId(dateISO)}
+    >
       <Group
         header={
           <LessonHeader

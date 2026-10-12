@@ -1,11 +1,19 @@
-import type { Task } from '@diary-spo/shared'
+import type { AbsenceType, Task } from '@diary-spo/shared'
 import { useSyncExternalStore } from 'react'
-
+import type { ReturnedMark } from '../../shared/types.ts'
 import { createStore } from '../store'
 
 interface ModalProps {
-  data: Task
+  data: Task | null
   lessonName: string
+  lessonDate?: string
+  lessonTime?: string
+  dateISO?: string
+  lessonIndex?: number
+  absenceType?: AbsenceType
+  fallbackMark?: ReturnedMark | null
+  isLoading?: boolean
+  loadError?: boolean
 }
 
 // TODO: add data
