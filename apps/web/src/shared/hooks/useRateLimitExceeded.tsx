@@ -19,7 +19,7 @@ export const useRateLimitExceeded = (): [Nullable<ReactNode>, () => void] => {
     setRateSnackbar(
       <Snackbar
         layout='vertical'
-        onClose={() => setRateSnackbar(null)}
+        onClosed={() => setRateSnackbar(null)}
         before={<Icon28ErrorCircleOutline fill={VKUI_RED} />}
         subtitle='Вы временно заблокированы. Если вы считаете, что это ошибка, то сообщите нам'
       >

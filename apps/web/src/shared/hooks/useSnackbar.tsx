@@ -30,13 +30,12 @@ export const useSnackbar = (): [
     setSnackbar(
       <Snackbar
         layout={snackbarData.layout || 'vertical'}
-        onClose={() => setSnackbar(null)}
+        onClosed={() => setSnackbar(null)}
         before={
           snackbarData.before || (
             <Icon28InfoCircleOutline fill={VKUI_ACCENT_BG} />
           )
         }
-        offsetY={50}
         action={snackbarData.action}
         onActionClick={snackbarData.onActionClick}
         duration={snackbarData.duration}

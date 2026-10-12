@@ -50,7 +50,7 @@ const LessonTimePlaceInfo: FC<Props> = ({ lessonTimePlaceInfo }) => {
     : lessonTimePlaceInfo.classroomName
 
   return (
-    <Group header={<Header mode='tertiary'>Куда бежать</Header>}>
+    <Group header={<Header size='m'>Куда бежать</Header>}>
       <SimpleCell>
         <InfoRow header={header}>{className}</InfoRow>
       </SimpleCell>

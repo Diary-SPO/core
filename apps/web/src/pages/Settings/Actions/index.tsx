@@ -38,13 +38,13 @@ const Actions = () => {
         }
       ]}
       actionsLayout='horizontal'
-      onClose={() => routeNavigator.hidePopout()}
-      header='Выход'
-      text='Вы уверены, что хотите выйти из аккаунта?'
+      onClosed={() => routeNavigator.hidePopout()}
+      title='Выход'
+      description='Вы уверены, что хотите выйти из аккаунта?'
     />
   )
 
-  const handleLogOut = () => {
+  const handleLogOut = async () => {
     showSnackbar({
       title: 'Выход',
       before: (
@@ -53,14 +53,12 @@ const Actions = () => {
       subtitle: 'После удаления всех данных вы попадёте на страницу авторизации'
     })
 
-    setTimeout(async () => {
-      try {
-        await logOut()
-        await routeNavigator.replace('/')
-      } catch (error) {
-        console.error('Error during logout:', error)
-      }
-    }, 1500)
+    try {
+      await logOut()
+      await routeNavigator.replace('/')
+    } catch (error) {
+      console.error('Error during logout:', error)
+    }
   }
 
   const addToHomeScreen = () => {
@@ -97,10 +95,10 @@ const Actions = () => {
 
   return (
     <>
-      <Group header={<Header mode='secondary'>Действия</Header>}>
+      <Group header={<Header size='s'>Действия</Header>}>
         <CellButton
           Component='label'
-          after={<Switch getRef={switchRef} />}
+          after={<Switch slotProps={{ input: { getRootRef: switchRef } }} />}
           onChange={() => setIsSwitchChecked(!isSwitchChecked)}
           before={<Icon28IncognitoOutline />}
         >

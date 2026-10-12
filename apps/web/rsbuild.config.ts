@@ -4,6 +4,12 @@ import { pluginBasicSsl } from '@rsbuild/plugin-basic-ssl'
 import { pluginReact } from '@rsbuild/plugin-react'
 
 const { publicVars } = loadEnv({ prefixes: ['VITE_'] })
+const optionalPublicVars = {
+  'import.meta.env.VITE_DIARY_SOURCE': JSON.stringify('server'),
+  'import.meta.env.VITE_PRIVACY_POLICY_URL': JSON.stringify(''),
+  'import.meta.env.VITE_USER_AGREEMENT_URL': JSON.stringify(''),
+  'import.meta.env.VITE_PERSONAL_DATA_CONSENT_URL': JSON.stringify('')
+}
 
 export default defineConfig({
   plugins: [pluginReact(), pluginBasicSsl()],
@@ -19,8 +25,12 @@ export default defineConfig({
     template: './index.html'
   },
   source: {
-    define: publicVars,
+    define: { ...optionalPublicVars, ...publicVars },
     alias: {
+      '@runtime-api': path.resolve(
+        __dirname,
+        './src/shared/api/runtime/server.ts'
+      ),
       '@vkontakte/vkui$': '@vkontakte/vkui/dist/cssm',
       '@utils': path.resolve(__dirname, './src/utils'),
       '@types': path.resolve(__dirname, './src/types'),

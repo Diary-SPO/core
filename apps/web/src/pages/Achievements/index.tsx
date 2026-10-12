@@ -137,7 +137,7 @@ const Achievements: FC<Props> = ({ id }) => {
       <PanelHeaderWithBack title='Успеваемость' />
       <PullToRefresh onRefresh={() => fetchMarks(true)} isFetching={isLoading}>
         <VKUITabs mode='default'>
-          <HorizontalScroll arrowSize='l'>
+          <HorizontalScroll arrowSize='m'>
             {data.map((item) => (
               <TabsItem
                 aria-controls={item.type}
@@ -155,11 +155,11 @@ const Achievements: FC<Props> = ({ id }) => {
         </VKUITabs>
 
         {isLoading && <LoadingData />}
+
+        {!isLoading && !isError && <Suspense id='tab'>{activeTab}</Suspense>}
+
+        {isError && <ErrorPlaceholder />}
       </PullToRefresh>
-
-      {!isLoading && !isError && <Suspense id='tab'>{activeTab}</Suspense>}
-
-      {isError && <ErrorPlaceholder />}
 
       {snackbar}
       {rateSnackbar}

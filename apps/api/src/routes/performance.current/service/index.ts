@@ -7,14 +7,12 @@ import { savePerformance } from './save'
 export const getCurrPerformance = async (
   authData: ICacheData
 ): Promise<PerformanceCurrent> => {
-  const response = await getPerformanceCurrent(authData)
+  const result = await getPerformanceCurrent(authData)
 
-  if (!response.ok) {
+  if (!result) {
     // Возвращаем из базы
     return getPerformanceFromDB(authData)
   }
-
-  const result = await response.json()
 
   // Сохраняем в базе
   savePerformance(result, authData)

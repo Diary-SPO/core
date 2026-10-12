@@ -31,7 +31,7 @@ export const MarksByGroup: FC<IMarksByGroup> = ({ marksForSubject }) => {
     <Group
       className='tableWrapper'
       mode='plain'
-      header={<Header mode='tertiary'>Оценки по дисциплинам</Header>}
+      header={<Header size='m'>Оценки по дисциплинам</Header>}
     >
       {subjectMarksMatrix.map(({ subjectName, data }, i) => (
         <CardGrid key={i} size='l'>
@@ -43,7 +43,7 @@ export const MarksByGroup: FC<IMarksByGroup> = ({ marksForSubject }) => {
             </Div>
 
             <HorizontalScroll>
-              <MarksList marks={data} />
+              <MarksList marks={data} subjectName={subjectName} />
             </HorizontalScroll>
 
             <AverageMarkCell marks={data.flatMap((item) => item.marks)} />

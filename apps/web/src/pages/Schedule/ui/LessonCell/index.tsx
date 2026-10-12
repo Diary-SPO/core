@@ -2,7 +2,7 @@ import type { Gradebook, Lesson, Timetable } from '@diary-spo/shared'
 import { SimpleCell } from '@vkontakte/vkui'
 import type { FC } from 'react'
 
-import { isDistant, setDefaultMark } from '../../../../shared'
+import { formatClassroomLocation, setDefaultMark } from '../../../../shared'
 import { Mark } from '../../../../shared/ui'
 
 import LessonSubtitle from '../LessonSubtitle'
@@ -12,6 +12,7 @@ import './index.css'
 interface ILessonCell {
   lesson: Lesson
   lessonDate: Date
+  anchorId?: string
   handleLessonClick: (
     name: string,
     endTime: string,
@@ -24,6 +25,7 @@ interface ILessonCell {
 const LessonCell: FC<ILessonCell> = ({
   lessonDate,
   lesson,
+  anchorId,
   handleLessonClick
 }) => {
   const { name, endTime, startTime, timetable, gradebook } = lesson
@@ -33,11 +35,7 @@ const LessonCell: FC<ILessonCell> = ({
   }
 
   const lessonTime = startTime
-    ? `${startTime} — ${endTime}, каб. ${
-        isDistant(timetable?.classroom?.name)
-          ? 'ДО'
-          : timetable?.classroom?.name
-      }`
+    ? `${startTime} — ${endTime}, ${formatClassroomLocation(timetable?.classroom)}`
     : 'Нет данных'
 
   let teacherInfo = timetable?.teacher
@@ -50,12 +48,13 @@ const LessonCell: FC<ILessonCell> = ({
 
   return (
     <SimpleCell
+      id={anchorId}
       className='lesson'
       onClick={() =>
         handleLessonClick(name, endTime, startTime, timetable, gradebook)
       }
       key={startTime}
-      subhead={<div>{lessonTime}</div>}
+      overTitle={<div>{lessonTime}</div>}
       subtitle={
         <div>
           <div className='lessonSubtitle'>

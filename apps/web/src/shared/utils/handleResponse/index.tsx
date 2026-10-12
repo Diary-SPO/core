@@ -35,6 +35,8 @@ export const handleResponse = <T extends object>(
       title: 'Ошибка при попытке сделать запрос',
       subtitle: 'Сообщите нам о проблеме'
     })
+    loadingCallback?.(false)
+    return
   }
 
   /**

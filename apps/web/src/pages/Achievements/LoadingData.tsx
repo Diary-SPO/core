@@ -6,7 +6,7 @@ interface Props {
 }
 
 const LoadingData: FC<Props> = ({ text }) => (
-  <Group header={<Header mode='tertiary'>{text ?? 'Загрузка...'}</Header>}>
+  <Group header={<Header size='m'>{text ?? 'Загрузка...'}</Header>}>
     <Div>
       <Spinner />
     </Div>

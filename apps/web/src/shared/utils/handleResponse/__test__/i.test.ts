@@ -4,6 +4,22 @@ import { HTTP_STATUSES } from '../../../types.ts'
 import { handleResponse } from '../index.tsx'
 
 describe('handleResponse', () => {
+  it('should handle an empty response', () => {
+    const showSnackbarMock = jest.fn()
+    const loadingCallback = jest.fn()
+    const result = handleResponse(
+      undefined as never,
+      undefined,
+      undefined,
+      loadingCallback,
+      showSnackbarMock
+    )
+
+    expect(showSnackbarMock).toHaveBeenCalled()
+    expect(loadingCallback).toHaveBeenCalledWith(false)
+    expect(result).toBeUndefined()
+  })
+
   it('should handle non-Response input', () => {
     const mockData = { message: 'Success' }
     const loadingCallback = jest.fn()

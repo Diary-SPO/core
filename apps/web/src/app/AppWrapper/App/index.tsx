@@ -23,8 +23,10 @@ import {
   usePlatform
 } from '@vkontakte/vkui'
 import type { FC } from 'react'
-
+import { useEffect, useRef } from 'react'
+import { MODAL_PAGE_RECOMMEND_APP } from '../../../shared/config'
 import type { Pages } from '../../../shared/types.ts'
+import { shouldShowRecommendationPrompt } from '../../../shared/utils/recommendationPrompt'
 import {
   MAIN_SETTINGS,
   VIEW_MARKS,
@@ -32,13 +34,12 @@ import {
   VIEW_SCHEDULE,
   VIEW_SETTINGS
 } from '../../routes'
-import ModalRoot from './ModalRoot'
-
 import Epic from './Epic'
+import ModalRoot from './ModalRoot'
 
 const App: FC = () => {
   const routeNavigator = useRouteNavigator()
-  const { panel } = useActiveVkuiLocation()
+  const { panel, modal } = useActiveVkuiLocation()
   const { viewWidth } = useAdaptivityConditionalRender()
   const platform = usePlatform()
   const routerPopout = usePopout()
@@ -46,6 +47,21 @@ const App: FC = () => {
   const isVKCOM = platform === Platform.VKCOM
 
   const cookieValue = localStorage.getItem('token')
+  const recommendationPromptRequested = useRef(false)
+
+  useEffect(() => {
+    if (
+      !cookieValue ||
+      modal ||
+      recommendationPromptRequested.current ||
+      !shouldShowRecommendationPrompt()
+    ) {
+      return
+    }
+
+    recommendationPromptRequested.current = true
+    routeNavigator.showModal(MODAL_PAGE_RECOMMEND_APP)
+  }, [cookieValue, modal, routeNavigator])
 
   const onStoryChange = async (currentView: Pages) => {
     if (cookieValue) {
@@ -65,10 +81,8 @@ const App: FC = () => {
   return (
     <AppRoot safeAreaInsets={vkBridgeInsets}>
       <SplitLayout
-        popout={routerPopout}
-        modal={modals}
         header={!isVKCOM && <PanelHeader delimiter='none' />}
-        style={{ justifyContent: 'center' }}
+        slotProps={{ content: { style: { justifyContent: 'center' } } }}
       >
         {viewWidth.tabletPlus && panel !== MAIN_SETTINGS && (
           <SplitCol
@@ -115,6 +129,8 @@ const App: FC = () => {
         <SplitCol width='100%' maxWidth='700px' stretchedOnMobile autoSpaced>
           <Epic onStoryChange={onStoryChange} />
         </SplitCol>
+        {routerPopout}
+        {modals}
       </SplitLayout>
     </AppRoot>
   )

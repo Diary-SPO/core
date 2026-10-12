@@ -1,5 +1,3 @@
-import { t } from 'elysia'
-
 export type Headers = Record<string, string>
 
 export const BaseHeaders: Headers = {

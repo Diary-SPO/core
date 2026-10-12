@@ -2,7 +2,7 @@ import { PanelSpinner, ScreenSpinner, Spinner } from '@vkontakte/vkui'
 import { type FC, type ReactNode, Suspense as ReactSuspense } from 'react'
 
 interface ISpinner {
-  size?: 'small' | 'regular' | 'medium' | 'large'
+  size?: 's' | 'm' | 'l' | 'xl'
   mode?: 'panel' | 'screen' | 'default'
 }
 
@@ -16,7 +16,7 @@ const SpinnerWrapper: FC<ISpinner> = ({ size, mode }) => {
     case 'panel':
       return <PanelSpinner size={size} />
     case 'screen':
-      return <ScreenSpinner size={size} />
+      return <ScreenSpinner label='Загрузка' />
     default:
       return <Spinner size={size} />
   }
@@ -24,7 +24,7 @@ const SpinnerWrapper: FC<ISpinner> = ({ size, mode }) => {
 
 export const Suspense: FC<ISuspense> = ({
   children,
-  size = 'regular',
+  size = 'm',
   id,
   mode = 'panel'
 }) => (

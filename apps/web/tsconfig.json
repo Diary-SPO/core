@@ -23,6 +23,7 @@
 
     "baseUrl": ".",
     "paths": {
+      "@runtime-api": ["./src/shared/api/runtime/server.ts"],
       "@utils": ["./src/utils"],
       "@components": ["./src/components"],
       "@config": ["./src/config"],

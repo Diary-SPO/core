@@ -3,7 +3,6 @@ import { BLUE, GREEN, ORANGE, RED } from '../../config'
 export const colors = {
   red: {
     background: RED,
-    border: '1px solid red',
     color: 'white'
   },
   green: {
@@ -35,7 +34,6 @@ export const colors = {
   blue: {
     background: BLUE,
     borderRadius: '5px',
-    border: '1px solid #2c67f2',
     color: 'white'
   }
 }

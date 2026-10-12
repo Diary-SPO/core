@@ -1,9 +1,8 @@
-export { getAds } from './getAds.ts'
-
-export { getUserLessons } from './user/getLessons.ts'
-export { getFinalMarks } from './user/getFinalMarks.ts'
-export { getPerformance } from './user/getPerformance.ts'
-export { getAttestation } from './user/getAttestation.ts'
-
-export { postLogin } from './auth/postLogin.ts'
 export { getLogout } from './auth/getLogout.ts'
+export { postEsiaLogin } from './auth/postEsiaLogin.ts'
+export { postLogin } from './auth/postLogin.ts'
+export { getAds } from './getAds.ts'
+export { getAttestation } from './user/getAttestation.ts'
+export { getFinalMarks } from './user/getFinalMarks.ts'
+export { getUserLessons } from './user/getLessons.ts'
+export { getPerformance } from './user/getPerformance.ts'
