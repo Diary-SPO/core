@@ -2,7 +2,11 @@ import { useSyncExternalStore } from 'react'
 
 import { createStore } from '../store'
 
-export type LoginDiagnosticsReason = 'shape' | 'repeated' | 'network'
+export type LoginDiagnosticsReason =
+  | 'shape'
+  | 'repeated'
+  | 'network'
+  | 'session'
 
 interface LoginDiagnosticsState {
   reason: LoginDiagnosticsReason | null
@@ -10,6 +14,7 @@ interface LoginDiagnosticsState {
   detail: string | null
   login: string | null
   passwordHash: string | null
+  getPassword: (() => string) | null
 }
 
 const diagnosticsStore = createStore<LoginDiagnosticsState>({
@@ -18,7 +23,8 @@ const diagnosticsStore = createStore<LoginDiagnosticsState>({
     diaryUrl: '',
     detail: null,
     login: null,
-    passwordHash: null
+    passwordHash: null,
+    getPassword: null
   }
 })
 
@@ -39,7 +45,8 @@ export const useLoginDiagnostics = () => {
         reason: null,
         detail: null,
         login: null,
-        passwordHash: null
+        passwordHash: null,
+        getPassword: null
       })
   }
 }

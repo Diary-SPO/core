@@ -1,7 +1,10 @@
+import type { ResponseLogin } from '@diary-spo/shared'
 import { client } from '../client.ts'
 import type {
+  ApiResponse,
   BackgroundGradeNotifications,
   DiaryApi,
+  RegionSearchResult,
   ShareContentOptions
 } from './types.ts'
 
@@ -35,11 +38,36 @@ export const isVpnActive = async (): Promise<{
 export const findWorkingRegion = async (
   _login: string,
   _passwordHash: string,
-  _regionUrls: string[]
-): Promise<{
-  regionUrl: string | null
-  supported: boolean
-}> => ({ regionUrl: null, supported: false })
+  _regionUrls: string[],
+  _onProgress?: (checked: number, total: number) => void,
+  _excludeUrl?: string
+): Promise<RegionSearchResult> => ({
+  regionUrl: null,
+  supported: false,
+  checked: 0,
+  results: []
+})
+
+// В web-сборке секреты не храним, перелогин недоступен.
+export const hasSavedCredentials = async (): Promise<boolean> => false
+
+export const getSavedAccount = async (): Promise<{
+  login: string
+  diaryUrl: string
+} | null> => null
+
+export const clearSavedCredentials = async (): Promise<void> => {}
+
+export const reloginWithSavedCredentials = async (): Promise<
+  ApiResponse<ResponseLogin>
+> => ({
+  data: null as unknown as ResponseLogin,
+  error: {
+    status: 501,
+    value: new Error('Saved credentials are not supported in the web build')
+  },
+  status: 501
+})
 
 export const diaryApi: DiaryApi = {
   login: (login, password, isHash) =>

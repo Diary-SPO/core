@@ -1,4 +1,3 @@
-import { b64 } from '@diary-spo/crypto'
 import {
   Icon16Dropdown,
   Icon24PlaceOutline,
@@ -19,8 +18,10 @@ import {
 import {
   type ChangeEvent,
   type FC,
+  useCallback,
   useLayoutEffect,
   useMemo,
+  useRef,
   useState
 } from 'react'
 
@@ -48,7 +49,7 @@ import {
   bumpLoginFailCount,
   resetLoginFailCount
 } from './diagnostics/failCounter'
-import { loginPattern, saveData } from './helpers'
+import { hashPassword, loginPattern, saveData } from './helpers'
 
 import './index.css'
 
@@ -59,6 +60,9 @@ const LoginForm: FC<Props> = ({ id }) => {
   const [password, setPassword] = useState<string>('')
   const [isDataInvalid, setIsDataInvalid] = useState<boolean>(false)
   const [isLoading, setIsLoading] = useState<boolean>(false)
+
+  const passwordRef = useRef('')
+  const getPassword = useCallback(() => passwordRef.current, [])
 
   const { selectedUrl: diaryUrl } = useDiaryRegion()
   const { openDiagnostics } = useLoginDiagnostics()
@@ -106,6 +110,7 @@ const LoginForm: FC<Props> = ({ id }) => {
     setIsDataInvalid(false)
     setIsLoading(false)
 
+    if (name === 'password') passwordRef.current = value
     setStateAction?.(value)
   }
 
@@ -144,7 +149,8 @@ const LoginForm: FC<Props> = ({ id }) => {
     const fails = bumpLoginFailCount()
     const credentials = {
       login,
-      passwordHash: passwordHash ?? null
+      passwordHash: passwordHash ?? null,
+      getPassword
     }
     if (status === 502 && message?.startsWith('Login response')) {
       openDiagnostics({
@@ -187,9 +193,7 @@ const LoginForm: FC<Props> = ({ id }) => {
       return
     }
 
-    const passwordHashed = await b64(
-      password === 'tr206711' ? 'df58980e' : password
-    )
+    const passwordHashed = await hashPassword(password)
 
     saveLegalAcceptance()
 

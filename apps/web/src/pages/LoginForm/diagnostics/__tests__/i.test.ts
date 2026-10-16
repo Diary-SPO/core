@@ -58,4 +58,17 @@ describe('buildSupportReport', () => {
     expect(report).toContain('Подключение к интернету')
     expect(report).not.toContain('tr206711')
   })
+
+  test('отчёт о протухшей сессии без слов про вход', () => {
+    const report = buildSupportReport({
+      reason: 'session',
+      diaryUrl: 'https://poo.tomedu.ru',
+      detail: 'Сессия дневника истекла',
+      steps: [],
+      region: null
+    })
+
+    expect(report).toContain('Выкинуло')
+    expect(report).not.toContain('Не получается войти')
+  })
 })

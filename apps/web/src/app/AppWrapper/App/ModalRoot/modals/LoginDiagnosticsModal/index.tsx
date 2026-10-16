@@ -55,8 +55,15 @@ const stepIcon = (status: DiagnosticStepResult['status']) => {
 
 const LoginDiagnosticsModal = ({ id }: { id: string }) => {
   const routeNavigator = useRouteNavigator()
-  const { reason, diaryUrl, detail, login, passwordHash, closeDiagnostics } =
-    useLoginDiagnostics()
+  const {
+    reason,
+    diaryUrl,
+    detail,
+    login,
+    passwordHash,
+    getPassword,
+    closeDiagnostics
+  } = useLoginDiagnostics()
   const { selectRegion } = useDiaryRegion()
 
   const [phase, setPhase] = useState<'idle' | 'running' | 'done'>('idle')
@@ -66,6 +73,7 @@ const LoginDiagnosticsModal = ({ id }: { id: string }) => {
   const [copied, setCopied] = useState(false)
   const [reloginWorking, setReloginWorking] = useState(false)
   const [reloginError, setReloginError] = useState<string | null>(null)
+  const [regionProgress, setRegionProgress] = useState<string | null>(null)
   const startedFor = useRef<LoginDiagnosticsReason | null>(null)
 
   const close = async () => {
@@ -79,10 +87,18 @@ const LoginDiagnosticsModal = ({ id }: { id: string }) => {
     setRegion(null)
     setCopied(false)
     setReloginError(null)
+    setRegionProgress(null)
     let done = 0
     setCurrentLabel(DIAGNOSTIC_STEP_LABELS[0])
     const { steps: finished, region: probe } = await runLoginDiagnostics(
-      { diaryUrl, login, passwordHash },
+      {
+        diaryUrl,
+        login,
+        passwordHash,
+        getPassword,
+        onRegionProgress: (checked, total) =>
+          setRegionProgress(`${checked}/${total}`)
+      },
       (step) => {
         done += 1
         setSteps((prev) => [...prev, step])
@@ -103,6 +119,7 @@ const LoginDiagnosticsModal = ({ id }: { id: string }) => {
       setRegion(null)
       setCurrentLabel(null)
       setReloginError(null)
+      setRegionProgress(null)
       return
     }
     if (reason === 'repeated' || startedFor.current === reason) return
@@ -178,7 +195,9 @@ const LoginDiagnosticsModal = ({ id }: { id: string }) => {
 
   return (
     <ModalPage id={id} size={520} dynamicContentHeight>
-      <ModalPageHeader>Не получается войти</ModalPageHeader>
+      <ModalPageHeader>
+        {reason === 'session' ? 'Сессия истекла' : 'Не получается войти'}
+      </ModalPageHeader>
       {reason === 'repeated' && phase !== 'done' && (
         <Group>
           <Div>
@@ -267,7 +286,11 @@ const LoginDiagnosticsModal = ({ id }: { id: string }) => {
           {phase === 'running' && currentLabel && (
             <SimpleCell
               before={<Spinner size='m' />}
-              subtitle='Проверяю…'
+              subtitle={
+                currentLabel === DIAGNOSTIC_STEP_LABELS[4] && regionProgress
+                  ? `Проверено ${regionProgress}`
+                  : 'Проверяю…'
+              }
               multiline
             >
               {currentLabel}

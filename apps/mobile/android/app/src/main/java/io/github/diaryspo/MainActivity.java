@@ -10,6 +10,7 @@ public class MainActivity extends BridgeActivity {
     protected void onCreate(Bundle savedInstanceState) {
         registerPlugin(DiaryCookiesPlugin.class);
         registerPlugin(DiaryNetworkPlugin.class);
+        registerPlugin(DiaryCredentialsPlugin.class);
         super.onCreate(savedInstanceState);
 
         getOnBackPressedDispatcher().addCallback(

@@ -7,7 +7,16 @@ export const SUPPORT_URL = 'https://vk.me/diary_spo'
 const REASON_TEXT: Record<LoginDiagnosticsReason, string> = {
   shape: 'дневник ответил, но приложение не разобрало ответ',
   repeated: 'несколько неудачных попыток входа подряд',
-  network: 'ошибка сети или сервера дневника'
+  network: 'ошибка сети или сервера дневника',
+  session: 'сессия дневника истекла'
+}
+
+const GREETING_TEXT: Record<LoginDiagnosticsReason, string> = {
+  shape: 'Здравствуйте! Не получается войти в «Дневник СПО».',
+  repeated: 'Здравствуйте! Не получается войти в «Дневник СПО».',
+  network: 'Здравствуйте! Не получается войти в «Дневник СПО».',
+  session:
+    'Здравствуйте! Выкинуло из «Дневника СПО» прямо во время пользования.'
 }
 
 const STEP_MARK = { ok: '✓', warn: '!', fail: '✗' } as const
@@ -20,7 +29,7 @@ export const buildSupportReport = (args: {
   region: RegionProbe | null
 }): string => {
   const lines = [
-    'Здравствуйте! Не получается войти в «Дневник СПО».',
+    GREETING_TEXT[args.reason],
     `Регион: ${getDiaryDomain(args.diaryUrl)}`,
     `Причина: ${REASON_TEXT[args.reason]}.`
   ]
@@ -35,6 +44,19 @@ export const buildSupportReport = (args: {
     lines.push(
       `Подошёл регион: ${args.region.foundName} (${args.region.foundUrl})`
     )
+  }
+  if (args.region && args.region.results.length > 0) {
+    lines.push('По регионам:')
+    for (const result of args.region.results) {
+      const domain = result.url.replace(/^https?:\/\//, '')
+      const outcome =
+        result.result === 'ok'
+          ? 'вход'
+          : result.result === 'denied'
+            ? `отказ ${result.status ?? ''}`.trim()
+            : 'недоступно'
+      lines.push(`- ${domain}: ${outcome}`)
+    }
   }
   lines.push(`Источник: ${DIARY_SOURCE}`, `Время: ${new Date().toISOString()}`)
   return lines.join('\n')

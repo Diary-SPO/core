@@ -23,6 +23,8 @@ import type { ResponseLogin } from '@diary-spo/shared'
 import type {
   ApiResponse,
   DiaryApi,
+  RegionProbeResult,
+  RegionSearchResult,
   ShareContentOptions
 } from '../../web/src/shared/api/runtime/types.ts'
 import {
@@ -116,64 +118,93 @@ const withTimeout = <T>(promise: Promise<T>, ms: number): Promise<T> =>
     )
   ])
 
-// Поиск региона перебором: вход без сохранения сессии и куки.
+// Поиск региона перебором настоящим входом: как ручной, только по списку.
 export const findWorkingRegion = async (
   login: string,
   passwordHash: string,
-  regionUrls: string[]
-): Promise<{ regionUrl: string | null; supported: boolean }> => {
-  const tryRegion = async (baseUrl: string): Promise<boolean> => {
-    const transport: DiaryHttpTransport = {
-      async request<T>({ method, url, headers, body }: DiaryHttpRequest) {
-        const response = await CapacitorHttp.request({
-          method,
-          url,
-          headers,
-          data: body,
-          connectTimeout,
-          readTimeout
-        })
-        return {
-          data: response.data as T,
-          status: response.status,
-          headers: response.headers
-        }
-      }
-    }
+  regionUrls: string[],
+  onProgress?: (checked: number, total: number) => void,
+  excludeUrl?: string
+): Promise<RegionSearchResult> => {
+  // Исключаем текущий выбранный регион: там только что не вышло.
+  // activeBaseUrl для этого не годится - в нём может лежать прошлая сессия.
+  const excluded = (() => {
     try {
-      await withTimeout(
-        new DiaryClient(baseUrl, transport).login({
-          login,
-          password: passwordHash
-        }),
-        10000
-      )
-      return true
+      return normalizeBaseUrl(excludeUrl || activeBaseUrl)
     } catch {
-      return false
+      return activeBaseUrl
     }
-  }
-
+  })()
   const queue = regionUrls.filter((url) => {
     try {
-      return normalizeBaseUrl(url) !== activeBaseUrl
+      return normalizeBaseUrl(url) !== excluded
     } catch {
       return false
     }
   })
-  let found: string | null = null
-  let index = 0
-  const workers = Array.from(
-    { length: Math.min(4, queue.length) },
-    async () => {
-      while (!found && index < queue.length) {
-        const url = queue[index++]
-        if (await tryRegion(url)) found = url
+  const results: RegionProbeResult[] = []
+  const pushResult = (probe: RegionProbeResult) => {
+    results.push(probe)
+    onProgress?.(results.length, queue.length)
+  }
+
+  // Кто вообще жив: быстро и параллельно, медленные - вторым кругом.
+  const alive: string[] = []
+  const slow: string[] = []
+  {
+    let index = 0
+    const workers = Array.from(
+      { length: Math.min(4, queue.length) },
+      async () => {
+        while (index < queue.length) {
+          const url = queue[index++]
+          try {
+            const response = await withTimeout(
+              CapacitorHttp.request({
+                method: 'GET',
+                url: `${normalizeBaseUrl(url)}/services/security/esia-settings`,
+                connectTimeout,
+                readTimeout
+              }),
+              6000
+            )
+            ;(response.status < 500 ? alive : slow).push(url)
+          } catch {
+            slow.push(url)
+          }
+        }
       }
+    )
+    await Promise.all(workers)
+  }
+
+  // Чужие куки в чужой регион не везём.
+  const savedCookie = getStoredCookie()
+  localStorage.removeItem(cookieStorageKey)
+  let found: string | null = null
+  try {
+    // Сначала живые, потом притормаживающие - тоже настоящим входом.
+    for (const url of [...alive, ...slow]) {
+      const response = await diaryApi.login(login, passwordHash, true, url)
+      if (response.error === null) {
+        console.log('[region-probe] hit', url)
+        found = url
+        pushResult({ url, result: 'ok', status: response.status })
+        break
+      }
+      console.log('[region-probe] miss', url, response.status)
+      pushResult({
+        url,
+        result: response.status === 401 ? 'denied' : 'unreachable',
+        status: response.status
+      })
     }
-  )
-  await Promise.all(workers)
-  return { regionUrl: found, supported: true }
+  } finally {
+    if (!found && savedCookie) {
+      localStorage.setItem(cookieStorageKey, savedCookie)
+    }
+  }
+  return { regionUrl: found, supported: true, checked: queue.length, results }
 }
 
 export const shareContent = async (

@@ -2,6 +2,7 @@
 # Переменные окружения: ADB (путь к adb)
 
 set shell := ["bash", "-cu"]
+set dotenv-load := true
 
 app_id := "io.github.diaryspo"
 sdk := env_var_or_default("ANDROID_SDK_ROOT", home_directory() / "Android" / "Sdk")
@@ -69,6 +70,10 @@ open-android:
     cd apps/mobile && bun run open:android
 
 # -- adb ----------------------------------------------
+# Выбор устройства: ANDROID_SERIAL=192.168.1.60:43137 just install-release
+
+serial := env_var_or_default("ANDROID_SERIAL", "")
+target := if serial != "" { "-s " + serial } else { "" }
 
 # Подключённые устройства
 devices:
@@ -95,21 +100,21 @@ avds:
 # Запустить эмулятор и дождаться загрузки
 emulator avd="Diary_API_36":
     setsid nohup {{ sdk }}/emulator/emulator -avd {{ avd }} > /tmp/opencode/emulator.log 2>&1 < /dev/null &
-    {{ adb }} wait-for-device
-    {{ adb }} shell 'while [ -z "$(getprop sys.boot_completed)" ]; do sleep 2; done; echo booted'
-    {{ adb }} shell wm density 280
+    {{ adb }} {{ target }} wait-for-device
+    {{ adb }} {{ target }} shell 'while [ -z "$(getprop sys.boot_completed)" ]; do sleep 2; done; echo booted'
+    {{ adb }} {{ target }} shell wm density 280
 
 # Установить debug APK
 install-debug apk=apk_debug:
-    {{ adb }} install -r {{ apk }}
+    {{ adb }} {{ target }} install -r {{ apk }}
 
 # Установить release APK
 install-release apk=apk_release:
-    {{ adb }} install -r {{ apk }}
+    {{ adb }} {{ target }} install -r {{ apk }}
 
 # Запустить приложение
 run:
-    {{ adb }} shell monkey -p {{ app_id }} -c android.intent.category.LAUNCHER 1
+    {{ adb }} {{ target }} shell monkey -p {{ app_id }} -c android.intent.category.LAUNCHER 1
 
 # Собрать release, установить и запустить
 ship-release metric="" source="github" suffix="":
@@ -119,15 +124,15 @@ ship-release metric="" source="github" suffix="":
 
 # Логи приложения
 logs:
-    {{ adb }} logcat -v time
+    {{ adb }} {{ target }} logcat -v time
 
 # Очистить буфер логов
 log-clear:
-    {{ adb }} logcat -c
+    {{ adb }} {{ target }} logcat -c
 
 # Удалить приложение
 uninstall:
-    {{ adb }} uninstall {{ app_id }}
+    {{ adb }} {{ target }} uninstall {{ app_id }}
 
 # -- качество -----------------------------------------
 

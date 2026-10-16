@@ -1,4 +1,6 @@
+import { b64 } from '@diary-spo/crypto'
 import { findWorkingRegion, isVpnActive } from '@runtime-api'
+import type { RegionProbeResult } from '../../../shared/api/runtime/types.ts'
 
 import { DIARY_REGIONS, getDiaryDomain } from '../../../shared/config'
 
@@ -15,12 +17,15 @@ export interface RegionProbe {
   checked: boolean
   foundUrl: string | null
   foundName: string | null
+  results: RegionProbeResult[]
 }
 
 export interface DiagnosticsInput {
   diaryUrl: string
   login?: string | null
   passwordHash?: string | null
+  getPassword?: (() => string) | null
+  onRegionProgress?: (checked: number, total: number) => void
 }
 
 export const DIAGNOSTIC_STEP_LABELS = [
@@ -122,8 +127,18 @@ const probeRegion = async (
   diaryOk: boolean
 ): Promise<{ step: DiagnosticStepResult; probe: RegionProbe }> => {
   const base = { id: 'region' as const, label: 'Поиск вашего региона' }
-  const idle: RegionProbe = { checked: false, foundUrl: null, foundName: null }
-  if (!input.login || !input.passwordHash) {
+  const idle: RegionProbe = {
+    checked: false,
+    foundUrl: null,
+    foundName: null,
+    results: []
+  }
+  // Пароль - только из поля ввода, никаких запомненных хешей.
+  const freshPassword = input.getPassword?.() ?? ''
+  const hash = freshPassword
+    ? await b64(freshPassword)
+    : (input.passwordHash ?? null)
+  if (!input.login || !hash) {
     return {
       step: {
         ...base,
@@ -143,10 +158,27 @@ const probeRegion = async (
       probe: idle
     }
   }
-  const { regionUrl, supported } = await findWorkingRegion(
+  return searchRegionAccount(
     input.login,
-    input.passwordHash,
-    DIARY_REGIONS.map((region) => region.url)
+    hash,
+    input.diaryUrl,
+    input.onRegionProgress
+  )
+}
+
+export const searchRegionAccount = async (
+  login: string,
+  passwordHash: string,
+  diaryUrl: string,
+  onProgress?: (checked: number, total: number) => void
+): Promise<{ step: DiagnosticStepResult; probe: RegionProbe }> => {
+  const base = { id: 'region' as const, label: 'Поиск вашего региона' }
+  const { regionUrl, supported, checked, results } = await findWorkingRegion(
+    login,
+    passwordHash,
+    DIARY_REGIONS.map((region) => region.url),
+    onProgress,
+    diaryUrl
   )
   if (!supported) {
     return {
@@ -155,17 +187,28 @@ const probeRegion = async (
         status: 'ok',
         detail: 'Пропущен — доступно только в приложении'
       },
-      probe: idle
+      probe: { checked: false, foundUrl: null, foundName: null, results: [] }
     }
   }
   if (!regionUrl) {
+    const denied = results.filter((result) => result.result === 'denied').length
+    const unreachable = results.filter(
+      (result) => result.result === 'unreachable'
+    )
+    const unreachableDomains = unreachable
+      .slice(0, 5)
+      .map((result) => getDiaryDomain(result.url))
+      .join(', ')
     return {
       step: {
         ...base,
         status: 'warn',
-        detail: 'В других регионах вход не прошёл'
+        detail:
+          `В других регионах вход не прошёл (проверено ${checked}): ` +
+          `отказ ${denied}, недоступно ${unreachable.length}` +
+          (unreachableDomains ? ` (${unreachableDomains})` : '')
       },
-      probe: { checked: true, foundUrl: null, foundName: null }
+      probe: { checked: true, foundUrl: null, foundName: null, results }
     }
   }
   const found = DIARY_REGIONS.find((region) => region.url === regionUrl)
@@ -178,7 +221,8 @@ const probeRegion = async (
     probe: {
       checked: true,
       foundUrl: regionUrl,
-      foundName: found?.name ?? getDiaryDomain(regionUrl)
+      foundName: found?.name ?? getDiaryDomain(regionUrl),
+      results
     }
   }
 }
