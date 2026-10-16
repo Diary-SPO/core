@@ -1,5 +1,10 @@
 import type { PluginListenerHandle } from '@capacitor/core'
-import { CapacitorCookies, CapacitorHttp } from '@capacitor/core'
+import {
+  Capacitor,
+  CapacitorCookies,
+  CapacitorHttp,
+  registerPlugin
+} from '@capacitor/core'
 import {
   DefaultAndroidWebViewOptions,
   DefaultWebViewOptions,
@@ -27,6 +32,91 @@ import {
 import { getDiaryCookies, setDiaryCookie } from './diary-cookies.ts'
 
 export { backgroundGradeNotifications }
+
+interface DiaryNetworkPlugin {
+  isVpnActive(): Promise<{ active: boolean }>
+}
+
+const diaryNetwork = registerPlugin<DiaryNetworkPlugin>('DiaryNetwork')
+
+export const isVpnActive = async (): Promise<{
+  active: boolean
+  supported: boolean
+}> => {
+  if (!Capacitor.isNativePlatform()) return { active: false, supported: false }
+  try {
+    const { active } = await diaryNetwork.isVpnActive()
+    return { active, supported: true }
+  } catch {
+    return { active: false, supported: false }
+  }
+}
+
+const withTimeout = <T>(promise: Promise<T>, ms: number): Promise<T> =>
+  Promise.race([
+    promise,
+    new Promise<T>((_, reject) =>
+      setTimeout(() => reject(new Error('Region probe timed out')), ms)
+    )
+  ])
+
+// Поиск региона перебором: вход без сохранения сессии и куки.
+export const findWorkingRegion = async (
+  login: string,
+  passwordHash: string,
+  regionUrls: string[]
+): Promise<{ regionUrl: string | null; supported: boolean }> => {
+  const tryRegion = async (baseUrl: string): Promise<boolean> => {
+    const transport: DiaryHttpTransport = {
+      async request<T>({ method, url, headers, body }: DiaryHttpRequest) {
+        const response = await CapacitorHttp.request({
+          method,
+          url,
+          headers,
+          data: body
+        })
+        return {
+          data: response.data as T,
+          status: response.status,
+          headers: response.headers
+        }
+      }
+    }
+    try {
+      await withTimeout(
+        new DiaryClient(baseUrl, transport).login({
+          login,
+          password: passwordHash
+        }),
+        10000
+      )
+      return true
+    } catch {
+      return false
+    }
+  }
+
+  const queue = regionUrls.filter((url) => {
+    try {
+      return normalizeBaseUrl(url) !== activeBaseUrl
+    } catch {
+      return false
+    }
+  })
+  let found: string | null = null
+  let index = 0
+  const workers = Array.from(
+    { length: Math.min(4, queue.length) },
+    async () => {
+      while (!found && index < queue.length) {
+        const url = queue[index++]
+        if (await tryRegion(url)) found = url
+      }
+    }
+  )
+  await Promise.all(workers)
+  return { regionUrl: found, supported: true }
+}
 
 export const shareContent = async (
   options: ShareContentOptions

@@ -74,6 +74,20 @@ open-android:
 devices:
     {{ adb }} devices
 
+# Спарить телефон по Wi-Fi отладке и сразу подключить
+# Пример: just wconnect 192.168.1.5:37077 123456 192.168.1.5:39509
+# (первые два значения с экрана «Подключить с помощью кода»,
+# третье - порт со строки «Беспроводная отладка», можно опустить)
+wconnect pair_addr code connect_addr="":
+    {{ adb }} pair {{ pair_addr }} {{ code }}
+    {{ if connect_addr != "" { adb + " connect " + connect_addr } else { "echo 'Спарено. Возьми порт со строки Беспроводная отладка и выполни: just wconnect2 IP:порт'" } }}
+    {{ adb }} devices
+
+# Подключиться к уже спаренному телефону: just wconnect2 192.168.1.5:39509
+wconnect2 addr:
+    {{ adb }} connect {{ addr }}
+    {{ adb }} devices
+
 # Список эмуляторов
 avds:
     {{ sdk }}/emulator/emulator -list-avds

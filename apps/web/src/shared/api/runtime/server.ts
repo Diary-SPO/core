@@ -26,6 +26,21 @@ export const shareContent = async (
   return true
 }
 
+// В web-сборке нативного детекта VPN нет, регион один и задан сервером.
+export const isVpnActive = async (): Promise<{
+  active: boolean
+  supported: boolean
+}> => ({ active: false, supported: false })
+
+export const findWorkingRegion = async (
+  _login: string,
+  _passwordHash: string,
+  _regionUrls: string[]
+): Promise<{
+  regionUrl: string | null
+  supported: boolean
+}> => ({ regionUrl: null, supported: false })
+
 export const diaryApi: DiaryApi = {
   login: (login, password, isHash) =>
     client.auth.login.post({ login, password, isHash }) as ReturnType<
