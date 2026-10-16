@@ -1,4 +1,8 @@
 import {
+  clearSavedCredentials,
+  reloginWithSavedCredentials
+} from '@runtime-api'
+import {
   type LoginDiagnosticsReason,
   useDiaryRegion,
   useLoginDiagnostics
@@ -39,6 +43,8 @@ import {
   openSupportChat,
   SUPPORT_URL
 } from '../../../../../../pages/LoginForm/diagnostics/support'
+import { saveData } from '../../../../../../pages/LoginForm/helpers'
+import { clearAuthData, isApiError } from '../../../../../../shared'
 import { getDiaryDomain } from '../../../../../../shared/config'
 
 const stepIcon = (status: DiagnosticStepResult['status']) => {
@@ -58,6 +64,8 @@ const LoginDiagnosticsModal = ({ id }: { id: string }) => {
   const [region, setRegion] = useState<RegionProbe | null>(null)
   const [currentLabel, setCurrentLabel] = useState<string | null>(null)
   const [copied, setCopied] = useState(false)
+  const [reloginWorking, setReloginWorking] = useState(false)
+  const [reloginError, setReloginError] = useState<string | null>(null)
   const startedFor = useRef<LoginDiagnosticsReason | null>(null)
 
   const close = async () => {
@@ -70,6 +78,7 @@ const LoginDiagnosticsModal = ({ id }: { id: string }) => {
     setSteps([])
     setRegion(null)
     setCopied(false)
+    setReloginError(null)
     let done = 0
     setCurrentLabel(DIAGNOSTIC_STEP_LABELS[0])
     const { steps: finished, region: probe } = await runLoginDiagnostics(
@@ -93,6 +102,7 @@ const LoginDiagnosticsModal = ({ id }: { id: string }) => {
       setSteps([])
       setRegion(null)
       setCurrentLabel(null)
+      setReloginError(null)
       return
     }
     if (reason === 'repeated' || startedFor.current === reason) return
@@ -124,6 +134,39 @@ const LoginDiagnosticsModal = ({ id }: { id: string }) => {
     selectRegion(region.foundUrl)
     resetLoginFailCount()
     await close()
+  }
+
+  const relogin = async () => {
+    if (reloginWorking) return
+    setReloginWorking(true)
+    setReloginError(null)
+    try {
+      const response = await reloginWithSavedCredentials()
+      if (isApiError(response)) {
+        if (response.status === 401) {
+          // Сохранённый пароль больше не подходит - выходим по-настоящему.
+          await clearSavedCredentials()
+          clearAuthData()
+          await close()
+          await routeNavigator.replace('/')
+          return
+        }
+        setReloginError('Не вышло, попробуйте позже')
+        return
+      }
+      if (!response.data?.token) {
+        setReloginError('Дневник ответил пустым, попробуйте позже')
+        return
+      }
+      selectRegion(diaryUrl)
+      saveData(response.data)
+      resetLoginFailCount()
+      window.location.reload()
+    } catch {
+      setReloginError('Не вышло, попробуйте позже')
+    } finally {
+      setReloginWorking(false)
+    }
   }
 
   const openDiaryInBrowser = () => {
@@ -216,12 +259,17 @@ const LoginDiagnosticsModal = ({ id }: { id: string }) => {
               key={step.id}
               before={stepIcon(step.status)}
               subtitle={step.detail}
+              multiline
             >
               {step.label}
             </SimpleCell>
           ))}
           {phase === 'running' && currentLabel && (
-            <SimpleCell before={<Spinner size='m' />} subtitle='Проверяю…'>
+            <SimpleCell
+              before={<Spinner size='m' />}
+              subtitle='Проверяю…'
+              multiline
+            >
               {currentLabel}
             </SimpleCell>
           )}
@@ -237,13 +285,20 @@ const LoginDiagnosticsModal = ({ id }: { id: string }) => {
               ) : (
                 <Div>
                   <Text>
-                    {reason === 'shape'
-                      ? 'Дневник ответил, но прислал данные, которые приложение не смогло разобрать. Это наша сторона — напишите нам, приложим исправление.'
-                      : failed.length > 0
-                        ? 'Нашли вероятную причину выше. Если дневник лежит — подождите и попробуйте позже, если всё зелёное — проверьте логин, пароль и регион.'
-                        : 'Явной причины не нашли. Попробуйте войти через браузер — если там получается, напишите нам с отчётом ниже.'}
+                    {reason === 'session' && failed.length === 0
+                      ? `Сессия дневника истекла, но всё остальное в порядке${login ? ` — можно войти заново как ${login}, пароль вводить не нужно` : ''}.`
+                      : reason === 'shape'
+                        ? 'Дневник ответил, но прислал данные, которые приложение не смогло разобрать. Это наша сторона — напишите нам, приложим исправление.'
+                        : failed.length > 0
+                          ? 'Нашли вероятную причину выше. Если дневник лежит — подождите и попробуйте позже, если всё зелёное — проверьте логин, пароль и регион.'
+                          : 'Явной причины не нашли. Попробуйте войти через браузер — если там получается, напишите нам с отчётом ниже.'}
                     {detail ? ` (${detail})` : ''}
                   </Text>
+                </Div>
+              )}
+              {reloginError && (
+                <Div>
+                  <Text>{reloginError}</Text>
                 </Div>
               )}
               <Div>
@@ -255,6 +310,18 @@ const LoginDiagnosticsModal = ({ id }: { id: string }) => {
                       onClick={() => void switchRegion()}
                     >
                       Переключить на {region.foundName}
+                    </Button>
+                  )}
+                  {reason === 'session' && login && failed.length === 0 && (
+                    <Button
+                      size='l'
+                      stretched
+                      disabled={reloginWorking}
+                      onClick={() => void relogin()}
+                    >
+                      {reloginWorking
+                        ? 'Вхожу заново…'
+                        : `Войти заново как ${login}`}
                     </Button>
                   )}
                   <Button
