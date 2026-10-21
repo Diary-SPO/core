@@ -24,6 +24,7 @@ import {
 } from '@vkontakte/vkui'
 import type { FC } from 'react'
 import { useEffect, useRef } from 'react'
+import { hasAuthData } from '../../../shared'
 import { MODAL_PAGE_RECOMMEND_APP } from '../../../shared/config'
 import type { Pages } from '../../../shared/types.ts'
 import { shouldShowRecommendationPrompt } from '../../../shared/utils/recommendationPrompt'
@@ -36,6 +37,7 @@ import {
 } from '../../routes'
 import Epic from './Epic'
 import ModalRoot from './ModalRoot'
+import SessionGuardian from './SessionGuardian'
 
 const App: FC = () => {
   const routeNavigator = useRouteNavigator()
@@ -64,7 +66,8 @@ const App: FC = () => {
   }, [cookieValue, modal, routeNavigator])
 
   const onStoryChange = async (currentView: Pages) => {
-    if (cookieValue) {
+    // cookieValue выше - слепок на момент рендера, после выхода он врёт.
+    if (hasAuthData()) {
       try {
         await routeNavigator.push(`/${currentView}`)
         return
@@ -80,6 +83,7 @@ const App: FC = () => {
 
   return (
     <AppRoot safeAreaInsets={vkBridgeInsets}>
+      <SessionGuardian />
       <SplitLayout
         header={!isVKCOM && <PanelHeader delimiter='none' />}
         slotProps={{ content: { style: { justifyContent: 'center' } } }}

@@ -1,5 +1,10 @@
 import type { PluginListenerHandle } from '@capacitor/core'
-import { CapacitorCookies, CapacitorHttp } from '@capacitor/core'
+import {
+  Capacitor,
+  CapacitorCookies,
+  CapacitorHttp,
+  registerPlugin
+} from '@capacitor/core'
 import {
   DefaultAndroidWebViewOptions,
   DefaultWebViewOptions,
@@ -14,9 +19,12 @@ import {
   extractAuthCookie,
   mergeAuthCookies
 } from '@diary-spo/diary-client'
+import type { ResponseLogin } from '@diary-spo/shared'
 import type {
   ApiResponse,
   DiaryApi,
+  RegionProbeResult,
+  RegionSearchResult,
   ShareContentOptions
 } from '../../web/src/shared/api/runtime/types.ts'
 import {
@@ -27,6 +35,177 @@ import {
 import { getDiaryCookies, setDiaryCookie } from './diary-cookies.ts'
 
 export { backgroundGradeNotifications }
+
+const connectTimeout = 15000
+const readTimeout = 20000
+
+interface DiaryNetworkPlugin {
+  isVpnActive(): Promise<{ active: boolean }>
+}
+
+const diaryNetwork = registerPlugin<DiaryNetworkPlugin>('DiaryNetwork')
+
+interface DiaryCredentialsPlugin {
+  saveCredentials(options: {
+    login: string
+    password: string
+    diaryUrl: string
+  }): Promise<void>
+  getCredentials(): Promise<{
+    login: string
+    password: string
+    diaryUrl: string
+  }>
+  clearCredentials(): Promise<void>
+}
+
+const diaryCredentials =
+  registerPlugin<DiaryCredentialsPlugin>('DiaryCredentials')
+
+const readCredentials = async (): Promise<{
+  login: string
+  password: string
+  diaryUrl: string
+} | null> => {
+  if (!Capacitor.isNativePlatform()) return null
+  try {
+    return await diaryCredentials.getCredentials()
+  } catch {
+    return null
+  }
+}
+
+export const hasSavedCredentials = async (): Promise<boolean> =>
+  (await readCredentials()) !== null
+
+export const getSavedAccount = async (): Promise<{
+  login: string
+  diaryUrl: string
+} | null> => {
+  const credentials = await readCredentials()
+  return credentials
+    ? { login: credentials.login, diaryUrl: credentials.diaryUrl }
+    : null
+}
+
+export const clearSavedCredentials = async (): Promise<void> => {
+  if (!Capacitor.isNativePlatform()) return
+  try {
+    await diaryCredentials.clearCredentials()
+  } catch (error) {
+    console.warn('Unable to clear saved credentials', error)
+  }
+}
+
+export const isVpnActive = async (): Promise<{
+  active: boolean
+  supported: boolean
+}> => {
+  if (!Capacitor.isNativePlatform()) return { active: false, supported: false }
+  try {
+    const { active } = await diaryNetwork.isVpnActive()
+    return { active, supported: true }
+  } catch {
+    return { active: false, supported: false }
+  }
+}
+
+const withTimeout = <T>(promise: Promise<T>, ms: number): Promise<T> =>
+  Promise.race([
+    promise,
+    new Promise<T>((_, reject) =>
+      setTimeout(() => reject(new Error('Region probe timed out')), ms)
+    )
+  ])
+
+// Поиск региона перебором настоящим входом: как ручной, только по списку.
+export const findWorkingRegion = async (
+  login: string,
+  passwordHash: string,
+  regionUrls: string[],
+  onProgress?: (checked: number, total: number) => void,
+  excludeUrl?: string
+): Promise<RegionSearchResult> => {
+  // Исключаем текущий выбранный регион: там только что не вышло.
+  // activeBaseUrl для этого не годится - в нём может лежать прошлая сессия.
+  const excluded = (() => {
+    try {
+      return normalizeBaseUrl(excludeUrl || activeBaseUrl)
+    } catch {
+      return activeBaseUrl
+    }
+  })()
+  const queue = regionUrls.filter((url) => {
+    try {
+      return normalizeBaseUrl(url) !== excluded
+    } catch {
+      return false
+    }
+  })
+  const results: RegionProbeResult[] = []
+  const pushResult = (probe: RegionProbeResult) => {
+    results.push(probe)
+    onProgress?.(results.length, queue.length)
+  }
+
+  // Кто вообще жив: быстро и параллельно, медленные - вторым кругом.
+  const alive: string[] = []
+  const slow: string[] = []
+  {
+    let index = 0
+    const workers = Array.from(
+      { length: Math.min(4, queue.length) },
+      async () => {
+        while (index < queue.length) {
+          const url = queue[index++]
+          try {
+            const response = await withTimeout(
+              CapacitorHttp.request({
+                method: 'GET',
+                url: `${normalizeBaseUrl(url)}/services/security/esia-settings`,
+                connectTimeout,
+                readTimeout
+              }),
+              6000
+            )
+            ;(response.status < 500 ? alive : slow).push(url)
+          } catch {
+            slow.push(url)
+          }
+        }
+      }
+    )
+    await Promise.all(workers)
+  }
+
+  // Чужие куки в чужой регион не везём.
+  const savedCookie = getStoredCookie()
+  localStorage.removeItem(cookieStorageKey)
+  let found: string | null = null
+  try {
+    // Сначала живые, потом притормаживающие - тоже настоящим входом.
+    for (const url of [...alive, ...slow]) {
+      const response = await diaryApi.login(login, passwordHash, true, url)
+      if (response.error === null) {
+        console.log('[region-probe] hit', url)
+        found = url
+        pushResult({ url, result: 'ok', status: response.status })
+        break
+      }
+      console.log('[region-probe] miss', url, response.status)
+      pushResult({
+        url,
+        result: response.status === 401 ? 'denied' : 'unreachable',
+        status: response.status
+      })
+    }
+  } finally {
+    if (!found && savedCookie) {
+      localStorage.setItem(cookieStorageKey, savedCookie)
+    }
+  }
+  return { regionUrl: found, supported: true, checked: queue.length, results }
+}
 
 export const shareContent = async (
   options: ShareContentOptions
@@ -252,7 +431,9 @@ const createTransport = (baseUrl: string): DiaryHttpTransport => ({
         ...headers,
         ...(shouldUseStoredCookie ? { Cookie: storedCookie } : {})
       },
-      data: body
+      data: body,
+      connectTimeout,
+      readTimeout
     })
 
     const responseCookies = getResponseCookies([response.headers])
@@ -284,6 +465,61 @@ const createTransport = (baseUrl: string): DiaryHttpTransport => ({
 
 const createClient = (baseUrl: string) =>
   new DiaryClient(baseUrl, createTransport(baseUrl))
+
+const performPasswordLogin = async (
+  login: string,
+  password: string,
+  diaryUrl?: string
+) => {
+  await client.logout()
+
+  const nextBaseUrl = normalizeBaseUrl(diaryUrl || activeBaseUrl)
+  const nextClient = createClient(nextBaseUrl)
+
+  if (nextBaseUrl !== activeBaseUrl) await nextClient.logout()
+
+  try {
+    const { user, responseHeaders } = await nextClient.login({
+      login,
+      password
+    })
+    const responseCookies = getResponseCookies(responseHeaders)
+
+    if (!responseCookies) {
+      throw new DiaryClientError('Login response has no cookies', 502)
+    }
+
+    activeBaseUrl = nextBaseUrl
+    client = nextClient
+    localStorage.setItem(baseUrlStorageKey, activeBaseUrl)
+    localStorage.setItem(cookieStorageKey, responseCookies)
+    const cookie = getStoredCookie()
+    try {
+      await syncBackgroundGradeSession(cookie, Number(user.id), activeBaseUrl)
+    } catch (error) {
+      console.error('Unable to sync background grade session', error)
+    }
+    return user
+  } catch (error) {
+    await nextClient.logout()
+    throw error
+  }
+}
+
+export const reloginWithSavedCredentials = async (): Promise<
+  ApiResponse<ResponseLogin>
+> =>
+  execute(async () => {
+    const credentials = await readCredentials()
+    if (!credentials) {
+      throw new DiaryClientError('No saved credentials', 401)
+    }
+    return performPasswordLogin(
+      credentials.login,
+      credentials.password,
+      credentials.diaryUrl
+    )
+  })
 
 let client = createClient(activeBaseUrl)
 
@@ -320,43 +556,19 @@ const execute = async <T>(
 export const diaryApi: DiaryApi = {
   login: (login, password, _isHash, diaryUrl) =>
     execute(async () => {
-      await client.logout()
-
-      const nextBaseUrl = normalizeBaseUrl(diaryUrl || activeBaseUrl)
-      const nextClient = createClient(nextBaseUrl)
-
-      if (nextBaseUrl !== activeBaseUrl) await nextClient.logout()
-
-      try {
-        const { user, responseHeaders } = await nextClient.login({
-          login,
-          password
-        })
-        const responseCookies = getResponseCookies(responseHeaders)
-
-        if (!responseCookies) {
-          throw new DiaryClientError('Login response has no cookies', 502)
-        }
-
-        activeBaseUrl = nextBaseUrl
-        client = nextClient
-        localStorage.setItem(baseUrlStorageKey, activeBaseUrl)
-        localStorage.setItem(cookieStorageKey, responseCookies)
-        const cookie = getStoredCookie()
+      const user = await performPasswordLogin(login, password, diaryUrl)
+      if (Capacitor.isNativePlatform()) {
         try {
-          await syncBackgroundGradeSession(
-            cookie,
-            Number(user.id),
-            activeBaseUrl
-          )
+          await diaryCredentials.saveCredentials({
+            login,
+            password,
+            diaryUrl: activeBaseUrl
+          })
         } catch (error) {
-          console.error('Unable to sync background grade session', error)
+          console.warn('Unable to save credentials', error)
         }
-        return user
-      } catch (error) {
-        await nextClient.logout()
-        throw error
       }
+      return user
     }),
   loginWithEsia: (diaryUrl?: string) =>
     execute(async () => {
@@ -404,6 +616,8 @@ export const diaryApi: DiaryApi = {
         client = nextClient
         localStorage.setItem(baseUrlStorageKey, activeBaseUrl)
 
+        await clearSavedCredentials()
+
         try {
           await syncBackgroundGradeSession(
             getStoredCookie(),
@@ -426,6 +640,7 @@ export const diaryApi: DiaryApi = {
         return await client.logout()
       } finally {
         await clearBackgroundGradeSession()
+        await clearSavedCredentials()
       }
     }),
   getLessons: (startDate, endDate) =>
