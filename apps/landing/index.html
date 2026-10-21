@@ -6,6 +6,7 @@
       name="viewport"
       content="width=device-width, initial-scale=1, viewport-fit=cover"
     />
+    <meta name="color-scheme" content="light dark" />
     <title>Дневник СПО — Сетевой город в удобном приложении для Android</title>
     <meta
       name="description"
@@ -26,8 +27,10 @@
               : 'light'
           }
           document.documentElement.dataset.theme = theme
+          document.documentElement.style.colorScheme = theme
         } catch (e) {
           document.documentElement.dataset.theme = 'light'
+          document.documentElement.style.colorScheme = 'light'
         }
       })()
     </script>

@@ -9,12 +9,15 @@
   --radius: 20px;
   --max: 1140px;
   --shadow: 0 18px 50px rgba(11, 92, 255, 0.14);
+  color-scheme: light dark;
 }
 * {
   box-sizing: border-box;
 }
 html {
   scroll-behavior: smooth;
+}
+[data-theme="light"] {
   color-scheme: light;
 }
 [data-theme="dark"] {

@@ -36,6 +36,7 @@ export function useTheme(): [Theme, (t: Theme) => void] {
   useEffect(() => {
     if (!mounted) return
     document.documentElement.dataset.theme = theme
+    document.documentElement.style.colorScheme = theme
     try {
       localStorage.setItem(THEME_KEY, theme)
     } catch {
