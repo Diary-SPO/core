@@ -58,3 +58,16 @@ export interface ShareContentOptions {
   url?: string
   dialogTitle?: string
 }
+
+export interface RegionProbeResult {
+  url: string
+  result: 'ok' | 'denied' | 'unreachable'
+  status: number | null
+}
+
+export interface RegionSearchResult {
+  regionUrl: string | null
+  supported: boolean
+  checked: number
+  results: RegionProbeResult[]
+}

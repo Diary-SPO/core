@@ -1,4 +1,3 @@
-import { b64 } from '@diary-spo/crypto'
 import {
   Icon16Dropdown,
   Icon24PlaceOutline,
@@ -19,8 +18,10 @@ import {
 import {
   type ChangeEvent,
   type FC,
+  useCallback,
   useLayoutEffect,
   useMemo,
+  useRef,
   useState
 } from 'react'
 
@@ -33,6 +34,7 @@ import {
   DIARY_SOURCE,
   getDiaryDomain,
   getSortedDiaryRegions,
+  MODAL_PAGE_LOGIN_DIAGNOSTICS,
   MODAL_PAGE_REGION,
   PERSONAL_DATA_CONSENT_URL,
   PRIVACY_POLICY_URL,
@@ -41,8 +43,13 @@ import {
 } from '../../shared/config'
 import { useSnackbar } from '../../shared/hooks'
 import { useDiaryRegion } from '../../store/diaryRegion'
+import { useLoginDiagnostics } from '../../store/loginDiagnostics'
 import type { Props } from '../types.ts'
-import { loginPattern, saveData } from './helpers'
+import {
+  bumpLoginFailCount,
+  resetLoginFailCount
+} from './diagnostics/failCounter'
+import { hashPassword, loginPattern, saveData } from './helpers'
 
 import './index.css'
 
@@ -54,7 +61,11 @@ const LoginForm: FC<Props> = ({ id }) => {
   const [isDataInvalid, setIsDataInvalid] = useState<boolean>(false)
   const [isLoading, setIsLoading] = useState<boolean>(false)
 
+  const passwordRef = useRef('')
+  const getPassword = useCallback(() => passwordRef.current, [])
+
   const { selectedUrl: diaryUrl } = useDiaryRegion()
+  const { openDiagnostics } = useLoginDiagnostics()
 
   const hasLegalDocuments = Boolean(
     PRIVACY_POLICY_URL && USER_AGREEMENT_URL && PERSONAL_DATA_CONSENT_URL
@@ -99,7 +110,78 @@ const LoginForm: FC<Props> = ({ id }) => {
     setIsDataInvalid(false)
     setIsLoading(false)
 
+    if (name === 'password') passwordRef.current = value
     setStateAction?.(value)
+  }
+
+  const readErrorDetails = (
+    response: unknown
+  ): { status: number; message: string | null } => {
+    if (response instanceof Error) {
+      const status = Number((response as { status?: unknown }).status ?? 0) || 0
+      return { status, message: response.message }
+    }
+    if (!response || typeof response !== 'object') {
+      return { status: 0, message: null }
+    }
+    const record = response as {
+      status?: unknown
+      error?: { status?: unknown; value?: unknown }
+    }
+    const status = Number(record.status ?? record.error?.status ?? 0) || 0
+    const value = record.error?.value
+    const message =
+      value instanceof Error
+        ? value.message
+        : typeof value === 'string'
+          ? value
+          : null
+    return { status, message }
+  }
+
+  const handleFailedAttempt = async (
+    status: number,
+    message: string | null,
+    passwordHash?: string
+  ) => {
+    // Закрытый WebView Госуслуг — не ошибка, молча выходим.
+    if (status === 499) return
+    const fails = bumpLoginFailCount()
+    const credentials = {
+      login,
+      passwordHash: passwordHash ?? null,
+      getPassword
+    }
+    if (status === 502 && message?.startsWith('Login response')) {
+      openDiagnostics({
+        reason: 'shape',
+        diaryUrl,
+        detail: message,
+        ...credentials
+      })
+      await routeNavigator.showModal(MODAL_PAGE_LOGIN_DIAGNOSTICS)
+      return
+    }
+    if (status === 401) {
+      if (fails >= 3) {
+        resetLoginFailCount()
+        openDiagnostics({
+          reason: 'repeated',
+          diaryUrl,
+          detail: message,
+          ...credentials
+        })
+        await routeNavigator.showModal(MODAL_PAGE_LOGIN_DIAGNOSTICS)
+      }
+      return
+    }
+    openDiagnostics({
+      reason: 'network',
+      diaryUrl,
+      detail: message ?? `status ${status}`,
+      ...credentials
+    })
+    await routeNavigator.showModal(MODAL_PAGE_LOGIN_DIAGNOSTICS)
   }
 
   const handleLogin = async (e: ChangeEvent<HTMLFormElement>) => {
@@ -111,25 +193,31 @@ const LoginForm: FC<Props> = ({ id }) => {
       return
     }
 
-    const passwordHashed = await b64(
-      password === 'tr206711' ? 'df58980e' : password
-    )
+    const passwordHashed = await hashPassword(password)
 
     saveLegalAcceptance()
 
     try {
       const response = await postLogin(login, passwordHashed, true, diaryUrl)
+      const { status, message } = readErrorDetails(response)
+      const isShapeError =
+        status === 502 && message?.startsWith('Login response')
 
       const handledResponse = handleResponse(
         response,
-        () => setIsDataInvalid(true),
+        () => {
+          if (!isShapeError) setIsDataInvalid(true)
+        },
         undefined,
         setIsLoading,
         showSnackbar,
         false,
         true
       )
-      if (!handledResponse) return
+      if (!handledResponse) {
+        await handleFailedAttempt(status, message, passwordHashed)
+        return
+      }
 
       const { data } = handledResponse
 
@@ -139,6 +227,7 @@ const LoginForm: FC<Props> = ({ id }) => {
       }
 
       saveData(data)
+      resetLoginFailCount()
 
       showSnackbar({
         title: 'Вхожу',
@@ -148,6 +237,8 @@ const LoginForm: FC<Props> = ({ id }) => {
       await routeNavigator.replace(`/${VIEW_SCHEDULE}`)
     } catch (error) {
       console.error(error)
+      const { status, message } = readErrorDetails(error)
+      await handleFailedAttempt(status, message, passwordHashed)
     } finally {
       setIsLoading(false)
     }
@@ -187,7 +278,11 @@ const LoginForm: FC<Props> = ({ id }) => {
         false,
         true
       )
-      if (!handledResponse || isApiError(handledResponse.data)) return
+      if (!handledResponse || isApiError(handledResponse.data)) {
+        const { status, message } = readErrorDetails(response)
+        await handleFailedAttempt(status, message)
+        return
+      }
 
       saveData(handledResponse.data)
       showSnackbar({
@@ -197,6 +292,8 @@ const LoginForm: FC<Props> = ({ id }) => {
       await routeNavigator.replace(`/${VIEW_SCHEDULE}`)
     } catch (error) {
       console.error(error)
+      const { status, message } = readErrorDetails(error)
+      await handleFailedAttempt(status, message)
       showSnackbar({
         before: <Icon28ErrorCircleOutline fill={VKUI_RED} />,
         title: 'Не удалось войти через Госуслуги',

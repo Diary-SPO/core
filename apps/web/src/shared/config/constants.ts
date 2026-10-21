@@ -5,6 +5,7 @@ export const MODAL_PAGE_LESSON = 'lesson'
 export const MODAL_PAGE_MARK = 'mark'
 export const MODAL_PAGE_REGION = 'diary-region'
 export const MODAL_PAGE_RECOMMEND_APP = 'recommend-app'
+export const MODAL_PAGE_LOGIN_DIAGNOSTICS = 'login-diagnostics'
 
 // Временно включено для проверки модалки при каждом новом запуске приложения.
 export const RECOMMENDATION_PROMPT_TEST_MODE = false

@@ -3,6 +3,7 @@ import { VKUI_RED } from '../../config'
 import type { SnackbarData } from '../../hooks'
 import { HTTP_STATUSES } from '../../types.ts'
 import { isApiError } from '../isApiError'
+import { emitRequestFailed, hasAuthData } from '../session'
 
 /**
  * Функция 'handleResponse' обрабатывает различные негативные сценарии ответа после запроса.
@@ -30,11 +31,15 @@ export const handleResponse = <T extends object>(
   // console.log('%c[handleResponse]', 'color: green', response)
 
   if (!response) {
-    showSnackbar?.({
-      before: errorIcon,
-      title: 'Ошибка при попытке сделать запрос',
-      subtitle: 'Сообщите нам о проблеме'
-    })
+    // После выхода залетевшие ответы молча гасим.
+    if (hasAuthData()) {
+      emitRequestFailed(0)
+      showSnackbar?.({
+        before: errorIcon,
+        title: 'Ошибка при попытке сделать запрос',
+        subtitle: 'Сообщите нам о проблеме'
+      })
+    }
     loadingCallback?.(false)
     return
   }
@@ -61,26 +66,34 @@ export const handleResponse = <T extends object>(
         break
       }
 
-      localStorage.clear()
-      showSnackbar?.({
-        before: errorIcon,
-        title: 'Ошибка при попытке сделать запрос',
-        subtitle: 'Перезайдите в аккаунт'
-      })
+      // Сессию разбирает SessionGuardian, тут только уведомляем.
+      if (hasAuthData()) {
+        emitRequestFailed(response.status)
+        showSnackbar?.({
+          before: errorIcon,
+          title: 'Ошибка при попытке сделать запрос',
+          subtitle: 'Перезайдите в аккаунт'
+        })
+      }
       break
     case HTTP_STATUSES.TEAPOT: {
       if (shouldCallErrorIfFatal) {
         errorCallback?.()
       }
 
-      showSnackbar?.({
-        before: errorIcon,
-        title: 'Ошибка при попытке сделать запрос',
-        subtitle: 'Сообщите нам о проблеме'
-      })
+      if (hasAuthData()) {
+        emitRequestFailed(response.status)
+        showSnackbar?.({
+          before: errorIcon,
+          title: 'Ошибка при попытке сделать запрос',
+          subtitle: 'Сообщите нам о проблеме'
+        })
+      }
       break
     }
     default: {
+      // 429 и прочие - тихо, у них свой UX.
+      if (response.status >= 500) emitRequestFailed(response.status)
       errorCallback?.()
       break
     }
