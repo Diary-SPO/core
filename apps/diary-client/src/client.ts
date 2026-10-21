@@ -25,6 +25,12 @@ export class DiaryClientError extends Error {
   }
 }
 
+// Ответ 200, но обработать его упали мы: дневник поменял форму данных.
+export const isLoginShapeError = (error: unknown): boolean =>
+  error instanceof DiaryClientError &&
+  error.status === 502 &&
+  error.message.startsWith('Login response')
+
 export interface LoginInput {
   login: string
   /**SHA-256/base64 */
@@ -179,8 +185,20 @@ export class DiaryClient {
     const organization = tenant?.settings.organization
     const person = account.persons[0]
 
-    if (!student || !organization || typeof student.id !== 'number') {
-      throw new DiaryClientError('Unexpected login response', 502)
+    if (!tenant) {
+      throw new DiaryClientError(
+        `Login response has no tenant "${auth.tenantName}"`,
+        502
+      )
+    }
+    if (!student) {
+      throw new DiaryClientError('Login response has no student', 502)
+    }
+    if (typeof student.id !== 'number') {
+      throw new DiaryClientError('Login response has invalid student id', 502)
+    }
+    if (!organization) {
+      throw new DiaryClientError('Login response has no organization', 502)
     }
 
     this.studentId = student.id

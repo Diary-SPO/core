@@ -7,8 +7,7 @@ import bridge from '@vkontakte/vk-bridge'
 import { useRouteNavigator } from '@vkontakte/vk-mini-apps-router'
 import { Alert, CellButton, Group, Header, Switch } from '@vkontakte/vkui'
 import { useEffect, useRef, useState } from 'react'
-
-import { logOut } from '../../../shared'
+import { clearAuthData, logOut } from '../../../shared'
 import { useSnackbar } from '../../../shared/hooks'
 
 import TechInfo from './TechInfo.tsx'
@@ -53,9 +52,16 @@ const Actions = () => {
       subtitle: 'После удаления всех данных вы попадёте на страницу авторизации'
     })
 
+    // Авторизацию сносим сразу, иначе тапы по вкладкам уходят в экраны.
+    // Сетевой выход добежит фоном.
+    clearAuthData()
+    try {
+      await routeNavigator.replace('/')
+    } catch (error) {
+      console.error('Error during logout navigation:', error)
+    }
     try {
       await logOut()
-      await routeNavigator.replace('/')
     } catch (error) {
       console.error('Error during logout:', error)
     }

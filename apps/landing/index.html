@@ -6,6 +6,7 @@
       name="viewport"
       content="width=device-width, initial-scale=1, viewport-fit=cover"
     />
+    <meta name="color-scheme" content="light dark" />
     <title>Дневник СПО — Сетевой город в удобном приложении для Android</title>
     <meta
       name="description"
@@ -16,6 +17,23 @@
       content="сетевой город, электронный дневник, дневник спо, оценки, расписание занятий, сетевой город образование, скачать дневник спо"
     />
     <meta name="theme-color" content="#0b5cff" />
+    <script>
+      ;(function () {
+        try {
+          var theme = localStorage.getItem('landing-theme')
+          if (theme !== 'light' && theme !== 'dark') {
+            theme = window.matchMedia('(prefers-color-scheme: dark)').matches
+              ? 'dark'
+              : 'light'
+          }
+          document.documentElement.dataset.theme = theme
+          document.documentElement.style.colorScheme = theme
+        } catch (e) {
+          document.documentElement.dataset.theme = 'light'
+          document.documentElement.style.colorScheme = 'light'
+        }
+      })()
+    </script>
     <link rel="canonical" href="https://diary-spo.github.io/" />
     <meta property="og:type" content="website" />
     <meta property="og:locale" content="ru_RU" />

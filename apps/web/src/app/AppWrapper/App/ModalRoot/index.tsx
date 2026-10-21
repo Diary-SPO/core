@@ -6,6 +6,7 @@ import { ModalRoot as VKUIModalRoot } from '@vkontakte/vkui'
 
 import {
   MODAL_PAGE_LESSON,
+  MODAL_PAGE_LOGIN_DIAGNOSTICS,
   MODAL_PAGE_MARK,
   MODAL_PAGE_RECOMMEND_APP,
   MODAL_PAGE_REGION
@@ -13,6 +14,7 @@ import {
 import { postponeRecommendationPrompt } from '../../../../shared/utils/recommendationPrompt'
 
 import LessonModal from './modals/LessonModal'
+import LoginDiagnosticsModal from './modals/LoginDiagnosticsModal'
 import MarkDetailedModal from './modals/MarkDetailedModal'
 import RecommendAppModal from './modals/RecommendAppModal'
 import RegionModal from './modals/RegionModal'
@@ -35,6 +37,7 @@ const ModalRoot = () => {
       <MarkDetailedModal id={MODAL_PAGE_MARK} />
       <RegionModal id={MODAL_PAGE_REGION} />
       <RecommendAppModal id={MODAL_PAGE_RECOMMEND_APP} />
+      <LoginDiagnosticsModal id={MODAL_PAGE_LOGIN_DIAGNOSTICS} />
     </VKUIModalRoot>
   )
 }

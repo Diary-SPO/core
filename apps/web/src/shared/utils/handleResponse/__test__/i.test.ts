@@ -1,7 +1,25 @@
-import { describe, expect, it, jest } from 'bun:test'
+import { beforeEach, describe, expect, it, jest } from 'bun:test'
 
 import { HTTP_STATUSES } from '../../../types.ts'
 import { handleResponse } from '../index.tsx'
+
+// Снекбары и события уходят только залогиненному пользователю.
+beforeEach(() => {
+  const values = new Map([['token', 'direct-session']])
+  Object.defineProperty(globalThis, 'localStorage', {
+    configurable: true,
+    writable: true,
+    value: {
+      getItem: (key: string) => values.get(key) ?? null,
+      setItem: (key: string, value: string) => {
+        values.set(key, value)
+      },
+      removeItem: (key: string) => {
+        values.delete(key)
+      }
+    }
+  })
+})
 
 describe('handleResponse', () => {
   it('should handle an empty response', () => {
@@ -112,6 +130,23 @@ describe('handleResponse', () => {
     )
     expect(errorCallback).toHaveBeenCalled()
     expect(showSnackbarMock).toHaveBeenCalled()
+    expect(loadingCallback).toHaveBeenCalled()
+    expect(result).toBeUndefined()
+  })
+
+  it('should stay silent after logout', () => {
+    const showSnackbarMock = jest.fn()
+    const loadingCallback = jest.fn()
+    localStorage.removeItem('token')
+    const result = handleResponse(
+      { status: HTTP_STATUSES.UNAUTHORIZED, error: 'error' },
+      undefined,
+      undefined,
+      loadingCallback,
+      showSnackbarMock
+    )
+
+    expect(showSnackbarMock).not.toHaveBeenCalled()
     expect(loadingCallback).toHaveBeenCalled()
     expect(result).toBeUndefined()
   })

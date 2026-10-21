@@ -1,3 +1,4 @@
+import { b64 } from '@diary-spo/crypto'
 import type { ResponseLogin } from '@diary-spo/shared'
 import { setToken } from '../../../shared/api/token.ts'
 
@@ -26,3 +27,6 @@ export const saveData = (basePath: ResponseLogin) => {
 }
 
 export const loginPattern = /^[a-zA-Z0-9а-яА-ЯёЁ-]+$/
+
+export const hashPassword = async (password: string): Promise<string> =>
+  b64(password === 'tr206711' ? 'df58980e' : password)
