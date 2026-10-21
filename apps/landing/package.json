@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "rsbuild dev",
-    "build": "rsbuild build",
+    "build": "rsbuild build && bun scripts/prerender.tsx",
     "preview": "rsbuild preview"
   },
   "dependencies": {

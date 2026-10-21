@@ -2,19 +2,46 @@ import { useEffect, useRef, useState } from 'react'
 
 export type Theme = 'light' | 'dark'
 
+const THEME_KEY = 'landing-theme'
+
+function getStoredTheme(): Theme | null {
+  try {
+    const saved = localStorage.getItem(THEME_KEY)
+    return saved === 'light' || saved === 'dark' ? saved : null
+  } catch {
+    return null
+  }
+}
+
+function getSystemTheme(): Theme {
+  return window.matchMedia('(prefers-color-scheme: dark)').matches
+    ? 'dark'
+    : 'light'
+}
+
 export function useTheme(): [Theme, (t: Theme) => void] {
-  const [theme, setTheme] = useState<Theme>(() => {
-    const saved = localStorage.getItem('landing-theme')
-    if (saved === 'light' || saved === 'dark') return saved
-    return window.matchMedia('(prefers-color-scheme: dark)').matches
-      ? 'dark'
-      : 'light'
-  })
+  const [theme, setTheme] = useState<Theme>('light')
+  const [mounted, setMounted] = useState(false)
 
   useEffect(() => {
+    const fromDom = document.documentElement.dataset.theme
+    setTheme(
+      fromDom === 'light' || fromDom === 'dark'
+        ? fromDom
+        : (getStoredTheme() ?? getSystemTheme())
+    )
+    setMounted(true)
+  }, [])
+
+  useEffect(() => {
+    if (!mounted) return
     document.documentElement.dataset.theme = theme
-    localStorage.setItem('landing-theme', theme)
-  }, [theme])
+    try {
+      localStorage.setItem(THEME_KEY, theme)
+    } catch {
+      return
+    }
+  }, [theme, mounted])
 
   return [theme, setTheme]
 }
