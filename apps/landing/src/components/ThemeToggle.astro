@@ -1,5 +1,7 @@
 ---
-/** Переключатель темы для статических SEO-страниц (без React). */
+/** Переключатель темы для статических SEO-страниц (без React).
+ *  Логика клика и синхронизации — в ClientEnhancements (переживает View Transitions).
+ */
 ---
 
 <button
@@ -40,35 +42,6 @@
       stroke-linejoin="round"></path>
   </svg>
 </button>
-
-<script>
-  const btn = document.getElementById('theme-toggle')
-  if (btn) {
-    const sync = () => {
-      const dark = document.documentElement.dataset.theme === 'dark'
-      btn.setAttribute('aria-pressed', dark ? 'true' : 'false')
-      btn.setAttribute(
-        'aria-label',
-        dark ? 'Переключить на светлую тему' : 'Переключить на тёмную тему'
-      )
-    }
-
-    btn.addEventListener('click', () => {
-      const next =
-        document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark'
-      document.documentElement.dataset.theme = next
-      document.documentElement.style.colorScheme = next
-      try {
-        localStorage.setItem('landing-theme', next)
-      } catch {
-        /* ignore */
-      }
-      sync()
-    })
-
-    sync()
-  }
-</script>
 
 <style is:global>
   .theme-icon-sun {

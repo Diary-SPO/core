@@ -25,11 +25,12 @@ export function useTheme(): [Theme, (t: Theme) => void] {
 
   useEffect(() => {
     const fromDom = document.documentElement.dataset.theme
-    setTheme(
-      fromDom === 'light' || fromDom === 'dark'
-        ? fromDom
-        : (getStoredTheme() ?? getSystemTheme())
-    )
+    const initial =
+      getStoredTheme() ??
+      (fromDom === 'light' || fromDom === 'dark' ? fromDom : getSystemTheme())
+    setTheme(initial)
+    document.documentElement.dataset.theme = initial
+    document.documentElement.style.colorScheme = initial
     setMounted(true)
   }, [])
 

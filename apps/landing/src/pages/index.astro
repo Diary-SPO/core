@@ -1,5 +1,6 @@
 ---
 import { App } from '../App'
+import ClientEnhancements from '../components/ClientEnhancements.astro'
 import { canonicalUrl, publicUrl } from '../lib/site'
 import '../styles.css'
 
@@ -66,6 +67,7 @@ const jsonLd = {
     <meta property="og:image" content={new URL(icon, Astro.site).href} />
     <link rel="icon" type="image/png" href={icon} />
     <link rel="apple-touch-icon" href={icon} />
+    <ClientEnhancements />
     <!-- Yandex.Metrika counter -->
     <script type="text/javascript" is:inline>
       ;(function (m, e, t, r, i, k, a) {

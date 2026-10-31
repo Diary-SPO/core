@@ -68,12 +68,15 @@ body {
 .header--home {
   margin-bottom: -70px;
 }
+.header > .container {
+  position: relative;
+}
 .header-bento {
   display: flex;
   align-items: center;
-  gap: 16px 20px;
+  gap: 12px 16px;
   min-height: 58px;
-  padding: 0 14px 0 16px;
+  padding: 0 12px 0 16px;
   border-radius: 20px;
   border: 1px solid color-mix(in srgb, var(--line) 80%, transparent);
   background: color-mix(in srgb, var(--bg) 78%, #fff);
@@ -83,7 +86,8 @@ body {
     box-shadow 0.2s,
     border-color 0.2s;
 }
-.header.is-scrolled .header-bento {
+.header.is-scrolled .header-bento,
+.header.is-nav-open .header-bento {
   border-color: var(--line);
   box-shadow: 0 14px 36px rgba(15, 27, 45, 0.14);
 }
@@ -94,17 +98,25 @@ body {
   font-weight: 800;
   color: var(--ink);
   text-decoration: none;
-  flex: 0 0 auto;
+  flex: 0 1 auto;
+  min-width: 0;
+}
+.brand span {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 .brand img {
   width: 36px;
   height: 36px;
   border-radius: 10px;
   box-shadow: 0 4px 14px rgba(11, 92, 255, 0.3);
+  flex: 0 0 auto;
 }
 .nav {
   display: flex;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
+  align-items: center;
   gap: 16px 20px;
 }
 .nav a {
@@ -112,9 +124,70 @@ body {
   text-decoration: none;
   font-size: 14px;
   font-weight: 600;
+  white-space: nowrap;
 }
 .nav a:hover {
   color: var(--ink);
+}
+.nav-toggle {
+  width: auto;
+  height: auto;
+  min-width: 0;
+  flex: 0 0 auto;
+  align-items: center;
+  justify-content: center;
+  line-height: 0;
+}
+.btn.nav-toggle {
+  display: none;
+}
+.btn.btn-sm.nav-toggle {
+  padding: 9px;
+}
+.nav-toggle-icon {
+  display: block;
+  width: 18px;
+  height: 18px;
+}
+.nav-toggle-icon .nav-toggle-close {
+  display: none;
+}
+.header.is-nav-open .nav-toggle-icon .nav-toggle-open {
+  display: none;
+}
+.header.is-nav-open .nav-toggle-icon .nav-toggle-close {
+  display: block;
+}
+.header-panel {
+  display: none;
+  margin-top: 8px;
+  padding: 14px;
+  border-radius: 18px;
+  border: 1px solid var(--line);
+  background: color-mix(in srgb, var(--bg) 88%, #fff);
+  backdrop-filter: blur(14px);
+  box-shadow: 0 16px 40px rgba(15, 27, 45, 0.14);
+}
+.header.is-nav-open .header-panel {
+  display: grid;
+  gap: 12px;
+}
+.nav--mobile {
+  flex-direction: column;
+  align-items: stretch;
+  gap: 4px;
+}
+.nav--mobile a {
+  display: block;
+  padding: 12px 12px;
+  border-radius: 12px;
+  font-size: 15px;
+}
+.nav--mobile a:hover {
+  background: color-mix(in srgb, var(--brand) 8%, transparent);
+}
+.header-panel-cta {
+  width: 100%;
 }
 
 /* Buttons */
@@ -163,12 +236,14 @@ body {
 }
 .header-cta {
   margin-left: 0;
+  flex: 0 0 auto;
 }
 .theme-toggle {
   margin-left: auto;
   width: 38px;
   height: 38px;
   padding: 0;
+  flex: 0 0 auto;
 }
 .btn-icon {
   width: 22px;
@@ -802,8 +877,12 @@ h1 {
   .steps {
     grid-template-columns: 1fr;
   }
-  .header--home .nav {
+  .nav--desktop,
+  .header-cta {
     display: none;
+  }
+  .btn.nav-toggle {
+    display: inline-flex;
   }
   .footer-bento {
     grid-template-columns: 1fr 1fr;
@@ -819,6 +898,10 @@ h1 {
   }
   .header--home {
     margin-bottom: -64px;
+  }
+  .header-bento {
+    gap: 8px;
+    padding: 0 10px 0 12px;
   }
   .spo-banner {
     grid-template-columns: 1fr;
@@ -867,6 +950,11 @@ h1 {
   .shot-fade {
     animation: none;
   }
+  .reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
   html {
     scroll-behavior: auto;
   }
@@ -883,12 +971,15 @@ h1 {
   --card: #121b2e;
   --shadow: 0 18px 50px rgba(0, 0, 0, 0.45);
 }
-[data-theme="dark"] .header-bento {
+[data-theme="dark"] .header-bento,
+[data-theme="dark"] .header-panel {
   background: color-mix(in srgb, var(--bg) 72%, #121b2e);
   border-color: var(--line);
   box-shadow: none;
 }
-[data-theme="dark"] .header.is-scrolled .header-bento {
+[data-theme="dark"] .header.is-scrolled .header-bento,
+[data-theme="dark"] .header.is-nav-open .header-bento,
+[data-theme="dark"] .header.is-nav-open .header-panel {
   box-shadow: 0 16px 40px rgba(0, 0, 0, 0.5);
 }
 [data-theme="dark"] .hero-bg {
