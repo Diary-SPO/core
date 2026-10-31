@@ -165,7 +165,7 @@ import { ClientRouter } from 'astro:transitions'
     }
   }
 
-  // До замены DOM — переносим тему на новый документ, иначе вспышка светлой.
+  // Перед сменой страницы копируем тему в новый документ, чтобы не мигала светлая
   document.addEventListener('astro:before-swap', (event) => {
     applyTheme(readTheme(), event.newDocument.documentElement)
   })

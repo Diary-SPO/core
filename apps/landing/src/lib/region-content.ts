@@ -20,9 +20,9 @@ export interface RegionProblem {
 }
 
 export interface RegionPageContent {
-  /** Как систему называют в регионе */
+  /** Локальное название системы дневника */
   systemName: string
-  /** Короткая статья: абзацы подряд */
+  /** Абзацы короткой статьи о регионе */
   article: string[]
   loginHint: string
   notes: RegionNote[]

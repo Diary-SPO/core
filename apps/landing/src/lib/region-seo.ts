@@ -1,6 +1,6 @@
 import type { DiaryRegion } from './regions'
 
-/** Города региона для страницы и SEO. */
+/** Список городов региона для страницы и SEO */
 export function regionCities(region: DiaryRegion): string[] {
   if (region.cities.length > 0) return region.cities
   return region.aliases
@@ -22,12 +22,12 @@ export function pluralCitiesMore(n: number): string {
   return `${n} городов`
 }
 
-/** Например: `71 (Тульская область)`. */
+/** Код региона вместе с названием: 71 (Тульская область) */
 export function regionCodeWithName(region: DiaryRegion): string {
   return `${region.code} (${region.name})`
 }
 
-/** Например: `СПО 71 (Тульская область)`. */
+/** Подпись вида: СПО 71 (Тульская область) */
 export function spoCodeWithName(region: DiaryRegion): string {
   return `СПО ${region.code} (${region.name})`
 }

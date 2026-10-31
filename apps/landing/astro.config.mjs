@@ -4,10 +4,9 @@ import react from '@astrojs/react'
 import sitemap from '@astrojs/sitemap'
 import { defineConfig } from 'astro/config'
 
-// GitHub Pages: main → корень, pre-main → /pre/
+/** base для GitHub Pages: main = "/", pre-main = "/pre/" */
 const base = process.env.SITE_BASE || '/'
 
-// https://astro.build/config
 export default defineConfig({
   site: 'https://diary-spo.github.io',
   base,

@@ -21,7 +21,7 @@ export function Download({ onWebClick }: DownloadProps) {
       done(true)
       return
     } catch {
-      // clipboard API недоступен (http, старый браузер) — пробуем fallback
+      // Clipboard API недоступен, пробуем запасной способ
     }
     try {
       const ta = document.createElement('textarea')

@@ -1,7 +1,4 @@
-/* SEO content blocks — used by Layout + content pages */
-
 .seo-main {
-  /* ширина как у шапки/футера (.container → --max) */
   padding-top: 1.75rem;
   padding-bottom: 2rem;
 }
@@ -385,7 +382,6 @@
   font-weight: 700;
 }
 
-/* Region detail hero */
 .seo-back {
   display: inline-flex;
   align-items: center;

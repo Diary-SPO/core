@@ -3,7 +3,7 @@ export interface DiaryRegion {
   name: string
   url: string
   code: string
-  /** Крупные города региона (для SEO и страницы). */
+  /** Крупные города региона, показываются на SEO-странице */
   cities: string[]
   aliases: string[]
   hasEsiaOnly?: boolean

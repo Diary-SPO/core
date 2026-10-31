@@ -3,7 +3,7 @@ import { GithubIcon, VkIcon } from '../icons'
 import { publicUrl, withBase } from '../lib/site'
 
 interface FooterProps {
-  /** На главной — `#top` (без перезагрузки), на остальных — ссылка домой. */
+  /** На главной якорь #top, на остальных страницах ссылка на главную */
   homeHref?: string
 }
 
