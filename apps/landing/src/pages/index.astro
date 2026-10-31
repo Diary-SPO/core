@@ -1,0 +1,130 @@
+---
+import { App } from '../App'
+import { canonicalUrl, publicUrl } from '../lib/site'
+import '../styles.css'
+
+const title = 'Дневник СПО — Сетевой город в удобном приложении для Android'
+const description =
+  'Дневник СПО — неофициальный мобильный клиент Сетевого города для всех регионов. Расписание, оценки, объявления, статистика успеваемости. Скачать в RuStore или APK.'
+const canonical = canonicalUrl()
+const icon = publicUrl('icon.png')
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'SoftwareApplication',
+  name: 'Дневник СПО',
+  applicationCategory: 'EducationalApplication',
+  operatingSystem: 'Android',
+  offers: { '@type': 'Offer', price: '0', priceCurrency: 'RUB' },
+  description:
+    'Неофициальный мобильный клиент Сетевого города: расписание, оценки, объявления.'
+}
+---
+
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, viewport-fit=cover"
+    />
+    <meta name="color-scheme" content="light dark" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <meta
+      name="keywords"
+      content="сетевой город, электронный дневник, дневник спо, оценки, расписание занятий, сетевой город образование, скачать дневник спо"
+    />
+    <meta name="theme-color" content="#0b5cff" />
+    <script is:inline>
+      ;(function () {
+        try {
+          var theme = localStorage.getItem('landing-theme')
+          if (theme !== 'light' && theme !== 'dark') {
+            theme = window.matchMedia('(prefers-color-scheme: dark)').matches
+              ? 'dark'
+              : 'light'
+          }
+          document.documentElement.dataset.theme = theme
+          document.documentElement.style.colorScheme = theme
+        } catch (e) {
+          document.documentElement.dataset.theme = 'light'
+          document.documentElement.style.colorScheme = 'light'
+        }
+      })()
+    </script>
+    <link rel="canonical" href={canonical} />
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="ru_RU" />
+    <meta property="og:site_name" content="Дневник СПО" />
+    <meta
+      property="og:title"
+      content="Дневник СПО — Сетевой город в удобном приложении"
+    />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={new URL(icon, Astro.site).href} />
+    <link rel="icon" type="image/png" href={icon} />
+    <link rel="apple-touch-icon" href={icon} />
+    <!-- Yandex.Metrika counter -->
+    <script type="text/javascript" is:inline>
+      ;(function (m, e, t, r, i, k, a) {
+        m[i] =
+          m[i] ||
+          function () {
+            ;(m[i].a = m[i].a || []).push(arguments)
+          }
+        m[i].l = 1 * new Date()
+        for (var j = 0; j < document.scripts.length; j++) {
+          if (document.scripts[j].src === r) {
+            return
+          }
+        }
+        ;(k = e.createElement(t)),
+          (a = e.getElementsByTagName(t)[0]),
+          (k.async = 1),
+          (k.src = r),
+          a.parentNode.insertBefore(k, a)
+      })(
+        window,
+        document,
+        'script',
+        'https://mc.yandex.ru/metrika/tag.js?id=113429458',
+        'ym'
+      )
+
+      ym(113429458, 'init', {
+        ssr: true,
+        webvisor: true,
+        clickmap: true,
+        ecommerce: 'dataLayer',
+        referrer: document.referrer,
+        url: location.href,
+        accurateTrackBounce: true,
+        trackLinks: true
+      })
+    </script>
+    <!-- /Yandex.Metrika counter -->
+    <noscript>
+      <style>
+        .reveal {
+          opacity: 1;
+          transform: none;
+        }
+      </style>
+    </noscript>
+    <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+  </head>
+  <body>
+    <noscript
+      ><div>
+        <img
+          src="https://mc.yandex.ru/watch/113429458"
+          style="position:absolute; left:-9999px;"
+          alt=""
+        />
+      </div></noscript
+    >
+    <App client:load />
+  </body>
+</html>

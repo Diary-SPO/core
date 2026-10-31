@@ -1,0 +1,239 @@
+---
+import { canonicalUrl, publicUrl, withBase } from '../lib/site'
+import '../styles.css'
+
+interface Props {
+  title: string
+  description: string
+  path?: string
+  ogType?: string
+  jsonLd?: Record<string, unknown> | Record<string, unknown>[]
+}
+
+const {
+  title,
+  description,
+  path = '',
+  ogType = 'website',
+  jsonLd
+} = Astro.props
+
+const canonical = canonicalUrl(path)
+const icon = publicUrl('icon.png')
+const jsonLdBlocks = jsonLd ? (Array.isArray(jsonLd) ? jsonLd : [jsonLd]) : []
+---
+
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, viewport-fit=cover"
+    />
+    <meta name="color-scheme" content="light dark" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <meta name="theme-color" content="#0b5cff" />
+    <link rel="canonical" href={canonical} />
+    <meta property="og:type" content={ogType} />
+    <meta property="og:locale" content="ru_RU" />
+    <meta property="og:site_name" content="Дневник СПО" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={new URL(icon, Astro.site).href} />
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <link rel="icon" type="image/png" href={icon} />
+    <link rel="apple-touch-icon" href={icon} />
+    <script is:inline>
+      ;(function () {
+        try {
+          var theme = localStorage.getItem('landing-theme')
+          if (theme !== 'light' && theme !== 'dark') {
+            theme = window.matchMedia('(prefers-color-scheme: dark)').matches
+              ? 'dark'
+              : 'light'
+          }
+          document.documentElement.dataset.theme = theme
+          document.documentElement.style.colorScheme = theme
+        } catch (e) {
+          document.documentElement.dataset.theme = 'light'
+          document.documentElement.style.colorScheme = 'light'
+        }
+      })()
+    </script>
+    <!-- Yandex.Metrika counter -->
+    <script type="text/javascript" is:inline>
+      ;(function (m, e, t, r, i, k, a) {
+        m[i] =
+          m[i] ||
+          function () {
+            ;(m[i].a = m[i].a || []).push(arguments)
+          }
+        m[i].l = 1 * new Date()
+        for (var j = 0; j < document.scripts.length; j++) {
+          if (document.scripts[j].src === r) {
+            return
+          }
+        }
+        ;(k = e.createElement(t)),
+          (a = e.getElementsByTagName(t)[0]),
+          (k.async = 1),
+          (k.src = r),
+          a.parentNode.insertBefore(k, a)
+      })(
+        window,
+        document,
+        'script',
+        'https://mc.yandex.ru/metrika/tag.js?id=113429458',
+        'ym'
+      )
+
+      ym(113429458, 'init', {
+        ssr: true,
+        webvisor: true,
+        clickmap: true,
+        ecommerce: 'dataLayer',
+        referrer: document.referrer,
+        url: location.href,
+        accurateTrackBounce: true,
+        trackLinks: true
+      })
+    </script>
+    <!-- /Yandex.Metrika counter -->
+    {
+      jsonLdBlocks.map((block) => (
+        <script type="application/ld+json" set:html={JSON.stringify(block)} />
+      ))
+    }
+  </head>
+  <body>
+    <noscript
+      ><div>
+        <img
+          src="https://mc.yandex.ru/watch/113429458"
+          style="position:absolute; left:-9999px;"
+          alt=""
+        />
+      </div></noscript
+    >
+    <header class="seo-header">
+      <div class="container seo-header-in">
+        <a class="brand" href={withBase()}>
+          <img src={icon} alt="Иконка приложения Дневник СПО" width="32" height="32" />
+          <span>Дневник СПО</span>
+        </a>
+        <nav class="seo-nav" aria-label="Разделы сайта">
+          <a href={withBase('skachat/')}>Скачать</a>
+          <a href={withBase('vhod/')}>Как войти</a>
+          <a href={withBase('regions/')}>Регионы</a>
+        </nav>
+      </div>
+    </header>
+    <main class="container seo-main">
+      <slot />
+    </main>
+    <footer class="footer">
+      <div class="container footer-grid">
+        <div class="footer-brand">
+          <img src={icon} alt="" aria-hidden="true" width="40" height="40" />
+          <div>
+            <b>Дневник СПО</b>
+            <p>
+              Независимый проект. Не является официальным приложением Сетевого
+              города и АО «ИРТех».
+            </p>
+          </div>
+        </div>
+        <div class="footer-links">
+          <a href={withBase('skachat/')}>Скачать</a>
+          <a href={withBase('vhod/')}>Как войти</a>
+          <a href={withBase('vhod-cherez-gosuslugi/')}>Вход через Госуслуги</a>
+          <a href={withBase('regions/')}>Все регионы</a>
+          <a href={withBase('dnevnik-spo-ne-otkryvaetsya/')}>Не открывается</a>
+          <a href={withBase('dnevnik-spo-oshibka-zaprosa/')}>Ошибка запроса</a>
+          <a href={withBase('dnevnik-spo-ne-rabotaet/')}>Не работает</a>
+          <a href="https://vk.com/diary_spo" target="_blank" rel="noreferrer"
+            >VK</a
+          >
+          <a
+            href="https://github.com/Diary-SPO/core"
+            target="_blank"
+            rel="noreferrer">GitHub</a
+          >
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>
+
+<style is:global>
+  .seo-header {
+    position: sticky;
+    top: 0;
+    z-index: 20;
+    backdrop-filter: blur(10px);
+    background: color-mix(in srgb, var(--bg, #fff) 86%, transparent);
+    border-bottom: 1px solid color-mix(in srgb, currentColor 12%, transparent);
+  }
+
+  .seo-header-in {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    min-height: 3.5rem;
+  }
+
+  .seo-nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.85rem 1.1rem;
+    font-size: 0.95rem;
+  }
+
+  .seo-nav a {
+    color: inherit;
+    text-decoration: none;
+    opacity: 0.8;
+  }
+
+  .seo-nav a:hover {
+    opacity: 1;
+    text-decoration: underline;
+  }
+
+  .seo-main {
+    padding-top: 1.75rem;
+    padding-bottom: 3rem;
+    max-width: 46rem;
+  }
+
+  .seo-main h1 {
+    font-size: clamp(1.6rem, 2.4vw, 2.1rem);
+    line-height: 1.2;
+    margin: 0 0 1rem;
+  }
+
+  .seo-main h2 {
+    font-size: 1.25rem;
+    margin: 1.75rem 0 0.75rem;
+  }
+
+  .seo-main h3 {
+    font-size: 1.05rem;
+    margin: 1.25rem 0 0.5rem;
+  }
+
+  .seo-main p,
+  .seo-main li {
+    line-height: 1.65;
+  }
+
+  .seo-main a {
+    color: var(--accent, #0b5cff);
+  }
+</style>

@@ -1,0 +1,191 @@
+---
+import Layout from '../layouts/Layout.astro'
+import { CONTENT_VARIANTS, pickVariant } from '../lib/content-variants'
+import type { DiaryRegion } from '../lib/regions'
+import { withBase } from '../lib/site'
+
+interface Props {
+  region: DiaryRegion
+}
+
+const { region } = Astro.props
+
+const intro = pickVariant(CONTENT_VARIANTS.intro, region.code)
+const whatIs = pickVariant(CONTENT_VARIANTS.whatIs, region.code + 'what')
+const howToEnter = pickVariant(CONTENT_VARIANTS.howToEnter, region.code + 'how')
+const ifNotOpens = pickVariant(
+  CONTENT_VARIANTS.ifNotOpens,
+  region.code + 'open'
+)
+const download = pickVariant(CONTENT_VARIANTS.download, region.code + 'down')
+
+const schoolQuestion = pickVariant(
+  CONTENT_VARIANTS.faq.schoolQuestion,
+  region.code + 'sq'
+)
+const schoolAnswer = pickVariant(
+  CONTENT_VARIANTS.faq.schoolAnswer,
+  region.code + 'sa'
+)
+const passwordQuestion = pickVariant(
+  CONTENT_VARIANTS.faq.passwordQuestion,
+  region.code + 'pq'
+)
+const passwordAnswer = pickVariant(
+  CONTENT_VARIANTS.faq.passwordAnswer,
+  region.code + 'pa'
+)
+const esiaQuestion = pickVariant(
+  CONTENT_VARIANTS.faq.esiaQuestion,
+  region.code + 'eq'
+)
+
+const path = `dnevnik-spo-${region.code}/`
+const title = `Дневник СПО — ${region.name}: электронный дневник колледжа`
+const description = `Дневник СПО для студентов колледжей и техникумов: ${region.name}. Расписание, оценки и задания на Android. Портал ${new URL(region.url).hostname}. Вход по логину или через Госуслуги.`
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: [
+    {
+      '@type': 'Question',
+      name: schoolQuestion,
+      acceptedAnswer: { '@type': 'Answer', text: schoolAnswer }
+    },
+    {
+      '@type': 'Question',
+      name: passwordQuestion,
+      acceptedAnswer: { '@type': 'Answer', text: passwordAnswer }
+    },
+    ...(region.hasEsiaOnly
+      ? [
+          {
+            '@type': 'Question',
+            name: esiaQuestion,
+            acceptedAnswer: {
+              '@type': 'Answer',
+              text:
+                region.note ||
+                'Это требование регионального оператора, не приложения.'
+            }
+          }
+        ]
+      : [])
+  ]
+}
+---
+
+<Layout title={title} description={description} path={path} jsonLd={jsonLd}>
+  <h1>Дневник СПО — {region.name}</h1>
+
+  <p>{intro}</p>
+
+  <p>{whatIs}</p>
+
+  <p>
+    Приложение показывает расписание, оценки, задания и другие данные из
+    официального портала региона «{region.name}» ({new URL(region.url).hostname})
+    в удобном виде на телефоне.
+  </p>
+
+  {
+    region.hasEsiaOnly && (
+      <p>
+        <strong>Важно: {region.note}</strong>
+      </p>
+    )
+  }
+
+  <h2>Как войти</h2>
+
+  <ol>
+    <li>В приложении выберите регион «{region.name}»</li>
+    <li>
+      Введите логин и пароль от регионального дневника или войдите через
+      Госуслуги
+    </li>
+    <li>Готово — расписание и оценки перед вами</li>
+  </ol>
+
+  <p>{howToEnter}</p>
+
+  <p>
+    Пароль не сохраняется в приложении и передаётся напрямую в региональный
+    дневник. Исходный код открыт на GitHub.
+  </p>
+
+  <h2>Если дневник не открывается</h2>
+
+  <h3>Работы на портале</h3>
+  <p>{ifNotOpens}</p>
+
+  <h3>Неверный регион</h3>
+  <p>
+    Проверьте, что в приложении выбрана «{region.name}». Если выбран другой
+    регион — приложение будет обращаться к другому порталу.
+  </p>
+
+  <h3>Переход на ЕСИА</h3>
+  <p>
+    Если регион перешёл на ЕСИА — используйте кнопку «Войти через Госуслуги».
+    Подробности: <a href={withBase('vhod-cherez-gosuslugi/')}>вход через Госуслуги</a>.
+  </p>
+
+  <h3>Другая система</h3>
+  <p>
+    Уточните в учебной части, какую систему использует ваш регион. Если это не
+    «Сетевой город. Образование» — Дневник СПО не подойдёт.
+  </p>
+
+  <p>
+    См. также: <a href={withBase('dnevnik-spo-ne-otkryvaetsya/')}>дневник не открывается</a>,
+    <a href={withBase('dnevnik-spo-oshibka-zaprosa/')}>ошибка запроса</a>,
+    <a href={withBase('dnevnik-spo-ne-rabotaet/')}>не работает</a>.
+  </p>
+
+  <h2>Как скачать</h2>
+  <p>{download}</p>
+  <ul>
+    <li>
+      <strong>RuStore</strong> — найдите «Дневник СПО» (пакет io.github.diaryspo)
+    </li>
+    <li><strong>APK</strong> — скачайте файл установки с нашего сайта</li>
+  </ul>
+  <p>
+    Требуется Android 8+. Подробности: <a href={withBase('skachat/')}>страница скачивания</a>.
+  </p>
+
+  <h2>Часто задаваемые вопросы</h2>
+
+  <h3>{schoolQuestion}</h3>
+  <p>{schoolAnswer}</p>
+
+  <h3>{passwordQuestion}</h3>
+  <p>{passwordAnswer}</p>
+
+  {
+    region.hasEsiaOnly && (
+      <>
+        <h3>{esiaQuestion}</h3>
+        <p>
+          {region.note} Это требование регионального оператора, не приложения.
+        </p>
+      </>
+    )
+  }
+
+  <h3>Как узнать адрес портала «{region.name}»?</h3>
+  <p>
+    Уточните в учебной части. При выборе региона приложение подключается к
+    нужному порталу автоматически. Портал: <a href={region.url}>{region.url}</a>
+  </p>
+
+  {
+    region.aliases.length > 0 && (
+      <p>
+        Также ищут по городам: {region.aliases.filter((a) => /[а-яё]/i.test(a)).join(', ')}.
+      </p>
+    )
+  }
+</Layout>

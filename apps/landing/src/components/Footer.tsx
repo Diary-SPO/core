@@ -1,12 +1,13 @@
 import { LINKS } from '../config'
 import { GithubIcon, VkIcon } from '../icons'
+import { publicUrl, withBase } from '../lib/site'
 
 export function Footer() {
   return (
     <footer className='footer'>
       <div className='container footer-grid'>
         <div className='footer-brand'>
-          <img src='./icon.png' alt='' aria-hidden='true' />
+          <img src={publicUrl('icon.png')} alt='' aria-hidden='true' />
           <div>
             <b>Дневник СПО</b>
             <p>
@@ -45,13 +46,13 @@ export function Footer() {
           <a href={LINKS.consent} target='_blank' rel='noreferrer'>
             Согласие на обработку данных
           </a>
-          <a href='/skachat/'>Скачать</a>
-          <a href='/vhod/'>Как войти</a>
-          <a href='/vhod-cherez-gosuslugi/'>Вход через Госуслуги</a>
-          <a href='/regions/'>Все регионы</a>
-          <a href='/dnevnik-spo-ne-otkryvaetsya/'>Не открывается</a>
-          <a href='/dnevnik-spo-oshibka-zaprosa/'>Ошибка запроса</a>
-          <a href='/dnevnik-spo-ne-rabotaet/'>Не работает</a>
+          <a href={withBase('skachat/')}>Скачать</a>
+          <a href={withBase('vhod/')}>Как войти</a>
+          <a href={withBase('vhod-cherez-gosuslugi/')}>Вход через Госуслуги</a>
+          <a href={withBase('regions/')}>Все регионы</a>
+          <a href={withBase('dnevnik-spo-ne-otkryvaetsya/')}>Не открывается</a>
+          <a href={withBase('dnevnik-spo-oshibka-zaprosa/')}>Ошибка запроса</a>
+          <a href={withBase('dnevnik-spo-ne-rabotaet/')}>Не работает</a>
         </div>
       </div>
     </footer>

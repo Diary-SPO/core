@@ -112,7 +112,7 @@ export const REGIONS: DiaryRegion[] = [
     id: 'sakha',
     name: 'Республика Саха (Якутия)',
     url: 'https://poo.e-yakutia.ru',
-    code: '24',
+    code: '14',
     aliases: ['якутск', 'yakutsk', 'yakutia', 'sakha']
   },
   {

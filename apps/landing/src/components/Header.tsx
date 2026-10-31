@@ -1,5 +1,6 @@
 import { type Theme, useScrolled } from '../hooks'
 import { ApkIcon, ThemeIcon } from '../icons'
+import { publicUrl } from '../lib/site'
 
 interface HeaderProps {
   theme: Theme
@@ -13,7 +14,10 @@ export function Header({ theme, onToggleTheme }: HeaderProps) {
     <header className={`header${scrolled ? ' is-scrolled' : ''}`}>
       <div className='container header-in'>
         <a className='brand' href='#top'>
-          <img src='./icon.png' alt='Иконка приложения Дневник СПО' />
+          <img
+            src={publicUrl('icon.png')}
+            alt='Иконка приложения Дневник СПО'
+          />
           <span>Дневник СПО</span>
         </a>
         <nav className='nav'>
