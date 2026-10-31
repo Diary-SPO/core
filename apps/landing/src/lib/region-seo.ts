@@ -18,37 +18,30 @@ export function spoCodeWithName(region: DiaryRegion): string {
 }
 
 export function regionSeoTitle(region: DiaryRegion): string {
-  return `Дневник СПО ${region.code} (${region.name}) — приложение для Сетевого города`
+  return `Электронный дневник СПО ${region.code} (${region.name}) — Сетевой город`
 }
 
 export function regionSeoDescription(region: DiaryRegion): string {
   const cities = regionCities(region)
-  const cityPart =
-    cities.length > 0 ? ` Города: ${cities.slice(0, 4).join(', ')}.` : ''
+  const cityPart = cities.length > 0 ? ` ${cities.slice(0, 3).join(', ')}.` : ''
   return (
-    `Неофициальное приложение Дневник СПО для Android: удобный доступ к ` +
-    `электронному дневнику СПО / «Сетевой город. Образование» в регионе ` +
-    `${region.name} (код ${region.code}).` +
-    cityPart +
-    ` Не заменяет официальный портал ${new URL(region.url).hostname}.`
+    `Электронный дневник СПО и Сетевой город в регионе ${region.name} ` +
+    `(код ${region.code}): портал ${new URL(region.url).hostname}, как войти, ` +
+    `что делать если не открывается.` +
+    cityPart
   )
 }
 
 export function regionSeoH1(region: DiaryRegion): string {
-  return `Дневник СПО — приложение для электронного дневника, ${region.name}`
+  return `Электронный дневник СПО — ${region.name}`
 }
 
-/**
- * Поисковые формулировки пользователей (для поясняющего блока).
- * Это не названия нашего продукта, а то, как люди гуглят региональный дневник.
- */
 export function regionSearchPhrases(region: DiaryRegion): string[] {
   const cities = regionCities(region)
   const code = regionCodeWithName(region)
   const phrases = [
     `электронный дневник СПО ${code}`,
     `дневник СПО ${code}`,
-    `${spoCodeWithName(region)} электронный дневник`,
     `Сетевой город ${region.name}`,
     `электронный дневник СПО ${region.name}`
   ]

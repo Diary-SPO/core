@@ -2,7 +2,7 @@
 import Callout from './Callout.astro'
 import DownloadCta from './DownloadCta.astro'
 import Layout from '../layouts/Layout.astro'
-import { CONTENT_VARIANTS, pickVariant } from '../lib/content-variants'
+import { getRegionPageContent } from '../lib/region-content'
 import { regionEmblemUrl, regionPhotoUrl } from '../lib/region-media'
 import type { DiaryRegion } from '../lib/regions'
 import {
@@ -25,122 +25,34 @@ const host = new URL(region.url).hostname
 const emblem = regionEmblemUrl(region.id)
 const photo = regionPhotoUrl(region.id)
 const cities = regionCities(region)
-const searchPhrases = regionSearchPhrases(region)
-const mainCity = cities[0]
+const content = getRegionPageContent(region)
+const searchPhrases = [
+  ...new Set([...regionSearchPhrases(region), ...content.searchExtra])
+]
 const codeLabel = regionCodeWithName(region)
 const spoLabel = spoCodeWithName(region)
-
-const intro = pickVariant(CONTENT_VARIANTS.intro, region.code)
-const whatIs = pickVariant(CONTENT_VARIANTS.whatIs, region.code + 'what')
-const howToEnter = pickVariant(CONTENT_VARIANTS.howToEnter, region.code + 'how')
-const ifNotOpens = pickVariant(CONTENT_VARIANTS.ifNotOpens, region.code + 'open')
-
-const schoolQuestion = pickVariant(
-  CONTENT_VARIANTS.faq.schoolQuestion,
-  region.code + 'sq'
-)
-const schoolAnswer = pickVariant(
-  CONTENT_VARIANTS.faq.schoolAnswer,
-  region.code + 'sa'
-)
-const passwordQuestion = pickVariant(
-  CONTENT_VARIANTS.faq.passwordQuestion,
-  region.code + 'pq'
-)
-const passwordAnswer = pickVariant(
-  CONTENT_VARIANTS.faq.passwordAnswer,
-  region.code + 'pa'
-)
-const esiaQuestion = pickVariant(
-  CONTENT_VARIANTS.faq.esiaQuestion,
-  region.code + 'eq'
-)
+const cityList =
+  cities.length > 0
+    ? cities.length === 1
+      ? cities[0]
+      : `${cities.slice(0, -1).join(', ')} и ${cities[cities.length - 1]}`
+    : null
 
 const path = `dnevnik-spo-${region.code}/`
 const title = regionSeoTitle(region)
 const description = regionSeoDescription(region)
 const h1 = regionSeoH1(region)
+const faqMain = content.faq
 
-const faqMain = [
-  {
-    name: `Дневник СПО — это и есть «Сетевой город» ${mainCity || region.name}?`,
-    text:
-      `Нет. «Сетевой город. Образование» — официальная региональная система ` +
-      `(портал ${host}). Дневник СПО — независимое неофициальное приложение: ` +
-      `оно подключается к этому порталу и показывает расписание и оценки на Android` +
-      (mainCity ? ` для студентов из ${cities.slice(0, 3).join(', ')} и региона` : '') +
-      `. Мы не оператор дневника и не связаны с АО «ИРТех».`
-  },
-  {
-    name: `Подойдёт ли, если искал «электронный дневник СПО ${codeLabel}»?`,
-    text:
-      `Да, если ваш колледж в «${region.name}» (код ${region.code}) работает на ` +
-      `модуле ПОО «Сетевой город. Образование». Приложение не заменяет сайт ` +
-      `${host}, а даёт к нему удобный мобильный доступ.`
-  },
-  {
-    name: schoolQuestion,
-    text: schoolAnswer
-  },
-  {
-    name: passwordQuestion,
-    text: passwordAnswer
-  },
-  ...(region.hasEsiaOnly
-    ? [
-        {
-          name: esiaQuestion,
-          text:
-            (region.note || '') +
-            ' Это требование регионального оператора, не приложения.'
-        }
-      ]
-    : []),
-  {
-    name: `Где официальный портал Сетевого города — ${region.name}?`,
-    text:
-      `Официальный адрес: ${region.url}. Дневник СПО лишь подключается к нему ` +
-      `при выборе региона «${region.name}» в приложении.` +
-      (cities.length
-        ? ` Города, по которым часто ищут: ${cities.join(', ')}.`
-        : '')
-  }
-]
-
-const jsonLd = [
-  {
-    '@context': 'https://schema.org',
-    '@type': 'WebPage',
-    name: title,
-    description,
-    url: `https://diary-spo.github.io/${path}`,
-    about: [
-      'Дневник СПО',
-      'неофициальное приложение',
-      'Сетевой город. Образование',
-      region.name,
-      spoLabel
-    ]
-  },
-  {
-    '@context': 'https://schema.org',
-    '@type': 'SoftwareApplication',
-    name: 'Дневник СПО',
-    applicationCategory: 'EducationalApplication',
-    operatingSystem: 'Android',
-    offers: { '@type': 'Offer', price: '0', priceCurrency: 'RUB' },
-    description: description
-  },
-  {
-    '@context': 'https://schema.org',
-    '@type': 'FAQPage',
-    mainEntity: faqMain.map((item) => ({
-      '@type': 'Question',
-      name: item.name,
-      acceptedAnswer: { '@type': 'Answer', text: item.text }
-    }))
-  }
-]
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: faqMain.map((item) => ({
+    '@type': 'Question',
+    name: item.name,
+    acceptedAnswer: { '@type': 'Answer', text: item.text }
+  }))
+}
 ---
 
 <Layout
@@ -183,13 +95,11 @@ const jsonLd = [
         height="84"
       />
       <div>
-        <p class="region-hero-kicker">
-          Неофициальное приложение · {spoLabel}
-        </p>
+        <p class="region-hero-kicker">{spoLabel}</p>
         <h1>{h1}</h1>
         <p class="region-hero-lead">
-          {intro} Не сам «Сетевой город», а Android-клиент к его модулю ПОО для
-          региона «{region.name}».
+          {content.systemName}
+          {cityList ? ` — ${cityList}` : ''}
         </p>
       </div>
       <div class="region-hero-meta">
@@ -202,73 +112,63 @@ const jsonLd = [
         >
         {
           region.hasEsiaOnly && (
-            <span class="region-hero-chip">только Госуслуги</span>
+            <span class="region-hero-chip">вход через Госуслуги</span>
           )
-        }
-        {
-          cities.slice(0, 3).map((city) => (
-            <span class="region-hero-chip">{city}</span>
-          ))
         }
       </div>
     </div>
   </section>
 
-  <p class="seo-lead">{whatIs}</p>
+  <article class="region-article">
+    {content.article.map((paragraph) => <p>{paragraph}</p>)}
+  </article>
 
-  <Callout variant="warn" title="Важно: это приложение, не сам дневник">
-    <p>
-      Дневник СПО — неофициальный клиент. Официальный электронный дневник /
-      «Сетевой город. Образование» по-прежнему на портале региона ({host}). Мы не
-      выдаём пароли, не меняем оценки и не заменяем сайт оператора — только
-      показываем уже доступные вам данные удобнее на телефоне.
-    </p>
-  </Callout>
+  <p class="seo-portal">
+    Официальный портал:
+    <a href={region.url} target="_blank" rel="noreferrer">{region.url}</a>
+  </p>
 
-  <Callout variant="info" title="Если искали «Сетевой город» или код региона">
-    <p>
-      Запросы вроде «Сетевой город {mainCity || region.name}», «электронный
-      дневник СПО {codeLabel}» или «дневник СПО {codeLabel}» обычно про
-      региональный портал. Если колледж на модуле ПОО этой системы — наше
-      приложение может подойти как мобильный доступ к тем же данным.
-    </p>
-  </Callout>
-
-  {
-    region.hasEsiaOnly && (
-      <Callout variant="warn" title="Важно для этого региона">
-        <p>{region.note}</p>
-      </Callout>
-    )
-  }
-
-  <Callout variant="tip" title="Что делает приложение">
-    <p>
-      Показывает расписание, оценки, задания и объявления с портала {host} в
-      удобном виде. Для студентов СПО{cities.length > 0 && <> из {
-          cities.slice(0, 3).join(', ')
-        } и других городов региона</>}. Официальный сайт при этом остаётся
-      основным источником данных.
-    </p>
-  </Callout>
+  {content.notes.map((note) => (
+    <Callout variant={note.variant} title={note.title}>
+      <p>{note.text}</p>
+    </Callout>
+  ))}
 
   <h2 class="seo-block-title">Как войти</h2>
+  <p>{content.loginHint}</p>
   <ol class="seo-steps">
     <li class="seo-step">
       <span class="seo-step-n">1</span>
       <div>
-        <h3>Выберите «{region.name}»</h3>
+        <h3>Откройте сайт {host}</h3>
         <p>
-          В списке регионов при первом запуске — не другой субъект с похожим
-          названием.
+          Убедитесь, что это портал именно вашего региона «{region.name}», а не
+          школьный дневник и не сайт другого субъекта.
         </p>
       </div>
     </li>
     <li class="seo-step">
       <span class="seo-step-n">2</span>
       <div>
-        <h3>Логин или Госуслуги</h3>
-        <p>{howToEnter}</p>
+        <h3>Войдите удобным способом</h3>
+        <div class="seo-split">
+          <div class="seo-split-card">
+            <h3>Логин и пароль</h3>
+            <p>
+              Те же данные, что выдала учебная часть вашего колледжа. Если
+              забыли пароль — придётся обратиться в учебную часть: только там
+              могут восстановить доступ.
+            </p>
+          </div>
+          <div class="seo-split-card">
+            <h3>Госуслуги</h3>
+            <p>
+              Если регион перешёл на ЕСИА, нажмите «Войти через Госуслуги».
+              Учётная запись на Госуслугах должна быть подтверждена — иначе
+              система не пустит.
+            </p>
+          </div>
+        </div>
       </div>
     </li>
     <li class="seo-step">
@@ -276,46 +176,31 @@ const jsonLd = [
       <div>
         <h3>Готово</h3>
         <p>
-          В приложении откроются расписание и оценки с регионального портала.
+          После входа откроются расписание, оценки, задания и объявления вашего
+          учебного заведения.
         </p>
       </div>
     </li>
   </ol>
 
-  <Callout variant="ok" title="Пароль не хранится в приложении">
-    <p>
-      Данные уходят напрямую в региональный дневник. Исходный код открыт на
-      GitHub.
-    </p>
-  </Callout>
-
-  <h2 class="seo-block-title">Если дневник не открывается</h2>
+  <h2 class="seo-block-title">Типичные проблемы в этом регионе</h2>
   <div class="seo-faq">
-    <div class="seo-faq-item">
-      <h3>Работы на портале Сетевого города</h3>
-      <p>{ifNotOpens}</p>
-    </div>
-    <div class="seo-faq-item">
-      <h3>Неверный регион</h3>
-      <p>
-        Должна быть выбрана именно «{region.name}» — код {codeLabel} — иначе
-        запросы уйдут на другой портал.
-      </p>
-    </div>
-    <div class="seo-faq-item">
-      <h3>Переход на ЕСИА</h3>
-      <p>
-        Используйте «Войти через Госуслуги». Подробнее:
-        <a href={withBase('vhod-cherez-gosuslugi/')}>инструкция</a>.
-      </p>
-    </div>
+    {
+      content.problems.map((item) => (
+        <div class="seo-faq-item">
+          <h3>{item.title}</h3>
+          <p>{item.text}</p>
+        </div>
+      ))
+    }
   </div>
 
+  <p>Полезные статьи:</p>
   <div class="seo-related">
     <a href={withBase('dnevnik-spo-ne-otkryvaetsya/')}>Не открывается</a>
     <a href={withBase('dnevnik-spo-oshibka-zaprosa/')}>Ошибка запроса</a>
     <a href={withBase('dnevnik-spo-ne-rabotaet/')}>Не работает</a>
-    <a href={withBase('regions/')}>Все регионы</a>
+    <a href={withBase('vhod-cherez-gosuslugi/')}>Вход через Госуслуги</a>
   </div>
 
   <h2 class="seo-block-title">Частые вопросы</h2>
@@ -331,19 +216,21 @@ const jsonLd = [
   </div>
 
   <h2 class="seo-block-title">Как ещё ищут дневник в этом регионе</h2>
-  <p>
-    Так обычно гуглят официальный электронный дневник / Сетевой город для «{
-      region.name
-    }». Дневник СПО — приложение, которое может открыть эти же данные на
-    Android, если регион поддерживается:
-  </p>
   <ul class="seo-search-phrases">
     {searchPhrases.map((phrase) => <li>{phrase}</li>)}
   </ul>
 
+  <h2 class="seo-block-title">Приложение Дневник СПО</h2>
+  <p>
+    Если удобнее смотреть тот же дневник на телефоне, есть приложение
+    <strong>Дневник СПО</strong>. Оно неофициальное: подключается к порталу{' '}
+    {host} и показывает расписание и оценки для региона «{region.name}». Это не
+    сам Сетевой город и не продукт его оператора — просто клиент под Android.
+  </p>
+
   <DownloadCta
-    title={`Скачать приложение Дневник СПО — ${region.name}`}
-    lead={`Неофициальный клиент · Android · ${spoLabel}`}
+    title="Скачать Дневник СПО"
+    lead={`Поддерживается регион «${region.name}». Установка через RuStore или APK.`}
   />
 </Layout>
 
@@ -351,5 +238,19 @@ const jsonLd = [
   .seo-block-title {
     margin: 1.75rem 0 0.75rem !important;
     font-size: 1.2rem !important;
+  }
+
+  .region-article {
+    margin: 1.25rem 0 1rem;
+  }
+
+  .region-article p {
+    margin: 0 0 0.9rem;
+    line-height: 1.65;
+    color: var(--seo-text, inherit);
+  }
+
+  .region-article p:last-child {
+    margin-bottom: 0;
   }
 </style>

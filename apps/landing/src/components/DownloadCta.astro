@@ -10,7 +10,7 @@ interface Props {
 
 const {
   title = 'Скачать Дневник СПО',
-  lead = 'Android · бесплатно. RuStore или APK — как удобнее.',
+  lead = 'Неофициальное приложение для Android: расписание и оценки с вашего регионального дневника. Бесплатно, без рекламы.',
   showGuideLinks = true
 } = Astro.props
 
@@ -38,11 +38,11 @@ const rustore = publicUrl('rustore.svg')
       {
         showGuideLinks && (
           <p class="seo-download-links">
-            Дальше: <a href={withBase('vhod/')}>как войти</a>
+            <a href={withBase('vhod/')}>Как войти</a>
             {' · '}
             <a href={withBase('vhod-cherez-gosuslugi/')}>Госуслуги</a>
             {' · '}
-            <a href={withBase('skachat/')}>подробнее об установке</a>
+            <a href={withBase('skachat/')}>Подробнее об установке</a>
           </p>
         )
       }
