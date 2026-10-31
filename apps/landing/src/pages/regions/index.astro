@@ -2,6 +2,10 @@
 import Callout from '../../components/Callout.astro'
 import DownloadCta from '../../components/DownloadCta.astro'
 import Layout from '../../layouts/Layout.astro'
+import {
+  regionEmblemUrl,
+  regionThumbUrl
+} from '../../lib/region-media'
 import { REGIONS } from '../../lib/regions'
 import { withBase } from '../../lib/site'
 
@@ -26,12 +30,26 @@ const sorted = [...REGIONS].sort((a, b) =>
     {
       sorted.map((region) => (
         <li>
-          <a href={withBase(`dnevnik-spo-${region.code}/`)}>
-            <strong>{region.name}</strong>
-            <small>
-              {new URL(region.url).hostname}
-              {region.hasEsiaOnly ? ' · только Госуслуги' : ''}
-            </small>
+          <a
+            class="seo-region-card"
+            href={withBase(`dnevnik-spo-${region.code}/`)}
+            style={`--region-photo: url('${regionThumbUrl(region.id)}')`}
+          >
+            <img
+              class="seo-region-emblem"
+              src={regionEmblemUrl(region.id)}
+              alt=""
+              width="48"
+              height="48"
+              loading="lazy"
+            />
+            <span>
+              <strong>{region.name}</strong>
+              <small>{new URL(region.url).hostname}</small>
+            </span>
+            {region.hasEsiaOnly && (
+              <span class="seo-region-badge">только Госуслуги</span>
+            )}
           </a>
         </li>
       ))

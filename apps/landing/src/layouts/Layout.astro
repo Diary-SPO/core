@@ -10,6 +10,7 @@ interface Props {
   description: string
   path?: string
   ogType?: string
+  ogImage?: string
   jsonLd?: Record<string, unknown> | Record<string, unknown>[]
 }
 
@@ -18,11 +19,13 @@ const {
   description,
   path = '',
   ogType = 'website',
+  ogImage,
   jsonLd
 } = Astro.props
 
 const canonical = canonicalUrl(path)
 const icon = publicUrl('icon.png')
+const shareImage = new URL(ogImage || icon, Astro.site).href
 const jsonLdBlocks = jsonLd ? (Array.isArray(jsonLd) ? jsonLd : [jsonLd]) : []
 ---
 
@@ -45,7 +48,7 @@ const jsonLdBlocks = jsonLd ? (Array.isArray(jsonLd) ? jsonLd : [jsonLd]) : []
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonical} />
-    <meta property="og:image" content={new URL(icon, Astro.site).href} />
+    <meta property="og:image" content={shareImage} />
     <meta name="twitter:card" content="summary" />
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />

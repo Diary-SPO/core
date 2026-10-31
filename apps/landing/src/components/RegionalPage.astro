@@ -3,6 +3,10 @@ import Callout from './Callout.astro'
 import DownloadCta from './DownloadCta.astro'
 import Layout from '../layouts/Layout.astro'
 import { CONTENT_VARIANTS, pickVariant } from '../lib/content-variants'
+import {
+  regionEmblemUrl,
+  regionPhotoUrl
+} from '../lib/region-media'
 import type { DiaryRegion } from '../lib/regions'
 import { withBase } from '../lib/site'
 
@@ -12,6 +16,8 @@ interface Props {
 
 const { region } = Astro.props
 const host = new URL(region.url).hostname
+const emblem = regionEmblemUrl(region.id)
+const photo = regionPhotoUrl(region.id)
 
 const intro = pickVariant(CONTENT_VARIANTS.intro, region.code)
 const whatIs = pickVariant(CONTENT_VARIANTS.whatIs, region.code + 'what')
@@ -76,13 +82,68 @@ const jsonLd = {
 }
 ---
 
-<Layout title={title} description={description} path={path} jsonLd={jsonLd}>
-  <h1>Дневник СПО — {region.name}</h1>
-  <p class="seo-lead">{intro} {whatIs}</p>
+<Layout
+  title={title}
+  description={description}
+  path={path}
+  ogImage={photo}
+  jsonLd={jsonLd}
+>
+  <a class="seo-back" href={withBase('regions/')}>
+    <svg
+      width="16"
+      height="16"
+      viewBox="0 0 24 24"
+      fill="none"
+      aria-hidden="true"
+    >
+      <path
+        d="M15 6 9 12l6 6"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"></path>
+    </svg>
+    Все регионы
+  </a>
 
-  <p class="seo-portal">
-    Портал региона: <a href={region.url}>{host}</a>
-  </p>
+  <section
+    class="region-hero"
+    style={`--region-photo: url('${photo}')`}
+    aria-label={region.name}
+  >
+    <div class="region-hero-bg" aria-hidden="true"></div>
+    <div class="region-hero-in">
+      <img
+        class="region-hero-emblem"
+        src={emblem}
+        alt={`Герб: ${region.name}`}
+        width="84"
+        height="84"
+      />
+      <div>
+        <h1>Дневник СПО — {region.name}</h1>
+        <p class="region-hero-lead">{intro}</p>
+      </div>
+      <div class="region-hero-meta">
+        <a class="region-hero-chip" href={region.url} target="_blank" rel="noreferrer"
+          >{host}</a
+        >
+        {
+          region.hasEsiaOnly && (
+            <span class="region-hero-chip">только Госуслуги</span>
+          )
+        }
+        {
+          cities.slice(0, 3).map((city) => (
+            <span class="region-hero-chip">{city}</span>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <p class="seo-lead">{whatIs}</p>
 
   {
     region.hasEsiaOnly && (
