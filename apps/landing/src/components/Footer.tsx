@@ -2,20 +2,27 @@ import { LINKS } from '../config'
 import { GithubIcon, VkIcon } from '../icons'
 import { publicUrl, withBase } from '../lib/site'
 
-export function Footer() {
+interface FooterProps {
+  /** На главной — `#top` (без перезагрузки), на остальных — ссылка домой. */
+  homeHref?: string
+}
+
+export function Footer({ homeHref = '#top' }: FooterProps) {
   return (
     <footer className='footer'>
       <div className='container'>
         <div className='footer-bento'>
           <div className='footer-brand'>
-            <img src={publicUrl('icon.png')} alt='' aria-hidden='true' />
-            <div>
-              <b>Дневник СПО</b>
-              <p>
-                Независимый проект. Не является официальным приложением Сетевого
-                города и АО «ИРТех».
-              </p>
-            </div>
+            <a className='footer-brand-link' href={homeHref}>
+              <img src={publicUrl('icon.png')} alt='' aria-hidden='true' />
+              <span className='footer-brand-text'>
+                <b>Дневник СПО</b>
+                <p>
+                  Независимый проект. Не является официальным приложением
+                  Сетевого города и АО «ИРТех».
+                </p>
+              </span>
+            </a>
             <div className='socials'>
               <a
                 href={LINKS.vk}
