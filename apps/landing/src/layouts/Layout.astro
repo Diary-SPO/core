@@ -1,4 +1,5 @@
 ---
+import { LINKS } from '../config'
 import { canonicalUrl, publicUrl, withBase } from '../lib/site'
 import '../styles.css'
 
@@ -137,33 +138,68 @@ const jsonLdBlocks = jsonLd ? (Array.isArray(jsonLd) ? jsonLd : [jsonLd]) : []
       <slot />
     </main>
     <footer class="footer">
-      <div class="container footer-grid">
-        <div class="footer-brand">
-          <img src={icon} alt="" aria-hidden="true" width="40" height="40" />
-          <div>
-            <b>Дневник СПО</b>
-            <p>
-              Независимый проект. Не является официальным приложением Сетевого
-              города и АО «ИРТех».
-            </p>
+      <div class="container">
+        <div class="footer-bento">
+          <div class="footer-brand">
+            <img src={icon} alt="" aria-hidden="true" width="44" height="44" />
+            <div>
+              <b>Дневник СПО</b>
+              <p>
+                Независимый проект. Не является официальным приложением Сетевого
+                города и АО «ИРТех».
+              </p>
+            </div>
+            <div class="socials">
+              <a
+                href={LINKS.vk}
+                target="_blank"
+                rel="noreferrer"
+                aria-label="Группа Дневника СПО во VK"
+              >
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                  <path d="M12.93 17.5c-5.4 0-8.5-3.7-8.63-9.9h2.7c.09 4.54 2.1 6.46 3.69 6.86V7.6h2.55v3.9c1.56-.17 3.2-1.95 3.75-3.9h2.55c-.71 2.7-2.55 4.7-3.8 5.32 1.25.6 3.25 2.14 4.01 4.58h-2.8c-.6-1.9-2.1-3.37-4.34-3.58v3.58h-.65Z"></path>
+                </svg>
+              </a>
+              <a
+                href={LINKS.github}
+                target="_blank"
+                rel="noreferrer"
+                aria-label="Исходный код на GitHub"
+              >
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                  <path d="M12 2.5A9.5 9.5 0 0 0 2.5 12c0 4.2 2.72 7.76 6.5 9.02.48.09.65-.2.65-.46v-1.63c-2.65.58-3.21-1.13-3.21-1.13-.43-1.1-1.06-1.4-1.06-1.4-.86-.6.07-.58.07-.58.95.07 1.46.98 1.46.98.85 1.46 2.24 1.04 2.78.8.09-.63.33-1.04.6-1.28-2.11-.24-4.33-1.06-4.33-4.7 0-1.04.37-1.9.98-2.56-.1-.25-.42-1.22.09-2.54 0 0 .8-.25 2.62.98a9.1 9.1 0 0 1 4.76 0c1.82-1.23 2.62-.98 2.62-.98.51 1.32.19 2.29.09 2.54.61.66.98 1.52.98 2.56 0 3.65-2.23 4.45-4.35 4.69.35.3.65.88.65 1.78v2.64c0 .26.17.56.66.46A9.5 9.5 0 0 0 21.5 12 9.5 9.5 0 0 0 12 2.5Z"></path>
+                </svg>
+              </a>
+            </div>
           </div>
-        </div>
-        <div class="footer-links">
-          <a href={withBase('skachat/')}>Скачать</a>
-          <a href={withBase('vhod/')}>Как войти</a>
-          <a href={withBase('vhod-cherez-gosuslugi/')}>Вход через Госуслуги</a>
-          <a href={withBase('regions/')}>Все регионы</a>
-          <a href={withBase('dnevnik-spo-ne-otkryvaetsya/')}>Не открывается</a>
-          <a href={withBase('dnevnik-spo-oshibka-zaprosa/')}>Ошибка запроса</a>
-          <a href={withBase('dnevnik-spo-ne-rabotaet/')}>Не работает</a>
-          <a href="https://vk.com/diary_spo" target="_blank" rel="noreferrer"
-            >VK</a
-          >
-          <a
-            href="https://github.com/Diary-SPO/core"
-            target="_blank"
-            rel="noreferrer">GitHub</a
-          >
+
+          <nav class="footer-col" aria-label="Приложение">
+            <h2 class="footer-col-title">Приложение</h2>
+            <a href={withBase('skachat/')}>Скачать</a>
+            <a href={withBase('vhod/')}>Как войти</a>
+            <a href={withBase('vhod-cherez-gosuslugi/')}>Вход через Госуслуги</a>
+            <a href={withBase('regions/')}>Все регионы</a>
+          </nav>
+
+          <nav class="footer-col" aria-label="Помощь">
+            <h2 class="footer-col-title">Помощь</h2>
+            <a href={withBase('dnevnik-spo-ne-otkryvaetsya/')}>Не открывается</a>
+            <a href={withBase('dnevnik-spo-oshibka-zaprosa/')}>Ошибка запроса</a>
+            <a href={withBase('dnevnik-spo-ne-rabotaet/')}>Не работает</a>
+          </nav>
+
+          <nav class="footer-col" aria-label="Документы">
+            <h2 class="footer-col-title">Документы</h2>
+            <a href={LINKS.privacy} target="_blank" rel="noreferrer"
+              >Политика конфиденциальности</a
+            >
+            <a href={LINKS.agreement} target="_blank" rel="noreferrer"
+              >Пользовательское соглашение</a
+            >
+            <a href={LINKS.consent} target="_blank" rel="noreferrer"
+              >Согласие на обработку данных</a
+            >
+          </nav>
         </div>
       </div>
     </footer>

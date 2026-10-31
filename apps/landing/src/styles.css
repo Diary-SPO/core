@@ -630,48 +630,78 @@ h1 {
   padding-bottom: 18px;
 }
 
-/* Footer */
+/* Footer — bento card */
 .footer {
+  padding: 8px 0 20px;
+  font-size: 14px;
+  background: transparent;
+}
+.footer-bento {
+  display: grid;
+  grid-template-columns: minmax(0, 1.35fr) repeat(3, minmax(0, 1fr));
+  gap: 28px 32px;
+  align-items: start;
+  padding: 28px 30px;
+  border-radius: 24px;
   background: #0b1220;
   color: #9aa8c0;
-  padding: 32px 0;
-  font-size: 14px;
-}
-.footer-grid {
-  display: flex;
-  justify-content: space-between;
-  gap: 24px;
-  align-items: flex-start;
+  box-shadow: 0 16px 40px rgba(15, 27, 45, 0.12);
 }
 .footer-brand {
-  display: flex;
-  gap: 14px;
-  max-width: 440px;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  grid-template-areas:
+    "icon text"
+    "socials socials";
+  gap: 10px 14px;
+  align-items: start;
 }
 .footer-brand img {
+  grid-area: icon;
   width: 44px;
   height: 44px;
   border-radius: 12px;
 }
+.footer-brand > div:not(.socials) {
+  grid-area: text;
+}
 .footer-brand b {
   color: #fff;
+  font-size: 16px;
 }
 .footer-brand p {
   margin: 6px 0 0;
+  max-width: 28ch;
 }
-.footer-links > a {
-  display: block;
+.footer-brand .socials {
+  grid-area: socials;
+  margin-top: 6px;
+}
+.footer-col {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-width: 0;
+}
+.footer-col-title {
+  margin: 0 0 4px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: #c9d4e6;
+}
+.footer-col a {
   color: inherit;
   text-decoration: none;
-  margin-bottom: 8px;
+  line-height: 1.4;
 }
-.footer-links > a:hover {
+.footer-col a:hover {
   color: #fff;
 }
 .socials {
   display: flex;
   gap: 10px;
-  margin-bottom: 12px;
 }
 .socials a {
   display: grid;
@@ -756,6 +786,13 @@ h1 {
   .nav {
     display: none;
   }
+  .footer-bento {
+    grid-template-columns: 1fr 1fr;
+    gap: 24px 28px;
+  }
+  .footer-brand {
+    grid-column: 1 / -1;
+  }
 }
 @media (max-width: 600px) {
   .hero {
@@ -780,11 +817,26 @@ h1 {
     height: 84px;
     border-radius: 20px;
   }
-  .footer-grid {
-    flex-direction: column;
+  .footer-bento {
+    grid-template-columns: 1fr 1fr;
+    gap: 22px 20px;
+    padding: 22px 20px;
+    border-radius: 20px;
+  }
+  .footer-brand {
+    grid-column: 1 / -1;
+  }
+  .footer-brand p {
+    max-width: none;
   }
   .btn-lg {
     width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .footer-bento {
+    grid-template-columns: 1fr;
   }
 }
 @media (prefers-reduced-motion: reduce) {
@@ -860,8 +912,10 @@ h1 {
 [data-theme="dark"] .modal {
   background: var(--card);
 }
-[data-theme="dark"] .footer {
+[data-theme="dark"] .footer-bento {
   background: #060b14;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.35);
+  border: 1px solid var(--line);
 }
 [data-theme="dark"] .hero-visual img {
   filter: drop-shadow(0 30px 50px rgba(0, 0, 0, 0.6));
