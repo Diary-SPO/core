@@ -45,6 +45,13 @@ export function Footer() {
           <a href={LINKS.consent} target='_blank' rel='noreferrer'>
             Согласие на обработку данных
           </a>
+          <a href='/skachat/'>Скачать</a>
+          <a href='/vhod/'>Как войти</a>
+          <a href='/vhod-cherez-gosuslugi/'>Вход через Госуслуги</a>
+          <a href='/regions/'>Все регионы</a>
+          <a href='/dnevnik-spo-ne-otkryvaetsya/'>Не открывается</a>
+          <a href='/dnevnik-spo-oshibka-zaprosa/'>Ошибка запроса</a>
+          <a href='/dnevnik-spo-ne-rabotaet/'>Не работает</a>
         </div>
       </div>
     </footer>

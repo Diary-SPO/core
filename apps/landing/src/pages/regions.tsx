@@ -1,0 +1,63 @@
+import React from 'react'
+import { Footer } from '../components/Footer'
+import { Header } from '../components/Header'
+import { useTheme } from '../hooks'
+import { REGIONS } from '../lib/regions'
+
+export function RegionsPage() {
+  const [theme, setTheme] = useTheme()
+
+  return (
+    <div>
+      <Header
+        theme={theme}
+        onToggleTheme={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
+      />
+      <main className='container' style={{ padding: '2rem 1rem' }}>
+        <h1>Все поддерживаемые регионы</h1>
+        <p>
+          Приложение Дневник СПО работает в регионах, которые используют систему
+          «Сетевой город. Образование» для среднего профессионального
+          образования.
+        </p>
+        <p>Выберите ваш регион из списка:</p>
+        <ul>
+          {REGIONS.map((region) => (
+            <li key={region.id}>
+              <a href={`/dnevnik-spo-${region.code}/`}>
+                <strong>{region.name}</strong> (код {region.code})
+              </a>
+              {region.hasEsiaOnly && (
+                <span> — только вход через Госуслуги</span>
+              )}
+            </li>
+          ))}
+        </ul>
+
+        <h2>Что делать, если вашего региона нет в списке</h2>
+        <p>Если вашего региона нет в списке, возможно:</p>
+        <ul>
+          <li>
+            Ваш регион использует другую систему (не «Сетевой город.
+            Образование»)
+          </li>
+          <li>
+            Ваш регион использует «Сетевой город», но для школ, а не для СПО
+          </li>
+        </ul>
+        <p>
+          Уточните в учебной части вашего колледжа, какую систему использует ваш
+          регион.
+        </p>
+
+        <h2>Школьный модуль не поддерживается</h2>
+        <p>
+          Приложение предназначено только для студентов СПО. Школьный модуль
+          «Сетевого города» отключён с 1 сентября 2026 года, школы перешли на
+          систему «Госуслуги. Моя школа».
+        </p>
+      </main>
+      <Footer />
+    </div>
+  )
+}

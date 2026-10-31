@@ -1,0 +1,186 @@
+import React from 'react'
+import { Footer } from '../components/Footer'
+import { Header } from '../components/Header'
+import { useTheme } from '../hooks'
+import { CONTENT_VARIANTS, pickVariant } from '../lib/content-variants'
+import type { DiaryRegion } from '../lib/regions'
+
+interface RegionalPageProps {
+  region: DiaryRegion
+}
+
+export function RegionalPage({ region }: RegionalPageProps) {
+  const [theme, setTheme] = useTheme()
+
+  // Select random variants based on region code as seed
+  const intro = pickVariant(CONTENT_VARIANTS.intro, region.code)
+  const whatIs = pickVariant(CONTENT_VARIANTS.whatIs, region.code + 'what')
+  const howToEnter = pickVariant(
+    CONTENT_VARIANTS.howToEnter,
+    region.code + 'how'
+  )
+  const ifNotOpens = pickVariant(
+    CONTENT_VARIANTS.ifNotOpens,
+    region.code + 'open'
+  )
+  const download = pickVariant(CONTENT_VARIANTS.download, region.code + 'down')
+
+  const schoolQuestion = pickVariant(
+    CONTENT_VARIANTS.faq.schoolQuestion,
+    region.code + 'sq'
+  )
+  const schoolAnswer = pickVariant(
+    CONTENT_VARIANTS.faq.schoolAnswer,
+    region.code + 'sa'
+  )
+  const passwordQuestion = pickVariant(
+    CONTENT_VARIANTS.faq.passwordQuestion,
+    region.code + 'pq'
+  )
+  const passwordAnswer = pickVariant(
+    CONTENT_VARIANTS.faq.passwordAnswer,
+    region.code + 'pa'
+  )
+  const esiaQuestion = pickVariant(
+    CONTENT_VARIANTS.faq.esiaQuestion,
+    region.code + 'eq'
+  )
+  const esiaAnswer = pickVariant(
+    CONTENT_VARIANTS.faq.esiaAnswer,
+    region.code + 'ea'
+  )
+
+  return (
+    <div>
+      <Header
+        theme={theme}
+        onToggleTheme={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
+      />
+      <main className='container' style={{ padding: '2rem 1rem' }}>
+        <h1>
+          Дневник СПО {region.code} — электронный дневник колледжей{' '}
+          {region.name}
+        </h1>
+
+        <p>{intro}</p>
+
+        <p>{whatIs}</p>
+
+        <p>
+          Приложение показывает расписание, оценки, задания и другие данные из
+          официального портала {region.name} в удобном виде на телефоне.
+        </p>
+
+        {region.hasEsiaOnly && (
+          <p>
+            <strong>Важное: {region.note}</strong>
+          </p>
+        )}
+
+        <h2>Как войти</h2>
+
+        <ol>
+          <li>В приложении выберите регион «{region.name}»</li>
+          <li>
+            Введите логин и пароль от регионального дневника или войдите через
+            Госуслуги
+          </li>
+          <li>Готово — расписание и оценки перед вами</li>
+        </ol>
+
+        <p>{howToEnter}</p>
+
+        <p>
+          Ваш пароль не сохраняется в приложении и передаётся напрямую в
+          региональный дневник. Исходный код приложения открыт — его можно
+          проверить на GitHub.
+        </p>
+
+        <h2>Если дневник не открывается</h2>
+
+        <h3>Работы на портале</h3>
+
+        <p>{ifNotOpens}</p>
+
+        <h3>Неверный регион</h3>
+
+        <p>
+          Проверьте, что в приложении выбрана «{region.name}». Если выбран
+          другой регион — приложение будет обращаться к другому порталу.
+        </p>
+
+        <h3>Переход на ЕСИА</h3>
+
+        <p>
+          Проверьте на региональном портале, какой способ входа используется.
+          Если регион перешёл на ЕСИА — используйте кнопку «Войти через
+          Госуслуги» в приложении. Подробности:{' '}
+          <a href='/vhod-cherez-gosuslugi/'>вход через Госуслуги</a>.
+        </p>
+
+        <h3>Другая система</h3>
+
+        <p>
+          Уточните в учебной части, какую систему использует ваш регион. Если
+          это не «Сетевой город. Образование» — Дневник СПО не подойдёт.
+        </p>
+
+        <p>
+          Если проблема не решается, см.{' '}
+          <a href='/dnevnik-spo-ne-otkryvaetsya/'>дневник не открывается</a>,{' '}
+          <a href='/dnevnik-spo-oshibka-zaprosa/'>ошибка запроса</a>,{' '}
+          <a href='/dnevnik-spo-ne-rabotaet/'>не работает</a>.
+        </p>
+
+        <h2>Как скачать</h2>
+
+        <p>{download}</p>
+
+        <ul>
+          <li>
+            <strong>RuStore</strong> — найдите «Дневник СПО» (пакет
+            io.github.diaryspo)
+          </li>
+          <li>
+            <strong>APK</strong> — скачайте файл установки с нашего сайта
+          </li>
+        </ul>
+
+        <p>
+          Требуется Android 8 или новее. Подробности:{' '}
+          <a href='/skachat/'>страница скачивания</a>.
+        </p>
+
+        <h2>Часто задаваемые вопросы</h2>
+
+        <h3>{schoolQuestion}</h3>
+
+        <p>{schoolAnswer}</p>
+
+        <h3>{passwordQuestion}</h3>
+
+        <p>{passwordAnswer}</p>
+
+        {region.hasEsiaOnly && (
+          <>
+            <h3>{esiaQuestion}</h3>
+
+            <p>
+              {region.note} Это требование регионального оператора, не
+              приложения.
+            </p>
+          </>
+        )}
+
+        <h3>Как узнать адрес портала {region.name}?</h3>
+
+        <p>
+          Уточните в учебной части. Приложение автоматически подключается к
+          правильному порталу при выборе региона. Портал:{' '}
+          <a href={region.url}>{region.url}</a>
+        </p>
+      </main>
+      <Footer />
+    </div>
+  )
+}
