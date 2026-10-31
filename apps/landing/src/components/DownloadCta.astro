@@ -1,0 +1,62 @@
+---
+import { LINKS } from '../config'
+import { publicUrl, withBase } from '../lib/site'
+
+interface Props {
+  title?: string
+  lead?: string
+  showGuideLinks?: boolean
+}
+
+const {
+  title = 'Скачать Дневник СПО',
+  lead = 'Android · бесплатно. RuStore или APK — как удобнее.',
+  showGuideLinks = true
+} = Astro.props
+
+const icon = publicUrl('icon.png')
+const rustore = publicUrl('rustore.svg')
+---
+
+<section class="seo-download" aria-label="Скачать приложение">
+  <div class="download-card">
+    <div>
+      <h2>{title}</h2>
+      <p>{lead}</p>
+      <div class="cta">
+        <a
+          class="btn btn-primary btn-lg"
+          href={LINKS.rustore}
+          target="_blank"
+          rel="noreferrer"
+        >
+          <img class="btn-icon" src={rustore} alt="" aria-hidden="true" />
+          RuStore
+        </a>
+        <a class="btn btn-lg" href={LINKS.apk}> APK напрямую </a>
+      </div>
+      {
+        showGuideLinks && (
+          <p class="seo-download-links">
+            Дальше: <a href={withBase('vhod/')}>как войти</a>
+            {' · '}
+            <a href={withBase('vhod-cherez-gosuslugi/')}>Госуслуги</a>
+            {' · '}
+            <a href={withBase('skachat/')}>подробнее об установке</a>
+          </p>
+        )
+      }
+    </div>
+    <img
+      class="download-icon"
+      src={icon}
+      alt="Иконка приложения Дневник СПО"
+      loading="lazy"
+      width="128"
+      height="128"
+    />
+  </div>
+  <p class="hint seo-download-hint">
+    Нет RuStore — ставьте APK. Разрешите установку из браузера один раз.
+  </p>
+</section>

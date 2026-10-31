@@ -1,4 +1,6 @@
 ---
+import Callout from './Callout.astro'
+import DownloadCta from './DownloadCta.astro'
 import Layout from '../layouts/Layout.astro'
 import { CONTENT_VARIANTS, pickVariant } from '../lib/content-variants'
 import type { DiaryRegion } from '../lib/regions'
@@ -9,15 +11,12 @@ interface Props {
 }
 
 const { region } = Astro.props
+const host = new URL(region.url).hostname
 
 const intro = pickVariant(CONTENT_VARIANTS.intro, region.code)
 const whatIs = pickVariant(CONTENT_VARIANTS.whatIs, region.code + 'what')
 const howToEnter = pickVariant(CONTENT_VARIANTS.howToEnter, region.code + 'how')
-const ifNotOpens = pickVariant(
-  CONTENT_VARIANTS.ifNotOpens,
-  region.code + 'open'
-)
-const download = pickVariant(CONTENT_VARIANTS.download, region.code + 'down')
+const ifNotOpens = pickVariant(CONTENT_VARIANTS.ifNotOpens, region.code + 'open')
 
 const schoolQuestion = pickVariant(
   CONTENT_VARIANTS.faq.schoolQuestion,
@@ -40,9 +39,10 @@ const esiaQuestion = pickVariant(
   region.code + 'eq'
 )
 
+const cities = region.aliases.filter((a) => /[а-яё]/i.test(a))
 const path = `dnevnik-spo-${region.code}/`
 const title = `Дневник СПО — ${region.name}: электронный дневник колледжа`
-const description = `Дневник СПО для студентов колледжей и техникумов: ${region.name}. Расписание, оценки и задания на Android. Портал ${new URL(region.url).hostname}. Вход по логину или через Госуслуги.`
+const description = `Дневник СПО для студентов колледжей и техникумов: ${region.name}. Расписание, оценки и задания на Android. Портал ${host}. Вход по логину или через Госуслуги.`
 
 const jsonLd = {
   '@context': 'https://schema.org',
@@ -78,114 +78,134 @@ const jsonLd = {
 
 <Layout title={title} description={description} path={path} jsonLd={jsonLd}>
   <h1>Дневник СПО — {region.name}</h1>
+  <p class="seo-lead">{intro} {whatIs}</p>
 
-  <p>{intro}</p>
-
-  <p>{whatIs}</p>
-
-  <p>
-    Приложение показывает расписание, оценки, задания и другие данные из
-    официального портала региона «{region.name}» ({new URL(region.url).hostname})
-    в удобном виде на телефоне.
+  <p class="seo-portal">
+    Портал региона: <a href={region.url}>{host}</a>
   </p>
 
   {
     region.hasEsiaOnly && (
-      <p>
-        <strong>Важно: {region.note}</strong>
-      </p>
+      <Callout variant="warn" title="Важно для этого региона">
+        <p>{region.note}</p>
+      </Callout>
     )
   }
 
-  <h2>Как войти</h2>
+  <Callout variant="info" title="Что показывает приложение">
+    <p>
+      Расписание, оценки, задания и объявления из официального портала «{
+        region.name
+      }» — в удобном виде на телефоне.
+    </p>
+  </Callout>
 
-  <ol>
-    <li>В приложении выберите регион «{region.name}»</li>
-    <li>
-      Введите логин и пароль от регионального дневника или войдите через
-      Госуслуги
+  <h2 class="seo-block-title">Как войти</h2>
+  <ol class="seo-steps">
+    <li class="seo-step">
+      <span class="seo-step-n">1</span>
+      <div>
+        <h3>Выберите «{region.name}»</h3>
+        <p>В списке регионов при первом запуске.</p>
+      </div>
     </li>
-    <li>Готово — расписание и оценки перед вами</li>
+    <li class="seo-step">
+      <span class="seo-step-n">2</span>
+      <div>
+        <h3>Логин или Госуслуги</h3>
+        <p>{howToEnter}</p>
+      </div>
+    </li>
+    <li class="seo-step">
+      <span class="seo-step-n">3</span>
+      <div>
+        <h3>Готово</h3>
+        <p>Расписание и оценки перед вами.</p>
+      </div>
+    </li>
   </ol>
 
-  <p>{howToEnter}</p>
+  <Callout variant="ok" title="Пароль не хранится в приложении">
+    <p>
+      Данные уходят напрямую в региональный дневник. Исходный код открыт на
+      GitHub.
+    </p>
+  </Callout>
 
-  <p>
-    Пароль не сохраняется в приложении и передаётся напрямую в региональный
-    дневник. Исходный код открыт на GitHub.
-  </p>
-
-  <h2>Если дневник не открывается</h2>
-
-  <h3>Работы на портале</h3>
-  <p>{ifNotOpens}</p>
-
-  <h3>Неверный регион</h3>
-  <p>
-    Проверьте, что в приложении выбрана «{region.name}». Если выбран другой
-    регион — приложение будет обращаться к другому порталу.
-  </p>
-
-  <h3>Переход на ЕСИА</h3>
-  <p>
-    Если регион перешёл на ЕСИА — используйте кнопку «Войти через Госуслуги».
-    Подробности: <a href={withBase('vhod-cherez-gosuslugi/')}>вход через Госуслуги</a>.
-  </p>
-
-  <h3>Другая система</h3>
-  <p>
-    Уточните в учебной части, какую систему использует ваш регион. Если это не
-    «Сетевой город. Образование» — Дневник СПО не подойдёт.
-  </p>
-
-  <p>
-    См. также: <a href={withBase('dnevnik-spo-ne-otkryvaetsya/')}>дневник не открывается</a>,
-    <a href={withBase('dnevnik-spo-oshibka-zaprosa/')}>ошибка запроса</a>,
-    <a href={withBase('dnevnik-spo-ne-rabotaet/')}>не работает</a>.
-  </p>
-
-  <h2>Как скачать</h2>
-  <p>{download}</p>
-  <ul>
-    <li>
-      <strong>RuStore</strong> — найдите «Дневник СПО» (пакет io.github.diaryspo)
-    </li>
-    <li><strong>APK</strong> — скачайте файл установки с нашего сайта</li>
-  </ul>
-  <p>
-    Требуется Android 8+. Подробности: <a href={withBase('skachat/')}>страница скачивания</a>.
-  </p>
-
-  <h2>Часто задаваемые вопросы</h2>
-
-  <h3>{schoolQuestion}</h3>
-  <p>{schoolAnswer}</p>
-
-  <h3>{passwordQuestion}</h3>
-  <p>{passwordAnswer}</p>
-
-  {
-    region.hasEsiaOnly && (
-      <>
-        <h3>{esiaQuestion}</h3>
-        <p>
-          {region.note} Это требование регионального оператора, не приложения.
-        </p>
-      </>
-    )
-  }
-
-  <h3>Как узнать адрес портала «{region.name}»?</h3>
-  <p>
-    Уточните в учебной части. При выборе региона приложение подключается к
-    нужному порталу автоматически. Портал: <a href={region.url}>{region.url}</a>
-  </p>
-
-  {
-    region.aliases.length > 0 && (
+  <h2 class="seo-block-title">Если дневник не открывается</h2>
+  <div class="seo-faq">
+    <div class="seo-faq-item">
+      <h3>Работы на портале</h3>
+      <p>{ifNotOpens}</p>
+    </div>
+    <div class="seo-faq-item">
+      <h3>Неверный регион</h3>
       <p>
-        Также ищут по городам: {region.aliases.filter((a) => /[а-яё]/i.test(a)).join(', ')}.
+        Должна быть выбрана именно «{region.name}» — иначе запросы уйдут на
+        другой портал.
       </p>
-    )
-  }
+    </div>
+    <div class="seo-faq-item">
+      <h3>Переход на ЕСИА</h3>
+      <p>
+        Используйте «Войти через Госуслуги». Подробнее:
+        <a href={withBase('vhod-cherez-gosuslugi/')}>инструкция</a>.
+      </p>
+    </div>
+  </div>
+
+  <div class="seo-related">
+    <a href={withBase('dnevnik-spo-ne-otkryvaetsya/')}>Не открывается</a>
+    <a href={withBase('dnevnik-spo-oshibka-zaprosa/')}>Ошибка запроса</a>
+    <a href={withBase('dnevnik-spo-ne-rabotaet/')}>Не работает</a>
+    <a href={withBase('regions/')}>Все регионы</a>
+  </div>
+
+  <h2 class="seo-block-title">Частые вопросы</h2>
+  <div class="seo-faq">
+    <div class="seo-faq-item">
+      <h3>{schoolQuestion}</h3>
+      <p>{schoolAnswer}</p>
+    </div>
+    <div class="seo-faq-item">
+      <h3>{passwordQuestion}</h3>
+      <p>{passwordAnswer}</p>
+    </div>
+    {
+      region.hasEsiaOnly && (
+        <div class="seo-faq-item">
+          <h3>{esiaQuestion}</h3>
+          <p>
+            {region.note} Это требование регионального оператора, не приложения.
+          </p>
+        </div>
+      )
+    }
+    <div class="seo-faq-item">
+      <h3>Адрес портала «{region.name}»?</h3>
+      <p>
+        При выборе региона подключается автоматически:
+        <a href={region.url}>{region.url}</a>
+        {
+          cities.length > 0 && (
+            <>
+              . Часто ищут по городам: {cities.join(', ')}.
+            </>
+          )
+        }
+      </p>
+    </div>
+  </div>
+
+  <DownloadCta
+    title={`Скачать Дневник СПО для региона «${region.name}»`}
+    lead="Android · бесплатно. Дальше выберите регион в приложении."
+  />
 </Layout>
+
+<style>
+  .seo-block-title {
+    margin: 1.75rem 0 0.75rem !important;
+    font-size: 1.2rem !important;
+  }
+</style>
