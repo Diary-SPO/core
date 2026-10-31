@@ -1,0 +1,57 @@
+---
+/** Кнопка темы на SEO-страницах. Клик обрабатывает ClientEnhancements. */
+---
+
+<button
+  class="btn btn-sm btn-ghost theme-toggle"
+  type="button"
+  id="theme-toggle"
+  aria-label="Переключить тему"
+  aria-pressed="false"
+>
+  <svg
+    class="theme-icon theme-icon-sun"
+    width="18"
+    height="18"
+    viewBox="0 0 24 24"
+    fill="none"
+    aria-hidden="true"
+  >
+    <circle cx="12" cy="12" r="4.5" stroke="currentColor" stroke-width="1.8"
+    ></circle>
+    <path
+      d="M12 2.5v2.5M12 19v2.5M2.5 12H5M19 12h2.5M5 5l1.8 1.8M17.2 17.2 19 19M19 5l-1.8 1.8M6.8 17.2 5 19"
+      stroke="currentColor"
+      stroke-width="1.8"
+      stroke-linecap="round"></path>
+  </svg>
+  <svg
+    class="theme-icon theme-icon-moon"
+    width="18"
+    height="18"
+    viewBox="0 0 24 24"
+    fill="none"
+    aria-hidden="true"
+  >
+    <path
+      d="M20 14.5A8 8 0 0 1 9.5 4 8 8 0 1 0 20 14.5Z"
+      stroke="currentColor"
+      stroke-width="1.8"
+      stroke-linejoin="round"></path>
+  </svg>
+</button>
+
+<style is:global>
+  .theme-icon-sun {
+    display: none;
+  }
+  .theme-icon-moon {
+    display: block;
+  }
+  [data-theme='dark'] .theme-icon-sun {
+    display: block;
+  }
+  [data-theme='dark'] .theme-icon-moon {
+    display: none;
+  }
+</style>

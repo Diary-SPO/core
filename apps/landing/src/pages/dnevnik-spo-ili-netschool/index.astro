@@ -1,0 +1,216 @@
+---
+import Callout from '../../components/Callout.astro'
+import DownloadCta from '../../components/DownloadCta.astro'
+import Layout from '../../layouts/Layout.astro'
+import { publicUrl, withBase } from '../../lib/site'
+
+const path = 'dnevnik-spo-ili-netschool/'
+const hero = publicUrl('seo/seo-compare.webp')
+const schedule = publicUrl('showcase/phone-schedule.webp')
+const grades = publicUrl('showcase/phone-grades.webp')
+const news = publicUrl('showcase/phone-news.webp')
+const bgSchedule = publicUrl('showcase/bg-red.svg')
+const bgGrades = publicUrl('showcase/bg-purple.svg')
+const bgNews = publicUrl('showcase/bg-violet.svg')
+---
+
+<Layout
+  title="Дневник СПО или NetSchool — в чём разница"
+  description="Сравнение приложения Дневник СПО и официального NetSchool от ИРТех: для кого сделаны, откуда берут данные Сетевого города, плюсы для студентов колледжей."
+  path={path}
+>
+  <h1>Дневник СПО или NetSchool</h1>
+  <p class="seo-lead">
+    Оба приложения показывают данные из экосистемы «Сетевой город. Образование»
+    / АСУ РСО. NetSchool — официальный клиент АО «ИРТех» для школьников и
+    родителей. Дневник СПО — независимый проект под Android для студентов
+    колледжей и техникумов, где региональный дневник уже работает.
+  </p>
+
+  <figure class="seo-figure">
+    <img
+      src={hero}
+      alt="Иллюстрация: школа и колледж как разные сценарии дневника"
+      width="1280"
+      height="720"
+      loading="eager"
+    />
+    <figcaption>
+      Выбор приложения зависит от того, кто вы и какой портал использует ваше
+      учебное заведение.
+    </figcaption>
+  </figure>
+
+  <Callout variant="info" title="Коротко">
+    <p>
+      Это не «два одинаковых дневника». NetSchool закрывает школьный сценарий
+      официального вендора. Дневник СПО заточен под СПО: быстрее открыть
+      расписание и оценки на телефоне, без лишнего школьного контура.
+    </p>
+  </Callout>
+
+  <h2 class="seo-section-title">Сравнение</h2>
+  <table class="seo-compare-table">
+    <thead>
+      <tr>
+        <th>Параметр</th>
+        <th>Дневник СПО</th>
+        <th>NetSchool</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <th scope="row">Кто делает</th>
+        <td data-label="Дневник СПО">Независимый open-source проект</td>
+        <td data-label="NetSchool">АО «ИРТех», разработчик СГО</td>
+      </tr>
+      <tr>
+        <th scope="row">Для кого</th>
+        <td data-label="Дневник СПО">Студенты СПО в поддерживаемых регионах</td>
+        <td data-label="NetSchool">Школьники и родители (фокус на школу)</td>
+      </tr>
+      <tr>
+        <th scope="row">Откуда данные</th>
+        <td data-label="Дневник СПО"
+          >Региональный портал «Сетевой город. Образование»</td
+        >
+        <td data-label="NetSchool"
+          >Те же системы СГО / АСУ РСО, официальный канал вендора</td
+        >
+      </tr>
+      <tr>
+        <th scope="row">Платформы</th>
+        <td data-label="Дневник СПО">Android (RuStore и APK)</td>
+        <td data-label="NetSchool">Android, iOS и другие магазины</td>
+      </tr>
+      <tr>
+        <th scope="row">Вход</th>
+        <td data-label="Дневник СПО"
+          >Логин региона или Госуслуги, если регион на ЕСИА</td
+        >
+        <td data-label="NetSchool"
+          >Учётные данные СГО / сценарии вендора для школы</td
+        >
+      </tr>
+      <tr>
+        <th scope="row">Реклама и оплата</th>
+        <td data-label="Дневник СПО">Бесплатно, без рекламы</td>
+        <td data-label="NetSchool">Официальное приложение вендора</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h2 class="seo-section-title">Что умеет Дневник СПО</h2>
+  <div class="seo-phones">
+    <figure>
+      <div
+        class="seo-phone-shot"
+        style={`background-image: url(${bgSchedule})`}
+      >
+        <img
+          src={schedule}
+          alt="Экран расписания в приложении Дневник СПО"
+          width="360"
+          height="720"
+          loading="lazy"
+        />
+      </div>
+      <figcaption>Расписание на неделю</figcaption>
+    </figure>
+    <figure>
+      <div class="seo-phone-shot" style={`background-image: url(${bgGrades})`}>
+        <img
+          src={grades}
+          alt="Экран оценок в приложении Дневник СПО"
+          width="360"
+          height="720"
+          loading="lazy"
+        />
+      </div>
+      <figcaption>Оценки и итоги</figcaption>
+    </figure>
+    <figure>
+      <div class="seo-phone-shot" style={`background-image: url(${bgNews})`}>
+        <img
+          src={news}
+          alt="Экран объявлений в приложении Дневник СПО"
+          width="360"
+          height="720"
+          loading="lazy"
+        />
+      </div>
+      <figcaption>Новости колледжа</figcaption>
+    </figure>
+  </div>
+
+  <div class="seo-split">
+    <div class="seo-split-card">
+      <h3>Когда удобнее Дневник СПО</h3>
+      <p>
+        Учитесь в колледже или техникуме на Сетевом городе, нужен лёгкий Android-клиент
+        под расписание и оценки, хотите открытый код и установку из RuStore или APK.
+      </p>
+    </div>
+    <div class="seo-split-card">
+      <h3>Когда логичнее NetSchool</h3>
+      <p>
+        Вы школьник или родитель, регион официально рекомендует NetSchool, нужен
+        iOS или функции школьного контура (питание, справки, портфолио), которые
+        вендор встроил именно туда.
+      </p>
+    </div>
+  </div>
+
+  <Callout variant="warn" title="Важно про официальность">
+    <p>
+      Дневник СПО не заменяет портал колледжа и не является продуктом ИРТех.
+      Оценки и расписание по-прежнему ведутся в региональной системе. Приложение
+      только показывает то, что уже есть в вашем дневнике.
+    </p>
+  </Callout>
+
+  <h2 class="seo-section-title">Как выбрать за минуту</h2>
+  <ol class="seo-steps">
+    <li class="seo-step">
+      <span class="seo-step-n">1</span>
+      <div>
+        <h3>Уточните систему колледжа</h3>
+        <p>
+          Если это «Сетевой город. Образование» и регион есть в
+          <a href={withBase('regions/')}>списке</a>, Дневник СПО обычно подходит.
+        </p>
+      </div>
+    </li>
+    <li class="seo-step">
+      <span class="seo-step-n">2</span>
+      <div>
+        <h3>Проверьте способ входа</h3>
+        <p>
+          Тот же логин, что на сайте, или
+          <a href={withBase('vhod-cherez-gosuslugi/')}>Госуслуги</a>. Без рабочей
+          учётки ни одно приложение не поможет.
+        </p>
+      </div>
+    </li>
+    <li class="seo-step">
+      <span class="seo-step-n">3</span>
+      <div>
+        <h3>Поставьте и сравните сами</h3>
+        <p>
+          Оба клиента можно держать рядом. Для учёбы в СПО чаще хватает
+          расписания, оценок и объявлений — именно на этом сделан акцент в
+          Дневнике СПО.
+        </p>
+      </div>
+    </li>
+  </ol>
+
+  <div class="seo-related">
+    <a href={withBase('dnevnik-spo-ili-moya-shkola/')}>Сравнение с «Моей школой»</a>
+    <a href={withBase('o-proekte/')}>О проекте</a>
+    <a href={withBase('skachat/')}>Как скачать</a>
+    <a href={withBase('regions/')}>Регионы</a>
+  </div>
+
+  <DownloadCta />
+</Layout>

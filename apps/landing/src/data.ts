@@ -1,3 +1,5 @@
+import { publicUrl } from './lib/site'
+
 export interface Feature {
   color: string
   bg: string
@@ -15,34 +17,34 @@ export interface FaqItem {
 export const FEATURES: Feature[] = [
   {
     color: '#e5482f',
-    bg: './showcase/bg-red.svg',
+    bg: publicUrl('showcase/bg-red.svg'),
     title: 'Наглядное расписание на неделю',
     text: 'Пары по дням: время, корпус, кабинет, преподаватель. Листайте неделю и возвращайтесь кнопкой «Домой».',
-    img: './showcase/phone-schedule.webp',
+    img: publicUrl('showcase/phone-schedule.webp'),
     alt: 'Экран расписания на неделю в приложении Дневник СПО'
   },
   {
     color: '#0a9b4d',
-    bg: './showcase/bg-green.svg',
+    bg: publicUrl('showcase/bg-green.svg'),
     title: 'Подробная информация о паре',
     text: 'Предмет, тип занятия, аудитория, время и успеваемость — всё в карточке «Подробнее о паре».',
-    img: './showcase/phone-lesson.webp',
+    img: publicUrl('showcase/phone-lesson.webp'),
     alt: 'Карточка подробной информации о паре'
   },
   {
     color: '#3b3bbf',
-    bg: './showcase/bg-purple.svg',
+    bg: publicUrl('showcase/bg-purple.svg'),
     title: 'Детальная статистика успеваемости',
     text: 'Общий и средний балл, количество оценок, текущие и итоговые. Видно, что подтянуть.',
-    img: './showcase/phone-grades.webp',
+    img: publicUrl('showcase/phone-grades.webp'),
     alt: 'Экран статистики успеваемости студента'
   },
   {
     color: '#9333ea',
-    bg: './showcase/bg-violet.svg',
+    bg: publicUrl('showcase/bg-violet.svg'),
     title: 'Объявления в один клик',
     text: 'Графики занятий, переносы и новости колледжа без похода в браузер Сетевого города.',
-    img: './showcase/phone-news.webp',
+    img: publicUrl('showcase/phone-news.webp'),
     alt: 'Экран объявлений учебной организации'
   }
 ]
@@ -54,7 +56,7 @@ export const FAQ: FaqItem[] = [
   },
   {
     q: 'Мой регион поддерживается?',
-    a: 'Да. Мобильное приложение работает со всеми регионами Сетевого города: регион и портал выбираются на экране входа.'
+    a: 'Да, если ваш колледж на модуле ПОО «Сетевой город. Образование». Регион выбирается на экране входа; полный список — в разделе «Все регионы» в подвале сайта.'
   },
   {
     q: 'Это безопасно? Куда уходит пароль?',

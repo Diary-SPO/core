@@ -1,0 +1,222 @@
+---
+import Callout from '../../components/Callout.astro'
+import DownloadCta from '../../components/DownloadCta.astro'
+import Layout from '../../layouts/Layout.astro'
+import { publicUrl, withBase } from '../../lib/site'
+
+const path = 'dnevnik-spo-ili-moya-shkola/'
+const hero = publicUrl('seo/seo-compare.webp')
+const schedule = publicUrl('showcase/phone-schedule.webp')
+const lesson = publicUrl('showcase/phone-lesson.webp')
+const grades = publicUrl('showcase/phone-grades.webp')
+const bgSchedule = publicUrl('showcase/bg-red.svg')
+const bgLesson = publicUrl('showcase/bg-green.svg')
+const bgGrades = publicUrl('showcase/bg-purple.svg')
+---
+
+<Layout
+  title="Дневник СПО или ФГИС «Моя школа» — чем отличаются"
+  description="Чем ФГИС «Моя школа» отличается от регионального Сетевого города и приложения Дневник СПО: федеральная платформа, контент, журнал и когда какое решение использовать студенту колледжа."
+  path={path}
+>
+  <h1>Дневник СПО или «Моя школа»</h1>
+  <p class="seo-lead">
+    ФГИС «Моя школа» — федеральная платформа Минпросвещения: контент, тесты,
+    документы, связь через «Сферум», в ряде регионов ещё и журнал с дневником.
+    Дневник СПО — мобильный клиент к региональному «Сетевому городу» для
+    студентов СПО. Это разные уровни системы, а не дубликаты одной кнопки.
+  </p>
+
+  <figure class="seo-figure">
+    <img
+      src={hero}
+      alt="Иллюстрация сравнения школьной и колледжной цифровых сред"
+      width="1280"
+      height="720"
+      loading="eager"
+    />
+    <figcaption>
+      В одном субъекте могут жить и региональный дневник, и сервисы «Моей школы».
+    </figcaption>
+  </figure>
+
+  <Callout variant="info" title="Как это устроено официально">
+    <p>
+      По FAQ самой ФГИС «Моя школа» у системы нет задачи «убить» все региональные
+      журналы. Часто идут по пути интеграции: оценки и расписание по-прежнему
+      живут в региональной ГИС, а «Моя школа» добавляет федеральные сервисы.
+      В отдельных территориях идет полный переход с СГО на «Мою школу» — тогда
+      привычный адрес дневника меняется.
+    </p>
+  </Callout>
+
+  <h2 class="seo-section-title">Сравнение</h2>
+  <table class="seo-compare-table">
+    <thead>
+      <tr>
+        <th>Параметр</th>
+        <th>Дневник СПО</th>
+        <th>ФГИС «Моя школа»</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <th scope="row">Статус</th>
+        <td data-label="Дневник СПО">Неофициальное приложение-клиент</td>
+        <td data-label="ФГИС «Моя школа»"
+          >Федеральная государственная ИС</td
+        >
+      </tr>
+      <tr>
+        <th scope="row">Источник данных</th>
+        <td data-label="Дневник СПО"
+          >Региональный «Сетевой город. Образование»</td
+        >
+        <td data-label="ФГИС «Моя школа»"
+          >Федеральные сервисы + интеграция с региональными ГИС / ТОР</td
+        >
+      </tr>
+      <tr>
+        <th scope="row">Для студента</th>
+        <td data-label="Дневник СПО"
+          >Расписание, оценки, объявления на телефоне</td
+        >
+        <td data-label="ФГИС «Моя школа»"
+          >Дневник (где подключён), ЦОК, тесты, облако, «Сферум»</td
+        >
+      </tr>
+      <tr>
+        <th scope="row">Вход</th>
+        <td data-label="Дневник СПО">Логин региона или Госуслуги</td>
+        <td data-label="ФГИС «Моя школа»">В основном через Госуслуги</td>
+      </tr>
+      <tr>
+        <th scope="row">Когда нужен</th>
+        <td data-label="Дневник СПО"
+          >Колледж на СГО, нужен быстрый мобильный дневник</td
+        >
+        <td data-label="ФГИС «Моя школа»"
+          >Учёба, материалы и коммуникации по федеральной платформе</td
+        >
+      </tr>
+    </tbody>
+  </table>
+
+  <h2 class="seo-section-title">Что смотреть в Дневнике СПО</h2>
+  <div class="seo-phones">
+    <figure>
+      <div
+        class="seo-phone-shot"
+        style={`background-image: url(${bgSchedule})`}
+      >
+        <img
+          src={schedule}
+          alt="Расписание в Дневнике СПО"
+          width="360"
+          height="720"
+          loading="lazy"
+        />
+      </div>
+      <figcaption>Расписание с заменами</figcaption>
+    </figure>
+    <figure>
+      <div class="seo-phone-shot" style={`background-image: url(${bgLesson})`}>
+        <img
+          src={lesson}
+          alt="Карточка занятия в Дневнике СПО"
+          width="360"
+          height="720"
+          loading="lazy"
+        />
+      </div>
+      <figcaption>Детали пары</figcaption>
+    </figure>
+    <figure>
+      <div class="seo-phone-shot" style={`background-image: url(${bgGrades})`}>
+        <img
+          src={grades}
+          alt="Оценки в Дневнике СПО"
+          width="360"
+          height="720"
+          loading="lazy"
+        />
+      </div>
+      <figcaption>Текущие оценки</figcaption>
+    </figure>
+  </div>
+
+  <h2 class="seo-section-title">Практичные сценарии</h2>
+  <div class="seo-split">
+    <div class="seo-split-card">
+      <h3>Колледж на «Сетевом городе»</h3>
+      <p>
+        Оценки и пары лежат в региональном портале. Дневник СПО показывает их на
+        Android. «Моя школа» может параллельно давать материалы и связь с
+        педагогами, если колледж её использует.
+      </p>
+    </div>
+    <div class="seo-split-card">
+      <h3>Регион ушёл на «Мою школу»</h3>
+      <p>
+        Если учебная часть говорит, что журнал теперь только в ФГИС, смотрите
+        оценки там. Клиент к СГО в таком случае уже не увидит актуальные данные —
+        регион сменил систему.
+      </p>
+    </div>
+  </div>
+
+  <Callout variant="warn" title="Не путайте названия">
+    <p>
+      «Моя школа» в разговоре иногда называют любой электронный дневник. На деле
+      это конкретная федеральная платформа. Спросите в учебной части точное
+      название системы и ссылку для входа — от этого зависит, какое приложение
+      ставить.
+    </p>
+  </Callout>
+
+  <h2 class="seo-section-title">Что делать студенту</h2>
+  <ol class="seo-steps">
+    <li class="seo-step">
+      <span class="seo-step-n">1</span>
+      <div>
+        <h3>Узнайте систему колледжа</h3>
+        <p>
+          СГО, «Моя школа», другая ГИС — без этого любой совет про приложение
+          будет гаданием.
+        </p>
+      </div>
+    </li>
+    <li class="seo-step">
+      <span class="seo-step-n">2</span>
+      <div>
+        <h3>Если это Сетевой город</h3>
+        <p>
+          Проверьте регион в <a href={withBase('regions/')}>каталоге</a>, войдите
+          как на сайте и при необходимости
+          <a href={withBase('privyazka-gosuslug/')}>привяжите Госуслуги</a>.
+        </p>
+      </div>
+    </li>
+    <li class="seo-step">
+      <span class="seo-step-n">3</span>
+      <div>
+        <h3>Если основная площадка — «Моя школа»</h3>
+        <p>
+          Пользуйтесь официальным входом через Госуслуги. Дневник СПО здесь не
+          заменяет федеральную платформу.
+        </p>
+      </div>
+    </li>
+  </ol>
+
+  <div class="seo-related">
+    <a href={withBase('dnevnik-spo-ili-netschool/')}>Сравнение с NetSchool</a>
+    <a href={withBase('o-proekte/')}>О проекте</a>
+    <a href={withBase('vhod/')}>Как войти</a>
+    <a href={withBase('regions/')}>Регионы</a>
+  </div>
+
+  <DownloadCta
+    lead="Если колледж на Сетевом городе и регион поддерживается — поставьте Дневник СПО и смотрите пары на телефоне."
+  />
+</Layout>

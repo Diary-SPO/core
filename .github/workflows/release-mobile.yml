@@ -13,9 +13,9 @@ name: Mobile release + landing
 #    сборки (задел под будущую автопубликацию в RuStore).
 # 3. APK для лендинга (канал landing) едет артефактом в job лендинга,
 #    кладётся в public/ и попадает в dist рядом с сайтом.
-# 4. Сборка лендинга и деплой в репозиторий Diary-SPO/diary-spo.github.io
-#    (именно он отдаёт корень https://diary-spo.github.io/):
-#    main -> корень, pre-main -> подпапка pre/.
+# 4. Сборка Astro-лендинга (SSG в apps/landing/dist) и деплой в
+#    Diary-SPO/diary-spo.github.io (корень https://diary-spo.github.io/):
+#    main -> корень (SITE_BASE=/), pre-main -> pre/ (SITE_BASE=/pre/).
 #    Для деплоя нужен PAT с доступом к этому репозиторию (секрет PAGES_DEPLOY_TOKEN).
 #
 # Нужные секреты репозитория:
@@ -227,7 +227,11 @@ jobs:
           name: landing-apk
           path: apps/landing/public/
 
+      # Astro SSG: HTML страниц в dist/ (не SPA). Для pre-main base=/pre/,
+      # чтобы ассеты и ссылки работали из https://diary-spo.github.io/pre/.
       - name: Build landing
+        env:
+          SITE_BASE: ${{ github.ref_name == 'pre-main' && '/pre/' || '/' }}
         run: bun run --cwd apps/landing build
 
       - name: Deploy production landing to diary-spo.github.io

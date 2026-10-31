@@ -1,0 +1,337 @@
+---
+import { fade } from 'astro:transitions'
+import ClientEnhancements from '../components/ClientEnhancements.astro'
+import ThemeToggle from '../components/ThemeToggle.astro'
+import { LINKS } from '../config'
+import { canonicalUrl, publicUrl, withBase } from '../lib/site'
+import '../styles.css'
+import '../styles-seo.css'
+
+interface Props {
+  title: string
+  description: string
+  path?: string
+  ogType?: string
+  ogImage?: string
+  jsonLd?: Record<string, unknown> | Record<string, unknown>[]
+}
+
+const {
+  title,
+  description,
+  path = '',
+  ogType = 'website',
+  ogImage,
+  jsonLd
+} = Astro.props
+
+const canonical = canonicalUrl(path)
+const icon = publicUrl('icon.png')
+const shareImage = new URL(ogImage || icon, Astro.site).href
+const jsonLdBlocks = jsonLd ? (Array.isArray(jsonLd) ? jsonLd : [jsonLd]) : []
+---
+
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, viewport-fit=cover"
+    />
+    <meta name="color-scheme" content="light dark" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <meta name="theme-color" content="#0b5cff" />
+    <link rel="canonical" href={canonical} />
+    <meta property="og:type" content={ogType} />
+    <meta property="og:locale" content="ru_RU" />
+    <meta property="og:site_name" content="Дневник СПО" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={shareImage} />
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <link rel="icon" type="image/png" href={icon} />
+    <link rel="apple-touch-icon" href={icon} />
+    <ClientEnhancements />
+    <noscript>
+      <style>
+        .reveal {
+          opacity: 1;
+          transform: none;
+        }
+      </style>
+    </noscript>
+    <script is:inline>
+      ;(function () {
+        try {
+          var theme = localStorage.getItem('landing-theme')
+          if (theme !== 'light' && theme !== 'dark') {
+            theme = window.matchMedia('(prefers-color-scheme: dark)').matches
+              ? 'dark'
+              : 'light'
+          }
+          document.documentElement.dataset.theme = theme
+          document.documentElement.style.colorScheme = theme
+        } catch (e) {
+          document.documentElement.dataset.theme = 'light'
+          document.documentElement.style.colorScheme = 'light'
+        }
+      })()
+    </script>
+    <!-- Yandex.Metrika counter -->
+    <script type="text/javascript" is:inline>
+      ;(function (m, e, t, r, i, k, a) {
+        m[i] =
+          m[i] ||
+          function () {
+            ;(m[i].a = m[i].a || []).push(arguments)
+          }
+        m[i].l = 1 * new Date()
+        for (var j = 0; j < document.scripts.length; j++) {
+          if (document.scripts[j].src === r) {
+            return
+          }
+        }
+        ;(k = e.createElement(t)),
+          (a = e.getElementsByTagName(t)[0]),
+          (k.async = 1),
+          (k.src = r),
+          a.parentNode.insertBefore(k, a)
+      })(
+        window,
+        document,
+        'script',
+        'https://mc.yandex.ru/metrika/tag.js?id=113429458',
+        'ym'
+      )
+
+      ym(113429458, 'init', {
+        ssr: true,
+        webvisor: true,
+        clickmap: true,
+        ecommerce: 'dataLayer',
+        referrer: document.referrer,
+        url: location.href,
+        accurateTrackBounce: true,
+        trackLinks: true
+      })
+    </script>
+    <!-- /Yandex.Metrika counter -->
+    {
+      jsonLdBlocks.map((block) => (
+        <script type="application/ld+json" set:html={JSON.stringify(block)} />
+      ))
+    }
+  </head>
+  <body>
+    <noscript
+      ><div>
+        <img
+          src="https://mc.yandex.ru/watch/113429458"
+          style="position:absolute; left:-9999px;"
+          alt=""
+        />
+      </div></noscript
+    >
+    <header class="header" id="site-header" transition:name="site-header">
+      <div class="container">
+        <div class="header-bento">
+          <a class="brand" href={withBase()}>
+            <img
+              src={icon}
+              alt="Иконка приложения Дневник СПО"
+              width="36"
+              height="36"
+            />
+            <span>Дневник СПО</span>
+          </a>
+          <nav class="nav nav--desktop" aria-label="Разделы сайта">
+            <a href={withBase('skachat/')}>Скачать</a>
+            <a href={withBase('vhod/')}>Как войти</a>
+            <a href={withBase('o-proekte/')}>О проекте</a>
+            <a href={withBase('regions/')}>Регионы</a>
+          </nav>
+          <ThemeToggle />
+          <a
+            class="btn btn-sm btn-ghost header-regions"
+            href={withBase('regions/')}
+          >
+            Регионы
+          </a>
+          <a
+            class="btn btn-sm btn-primary header-cta"
+            href={withBase('skachat/')}
+          >
+            Скачать
+          </a>
+          <button
+            class="btn btn-sm btn-ghost nav-toggle"
+            type="button"
+            id="nav-toggle"
+            aria-label="Открыть меню"
+            aria-expanded="false"
+            aria-controls="site-nav-panel"
+          >
+            <svg
+              class="nav-toggle-icon"
+              width="18"
+              height="18"
+              viewBox="0 0 18 18"
+              fill="none"
+              aria-hidden="true"
+            >
+              <g class="nav-toggle-open">
+                <path
+                  d="M3.5 5.5h11"
+                  stroke="currentColor"
+                  stroke-width="1.5"
+                  stroke-linecap="round"></path>
+                <path
+                  d="M3.5 9h11"
+                  stroke="currentColor"
+                  stroke-width="1.5"
+                  stroke-linecap="round"></path>
+                <path
+                  d="M3.5 12.5h11"
+                  stroke="currentColor"
+                  stroke-width="1.5"
+                  stroke-linecap="round"></path>
+              </g>
+              <g class="nav-toggle-close">
+                <path
+                  d="M4.5 4.5 13.5 13.5"
+                  stroke="currentColor"
+                  stroke-width="1.5"
+                  stroke-linecap="round"></path>
+                <path
+                  d="m13.5 4.5-9 9"
+                  stroke="currentColor"
+                  stroke-width="1.5"
+                  stroke-linecap="round"></path>
+              </g>
+            </svg>
+          </button>
+        </div>
+        <div class="header-panel" id="site-nav-panel" hidden aria-hidden="true">
+          <nav class="nav nav--mobile" aria-label="Мобильное меню">
+            <a href={withBase('skachat/')}>Скачать</a>
+            <a href={withBase('vhod/')}>Как войти</a>
+            <a href={withBase('o-proekte/')}>О проекте</a>
+            <a href={withBase('regions/')}>Регионы</a>
+            <a href={withBase('vhod-cherez-gosuslugi/')}>Госуслуги</a>
+            <a href={withBase('zabyl-parol/')}>Забыли пароль</a>
+            <a href={withBase('privyazka-gosuslug/')}>Привязка Госуслуг</a>
+          </nav>
+          <a
+            class="btn btn-primary header-panel-cta"
+            href={withBase('skachat/')}
+          >
+            Скачать приложение
+          </a>
+        </div>
+      </div>
+    </header>
+    <main class="container seo-main" transition:animate={fade({ duration: '0.22s' })}>
+      <slot />
+    </main>
+    <footer class="footer" transition:name="site-footer">
+      <div class="container">
+        <div class="footer-bento">
+          <div class="footer-brand">
+            <a class="footer-brand-link" href={withBase()}>
+              <img
+                src={icon}
+                alt=""
+                aria-hidden="true"
+                width="44"
+                height="44"
+              />
+              <span class="footer-brand-text">
+                <b>Дневник СПО</b>
+                <p>
+                  Независимый проект. Не является официальным приложением
+                  Сетевого города и АО «ИРТех».
+                </p>
+              </span>
+            </a>
+            <div class="socials">
+              <a
+                href={LINKS.vk}
+                target="_blank"
+                rel="noreferrer"
+                aria-label="Группа Дневника СПО во VK"
+              >
+                <svg
+                  width="20"
+                  height="20"
+                  viewBox="0 0 24 24"
+                  fill="currentColor"
+                  aria-hidden="true"
+                >
+                  <path
+                    d="M12.93 17.5c-5.4 0-8.5-3.7-8.63-9.9h2.7c.09 4.54 2.1 6.46 3.69 6.86V7.6h2.55v3.9c1.56-.17 3.2-1.95 3.75-3.9h2.55c-.71 2.7-2.55 4.7-3.8 5.32 1.25.6 3.25 2.14 4.01 4.58h-2.8c-.6-1.9-2.1-3.37-4.34-3.58v3.58h-.65Z"
+                  ></path>
+                </svg>
+              </a>
+              <a
+                href={LINKS.github}
+                target="_blank"
+                rel="noreferrer"
+                aria-label="Исходный код на GitHub"
+              >
+                <svg
+                  width="20"
+                  height="20"
+                  viewBox="0 0 24 24"
+                  fill="currentColor"
+                  aria-hidden="true"
+                >
+                  <path
+                    d="M12 2.5A9.5 9.5 0 0 0 2.5 12c0 4.2 2.72 7.76 6.5 9.02.48.09.65-.2.65-.46v-1.63c-2.65.58-3.21-1.13-3.21-1.13-.43-1.1-1.06-1.4-1.06-1.4-.86-.6.07-.58.07-.58.95.07 1.46.98 1.46.98.85 1.46 2.24 1.04 2.78.8.09-.63.33-1.04.6-1.28-2.11-.24-4.33-1.06-4.33-4.7 0-1.04.37-1.9.98-2.56-.1-.25-.42-1.22.09-2.54 0 0 .8-.25 2.62.98a9.1 9.1 0 0 1 4.76 0c1.82-1.23 2.62-.98 2.62-.98.51 1.32.19 2.29.09 2.54.61.66.98 1.52.98 2.56 0 3.65-2.23 4.45-4.35 4.69.35.3.65.88.65 1.78v2.64c0 .26.17.56.66.46A9.5 9.5 0 0 0 21.5 12 9.5 9.5 0 0 0 12 2.5Z"
+                  ></path>
+                </svg>
+              </a>
+            </div>
+          </div>
+
+          <nav class="footer-col" aria-label="Приложение">
+            <h2 class="footer-col-title">Приложение</h2>
+            <a href={withBase('skachat/')}>Скачать</a>
+            <a href={withBase('o-proekte/')}>О проекте</a>
+            <a href={withBase('vhod/')}>Как войти</a>
+            <a href={withBase('vhod-cherez-gosuslugi/')}>Вход через Госуслуги</a>
+            <a href={withBase('regions/')}>Все регионы</a>
+          </nav>
+
+          <nav class="footer-col" aria-label="Помощь">
+            <h2 class="footer-col-title">Помощь</h2>
+            <a href={withBase('zabyl-parol/')}>Забыли пароль</a>
+            <a href={withBase('privyazka-gosuslug/')}>Привязка Госуслуг</a>
+            <a href={withBase('dnevnik-spo-ne-otkryvaetsya/')}>Не открывается</a>
+            <a href={withBase('dnevnik-spo-oshibka-zaprosa/')}>Ошибка запроса</a>
+            <a href={withBase('dnevnik-spo-ne-rabotaet/')}>Не работает</a>
+            <a href={withBase('dnevnik-spo-ili-netschool/')}>Сравнение с NetSchool</a>
+            <a href={withBase('dnevnik-spo-ili-moya-shkola/')}>Сравнение с «Моей школой»</a>
+          </nav>
+
+          <nav class="footer-col" aria-label="Документы">
+            <h2 class="footer-col-title">Документы</h2>
+            <a href={LINKS.privacy} target="_blank" rel="noreferrer"
+              >Политика конфиденциальности</a
+            >
+            <a href={LINKS.agreement} target="_blank" rel="noreferrer"
+              >Пользовательское соглашение</a
+            >
+            <a href={LINKS.consent} target="_blank" rel="noreferrer"
+              >Согласие на обработку данных</a
+            >
+          </nav>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

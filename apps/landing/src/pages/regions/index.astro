@@ -1,0 +1,89 @@
+---
+import Callout from '../../components/Callout.astro'
+import DownloadCta from '../../components/DownloadCta.astro'
+import Layout from '../../layouts/Layout.astro'
+import { regionEmblemUrl, regionThumbUrl } from '../../lib/region-media'
+import { REGIONS } from '../../lib/regions'
+import { withBase } from '../../lib/site'
+
+const path = 'regions/'
+const sorted = [...REGIONS].sort((a, b) =>
+  a.name.localeCompare(b.name, 'ru', { sensitivity: 'base' })
+)
+---
+
+<Layout
+  title="Регионы электронного дневника СПО — Сетевой город"
+  description="Список регионов, где колледжи работают на «Сетевой город. Образование»: порталы, коды субъектов, города. Челябинск, Калуга, Сыктывкар, Томск и другие."
+  path={path}
+>
+  <h1>Регионы электронного дневника СПО</h1>
+  <p class="seo-lead">
+    Ниже регионы, где студенты колледжей и техникумов пользуются модулем ПОО
+    «Сетевой город. Образование» (в Самарской области систему чаще называют АСУ
+    РСО). Откройте свой регион — там адрес портала, как войти и что делать, если
+    дневник не открывается.
+  </p>
+
+  <ul class="seo-regions">
+    {
+      sorted.map((region) => (
+        <li>
+          <a
+            class="seo-region-card"
+            href={withBase(`dnevnik-spo-${region.code}/`)}
+            style={`--region-photo: url('${regionThumbUrl(region.id)}')`}
+          >
+            <img
+              class="seo-region-emblem"
+              src={regionEmblemUrl(region.id)}
+              alt=""
+              width="48"
+              height="48"
+              loading="lazy"
+            />
+            <span>
+              <strong>{region.name}</strong>
+              <small>
+                код {region.code} · {new URL(region.url).hostname}
+              </small>
+            </span>
+            {region.hasEsiaOnly && (
+              <span class="seo-region-badge">вход через Госуслуги</span>
+            )}
+          </a>
+        </li>
+      ))
+    }
+  </ul>
+
+  <Callout variant="warn" title="Региона нет в списке?">
+    <p>
+      Скорее всего, у вас другая система (не «Сетевой город» для СПО) или дневник
+      только для школ. Уточните в учебной части вашего колледжа, какой портал
+      использует учебное заведение.
+    </p>
+  </Callout>
+
+  <Callout variant="info" title="Для школьников">
+    <p>
+      Школьный модуль Сетевого города сюда не входит. Многие школы переходят на
+      «Госуслуги. Моя школа».
+    </p>
+  </Callout>
+
+  <h2 class="seo-block-title">Приложение Дневник СПО</h2>
+  <p>
+    Для регионов из списка есть неофициальное приложение Дневник СПО — тот же
+    региональный дневник на Android, без браузера.
+  </p>
+
+  <DownloadCta lead="RuStore или APK. Бесплатно, без рекламы." />
+</Layout>
+
+<style>
+  .seo-block-title {
+    margin: 1.75rem 0 0.75rem !important;
+    font-size: 1.2rem !important;
+  }
+</style>

@@ -1,0 +1,225 @@
+---
+import Callout from '../../components/Callout.astro'
+import DownloadCta from '../../components/DownloadCta.astro'
+import Layout from '../../layouts/Layout.astro'
+import { LINKS } from '../../config'
+import { publicUrl, withBase } from '../../lib/site'
+
+const path = 'o-proekte/'
+const hero = publicUrl('seo/seo-about.webp')
+const icon = publicUrl('icon.png')
+const schedule = publicUrl('showcase/phone-schedule.webp')
+const grades = publicUrl('showcase/phone-grades.webp')
+const news = publicUrl('showcase/phone-news.webp')
+const bgSchedule = publicUrl('showcase/bg-red.svg')
+const bgGrades = publicUrl('showcase/bg-purple.svg')
+const bgNews = publicUrl('showcase/bg-violet.svg')
+---
+
+<Layout
+  title="Что такое Дневник СПО — о проекте"
+  description="Дневник СПО: независимое Android-приложение для студентов колледжей на Сетевом городе. Открытый код, без рекламы, RuStore и APK, чем отличается от официальных систем."
+  path={path}
+>
+  <h1>Что такое Дневник СПО</h1>
+  <p class="seo-lead">
+    Дневник СПО — независимое приложение для Android. Оно помогает студентам
+    колледжей и техникумов смотреть расписание, оценки и объявления из
+    регионального электронного дневника «Сетевой город. Образование». Проект не
+    связан с АО «ИРТех» и не является официальным клиентом Сетевого города.
+  </p>
+
+  <figure class="seo-figure">
+    <img
+      src={hero}
+      alt="Иллюстрация: кот-талисман рядом со смартфоном с расписанием"
+      width="1280"
+      height="720"
+      loading="eager"
+    />
+    <figcaption>
+      Проект сделан студентами и для студентов: меньше лишнего, больше пользы на
+      телефоне.
+    </figcaption>
+  </figure>
+
+  <div class="seo-split">
+    <div class="seo-split-card">
+      <h3>Зачем он нужен</h3>
+      <p>
+        Веб-портал регионального дневника неудобен с телефона. Приложение
+        собирает то, что нужно каждый день: пары, оценки, новости группы и
+        колледжа — в одном месте.
+      </p>
+    </div>
+    <div class="seo-split-card">
+      <h3>Чего он не делает</h3>
+      <p>
+        Не выдаёт и не сбрасывает пароли, не меняет оценки, не подменяет
+        официальный журнал. Данные берутся из той системы, которую уже использует
+        ваш колледж.
+      </p>
+    </div>
+  </div>
+
+  <h2 class="seo-section-title">Как выглядит приложение</h2>
+  <div class="seo-phones">
+    <figure>
+      <div
+        class="seo-phone-shot"
+        style={`background-image: url(${bgSchedule})`}
+      >
+        <img
+          src={schedule}
+          alt="Расписание в Дневнике СПО"
+          width="360"
+          height="720"
+          loading="lazy"
+        />
+      </div>
+      <figcaption>Расписание</figcaption>
+    </figure>
+    <figure>
+      <div class="seo-phone-shot" style={`background-image: url(${bgGrades})`}>
+        <img
+          src={grades}
+          alt="Оценки в Дневнике СПО"
+          width="360"
+          height="720"
+          loading="lazy"
+        />
+      </div>
+      <figcaption>Оценки</figcaption>
+    </figure>
+    <figure>
+      <div class="seo-phone-shot" style={`background-image: url(${bgNews})`}>
+        <img
+          src={news}
+          alt="Новости в Дневнике СПО"
+          width="360"
+          height="720"
+          loading="lazy"
+        />
+      </div>
+      <figcaption>Объявления</figcaption>
+    </figure>
+  </div>
+
+  <h2 class="seo-section-title">Принципы проекта</h2>
+  <div class="seo-faq">
+    <div class="seo-faq-item">
+      <h3>Бесплатно и без рекламы</h3>
+      <p>
+        Скачивание из RuStore или APK ничего не стоит. Внутри нет баннеров и
+        навязчивых подписок.
+      </p>
+    </div>
+    <div class="seo-faq-item">
+      <h3>Открытый код</h3>
+      <p>
+        Исходники лежат на
+        <a href={LINKS.github} target="_blank" rel="noreferrer">GitHub</a>. Можно
+        посмотреть, как устроен вход и работа с региональным API.
+      </p>
+    </div>
+    <div class="seo-faq-item">
+      <h3>Пароль не храним у себя</h3>
+      <p>
+        Вход идёт в региональный дневник или через Госуслуги по правилам вашего
+        субъекта. Подробнее:
+        <a href={withBase('vhod/')}>как войти</a> и
+        <a href={withBase('privyazka-gosuslug/')}>привязка ЕСИА</a>.
+      </p>
+    </div>
+    <div class="seo-faq-item">
+      <h3>Только поддерживаемые регионы</h3>
+      <p>
+        Список живой и зависит от того, как устроен портал субъекта. Актуальные
+        регионы — на странице <a href={withBase('regions/')}>регионов</a>.
+      </p>
+    </div>
+  </div>
+
+  <Callout variant="warn" title="Официальный статус">
+    <p>
+      Дневник СПО — независимый проект. Вопросы по учётным записям, паролям и
+      ошибкам в журнале решает колледж и оператор региональной системы. Мы
+      помогаем удобнее читать уже существующие данные.
+    </p>
+  </Callout>
+
+  <h2 class="seo-section-title">Чем отличаемся от других названий</h2>
+  <div class="seo-split">
+    <div class="seo-split-card">
+      <h3>NetSchool</h3>
+      <p>
+        Официальное приложение ИРТех, в основном для школы.
+        <a href={withBase('dnevnik-spo-ili-netschool/')}>Подробное сравнение</a>.
+      </p>
+    </div>
+    <div class="seo-split-card">
+      <h3>ФГИС «Моя школа»</h3>
+      <p>
+        Федеральная платформа с контентом и сервисами Минпросвещения.
+        <a href={withBase('dnevnik-spo-ili-moya-shkola/')}>Чем отличается</a>.
+      </p>
+    </div>
+  </div>
+
+  <h2 class="seo-section-title">Связь и документы</h2>
+  <p>
+    Новости и поддержка сообщества — в
+    <a href={LINKS.vk} target="_blank" rel="noreferrer">группе VK</a>. Код и
+    задачи разработки — на GitHub. Юридические документы:
+    <a href={LINKS.privacy} target="_blank" rel="noreferrer"
+      >политика конфиденциальности</a
+    >,
+    <a href={LINKS.agreement} target="_blank" rel="noreferrer"
+      >пользовательское соглашение</a
+    >,
+    <a href={LINKS.consent} target="_blank" rel="noreferrer"
+      >согласие на обработку данных</a
+    >.
+  </p>
+
+  <div class="seo-related">
+    <a href={withBase('skachat/')}>Скачать</a>
+    <a href={withBase('vhod/')}>Как войти</a>
+    <a href={withBase('zabyl-parol/')}>Забыли пароль</a>
+    <a href={withBase('regions/')}>Регионы</a>
+  </div>
+
+  <DownloadCta
+    title="Попробовать Дневник СПО"
+    lead="Поставьте приложение, выберите регион и войдите так же, как на сайте колледжа."
+  />
+
+  <p class="seo-brand-note">
+    <img src={icon} alt="" width="40" height="40" aria-hidden="true" />
+    <span>
+      Дневник СПО существует, чтобы студентам было проще жить с электронным
+      дневником, а не чтобы заменить официальные системы образования.
+    </span>
+  </p>
+</Layout>
+
+<style>
+  .seo-brand-note {
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+    margin: 1.5rem 0 0;
+    padding: 14px 16px;
+    border-radius: 16px;
+    border: 1px solid var(--line);
+    background: var(--card);
+    color: var(--muted);
+    font-size: 0.95rem;
+    line-height: 1.55;
+  }
+
+  .seo-brand-note img {
+    flex: none;
+    border-radius: 10px;
+  }
+</style>
