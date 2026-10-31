@@ -1,0 +1,78 @@
+---
+import Callout from '../../components/Callout.astro'
+import DownloadCta from '../../components/DownloadCta.astro'
+import Layout from '../../layouts/Layout.astro'
+import { LINKS } from '../../config'
+import { withBase } from '../../lib/site'
+
+const path = 'skachat/'
+---
+
+<Layout
+  title="Скачать Дневник СПО — приложение для Android (APK и RuStore)"
+  description="Скачать Дневник СПО бесплатно: RuStore или APK. Android 8+, без рекламы. Неофициальный клиент электронного дневника СПО / Сетевого города."
+  path={path}
+>
+  <h1>Скачать Дневник СПО</h1>
+  <p class="seo-lead">
+    Дневник СПО — неофициальное приложение для Android. Оно показывает
+    расписание и оценки из вашего регионального дневника «Сетевой город.
+    Образование», если регион поддерживается.
+  </p>
+
+  <DownloadCta
+    title="Установить приложение"
+    lead="Бесплатно · Android 8+ · без рекламы"
+    showGuideLinks={false}
+  />
+
+  <div class="seo-split" style="margin-top: 1.75rem">
+    <div class="seo-split-card">
+      <h3>RuStore</h3>
+      <ol>
+        <li>Откройте магазин приложений RuStore</li>
+        <li>Найдите «Дневник СПО»</li>
+        <li>Убедитесь, что пакет называется io.github.diaryspo</li>
+        <li>Нажмите «Установить»</li>
+      </ol>
+      <p>
+        Обновления будут приходить сами.
+        <a href={LINKS.rustore} target="_blank" rel="noreferrer"
+          >Открыть в RuStore</a
+        >
+      </p>
+    </div>
+    <div class="seo-split-card">
+      <h3>APK с сайта</h3>
+      <ol>
+        <li><a href={LINKS.apk}>Скачайте файл APK</a></li>
+        <li>Откройте скачанный файл на телефоне</li>
+        <li>Разрешите установку из браузера (это делается один раз)</li>
+        <li>Нажмите «Установить»</li>
+      </ol>
+      <p>Новая версия ставится поверх старой, данные входа обычно сохраняются.</p>
+    </div>
+  </div>
+
+  <Callout variant="info" title="Требования">
+    <p>
+      Нужен Android 8.0 или новее. Почти все современные смартфоны подойдут.
+    </p>
+  </Callout>
+
+  <Callout variant="tip" title="Не устанавливается APK?">
+    <ul>
+      <li>Проверьте версию Android в настройках телефона</li>
+      <li>Разрешите установку из браузера или из неизвестных источников</li>
+      <li>Скачайте файл ещё раз — возможно, загрузка оборвалась</li>
+    </ul>
+  </Callout>
+
+  <Callout variant="ok" title="После установки">
+    <p>
+      Дальше читайте: <a href={withBase('vhod/')}>как войти</a>,
+      <a href={withBase('vhod-cherez-gosuslugi/')}>вход через Госуслуги</a>,
+      <a href={withBase('regions/')}>список регионов</a>.
+    </p>
+  </Callout>
+</Layout>
