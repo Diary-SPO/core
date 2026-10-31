@@ -454,11 +454,38 @@
   filter: drop-shadow(0 8px 18px rgba(0, 0, 0, 0.35));
 }
 
+.region-hero-kicker {
+  margin: 0 0 8px !important;
+  font-size: 0.82rem !important;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: #b8c7e6 !important;
+}
+
 .region-hero h1 {
   margin: 0 0 8px !important;
   color: #fff;
   font-size: clamp(1.45rem, 3vw, 2rem) !important;
   text-shadow: 0 2px 18px rgba(0, 0, 0, 0.35);
+}
+
+.seo-search-phrases {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 0.75rem 0 1.75rem;
+  padding: 0;
+  list-style: none;
+}
+
+.seo-search-phrases li {
+  padding: 7px 12px;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  background: var(--card);
+  color: var(--muted);
+  font-size: 0.86rem;
 }
 
 .region-hero-lead {
