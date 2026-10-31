@@ -233,9 +233,15 @@ body {
 .btn-ghost {
   background: rgba(255, 255, 255, 0.6);
 }
-.header-cta {
+.header-cta,
+.header-regions {
   margin-left: 0;
   flex: 0 0 auto;
+  white-space: nowrap;
+}
+/* На широком экране регионы уже в nav; кнопка только на узком */
+.btn.header-regions {
+  display: none;
 }
 .theme-toggle {
   margin-left: auto;
@@ -871,6 +877,7 @@ h1 {
   .header-cta {
     display: none;
   }
+  .btn.header-regions,
   .btn.nav-toggle {
     display: inline-flex;
   }

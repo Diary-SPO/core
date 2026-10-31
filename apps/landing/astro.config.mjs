@@ -11,7 +11,12 @@ export default defineConfig({
   site: 'https://diary-spo.github.io',
   base,
   trailingSlash: 'always',
-  integrations: [react(), sitemap()],
+  integrations: [
+    react(),
+    sitemap({
+      filter: (page) => !page.includes('/404')
+    })
+  ],
   build: {
     format: 'directory'
   }

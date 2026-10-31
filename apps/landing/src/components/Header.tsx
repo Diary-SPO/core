@@ -1,7 +1,7 @@
 import { useEffect, useId, useState } from 'react'
 import { type Theme, useScrolled } from '../hooks'
 import { ApkIcon, ThemeIcon } from '../icons'
-import { publicUrl } from '../lib/site'
+import { publicUrl, withBase } from '../lib/site'
 
 interface HeaderProps {
   theme: Theme
@@ -12,7 +12,8 @@ const NAV = [
   { href: '#features', label: 'Возможности' },
   { href: '#steps', label: 'Как войти' },
   { href: '#download', label: 'Скачать' },
-  { href: '#faq', label: 'Вопросы' }
+  { href: '#faq', label: 'Вопросы' },
+  { href: withBase('regions/'), label: 'Регионы' }
 ] as const
 
 export function Header({ theme, onToggleTheme }: HeaderProps) {
@@ -73,6 +74,14 @@ export function Header({ theme, onToggleTheme }: HeaderProps) {
           >
             <ThemeIcon dark={theme === 'dark'} />
           </button>
+
+          <a
+            className='btn btn-sm btn-ghost header-regions'
+            href={withBase('regions/')}
+            onClick={close}
+          >
+            Регионы
+          </a>
 
           <a className='btn btn-sm btn-primary header-cta' href='#download'>
             <ApkIcon /> Скачать

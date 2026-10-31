@@ -156,6 +156,12 @@ const jsonLdBlocks = jsonLd ? (Array.isArray(jsonLd) ? jsonLd : [jsonLd]) : []
           </nav>
           <ThemeToggle />
           <a
+            class="btn btn-sm btn-ghost header-regions"
+            href={withBase('regions/')}
+          >
+            Регионы
+          </a>
+          <a
             class="btn btn-sm btn-primary header-cta"
             href={withBase('skachat/')}
           >
