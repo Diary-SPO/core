@@ -1,0 +1,192 @@
+---
+import { ClientRouter } from 'astro:transitions'
+---
+
+<ClientRouter />
+<script>
+  const THEME_KEY = 'landing-theme'
+  const REVEAL_SELECTOR = [
+    '.seo-main > *',
+    '.seo-causes > *',
+    '.seo-faq > .seo-faq-item',
+    '.seo-steps > *',
+    '.seo-split > *',
+    '.seo-phones > *',
+    '.seo-regions > li',
+    '.region-article > p'
+  ].join(', ')
+
+  let firstPageLoad = true
+  let themeClickBound = false
+  let navBound = false
+
+  function getSeoHeader() {
+    return document.getElementById('site-header')
+  }
+
+  function setNavOpen(open: boolean) {
+    const header = getSeoHeader()
+    const toggle = document.getElementById('nav-toggle')
+    const panel = document.getElementById('site-nav-panel')
+    if (!header || !toggle || !panel) return
+    header.classList.toggle('is-nav-open', open)
+    toggle.setAttribute('aria-expanded', open ? 'true' : 'false')
+    toggle.setAttribute('aria-label', open ? 'Закрыть меню' : 'Открыть меню')
+    panel.hidden = !open
+    panel.setAttribute('aria-hidden', open ? 'false' : 'true')
+  }
+
+  function bindNavToggle() {
+    setNavOpen(false)
+    if (navBound) return
+    navBound = true
+
+    document.addEventListener('click', (event) => {
+      const target = event.target
+      if (!(target instanceof Element)) return
+      const toggle = target.closest('#nav-toggle')
+      if (toggle) {
+        const header = getSeoHeader()
+        setNavOpen(!header?.classList.contains('is-nav-open'))
+        return
+      }
+      const header = getSeoHeader()
+      if (!header?.classList.contains('is-nav-open')) return
+      if (target.closest('#site-nav-panel a')) {
+        setNavOpen(false)
+        return
+      }
+      if (!target.closest('#site-header')) setNavOpen(false)
+    })
+
+    window.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape') setNavOpen(false)
+    })
+
+    window.addEventListener('resize', () => {
+      if (window.matchMedia('(min-width: 961px)').matches) setNavOpen(false)
+    })
+  }
+
+  function readTheme(): 'light' | 'dark' {
+    try {
+      const saved = localStorage.getItem(THEME_KEY)
+      if (saved === 'light' || saved === 'dark') return saved
+    } catch {
+      /* ignore */
+    }
+    return window.matchMedia('(prefers-color-scheme: dark)').matches
+      ? 'dark'
+      : 'light'
+  }
+
+  function applyTheme(
+    theme: 'light' | 'dark',
+    root: HTMLElement = document.documentElement
+  ) {
+    root.dataset.theme = theme
+    root.style.colorScheme = theme
+  }
+
+  function syncThemeToggle() {
+    const btn = document.getElementById('theme-toggle')
+    if (!btn) return
+    const dark = document.documentElement.dataset.theme === 'dark'
+    btn.setAttribute('aria-pressed', dark ? 'true' : 'false')
+    btn.setAttribute(
+      'aria-label',
+      dark ? 'Переключить на светлую тему' : 'Переключить на тёмную тему'
+    )
+  }
+
+  function bindThemeToggle() {
+    if (themeClickBound) return
+    themeClickBound = true
+    document.addEventListener('click', (event) => {
+      const target = event.target
+      if (!(target instanceof Element)) return
+      const btn = target.closest('#theme-toggle')
+      if (!btn) return
+      const next =
+        document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark'
+      applyTheme(next)
+      try {
+        localStorage.setItem(THEME_KEY, next)
+      } catch {
+        /* ignore */
+      }
+      syncThemeToggle()
+    })
+  }
+
+  function onHeaderScroll() {
+    const header = document.getElementById('site-header')
+    if (!header) return
+    header.classList.toggle('is-scrolled', window.scrollY > 8)
+  }
+
+  function initHeaderScroll() {
+    onHeaderScroll()
+    window.removeEventListener('scroll', onHeaderScroll)
+    window.addEventListener('scroll', onHeaderScroll, { passive: true })
+  }
+
+  function initReveal() {
+    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    const nodes = document.querySelectorAll(REVEAL_SELECTOR)
+    if (!nodes.length) return
+
+    nodes.forEach((node) => {
+      node.classList.add('reveal')
+      if (reduced) node.classList.add('is-visible')
+    })
+
+    if (reduced) return
+
+    const io = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          if (!entry.isIntersecting) continue
+          entry.target.classList.add('is-visible')
+          io.unobserve(entry.target)
+        }
+      },
+      { threshold: 0.12 }
+    )
+
+    nodes.forEach((node) => {
+      if (!node.classList.contains('is-visible')) io.observe(node)
+    })
+  }
+
+  function trackHit() {
+    const w = window as Window & { ym?: (...args: unknown[]) => void }
+    if (typeof w.ym === 'function') {
+      w.ym(113429458, 'hit', window.location.href)
+    }
+  }
+
+  // Перед сменой страницы копируем тему в новый документ, чтобы не мигала светлая
+  document.addEventListener('astro:before-swap', (event) => {
+    applyTheme(readTheme(), event.newDocument.documentElement)
+  })
+
+  document.addEventListener('astro:after-swap', () => {
+    applyTheme(readTheme())
+    syncThemeToggle()
+  })
+
+  document.addEventListener('astro:page-load', () => {
+    applyTheme(readTheme())
+    bindThemeToggle()
+    syncThemeToggle()
+    bindNavToggle()
+    initHeaderScroll()
+    initReveal()
+    if (firstPageLoad) {
+      firstPageLoad = false
+      return
+    }
+    trackHit()
+  })
+</script>

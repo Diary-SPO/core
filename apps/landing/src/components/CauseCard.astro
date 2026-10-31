@@ -1,0 +1,18 @@
+---
+interface Props {
+  n: number | string
+  title: string
+}
+
+const { n, title } = Astro.props
+---
+
+<article class="seo-cause">
+  <div class="seo-cause-head">
+    <span class="seo-cause-n" aria-hidden="true">{n}</span>
+    <h2>{title}</h2>
+  </div>
+  <div class="seo-cause-body">
+    <slot />
+  </div>
+</article>

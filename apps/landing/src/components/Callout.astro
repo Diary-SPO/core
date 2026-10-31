@@ -1,0 +1,21 @@
+---
+interface Props {
+  variant?: 'tip' | 'warn' | 'info' | 'ok'
+  title?: string
+}
+
+const { variant = 'info', title } = Astro.props
+const labels = {
+  tip: 'Подсказка',
+  warn: 'Важно',
+  info: 'Кстати',
+  ok: 'Готово'
+} as const
+---
+
+<aside class={`seo-callout seo-callout--${variant}`}>
+  <p class="seo-callout-label">{title ?? labels[variant]}</p>
+  <div class="seo-callout-body">
+    <slot />
+  </div>
+</aside>

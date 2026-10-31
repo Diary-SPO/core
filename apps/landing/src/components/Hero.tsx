@@ -7,6 +7,7 @@ import {
   TrendIcon,
   WebIcon
 } from '../icons'
+import { publicUrl } from '../lib/site'
 
 interface HeroProps {
   onWebClick: () => void
@@ -41,7 +42,7 @@ export function Hero({ onWebClick }: HeroProps) {
             >
               <img
                 className='btn-icon'
-                src='./rustore.svg'
+                src={publicUrl('rustore.svg')}
                 alt=''
                 aria-hidden='true'
               />{' '}
@@ -65,7 +66,7 @@ export function Hero({ onWebClick }: HeroProps) {
         </div>
         <div className='hero-visual reveal'>
           <img
-            src='./cat.webp'
+            src={publicUrl('cat.webp')}
             alt='Котик — маскот приложения Дневник СПО'
             fetchPriority='high'
           />

@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { LINKS } from '../config'
 import { ApkIcon, CopyIcon, WebIcon } from '../icons'
+import { publicUrl } from '../lib/site'
 
 interface DownloadProps {
   onWebClick: () => void
@@ -20,7 +21,7 @@ export function Download({ onWebClick }: DownloadProps) {
       done(true)
       return
     } catch {
-      // clipboard API недоступен (http, старый браузер) — пробуем fallback
+      // Clipboard API недоступен, пробуем запасной способ
     }
     try {
       const ta = document.createElement('textarea')
@@ -52,7 +53,7 @@ export function Download({ onWebClick }: DownloadProps) {
             >
               <img
                 className='btn-icon'
-                src='./rustore.svg'
+                src={publicUrl('rustore.svg')}
                 alt=''
                 aria-hidden='true'
               />{' '}
@@ -84,7 +85,7 @@ export function Download({ onWebClick }: DownloadProps) {
         </div>
         <img
           className='download-icon'
-          src='./icon.png'
+          src={publicUrl('icon.png')}
           alt='Иконка приложения Дневник СПО'
           loading='lazy'
         />
