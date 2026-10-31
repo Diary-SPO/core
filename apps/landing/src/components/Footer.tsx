@@ -48,6 +48,7 @@ export function Footer({ homeHref = '#top' }: FooterProps) {
           <nav className='footer-col' aria-label='Приложение'>
             <h2 className='footer-col-title'>Приложение</h2>
             <a href={withBase('skachat/')}>Скачать</a>
+            <a href={withBase('o-proekte/')}>О проекте</a>
             <a href={withBase('vhod/')}>Как войти</a>
             <a href={withBase('vhod-cherez-gosuslugi/')}>
               Вход через Госуслуги
@@ -57,6 +58,8 @@ export function Footer({ homeHref = '#top' }: FooterProps) {
 
           <nav className='footer-col' aria-label='Помощь'>
             <h2 className='footer-col-title'>Помощь</h2>
+            <a href={withBase('zabyl-parol/')}>Забыли пароль</a>
+            <a href={withBase('privyazka-gosuslug/')}>Привязка Госуслуг</a>
             <a href={withBase('dnevnik-spo-ne-otkryvaetsya/')}>
               Не открывается
             </a>
@@ -64,6 +67,12 @@ export function Footer({ homeHref = '#top' }: FooterProps) {
               Ошибка запроса
             </a>
             <a href={withBase('dnevnik-spo-ne-rabotaet/')}>Не работает</a>
+            <a href={withBase('dnevnik-spo-ili-netschool/')}>
+              Сравнение с NetSchool
+            </a>
+            <a href={withBase('dnevnik-spo-ili-moya-shkola/')}>
+              Сравнение с «Моей школой»
+            </a>
           </nav>
 
           <nav className='footer-col' aria-label='Документы'>

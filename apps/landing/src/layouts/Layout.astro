@@ -152,6 +152,7 @@ const jsonLdBlocks = jsonLd ? (Array.isArray(jsonLd) ? jsonLd : [jsonLd]) : []
           <nav class="nav nav--desktop" aria-label="Разделы сайта">
             <a href={withBase('skachat/')}>Скачать</a>
             <a href={withBase('vhod/')}>Как войти</a>
+            <a href={withBase('o-proekte/')}>О проекте</a>
             <a href={withBase('regions/')}>Регионы</a>
           </nav>
           <ThemeToggle />
@@ -219,8 +220,11 @@ const jsonLdBlocks = jsonLd ? (Array.isArray(jsonLd) ? jsonLd : [jsonLd]) : []
           <nav class="nav nav--mobile" aria-label="Мобильное меню">
             <a href={withBase('skachat/')}>Скачать</a>
             <a href={withBase('vhod/')}>Как войти</a>
+            <a href={withBase('o-proekte/')}>О проекте</a>
             <a href={withBase('regions/')}>Регионы</a>
             <a href={withBase('vhod-cherez-gosuslugi/')}>Госуслуги</a>
+            <a href={withBase('zabyl-parol/')}>Забыли пароль</a>
+            <a href={withBase('privyazka-gosuslug/')}>Привязка Госуслуг</a>
           </nav>
           <a
             class="btn btn-primary header-panel-cta"
@@ -297,6 +301,7 @@ const jsonLdBlocks = jsonLd ? (Array.isArray(jsonLd) ? jsonLd : [jsonLd]) : []
           <nav class="footer-col" aria-label="Приложение">
             <h2 class="footer-col-title">Приложение</h2>
             <a href={withBase('skachat/')}>Скачать</a>
+            <a href={withBase('o-proekte/')}>О проекте</a>
             <a href={withBase('vhod/')}>Как войти</a>
             <a href={withBase('vhod-cherez-gosuslugi/')}>Вход через Госуслуги</a>
             <a href={withBase('regions/')}>Все регионы</a>
@@ -304,9 +309,13 @@ const jsonLdBlocks = jsonLd ? (Array.isArray(jsonLd) ? jsonLd : [jsonLd]) : []
 
           <nav class="footer-col" aria-label="Помощь">
             <h2 class="footer-col-title">Помощь</h2>
+            <a href={withBase('zabyl-parol/')}>Забыли пароль</a>
+            <a href={withBase('privyazka-gosuslug/')}>Привязка Госуслуг</a>
             <a href={withBase('dnevnik-spo-ne-otkryvaetsya/')}>Не открывается</a>
             <a href={withBase('dnevnik-spo-oshibka-zaprosa/')}>Ошибка запроса</a>
             <a href={withBase('dnevnik-spo-ne-rabotaet/')}>Не работает</a>
+            <a href={withBase('dnevnik-spo-ili-netschool/')}>Сравнение с NetSchool</a>
+            <a href={withBase('dnevnik-spo-ili-moya-shkola/')}>Сравнение с «Моей школой»</a>
           </nav>
 
           <nav class="footer-col" aria-label="Документы">

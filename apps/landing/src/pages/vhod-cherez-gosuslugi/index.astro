@@ -77,11 +77,10 @@ const path = 'vhod-cherez-gosuslugi/'
       </p>
     </div>
     <div class="seo-faq-item">
-      <h3>Госуслуги пускают, а дневник пишет, что пользователь не найден</h3>
+      <h3>      Госуслуги пускают, а дневник пишет, что пользователь не найден</h3>
       <p>
-        Проверьте, что регион действительно на ЕСИА, что вы студент СПО и что
-        учебная часть привязала ваши данные (ФИО, СНИЛС) к Госуслугам. Без этой
-        привязки дневник вас «не увидит».
+        Нужна связь учётных записей СГО и ЕСИА по ФИО, дате рождения или СНИЛС.
+        Пошагово: <a href={withBase('privyazka-gosuslug/')}>привязка Госуслуг</a>.
       </p>
     </div>
     <div class="seo-faq-item">
@@ -102,8 +101,9 @@ const path = 'vhod-cherez-gosuslugi/'
 
   <div class="seo-related">
     <a href={withBase('vhod/')}>Вход по логину</a>
+    <a href={withBase('privyazka-gosuslug/')}>Привязка Госуслуг</a>
+    <a href={withBase('zabyl-parol/')}>Забыли пароль</a>
     <a href={withBase('dnevnik-spo-ne-otkryvaetsya/')}>Не открывается</a>
-    <a href={withBase('dnevnik-spo-oshibka-zaprosa/')}>Ошибка запроса</a>
   </div>
 
   <h2 class="seo-section-title">Приложение Дневник СПО</h2>
