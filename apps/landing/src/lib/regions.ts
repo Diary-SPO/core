@@ -3,6 +3,8 @@ export interface DiaryRegion {
   name: string
   url: string
   code: string
+  /** Крупные города региона (для SEO и страницы). */
+  cities: string[]
   aliases: string[]
   hasEsiaOnly?: boolean
   note?: string
@@ -14,6 +16,18 @@ export const REGIONS: DiaryRegion[] = [
     name: 'Алтайский край',
     url: 'https://netspo.edu22.info',
     code: '22',
+    cities: [
+      'Барнаул',
+      'Бийск',
+      'Рубцовск',
+      'Новоалтайск',
+      'Заринск',
+      'Славгород',
+      'Алейск',
+      'Белокуриха',
+      'Камень-на-Оби',
+      'Яровое'
+    ],
     aliases: ['барнаул', 'бийск', 'рубцовск', 'barnaul', 'biysk', 'altai']
   },
   {
@@ -21,6 +35,17 @@ export const REGIONS: DiaryRegion[] = [
     name: 'Волгоградская область',
     url: 'https://spo.volganet.ru',
     code: '34',
+    cities: [
+      'Волгоград',
+      'Волжский',
+      'Камышин',
+      'Михайловка',
+      'Урюпинск',
+      'Фролово',
+      'Калач-на-Дону',
+      'Котово',
+      'Суровикино'
+    ],
     aliases: ['волгоград', 'волжский', 'камышин', 'volgograd', 'volzhsky']
   },
   {
@@ -28,6 +53,16 @@ export const REGIONS: DiaryRegion[] = [
     name: 'Забайкальский край',
     url: 'https://poo.zabedu.ru',
     code: '75',
+    cities: [
+      'Чита',
+      'Краснокаменск',
+      'Борзя',
+      'Петровск-Забайкальский',
+      'Нерчинск',
+      'Шилка',
+      'Балей',
+      'Могоча'
+    ],
     aliases: ['чита', 'chita', 'zabaikalsky', 'zabaykalsky']
   },
   {
@@ -35,6 +70,18 @@ export const REGIONS: DiaryRegion[] = [
     name: 'Калужская область',
     url: 'https://spo.admoblkaluga.ru',
     code: '40',
+    cities: [
+      'Калуга',
+      'Обнинск',
+      'Людиново',
+      'Киров',
+      'Малоярославец',
+      'Балабаново',
+      'Козельск',
+      'Кондрово',
+      'Сухиничи',
+      'Таруса'
+    ],
     aliases: ['калуга', 'обнинск', 'kaluga', 'obninsk']
   },
   {
@@ -42,6 +89,14 @@ export const REGIONS: DiaryRegion[] = [
     name: 'Камчатский край',
     url: 'https://prof.sgo41.ru',
     code: '41',
+    cities: [
+      'Петропавловск-Камчатский',
+      'Елизово',
+      'Вилючинск',
+      'Мильково',
+      'Усть-Камчатск',
+      'Ключи'
+    ],
     aliases: [
       'петропавловск-камчатский',
       'петропавловск',
@@ -55,6 +110,14 @@ export const REGIONS: DiaryRegion[] = [
     name: 'Карачаево-Черкесская Республика',
     url: 'https://poo.kchgov.ru',
     code: '09',
+    cities: [
+      'Черкесск',
+      'Карачаевск',
+      'Усть-Джегута',
+      'Теберда',
+      'Зеленчукская',
+      'Домбай'
+    ],
     aliases: ['черкесск', 'карачаевск', 'cherkessk', 'cherkes', 'karachay']
   },
   {
@@ -62,6 +125,23 @@ export const REGIONS: DiaryRegion[] = [
     name: 'Краснодарский край',
     url: 'https://spo.rso23.ru',
     code: '23',
+    cities: [
+      'Краснодар',
+      'Сочи',
+      'Новороссийск',
+      'Армавир',
+      'Анапа',
+      'Геленджик',
+      'Ейск',
+      'Кропоткин',
+      'Тихорецк',
+      'Туапсе',
+      'Белореченск',
+      'Славянск-на-Кубани',
+      'Крымск',
+      'Лабинск',
+      'Тимашёвск'
+    ],
     aliases: [
       'краснодар',
       'сочи',
@@ -77,6 +157,19 @@ export const REGIONS: DiaryRegion[] = [
     name: 'Приморский край',
     url: 'https://poo.prim-edu.ru',
     code: '25',
+    cities: [
+      'Владивосток',
+      'Находка',
+      'Уссурийск',
+      'Артём',
+      'Арсеньев',
+      'Спасск-Дальний',
+      'Большой Камень',
+      'Дальнегорск',
+      'Лесозаводск',
+      'Партизанск',
+      'Фокино'
+    ],
     aliases: [
       'владивосток',
       'находка',
@@ -92,6 +185,14 @@ export const REGIONS: DiaryRegion[] = [
     name: 'Республика Бурятия',
     url: 'https://spo.obr03.ru',
     code: '03',
+    cities: [
+      'Улан-Удэ',
+      'Северобайкальск',
+      'Гусиноозёрск',
+      'Кяхта',
+      'Закаменск',
+      'Бабушкин'
+    ],
     aliases: ['улан-удэ', 'ulan-ude', 'buryatia']
   },
   {
@@ -99,6 +200,7 @@ export const REGIONS: DiaryRegion[] = [
     name: 'Республика Ингушетия',
     url: 'https://poo.edu-ri.ru',
     code: '06',
+    cities: ['Магас', 'Назрань', 'Карабулак', 'Малгобек', 'Сунжа'],
     aliases: ['магас', 'назрань', 'magas', 'nazran', 'ingushetia']
   },
   {
@@ -106,6 +208,17 @@ export const REGIONS: DiaryRegion[] = [
     name: 'Республика Коми',
     url: 'https://giseo-spo.rkomi.ru',
     code: '11',
+    cities: [
+      'Сыктывкар',
+      'Ухта',
+      'Воркута',
+      'Печора',
+      'Сосногорск',
+      'Инта',
+      'Вуктыл',
+      'Усинск',
+      'Емва'
+    ],
     aliases: ['сыктывкар', 'ухта', 'воркута', 'syktyvkar', 'ukhta', 'komi']
   },
   {
@@ -113,6 +226,17 @@ export const REGIONS: DiaryRegion[] = [
     name: 'Республика Саха (Якутия)',
     url: 'https://poo.e-yakutia.ru',
     code: '14',
+    cities: [
+      'Якутск',
+      'Нерюнгри',
+      'Мирный',
+      'Ленск',
+      'Алдан',
+      'Удачный',
+      'Нюрба',
+      'Покровск',
+      'Олёкминск'
+    ],
     aliases: ['якутск', 'yakutsk', 'yakutia', 'sakha']
   },
   {
@@ -120,6 +244,18 @@ export const REGIONS: DiaryRegion[] = [
     name: 'Самарская область',
     url: 'https://spo.asurso.ru',
     code: '63',
+    cities: [
+      'Самара',
+      'Тольятти',
+      'Сызрань',
+      'Новокуйбышевск',
+      'Чапаевск',
+      'Жигулёвск',
+      'Отрадный',
+      'Кинель',
+      'Похвистнево',
+      'Октябрьск'
+    ],
     aliases: ['самара', 'тольятти', 'сызрань', 'samara', 'tolyatti']
   },
   {
@@ -127,6 +263,7 @@ export const REGIONS: DiaryRegion[] = [
     name: 'Томская область',
     url: 'https://poo.tomedu.ru',
     code: '70',
+    cities: ['Томск', 'Северск', 'Стрежевой', 'Асино', 'Колпашево', 'Кедровый'],
     aliases: ['томск', 'северск', 'tomsk', 'seversk']
   },
   {
@@ -134,6 +271,18 @@ export const REGIONS: DiaryRegion[] = [
     name: 'Тульская область',
     url: 'https://spo1.edu71.ru',
     code: '71',
+    cities: [
+      'Тула',
+      'Новомосковск',
+      'Алексин',
+      'Щёкино',
+      'Узловая',
+      'Ефремов',
+      'Донской',
+      'Богородицк',
+      'Кимовск',
+      'Суворов'
+    ],
     aliases: ['тула', 'новомосковск', 'tula'],
     hasEsiaOnly: true,
     note: 'С 1 декабря 2024 года вход только через ЕСИА'
@@ -143,6 +292,14 @@ export const REGIONS: DiaryRegion[] = [
     name: 'Ульяновская область',
     url: 'https://spo.cit73.ru',
     code: '73',
+    cities: [
+      'Ульяновск',
+      'Димитровград',
+      'Инза',
+      'Барыш',
+      'Новоульяновск',
+      'Сенгилей'
+    ],
     aliases: ['ульяновск', 'димитровград', 'ulyanovsk']
   },
   {
@@ -150,6 +307,20 @@ export const REGIONS: DiaryRegion[] = [
     name: 'Челябинская область',
     url: 'https://poo.edu-74.ru',
     code: '74',
+    cities: [
+      'Челябинск',
+      'Магнитогорск',
+      'Златоуст',
+      'Миасс',
+      'Копейск',
+      'Озёрск',
+      'Троицк',
+      'Снежинск',
+      'Сатка',
+      'Чебаркуль',
+      'Кыштым',
+      'Южноуральск'
+    ],
     aliases: ['челябинск', 'магнитогорск', 'chelyabinsk', 'magnitogorsk']
   },
   {
@@ -157,6 +328,16 @@ export const REGIONS: DiaryRegion[] = [
     name: 'Ямало-Ненецкий АО',
     url: 'https://spo.yanao.ru',
     code: '89',
+    cities: [
+      'Салехард',
+      'Новый Уренгой',
+      'Ноябрьск',
+      'Надым',
+      'Муравленко',
+      'Губкинский',
+      'Лабытнанги',
+      'Тарко-Сале'
+    ],
     aliases: [
       'салехард',
       'новый уренгой',

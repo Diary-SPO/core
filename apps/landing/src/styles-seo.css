@@ -488,6 +488,59 @@
   font-size: 0.86rem;
 }
 
+.region-cities-block {
+  margin: 1.25rem 0 0.5rem;
+}
+
+.region-cities {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 0.75rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.region-cities li {
+  padding: 7px 12px;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  background: var(--card);
+  color: var(--ink);
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.region-cities-more {
+  margin-top: 10px;
+}
+
+.region-cities-more summary {
+  cursor: pointer;
+  color: var(--brand);
+  font-size: 0.92rem;
+  font-weight: 700;
+  list-style: none;
+  width: fit-content;
+}
+
+.region-cities-more summary::-webkit-details-marker {
+  display: none;
+}
+
+.region-cities-more summary::after {
+  content: " ▾";
+  font-weight: 700;
+}
+
+.region-cities-more[open] summary::after {
+  content: " ▴";
+}
+
+.region-cities-more .region-cities {
+  margin-top: 10px;
+}
+
 .region-hero-lead {
   margin: 0 !important;
   color: #d7e0f2 !important;

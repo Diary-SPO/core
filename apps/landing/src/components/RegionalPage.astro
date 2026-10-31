@@ -6,6 +6,8 @@ import { getRegionPageContent } from '../lib/region-content'
 import { regionEmblemUrl, regionPhotoUrl } from '../lib/region-media'
 import type { DiaryRegion } from '../lib/regions'
 import {
+  citiesVisibleCount,
+  pluralCitiesMore,
   regionCities,
   regionCodeWithName,
   regionSearchPhrases,
@@ -25,6 +27,9 @@ const host = new URL(region.url).hostname
 const emblem = regionEmblemUrl(region.id)
 const photo = regionPhotoUrl(region.id)
 const cities = regionCities(region)
+const citiesShown = citiesVisibleCount(cities.length)
+const citiesPreview = cities.slice(0, citiesShown)
+const citiesRest = cities.slice(citiesShown)
 const content = getRegionPageContent(region)
 const searchPhrases = [
   ...new Set([...regionSearchPhrases(region), ...content.searchExtra])
@@ -35,7 +40,9 @@ const cityList =
   cities.length > 0
     ? cities.length === 1
       ? cities[0]
-      : `${cities.slice(0, -1).join(', ')} и ${cities[cities.length - 1]}`
+      : cities.length <= 3
+        ? `${cities.slice(0, -1).join(', ')} и ${cities[cities.length - 1]}`
+        : `${cities.slice(0, 3).join(', ')} и другие`
     : null
 
 const path = `dnevnik-spo-${region.code}/`
@@ -127,6 +134,33 @@ const jsonLd = {
     Официальный портал:
     <a href={region.url} target="_blank" rel="noreferrer">{region.url}</a>
   </p>
+
+  {
+    cities.length > 0 && (
+      <section class="region-cities-block" aria-label="Города региона">
+        <h2 class="seo-block-title">Города региона</h2>
+        <p>
+          Электронный дневник СПО в регионе «{region.name}» используют студенты
+          колледжей и техникумов, в том числе в этих городах:
+        </p>
+        <ul class="region-cities">
+          {citiesPreview.map((city) => (
+            <li>{city}</li>
+          ))}
+        </ul>
+        {citiesRest.length > 0 && (
+          <details class="region-cities-more">
+            <summary>Ещё {pluralCitiesMore(citiesRest.length)}</summary>
+            <ul class="region-cities">
+              {citiesRest.map((city) => (
+                <li>{city}</li>
+              ))}
+            </ul>
+          </details>
+        )}
+      </section>
+    )
+  }
 
   {content.notes.map((note) => (
     <Callout variant={note.variant} title={note.title}>
