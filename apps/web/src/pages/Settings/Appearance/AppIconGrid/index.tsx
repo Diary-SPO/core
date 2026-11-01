@@ -1,15 +1,7 @@
-import catPreview from '../../../../assets/images/app-icons/cat.png'
-import defaultPreview from '../../../../assets/images/app-icons/default.png'
-import playfulPreview from '../../../../assets/images/app-icons/playful.png'
 import type { AppIconOption } from '../../../../shared/api/runtime/types.ts'
+import { appIconPreviews } from './previews'
 
 import './index.css'
-
-const previewById: Record<string, string> = {
-  default: defaultPreview,
-  cat: catPreview,
-  playful: playfulPreview
-}
 
 interface AppIconGridProps {
   options: AppIconOption[]
@@ -21,7 +13,7 @@ const AppIconGrid = ({ options, value, onChange }: AppIconGridProps) => (
   <div className='appIconGrid' role='listbox' aria-label='Иконка приложения'>
     {options.map((option) => {
       const selected = option.id === value
-      const preview = previewById[option.id] ?? previewById.default
+      const preview = appIconPreviews[option.id] ?? appIconPreviews.default
       return (
         <button
           key={option.id}

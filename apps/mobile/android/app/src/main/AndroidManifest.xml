@@ -48,11 +48,11 @@
         </activity-alias>
 
         <activity-alias
-            android:name=".MainActivityCat"
+            android:name=".MainActivitySimka"
             android:enabled="false"
             android:exported="true"
-            android:icon="@mipmap/ic_launcher_cat"
-            android:roundIcon="@mipmap/ic_launcher_cat_round"
+            android:icon="@mipmap/ic_launcher_simka"
+            android:roundIcon="@mipmap/ic_launcher_simka_round"
             android:label="@string/app_name"
             android:targetActivity=".MainActivity">
             <intent-filter>
@@ -62,11 +62,627 @@
         </activity-alias>
 
         <activity-alias
-            android:name=".MainActivityPlayful"
+            android:name=".MainActivitySimkaThrone"
             android:enabled="false"
             android:exported="true"
-            android:icon="@mipmap/ic_launcher_playful"
-            android:roundIcon="@mipmap/ic_launcher_playful_round"
+            android:icon="@mipmap/ic_launcher_simka_throne"
+            android:roundIcon="@mipmap/ic_launcher_simka_throne_round"
+            android:label="@string/app_name"
+            android:targetActivity=".MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity-alias>
+
+        <activity-alias
+            android:name=".MainActivitySimka01"
+            android:enabled="false"
+            android:exported="true"
+            android:icon="@mipmap/ic_launcher_simka_01"
+            android:roundIcon="@mipmap/ic_launcher_simka_01_round"
+            android:label="@string/app_name"
+            android:targetActivity=".MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity-alias>
+
+        <activity-alias
+            android:name=".MainActivitySimka02"
+            android:enabled="false"
+            android:exported="true"
+            android:icon="@mipmap/ic_launcher_simka_02"
+            android:roundIcon="@mipmap/ic_launcher_simka_02_round"
+            android:label="@string/app_name"
+            android:targetActivity=".MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity-alias>
+
+        <activity-alias
+            android:name=".MainActivitySimka03"
+            android:enabled="false"
+            android:exported="true"
+            android:icon="@mipmap/ic_launcher_simka_03"
+            android:roundIcon="@mipmap/ic_launcher_simka_03_round"
+            android:label="@string/app_name"
+            android:targetActivity=".MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity-alias>
+
+        <activity-alias
+            android:name=".MainActivitySimka04"
+            android:enabled="false"
+            android:exported="true"
+            android:icon="@mipmap/ic_launcher_simka_04"
+            android:roundIcon="@mipmap/ic_launcher_simka_04_round"
+            android:label="@string/app_name"
+            android:targetActivity=".MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity-alias>
+
+        <activity-alias
+            android:name=".MainActivitySimka05"
+            android:enabled="false"
+            android:exported="true"
+            android:icon="@mipmap/ic_launcher_simka_05"
+            android:roundIcon="@mipmap/ic_launcher_simka_05_round"
+            android:label="@string/app_name"
+            android:targetActivity=".MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity-alias>
+
+        <activity-alias
+            android:name=".MainActivitySimka06"
+            android:enabled="false"
+            android:exported="true"
+            android:icon="@mipmap/ic_launcher_simka_06"
+            android:roundIcon="@mipmap/ic_launcher_simka_06_round"
+            android:label="@string/app_name"
+            android:targetActivity=".MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity-alias>
+
+        <activity-alias
+            android:name=".MainActivitySimka07"
+            android:enabled="false"
+            android:exported="true"
+            android:icon="@mipmap/ic_launcher_simka_07"
+            android:roundIcon="@mipmap/ic_launcher_simka_07_round"
+            android:label="@string/app_name"
+            android:targetActivity=".MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity-alias>
+
+        <activity-alias
+            android:name=".MainActivitySimka08"
+            android:enabled="false"
+            android:exported="true"
+            android:icon="@mipmap/ic_launcher_simka_08"
+            android:roundIcon="@mipmap/ic_launcher_simka_08_round"
+            android:label="@string/app_name"
+            android:targetActivity=".MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity-alias>
+
+        <activity-alias
+            android:name=".MainActivitySimka09"
+            android:enabled="false"
+            android:exported="true"
+            android:icon="@mipmap/ic_launcher_simka_09"
+            android:roundIcon="@mipmap/ic_launcher_simka_09_round"
+            android:label="@string/app_name"
+            android:targetActivity=".MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity-alias>
+
+        <activity-alias
+            android:name=".MainActivitySimka10"
+            android:enabled="false"
+            android:exported="true"
+            android:icon="@mipmap/ic_launcher_simka_10"
+            android:roundIcon="@mipmap/ic_launcher_simka_10_round"
+            android:label="@string/app_name"
+            android:targetActivity=".MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity-alias>
+
+        <activity-alias
+            android:name=".MainActivitySimka11"
+            android:enabled="false"
+            android:exported="true"
+            android:icon="@mipmap/ic_launcher_simka_11"
+            android:roundIcon="@mipmap/ic_launcher_simka_11_round"
+            android:label="@string/app_name"
+            android:targetActivity=".MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity-alias>
+
+        <activity-alias
+            android:name=".MainActivitySimka12"
+            android:enabled="false"
+            android:exported="true"
+            android:icon="@mipmap/ic_launcher_simka_12"
+            android:roundIcon="@mipmap/ic_launcher_simka_12_round"
+            android:label="@string/app_name"
+            android:targetActivity=".MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity-alias>
+
+        <activity-alias
+            android:name=".MainActivitySimka13"
+            android:enabled="false"
+            android:exported="true"
+            android:icon="@mipmap/ic_launcher_simka_13"
+            android:roundIcon="@mipmap/ic_launcher_simka_13_round"
+            android:label="@string/app_name"
+            android:targetActivity=".MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity-alias>
+
+        <activity-alias
+            android:name=".MainActivitySimka14"
+            android:enabled="false"
+            android:exported="true"
+            android:icon="@mipmap/ic_launcher_simka_14"
+            android:roundIcon="@mipmap/ic_launcher_simka_14_round"
+            android:label="@string/app_name"
+            android:targetActivity=".MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity-alias>
+
+        <activity-alias
+            android:name=".MainActivitySimka15"
+            android:enabled="false"
+            android:exported="true"
+            android:icon="@mipmap/ic_launcher_simka_15"
+            android:roundIcon="@mipmap/ic_launcher_simka_15_round"
+            android:label="@string/app_name"
+            android:targetActivity=".MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity-alias>
+
+        <activity-alias
+            android:name=".MainActivitySimka16"
+            android:enabled="false"
+            android:exported="true"
+            android:icon="@mipmap/ic_launcher_simka_16"
+            android:roundIcon="@mipmap/ic_launcher_simka_16_round"
+            android:label="@string/app_name"
+            android:targetActivity=".MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity-alias>
+
+        <activity-alias
+            android:name=".MainActivitySimka17"
+            android:enabled="false"
+            android:exported="true"
+            android:icon="@mipmap/ic_launcher_simka_17"
+            android:roundIcon="@mipmap/ic_launcher_simka_17_round"
+            android:label="@string/app_name"
+            android:targetActivity=".MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity-alias>
+
+        <activity-alias
+            android:name=".MainActivitySimka18"
+            android:enabled="false"
+            android:exported="true"
+            android:icon="@mipmap/ic_launcher_simka_18"
+            android:roundIcon="@mipmap/ic_launcher_simka_18_round"
+            android:label="@string/app_name"
+            android:targetActivity=".MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity-alias>
+
+        <activity-alias
+            android:name=".MainActivitySimka19"
+            android:enabled="false"
+            android:exported="true"
+            android:icon="@mipmap/ic_launcher_simka_19"
+            android:roundIcon="@mipmap/ic_launcher_simka_19_round"
+            android:label="@string/app_name"
+            android:targetActivity=".MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity-alias>
+
+        <activity-alias
+            android:name=".MainActivitySimka20"
+            android:enabled="false"
+            android:exported="true"
+            android:icon="@mipmap/ic_launcher_simka_20"
+            android:roundIcon="@mipmap/ic_launcher_simka_20_round"
+            android:label="@string/app_name"
+            android:targetActivity=".MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity-alias>
+
+        <activity-alias
+            android:name=".MainActivitySimka21"
+            android:enabled="false"
+            android:exported="true"
+            android:icon="@mipmap/ic_launcher_simka_21"
+            android:roundIcon="@mipmap/ic_launcher_simka_21_round"
+            android:label="@string/app_name"
+            android:targetActivity=".MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity-alias>
+
+        <activity-alias
+            android:name=".MainActivitySimka22"
+            android:enabled="false"
+            android:exported="true"
+            android:icon="@mipmap/ic_launcher_simka_22"
+            android:roundIcon="@mipmap/ic_launcher_simka_22_round"
+            android:label="@string/app_name"
+            android:targetActivity=".MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity-alias>
+
+        <activity-alias
+            android:name=".MainActivitySimka23"
+            android:enabled="false"
+            android:exported="true"
+            android:icon="@mipmap/ic_launcher_simka_23"
+            android:roundIcon="@mipmap/ic_launcher_simka_23_round"
+            android:label="@string/app_name"
+            android:targetActivity=".MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity-alias>
+
+        <activity-alias
+            android:name=".MainActivitySimka24"
+            android:enabled="false"
+            android:exported="true"
+            android:icon="@mipmap/ic_launcher_simka_24"
+            android:roundIcon="@mipmap/ic_launcher_simka_24_round"
+            android:label="@string/app_name"
+            android:targetActivity=".MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity-alias>
+
+        <activity-alias
+            android:name=".MainActivitySimka25"
+            android:enabled="false"
+            android:exported="true"
+            android:icon="@mipmap/ic_launcher_simka_25"
+            android:roundIcon="@mipmap/ic_launcher_simka_25_round"
+            android:label="@string/app_name"
+            android:targetActivity=".MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity-alias>
+
+        <activity-alias
+            android:name=".MainActivitySimka26"
+            android:enabled="false"
+            android:exported="true"
+            android:icon="@mipmap/ic_launcher_simka_26"
+            android:roundIcon="@mipmap/ic_launcher_simka_26_round"
+            android:label="@string/app_name"
+            android:targetActivity=".MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity-alias>
+
+        <activity-alias
+            android:name=".MainActivitySimka27"
+            android:enabled="false"
+            android:exported="true"
+            android:icon="@mipmap/ic_launcher_simka_27"
+            android:roundIcon="@mipmap/ic_launcher_simka_27_round"
+            android:label="@string/app_name"
+            android:targetActivity=".MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity-alias>
+
+        <activity-alias
+            android:name=".MainActivitySimka28"
+            android:enabled="false"
+            android:exported="true"
+            android:icon="@mipmap/ic_launcher_simka_28"
+            android:roundIcon="@mipmap/ic_launcher_simka_28_round"
+            android:label="@string/app_name"
+            android:targetActivity=".MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity-alias>
+
+        <activity-alias
+            android:name=".MainActivitySimka29"
+            android:enabled="false"
+            android:exported="true"
+            android:icon="@mipmap/ic_launcher_simka_29"
+            android:roundIcon="@mipmap/ic_launcher_simka_29_round"
+            android:label="@string/app_name"
+            android:targetActivity=".MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity-alias>
+
+        <activity-alias
+            android:name=".MainActivitySimka31"
+            android:enabled="false"
+            android:exported="true"
+            android:icon="@mipmap/ic_launcher_simka_31"
+            android:roundIcon="@mipmap/ic_launcher_simka_31_round"
+            android:label="@string/app_name"
+            android:targetActivity=".MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity-alias>
+
+        <activity-alias
+            android:name=".MainActivitySimka32"
+            android:enabled="false"
+            android:exported="true"
+            android:icon="@mipmap/ic_launcher_simka_32"
+            android:roundIcon="@mipmap/ic_launcher_simka_32_round"
+            android:label="@string/app_name"
+            android:targetActivity=".MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity-alias>
+
+        <activity-alias
+            android:name=".MainActivitySimka33"
+            android:enabled="false"
+            android:exported="true"
+            android:icon="@mipmap/ic_launcher_simka_33"
+            android:roundIcon="@mipmap/ic_launcher_simka_33_round"
+            android:label="@string/app_name"
+            android:targetActivity=".MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity-alias>
+
+        <activity-alias
+            android:name=".MainActivitySimka34"
+            android:enabled="false"
+            android:exported="true"
+            android:icon="@mipmap/ic_launcher_simka_34"
+            android:roundIcon="@mipmap/ic_launcher_simka_34_round"
+            android:label="@string/app_name"
+            android:targetActivity=".MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity-alias>
+
+        <activity-alias
+            android:name=".MainActivitySimka35"
+            android:enabled="false"
+            android:exported="true"
+            android:icon="@mipmap/ic_launcher_simka_35"
+            android:roundIcon="@mipmap/ic_launcher_simka_35_round"
+            android:label="@string/app_name"
+            android:targetActivity=".MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity-alias>
+
+        <activity-alias
+            android:name=".MainActivitySimka37"
+            android:enabled="false"
+            android:exported="true"
+            android:icon="@mipmap/ic_launcher_simka_37"
+            android:roundIcon="@mipmap/ic_launcher_simka_37_round"
+            android:label="@string/app_name"
+            android:targetActivity=".MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity-alias>
+
+        <activity-alias
+            android:name=".MainActivitySimka39"
+            android:enabled="false"
+            android:exported="true"
+            android:icon="@mipmap/ic_launcher_simka_39"
+            android:roundIcon="@mipmap/ic_launcher_simka_39_round"
+            android:label="@string/app_name"
+            android:targetActivity=".MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity-alias>
+
+        <activity-alias
+            android:name=".MainActivitySimka40"
+            android:enabled="false"
+            android:exported="true"
+            android:icon="@mipmap/ic_launcher_simka_40"
+            android:roundIcon="@mipmap/ic_launcher_simka_40_round"
+            android:label="@string/app_name"
+            android:targetActivity=".MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity-alias>
+
+        <activity-alias
+            android:name=".MainActivitySimka41"
+            android:enabled="false"
+            android:exported="true"
+            android:icon="@mipmap/ic_launcher_simka_41"
+            android:roundIcon="@mipmap/ic_launcher_simka_41_round"
+            android:label="@string/app_name"
+            android:targetActivity=".MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity-alias>
+
+        <activity-alias
+            android:name=".MainActivitySimka42"
+            android:enabled="false"
+            android:exported="true"
+            android:icon="@mipmap/ic_launcher_simka_42"
+            android:roundIcon="@mipmap/ic_launcher_simka_42_round"
+            android:label="@string/app_name"
+            android:targetActivity=".MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity-alias>
+
+        <activity-alias
+            android:name=".MainActivitySimka43"
+            android:enabled="false"
+            android:exported="true"
+            android:icon="@mipmap/ic_launcher_simka_43"
+            android:roundIcon="@mipmap/ic_launcher_simka_43_round"
+            android:label="@string/app_name"
+            android:targetActivity=".MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity-alias>
+
+        <activity-alias
+            android:name=".MainActivitySimka44"
+            android:enabled="false"
+            android:exported="true"
+            android:icon="@mipmap/ic_launcher_simka_44"
+            android:roundIcon="@mipmap/ic_launcher_simka_44_round"
+            android:label="@string/app_name"
+            android:targetActivity=".MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity-alias>
+
+        <activity-alias
+            android:name=".MainActivitySimka45"
+            android:enabled="false"
+            android:exported="true"
+            android:icon="@mipmap/ic_launcher_simka_45"
+            android:roundIcon="@mipmap/ic_launcher_simka_45_round"
+            android:label="@string/app_name"
+            android:targetActivity=".MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity-alias>
+
+        <activity-alias
+            android:name=".MainActivitySimka46"
+            android:enabled="false"
+            android:exported="true"
+            android:icon="@mipmap/ic_launcher_simka_46"
+            android:roundIcon="@mipmap/ic_launcher_simka_46_round"
+            android:label="@string/app_name"
+            android:targetActivity=".MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity-alias>
+
+        <activity-alias
+            android:name=".MainActivitySimka47"
+            android:enabled="false"
+            android:exported="true"
+            android:icon="@mipmap/ic_launcher_simka_47"
+            android:roundIcon="@mipmap/ic_launcher_simka_47_round"
             android:label="@string/app_name"
             android:targetActivity=".MainActivity">
             <intent-filter>
