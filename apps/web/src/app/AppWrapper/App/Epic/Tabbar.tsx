@@ -9,8 +9,11 @@ import {
   useAdaptivityConditionalRender,
   Tabbar as VKUITabbar
 } from '@vkontakte/vkui'
-import type { FC } from 'react'
-
+import { type FC, useEffect, useState } from 'react'
+import {
+  getTabbarLabelsVisible,
+  TABBAR_LABELS_CHANGE_EVENT
+} from '../../../../shared/config'
 import type { Pages } from '../../../../shared/types.ts'
 import {
   isSettingsPanel,
@@ -27,6 +30,19 @@ interface ITabbar {
 
 const Tabbar: FC<ITabbar> = ({ onStoryChange, activePanel }) => {
   const { viewWidth } = useAdaptivityConditionalRender()
+  const [showLabels, setShowLabels] = useState(getTabbarLabelsVisible)
+
+  useEffect(() => {
+    const onChange = (event: Event) => {
+      const detail = (event as CustomEvent<boolean>).detail
+      setShowLabels(
+        typeof detail === 'boolean' ? detail : getTabbarLabelsVisible()
+      )
+    }
+    window.addEventListener(TABBAR_LABELS_CHANGE_EVENT, onChange)
+    return () =>
+      window.removeEventListener(TABBAR_LABELS_CHANGE_EVENT, onChange)
+  }, [])
 
   return (
     viewWidth.tabletMinus && (
@@ -35,7 +51,7 @@ const Tabbar: FC<ITabbar> = ({ onStoryChange, activePanel }) => {
           onClick={() => onStoryChange(VIEW_SCHEDULE)}
           selected={activePanel === VIEW_SCHEDULE}
           data-story={VIEW_SCHEDULE}
-          label='Главная'
+          label={showLabels ? 'Главная' : undefined}
         >
           <Icon28HomeOutline />
         </TabbarItem>
@@ -43,7 +59,7 @@ const Tabbar: FC<ITabbar> = ({ onStoryChange, activePanel }) => {
           onClick={() => onStoryChange(VIEW_MARKS)}
           selected={activePanel === VIEW_MARKS}
           data-story={VIEW_MARKS}
-          label='Успеваемость'
+          label={showLabels ? 'Успеваемость' : undefined}
         >
           <Icon28GraphOutline />
         </TabbarItem>
@@ -51,7 +67,7 @@ const Tabbar: FC<ITabbar> = ({ onStoryChange, activePanel }) => {
           onClick={() => onStoryChange(VIEW_NOTIFICATIONS)}
           selected={activePanel === VIEW_NOTIFICATIONS}
           data-story={VIEW_NOTIFICATIONS}
-          label='Объявления'
+          label={showLabels ? 'Объявления' : undefined}
         >
           <Icon28BookSpreadOutline />
         </TabbarItem>
@@ -59,7 +75,7 @@ const Tabbar: FC<ITabbar> = ({ onStoryChange, activePanel }) => {
           onClick={() => onStoryChange(VIEW_SETTINGS)}
           selected={isSettingsPanel(activePanel)}
           data-story={VIEW_SETTINGS}
-          label='Профиль'
+          label={showLabels ? 'Профиль' : undefined}
         >
           <Icon28UserCircleOutline />
         </TabbarItem>

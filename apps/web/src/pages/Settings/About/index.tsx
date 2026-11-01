@@ -1,11 +1,12 @@
+import { getAppVersion } from '@runtime-api'
 import { Icon28ChevronRightOutline } from '@vkontakte/icons'
 import { useRouteNavigator } from '@vkontakte/vk-mini-apps-router'
 import { Group, Header, Panel, SimpleCell, Snackbar } from '@vkontakte/vkui'
-import { type FC, useRef, useState } from 'react'
+import { type FC, useEffect, useRef, useState } from 'react'
 
 import { PAGE_SETTINGS_DEVELOPER } from '../../../app/routes'
 import { PanelHeaderWithBack } from '../../../shared'
-import { BETA_VERSION, IS_DEV } from '../../../shared/config'
+import { APP_VERSION, IS_DEV } from '../../../shared/config'
 import type { Props } from '../../types.ts'
 import Legal from '../Legal'
 import {
@@ -14,13 +15,18 @@ import {
   unlockDeveloperMode
 } from '../shared/developer'
 
-const APP_VERSION = BETA_VERSION || '8.0.0'
-
 const AboutSettings: FC<Props> = ({ id }) => {
   const routeNavigator = useRouteNavigator()
   const tapsRef = useRef(0)
   const [unlocked, setUnlocked] = useState(isDeveloperModeUnlocked)
   const [snackbar, setSnackbar] = useState<string | null>(null)
+  const [version, setVersion] = useState(APP_VERSION)
+
+  useEffect(() => {
+    void getAppVersion()
+      .then(setVersion)
+      .catch(() => setVersion(APP_VERSION))
+  }, [])
 
   const onVersionTap = () => {
     if (unlocked) {
@@ -52,7 +58,7 @@ const AboutSettings: FC<Props> = ({ id }) => {
           subtitle={IS_DEV ? 'Сборка для разработки' : 'Дневник СПО'}
           onClick={onVersionTap}
         >
-          Версия {APP_VERSION}
+          Версия {version}
         </SimpleCell>
         {unlocked && (
           <SimpleCell

@@ -40,7 +40,12 @@ export default defineConfig({
       ),
       'import.meta.env.VITE_SERVER_URL': JSON.stringify(''),
       'import.meta.env.VITE_ADMIN_PAGE_URL': JSON.stringify(''),
-      'import.meta.env.VITE_BETA_VERSION': JSON.stringify('false')
+      'import.meta.env.VITE_APP_VERSION': JSON.stringify(
+        process.env.VITE_APP_VERSION ?? '1.0.0'
+      ),
+      'import.meta.env.VITE_BETA_VERSION': JSON.stringify(
+        process.env.VITE_BETA_VERSION ?? ''
+      )
     }
   }
 })

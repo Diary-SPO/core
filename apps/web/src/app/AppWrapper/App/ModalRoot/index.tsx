@@ -9,7 +9,8 @@ import {
   MODAL_PAGE_LOGIN_DIAGNOSTICS,
   MODAL_PAGE_MARK,
   MODAL_PAGE_RECOMMEND_APP,
-  MODAL_PAGE_REGION
+  MODAL_PAGE_REGION,
+  MODAL_PAGE_STORAGE_INSPECT
 } from '../../../../shared/config'
 import { postponeRecommendationPrompt } from '../../../../shared/utils/recommendationPrompt'
 
@@ -18,6 +19,7 @@ import LoginDiagnosticsModal from './modals/LoginDiagnosticsModal'
 import MarkDetailedModal from './modals/MarkDetailedModal'
 import RecommendAppModal from './modals/RecommendAppModal'
 import RegionModal from './modals/RegionModal'
+import StorageInspectModal from './modals/StorageInspectModal'
 
 const ModalRoot = () => {
   const routeNavigator = useRouteNavigator()
@@ -38,6 +40,7 @@ const ModalRoot = () => {
       <RegionModal id={MODAL_PAGE_REGION} />
       <RecommendAppModal id={MODAL_PAGE_RECOMMEND_APP} />
       <LoginDiagnosticsModal id={MODAL_PAGE_LOGIN_DIAGNOSTICS} />
+      <StorageInspectModal id={MODAL_PAGE_STORAGE_INSPECT} />
     </VKUIModalRoot>
   )
 }

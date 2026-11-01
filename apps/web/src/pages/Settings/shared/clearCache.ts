@@ -23,7 +23,7 @@ export const clearAppCache = (): number => {
         removed += 1
       }
     } catch {
-      // пропускаем недоступные ключи
+      // localStorage может быть недоступен - ключ просто пропускаем
     }
   }
   return removed

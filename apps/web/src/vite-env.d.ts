@@ -14,6 +14,7 @@ interface ImportMetaEnv {
   readonly NODE_ENV: 'production' | 'development'
 
   readonly VITE_ADMIN_PAGE_URL: string
+  readonly VITE_APP_VERSION?: string
   readonly VITE_BETA_VERSION: string
 }
 

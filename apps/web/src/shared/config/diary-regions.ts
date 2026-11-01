@@ -8,6 +8,7 @@ import karachayEmblem from '../../assets/images/regions/karachay.png'
 import komiEmblem from '../../assets/images/regions/komi.png'
 import krasnodarEmblem from '../../assets/images/regions/krasnodar.png'
 import primorskyEmblem from '../../assets/images/regions/primorsky.png'
+import ryazanEmblem from '../../assets/images/regions/ryazan.png'
 import sakhaEmblem from '../../assets/images/regions/sakha.png'
 import samaraEmblem from '../../assets/images/regions/samara.png'
 import tomskEmblem from '../../assets/images/regions/tomsk.png'
@@ -131,6 +132,12 @@ export const DIARY_REGIONS: DiaryRegion[] = [
     url: 'https://poo.e-yakutia.ru',
     emblem: sakhaEmblem,
     aliases: ['якутск', 'yakutsk', 'yakutia', 'sakha']
+  },
+  {
+    name: 'Рязанская область',
+    url: 'https://e-college.ryazan.gov.ru',
+    emblem: ryazanEmblem,
+    aliases: ['рязань', 'касимов', 'скопин', 'ryazan', 'kasimov', 'skopin']
   },
   {
     name: 'Самарская область',

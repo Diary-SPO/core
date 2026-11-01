@@ -72,12 +72,10 @@ const AppSettings: FC<Props> = ({ id }) => {
           )}
         </Group>
       ) : (
-        <Group header={<Header size='s'>Категории</Header>}>
+        <Group>
           {categories.map((category) => (
             <SimpleCell
               key={category.id}
-              multiline
-              subtitle={category.subtitle}
               after={<Icon28ChevronRightOutline />}
               onClick={() => void routeNavigator.push(category.path)}
             >

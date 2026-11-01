@@ -105,13 +105,13 @@ const SessionGuardian = () => {
 
         const account = await getSavedAccount()
         if (!account || !(await hasSavedCredentials())) {
-          // Нет сохранённого пароля (веб или вход через Госуслуги) - поэтому только выход
+          // Нет сохранённого пароля (веб или Госуслуги) - только выход.
           clearAuthData()
           await routeNavigator.replace('/')
           return
         }
 
-        // Тихий перелогин: модалку показываем только если автоматически не смогли перелогинить
+        // Тихий перелогин - модалку открываем, только если перелогин не удался.
         const response = await reloginWithSavedCredentials()
         if (!isApiError(response) && response.data?.token) {
           selectRegionRef.current(account.diaryUrl)

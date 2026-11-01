@@ -1,3 +1,4 @@
+import { App } from '@capacitor/app'
 import type { PluginListenerHandle } from '@capacitor/core'
 import {
   Capacitor,
@@ -22,11 +23,14 @@ import {
 import type { ResponseLogin } from '@diary-spo/shared'
 import type {
   ApiResponse,
+  AppIconController,
   DiaryApi,
+  GetAppVersion,
   RegionProbeResult,
   RegionSearchResult,
   ShareContentOptions
 } from '../../web/src/shared/api/runtime/types.ts'
+import { APP_VERSION } from '../../web/src/shared/config'
 import {
   backgroundGradeNotifications,
   clearBackgroundGradeSession,
@@ -38,6 +42,57 @@ export { backgroundGradeNotifications }
 
 const connectTimeout = 15000
 const readTimeout = 20000
+
+export const getAppVersion: GetAppVersion = async () => {
+  if (!Capacitor.isNativePlatform()) return APP_VERSION
+  try {
+    const info = await App.getInfo()
+    // version - versionName из Android, build - versionCode.
+    return info.build ? `${info.version} (${info.build})` : info.version
+  } catch (error) {
+    console.warn('Unable to read native app version', error)
+    return APP_VERSION
+  }
+}
+
+interface DiaryAppIconPlugin {
+  getOptions(): Promise<{
+    supported: boolean
+    options: Array<{ id: string; name: string }>
+  }>
+  getCurrent(): Promise<{ iconId: string }>
+  setIcon(options: { iconId: string }): Promise<{ iconId: string }>
+}
+
+const diaryAppIcon = registerPlugin<DiaryAppIconPlugin>('DiaryAppIcon')
+
+export const appIcon: AppIconController = {
+  supported: Capacitor.isNativePlatform(),
+  getOptions: async () => {
+    if (!Capacitor.isNativePlatform()) return []
+    try {
+      const response = await diaryAppIcon.getOptions()
+      return response.options ?? []
+    } catch (error) {
+      console.warn('Unable to read app icon options', error)
+      return []
+    }
+  },
+  getCurrent: async () => {
+    if (!Capacitor.isNativePlatform()) return 'default'
+    try {
+      const response = await diaryAppIcon.getCurrent()
+      return response.iconId || 'default'
+    } catch {
+      return 'default'
+    }
+  },
+  setIcon: async (iconId) => {
+    if (!Capacitor.isNativePlatform()) return 'default'
+    const response = await diaryAppIcon.setIcon({ iconId })
+    return response.iconId || iconId
+  }
+}
 
 interface DiaryNetworkPlugin {
   isVpnActive(): Promise<{ active: boolean }>

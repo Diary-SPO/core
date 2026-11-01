@@ -10,16 +10,14 @@ import { useRouteNavigator } from '@vkontakte/vk-mini-apps-router'
 import { CellButton, Group, Header, Panel, SimpleCell } from '@vkontakte/vkui'
 import { type FC, useEffect, useMemo, useState } from 'react'
 import { PanelHeaderWithBack } from '../../../shared'
-import {
-  MODAL_PAGE_LOGIN_DIAGNOSTICS,
-  MODAL_PAGE_REGION
-} from '../../../shared/config'
+import { MODAL_PAGE_LOGIN_DIAGNOSTICS } from '../../../shared/config'
 import {
   DIARY_REGIONS,
   getDiaryDomain
 } from '../../../shared/config/diary-regions.ts'
 import { useSnackbar } from '../../../shared/hooks'
 import type { Props } from '../../types.ts'
+import PinSettings from '../PinSettings'
 import { clearAppCache } from '../shared/clearCache'
 
 const AccountSettings: FC<Props> = ({ id }) => {
@@ -90,12 +88,12 @@ const AccountSettings: FC<Props> = ({ id }) => {
         <SimpleCell
           before={<Icon28PlaceOutline />}
           subtitle={regionLabel}
-          onClick={() => void routeNavigator.showModal(MODAL_PAGE_REGION)}
           multiline
         >
           Регион дневника
         </SimpleCell>
       </Group>
+      <PinSettings />
       <Group header={<Header size='s'>Данные</Header>}>
         <CellButton before={<Icon28DeleteOutline />} onClick={clearCache}>
           Очистить кеш

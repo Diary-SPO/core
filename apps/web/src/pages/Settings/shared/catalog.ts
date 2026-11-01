@@ -48,7 +48,15 @@ export const SETTINGS_CATEGORIES: SettingsCategory[] = [
     title: 'Аккаунт',
     subtitle: 'Регион, кеш, диагностика',
     path: PAGE_SETTINGS_ACCOUNT,
-    keywords: ['аккаунт', 'регион', 'кеш', 'диагностика', 'вход']
+    keywords: [
+      'аккаунт',
+      'регион',
+      'кеш',
+      'диагностика',
+      'вход',
+      'пинкод',
+      'pin'
+    ]
   },
   {
     id: 'help',
@@ -81,6 +89,27 @@ export const SETTINGS_ITEMS: SettingsCatalogItem[] = [
     subtitle: 'Авто, светлая или тёмная',
     keywords: ['тема', 'оформление', 'тёмная', 'светлая', 'авто'],
     path: PAGE_SETTINGS_APPEARANCE
+  },
+  {
+    id: 'tabbar-labels',
+    title: 'Подписи в нижней панели',
+    subtitle: 'Показывать названия вкладок',
+    keywords: ['подписи', 'tabbar', 'навигация', 'вкладки'],
+    path: PAGE_SETTINGS_APPEARANCE
+  },
+  {
+    id: 'app-icon',
+    title: 'Иконка приложения',
+    subtitle: 'Значок на рабочем столе',
+    keywords: ['иконка', 'значок', 'ярлык', 'рабочий стол'],
+    path: PAGE_SETTINGS_APPEARANCE
+  },
+  {
+    id: 'pin',
+    title: 'Пинкод входа',
+    subtitle: 'Защита приложения кодом',
+    keywords: ['пинкод', 'pin', 'пароль', 'блокировка', 'безопасность'],
+    path: PAGE_SETTINGS_ACCOUNT
   },
   {
     id: 'grade-notifications',

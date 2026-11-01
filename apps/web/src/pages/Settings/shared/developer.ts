@@ -13,12 +13,12 @@ export const unlockDeveloperMode = (): void => {
   try {
     localStorage.setItem(DEVELOPER_MODE_KEY, '1')
   } catch {
-    // localStorage может быть недоступен
+    // localStorage может быть недоступен - флаг просто не сохранится
   }
   try {
     window.dispatchEvent(new Event(DEVELOPER_MODE_EVENT))
   } catch {
-    // window может быть недоступен
+    // Слушателя нет - список настроек подтянется при следующем заходе
   }
 }
 

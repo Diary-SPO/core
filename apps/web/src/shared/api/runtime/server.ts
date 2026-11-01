@@ -1,9 +1,12 @@
 import type { ResponseLogin } from '@diary-spo/shared'
+import { APP_VERSION } from '../../config'
 import { client } from '../client.ts'
 import type {
   ApiResponse,
+  AppIconController,
   BackgroundGradeNotifications,
   DiaryApi,
+  GetAppVersion,
   RegionSearchResult,
   ShareContentOptions
 } from './types.ts'
@@ -18,6 +21,15 @@ export const backgroundGradeNotifications: BackgroundGradeNotifications = {
   getSettings: () => defaultBackgroundSettings,
   setSettings: async () => defaultBackgroundSettings
 }
+
+export const appIcon: AppIconController = {
+  supported: false,
+  getOptions: async () => [],
+  getCurrent: async () => 'default',
+  setIcon: async () => 'default'
+}
+
+export const getAppVersion: GetAppVersion = async () => APP_VERSION
 
 export const shareContent = async (
   options: ShareContentOptions

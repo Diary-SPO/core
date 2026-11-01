@@ -71,3 +71,18 @@ export interface RegionSearchResult {
   checked: number
   results: RegionProbeResult[]
 }
+
+export interface AppIconOption {
+  id: string
+  name: string
+}
+
+export interface AppIconController {
+  readonly supported: boolean
+  getOptions(): Promise<AppIconOption[]>
+  getCurrent(): Promise<string>
+  setIcon(iconId: string): Promise<string>
+}
+
+/** Версия приложения: в APK из Android, в вебе из env. */
+export type GetAppVersion = () => Promise<string>

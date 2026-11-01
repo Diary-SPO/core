@@ -23,7 +23,7 @@ const intervalLabels: Record<BackgroundGradeInterval, string> = {
 }
 
 interface GradeNotificationsProps {
-  /** Только тумблер без выбора частоты — для быстрых действий на хабе */
+  /** Только тумблер без частоты - для быстрых действий на хабе */
   compact?: boolean
 }
 
@@ -75,6 +75,7 @@ const GradeNotifications = ({ compact = false }: GradeNotificationsProps) => {
 
   const toggle = (
     <SimpleCell
+      multiline
       before={<Icon28Notifications />}
       after={
         <Switch
