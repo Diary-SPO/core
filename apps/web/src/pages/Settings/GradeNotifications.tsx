@@ -22,7 +22,12 @@ const intervalLabels: Record<BackgroundGradeInterval, string> = {
   120: 'Каждые 2 часа'
 }
 
-const GradeNotifications = () => {
+interface GradeNotificationsProps {
+  /** Только тумблер без выбора частоты — для быстрых действий на хабе */
+  compact?: boolean
+}
+
+const GradeNotifications = ({ compact = false }: GradeNotificationsProps) => {
   const [settings, setSettings] = useState(() =>
     backgroundGradeNotifications.getSettings()
   )
@@ -68,20 +73,26 @@ const GradeNotifications = () => {
     }
   }
 
+  const toggle = (
+    <SimpleCell
+      before={<Icon28Notifications />}
+      after={
+        <Switch
+          checked={settings.enabled}
+          onChange={(event) => updateEnabled(event.currentTarget.checked)}
+        />
+      }
+      subtitle='Проверять оценки в фоне и показывать уведомления'
+    >
+      Уведомления об оценках
+    </SimpleCell>
+  )
+
+  if (compact) return toggle
+
   return (
     <Group header={<Header size='s'>Оценки</Header>}>
-      <SimpleCell
-        before={<Icon28Notifications />}
-        after={
-          <Switch
-            checked={settings.enabled}
-            onChange={(event) => updateEnabled(event.currentTarget.checked)}
-          />
-        }
-        subtitle='Проверять оценки в фоне и показывать уведомления'
-      >
-        Уведомления об оценках
-      </SimpleCell>
+      {toggle}
       <FormItem
         hidden={!settings.enabled}
         top='Частота проверки'

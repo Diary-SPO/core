@@ -2,17 +2,18 @@ import {
   Icon28BookSpreadOutline,
   Icon28GraphOutline,
   Icon28HomeOutline,
-  Icon28SettingsOutline
+  Icon28UserCircleOutline
 } from '@vkontakte/icons'
 import {
   TabbarItem,
-  Tabbar as VKUITabbar,
-  useAdaptivityConditionalRender
+  useAdaptivityConditionalRender,
+  Tabbar as VKUITabbar
 } from '@vkontakte/vkui'
 import type { FC } from 'react'
 
 import type { Pages } from '../../../../shared/types.ts'
 import {
+  isSettingsPanel,
   VIEW_MARKS,
   VIEW_NOTIFICATIONS,
   VIEW_SCHEDULE,
@@ -21,10 +22,10 @@ import {
 
 interface ITabbar {
   onStoryChange: (current: Pages) => void
-  activeView: Pages
+  activePanel?: string | null
 }
 
-const Tabbar: FC<ITabbar> = ({ onStoryChange, activeView }) => {
+const Tabbar: FC<ITabbar> = ({ onStoryChange, activePanel }) => {
   const { viewWidth } = useAdaptivityConditionalRender()
 
   return (
@@ -32,7 +33,7 @@ const Tabbar: FC<ITabbar> = ({ onStoryChange, activeView }) => {
       <VKUITabbar className={viewWidth.tabletMinus.className}>
         <TabbarItem
           onClick={() => onStoryChange(VIEW_SCHEDULE)}
-          selected={activeView === VIEW_SCHEDULE}
+          selected={activePanel === VIEW_SCHEDULE}
           data-story={VIEW_SCHEDULE}
           label='Главная'
         >
@@ -40,7 +41,7 @@ const Tabbar: FC<ITabbar> = ({ onStoryChange, activeView }) => {
         </TabbarItem>
         <TabbarItem
           onClick={() => onStoryChange(VIEW_MARKS)}
-          selected={activeView === VIEW_MARKS}
+          selected={activePanel === VIEW_MARKS}
           data-story={VIEW_MARKS}
           label='Успеваемость'
         >
@@ -48,7 +49,7 @@ const Tabbar: FC<ITabbar> = ({ onStoryChange, activeView }) => {
         </TabbarItem>
         <TabbarItem
           onClick={() => onStoryChange(VIEW_NOTIFICATIONS)}
-          selected={activeView === VIEW_NOTIFICATIONS}
+          selected={activePanel === VIEW_NOTIFICATIONS}
           data-story={VIEW_NOTIFICATIONS}
           label='Объявления'
         >
@@ -56,11 +57,11 @@ const Tabbar: FC<ITabbar> = ({ onStoryChange, activeView }) => {
         </TabbarItem>
         <TabbarItem
           onClick={() => onStoryChange(VIEW_SETTINGS)}
-          selected={activeView === VIEW_SETTINGS}
+          selected={isSettingsPanel(activePanel)}
           data-story={VIEW_SETTINGS}
-          label='Настройки'
+          label='Профиль'
         >
-          <Icon28SettingsOutline />
+          <Icon28UserCircleOutline />
         </TabbarItem>
       </VKUITabbar>
     )

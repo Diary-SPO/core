@@ -2,7 +2,7 @@ import {
   Icon28BookSpreadOutline,
   Icon28GraphOutline,
   Icon28HomeOutline,
-  Icon28SettingsOutline
+  Icon28UserCircleOutline
 } from '@vkontakte/icons'
 import { useInsets } from '@vkontakte/vk-bridge-react'
 import {
@@ -29,6 +29,7 @@ import { MODAL_PAGE_RECOMMEND_APP } from '../../../shared/config'
 import type { Pages } from '../../../shared/types.ts'
 import { shouldShowRecommendationPrompt } from '../../../shared/utils/recommendationPrompt'
 import {
+  isSettingsPanel,
   MAIN_SETTINGS,
   VIEW_MARKS,
   VIEW_NOTIFICATIONS,
@@ -121,10 +122,10 @@ const App: FC = () => {
                 </Cell>
                 <Cell
                   onClick={() => onStoryChange(VIEW_SETTINGS)}
-                  hovered={panel === VIEW_SETTINGS}
-                  before={<Icon28SettingsOutline />}
+                  hovered={isSettingsPanel(panel)}
+                  before={<Icon28UserCircleOutline />}
                 >
-                  Настройки
+                  Профиль
                 </Cell>
               </Group>
             </Panel>
