@@ -1,10 +1,18 @@
-import { diaryApi, getSavedAccount, hasSavedCredentials } from '@runtime-api'
+import {
+  clearSavedCredentials,
+  diaryApi,
+  getSavedAccount,
+  hasSavedCredentials,
+  reloginWithSavedCredentials
+} from '@runtime-api'
 import { useDiaryRegion, useLoginDiagnostics } from '@store'
 import {
   useActiveVkuiLocation,
   useRouteNavigator
 } from '@vkontakte/vk-mini-apps-router'
 import { useEffect, useRef } from 'react'
+import { resetLoginFailCount } from '../../../../pages/LoginForm/diagnostics/failCounter'
+import { saveData } from '../../../../pages/LoginForm/helpers'
 import {
   clearAuthData,
   DIARY_REQUEST_FAILED_EVENT,
@@ -26,13 +34,15 @@ const checkSession = async (): Promise<'alive' | 'expired' | 'unknown'> => {
 const SessionGuardian = () => {
   const routeNavigator = useRouteNavigator()
   const { modal } = useActiveVkuiLocation()
-  const { selectedUrl } = useDiaryRegion()
+  const { selectedUrl, selectRegion } = useDiaryRegion()
   const { openDiagnostics } = useLoginDiagnostics()
 
   const modalRef = useRef(modal)
   modalRef.current = modal
   const regionRef = useRef(selectedUrl)
   regionRef.current = selectedUrl
+  const selectRegionRef = useRef(selectRegion)
+  selectRegionRef.current = selectRegion
   const openRef = useRef(openDiagnostics)
   openRef.current = openDiagnostics
   const handling = useRef(false)
@@ -95,10 +105,29 @@ const SessionGuardian = () => {
 
         const account = await getSavedAccount()
         if (!account || !(await hasSavedCredentials())) {
+          // Нет сохранённого пароля (веб или вход через Госуслуги) - поэтому только выход
           clearAuthData()
           await routeNavigator.replace('/')
           return
         }
+
+        // Тихий перелогин: модалку показываем только если автоматически не смогли перелогинить
+        const response = await reloginWithSavedCredentials()
+        if (!isApiError(response) && response.data?.token) {
+          selectRegionRef.current(account.diaryUrl)
+          saveData(response.data)
+          resetLoginFailCount()
+          window.location.reload()
+          return
+        }
+
+        if (isApiError(response) && response.status === 401) {
+          await clearSavedCredentials()
+          clearAuthData()
+          await routeNavigator.replace('/')
+          return
+        }
+
         openRef.current({
           reason: 'session',
           diaryUrl: account.diaryUrl,

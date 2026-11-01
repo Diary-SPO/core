@@ -10,11 +10,12 @@ import {
   ModalPageHeader,
   Placeholder,
   SimpleCell,
-  Skeleton
+  Skeleton,
+  Text
 } from '@vkontakte/vkui'
 import { PAGE_SCHEDULE } from '../../../../../../app/routes/constants.ts'
 import { parseRuDate } from '../../../../../../pages/Achievements/Tabs/MarksByGroup/resolveLesson.ts'
-import { Mark, setDefaultMark } from '../../../../../../shared'
+import { Mark, setDefaultMark, textToLink } from '../../../../../../shared'
 import { getLessonMarkDescription } from '../LessonModal/LessonTasks.tsx'
 
 const dateWords = (date: Date): string =>
@@ -120,9 +121,18 @@ const MarkDetailedModal = ({ id }: { id: string }) => {
         {modalData.data?.topic || (!modalData.data && modalData.isLoading) ? (
           <SimpleCell multiline>
             <InfoRow header='Тема'>
-              {modalData.data?.topic ?? (
+              {modalData.data?.topic ? (
+                <Text>{textToLink(modalData.data.topic)}</Text>
+              ) : (
                 <Skeleton width={200} height={20} borderRadius={8} />
               )}
+            </InfoRow>
+          </SimpleCell>
+        ) : null}
+        {modalData.data?.condition ? (
+          <SimpleCell multiline>
+            <InfoRow header='Описание'>
+              <Text>{textToLink(modalData.data.condition)}</Text>
             </InfoRow>
           </SimpleCell>
         ) : null}
