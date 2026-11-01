@@ -85,10 +85,7 @@ const App: FC = () => {
   return (
     <AppRoot safeAreaInsets={vkBridgeInsets}>
       <SessionGuardian />
-      <SplitLayout
-        header={!isVKCOM && <PanelHeader delimiter='none' />}
-        slotProps={{ content: { style: { justifyContent: 'center' } } }}
-      >
+      <SplitLayout center header={!isVKCOM && <PanelHeader delimiter='none' />}>
         {viewWidth.tabletPlus && panel !== MAIN_SETTINGS && (
           <SplitCol
             className={viewWidth.tabletPlus.className}

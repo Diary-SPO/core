@@ -1,14 +1,24 @@
+import { createRequire } from 'node:module'
 import path from 'node:path'
 import { defineConfig, loadEnv } from '@rsbuild/core'
 import { pluginBasicSsl } from '@rsbuild/plugin-basic-ssl'
 import { pluginReact } from '@rsbuild/plugin-react'
+
+const require = createRequire(import.meta.url)
+const { version: packageVersion } = require('./package.json') as {
+  version: string
+}
 
 const { publicVars } = loadEnv({ prefixes: ['VITE_'] })
 const optionalPublicVars = {
   'import.meta.env.VITE_DIARY_SOURCE': JSON.stringify('server'),
   'import.meta.env.VITE_PRIVACY_POLICY_URL': JSON.stringify(''),
   'import.meta.env.VITE_USER_AGREEMENT_URL': JSON.stringify(''),
-  'import.meta.env.VITE_PERSONAL_DATA_CONSENT_URL': JSON.stringify('')
+  'import.meta.env.VITE_PERSONAL_DATA_CONSENT_URL': JSON.stringify(''),
+  // Без define rsbuild оставляет import.meta.env пустым объектом/undefined.
+  'import.meta.env.VITE_APP_VERSION': JSON.stringify(
+    process.env.VITE_APP_VERSION ?? packageVersion ?? '8.0.0'
+  )
 }
 
 export default defineConfig({

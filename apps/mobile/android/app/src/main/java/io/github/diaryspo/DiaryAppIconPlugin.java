@@ -15,13 +15,15 @@ public class DiaryAppIconPlugin extends Plugin {
     private static final String PREFS = "diary_app_icon";
     private static final String PREF_ICON = "iconId";
     private static final String DEFAULT_ALIAS = "io.github.diaryspo.MainActivityDefault";
-    private static final String ALT_ALIAS = "io.github.diaryspo.MainActivityAlt";
+    private static final String CAT_ALIAS = "io.github.diaryspo.MainActivityCat";
+    private static final String PLAYFUL_ALIAS = "io.github.diaryspo.MainActivityPlayful";
 
     @PluginMethod
     public void getOptions(PluginCall call) {
         JSArray options = new JSArray();
         options.put(option("default", "Классическая"));
-        options.put(option("alt", "Тёмная"));
+        options.put(option("cat", "Кот"));
+        options.put(option("playful", "Игривый"));
         JSObject result = new JSObject();
         result.put("options", options);
         result.put("supported", true);
@@ -33,6 +35,7 @@ public class DiaryAppIconPlugin extends Plugin {
         String iconId = getContext()
                 .getSharedPreferences(PREFS, android.content.Context.MODE_PRIVATE)
                 .getString(PREF_ICON, "default");
+        if ("alt".equals(iconId)) iconId = "default";
         JSObject result = new JSObject();
         result.put("iconId", iconId);
         call.resolve(result);
@@ -41,15 +44,20 @@ public class DiaryAppIconPlugin extends Plugin {
     @PluginMethod
     public void setIcon(PluginCall call) {
         String iconId = call.getString("iconId", "default");
-        if (!"default".equals(iconId) && !"alt".equals(iconId)) {
-            call.reject("Unknown iconId");
-            return;
+        if (!"default".equals(iconId) && !"cat".equals(iconId) && !"playful".equals(iconId)) {
+            // Старый id "alt" больше не поддерживаем - откатываем на классику.
+            if ("alt".equals(iconId)) {
+                iconId = "default";
+            } else {
+                call.reject("Unknown iconId");
+                return;
+            }
         }
 
         PackageManager pm = getContext().getPackageManager();
-        boolean useAlt = "alt".equals(iconId);
-        setAliasEnabled(pm, DEFAULT_ALIAS, !useAlt);
-        setAliasEnabled(pm, ALT_ALIAS, useAlt);
+        setAliasEnabled(pm, DEFAULT_ALIAS, "default".equals(iconId));
+        setAliasEnabled(pm, CAT_ALIAS, "cat".equals(iconId));
+        setAliasEnabled(pm, PLAYFUL_ALIAS, "playful".equals(iconId));
 
         getContext()
                 .getSharedPreferences(PREFS, android.content.Context.MODE_PRIVATE)

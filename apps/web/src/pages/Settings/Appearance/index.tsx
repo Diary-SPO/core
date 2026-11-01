@@ -24,6 +24,7 @@ import {
   THEME_LABELS,
   type ThemePreference
 } from '../shared/theme'
+import AppIconGrid from './AppIconGrid'
 
 const AppearanceSettings: FC<Props> = ({ id }) => {
   const [theme, setTheme] = useState<ThemePreference>(getThemePreference)
@@ -62,8 +63,8 @@ const AppearanceSettings: FC<Props> = ({ id }) => {
     setTabbarLabelsVisible(checked)
   }
 
-  const handleIconChange = async (event: ChangeEvent<HTMLSelectElement>) => {
-    const next = event.currentTarget.value
+  const handleIconChange = async (next: string) => {
+    if (next === iconId) return
     const previous = iconId
     setIconId(next)
     try {
@@ -123,18 +124,13 @@ const AppearanceSettings: FC<Props> = ({ id }) => {
         <Group header={<Header size='s'>Иконка приложения</Header>}>
           <FormItem
             top='Значок на рабочем столе'
-            bottom='Доступно в Android-приложении. Иногда ярлык обновляется с задержкой.'
+            bottom='Меняется сам значок на рабочем столе. Иногда ярлык обновляется с задержкой.'
           >
-            <NativeSelect
+            <AppIconGrid
+              options={iconOptions}
               value={iconId}
-              onChange={(e) => void handleIconChange(e)}
-            >
-              {iconOptions.map((option) => (
-                <option key={option.id} value={option.id}>
-                  {option.name}
-                </option>
-              ))}
-            </NativeSelect>
+              onChange={(next) => void handleIconChange(next)}
+            />
           </FormItem>
         </Group>
       )}

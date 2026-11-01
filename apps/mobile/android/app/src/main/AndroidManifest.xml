@@ -48,11 +48,25 @@
         </activity-alias>
 
         <activity-alias
-            android:name=".MainActivityAlt"
+            android:name=".MainActivityCat"
             android:enabled="false"
             android:exported="true"
-            android:icon="@mipmap/ic_launcher_alt"
-            android:roundIcon="@mipmap/ic_launcher_alt_round"
+            android:icon="@mipmap/ic_launcher_cat"
+            android:roundIcon="@mipmap/ic_launcher_cat_round"
+            android:label="@string/app_name"
+            android:targetActivity=".MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity-alias>
+
+        <activity-alias
+            android:name=".MainActivityPlayful"
+            android:enabled="false"
+            android:exported="true"
+            android:icon="@mipmap/ic_launcher_playful"
+            android:roundIcon="@mipmap/ic_launcher_playful_round"
             android:label="@string/app_name"
             android:targetActivity=".MainActivity">
             <intent-filter>

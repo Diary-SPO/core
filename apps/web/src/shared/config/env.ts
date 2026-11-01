@@ -10,6 +10,7 @@ const readEnvString = (value: unknown): string => {
 export const MODE = import.meta.env.VITE_MODE
 export const ADMIN_PAGE = import.meta.env.VITE_ADMIN_PAGE_URL
 export const BETA_VERSION = readEnvString(import.meta.env.VITE_BETA_VERSION)
+// Нужен source.define в rsbuild, иначе import.meta.env.VITE_APP_VERSION падает.
 export const APP_VERSION =
   readEnvString(import.meta.env.VITE_APP_VERSION) || BETA_VERSION || '8.0.0'
 export const API_URL = import.meta.env.VITE_SERVER_URL
