@@ -3,29 +3,41 @@ import {
   useRouteNavigator
 } from '@vkontakte/vk-mini-apps-router'
 import {
-  Epic as VKUIEpic,
+  useAdaptivityConditionalRender,
   View,
-  useAdaptivityConditionalRender
+  Epic as VKUIEpic
 } from '@vkontakte/vkui'
+import type { FC } from 'react'
+import {
+  Achievements,
+  LoginForm,
+  Notifications,
+  Schedule
+} from '../../../../pages'
+import Settings, {
+  AboutSettings,
+  AccountSettings,
+  AppearanceSettings,
+  AppSettings,
+  DeveloperSettings,
+  HelpSettings,
+  NotificationsSettings
+} from '../../../../pages/Settings'
+import type { Pages } from '../../../../shared/types.ts'
 import {
   MAIN_SETTINGS,
   VIEW_MARKS,
   VIEW_NOTIFICATIONS,
   VIEW_SCHEDULE,
-  VIEW_SETTINGS
+  VIEW_SETTINGS,
+  VIEW_SETTINGS_ABOUT,
+  VIEW_SETTINGS_ACCOUNT,
+  VIEW_SETTINGS_APP,
+  VIEW_SETTINGS_APPEARANCE,
+  VIEW_SETTINGS_DEVELOPER,
+  VIEW_SETTINGS_HELP,
+  VIEW_SETTINGS_NOTIFICATIONS
 } from '../../../routes'
-
-import {
-  Achievements,
-  LoginForm,
-  Notifications,
-  Schedule,
-  Settings
-} from '../../../../pages'
-
-import type { Pages } from '../../../../shared/types.ts'
-
-import type { FC } from 'react'
 import Tabbar from './Tabbar'
 
 interface IEpic {
@@ -37,19 +49,20 @@ const Epic: FC<IEpic> = ({ onStoryChange }) => {
   const { viewWidth } = useAdaptivityConditionalRender()
   const { panel: activePanel, panelsHistory } = useActiveVkuiLocation()
   const routeNavigator = useRouteNavigator()
+
   return (
     <VKUIEpic
-      activeStory={activeView}
+      activeStory={activeView ?? VIEW_SCHEDULE}
       tabbar={
         viewWidth.tabletMinus && (
-          <Tabbar onStoryChange={onStoryChange} activeView={panel as Pages} />
+          <Tabbar onStoryChange={onStoryChange} activePanel={panel} />
         )
       }
     >
       <View
         id={VIEW_SCHEDULE}
         history={panelsHistory}
-        activePanel={activePanel}
+        activePanel={activePanel ?? VIEW_SCHEDULE}
         onSwipeBack={() => routeNavigator.back()}
       >
         <LoginForm id={MAIN_SETTINGS} />
@@ -57,6 +70,13 @@ const Epic: FC<IEpic> = ({ onStoryChange }) => {
         <Achievements id={VIEW_MARKS} />
         <Notifications id={VIEW_NOTIFICATIONS} />
         <Settings id={VIEW_SETTINGS} />
+        <AppSettings id={VIEW_SETTINGS_APP} />
+        <AppearanceSettings id={VIEW_SETTINGS_APPEARANCE} />
+        <NotificationsSettings id={VIEW_SETTINGS_NOTIFICATIONS} />
+        <AccountSettings id={VIEW_SETTINGS_ACCOUNT} />
+        <HelpSettings id={VIEW_SETTINGS_HELP} />
+        <AboutSettings id={VIEW_SETTINGS_ABOUT} />
+        <DeveloperSettings id={VIEW_SETTINGS_DEVELOPER} />
       </View>
     </VKUIEpic>
   )

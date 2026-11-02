@@ -1,0 +1,71 @@
+.appUpdateModal__hero {
+  display: grid;
+  gap: 10px;
+  place-items: center;
+  margin: 8px 20px 0;
+  padding: 28px 16px;
+  border-radius: 18px;
+  background:
+    radial-gradient(circle at 30% 20%, rgb(38 136 235 / 22%), transparent 55%),
+    linear-gradient(
+      160deg,
+      rgb(38 136 235 / 10%),
+      rgb(86 171 47 / 8%) 55%,
+      transparent
+    );
+}
+
+.appUpdateModal__badge {
+  min-width: 96px;
+  padding: 10px 16px;
+  border-radius: 999px;
+  /* Не accent_themed: в тёмной теме он белый, и белый текст пропадает. */
+  color: #fff;
+  background: var(--vkui--color_background_accent, #2688eb);
+  font-size: 18px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  text-align: center;
+}
+
+.appUpdateModal__channel {
+  color: var(--vkui--color_text_secondary);
+  font-size: 14px;
+}
+
+.appUpdateModal__content {
+  display: grid;
+  gap: 12px;
+  padding: 20px 20px 16px;
+  text-align: center;
+}
+
+.appUpdateModal__title {
+  margin: 0;
+  text-wrap: balance;
+}
+
+.appUpdateModal__description {
+  max-width: 430px;
+  margin: 0 auto;
+  color: var(--vkui--color_text_secondary);
+  line-height: 1.45;
+  text-wrap: pretty;
+}
+
+.appUpdateModal__progress {
+  display: grid;
+  gap: 8px;
+  margin: 0 auto 16px;
+  max-width: 320px;
+}
+
+.appUpdateModal__progressLabel {
+  color: var(--vkui--color_text_subhead);
+  font-variant-numeric: tabular-nums;
+}
+
+.appUpdateModal__error {
+  margin: 0 0 12px;
+  color: var(--vkui--color_text_negative);
+}

@@ -3,7 +3,7 @@ import { SERVER_URL } from '@config'
 import { b64 } from '@diary-spo/crypto'
 import type { ResponseLogin, UserData } from '@diary-spo/shared'
 
-import { fetcher } from 'src/utils/fetcher'
+import { fetcher, getSetCookieHeader } from 'src/utils/fetcher'
 import { offlineAuth } from './service'
 import { saveUserData } from './service/save'
 
@@ -36,7 +36,7 @@ const postAuth = async ({
      * Поэтому проверяем хотя бы наличие одного обязательного поля
      **/
 
-    const setCookieHeader = rawResponse.headers.get('Set-Cookie')
+    const setCookieHeader = getSetCookieHeader(rawResponse.headers)
 
     const parsedRes = await rawResponse.json<UserData>()
 

@@ -85,7 +85,7 @@ export function Download({ onWebClick }: DownloadProps) {
         </div>
         <img
           className='download-icon'
-          src={publicUrl('icon.png')}
+          src={publicUrl('icon.webp')}
           alt='Иконка приложения Дневник СПО'
           loading='lazy'
         />

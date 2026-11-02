@@ -71,3 +71,69 @@ export interface RegionSearchResult {
   checked: number
   results: RegionProbeResult[]
 }
+
+export interface AppIconOption {
+  id: string
+  name: string
+}
+
+export interface AppIconController {
+  readonly supported: boolean
+  getOptions(): Promise<AppIconOption[]>
+  getCurrent(): Promise<string>
+  setIcon(iconId: string): Promise<string>
+}
+
+/** Версия приложения: в APK из Android, в вебе из env. */
+export type GetAppVersion = () => Promise<string>
+
+export type AppUpdateChannel = 'stable' | 'beta'
+
+export type AppUpdateKind = 'none' | 'web' | 'native' | 'ready' | 'downloading'
+
+export interface AppUpdateInfo {
+  version: string
+  notes: string
+  minNative: number
+  channel: AppUpdateChannel
+  url: string
+  checksum: string
+}
+
+export interface AppUpdateStatus {
+  supported: boolean
+  channel: AppUpdateChannel
+  currentVersion: string
+  nativeVersionCode: number
+  kind: AppUpdateKind
+  available: AppUpdateInfo | null
+  downloadedVersion: string | null
+  badge: boolean
+  progress: number | null
+  lastError: string | null
+}
+
+export interface AppUpdaterDebugPromptOptions {
+  /** Показать панель даже если обновления нет (мок для UI). */
+  force?: boolean
+}
+
+export interface AppUpdater {
+  readonly supported: boolean
+  getStatus(): AppUpdateStatus
+  subscribe(listener: (status: AppUpdateStatus) => void): () => void
+  getChannel(): AppUpdateChannel
+  setChannel(channel: AppUpdateChannel): Promise<AppUpdateStatus>
+  /** Проверка манифеста канала; при необходимости показывает UI через события. */
+  check(options?: { silent?: boolean }): Promise<AppUpdateStatus>
+  download(): Promise<AppUpdateStatus>
+  apply(): Promise<void>
+  /** Удалить скачанные бандлы и вернуться к встроенному. */
+  reset(): Promise<AppUpdateStatus>
+  dismiss(): AppUpdateStatus
+  clearBadge(): AppUpdateStatus
+  /** Dev: открыть панель обновления. */
+  debugOpenPrompt(options?: AppUpdaterDebugPromptOptions): void
+  /** Dev: принудительно скачать текущий available (или check+download). */
+  debugForceDownload(): Promise<AppUpdateStatus>
+}

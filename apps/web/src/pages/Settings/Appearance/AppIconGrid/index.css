@@ -1,0 +1,50 @@
+.appIconGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(96px, 1fr));
+  gap: 12px;
+}
+
+.appIconGrid__option {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 8px;
+  border: 0;
+  border-radius: 16px;
+  background: transparent;
+  color: var(--vkui--color_text_primary);
+  cursor: pointer;
+}
+
+.appIconGrid__option--selected {
+  background: var(--vkui--color_background_secondary);
+}
+
+.appIconGrid__preview {
+  width: 72px;
+  height: 72px;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 0 0 2px transparent;
+  background: var(--vkui--color_background_tertiary);
+}
+
+.appIconGrid__option--selected .appIconGrid__preview {
+  box-shadow: 0 0 0 2px var(--vkui--color_stroke_accent);
+}
+
+.appIconGrid__image {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  pointer-events: none;
+}
+
+.appIconGrid__label {
+  font-size: 13px;
+  line-height: 16px;
+  text-align: center;
+  color: var(--vkui--color_text_secondary);
+}

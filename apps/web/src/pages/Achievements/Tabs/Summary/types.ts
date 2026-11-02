@@ -1,7 +1,8 @@
-import type { Nullable } from '@diary-spo/shared'
+import type { Nullable, PerformanceCurrent } from '@diary-spo/shared'
 
 export interface ISummary {
   totalNumberOfMarks: Nullable<number>
   averageMark: Nullable<number>
   markCounts: Nullable<Record<number, number>>
+  marksForSubject: Nullable<PerformanceCurrent>
 }

@@ -78,6 +78,32 @@ APPMETRICA_API_KEY='ваш_api_key' ./gradlew clean assembleRelease bundleReleas
 в защищённой резервной копии: без прежнего ключа нельзя выпустить обновление
 приложения с той же подписью.
 
+## OTA: обновление фронта без нового APK
+
+Интерфейс можно выкатывать на `https://diary-spo.github.io/mobile/{stable|beta}/`
+(zip + `manifest.json`). Приложение скачивает бандл через
+`@capgo/capacitor-updater`. В манифесте поле `minNative` — минимальный
+`versionCode` APK; если натив старше, пользователю предлагают RuStore.
+
+Каналы:
+
+| Канал | URL | Откуда |
+| --- | --- | --- |
+| `stable` | `/mobile/stable/` | `main` или manual |
+| `beta` | `/mobile/beta/` | `pre-main` или manual |
+
+Локально:
+
+```bash
+bun run --cwd apps/mobile build
+OTA_VERSION=1.3.99 OTA_CHANNEL=beta bun run --cwd apps/mobile pack:ota
+```
+
+Workflow: `.github/workflows/mobile-ota.yml`.
+
+В приложении: «О приложении» → канал / проверка обновлений; в режиме
+разработчика — принудительные сценарии OTA.
+
 ## CI: сборка APK/AAB и публикация лендинга
 
 Workflow `.github/workflows/release-mobile.yml` запускается на push в `main` /

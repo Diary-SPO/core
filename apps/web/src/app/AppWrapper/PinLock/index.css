@@ -1,0 +1,55 @@
+.pinLock {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 24px 16px;
+  background: var(--vkui--color_background);
+}
+
+.pinLock__dots {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  margin: 24px 0 32px;
+}
+
+.pinLock__dot {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  border: 2px solid var(--vkui--color_icon_accent);
+  background: transparent;
+}
+
+.pinLock__dot--filled {
+  background: var(--vkui--color_icon_accent);
+}
+
+.pinLock__pad {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+  max-width: 280px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+.pinLock__key {
+  height: 56px;
+  border-radius: 16px;
+  border: 0;
+  background: var(--vkui--color_background_secondary);
+  color: var(--vkui--color_text_primary);
+  font-size: 22px;
+  font-weight: 600;
+}
+
+.pinLock__error {
+  text-align: center;
+  color: var(--vkui--color_text_negative);
+  min-height: 24px;
+  margin-bottom: 8px;
+}

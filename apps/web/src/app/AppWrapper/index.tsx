@@ -18,6 +18,7 @@ import { router } from '../routes/router'
 
 import App from './App'
 import NotFoundCorrect from './NotFound'
+import PinLock from './PinLock'
 
 vkBridge.send('VKWebAppInit')
 
@@ -50,6 +51,7 @@ const AppWrapper = () => {
         >
           <Suspense id='App' mode='screen'>
             <App />
+            <PinLock />
           </Suspense>
         </ConfigProvider>
       </RouterProvider>

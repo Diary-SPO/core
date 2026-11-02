@@ -2,7 +2,7 @@ import {
   Icon28BookSpreadOutline,
   Icon28GraphOutline,
   Icon28HomeOutline,
-  Icon28SettingsOutline
+  Icon28UserCircleOutline
 } from '@vkontakte/icons'
 import { useInsets } from '@vkontakte/vk-bridge-react'
 import {
@@ -29,12 +29,14 @@ import { MODAL_PAGE_RECOMMEND_APP } from '../../../shared/config'
 import type { Pages } from '../../../shared/types.ts'
 import { shouldShowRecommendationPrompt } from '../../../shared/utils/recommendationPrompt'
 import {
+  isSettingsPanel,
   MAIN_SETTINGS,
   VIEW_MARKS,
   VIEW_NOTIFICATIONS,
   VIEW_SCHEDULE,
   VIEW_SETTINGS
 } from '../../routes'
+import AppUpdateGuardian from './AppUpdateGuardian'
 import Epic from './Epic'
 import ModalRoot from './ModalRoot'
 import SessionGuardian from './SessionGuardian'
@@ -84,10 +86,8 @@ const App: FC = () => {
   return (
     <AppRoot safeAreaInsets={vkBridgeInsets}>
       <SessionGuardian />
-      <SplitLayout
-        header={!isVKCOM && <PanelHeader delimiter='none' />}
-        slotProps={{ content: { style: { justifyContent: 'center' } } }}
-      >
+      <AppUpdateGuardian />
+      <SplitLayout center header={!isVKCOM && <PanelHeader delimiter='none' />}>
         {viewWidth.tabletPlus && panel !== MAIN_SETTINGS && (
           <SplitCol
             className={viewWidth.tabletPlus.className}
@@ -121,10 +121,10 @@ const App: FC = () => {
                 </Cell>
                 <Cell
                   onClick={() => onStoryChange(VIEW_SETTINGS)}
-                  hovered={panel === VIEW_SETTINGS}
-                  before={<Icon28SettingsOutline />}
+                  hovered={isSettingsPanel(panel)}
+                  before={<Icon28UserCircleOutline />}
                 >
-                  Настройки
+                  Профиль
                 </Cell>
               </Group>
             </Panel>

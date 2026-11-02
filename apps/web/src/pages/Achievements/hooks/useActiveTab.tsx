@@ -24,6 +24,7 @@ export const useActiveTab = (
           totalNumberOfMarks={totalNumberOfMarks}
           averageMark={averageMark}
           markCounts={markCounts}
+          marksForSubject={marksForSubject}
         />
       )
     case 'current':

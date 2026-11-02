@@ -14,7 +14,7 @@ export function Footer({ homeHref = '#top' }: FooterProps) {
         <div className='footer-bento'>
           <div className='footer-brand'>
             <a className='footer-brand-link' href={homeHref}>
-              <img src={publicUrl('icon.png')} alt='' aria-hidden='true' />
+              <img src={publicUrl('icon.webp')} alt='' aria-hidden='true' />
               <span className='footer-brand-text'>
                 <b>Дневник СПО</b>
                 <p>

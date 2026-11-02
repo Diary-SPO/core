@@ -2,6 +2,7 @@ import { SERVER_URL } from '@config'
 import { cookieExtractor, formatDate } from '@utils'
 import ky from 'ky'
 import type { IDiaryUserModel } from '../../../models/DiaryUser'
+import { getSetCookieHeader } from '../../../utils/fetcher'
 import { logger } from '../../utils/logger'
 
 const log = logger('cookie updater')
@@ -28,7 +29,7 @@ export const updateUserCookie = async (
   }
 
   // 2. Подготавливаем куку
-  const setCookieHeader = rawResponse.headers.get('Set-Cookie')
+  const setCookieHeader = getSetCookieHeader(rawResponse.headers)
   const cookie = cookieExtractor(setCookieHeader ?? '')
 
   // 3. Обновляем куку и дату обновления

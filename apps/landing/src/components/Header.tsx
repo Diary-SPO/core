@@ -47,7 +47,7 @@ export function Header({ theme, onToggleTheme }: HeaderProps) {
         <div className='header-bento'>
           <a className='brand' href='#top' onClick={close}>
             <img
-              src={publicUrl('icon.png')}
+              src={publicUrl('icon.webp')}
               alt='Иконка приложения Дневник СПО'
             />
             <span>Дневник СПО</span>

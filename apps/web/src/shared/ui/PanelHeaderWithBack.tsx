@@ -31,7 +31,7 @@ export const PanelHeaderWithBack: FC<PanelHeaderWithBackProps> = ({
         )
       }
     >
-      {title} {IS_DEV && `[Beta ${BETA_VERSION}]`}
+      {title} {IS_DEV && BETA_VERSION ? `[Beta ${BETA_VERSION}]` : null}
     </PanelHeader>
   )
 }

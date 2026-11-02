@@ -10,7 +10,7 @@
     <meta name="theme-color" content="#ffffff" />
     <meta
       name="theme-color"
-      content="#19191a"
+      content="#0a0a0a"
       media="(prefers-color-scheme: dark)"
     />
     <title>Дневник СПО</title>
@@ -21,8 +21,10 @@
           savedTheme === 'dark' ||
           (savedTheme !== 'light' &&
             window.matchMedia('(prefers-color-scheme: dark)').matches)
+        // color_background, не content: иначе на ПК по бокам колонок
+        // светлее html-фон и получаются вертикальные «полосы».
         document.documentElement.style.background = isDark
-          ? '#19191a'
+          ? '#0a0a0a'
           : '#ffffff'
       } catch (e) {}
     </script>

@@ -1,18 +1,24 @@
+import { appUpdater } from '@runtime-api'
 import {
   Icon28BookSpreadOutline,
   Icon28GraphOutline,
   Icon28HomeOutline,
-  Icon28SettingsOutline
+  Icon28UserCircleOutline
 } from '@vkontakte/icons'
 import {
+  Badge,
   TabbarItem,
-  Tabbar as VKUITabbar,
-  useAdaptivityConditionalRender
+  useAdaptivityConditionalRender,
+  Tabbar as VKUITabbar
 } from '@vkontakte/vkui'
-import type { FC } from 'react'
-
+import { type FC, useEffect, useState } from 'react'
+import {
+  getTabbarLabelsVisible,
+  TABBAR_LABELS_CHANGE_EVENT
+} from '../../../../shared/config'
 import type { Pages } from '../../../../shared/types.ts'
 import {
+  isSettingsPanel,
   VIEW_MARKS,
   VIEW_NOTIFICATIONS,
   VIEW_SCHEDULE,
@@ -21,46 +27,72 @@ import {
 
 interface ITabbar {
   onStoryChange: (current: Pages) => void
-  activeView: Pages
+  activePanel?: string | null
 }
 
-const Tabbar: FC<ITabbar> = ({ onStoryChange, activeView }) => {
+const Tabbar: FC<ITabbar> = ({ onStoryChange, activePanel }) => {
   const { viewWidth } = useAdaptivityConditionalRender()
+  const [showLabels, setShowLabels] = useState(getTabbarLabelsVisible)
+  const [updateBadge, setUpdateBadge] = useState(
+    () =>
+      appUpdater.getStatus().badge || appUpdater.getStatus().kind === 'ready'
+  )
+
+  useEffect(() => {
+    const onChange = (event: Event) => {
+      const detail = (event as CustomEvent<boolean>).detail
+      setShowLabels(
+        typeof detail === 'boolean' ? detail : getTabbarLabelsVisible()
+      )
+    }
+    window.addEventListener(TABBAR_LABELS_CHANGE_EVENT, onChange)
+    return () =>
+      window.removeEventListener(TABBAR_LABELS_CHANGE_EVENT, onChange)
+  }, [])
+
+  useEffect(
+    () =>
+      appUpdater.subscribe((status) => {
+        setUpdateBadge(status.badge || status.kind === 'ready')
+      }),
+    []
+  )
 
   return (
     viewWidth.tabletMinus && (
       <VKUITabbar className={viewWidth.tabletMinus.className}>
         <TabbarItem
           onClick={() => onStoryChange(VIEW_SCHEDULE)}
-          selected={activeView === VIEW_SCHEDULE}
+          selected={activePanel === VIEW_SCHEDULE}
           data-story={VIEW_SCHEDULE}
-          label='Главная'
+          label={showLabels ? 'Главная' : undefined}
         >
           <Icon28HomeOutline />
         </TabbarItem>
         <TabbarItem
           onClick={() => onStoryChange(VIEW_MARKS)}
-          selected={activeView === VIEW_MARKS}
+          selected={activePanel === VIEW_MARKS}
           data-story={VIEW_MARKS}
-          label='Успеваемость'
+          label={showLabels ? 'Успеваемость' : undefined}
         >
           <Icon28GraphOutline />
         </TabbarItem>
         <TabbarItem
           onClick={() => onStoryChange(VIEW_NOTIFICATIONS)}
-          selected={activeView === VIEW_NOTIFICATIONS}
+          selected={activePanel === VIEW_NOTIFICATIONS}
           data-story={VIEW_NOTIFICATIONS}
-          label='Объявления'
+          label={showLabels ? 'Объявления' : undefined}
         >
           <Icon28BookSpreadOutline />
         </TabbarItem>
         <TabbarItem
           onClick={() => onStoryChange(VIEW_SETTINGS)}
-          selected={activeView === VIEW_SETTINGS}
+          selected={isSettingsPanel(activePanel)}
           data-story={VIEW_SETTINGS}
-          label='Настройки'
+          label={showLabels ? 'Профиль' : undefined}
+          indicator={updateBadge ? <Badge mode='prominent' /> : undefined}
         >
-          <Icon28SettingsOutline />
+          <Icon28UserCircleOutline />
         </TabbarItem>
       </VKUITabbar>
     )

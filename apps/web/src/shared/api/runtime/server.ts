@@ -1,9 +1,15 @@
 import type { ResponseLogin } from '@diary-spo/shared'
+import { APP_VERSION } from '../../config'
 import { client } from '../client.ts'
 import type {
   ApiResponse,
+  AppIconController,
+  AppUpdateChannel,
+  AppUpdater,
+  AppUpdateStatus,
   BackgroundGradeNotifications,
   DiaryApi,
+  GetAppVersion,
   RegionSearchResult,
   ShareContentOptions
 } from './types.ts'
@@ -17,6 +23,47 @@ export const backgroundGradeNotifications: BackgroundGradeNotifications = {
   supported: false,
   getSettings: () => defaultBackgroundSettings,
   setSettings: async () => defaultBackgroundSettings
+}
+
+export const appIcon: AppIconController = {
+  supported: false,
+  getOptions: async () => [],
+  getCurrent: async () => 'default',
+  setIcon: async () => 'default'
+}
+
+export const getAppVersion: GetAppVersion = async () => APP_VERSION
+
+const webUpdateStatus = (): AppUpdateStatus => ({
+  supported: false,
+  channel: 'stable',
+  currentVersion: APP_VERSION,
+  nativeVersionCode: 0,
+  kind: 'none',
+  available: null,
+  downloadedVersion: null,
+  badge: false,
+  progress: null,
+  lastError: null
+})
+
+export const appUpdater: AppUpdater = {
+  supported: false,
+  getStatus: webUpdateStatus,
+  subscribe: (listener) => {
+    listener(webUpdateStatus())
+    return () => undefined
+  },
+  getChannel: () => 'stable',
+  setChannel: async (_channel: AppUpdateChannel) => webUpdateStatus(),
+  check: async () => webUpdateStatus(),
+  download: async () => webUpdateStatus(),
+  apply: async () => undefined,
+  reset: async () => webUpdateStatus(),
+  dismiss: () => webUpdateStatus(),
+  clearBadge: () => webUpdateStatus(),
+  debugOpenPrompt: () => undefined,
+  debugForceDownload: async () => webUpdateStatus()
 }
 
 export const shareContent = async (

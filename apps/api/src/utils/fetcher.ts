@@ -5,6 +5,8 @@ const defaultKy = ky.extend({
   retry: 2
 })
 
+const emptyHeaders = (): Headers => new Headers()
+
 const localFetcher = async (
   method: 'GET' | 'POST',
   url: Input,
@@ -21,14 +23,36 @@ const localFetcher = async (
         result = await defaultKy.post(url, options)
         break
     }
-  } catch {}
+  } catch {
+    // Сеть/таймаут - отдаём пустой ответ с настоящим Headers, без .get на {}
+  }
 
   return {
     ok: result ? result.ok : false,
     status: result ? result.status : 0,
-    headers: result ? result.headers : ({} as Headers),
-    json: async <T>() => (result as KyResponse).json<T>()
+    headers: result?.headers ?? emptyHeaders(),
+    json: async <T>() => {
+      if (!result) {
+        throw new Error(`Fetcher ${method} failed before response`)
+      }
+      return result.json<T>()
+    }
   }
+}
+
+export const getSetCookieHeader = (
+  headers: Headers | null | undefined
+): string | null => {
+  if (!headers || typeof headers.get !== 'function') return null
+
+  // В Bun/undici несколько Set-Cookie удобнее читать так.
+  const withList = headers as Headers & { getSetCookie?: () => string[] }
+  if (typeof withList.getSetCookie === 'function') {
+    const cookies = withList.getSetCookie()
+    if (cookies.length > 0) return cookies.join(', ')
+  }
+
+  return headers.get('Set-Cookie')
 }
 
 export const fetcher = {

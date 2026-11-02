@@ -37,6 +37,16 @@ dist-ssr
 
 coverage
 
+# Python
+**/__pycache__/
+*.py[cod]
+
+# Исходники иконок
+apps/mobile/icon-sources/
+
+# OTA-артефакты (zip + manifest)
+apps/mobile/ota-dist/
+
 # Added by cargo
 
 /target

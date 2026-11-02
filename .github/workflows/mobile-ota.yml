@@ -1,0 +1,118 @@
+name: Mobile web OTA
+
+# Публикует zip фронта Capacitor на diary-spo.github.io/mobile/{stable|beta}/
+# без пересборки APK. Пользователи подтягивают бандл через @capgo/capacitor-updater.
+#
+# Каналы:
+#   main     -> mobile/stable
+#   pre-main -> mobile/beta
+#   manual   -> выбор channel
+#
+# Секрет: PAGES_DEPLOY_TOKEN (как у лендинга).
+
+on:
+  push:
+    branches:
+      - main
+      - pre-main
+    paths:
+      - 'apps/web/**'
+      - 'apps/mobile/**'
+      - 'packages/**'
+      - '.github/workflows/mobile-ota.yml'
+  workflow_dispatch:
+    inputs:
+      channel:
+        description: 'OTA channel'
+        type: choice
+        options:
+          - stable
+          - beta
+        default: stable
+      notes:
+        description: 'Текст обновления для пользователя'
+        required: false
+        default: 'Улучшения интерфейса и исправления'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: mobile-ota-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+
+      - name: Install zip
+        run: sudo apt-get update && sudo apt-get install -y zip
+
+      - name: Install dependencies
+        run: bun install
+
+      - name: Resolve channel and version
+        id: meta
+        run: |
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            CHANNEL="${{ github.event.inputs.channel }}"
+            NOTES="${{ github.event.inputs.notes }}"
+          elif [ "${{ github.ref_name }}" = "pre-main" ]; then
+            CHANNEL=beta
+            NOTES='Canary / beta интерфейс'
+          else
+            CHANNEL=stable
+            NOTES='Улучшения интерфейса и исправления'
+          fi
+
+          VERSION_NAME=$(grep -oP 'versionName "\K[^"]+' apps/mobile/android/app/build.gradle | head -1)
+          VERSION_NAME=${VERSION_NAME%%\$*}
+          VERSION_NAME=${VERSION_NAME%\"*}
+          # versionName вида 1.3 + patch из run_number → semver 1.3.N
+          OTA_VERSION="${VERSION_NAME}.${{ github.run_number }}"
+
+          {
+            echo "channel=$CHANNEL"
+            echo "notes=$NOTES"
+            echo "version=$OTA_VERSION"
+          } >> "$GITHUB_OUTPUT"
+          echo "OTA $OTA_VERSION → mobile/$CHANNEL"
+
+      - name: Write mobile .env
+        run: |
+          cat > apps/mobile/.env <<'EOF'
+          VITE_DIARY_URL=https://poo.tomedu.ru
+          VITE_PRIVACY_POLICY_URL=https://disk.yandex.ru/i/q3875_7h9oPdvA
+          VITE_USER_AGREEMENT_URL=https://disk.yandex.ru/i/ylPeDklUN5GVCQ
+          VITE_PERSONAL_DATA_CONSENT_URL=https://disk.yandex.ru/i/oxnrYLEWNJY7bQ
+          EOF
+
+      - name: Build mobile web bundle
+        env:
+          VITE_APP_VERSION: ${{ steps.meta.outputs.version }}
+        run: bun run --cwd apps/mobile build
+
+      - name: Pack OTA zip + manifest
+        env:
+          OTA_VERSION: ${{ steps.meta.outputs.version }}
+          OTA_CHANNEL: ${{ steps.meta.outputs.channel }}
+          OTA_NOTES: ${{ steps.meta.outputs.notes }}
+        run: bun apps/mobile/scripts/pack-ota.mjs
+
+      - name: Deploy to diary-spo.github.io/mobile/${{ steps.meta.outputs.channel }}
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          personal_token: ${{ secrets.PAGES_DEPLOY_TOKEN }}
+          external_repository: Diary-SPO/diary-spo.github.io
+          publish_branch: main
+          publish_dir: apps/mobile/ota-dist
+          destination_dir: mobile/${{ steps.meta.outputs.channel }}
+          keep_files: true
