@@ -70,14 +70,31 @@ export const SETTINGS_CATEGORIES: SettingsCategory[] = [
     title: 'О приложении',
     subtitle: 'Версия и документы',
     path: PAGE_SETTINGS_ABOUT,
-    keywords: ['о приложении', 'версия', 'правовое', 'политика', 'соглашение']
+    keywords: [
+      'о приложении',
+      'версия',
+      'правовое',
+      'политика',
+      'соглашение',
+      'обновление',
+      'бета',
+      'ota'
+    ]
   },
   {
     id: 'developer',
     title: 'Для разработчиков',
     subtitle: 'Техническая информация',
     path: PAGE_SETTINGS_DEVELOPER,
-    keywords: ['разработчик', 'developer', 'кеш', 'localstorage', 'тех'],
+    keywords: [
+      'разработчик',
+      'developer',
+      'кеш',
+      'localstorage',
+      'тех',
+      'ota',
+      'обновление'
+    ],
     available: isDeveloperModeUnlocked
   }
 ]

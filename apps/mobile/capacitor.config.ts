@@ -15,6 +15,14 @@ const config: CapacitorConfig = {
       label: 'io.github.diaryspo.grade-check',
       repeat: true,
       src: 'runners/grade-runner.js'
+    },
+    CapacitorUpdater: {
+      // Каналы и UI обновлений ведём сами; в Capgo cloud не ходим.
+      autoUpdate: false,
+      appReadyTimeout: 15000,
+      statsUrl: '',
+      updateUrl: '',
+      channelUrl: ''
     }
   }
 }

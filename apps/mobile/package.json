@@ -1,13 +1,14 @@
 {
   "name": "@diary-spo/mobile",
   "private": true,
-  "version": "1.0.0",
+  "version": "4.3.1",
   "type": "module",
   "scripts": {
     "build": "rsbuild build && bun run build:runner",
     "build:runner": "bun build src/background/grade-runner.ts --outfile dist/runners/grade-runner.js --target browser --format iife",
     "build:android": "bun run sync && cd android && ./gradlew assembleDebug",
     "sync": "bun run build && cap sync android",
+    "pack:ota": "bun scripts/pack-ota.mjs",
     "open:android": "cap open android",
     "run:android": "bun run sync && cap run android"
   },
@@ -18,6 +19,7 @@
     "@capacitor/core": "8.5.1",
     "@capacitor/inappbrowser": "^4.0.3",
     "@capacitor/share": "8.0.2",
+    "@capgo/capacitor-updater": "8",
     "@diary-spo/crypto": "workspace:*",
     "@diary-spo/diary-client": "workspace:*",
     "@diary-spo/shared": "workspace:*",

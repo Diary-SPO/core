@@ -44,6 +44,9 @@ coverage
 # Исходники иконок
 apps/mobile/icon-sources/
 
+# OTA-артефакты (zip + manifest)
+apps/mobile/ota-dist/
+
 # Added by cargo
 
 /target

@@ -1,3 +1,4 @@
+import { appUpdater } from '@runtime-api'
 import {
   Icon28ChevronRightOutline,
   Icon28HelpOutline,
@@ -6,7 +7,7 @@ import {
   Icon28SettingsOutline
 } from '@vkontakte/icons'
 import { useRouteNavigator } from '@vkontakte/vk-mini-apps-router'
-import { Group, Header, Panel, SimpleCell } from '@vkontakte/vkui'
+import { Badge, Group, Header, Panel, SimpleCell } from '@vkontakte/vkui'
 import { type FC, useEffect, useState } from 'react'
 
 import {
@@ -31,6 +32,9 @@ import {
 const Settings: FC<Props> = ({ id }) => {
   const routeNavigator = useRouteNavigator()
   const [theme, setTheme] = useState<ThemePreference>(getThemePreference)
+  const [updateBadge, setUpdateBadge] = useState(
+    () => appUpdater.getStatus().badge
+  )
 
   useEffect(() => {
     const onThemeChange = (event: Event) => {
@@ -41,6 +45,14 @@ const Settings: FC<Props> = ({ id }) => {
     window.addEventListener(THEME_CHANGE_EVENT, onThemeChange)
     return () => window.removeEventListener(THEME_CHANGE_EVENT, onThemeChange)
   }, [])
+
+  useEffect(
+    () =>
+      appUpdater.subscribe((status) => {
+        setUpdateBadge(status.badge || status.kind === 'ready')
+      }),
+    []
+  )
 
   return (
     <Panel nav={id}>
@@ -80,6 +92,9 @@ const Settings: FC<Props> = ({ id }) => {
         <SimpleCell
           before={<Icon28InfoCircleOutline />}
           subtitle='Версия и документы'
+          indicator={
+            updateBadge ? <Badge mode='prominent'>1</Badge> : undefined
+          }
           after={<Icon28ChevronRightOutline />}
           onClick={() => void routeNavigator.push(PAGE_SETTINGS_ABOUT)}
         >

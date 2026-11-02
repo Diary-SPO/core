@@ -32,13 +32,25 @@ import type {
 } from '../../web/src/shared/api/runtime/types.ts'
 import { APP_VERSION } from '../../web/src/shared/config'
 import {
+  APP_UPDATE_PROMPT_EVENT,
+  APP_UPDATE_STATUS_EVENT,
+  appUpdater,
+  startAppUpdater
+} from './app-updater.ts'
+import {
   backgroundGradeNotifications,
   clearBackgroundGradeSession,
   syncBackgroundGradeSession
 } from './background-grade-notifications.ts'
 import { getDiaryCookies, setDiaryCookie } from './diary-cookies.ts'
 
-export { backgroundGradeNotifications }
+export {
+  APP_UPDATE_PROMPT_EVENT,
+  APP_UPDATE_STATUS_EVENT,
+  appUpdater,
+  backgroundGradeNotifications,
+  startAppUpdater
+}
 
 const connectTimeout = 15000
 const readTimeout = 20000
@@ -715,3 +727,7 @@ if (storedStudentId > 0 && getStoredCookie()) {
     console.error('Unable to sync background grade session', error)
   )
 }
+
+void startAppUpdater().catch((error) =>
+  console.warn('App updater failed to start', error)
+)

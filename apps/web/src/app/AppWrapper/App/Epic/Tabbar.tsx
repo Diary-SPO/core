@@ -1,3 +1,4 @@
+import { appUpdater } from '@runtime-api'
 import {
   Icon28BookSpreadOutline,
   Icon28GraphOutline,
@@ -5,6 +6,7 @@ import {
   Icon28UserCircleOutline
 } from '@vkontakte/icons'
 import {
+  Badge,
   TabbarItem,
   useAdaptivityConditionalRender,
   Tabbar as VKUITabbar
@@ -31,6 +33,10 @@ interface ITabbar {
 const Tabbar: FC<ITabbar> = ({ onStoryChange, activePanel }) => {
   const { viewWidth } = useAdaptivityConditionalRender()
   const [showLabels, setShowLabels] = useState(getTabbarLabelsVisible)
+  const [updateBadge, setUpdateBadge] = useState(
+    () =>
+      appUpdater.getStatus().badge || appUpdater.getStatus().kind === 'ready'
+  )
 
   useEffect(() => {
     const onChange = (event: Event) => {
@@ -43,6 +49,14 @@ const Tabbar: FC<ITabbar> = ({ onStoryChange, activePanel }) => {
     return () =>
       window.removeEventListener(TABBAR_LABELS_CHANGE_EVENT, onChange)
   }, [])
+
+  useEffect(
+    () =>
+      appUpdater.subscribe((status) => {
+        setUpdateBadge(status.badge || status.kind === 'ready')
+      }),
+    []
+  )
 
   return (
     viewWidth.tabletMinus && (
@@ -76,6 +90,7 @@ const Tabbar: FC<ITabbar> = ({ onStoryChange, activePanel }) => {
           selected={isSettingsPanel(activePanel)}
           data-story={VIEW_SETTINGS}
           label={showLabels ? 'Профиль' : undefined}
+          indicator={updateBadge ? <Badge mode='prominent' /> : undefined}
         >
           <Icon28UserCircleOutline />
         </TabbarItem>

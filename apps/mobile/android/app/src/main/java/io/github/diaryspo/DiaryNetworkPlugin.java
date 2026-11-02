@@ -10,7 +10,7 @@ import com.getcapacitor.PluginCall;
 import com.getcapacitor.PluginMethod;
 import com.getcapacitor.annotation.CapacitorPlugin;
 
-/** Активен ли VPN-транспорт, без чтения трафика и адресов. */
+/** Сеть: VPN и тип транспорта (wifi/cellular), без чтения трафика. */
 @CapacitorPlugin(name = "DiaryNetwork")
 public class DiaryNetworkPlugin extends Plugin {
 
@@ -35,6 +35,39 @@ public class DiaryNetworkPlugin extends Plugin {
         }
         JSObject result = new JSObject();
         result.put("active", active);
+        call.resolve(result);
+    }
+
+    @PluginMethod
+    public void getTransport(PluginCall call) {
+        String transport = "none";
+        try {
+            ConnectivityManager manager = (ConnectivityManager) getContext()
+                    .getSystemService(Context.CONNECTIVITY_SERVICE);
+            if (manager != null) {
+                Network active = manager.getActiveNetwork();
+                NetworkCapabilities caps =
+                        active != null ? manager.getNetworkCapabilities(active) : null;
+                if (caps != null) {
+                    if (caps.hasTransport(NetworkCapabilities.TRANSPORT_WIFI)) {
+                        transport = "wifi";
+                    } else if (caps.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR)) {
+                        transport = "cellular";
+                    } else if (caps.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET)
+                            || caps.hasTransport(NetworkCapabilities.TRANSPORT_USB)
+                            || caps.hasTransport(NetworkCapabilities.TRANSPORT_BLUETOOTH)) {
+                        transport = "other";
+                    } else {
+                        transport = "other";
+                    }
+                }
+            }
+        } catch (Exception e) {
+            call.reject("Unable to read network transport");
+            return;
+        }
+        JSObject result = new JSObject();
+        result.put("transport", transport);
         call.resolve(result);
     }
 }

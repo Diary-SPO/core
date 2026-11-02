@@ -36,6 +36,7 @@ import {
   VIEW_SCHEDULE,
   VIEW_SETTINGS
 } from '../../routes'
+import AppUpdateGuardian from './AppUpdateGuardian'
 import Epic from './Epic'
 import ModalRoot from './ModalRoot'
 import SessionGuardian from './SessionGuardian'
@@ -85,6 +86,7 @@ const App: FC = () => {
   return (
     <AppRoot safeAreaInsets={vkBridgeInsets}>
       <SessionGuardian />
+      <AppUpdateGuardian />
       <SplitLayout center header={!isVKCOM && <PanelHeader delimiter='none' />}>
         {viewWidth.tabletPlus && panel !== MAIN_SETTINGS && (
           <SplitCol
