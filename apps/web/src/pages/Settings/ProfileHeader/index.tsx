@@ -1,18 +1,16 @@
 import { Icon28SchoolOutline } from '@vkontakte/icons'
 import {
   Avatar,
-  Div,
   Gradient,
   Group,
   Header,
   SimpleCell,
-  Spinner,
   Text,
   Title
 } from '@vkontakte/vkui'
 import { type FC, useEffect, useState } from 'react'
-
 import { winxAva } from '../../../shared/config/images.ts'
+import { ProfileSkeleton } from '../../../shared/ui'
 
 import './index.css'
 
@@ -54,11 +52,7 @@ const ProfileHeader: FC = () => {
   }, [])
 
   if (isLoading) {
-    return (
-      <Div>
-        <Spinner />
-      </Div>
-    )
+    return <ProfileSkeleton />
   }
 
   return (

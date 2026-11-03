@@ -1,5 +1,5 @@
-import { Icon24ChevronLeft, Icon24ChevronRight } from '@vkontakte/icons'
 import { useWeekPicker } from '@store'
+import { Icon24ChevronLeft, Icon24ChevronRight } from '@vkontakte/icons'
 import { useRouteNavigator } from '@vkontakte/vk-mini-apps-router'
 import {
   Button,
@@ -81,7 +81,28 @@ const WeekPickerModal: FC<WeekPickerModalProps> = ({ id }) => {
   }
 
   return (
-    <ModalPage id={id} dynamicContentHeight>
+    <ModalPage
+      id={id}
+      dynamicContentHeight
+      footer={
+        <Div className='diary-week-picker-modal__footer'>
+          <Button
+            className='diary-home-button'
+            size='l'
+            mode='secondary'
+            appearance='neutral'
+            stretched
+            disabled={isCurrent}
+            onClick={() => {
+              onCurrentWeek?.()
+              routeNavigator.hideModal()
+            }}
+          >
+            К текущей неделе
+          </Button>
+        </Div>
+      }
+    >
       <ModalPageHeader>Выбор недели</ModalPageHeader>
       <Div className='diary-week-picker-modal'>
         <div className='diary-week-picker-modal__month'>
@@ -139,12 +160,8 @@ const WeekPickerModal: FC<WeekPickerModalProps> = ({ id }) => {
                         key={day.toISOString()}
                         className={[
                           'diary-week-picker-modal__day',
-                          outside
-                            ? 'diary-week-picker-modal__day--muted'
-                            : '',
-                          isToday
-                            ? 'diary-week-picker-modal__day--today'
-                            : ''
+                          outside ? 'diary-week-picker-modal__day--muted' : '',
+                          isToday ? 'diary-week-picker-modal__day--today' : ''
                         ]
                           .filter(Boolean)
                           .join(' ')}
@@ -158,21 +175,6 @@ const WeekPickerModal: FC<WeekPickerModalProps> = ({ id }) => {
             )
           })}
         </div>
-
-        <Button
-          className='diary-home-button'
-          size='l'
-          mode='secondary'
-          appearance='neutral'
-          stretched
-          disabled={isCurrent}
-          onClick={() => {
-            onCurrentWeek?.()
-            routeNavigator.hideModal()
-          }}
-        >
-          К текущей неделе
-        </Button>
       </Div>
     </ModalPage>
   )

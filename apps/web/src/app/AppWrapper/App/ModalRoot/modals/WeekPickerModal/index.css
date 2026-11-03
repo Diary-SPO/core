@@ -2,7 +2,11 @@
   display: flex;
   flex-direction: column;
   gap: 10px;
-  padding-block: 0 12px;
+  padding-block: 0 4px;
+}
+
+.diary-week-picker-modal__footer {
+  padding-block: 8px 12px;
 }
 
 .diary-week-picker-modal__month {
@@ -35,8 +39,8 @@
   display: flex;
   flex-direction: column;
   gap: 6px;
-  max-block-size: min(48vh, 340px);
-  overflow-y: auto;
+  /* Без max-height: модалка тянется по контенту,
+     скролл — у ModalPageContent, когда упёрлись в max-block-size листа. */
 }
 
 .diary-week-picker-modal__week {

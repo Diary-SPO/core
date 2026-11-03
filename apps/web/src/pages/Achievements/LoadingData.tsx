@@ -1,16 +1,8 @@
-import { Div, Group, Header, Spinner } from '@vkontakte/vkui'
 import type { FC } from 'react'
 
-interface Props {
-  text?: string
-}
+import { PageSkeleton } from '../../shared/ui'
 
-const LoadingData: FC<Props> = ({ text }) => (
-  <Group header={<Header size='m'>{text ?? 'Загрузка...'}</Header>}>
-    <Div>
-      <Spinner />
-    </Div>
-  </Group>
-)
+/** text оставлен для совместимости вызовов */
+const LoadingData: FC<{ text?: string }> = () => <PageSkeleton cards={3} />
 
 export default LoadingData

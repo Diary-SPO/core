@@ -1,0 +1,26 @@
+.diary-page-skeleton {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding-block: 8px;
+}
+
+.diary-page-skeleton--profile {
+  align-items: center;
+  gap: 10px;
+  padding-block: 24px 12px;
+}
+
+.diary-page-skeleton--profile > :last-child {
+  align-self: stretch;
+  margin-block-start: 12px;
+}
+
+.diary-page-skeleton__notify {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 12px;
+  background: var(--vkui--color_background_secondary);
+  border-radius: 12px;
+}

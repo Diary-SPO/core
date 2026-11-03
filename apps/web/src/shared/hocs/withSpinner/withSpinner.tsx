@@ -1,18 +1,17 @@
-import { PanelSpinner } from '@vkontakte/vkui'
-import type { ComponentType, FC, ReactNode } from 'react'
+import type { ComponentType } from 'react'
 
-type WithLoadingProps = {
+import { PageSkeleton } from '../../ui/PageSkeleton'
+
+interface WithLoadingProps {
   shouldShowSpinner: boolean
-  fallback?: ReactNode
+  fallback?: React.ReactNode
 }
 
 export const withSpinner =
-  <P extends object>(
-    WrappedComponent: ComponentType<P>
-  ): FC<P & WithLoadingProps> =>
+  <P extends object>(WrappedComponent: ComponentType<P>) =>
   ({ shouldShowSpinner, fallback, ...props }: WithLoadingProps & P) => {
     if (shouldShowSpinner) {
-      return <>{fallback || <PanelSpinner />}</>
+      return <>{fallback || <PageSkeleton />}</>
     }
 
     return <WrappedComponent {...(props as P)} />
