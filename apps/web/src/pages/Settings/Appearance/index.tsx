@@ -19,7 +19,11 @@ import type { AppIconOption } from '../../../shared/api/runtime/types.ts'
 import {
   ACCENT_OPTIONS,
   type AccentId,
+  getAccentOnHomeControls,
+  getAccentOnTabbar,
   getTabbarLabelsVisible,
+  setAccentOnHomeControls,
+  setAccentOnTabbar,
   setTabbarLabelsVisible
 } from '../../../shared/config'
 import { useSnackbar } from '../../../shared/hooks'
@@ -42,6 +46,8 @@ const AppearanceSettings: FC<Props> = ({ id }) => {
   const [oled, setOled] = useState(getOledPreference)
   const [accent, setAccent] = useState<AccentId>(getAccentPreference)
   const [showLabels, setShowLabels] = useState(getTabbarLabelsVisible)
+  const [accentOnTabbar, setAccentOnTabbarState] = useState(getAccentOnTabbar)
+  const [accentOnHome, setAccentOnHomeState] = useState(getAccentOnHomeControls)
   const [iconSupported, setIconSupported] = useState(appIcon.supported)
   const [iconOptions, setIconOptions] = useState<AppIconOption[]>([])
   const [iconId, setIconId] = useState('default')
@@ -84,6 +90,16 @@ const AppearanceSettings: FC<Props> = ({ id }) => {
   const handleLabelsChange = (checked: boolean) => {
     setShowLabels(checked)
     setTabbarLabelsVisible(checked)
+  }
+
+  const handleAccentOnTabbarChange = (checked: boolean) => {
+    setAccentOnTabbarState(checked)
+    setAccentOnTabbar(checked)
+  }
+
+  const handleAccentOnHomeChange = (checked: boolean) => {
+    setAccentOnHomeState(checked)
+    setAccentOnHomeControls(checked)
   }
 
   const handleIconChange = async (next: string) => {
@@ -165,6 +181,34 @@ const AppearanceSettings: FC<Props> = ({ id }) => {
           multiline
         >
           Подписи в нижней панели
+        </SimpleCell>
+        <SimpleCell
+          after={
+            <Switch
+              checked={accentOnTabbar}
+              onChange={(event) =>
+                handleAccentOnTabbarChange(event.currentTarget.checked)
+              }
+            />
+          }
+          subtitle='Выбранная вкладка в нижней панели красятся акцентом'
+          multiline
+        >
+          Акцент на нижней навигации
+        </SimpleCell>
+        <SimpleCell
+          after={
+            <Switch
+              checked={accentOnHome}
+              onChange={(event) =>
+                handleAccentOnHomeChange(event.currentTarget.checked)
+              }
+            />
+          }
+          subtitle='Стрелки недели и кнопка «Домой» на главной'
+          multiline
+        >
+          Акцент на стрелках и «Домой»
         </SimpleCell>
       </Group>
 

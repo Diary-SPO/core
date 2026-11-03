@@ -65,11 +65,21 @@ export const subscribeAppLogs = (listener: () => void): (() => void) => {
 export const clearAppLogs = (): void => {
   entries = []
   persist()
+const isDeveloperModeOn = (): boolean => {
+  try {
+    return localStorage.getItem('developerModeUnlocked') === '1'
+  } catch {
+    return false
+  }
+}
+
 }
 
 export const appendAppLog = (
   category: AppLogCategory,
   message: string,
+  if (!isDeveloperModeOn()) return
+
   detail?: string
 ): void => {
   entries = pruneAppLogs([

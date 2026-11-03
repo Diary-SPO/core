@@ -1,5 +1,6 @@
 import type { Day } from '@diary-spo/shared'
-import { useLessonFocus } from '@store'
+import { useLessonFocus, useLessonModal } from '@store'
+import { useRouteNavigator } from '@vkontakte/vk-mini-apps-router'
 import { Div, Group, Header, PullToRefresh } from '@vkontakte/vkui'
 import { endOfWeek } from 'date-fns/endOfWeek'
 import { startOfWeek } from 'date-fns/startOfWeek'
@@ -10,8 +11,10 @@ import {
   ErrorPlaceholder,
   isNeedToUpdateCache,
   lessonAnchorId,
+  toISODate,
   withSpinner
 } from '../../shared'
+import { MODAL_PAGE_LESSON } from '../../shared/config'
 
 import { RecentMarks } from '../../widgets'
 import type { Props } from '../types.ts'
@@ -47,7 +50,10 @@ const Schedule: FC<Props> = ({ id }) => {
   const getLessons = async () => getActualUserLessons(startDate, endDate)
 
   const { focus, clearFocus } = useLessonFocus()
+  const { setData: setLessonModal } = useLessonModal()
+  const routeNavigator = useRouteNavigator()
   const flashDone = useRef(false)
+  const modalOpened = useRef(false)
 
   useEffect(() => {
     if (!focus) return
@@ -67,11 +73,50 @@ const Schedule: FC<Props> = ({ id }) => {
   useEffect(() => {
     if (!focus) {
       flashDone.current = false
+      modalOpened.current = false
       return
     }
     if (isLoading || (!lessonsState && !isError)) return
-    // View при смене панели сам скроллит в 0 уже после дочерних эффектов,
-    // поэтому скроллим отложенно, когда переход завершён.
+
+    const resolveLessonIndex = (): number => {
+      if (focus.lessonIndex >= 0) return focus.lessonIndex
+      if (!focus.subjectName || !lessonsState) return -1
+      const day = lessonsState.find(
+        (item) => toISODate(new Date(item.date)) === focus.dateISO
+      )
+      const index =
+        day?.lessons?.findIndex((lesson) => lesson.name === focus.subjectName) ??
+        -1
+      return index
+    }
+
+    const lessonIndex = resolveLessonIndex()
+
+    if (
+      focus.openLessonModal &&
+      !modalOpened.current &&
+      lessonsState &&
+      lessonIndex >= 0
+    ) {
+      const day = lessonsState.find(
+        (item) => toISODate(new Date(item.date)) === focus.dateISO
+      )
+      const lesson = day?.lessons?.[lessonIndex]
+      if (lesson?.name) {
+        modalOpened.current = true
+        setLessonModal({
+          name: lesson.name,
+          endTime: lesson.endTime,
+          startTime: lesson.startTime,
+          timetable: lesson.timetable,
+          gradebook: lesson.gradebook,
+          tasks: lesson.gradebook?.tasks,
+          lessonId: new Date(day!.date).toISOString()
+        })
+        void routeNavigator.showModal(MODAL_PAGE_LESSON)
+      }
+    }
+
     const flash = (target: HTMLElement) => {
       const hover = 'var(--vkui--color_transparent--hover)'
       try {
@@ -108,10 +153,12 @@ const Schedule: FC<Props> = ({ id }) => {
       return bestDiff <= 3 * 24 * 3600 * 1000 ? best : null
     }
     const findTarget = (): HTMLElement | null => {
+      const index = lessonIndex >= 0 ? lessonIndex : focus.lessonIndex
       const dayEl = document.getElementById(dayAnchorId(focus.dateISO))
-      const lessonEl = document.getElementById(
-        lessonAnchorId(focus.dateISO, focus.lessonIndex)
-      )
+      const lessonEl =
+        index >= 0
+          ? document.getElementById(lessonAnchorId(focus.dateISO, index))
+          : null
       return lessonEl ?? dayEl ?? nearestDay()
     }
     const isReady = (el: HTMLElement | null): el is HTMLElement => {
@@ -122,16 +169,9 @@ const Schedule: FC<Props> = ({ id }) => {
     const attempt = (): boolean => {
       if (flashDone.current) return true
       const target = findTarget()
-      console.log('[lessonFocus]', {
-        dateISO: focus.dateISO,
-        lessonIndex: focus.lessonIndex,
-        targetId: target?.id ?? null,
-        ready: isReady(target)
-      })
       if (!isReady(target)) return false
       flashDone.current = true
       target.scrollIntoView({ behavior: 'smooth', block: 'center' })
-      // Замеряем заново после скролла: узел мог пересоздаться.
       setTimeout(() => {
         const live = findTarget()
         if (!isReady(live)) return
@@ -207,7 +247,7 @@ const Schedule: FC<Props> = ({ id }) => {
   return (
     <Layout id={id}>
       <PullToRefresh onRefresh={getLessons} isFetching={isLoading}>
-        <Div>
+        <Div className='diary-schedule-flush'>
           <Group header={MarksHeader}>
             <RecentMarksWithSpinner
               lessonsState={lessonsState}

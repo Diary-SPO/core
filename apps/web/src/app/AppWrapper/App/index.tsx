@@ -38,6 +38,7 @@ import {
 } from '../../routes'
 import AppUpdateGuardian from './AppUpdateGuardian'
 import Epic from './Epic'
+import GradeNotificationGuardian from './GradeNotificationGuardian'
 import ModalRoot from './ModalRoot'
 import SessionGuardian from './SessionGuardian'
 
@@ -87,6 +88,7 @@ const App: FC = () => {
     <AppRoot safeAreaInsets={vkBridgeInsets}>
       <SessionGuardian />
       <AppUpdateGuardian />
+      <GradeNotificationGuardian />
       <SplitLayout center header={!isVKCOM && <PanelHeader delimiter='none' />}>
         {viewWidth.tabletPlus && panel !== MAIN_SETTINGS && (
           <SplitCol

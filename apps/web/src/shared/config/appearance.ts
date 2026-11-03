@@ -255,4 +255,14 @@ export const syncAppearanceToDocument = (
   root.style.setProperty('--diary-accent', colors.base)
   root.style.setProperty('--diary-accent-hover', colors.hover)
   root.style.setProperty('--diary-accent-active', colors.active)
+
+  // Классы акцента для tabbar / стрелок — из constants, без циклического импорта.
+  try {
+    const tabbar = localStorage.getItem('accentOnTabbar')
+    root.classList.toggle('diary-accent-tabbar', tabbar !== '0')
+    const home = localStorage.getItem('accentOnHomeControls')
+    root.classList.toggle('diary-accent-home', home !== '0')
+  } catch {
+    root.classList.add('diary-accent-tabbar', 'diary-accent-home')
+  }
 }

@@ -34,6 +34,7 @@ describe('appLog', () => {
   })
 
   test('prepends entries and notifies subscribers', () => {
+    localStorage.setItem('developerModeUnlocked', '1')
     let ticks = 0
     const stop = subscribeAppLogs(() => {
       ticks += 1
@@ -48,6 +49,13 @@ describe('appLog', () => {
     ])
     expect(ticks).toBeGreaterThanOrEqual(2)
     stop()
+  })
+
+  test('skips logging when developer mode is off', () => {
+    localStorage.removeItem('developerModeUnlocked')
+    clearAppLogs()
+    appendAppLog('auth', 'should not appear')
+    expect(getAppLogs()).toEqual([])
   })
 
   test('drops entries older than 20 days and caps at 4k', () => {

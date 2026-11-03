@@ -146,6 +146,11 @@ const runGradeCheck = async (force = false) => {
       const notification = formatGradeNotification(change)
       return {
         ...notification,
+        actionTypeId: JSON.stringify({
+          t: 'grade',
+          day: change.day,
+          subjectName: change.subjectName
+        }),
         autoCancel: true,
         id: nextNotificationId(),
         scheduleAt: new Date()

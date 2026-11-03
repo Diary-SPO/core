@@ -83,3 +83,54 @@ html.diary-oled:is(
   --vkui--color_tabbar_background: #000000;
   --vkui--color_panel_header_icon: #e1e3e6;
 }
+
+/* Tabbar без акцента: выбранная вкладка нейтральная */
+html:not(.diary-accent-tabbar) .vkuiInternalTabbar,
+html:not(.diary-accent-tabbar) [class*='Tabbar'].host,
+html:not(.diary-accent-tabbar) .vkuiTabbar {
+  --vkui--color_text_accent_themed: var(--vkui--color_text_primary);
+  --vkui--color_icon_accent: var(--vkui--color_icon_primary);
+  --vkui--color_icon_accent_themed: var(--vkui--color_icon_primary);
+}
+
+html.diary-accent-home .diary-home-controls {
+  color: var(--diary-accent, #2688eb);
+}
+
+html.diary-accent-home .diary-home-controls .vkuiButton {
+  --vkui--color_background_secondary: color-mix(
+    in srgb,
+    var(--diary-accent, #2688eb) 16%,
+    transparent
+  );
+  --vkui--color_text_primary: var(--diary-accent, #2688eb);
+  color: var(--diary-accent, #2688eb);
+}
+
+/* Native: сепараторы и ленты оценок до края экрана */
+html.diary-native {
+  --vkui--size_base_padding_horizontal--regular: 0px;
+}
+
+html.diary-native .vkuiSimpleCell,
+html.diary-native .vkuiCell,
+html.diary-native .vkuiHeader,
+html.diary-native .vkuiFormItem,
+html.diary-native .vkuiPlaceholder,
+html.diary-native .vkuiSearch {
+  padding-inline: 12px;
+}
+
+html.diary-native .vkuiGroup__separator,
+html.diary-native [class*='Group__separator'],
+html.diary-native .vkuiSeparator--padded,
+html.diary-native [class*='Separator--padded'] {
+  padding-inline: 0 !important;
+  margin-inline: 0 !important;
+}
+
+html.diary-native .recentMarks,
+html.diary-native .tableWrapper,
+html.diary-native .diary-schedule-flush {
+  padding-inline: 0 !important;
+}

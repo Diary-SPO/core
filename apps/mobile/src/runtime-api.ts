@@ -1,4 +1,5 @@
 import { App } from '@capacitor/app'
+import { BackgroundRunner } from '@capacitor/background-runner'
 import type { PluginListenerHandle } from '@capacitor/core'
 import {
   Capacitor,
@@ -34,6 +35,10 @@ import type {
 } from '../../web/src/shared/api/runtime/types.ts'
 import { APP_VERSION } from '../../web/src/shared/config'
 import { appendAppLog } from '../../web/src/shared/utils/appLog'
+import {
+  parseGradeNotificationAction,
+  setGradeNotificationOpen
+} from '../../web/src/shared/utils/gradeNotificationOpen'
 import {
   APP_UPDATE_PROMPT_EVENT,
   APP_UPDATE_STATUS_EVENT,
@@ -789,3 +794,22 @@ if (storedStudentId > 0 && getStoredCookie()) {
 void startAppUpdater().catch((error) =>
   console.warn('App updater failed to start', error)
 )
+
+if (Capacitor.isNativePlatform()) {
+  document.documentElement.classList.add('diary-native')
+  void BackgroundRunner.addListener(
+    'backgroundRunnerNotificationReceived',
+    (event) => {
+      const payload = parseGradeNotificationAction(event.actionTypeId)
+      if (!payload) return
+      appendAppLog(
+        'notifications',
+        'notification click',
+        `${payload.day} ${payload.subjectName}`
+      )
+      setGradeNotificationOpen(payload)
+    }
+  ).catch((error) =>
+    console.warn('Unable to listen grade notification clicks', error)
+  )
+}

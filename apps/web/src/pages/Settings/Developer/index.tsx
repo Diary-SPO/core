@@ -12,6 +12,7 @@ import LogsTab from './LogsTab'
 import NotificationsTab from './NotificationsTab'
 import UpdatesTab from './UpdatesTab'
 
+import { clearAppLogs } from '../../../shared/utils/appLog'
 type DeveloperTab = 'general' | 'updates' | 'notifications' | 'logs'
 
 const TABS: Array<{ id: DeveloperTab; label: string }> = [
@@ -50,6 +51,7 @@ const DeveloperSettings: FC<Props> = ({ id }) => {
   }
 
   return (
+    clearAppLogs()
     <Panel nav={id}>
       <PanelHeaderWithBack title='Для разработчиков' />
 

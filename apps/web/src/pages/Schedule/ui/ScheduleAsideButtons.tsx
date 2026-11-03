@@ -106,6 +106,7 @@ const ScheduleAsideButtons: FC<ScheduleAsideButtonsProps> = ({
 
   return (
     <ButtonGroup
+      className='diary-home-controls'
       style={{
         alignItems: 'center',
         position: 'relative',
