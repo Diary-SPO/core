@@ -10,9 +10,14 @@ import { useEffect, useState } from 'react'
 
 import { Suspense } from '../../shared'
 import {
+  ACCENT_CHANGE_EVENT,
+  type AccentId,
+  getAccentPreference,
   getThemePreference,
+  syncAppearanceToDocument,
   THEME_CHANGE_EVENT,
-  type ThemePreference
+  type ThemePreference,
+  toColorScheme
 } from '../../shared/config'
 import { router } from '../routes/router'
 
@@ -27,19 +32,29 @@ const AppWrapper = () => {
   const vkBridgeAppearance = useAppearance() || undefined
   const [themePreference, setThemePreference] =
     useState<ThemePreference>(getThemePreference)
+  const [accent, setAccent] = useState<AccentId>(getAccentPreference)
 
   useEffect(() => {
     const handleThemeChange = (event: Event) => {
       setThemePreference((event as CustomEvent<ThemePreference>).detail)
     }
+    const handleAccentChange = (event: Event) => {
+      setAccent((event as CustomEvent<AccentId>).detail)
+    }
 
     window.addEventListener(THEME_CHANGE_EVENT, handleThemeChange)
-    return () =>
+    window.addEventListener(ACCENT_CHANGE_EVENT, handleAccentChange)
+    return () => {
       window.removeEventListener(THEME_CHANGE_EVENT, handleThemeChange)
+      window.removeEventListener(ACCENT_CHANGE_EVENT, handleAccentChange)
+    }
   }, [])
 
-  const colorScheme =
-    themePreference === 'auto' ? vkBridgeAppearance : themePreference
+  useEffect(() => {
+    syncAppearanceToDocument(themePreference, accent)
+  }, [themePreference, accent])
+
+  const colorScheme = toColorScheme(themePreference, vkBridgeAppearance)
 
   return (
     <AdaptivityProvider>

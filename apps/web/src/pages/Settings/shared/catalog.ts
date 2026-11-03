@@ -31,9 +31,18 @@ export const SETTINGS_CATEGORIES: SettingsCategory[] = [
   {
     id: 'appearance',
     title: 'Оформление',
-    subtitle: 'Тема приложения',
+    subtitle: 'Тема, OLED и акцент',
     path: PAGE_SETTINGS_APPEARANCE,
-    keywords: ['оформление', 'тема', 'тёмная', 'светлая', 'авто']
+    keywords: [
+      'оформление',
+      'тема',
+      'тёмная',
+      'светлая',
+      'авто',
+      'oled',
+      'акцент',
+      'цвет'
+    ]
   },
   {
     id: 'notifications',
@@ -103,8 +112,15 @@ export const SETTINGS_ITEMS: SettingsCatalogItem[] = [
   {
     id: 'theme',
     title: 'Тема приложения',
-    subtitle: 'Авто, светлая или тёмная',
-    keywords: ['тема', 'оформление', 'тёмная', 'светлая', 'авто'],
+    subtitle: 'Авто, светлая, тёмная или OLED',
+    keywords: ['тема', 'оформление', 'тёмная', 'светлая', 'авто', 'oled'],
+    path: PAGE_SETTINGS_APPEARANCE
+  },
+  {
+    id: 'accent',
+    title: 'Акцентный цвет',
+    subtitle: 'Цвет кнопок и выделений',
+    keywords: ['акцент', 'цвет', 'оформление', 'палитра'],
     path: PAGE_SETTINGS_APPEARANCE
   },
   {

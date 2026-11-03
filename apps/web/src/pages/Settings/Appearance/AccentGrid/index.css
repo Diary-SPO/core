@@ -1,0 +1,44 @@
+.accentGrid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.accentGrid__option {
+  display: grid;
+  gap: 8px;
+  justify-items: center;
+  margin: 0;
+  padding: 10px 6px;
+  border: 1px solid var(--vkui--color_separator_primary);
+  border-radius: 14px;
+  background: var(--vkui--color_background_secondary);
+  color: var(--vkui--color_text_primary);
+  cursor: pointer;
+}
+
+.accentGrid__option--selected {
+  border-color: var(--accent-swatch);
+  box-shadow: 0 0 0 2px
+    color-mix(in srgb, var(--accent-swatch) 35%, transparent);
+}
+
+.accentGrid__swatch {
+  width: 28px;
+  height: 28px;
+  border-radius: 999px;
+  background: var(--accent-swatch);
+  box-shadow: inset 0 0 0 1px rgb(0 0 0 / 12%);
+}
+
+.accentGrid__label {
+  font-size: 12px;
+  line-height: 1.2;
+  text-align: center;
+  color: var(--vkui--color_text_secondary);
+}
+
+.accentGrid__option--selected .accentGrid__label {
+  color: var(--vkui--color_text_primary);
+  font-weight: 600;
+}

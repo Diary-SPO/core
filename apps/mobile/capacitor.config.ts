@@ -17,8 +17,8 @@ const config: CapacitorConfig = {
       src: 'runners/grade-runner.js'
     },
     CapacitorUpdater: {
-      // Каналы и UI обновлений ведём сами; в Capgo cloud не ходим.
       autoUpdate: false,
+      resetWhenUpdate: true,
       appReadyTimeout: 15000,
       statsUrl: '',
       updateUrl: '',

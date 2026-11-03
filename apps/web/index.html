@@ -16,16 +16,37 @@
     <title>Дневник СПО</title>
     <script>
       try {
+        var root = document.documentElement
         var savedTheme = localStorage.getItem('themePreference')
+        var isOled = savedTheme === 'oled'
         var isDark =
+          isOled ||
           savedTheme === 'dark' ||
           (savedTheme !== 'light' &&
             window.matchMedia('(prefers-color-scheme: dark)').matches)
-        // color_background, не content: иначе на ПК по бокам колонок
-        // светлее html-фон и получаются вертикальные «полосы».
-        document.documentElement.style.background = isDark
-          ? '#0a0a0a'
-          : '#ffffff'
+        root.style.background = isOled
+          ? '#000000'
+          : isDark
+            ? '#0a0a0a'
+            : '#ffffff'
+        if (isOled) root.classList.add('diary-oled')
+
+        var accents = {
+          blue: ['#2688eb', '#2483e4', '#237edd'],
+          sky: ['#4ca0f5', '#4598eb', '#3f90e0'],
+          indigo: ['#5b6cff', '#5564f2', '#4f5de5'],
+          violet: ['#792ec0', '#722cb6', '#6b29ab'],
+          pink: ['#e73d8c', '#db3a85', '#cf367e'],
+          red: ['#e64646', '#db4343', '#cf3f3f'],
+          orange: ['#f08722', '#e48020', '#d8791e'],
+          green: ['#4bb34b', '#47aa47', '#43a043'],
+          teal: ['#18a3a8', '#169b9f', '#149297']
+        }
+        var savedAccent = localStorage.getItem('accentPreference')
+        var accent = accents[savedAccent] || accents.blue
+        root.style.setProperty('--diary-accent', accent[0])
+        root.style.setProperty('--diary-accent-hover', accent[1])
+        root.style.setProperty('--diary-accent-active', accent[2])
       } catch (e) {}
     </script>
   </head>

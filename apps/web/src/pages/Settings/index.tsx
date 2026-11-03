@@ -67,7 +67,7 @@ const Settings: FC<Props> = ({ id }) => {
           after={<Icon28ChevronRightOutline />}
           onClick={() => void routeNavigator.push(PAGE_SETTINGS_APPEARANCE)}
         >
-          Тема
+          Оформление
         </SimpleCell>
       </Group>
 

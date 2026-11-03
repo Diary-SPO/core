@@ -12,7 +12,6 @@ import {
   setPendingAppUpdatePrompt
 } from '../../../../shared/utils/appUpdate'
 
-/** Не мешаем первой загрузке расписания/оценок. */
 const INITIAL_CHECK_DELAY_MS = 8_000
 
 const AppUpdateGuardian = () => {

@@ -13,21 +13,27 @@ import { type ChangeEvent, type FC, useEffect, useState } from 'react'
 import { PanelHeaderWithBack } from '../../../shared'
 import type { AppIconOption } from '../../../shared/api/runtime/types.ts'
 import {
+  ACCENT_OPTIONS,
+  type AccentId,
   getTabbarLabelsVisible,
   setTabbarLabelsVisible
 } from '../../../shared/config'
 import { useSnackbar } from '../../../shared/hooks'
 import type { Props } from '../../types.ts'
 import {
+  getAccentPreference,
   getThemePreference,
+  setAccentPreference,
   setThemePreference,
   THEME_LABELS,
   type ThemePreference
 } from '../shared/theme'
+import AccentGrid from './AccentGrid'
 import AppIconGrid from './AppIconGrid'
 
 const AppearanceSettings: FC<Props> = ({ id }) => {
   const [theme, setTheme] = useState<ThemePreference>(getThemePreference)
+  const [accent, setAccent] = useState<AccentId>(getAccentPreference)
   const [showLabels, setShowLabels] = useState(getTabbarLabelsVisible)
   const [iconSupported, setIconSupported] = useState(appIcon.supported)
   const [iconOptions, setIconOptions] = useState<AppIconOption[]>([])
@@ -56,6 +62,11 @@ const AppearanceSettings: FC<Props> = ({ id }) => {
     const preference = event.currentTarget.value as ThemePreference
     setTheme(preference)
     setThemePreference(preference)
+  }
+
+  const handleAccentChange = (next: AccentId) => {
+    setAccent(next)
+    setAccentPreference(next)
   }
 
   const handleLabelsChange = (checked: boolean) => {
@@ -99,6 +110,16 @@ const AppearanceSettings: FC<Props> = ({ id }) => {
               </option>
             ))}
           </NativeSelect>
+        </FormItem>
+      </Group>
+
+      <Group header={<Header size='s'>Акцент</Header>}>
+        <FormItem top='Цвет кнопок и выделений'>
+          <AccentGrid
+            options={ACCENT_OPTIONS}
+            value={accent}
+            onChange={handleAccentChange}
+          />
         </FormItem>
       </Group>
 

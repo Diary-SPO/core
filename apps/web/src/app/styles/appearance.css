@@ -1,0 +1,85 @@
+:is(
+  .vkui--vkBase--light,
+  .vkui--vkBase--dark,
+  .vkui--vkIOS--light,
+  .vkui--vkIOS--dark,
+  .vkui--vkCom--light,
+  .vkui--vkCom--dark
+) {
+  --vkui--color_background_accent: var(--diary-accent, #2688eb);
+  --vkui--color_background_accent--hover: var(--diary-accent-hover, #2483e4);
+  --vkui--color_background_accent--active: var(--diary-accent-active, #237edd);
+  --vkui--color_background_accent_themed: var(--diary-accent, #2688eb);
+  --vkui--color_background_accent_themed--hover: var(
+    --diary-accent-hover,
+    #2483e4
+  );
+  --vkui--color_background_accent_themed--active: var(
+    --diary-accent-active,
+    #237edd
+  );
+  --vkui--color_background_accent_themed_alpha: color-mix(
+    in srgb,
+    var(--diary-accent, #2688eb) 20%,
+    transparent
+  );
+  --vkui--color_background_accent_themed_alpha--hover: color-mix(
+    in srgb,
+    var(--diary-accent, #2688eb) 24%,
+    transparent
+  );
+  --vkui--color_background_accent_themed_alpha--active: color-mix(
+    in srgb,
+    var(--diary-accent, #2688eb) 28%,
+    transparent
+  );
+  --vkui--color_background_accent_tint: color-mix(
+    in srgb,
+    var(--diary-accent, #2688eb) 72%,
+    white
+  );
+  --vkui--color_background_accent_alternative: var(--diary-accent, #2688eb);
+  --vkui--color_background_accent_alternative--hover: var(
+    --diary-accent-hover,
+    #2483e4
+  );
+  --vkui--color_background_accent_alternative--active: var(
+    --diary-accent-active,
+    #237edd
+  );
+  --vkui--color_text_accent: var(--diary-accent, #2688eb);
+  --vkui--color_text_accent--hover: var(--diary-accent-hover, #2483e4);
+  --vkui--color_text_accent--active: var(--diary-accent-active, #237edd);
+  --vkui--color_icon_accent: var(--diary-accent, #2688eb);
+  --vkui--color_icon_accent--hover: var(--diary-accent-hover, #2483e4);
+  --vkui--color_icon_accent--active: var(--diary-accent-active, #237edd);
+  --vkui--color_stroke_accent: var(--diary-accent, #2688eb);
+  --vkui--color_stroke_accent--hover: var(--diary-accent-hover, #2483e4);
+  --vkui--color_stroke_accent--active: var(--diary-accent-active, #237edd);
+}
+
+html.diary-oled
+  :is(.vkui--vkBase--dark, .vkui--vkIOS--dark, .vkui--vkCom--dark),
+html.diary-oled:is(
+  .vkui--vkBase--dark,
+  .vkui--vkIOS--dark,
+  .vkui--vkCom--dark
+) {
+  --vkui--color_background: #000000;
+  --vkui--color_background_content: #000000;
+  --vkui--color_background_secondary: #0d0d0d;
+  --vkui--color_background_secondary_alpha: rgb(255 255 255 / 6%);
+  --vkui--color_background_tertiary: #141414;
+  --vkui--color_background_modal: #000000;
+  --vkui--color_background_modal_inverse: #ffffff;
+  --vkui--color_header_background: #000000;
+  --vkui--color_background_contrast_themed: #000000;
+  --vkui--color_background_contrast_secondary_alpha: rgb(255 255 255 / 8%);
+  --vkui--color_separator_primary: rgb(255 255 255 / 12%);
+  --vkui--color_separator_primary_alpha: rgb(255 255 255 / 12%);
+  --vkui--color_field_background: #0d0d0d;
+  --vkui--color_write_bar_input_background: #0d0d0d;
+  --vkui--color_search_field_background: #0d0d0d;
+  --vkui--color_tabbar_background: #000000;
+  --vkui--color_panel_header_icon: #e1e3e6;
+}

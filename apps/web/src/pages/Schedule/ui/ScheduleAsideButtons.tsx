@@ -109,7 +109,7 @@ const ScheduleAsideButtons: FC<ScheduleAsideButtonsProps> = ({
       style={{
         alignItems: 'center',
         position: 'relative',
-        color: 'var(--vkui--color_stroke_accent_themed)'
+        color: 'var(--vkui--color_icon_medium)'
       }}
       gap='s'
     >
