@@ -33,6 +33,7 @@ import type {
   SystemAccentColors
 } from '../../web/src/shared/api/runtime/types.ts'
 import { APP_VERSION } from '../../web/src/shared/config'
+import { appendAppLog } from '../../web/src/shared/utils/appLog'
 import {
   APP_UPDATE_PROMPT_EVENT,
   APP_UPDATE_STATUS_EVENT,
@@ -509,32 +510,52 @@ const waitForEsiaWebViewLogin = async (
     })
   })
 
+const diaryPath = (url: string): string => {
+  try {
+    return new URL(url).pathname
+  } catch {
+    return url
+  }
+}
+
 const createTransport = (baseUrl: string): DiaryHttpTransport => ({
   async request<T>({ method, url, headers, body }: DiaryHttpRequest) {
     const isLoginRequest = url.endsWith('/services/security/login')
     const storedCookie = getStoredCookie()
     const shouldUseStoredCookie = !isLoginRequest && storedCookie
+    const path = diaryPath(url)
 
-    const response = await CapacitorHttp.request({
-      method,
-      url,
-      headers: {
-        ...headers,
-        ...(shouldUseStoredCookie ? { Cookie: storedCookie } : {})
-      },
-      data: body,
-      connectTimeout,
-      readTimeout
-    })
+    try {
+      const response = await CapacitorHttp.request({
+        method,
+        url,
+        headers: {
+          ...headers,
+          ...(shouldUseStoredCookie ? { Cookie: storedCookie } : {})
+        },
+        data: body,
+        connectTimeout,
+        readTimeout
+      })
 
-    const responseCookies = getResponseCookies([response.headers])
-    const nativeCookies = await getNativeCookies(baseUrl)
-    persistCookies(responseCookies, nativeCookies)
+      const responseCookies = getResponseCookies([response.headers])
+      const nativeCookies = await getNativeCookies(baseUrl)
+      persistCookies(responseCookies, nativeCookies)
 
-    return {
-      data: response.data as T,
-      status: response.status,
-      headers: response.headers
+      appendAppLog('diary', `${method} ${path}`, `status=${response.status}`)
+
+      return {
+        data: response.data as T,
+        status: response.status,
+        headers: response.headers
+      }
+    } catch (error) {
+      appendAppLog(
+        'diary',
+        `${method} ${path} failed`,
+        error instanceof Error ? error.message : String(error)
+      )
+      throw error
     }
   },
   async clearSession() {
@@ -590,8 +611,14 @@ const performPasswordLogin = async (
     } catch (error) {
       console.error('Unable to sync background grade session', error)
     }
+    appendAppLog('auth', 'login ok', nextBaseUrl)
     return user
   } catch (error) {
+    appendAppLog(
+      'auth',
+      'login failed',
+      error instanceof Error ? error.message : String(error)
+    )
     await nextClient.logout()
     throw error
   }
@@ -719,8 +746,14 @@ export const diaryApi: DiaryApi = {
           console.error('Unable to sync background grade session', error)
         }
 
+        appendAppLog('auth', 'esia login ok', nextBaseUrl)
         return user
       } catch (error) {
+        appendAppLog(
+          'auth',
+          'esia login failed',
+          error instanceof Error ? error.message : String(error)
+        )
         await nextClient.logout()
         throw error
       }
@@ -730,6 +763,7 @@ export const diaryApi: DiaryApi = {
       try {
         return await client.logout()
       } finally {
+        appendAppLog('auth', 'logout')
         await clearBackgroundGradeSession()
         await clearSavedCredentials()
       }

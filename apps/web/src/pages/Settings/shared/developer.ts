@@ -9,17 +9,30 @@ export const isDeveloperModeUnlocked = (): boolean => {
   }
 }
 
+const emitDeveloperModeEvent = (): void => {
+  try {
+    window.dispatchEvent(new Event(DEVELOPER_MODE_EVENT))
+  } catch {
+    // Слушателя нет - список настроек подтянется при следующем заходе
+  }
+}
+
 export const unlockDeveloperMode = (): void => {
   try {
     localStorage.setItem(DEVELOPER_MODE_KEY, '1')
   } catch {
     // localStorage может быть недоступен - флаг просто не сохранится
   }
+  emitDeveloperModeEvent()
+}
+
+export const lockDeveloperMode = (): void => {
   try {
-    window.dispatchEvent(new Event(DEVELOPER_MODE_EVENT))
+    localStorage.removeItem(DEVELOPER_MODE_KEY)
   } catch {
-    // Слушателя нет - список настроек подтянется при следующем заходе
+    // localStorage может быть недоступен
   }
+  emitDeveloperModeEvent()
 }
 
 export const DEVELOPER_UNLOCK_TAPS = 7

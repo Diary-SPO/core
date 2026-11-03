@@ -52,7 +52,7 @@ export interface ForgottenGradeMark {
 
 export interface BackgroundGradeDebugRetestResult {
   forgotten: ForgottenGradeMark | null
-  reason?: 'empty' | 'corrupt'
+  reason?: 'empty' | 'corrupt' | 'noSession'
 }
 
 export interface BackgroundGradeNotifications {

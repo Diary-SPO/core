@@ -117,6 +117,7 @@ const runGradeCheck = async (force = false) => {
   const response = await fetch(
     `${baseUrl.replace(/\/$/, '')}/services/reports/current/performance/${studentId}`,
     {
+      method: 'GET',
       headers: {
         'Content-Type': 'application/json;charset=UTF-8',
         Cookie: cookie
@@ -214,31 +215,51 @@ runner.addEventListener('gradeSessionClear', (resolve, reject) => {
   }
 })
 
+const snapshotMarkCount = (snapshot: ReturnType<typeof parseGradeSnapshot>) =>
+  snapshot
+    ? Object.values(snapshot.entries).reduce(
+        (total, entry) => total + entry.marks.length,
+        0
+      )
+    : 0
+
 runner.addEventListener('gradeDebugRetestNotification', (resolve, reject) => {
-  try {
-    const previousValue = stored(STORAGE.snapshot)
-    const previous = parseGradeSnapshot(previousValue)
-    if (!previous) {
-      resolve({
-        forgotten: null,
-        reason: previousValue ? 'corrupt' : 'empty'
-      })
-      return
+  void (async () => {
+    try {
+      let previous = parseGradeSnapshot(stored(STORAGE.snapshot))
+      if (!previous || snapshotMarkCount(previous) === 0) {
+        await runGradeCheck(true)
+        previous = parseGradeSnapshot(stored(STORAGE.snapshot))
+      }
+
+      if (!previous) {
+        resolve({
+          forgotten: null,
+          reason: stored(STORAGE.cookie) ? 'corrupt' : 'noSession'
+        })
+        return
+      }
+
+      if (snapshotMarkCount(previous) === 0) {
+        resolve({
+          forgotten: null,
+          reason: stored(STORAGE.cookie) ? 'empty' : 'noSession'
+        })
+        return
+      }
+
+      const result = forgetOneMark(previous)
+      if (!result) {
+        resolve({ forgotten: null, reason: 'empty' })
+        return
+      }
+
+      CapacitorKV.set(STORAGE.snapshot, JSON.stringify(result.snapshot))
+      CapacitorKV.remove(STORAGE.lastCheck)
+      await runGradeCheck(true)
+      resolve({ forgotten: result.forgotten })
+    } catch (error) {
+      reject(error)
     }
-
-    const result = forgetOneMark(previous)
-    if (!result) {
-      resolve({ forgotten: null, reason: 'empty' })
-      return
-    }
-
-    CapacitorKV.set(STORAGE.snapshot, JSON.stringify(result.snapshot))
-    CapacitorKV.remove(STORAGE.lastCheck)
-
-    runGradeCheck(true)
-      .then(() => resolve({ forgotten: result.forgotten }))
-      .catch(reject)
-  } catch (error) {
-    reject(error)
-  }
+  })()
 })
