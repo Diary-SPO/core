@@ -26,6 +26,9 @@ import { getWeekString } from './lib'
 import ScheduleAsideButtons from './ui/ScheduleAsideButtons.tsx'
 import ScheduleGroup from './ui/ScheduleGroup'
 
+const RecentMarksWithSpinner = withSpinner(RecentMarks)
+const ScheduleGroupWithSpinner = withSpinner(ScheduleGroup)
+
 const Schedule: FC<Props> = ({ id }) => {
   /** Управление данными **/
   const newDate = new Date()
@@ -232,9 +235,6 @@ const Schedule: FC<Props> = ({ id }) => {
       setStartDate={setStartDate}
     />
   )
-
-  const RecentMarksWithSpinner = withSpinner(RecentMarks)
-  const ScheduleGroupWithSpinner = withSpinner(ScheduleGroup)
 
   const MarksHeader = (
     <Header size='s'>Оценки за неделю{isNoMarks ? ' отсутствуют' : ''}</Header>

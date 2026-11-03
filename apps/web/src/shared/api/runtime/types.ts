@@ -109,6 +109,12 @@ export interface SystemAccentColors {
 /** Системный акцент: на Android — Material You, в вебе — CSS AccentColor / null. */
 export type GetSystemAccent = () => Promise<SystemAccentColors | null>
 
+/** Тёмная ли системная тема (на Android — uiMode, не WebView media). */
+export type GetSystemDark = () => Promise<boolean | null>
+
+/** darkIcons=true — тёмные иконки статус-бара (светлый фон). */
+export type SetStatusBarIconStyle = (darkIcons: boolean) => Promise<void>
+
 export type AppUpdateChannel = 'stable' | 'beta'
 
 export type AppUpdateKind = 'none' | 'web' | 'native' | 'ready' | 'downloading'

@@ -135,9 +135,17 @@ export const getAccentPreference = (): AccentId => {
     : DEFAULT_ACCENT
 }
 
+/** На native — uiMode из плагина; WebView prefers-color-scheme часто врёт. */
+let systemDarkOverride: boolean | null = null
+
+export const setSystemDarkOverride = (dark: boolean | null): void => {
+  systemDarkOverride = dark
+}
+
 export const resolveIsDark = (preference: ThemePreference): boolean => {
   if (preference === 'dark') return true
   if (preference === 'light') return false
+  if (systemDarkOverride !== null) return systemDarkOverride
   return window.matchMedia('(prefers-color-scheme: dark)').matches
 }
 
@@ -157,11 +165,10 @@ export const resolveHtmlBackground = (
 
 export const toColorScheme = (
   preference: ThemePreference,
-  systemAppearance?: 'light' | 'dark'
+  _systemAppearance?: 'light' | 'dark'
 ): 'light' | 'dark' => {
-  if (preference === 'light') return 'light'
-  if (preference === 'dark') return 'dark'
-  return systemAppearance === 'light' ? 'light' : 'dark'
+  // auto — тот же источник, что OLED (override / media), не VK Bridge.
+  return resolveIsDark(preference) ? 'dark' : 'light'
 }
 
 const parseRgb = (color: string): [number, number, number] | null => {
@@ -248,8 +255,13 @@ export const syncAppearanceToDocument = (
 ): void => {
   const root = document.documentElement
   const useOled = resolveUsesOled(preference, oled)
+  const background = resolveHtmlBackground(preference, oled)
   root.classList.toggle('diary-oled', useOled)
-  root.style.background = resolveHtmlBackground(preference, oled)
+  root.style.background = background
+
+  // Android WebView читает theme-color для статус-бара; берём первую meta.
+  const themeColor = document.querySelector('meta[name="theme-color"]')
+  if (themeColor) themeColor.setAttribute('content', background)
 
   const colors = resolveAccentColors(accent, systemColors)
   root.style.setProperty('--diary-accent', colors.base)

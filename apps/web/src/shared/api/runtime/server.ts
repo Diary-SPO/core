@@ -11,7 +11,9 @@ import type {
   DiaryApi,
   GetAppVersion,
   GetSystemAccent,
+  GetSystemDark,
   RegionSearchResult,
+  SetStatusBarIconStyle,
   ShareContentOptions
 } from './types.ts'
 
@@ -38,6 +40,14 @@ export const appIcon: AppIconController = {
 export const getAppVersion: GetAppVersion = async () => APP_VERSION
 
 export const getSystemAccent: GetSystemAccent = async () => null
+
+export const getSystemDark: GetSystemDark = async () => null
+
+export const subscribeSystemDark = async (
+  _callback: (dark: boolean) => void
+): Promise<() => void> => () => undefined
+
+export const setStatusBarIconStyle: SetStatusBarIconStyle = async () => undefined
 
 const webUpdateStatus = (): AppUpdateStatus => ({
   supported: false,

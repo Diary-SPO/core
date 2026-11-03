@@ -30,12 +30,12 @@
           (savedTheme !== 'light' &&
             window.matchMedia('(prefers-color-scheme: dark)').matches)
         var isOled = oledPref && isDark
-        root.style.background = isOled
-          ? '#000000'
-          : isDark
-            ? '#0a0a0a'
-            : '#ffffff'
+        var bootBg = isOled ? '#000000' : isDark ? '#0a0a0a' : '#ffffff'
+        root.style.background = bootBg
         if (isOled) root.classList.add('diary-oled')
+        var themeColorMeta = document.querySelector('meta[name="theme-color"]')
+        if (themeColorMeta) themeColorMeta.setAttribute('content', bootBg)
+
 
         var accents = {
           blue: ['#2688eb', '#2483e4', '#237edd'],
@@ -52,6 +52,13 @@
         var accent
         if (savedAccent === 'system') {
           var systemColor = '#2688eb'
+          try {
+            var cachedAccent = localStorage.getItem('diarySystemAccentCache')
+            if (cachedAccent) {
+              var parsed = JSON.parse(cachedAccent)
+              if (parsed && parsed.base) systemColor = parsed.base
+            }
+          } catch (cacheErr) {}
           try {
             if (!CSS.supports || CSS.supports('color', 'AccentColor')) {
               var probe = document.createElement('span')

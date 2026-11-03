@@ -1,9 +1,14 @@
 package io.github.diaryspo;
 
+import android.content.ComponentCallbacks2;
+import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.graphics.Color;
 import android.os.Build;
 import android.util.TypedValue;
+import android.view.Window;
+import androidx.core.view.WindowCompat;
+import androidx.core.view.WindowInsetsControllerCompat;
 import com.getcapacitor.JSObject;
 import com.getcapacitor.Plugin;
 import com.getcapacitor.PluginCall;
@@ -12,6 +17,55 @@ import com.getcapacitor.annotation.CapacitorPlugin;
 
 @CapacitorPlugin(name = "DiaryAppearance")
 public class DiaryAppearancePlugin extends Plugin {
+
+    private ComponentCallbacks2 configCallbacks;
+
+    @Override
+    public void load() {
+        configCallbacks =
+            new ComponentCallbacks2() {
+                @Override
+                public void onConfigurationChanged(Configuration newConfig) {
+                    JSObject data = new JSObject();
+                    data.put("dark", isNightYes(newConfig));
+                    notifyListeners("systemDarkChange", data);
+                }
+
+                @Override
+                public void onLowMemory() {}
+
+                @Override
+                public void onTrimMemory(int level) {}
+            };
+        getContext().registerComponentCallbacks(configCallbacks);
+    }
+
+    @Override
+    protected void handleOnDestroy() {
+        if (configCallbacks != null) {
+            getContext().unregisterComponentCallbacks(configCallbacks);
+            configCallbacks = null;
+        }
+        super.handleOnDestroy();
+    }
+
+    /** Реальный UI mode Android — WebView prefers-color-scheme часто врёт. */
+    @PluginMethod
+    public void isSystemDark(PluginCall call) {
+        JSObject result = new JSObject();
+        result.put(
+            "dark",
+            isNightYes(getContext().getResources().getConfiguration())
+        );
+        call.resolve(result);
+    }
+
+    private static boolean isNightYes(Configuration config) {
+        return (
+            (config.uiMode & Configuration.UI_MODE_NIGHT_MASK)
+            == Configuration.UI_MODE_NIGHT_YES
+        );
+    }
 
     @PluginMethod
     public void getSystemAccent(PluginCall call) {
@@ -46,6 +100,25 @@ public class DiaryAppearancePlugin extends Plugin {
         } catch (Exception error) {
             call.resolve(fallbackResult());
         }
+    }
+
+    /** darkIcons=true → тёмные иконки (светлый фон); false → светлые (тёмный фон). */
+    @PluginMethod
+    public void setStatusBarIconStyle(PluginCall call) {
+        boolean darkIcons = Boolean.TRUE.equals(call.getBoolean("darkIcons", false));
+        getActivity().runOnUiThread(() -> {
+            try {
+                Window window = getActivity().getWindow();
+                WindowInsetsControllerCompat controller =
+                    WindowCompat.getInsetsController(window, window.getDecorView());
+                if (controller != null) {
+                    controller.setAppearanceLightStatusBars(darkIcons);
+                }
+                call.resolve();
+            } catch (Exception error) {
+                call.reject("Unable to set status bar icons", error);
+            }
+        });
     }
 
     private static JSObject fallbackResult() {

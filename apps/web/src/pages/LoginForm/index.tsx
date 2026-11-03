@@ -430,7 +430,7 @@ const LoginForm: FC<Props> = ({ id }) => {
               type='submit'
               size='l'
               stretched
-              /*@TODO: ??*/
+              appearance='accent-invariable'
               onClick={handleLogin}
               disabled={isDisabled}
               before={<Icon28DoorArrowLeftOutline />}

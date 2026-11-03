@@ -28,8 +28,10 @@ import type {
   DiaryApi,
   GetAppVersion,
   GetSystemAccent,
+  GetSystemDark,
   RegionProbeResult,
   RegionSearchResult,
+  SetStatusBarIconStyle,
   ShareContentOptions,
   SystemAccentColors
 } from '../../web/src/shared/api/runtime/types.ts'
@@ -76,24 +78,84 @@ export const getAppVersion: GetAppVersion = async () => {
 }
 
 interface DiaryAppearancePlugin {
+  isSystemDark(): Promise<{ dark: boolean }>
   getSystemAccent(): Promise<SystemAccentColors>
+  setStatusBarIconStyle(options: { darkIcons: boolean }): Promise<void>
+  addListener(
+    eventName: 'systemDarkChange',
+    listenerFunc: (event: { dark: boolean }) => void
+  ): Promise<PluginListenerHandle>
 }
 
 const diaryAppearance = registerPlugin<DiaryAppearancePlugin>('DiaryAppearance')
+
+const SYSTEM_ACCENT_CACHE_KEY = 'diarySystemAccentCache'
 
 export const getSystemAccent: GetSystemAccent = async () => {
   if (!Capacitor.isNativePlatform()) return null
   try {
     const colors = await diaryAppearance.getSystemAccent()
     if (!colors?.base) return null
-    return {
+    const resolved = {
       base: colors.base,
       hover: colors.hover || colors.base,
       active: colors.active || colors.base
     }
+    try {
+      localStorage.setItem(SYSTEM_ACCENT_CACHE_KEY, JSON.stringify(resolved))
+    } catch {
+      // ignore
+    }
+    return resolved
   } catch (error) {
     console.warn('Unable to read system accent', error)
+    try {
+      const cached = localStorage.getItem(SYSTEM_ACCENT_CACHE_KEY)
+      if (cached) return JSON.parse(cached) as SystemAccentColors
+    } catch {
+      // ignore
+    }
     return null
+  }
+}
+
+export const setStatusBarIconStyle: SetStatusBarIconStyle = async (
+  darkIcons
+) => {
+  if (!Capacitor.isNativePlatform()) return
+  try {
+    await diaryAppearance.setStatusBarIconStyle({ darkIcons })
+  } catch (error) {
+    console.warn('Unable to set status bar icons', error)
+  }
+}
+
+export const getSystemDark: GetSystemDark = async () => {
+  if (!Capacitor.isNativePlatform()) return null
+  try {
+    const result = await diaryAppearance.isSystemDark()
+    return Boolean(result?.dark)
+  } catch (error) {
+    console.warn('Unable to read system dark mode', error)
+    return null
+  }
+}
+
+export const subscribeSystemDark = async (
+  callback: (dark: boolean) => void
+): Promise<() => void> => {
+  if (!Capacitor.isNativePlatform()) return () => undefined
+  try {
+    const handle = await diaryAppearance.addListener(
+      'systemDarkChange',
+      (event) => callback(Boolean(event?.dark))
+    )
+    return () => {
+      void handle.remove()
+    }
+  } catch (error) {
+    console.warn('Unable to subscribe system dark mode', error)
+    return () => undefined
   }
 }
 

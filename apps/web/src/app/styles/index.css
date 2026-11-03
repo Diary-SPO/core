@@ -12,14 +12,6 @@
   width: 100%;
 }
 
-.recentMarks {
-  padding-inline: 10px;
-}
-
-.marksWrapper > div::before,
-.marksWrapper > div::after {
-  content: none;
-}
 
 main {
   animation: show 0.5s forwards ease-in;

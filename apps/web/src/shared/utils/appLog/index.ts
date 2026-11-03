@@ -65,6 +65,8 @@ export const subscribeAppLogs = (listener: () => void): (() => void) => {
 export const clearAppLogs = (): void => {
   entries = []
   persist()
+}
+
 const isDeveloperModeOn = (): boolean => {
   try {
     return localStorage.getItem('developerModeUnlocked') === '1'
@@ -73,15 +75,13 @@ const isDeveloperModeOn = (): boolean => {
   }
 }
 
-}
-
 export const appendAppLog = (
   category: AppLogCategory,
   message: string,
-  if (!isDeveloperModeOn()) return
-
   detail?: string
 ): void => {
+  if (!isDeveloperModeOn()) return
+
   entries = pruneAppLogs([
     {
       id: `${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,

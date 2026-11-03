@@ -1,10 +1,17 @@
 import { useRouteNavigator } from '@vkontakte/vk-mini-apps-router'
-import { Group, HorizontalScroll, Panel, Tabs, TabsItem } from '@vkontakte/vkui'
+import {
+  Group,
+  HorizontalScroll,
+  Panel,
+  Tabs,
+  TabsItem
+} from '@vkontakte/vkui'
 import { type FC, useState } from 'react'
 
 import { PAGE_SETTINGS_ABOUT } from '../../../app/routes/constants'
 import { PanelHeaderWithBack } from '../../../shared'
 import { useSnackbar } from '../../../shared/hooks'
+import { clearAppLogs } from '../../../shared/utils/appLog'
 import type { Props } from '../../types.ts'
 import { lockDeveloperMode } from '../shared/developer'
 import GeneralTab from './GeneralTab'
@@ -12,7 +19,6 @@ import LogsTab from './LogsTab'
 import NotificationsTab from './NotificationsTab'
 import UpdatesTab from './UpdatesTab'
 
-import { clearAppLogs } from '../../../shared/utils/appLog'
 type DeveloperTab = 'general' | 'updates' | 'notifications' | 'logs'
 
 const TABS: Array<{ id: DeveloperTab; label: string }> = [
@@ -45,13 +51,13 @@ const DeveloperSettings: FC<Props> = ({ id }) => {
   }
 
   const disableDeveloperMode = async () => {
+    clearAppLogs()
     lockDeveloperMode()
     showSnackbar({ title: 'Режим разработчика выключен' })
     await routeNavigator.replace(PAGE_SETTINGS_ABOUT)
   }
 
   return (
-    clearAppLogs()
     <Panel nav={id}>
       <PanelHeaderWithBack title='Для разработчиков' />
 

@@ -31,6 +31,12 @@
                     android:host="esia" />
             </intent-filter>
 
+            <!-- BackgroundRunner: тап по локальному уведомлению -->
+            <intent-filter>
+                <action android:name=".NOTIFICATION_CLICKED" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+
         </activity>
 
         <activity-alias

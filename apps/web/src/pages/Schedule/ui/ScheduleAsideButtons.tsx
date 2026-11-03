@@ -109,8 +109,7 @@ const ScheduleAsideButtons: FC<ScheduleAsideButtonsProps> = ({
       className='diary-home-controls'
       style={{
         alignItems: 'center',
-        position: 'relative',
-        color: 'var(--vkui--color_icon_medium)'
+        position: 'relative'
       }}
       gap='s'
     >
@@ -122,8 +121,10 @@ const ScheduleAsideButtons: FC<ScheduleAsideButtonsProps> = ({
       </IconButton>
       <div style={{ display: 'flex', alignItems: 'center' }}>
         <Button
+          className='diary-home-button'
           size='m'
           mode='secondary'
+          appearance='neutral'
           onClick={() => getCurrentWeek()}
           disabled={isCurrent}
         >
