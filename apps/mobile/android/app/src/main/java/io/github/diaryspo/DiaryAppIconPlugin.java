@@ -11,7 +11,6 @@ import com.getcapacitor.annotation.CapacitorPlugin;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-/** Смена иконки через activity-alias: один MainActivity, разные ярлыки. */
 @CapacitorPlugin(name = "DiaryAppIcon")
 public class DiaryAppIconPlugin extends Plugin {
     private static final String PREFS = "diary_app_icon";
@@ -143,7 +142,6 @@ public class DiaryAppIconPlugin extends Plugin {
     public void setIcon(PluginCall call) {
         String iconId = call.getString("iconId", "default");
         if (!ALIASES.containsKey(iconId)) {
-            // Старые id (cat/playful/alt) больше не поддерживаем.
             iconId = "default";
         }
 

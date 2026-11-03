@@ -122,9 +122,7 @@ const refreshBundleInfo = async () => {
   try {
     const current = await CapacitorUpdater.current()
     currentVersion = current?.bundle?.version || currentVersion
-  } catch {
-    // ignore
-  }
+  } catch {}
 
   try {
     const info = await App.getInfo()

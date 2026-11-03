@@ -102,7 +102,6 @@ public class DiaryAppearancePlugin extends Plugin {
         }
     }
 
-    /** darkIcons=true → тёмные иконки (светлый фон); false → светлые (тёмный фон). */
     @PluginMethod
     public void setStatusBarIconStyle(PluginCall call) {
         boolean darkIcons = Boolean.TRUE.equals(call.getBoolean("darkIcons", false));

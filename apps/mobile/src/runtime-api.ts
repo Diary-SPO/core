@@ -69,7 +69,6 @@ export const getAppVersion: GetAppVersion = async () => {
   if (!Capacitor.isNativePlatform()) return APP_VERSION
   try {
     const info = await App.getInfo()
-    // version - versionName из Android, build - versionCode.
     return info.build ? `${info.version} (${info.build})` : info.version
   } catch (error) {
     console.warn('Unable to read native app version', error)
@@ -103,18 +102,14 @@ export const getSystemAccent: GetSystemAccent = async () => {
     }
     try {
       localStorage.setItem(SYSTEM_ACCENT_CACHE_KEY, JSON.stringify(resolved))
-    } catch {
-      // ignore
-    }
+    } catch {}
     return resolved
   } catch (error) {
     console.warn('Unable to read system accent', error)
     try {
       const cached = localStorage.getItem(SYSTEM_ACCENT_CACHE_KEY)
       if (cached) return JSON.parse(cached) as SystemAccentColors
-    } catch {
-      // ignore
-    }
+    } catch {}
     return null
   }
 }
