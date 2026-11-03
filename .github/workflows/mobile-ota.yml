@@ -3,12 +3,15 @@ name: Mobile web OTA
 # Публикует zip фронта Capacitor на diary-spo.github.io/mobile/{stable|beta}/
 # без пересборки APK. Пользователи подтягивают бандл через @capgo/capacitor-updater.
 #
-# Каналы:
-#   main     -> mobile/stable
-#   pre-main -> mobile/beta
-#   manual   -> выбор channel
+# Публикуем только если:
+#   1) version фронта (apps/mobile/package.json) > versionName APK (build.gradle)
+#   2) на канале ещё нет OTA с этой version фронта (manifest.json)
 #
-# Секрет: PAGES_DEPLOY_TOKEN (как у лендинга).
+# Иначе APK уже несёт этот фронт (или OTA уже выложена) — не собираем.
+# workflow_dispatch + force=true обходит гейт.
+#
+# Каналы: main→stable, pre-main→beta, manual→выбор
+# Секрет: PAGES_DEPLOY_TOKEN
 
 on:
   push:
@@ -33,6 +36,10 @@ on:
         description: 'Текст обновления для пользователя'
         required: false
         default: 'Улучшения интерфейса и исправления'
+      force:
+        description: 'Собрать даже если фронт ≤ APK или OTA уже есть'
+        type: boolean
+        default: false
 
 permissions:
   contents: read
@@ -53,40 +60,85 @@ jobs:
         with:
           bun-version: latest
 
-      - name: Install zip
-        run: sudo apt-get update && sudo apt-get install -y zip
-
-      - name: Install dependencies
-        run: bun install
-
-      - name: Resolve channel and version
+      - name: Resolve channel, version, gate
         id: meta
         run: |
+          set -euo pipefail
+
           if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
             CHANNEL="${{ github.event.inputs.channel }}"
             NOTES="${{ github.event.inputs.notes }}"
+            FORCE="${{ github.event.inputs.force }}"
           elif [ "${{ github.ref_name }}" = "pre-main" ]; then
             CHANNEL=beta
             NOTES='Canary / beta интерфейс'
+            FORCE=false
           else
             CHANNEL=stable
             NOTES='Улучшения интерфейса и исправления'
+            FORCE=false
           fi
 
-          VERSION_NAME=$(grep -oP 'versionName "\K[^"]+' apps/mobile/android/app/build.gradle | head -1)
-          VERSION_NAME=${VERSION_NAME%%\$*}
-          VERSION_NAME=${VERSION_NAME%\"*}
-          # versionName вида 1.3 + patch из run_number → semver 1.3.N
-          OTA_VERSION="${VERSION_NAME}.${{ github.run_number }}"
+          FRONT=$(node -p "require('./apps/mobile/package.json').version")
+          APK=$(grep -oP 'versionName "\K[^"]+' apps/mobile/android/app/build.gradle | head -1)
+          APK=${APK%%\$*}
+          APK=${APK%\"*}
+
+          MANIFEST_URL="https://diary-spo.github.io/mobile/${CHANNEL}/manifest.json"
+          PUBLISHED=$(curl -fsSL "$MANIFEST_URL" 2>/dev/null \
+            | node -p "JSON.parse(require('fs').readFileSync(0,'utf8')).version" \
+            || echo "")
+
+          # semver: a > b ?
+          is_newer() {
+            node -e "
+              const cmp=(a,b)=>{
+                const pa=a.split('.').map(x=>parseInt(x,10)||0);
+                const pb=b.split('.').map(x=>parseInt(x,10)||0);
+                const n=Math.max(pa.length,pb.length);
+                for(let i=0;i<n;i++){
+                  const d=(pa[i]||0)-(pb[i]||0);
+                  if(d) process.exit(d>0?0:1);
+                }
+                process.exit(1);
+              };
+              cmp(process.argv[1], process.argv[2]);
+            " "$1" "$2"
+          }
+
+          PUBLISH=false
+          REASON=""
+
+          if [ "$FORCE" = "true" ]; then
+            PUBLISH=true
+            REASON="force"
+          elif ! is_newer "$FRONT" "$APK"; then
+            REASON="фронт $FRONT ≤ APK $APK — OTA не нужна (уже в сторе/APK)"
+          elif [ -n "$PUBLISHED" ] && [ "$PUBLISHED" = "$FRONT" ]; then
+            REASON="OTA $FRONT уже на $CHANNEL"
+          else
+            PUBLISH=true
+            REASON="фронт $FRONT > APK $APK, published=${PUBLISHED:-none}"
+          fi
 
           {
             echo "channel=$CHANNEL"
             echo "notes=$NOTES"
-            echo "version=$OTA_VERSION"
+            echo "version=$FRONT"
+            echo "publish=$PUBLISH"
           } >> "$GITHUB_OUTPUT"
-          echo "OTA $OTA_VERSION → mobile/$CHANNEL"
+          echo "gate: publish=$PUBLISH ($REASON) → mobile/$CHANNEL"
+
+      - name: Install zip
+        if: steps.meta.outputs.publish == 'true'
+        run: sudo apt-get update && sudo apt-get install -y zip
+
+      - name: Install dependencies
+        if: steps.meta.outputs.publish == 'true'
+        run: bun install
 
       - name: Write mobile .env
+        if: steps.meta.outputs.publish == 'true'
         run: |
           cat > apps/mobile/.env <<'EOF'
           VITE_DIARY_URL=https://poo.tomedu.ru
@@ -96,11 +148,13 @@ jobs:
           EOF
 
       - name: Build mobile web bundle
+        if: steps.meta.outputs.publish == 'true'
         env:
           VITE_APP_VERSION: ${{ steps.meta.outputs.version }}
         run: bun run --cwd apps/mobile build
 
       - name: Pack OTA zip + manifest
+        if: steps.meta.outputs.publish == 'true'
         env:
           OTA_VERSION: ${{ steps.meta.outputs.version }}
           OTA_CHANNEL: ${{ steps.meta.outputs.channel }}
@@ -108,6 +162,7 @@ jobs:
         run: bun apps/mobile/scripts/pack-ota.mjs
 
       - name: Deploy to diary-spo.github.io/mobile/${{ steps.meta.outputs.channel }}
+        if: steps.meta.outputs.publish == 'true'
         uses: peaceiris/actions-gh-pages@v4
         with:
           personal_token: ${{ secrets.PAGES_DEPLOY_TOKEN }}

@@ -1,6 +1,6 @@
 {
   "name": "@diary-spo/core",
-  "version": "3.1.0",
+  "version": "4.4.0",
   "author": "diary-spo",
   "dependencies": {
     "bun": "^1.2.0"
