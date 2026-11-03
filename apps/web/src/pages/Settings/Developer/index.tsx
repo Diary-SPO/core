@@ -1,7 +1,8 @@
-import { appUpdater } from '@runtime-api'
+import { appUpdater, backgroundGradeNotifications } from '@runtime-api'
 import {
   Icon28DeleteOutline,
   Icon28DownloadOutline,
+  Icon28Notifications,
   Icon28RefreshOutline,
   Icon28WarningTriangleOutline
 } from '@vkontakte/icons'
@@ -155,6 +156,48 @@ const DeveloperSettings: FC<Props> = ({ id }) => {
             }}
           >
             Сбросить бейдж «есть обновление»
+          </CellButton>
+        </Group>
+      )}
+
+      {backgroundGradeNotifications.supported && (
+        <Group header={<Header size='s'>Уведомления об оценках</Header>}>
+          <CellButton
+            before={<Icon28Notifications />}
+            disabled={busy}
+            onClick={() =>
+              void (async () => {
+                setBusy(true)
+                try {
+                  const result =
+                    await backgroundGradeNotifications.debugRetestNotification()
+                  if (!result.forgotten) {
+                    showSnackbar({
+                      title: 'Нет оценок в снимке',
+                      subtitle:
+                        result.reason === 'corrupt'
+                          ? 'Снимок повреждён, дождитесь следующей проверки'
+                          : 'Сначала дождитесь фоновой проверки'
+                    })
+                    return
+                  }
+                  showSnackbar({
+                    title: 'Проверка запущена',
+                    subtitle: `${result.forgotten.subjectName}, ${result.forgotten.day}: ${result.forgotten.mark}`
+                  })
+                } catch (error) {
+                  showSnackbar({
+                    title: 'Ошибка',
+                    subtitle:
+                      error instanceof Error ? error.message : 'Неизвестно'
+                  })
+                } finally {
+                  setBusy(false)
+                }
+              })()
+            }
+          >
+            Симулировать новую оценку
           </CellButton>
         </Group>
       )}

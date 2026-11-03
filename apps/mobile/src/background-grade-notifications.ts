@@ -1,6 +1,7 @@
 import { BackgroundRunner } from '@capacitor/background-runner'
 import { Capacitor } from '@capacitor/core'
 import type {
+  BackgroundGradeDebugRetestResult,
   BackgroundGradeInterval,
   BackgroundGradeNotifications,
   BackgroundGradeSettings
@@ -61,6 +62,18 @@ export const clearBackgroundGradeSession = async () => {
   await dispatch('gradeSessionClear')
 }
 
+const syncSessionFromLocalStorage = async () => {
+  const cookie = localStorage.getItem('directDiaryCookies') ?? ''
+  const studentId = Number(localStorage.getItem('id'))
+  const baseUrl =
+    localStorage.getItem('directDiaryBaseUrl') ||
+    import.meta.env.VITE_DIARY_URL ||
+    'https://poo.tomedu.ru'
+  if (cookie && Number.isInteger(studentId) && studentId > 0) {
+    await syncBackgroundGradeSession(cookie, studentId, baseUrl)
+  }
+}
+
 export const backgroundGradeNotifications: BackgroundGradeNotifications = {
   supported: Capacitor.isNativePlatform(),
   getSettings: () => parseSettings(localStorage.getItem(SETTINGS_STORAGE_KEY)),
@@ -82,26 +95,25 @@ export const backgroundGradeNotifications: BackgroundGradeNotifications = {
 
     localStorage.setItem(SETTINGS_STORAGE_KEY, JSON.stringify(nextSettings))
 
-    void (async () => {
-      await dispatch('gradeSettingsUpdate', {
-        settings: JSON.stringify(nextSettings)
-      })
-
-      const cookie = localStorage.getItem('directDiaryCookies') ?? ''
-      const studentId = Number(localStorage.getItem('id'))
-      const baseUrl =
-        localStorage.getItem('directDiaryBaseUrl') ||
-        import.meta.env.VITE_DIARY_URL ||
-        'https://poo.tomedu.ru'
-      if (cookie && Number.isInteger(studentId) && studentId > 0) {
-        await syncBackgroundGradeSession(cookie, studentId, baseUrl)
-      }
-
-      if (nextSettings.enabled) await dispatch('gradeCheck')
-    })().catch((error) =>
-      console.error('Unable to update background grade settings', error)
-    )
+    await dispatch('gradeSettingsUpdate', {
+      settings: JSON.stringify(nextSettings)
+    })
+    await syncSessionFromLocalStorage()
+    if (nextSettings.enabled) await dispatch('gradeCheck')
 
     return nextSettings
+  },
+  async clearSession() {
+    await clearBackgroundGradeSession()
+  },
+  async debugRetestNotification(): Promise<BackgroundGradeDebugRetestResult> {
+    if (!Capacitor.isNativePlatform()) {
+      return { forgotten: null, reason: 'empty' }
+    }
+    await syncSessionFromLocalStorage()
+    const result = (await dispatch('gradeDebugRetestNotification')) as
+      | BackgroundGradeDebugRetestResult
+      | undefined
+    return result ?? { forgotten: null, reason: 'empty' }
   }
 }

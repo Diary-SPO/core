@@ -44,12 +44,25 @@ export interface BackgroundGradeSettings {
   intervalMinutes: BackgroundGradeInterval
 }
 
+export interface ForgottenGradeMark {
+  day: string
+  mark: string
+  subjectName: string
+}
+
+export interface BackgroundGradeDebugRetestResult {
+  forgotten: ForgottenGradeMark | null
+  reason?: 'empty' | 'corrupt'
+}
+
 export interface BackgroundGradeNotifications {
   readonly supported: boolean
   getSettings(): BackgroundGradeSettings
   setSettings(
     settings: BackgroundGradeSettings
   ): Promise<BackgroundGradeSettings>
+  clearSession(): Promise<void>
+  debugRetestNotification(): Promise<BackgroundGradeDebugRetestResult>
 }
 
 export interface ShareContentOptions {

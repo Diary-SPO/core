@@ -1,12 +1,12 @@
 import {
   createGradeSnapshot,
   diffGradeSnapshots,
-  formatGradeNotification,
-  type GradeSnapshot
+  formatGradeNotification
 } from '@diary-spo/diary-client'
 import type { PerformanceCurrent } from '@diary-spo/shared'
 
 import { shouldRunGradeCheck } from './grade-check-schedule.ts'
+import { forgetOneMark, parseGradeSnapshot } from './grade-snapshot.ts'
 import {
   getRunnerStoredValue,
   type RunnerKeyValueStore
@@ -20,6 +20,7 @@ interface RunnerSettings {
 interface RunnerEventDetails {
   baseUrl?: string
   cookie?: string
+  force?: boolean
   settings?: string | null
   studentId?: number
 }
@@ -101,10 +102,10 @@ const nextNotificationId = () => {
   return next
 }
 
-const runGradeCheck = async () => {
+const runGradeCheck = async (force = false) => {
   const settings = parseSettings()
   const now = new Date()
-  if (!settings.enabled || !shouldCheck(now, settings)) return
+  if (!force && (!settings.enabled || !shouldCheck(now, settings))) return
 
   const baseUrl = stored(STORAGE.baseUrl)
   const cookie = stored(STORAGE.cookie)
@@ -132,9 +133,13 @@ const runGradeCheck = async () => {
     (await response.json()) as PerformanceCurrent
   )
   const previousValue = stored(STORAGE.snapshot)
+  const previous = parseGradeSnapshot(previousValue)
 
-  if (previousValue) {
-    const previous = JSON.parse(previousValue) as GradeSnapshot
+  if (previousValue && !previous) {
+    CapacitorKV.remove(STORAGE.snapshot)
+  }
+
+  if (previous) {
     const changes = diffGradeSnapshots(previous, current)
     const notifications = changes.map((change) => {
       const notification = formatGradeNotification(change)
@@ -155,8 +160,8 @@ const runGradeCheck = async () => {
   CapacitorKV.set(STORAGE.lastCheck, String(now.getTime()))
 }
 
-runner.addEventListener('gradeCheck', (resolve, reject) => {
-  runGradeCheck().then(resolve).catch(reject)
+runner.addEventListener('gradeCheck', (resolve, reject, details) => {
+  runGradeCheck(Boolean(details?.force)).then(resolve).catch(reject)
 })
 
 runner.addEventListener('gradeSessionSync', (resolve, reject, details) => {
@@ -204,6 +209,35 @@ runner.addEventListener('gradeSessionClear', (resolve, reject) => {
   try {
     for (const key of Object.values(STORAGE)) CapacitorKV.remove(key)
     resolve()
+  } catch (error) {
+    reject(error)
+  }
+})
+
+runner.addEventListener('gradeDebugRetestNotification', (resolve, reject) => {
+  try {
+    const previousValue = stored(STORAGE.snapshot)
+    const previous = parseGradeSnapshot(previousValue)
+    if (!previous) {
+      resolve({
+        forgotten: null,
+        reason: previousValue ? 'corrupt' : 'empty'
+      })
+      return
+    }
+
+    const result = forgetOneMark(previous)
+    if (!result) {
+      resolve({ forgotten: null, reason: 'empty' })
+      return
+    }
+
+    CapacitorKV.set(STORAGE.snapshot, JSON.stringify(result.snapshot))
+    CapacitorKV.remove(STORAGE.lastCheck)
+
+    runGradeCheck(true)
+      .then(() => resolve({ forgotten: result.forgotten }))
+      .catch(reject)
   } catch (error) {
     reject(error)
   }

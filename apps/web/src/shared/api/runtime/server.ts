@@ -23,7 +23,9 @@ const defaultBackgroundSettings = {
 export const backgroundGradeNotifications: BackgroundGradeNotifications = {
   supported: false,
   getSettings: () => defaultBackgroundSettings,
-  setSettings: async () => defaultBackgroundSettings
+  setSettings: async () => defaultBackgroundSettings,
+  clearSession: async () => undefined,
+  debugRetestNotification: async () => ({ forgotten: null, reason: 'empty' })
 }
 
 export const appIcon: AppIconController = {
