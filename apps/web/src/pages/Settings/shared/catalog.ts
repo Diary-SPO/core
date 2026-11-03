@@ -31,9 +31,18 @@ export const SETTINGS_CATEGORIES: SettingsCategory[] = [
   {
     id: 'appearance',
     title: 'Оформление',
-    subtitle: 'Тема приложения',
+    subtitle: 'Тема, OLED и акцент',
     path: PAGE_SETTINGS_APPEARANCE,
-    keywords: ['оформление', 'тема', 'тёмная', 'светлая', 'авто']
+    keywords: [
+      'оформление',
+      'тема',
+      'тёмная',
+      'светлая',
+      'авто',
+      'oled',
+      'акцент',
+      'цвет'
+    ]
   },
   {
     id: 'notifications',
@@ -108,6 +117,20 @@ export const SETTINGS_ITEMS: SettingsCatalogItem[] = [
     path: PAGE_SETTINGS_APPEARANCE
   },
   {
+    id: 'oled',
+    title: 'OLED в тёмной теме',
+    subtitle: 'Чёрный фон для AMOLED',
+    keywords: ['oled', 'чёрный', 'amoled', 'тема'],
+    path: PAGE_SETTINGS_APPEARANCE
+  },
+  {
+    id: 'accent',
+    title: 'Акцентный цвет',
+    subtitle: 'Системный или свой цвет',
+    keywords: ['акцент', 'цвет', 'оформление', 'палитра', 'системный'],
+    path: PAGE_SETTINGS_APPEARANCE
+  },
+  {
     id: 'tabbar-labels',
     title: 'Подписи в нижней панели',
     subtitle: 'Показывать названия вкладок',
@@ -176,7 +199,7 @@ export const SETTINGS_ITEMS: SettingsCatalogItem[] = [
     id: 'contacts',
     title: 'Контакты',
     subtitle: 'Поддержка и сообщество',
-    keywords: ['контакты', 'поддержка', 'вк', 'телеграм'],
+    keywords: ['контакты', 'поддержка', 'вк', 'телеграм', 'сайт'],
     path: PAGE_SETTINGS_HELP
   },
   {

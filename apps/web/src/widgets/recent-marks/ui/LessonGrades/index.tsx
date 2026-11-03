@@ -1,10 +1,10 @@
 import type { Task } from '@diary-spo/shared'
 import { useMarkModal } from '@store'
 import { useRouteNavigator } from '@vkontakte/vk-mini-apps-router'
-import { Header, HorizontalCell } from '@vkontakte/vkui'
 import type { FC } from 'react'
-import { Mark, setDefaultMark, truncateString } from '../../../../shared'
+import { setDefaultMark } from '../../../../shared'
 import { MODAL_PAGE_MARK } from '../../../../shared/config'
+import { getBackgroundColor } from '../../../../shared/ui/Mark/helpers'
 
 import './index.css'
 
@@ -23,7 +23,7 @@ export const LessonGrades: FC<LessonGradesProps> = ({ day, lessonGrades }) => {
   const { setData } = useMarkModal()
 
   if (!lessonGrades.length) {
-    return
+    return null
   }
 
   const handleMarkClick = async (data: Task, lessonName: string) => {
@@ -32,25 +32,28 @@ export const LessonGrades: FC<LessonGradesProps> = ({ day, lessonGrades }) => {
   }
 
   return (
-    <div key={day}>
-      <Header size='s' className='recentMarks'>
-        {day}
-      </Header>
-      <div className='flex'>
-        {lessonGrades.map(({ lessonName, task }) => (
-          <div className='marksWrapper flex' key={`${lessonName}_${task.id}`}>
-            <HorizontalCell
-              onClick={() => handleMarkClick(task, lessonName)}
-              className='markWrapper'
-              size='auto'
+    <div className='lessonGrades'>
+      <div className='lessonGrades__day'>{day}</div>
+      <div className='lessonGrades__row'>
+        {lessonGrades.map(({ lessonName, task }) => {
+          const value = setDefaultMark(task)
+          return (
+            <button
+              type='button'
+              className='lessonGrades__item'
+              key={`${lessonName}_${task.id}`}
+              onClick={() => void handleMarkClick(task, lessonName)}
             >
-              <Mark
-                bottom={truncateString(lessonName, 18)}
-                mark={setDefaultMark(task)}
-              />
-            </HorizontalCell>
-          </div>
-        ))}
+              <span
+                className='lessonGrades__mark'
+                style={{ background: getBackgroundColor(value) }}
+              >
+                {value}
+              </span>
+              <span className='lessonGrades__label'>{lessonName}</span>
+            </button>
+          )
+        })}
       </div>
     </div>
   )

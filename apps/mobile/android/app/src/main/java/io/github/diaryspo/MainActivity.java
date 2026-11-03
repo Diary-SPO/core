@@ -1,5 +1,6 @@
 package io.github.diaryspo;
 
+import android.content.Intent;
 import android.os.Bundle;
 import androidx.activity.OnBackPressedCallback;
 import com.getcapacitor.BridgeActivity;
@@ -12,6 +13,7 @@ public class MainActivity extends BridgeActivity {
         registerPlugin(DiaryNetworkPlugin.class);
         registerPlugin(DiaryCredentialsPlugin.class);
         registerPlugin(DiaryAppIconPlugin.class);
+        registerPlugin(DiaryAppearancePlugin.class);
         super.onCreate(savedInstanceState);
 
         getOnBackPressedDispatcher().addCallback(
@@ -29,5 +31,12 @@ public class MainActivity extends BridgeActivity {
                 }
             }
         );
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        // singleTask: без setIntent extras тапа по уведомлению теряются.
+        setIntent(intent);
     }
 }

@@ -1,17 +1,8 @@
 import type { Nullable } from '@diary-spo/shared'
-import { useState } from 'react'
-
-// add test
-
-/**
- * Функция 'useDebouncedChangeWeek' обрабатывает изменения недели с задержкой.
- * Принимает начальную и конечную даты, устанавливает значения текущей даты, начальной и конечной даты.
- * Создает обработчик для событий клика с учетом задержки и изменения даты.
- * При каждом клике увеличивает счетчик нажатий, а также устанавливает таймер для вызова функции с новыми датами.
- * После задержки сбрасывает счетчик и вызывает функцию, отправляющую измененные даты на сервер.
- */
+import { useRef } from 'react'
 
 type SendToServerIfValid = (start: Date, end: Date) => void
+type Direction = 'prev' | 'next'
 
 export const useDebouncedChangeWeek = (
   startDate: Date,
@@ -20,53 +11,56 @@ export const useDebouncedChangeWeek = (
   setStartDate: (startDate: Date) => void,
   setEndDate: (endDate: Date) => void
 ) => {
-  const [clickCount, setClickCount] = useState<number>(0)
-  const [timeoutId, setTimeoutId] = useState<Nullable<number>>(null)
+  const clickCountRef = useRef(0)
+  const timeoutIdRef = useRef<Nullable<number>>(null)
+  const datesRef = useRef({ startDate, endDate })
+  datesRef.current = { startDate, endDate }
 
-  const handleChangeWeek = (
-    direction: 'prev' | 'next',
+  const applyWeek = (
+    direction: Direction,
+    weeks: number,
     sendToServerIfValid: SendToServerIfValid
   ) => {
     localStorage.setItem('isCurrent', JSON.stringify(false))
     setIsCurrent(false)
-    const newStartDate = new Date(startDate)
-    const newEndDate = new Date(endDate)
-
-    if (clickCount > 0) {
-      const isPrev = direction === 'prev'
-      const weekDifference = clickCount * (isPrev ? -7 : 7)
-      newStartDate.setDate(newStartDate.getDate() + weekDifference)
-      newEndDate.setDate(newEndDate.getDate() + weekDifference)
-      setClickCount(0)
-    } else if (direction === 'prev') {
-      newStartDate.setDate(newStartDate.getDate() - 7)
-      newEndDate.setDate(newEndDate.getDate() - 7)
-    } else if (direction === 'next') {
-      newStartDate.setDate(newStartDate.getDate() + 7)
-      newEndDate.setDate(newEndDate.getDate() + 7)
-    }
-
+    const { startDate: from, endDate: to } = datesRef.current
+    const newStartDate = new Date(from)
+    const newEndDate = new Date(to)
+    const delta = weeks * (direction === 'prev' ? -7 : 7)
+    newStartDate.setDate(newStartDate.getDate() + delta)
+    newEndDate.setDate(newEndDate.getDate() + delta)
     sendToServerIfValid(newStartDate, newEndDate)
     setStartDate(newStartDate)
     setEndDate(newEndDate)
   }
 
-  const handleButtonClick = (
-    direction: 'prev' | 'next',
+  const changeWeekNow = (
+    direction: Direction,
     sendToServerIfValid: SendToServerIfValid
   ) => {
-    setClickCount((prevCount) => prevCount + 1)
-    if (timeoutId) {
-      clearTimeout(timeoutId)
+    if (timeoutIdRef.current) {
+      clearTimeout(timeoutIdRef.current)
+      timeoutIdRef.current = null
     }
-
-    const timeout = window.setTimeout(() => {
-      handleChangeWeek(direction, sendToServerIfValid)
-      setClickCount(0)
-    }, 500)
-
-    setTimeoutId(timeout)
+    clickCountRef.current = 0
+    applyWeek(direction, 1, sendToServerIfValid)
   }
 
-  return { handleButtonClick }
+  const handleButtonClick = (
+    direction: Direction,
+    sendToServerIfValid: SendToServerIfValid
+  ) => {
+    clickCountRef.current += 1
+    if (timeoutIdRef.current) {
+      clearTimeout(timeoutIdRef.current)
+    }
+
+    timeoutIdRef.current = window.setTimeout(() => {
+      applyWeek(direction, clickCountRef.current, sendToServerIfValid)
+      clickCountRef.current = 0
+      timeoutIdRef.current = null
+    }, 500)
+  }
+
+  return { handleButtonClick, changeWeekNow }
 }

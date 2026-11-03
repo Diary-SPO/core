@@ -1,48 +1,39 @@
-import { appUpdater } from '@runtime-api'
+import { useRouteNavigator } from '@vkontakte/vk-mini-apps-router'
 import {
-  Icon28DeleteOutline,
-  Icon28DownloadOutline,
-  Icon28RefreshOutline,
-  Icon28WarningTriangleOutline
-} from '@vkontakte/icons'
-import {
-  CellButton,
   Group,
-  Header,
-  InfoRow,
+  HorizontalScroll,
   Panel,
-  SimpleCell
+  Tabs,
+  TabsItem
 } from '@vkontakte/vkui'
-import { type FC, useEffect, useState } from 'react'
+import { type FC, useState } from 'react'
 
+import { PAGE_SETTINGS_ABOUT } from '../../../app/routes/constants'
 import { PanelHeaderWithBack } from '../../../shared'
-import type { AppUpdateStatus } from '../../../shared/api/runtime/types'
 import { useSnackbar } from '../../../shared/hooks'
+import { clearAppLogs } from '../../../shared/utils/appLog'
 import type { Props } from '../../types.ts'
-import TechInfo from '../Actions/TechInfo'
-import { clearAppCache } from '../shared/clearCache'
+import { lockDeveloperMode } from '../shared/developer'
+import GeneralTab from './GeneralTab'
+import LogsTab from './LogsTab'
+import NotificationsTab from './NotificationsTab'
+import UpdatesTab from './UpdatesTab'
+
+type DeveloperTab = 'general' | 'updates' | 'notifications' | 'logs'
+
+const TABS: Array<{ id: DeveloperTab; label: string }> = [
+  { id: 'general', label: 'Общее' },
+  { id: 'updates', label: 'OTA' },
+  { id: 'notifications', label: 'Пуши' },
+  { id: 'logs', label: 'Логи' }
+]
 
 const DeveloperSettings: FC<Props> = ({ id }) => {
+  const routeNavigator = useRouteNavigator()
   const [snackbar, showSnackbar] = useSnackbar()
   const [refreshKey, setRefreshKey] = useState(0)
-  const [status, setStatus] = useState<AppUpdateStatus>(() =>
-    appUpdater.getStatus()
-  )
   const [busy, setBusy] = useState(false)
-
-  useEffect(() => appUpdater.subscribe(setStatus), [])
-
-  const clearCache = () => {
-    const removed = clearAppCache()
-    setRefreshKey((key) => key + 1)
-    showSnackbar({
-      title: 'Кеш очищен',
-      subtitle:
-        removed > 0
-          ? `Удалено записей: ${removed}`
-          : 'Сохранённых данных не нашлось'
-    })
-  }
+  const [tab, setTab] = useState<DeveloperTab>('general')
 
   const run = async (label: string, action: () => Promise<unknown>) => {
     setBusy(true)
@@ -59,107 +50,66 @@ const DeveloperSettings: FC<Props> = ({ id }) => {
     }
   }
 
+  const disableDeveloperMode = async () => {
+    clearAppLogs()
+    lockDeveloperMode()
+    showSnackbar({ title: 'Режим разработчика выключен' })
+    await routeNavigator.replace(PAGE_SETTINGS_ABOUT)
+  }
+
   return (
     <Panel nav={id}>
       <PanelHeaderWithBack title='Для разработчиков' />
-      <Group header={<Header size='s'>Действия</Header>}>
-        <CellButton before={<Icon28DeleteOutline />} onClick={clearCache}>
-          Очистить кеш приложения
-        </CellButton>
+
+      <Group>
+        <Tabs mode='default'>
+          <HorizontalScroll arrowSize='m'>
+            {TABS.map((item) => (
+              <TabsItem
+                key={item.id}
+                id={item.id}
+                selected={tab === item.id}
+                onClick={() => setTab(item.id)}
+              >
+                {item.label}
+              </TabsItem>
+            ))}
+          </HorizontalScroll>
+        </Tabs>
       </Group>
 
-      {appUpdater.supported && (
-        <Group
-          header={<Header size='s'>Обновление интерфейса</Header>}
-          description='Сценарии для проверки панели и бандлов'
-        >
-          <SimpleCell multiline>
-            <InfoRow header='Канал'>{status.channel}</InfoRow>
-          </SimpleCell>
-          <SimpleCell multiline>
-            <InfoRow header='Текущий бандл'>{status.currentVersion}</InfoRow>
-          </SimpleCell>
-          <SimpleCell multiline>
-            <InfoRow header='Native versionCode'>
-              {status.nativeVersionCode || '—'}
-            </InfoRow>
-          </SimpleCell>
-          <SimpleCell multiline>
-            <InfoRow header='Статус'>
-              {status.kind}
-              {status.available ? ` → ${status.available.version}` : ''}
-              {status.downloadedVersion
-                ? ` (скачано ${status.downloadedVersion})`
-                : ''}
-            </InfoRow>
-          </SimpleCell>
-          {status.lastError && (
-            <SimpleCell multiline>
-              <InfoRow header='Ошибка'>{status.lastError}</InfoRow>
-            </SimpleCell>
-          )}
-
-          <CellButton
-            before={<Icon28WarningTriangleOutline />}
-            disabled={busy}
-            onClick={() => appUpdater.debugOpenPrompt({ force: true })}
-          >
-            Открыть панель обновления (даже без update)
-          </CellButton>
-          <CellButton
-            before={<Icon28RefreshOutline />}
-            disabled={busy}
-            onClick={() =>
-              void run('Проверка обновлений', () =>
-                appUpdater.check({ silent: false })
-              )
-            }
-          >
-            Проверить и открыть панель при наличии
-          </CellButton>
-          <CellButton
-            before={<Icon28DownloadOutline />}
-            disabled={busy}
-            onClick={() =>
-              void run('Принудительное скачивание', () =>
-                appUpdater.debugForceDownload()
-              )
-            }
-          >
-            Принудительно скачать обновление
-          </CellButton>
-          <CellButton
-            before={<Icon28RefreshOutline />}
-            disabled={busy || !status.downloadedVersion}
-            onClick={() =>
-              void run('Установка бандла', () => appUpdater.apply())
-            }
-          >
-            Установить скачанный бандл
-          </CellButton>
-          <CellButton
-            appearance='negative'
-            before={<Icon28DeleteOutline />}
-            disabled={busy}
-            onClick={() =>
-              void run('Сброс OTA-бандлов', () => appUpdater.reset())
-            }
-          >
-            Удалить обновления (сброс к встроенному)
-          </CellButton>
-          <CellButton
-            disabled={busy}
-            onClick={() => {
-              appUpdater.clearBadge()
-              showSnackbar({ title: 'Бейдж обновления сброшен' })
-            }}
-          >
-            Сбросить бейдж «есть обновление»
-          </CellButton>
-        </Group>
+      {tab === 'general' && (
+        <GeneralTab
+          refreshKey={refreshKey}
+          onCacheCleared={(removed) => {
+            setRefreshKey((key) => key + 1)
+            showSnackbar({
+              title: 'Кеш очищен',
+              subtitle:
+                removed > 0
+                  ? `Удалено записей: ${removed}`
+                  : 'Сохранённых данных не нашлось'
+            })
+          }}
+          onLockDeveloperMode={() => void disableDeveloperMode()}
+        />
       )}
+      {tab === 'updates' && (
+        <UpdatesTab
+          busy={busy}
+          onRun={run}
+          onMessage={(title) => showSnackbar({ title })}
+        />
+      )}
+      {tab === 'notifications' && (
+        <NotificationsTab
+          busy={busy}
+          setBusy={setBusy}
+          onMessage={(title, subtitle) => showSnackbar({ title, subtitle })}
+        />
+      )}
+      {tab === 'logs' && <LogsTab />}
 
-      <TechInfo key={refreshKey} />
       {snackbar}
     </Panel>
   )

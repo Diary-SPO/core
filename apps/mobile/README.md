@@ -85,18 +85,30 @@ APPMETRICA_API_KEY='ваш_api_key' ./gradlew clean assembleRelease bundleReleas
 `@capgo/capacitor-updater`. В манифесте поле `minNative` — минимальный
 `versionCode` APK; если натив старше, пользователю предлагают RuStore.
 
+**Версия фронта (OTA):** `"version"` в `apps/mobile/package.json`.
+**Версия APK:** `versionName` в `android/app/build.gradle`.
+
+Workflow публикует OTA только если:
+1. фронт > APK по semver (иначе фронт уже внутри стора/APK);
+2. на канале ещё нет `manifest.json` с этой version фронта.
+
+Ручной `workflow_dispatch` с `force=true` обходит гейт.
+
+Перед OTA без нового APK: подними только `apps/mobile/package.json`
+(например `4.4.0` → `4.4.1`), `versionName` APK не трогай.
+
 Каналы:
 
 | Канал | URL | Откуда |
 | --- | --- | --- |
-| `stable` | `/mobile/stable/` | `main` или manual |
-| `beta` | `/mobile/beta/` | `pre-main` или manual |
+| `stable` | `/mobile/stable/` | `main` (если фронт > APK) или manual |
+| `beta` | `/mobile/beta/` | `pre-main` (если фронт > APK) или manual |
 
 Локально:
 
 ```bash
 bun run --cwd apps/mobile build
-OTA_VERSION=1.3.99 OTA_CHANNEL=beta bun run --cwd apps/mobile pack:ota
+OTA_VERSION=4.4.1 OTA_CHANNEL=beta bun run --cwd apps/mobile pack:ota
 ```
 
 Workflow: `.github/workflows/mobile-ota.yml`.

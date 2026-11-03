@@ -6,9 +6,9 @@ interface Props {
   ariaLabel?: string
 }
 
-const WIDTH = 320
-const HEIGHT = 148
-const PAD = { top: 16, right: 12, bottom: 28, left: 28 }
+const WIDTH = 480
+const HEIGHT = 200
+const PAD = { top: 16, right: 12, bottom: 28, left: 32 }
 /** Точки на линии только если их немного — иначе каша. */
 const MAX_DOTS = 14
 

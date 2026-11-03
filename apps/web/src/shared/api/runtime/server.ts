@@ -10,7 +10,10 @@ import type {
   BackgroundGradeNotifications,
   DiaryApi,
   GetAppVersion,
+  GetSystemAccent,
+  GetSystemDark,
   RegionSearchResult,
+  SetStatusBarIconStyle,
   ShareContentOptions
 } from './types.ts'
 
@@ -22,7 +25,9 @@ const defaultBackgroundSettings = {
 export const backgroundGradeNotifications: BackgroundGradeNotifications = {
   supported: false,
   getSettings: () => defaultBackgroundSettings,
-  setSettings: async () => defaultBackgroundSettings
+  setSettings: async () => defaultBackgroundSettings,
+  clearSession: async () => undefined,
+  debugRetestNotification: async () => ({ forgotten: null, reason: 'empty' })
 }
 
 export const appIcon: AppIconController = {
@@ -33,6 +38,16 @@ export const appIcon: AppIconController = {
 }
 
 export const getAppVersion: GetAppVersion = async () => APP_VERSION
+
+export const getSystemAccent: GetSystemAccent = async () => null
+
+export const getSystemDark: GetSystemDark = async () => null
+
+export const subscribeSystemDark = async (
+  _callback: (dark: boolean) => void
+): Promise<() => void> => () => undefined
+
+export const setStatusBarIconStyle: SetStatusBarIconStyle = async () => undefined
 
 const webUpdateStatus = (): AppUpdateStatus => ({
   supported: false,

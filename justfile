@@ -104,13 +104,13 @@ emulator avd="Diary_API_36":
     {{ adb }} {{ target }} shell 'while [ -z "$(getprop sys.boot_completed)" ]; do sleep 2; done; echo booted'
     {{ adb }} {{ target }} shell wm density 280
 
-# Установить debug APK
+# Установить debug APK (только user 0 — иначе на cloneUser появляется второй ярлык)
 install-debug apk=apk_debug:
-    {{ adb }} {{ target }} install -r {{ apk }}
+    {{ adb }} {{ target }} install --user 0 -r {{ apk }}
 
-# Установить release APK
+# Установить release APK (только user 0 — иначе на cloneUser появляется второй ярлык)
 install-release apk=apk_release:
-    {{ adb }} {{ target }} install -r {{ apk }}
+    {{ adb }} {{ target }} install --user 0 -r {{ apk }}
 
 # Запустить приложение
 run:

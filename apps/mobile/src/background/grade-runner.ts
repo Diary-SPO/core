@@ -1,12 +1,12 @@
 import {
   createGradeSnapshot,
   diffGradeSnapshots,
-  formatGradeNotification,
-  type GradeSnapshot
+  formatGradeNotification
 } from '@diary-spo/diary-client'
 import type { PerformanceCurrent } from '@diary-spo/shared'
 
 import { shouldRunGradeCheck } from './grade-check-schedule.ts'
+import { forgetOneMark, parseGradeSnapshot } from './grade-snapshot.ts'
 import {
   getRunnerStoredValue,
   type RunnerKeyValueStore
@@ -20,6 +20,7 @@ interface RunnerSettings {
 interface RunnerEventDetails {
   baseUrl?: string
   cookie?: string
+  force?: boolean
   settings?: string | null
   studentId?: number
 }
@@ -101,10 +102,10 @@ const nextNotificationId = () => {
   return next
 }
 
-const runGradeCheck = async () => {
+const runGradeCheck = async (force = false) => {
   const settings = parseSettings()
   const now = new Date()
-  if (!settings.enabled || !shouldCheck(now, settings)) return
+  if (!force && (!settings.enabled || !shouldCheck(now, settings))) return
 
   const baseUrl = stored(STORAGE.baseUrl)
   const cookie = stored(STORAGE.cookie)
@@ -116,6 +117,7 @@ const runGradeCheck = async () => {
   const response = await fetch(
     `${baseUrl.replace(/\/$/, '')}/services/reports/current/performance/${studentId}`,
     {
+      method: 'GET',
       headers: {
         'Content-Type': 'application/json;charset=UTF-8',
         Cookie: cookie
@@ -132,14 +134,23 @@ const runGradeCheck = async () => {
     (await response.json()) as PerformanceCurrent
   )
   const previousValue = stored(STORAGE.snapshot)
+  const previous = parseGradeSnapshot(previousValue)
 
-  if (previousValue) {
-    const previous = JSON.parse(previousValue) as GradeSnapshot
+  if (previousValue && !previous) {
+    CapacitorKV.remove(STORAGE.snapshot)
+  }
+
+  if (previous) {
     const changes = diffGradeSnapshots(previous, current)
     const notifications = changes.map((change) => {
       const notification = formatGradeNotification(change)
       return {
         ...notification,
+        actionTypeId: JSON.stringify({
+          t: 'grade',
+          day: change.day,
+          subjectName: change.subjectName
+        }),
         autoCancel: true,
         id: nextNotificationId(),
         scheduleAt: new Date()
@@ -155,8 +166,8 @@ const runGradeCheck = async () => {
   CapacitorKV.set(STORAGE.lastCheck, String(now.getTime()))
 }
 
-runner.addEventListener('gradeCheck', (resolve, reject) => {
-  runGradeCheck().then(resolve).catch(reject)
+runner.addEventListener('gradeCheck', (resolve, reject, details) => {
+  runGradeCheck(Boolean(details?.force)).then(resolve).catch(reject)
 })
 
 runner.addEventListener('gradeSessionSync', (resolve, reject, details) => {
@@ -207,4 +218,53 @@ runner.addEventListener('gradeSessionClear', (resolve, reject) => {
   } catch (error) {
     reject(error)
   }
+})
+
+const snapshotMarkCount = (snapshot: ReturnType<typeof parseGradeSnapshot>) =>
+  snapshot
+    ? Object.values(snapshot.entries).reduce(
+        (total, entry) => total + entry.marks.length,
+        0
+      )
+    : 0
+
+runner.addEventListener('gradeDebugRetestNotification', (resolve, reject) => {
+  void (async () => {
+    try {
+      let previous = parseGradeSnapshot(stored(STORAGE.snapshot))
+      if (!previous || snapshotMarkCount(previous) === 0) {
+        await runGradeCheck(true)
+        previous = parseGradeSnapshot(stored(STORAGE.snapshot))
+      }
+
+      if (!previous) {
+        resolve({
+          forgotten: null,
+          reason: stored(STORAGE.cookie) ? 'corrupt' : 'noSession'
+        })
+        return
+      }
+
+      if (snapshotMarkCount(previous) === 0) {
+        resolve({
+          forgotten: null,
+          reason: stored(STORAGE.cookie) ? 'empty' : 'noSession'
+        })
+        return
+      }
+
+      const result = forgetOneMark(previous)
+      if (!result) {
+        resolve({ forgotten: null, reason: 'empty' })
+        return
+      }
+
+      CapacitorKV.set(STORAGE.snapshot, JSON.stringify(result.snapshot))
+      CapacitorKV.remove(STORAGE.lastCheck)
+      await runGradeCheck(true)
+      resolve({ forgotten: result.forgotten })
+    } catch (error) {
+      reject(error)
+    }
+  })()
 })

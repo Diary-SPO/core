@@ -1,5 +1,4 @@
 import type { Day, Nullable } from '@diary-spo/shared'
-import { HorizontalScroll } from '@vkontakte/vkui'
 import type { FC } from 'react'
 
 import { transformData } from './lib'
@@ -12,22 +11,15 @@ export const RecentMarks: FC<{
   shouldReverse?: boolean
 }> = ({ lessonsState, shouldReverse }) => {
   const data = transformData(lessonsState)
-
-  if (shouldReverse) {
-    data.reverse()
-  }
+  if (shouldReverse) data.reverse() // transformData всегда новый массив
 
   return (
-    <HorizontalScroll
-      showArrows
-      getScrollToLeft={(i) => i - 120}
-      getScrollToRight={(i) => i + 120}
-    >
+    <div className='recentMarks'>
       <div className='recentMarks__wrapper'>
         {data.map(([day, lessonGrades]) => (
           <LessonGrades key={day} day={day} lessonGrades={lessonGrades} />
         ))}
       </div>
-    </HorizontalScroll>
+    </div>
   )
 }

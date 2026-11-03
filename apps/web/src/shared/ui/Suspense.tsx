@@ -1,34 +1,22 @@
-import { PanelSpinner, ScreenSpinner, Spinner } from '@vkontakte/vkui'
+import { ScreenSpinner } from '@vkontakte/vkui'
 import { type FC, type ReactNode, Suspense as ReactSuspense } from 'react'
 
-interface ISpinner {
+import { PageSkeleton } from './PageSkeleton'
+
+interface ISuspense {
+  children: ReactNode
+  id: string
   size?: 's' | 'm' | 'l' | 'xl'
   mode?: 'panel' | 'screen' | 'default'
 }
 
-interface ISuspense extends ISpinner {
-  children: ReactNode
-  id: string
-}
-
-const SpinnerWrapper: FC<ISpinner> = ({ size, mode }) => {
-  switch (mode) {
-    case 'panel':
-      return <PanelSpinner size={size} />
-    case 'screen':
-      return <ScreenSpinner label='Загрузка' />
-    default:
-      return <Spinner size={size} />
-  }
-}
-
-export const Suspense: FC<ISuspense> = ({
-  children,
-  size = 'm',
-  id,
-  mode = 'panel'
-}) => (
-  <ReactSuspense key={id} fallback={<SpinnerWrapper size={size} mode={mode} />}>
+export const Suspense: FC<ISuspense> = ({ children, id, mode = 'panel' }) => (
+  <ReactSuspense
+    key={id}
+    fallback={
+      mode === 'screen' ? <ScreenSpinner label='Загрузка' /> : <PageSkeleton />
+    }
+  >
     {children}
   </ReactSuspense>
 )

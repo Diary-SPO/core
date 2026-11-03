@@ -17,7 +17,7 @@ const optionalPublicVars = {
   'import.meta.env.VITE_PERSONAL_DATA_CONSENT_URL': JSON.stringify(''),
   // Без define rsbuild оставляет import.meta.env пустым объектом/undefined.
   'import.meta.env.VITE_APP_VERSION': JSON.stringify(
-    process.env.VITE_APP_VERSION ?? packageVersion ?? '8.0.0'
+    process.env.VITE_APP_VERSION ?? packageVersion ?? '4.4.0'
   )
 }
 

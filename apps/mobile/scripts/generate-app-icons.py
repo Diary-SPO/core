@@ -1,9 +1,7 @@
 #!/usr/bin/env python3
-"""Генерирует launcher/splash-ресурсы и web-превью из icon-sources.
+"""Генерирует launcher-иконки и web-превью из icon-sources.
 
-Adaptive foreground кладётся в safe-zone (66/108), иначе лаунчер
-обрезает края и иконка выглядит «приближенной».
-Ассеты пишутся в WebP.
+Foreground в safe-zone, иначе лаунчер обрезает края.
 """
 
 from __future__ import annotations
@@ -33,7 +31,7 @@ PLUGIN = (
     / 'DiaryAppIconPlugin.java'
 )
 
-# legacy size, adaptive canvas size
+# (legacy size, adaptive canvas)
 DENSITIES = {
     'mdpi': (48, 108),
     'hdpi': (72, 162),
@@ -42,8 +40,7 @@ DENSITIES = {
     'xxxhdpi': (192, 432),
 }
 
-# Доля арта на adaptive-слое (1.0 = во весь слой, сильно обрезает лаунчер).
-# 66/108 — строгий safe-zone (была заметная «рамка»), ~0.78 — чуть крупнее.
+# <1.0 — иначе лаунчер сильно обрезает края
 SAFE_ZONE_RATIO = 0.78
 WEBP_QUALITY = 90
 PREVIEW_SIZE = 192
@@ -128,7 +125,6 @@ def circle_mask(size: int) -> Image.Image:
 
 
 def make_adaptive_foreground(source: Image.Image, canvas_size: int) -> Image.Image:
-    """Картинка в safe-zone по центру, края прозрачные — лаунчер не зумит."""
     canvas = Image.new('RGBA', (canvas_size, canvas_size), (0, 0, 0, 0))
     art_size = max(1, round(canvas_size * SAFE_ZONE_RATIO))
     art = fit_cover(source, art_size)
@@ -139,7 +135,6 @@ def make_adaptive_foreground(source: Image.Image, canvas_size: int) -> Image.Ima
 
 def save_webp(im: Image.Image, path: Path) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
-    # RGB без альфы чуть легче; RGBA нужен для round/foreground.
     to_save = im
     if im.mode == 'RGBA':
         alpha = im.getchannel('A')
@@ -223,15 +218,6 @@ def generate_icon_assets(icon: dict[str, str]) -> None:
 
     preview = fit_cover(source, PREVIEW_SIZE).convert('RGB')
     save_webp(preview, WEB_ICONS / f'{icon["id"]}.webp')
-
-
-def clear_per_icon_splash_assets() -> None:
-    """Один общий splash; отдельные splash_icon_* под иконки не нужны."""
-    styles = ANDROID_RES / 'values' / 'app_icon_splash_styles.xml'
-    styles.unlink(missing_ok=True)
-    for folder in ANDROID_RES.glob('drawable*'):
-        for path in folder.glob('splash_icon_simka*'):
-            path.unlink(missing_ok=True)
 
 
 def _alias_xml(
@@ -322,7 +308,6 @@ import com.getcapacitor.annotation.CapacitorPlugin;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-/** Смена иконки через activity-alias: один MainActivity, разные ярлыки. */
 @CapacitorPlugin(name = "DiaryAppIcon")
 public class DiaryAppIconPlugin extends Plugin {{
     private static final String PREFS = "diary_app_icon";
@@ -362,7 +347,6 @@ public class DiaryAppIconPlugin extends Plugin {{
     public void setIcon(PluginCall call) {{
         String iconId = call.getString("iconId", "default");
         if (!ALIASES.containsKey(iconId)) {{
-            // Старые id (cat/playful/alt) больше не поддерживаем.
             iconId = "default";
         }}
 
@@ -409,11 +393,7 @@ def cleanup_web_previews(icons: list[dict[str, str]]) -> None:
     }
     for path in WEB_ICONS.glob('*'):
         if path.suffix.lower() in {'.png', '.webp'} and path.name not in keep:
-            # Удаляем старые png-превью симки.
-            if path.suffix.lower() == '.png' and path.stem != 'default':
-                path.unlink()
-            elif path.suffix.lower() == '.webp' and path.name not in keep:
-                path.unlink()
+            path.unlink()
 
 
 def ensure_default_webp() -> None:
@@ -468,7 +448,6 @@ def main() -> None:
 
     cleanup_web_previews(icons)
     render_web_preview_catalog(icons)
-    clear_per_icon_splash_assets()
     render_manifest(icons)
     render_plugin(icons)
     print(f'done: {len(icons)} icons (webp, safe-zone)')

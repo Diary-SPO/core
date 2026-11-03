@@ -11,7 +11,8 @@ import {
   MODAL_PAGE_MARK,
   MODAL_PAGE_RECOMMEND_APP,
   MODAL_PAGE_REGION,
-  MODAL_PAGE_STORAGE_INSPECT
+  MODAL_PAGE_STORAGE_INSPECT,
+  MODAL_PAGE_WEEK_PICKER
 } from '../../../../shared/config'
 import { postponeRecommendationPrompt } from '../../../../shared/utils/recommendationPrompt'
 
@@ -22,6 +23,7 @@ import MarkDetailedModal from './modals/MarkDetailedModal'
 import RecommendAppModal from './modals/RecommendAppModal'
 import RegionModal from './modals/RegionModal'
 import StorageInspectModal from './modals/StorageInspectModal'
+import WeekPickerModal from './modals/WeekPickerModal'
 
 const ModalRoot = () => {
   const routeNavigator = useRouteNavigator()
@@ -44,6 +46,7 @@ const ModalRoot = () => {
       <AppUpdateModal id={MODAL_PAGE_APP_UPDATE} />
       <LoginDiagnosticsModal id={MODAL_PAGE_LOGIN_DIAGNOSTICS} />
       <StorageInspectModal id={MODAL_PAGE_STORAGE_INSPECT} />
+      <WeekPickerModal id={MODAL_PAGE_WEEK_PICKER} />
     </VKUIModalRoot>
   )
 }

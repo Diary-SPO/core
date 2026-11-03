@@ -1,4 +1,5 @@
 import {
+  backgroundGradeNotifications,
   clearSavedCredentials,
   reloginWithSavedCredentials
 } from '@runtime-api'
@@ -164,6 +165,7 @@ const LoginDiagnosticsModal = ({ id }: { id: string }) => {
           // Сохранённый пароль больше не подходит - выходим по-настоящему.
           await clearSavedCredentials()
           clearAuthData()
+          await backgroundGradeNotifications.clearSession()
           await close()
           await routeNavigator.replace('/')
           return

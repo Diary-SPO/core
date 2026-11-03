@@ -1,4 +1,5 @@
 import {
+  backgroundGradeNotifications,
   clearSavedCredentials,
   diaryApi,
   getSavedAccount,
@@ -107,6 +108,7 @@ const SessionGuardian = () => {
         if (!account || !(await hasSavedCredentials())) {
           // Нет сохранённого пароля (веб или Госуслуги) - только выход.
           clearAuthData()
+          await backgroundGradeNotifications.clearSession()
           await routeNavigator.replace('/')
           return
         }
@@ -124,6 +126,7 @@ const SessionGuardian = () => {
         if (isApiError(response) && response.status === 401) {
           await clearSavedCredentials()
           clearAuthData()
+          await backgroundGradeNotifications.clearSession()
           await routeNavigator.replace('/')
           return
         }

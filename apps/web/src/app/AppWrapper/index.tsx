@@ -1,5 +1,10 @@
+import {
+  getSystemAccent,
+  getSystemDark,
+  setStatusBarIconStyle,
+  subscribeSystemDark
+} from '@runtime-api'
 import vkBridge from '@vkontakte/vk-bridge'
-import { useAppearance } from '@vkontakte/vk-bridge-react'
 import { RouterProvider } from '@vkontakte/vk-mini-apps-router'
 import {
   AdaptivityProvider,
@@ -10,8 +15,17 @@ import { useEffect, useState } from 'react'
 
 import { Suspense } from '../../shared'
 import {
+  ACCENT_CHANGE_EVENT,
+  type AccentColors,
+  type AccentId,
+  getAccentPreference,
+  getOledPreference,
   getThemePreference,
+  OLED_CHANGE_EVENT,
+  setSystemDarkOverride,
+  syncAppearanceToDocument,
   THEME_CHANGE_EVENT,
+  toColorScheme,
   type ThemePreference
 } from '../../shared/config'
 import { router } from '../routes/router'
@@ -24,22 +38,91 @@ vkBridge.send('VKWebAppInit')
 
 const AppWrapper = () => {
   const platform = usePlatform()
-  const vkBridgeAppearance = useAppearance() || undefined
   const [themePreference, setThemePreference] =
     useState<ThemePreference>(getThemePreference)
+  const [oled, setOled] = useState(getOledPreference)
+  const [accent, setAccent] = useState<AccentId>(getAccentPreference)
+  const [colorScheme, setColorScheme] = useState(() =>
+    toColorScheme(getThemePreference())
+  )
 
   useEffect(() => {
     const handleThemeChange = (event: Event) => {
       setThemePreference((event as CustomEvent<ThemePreference>).detail)
     }
+    const handleOledChange = (event: Event) => {
+      setOled((event as CustomEvent<boolean>).detail)
+    }
+    const handleAccentChange = (event: Event) => {
+      setAccent((event as CustomEvent<AccentId>).detail)
+    }
 
     window.addEventListener(THEME_CHANGE_EVENT, handleThemeChange)
-    return () =>
+    window.addEventListener(OLED_CHANGE_EVENT, handleOledChange)
+    window.addEventListener(ACCENT_CHANGE_EVENT, handleAccentChange)
+    return () => {
       window.removeEventListener(THEME_CHANGE_EVENT, handleThemeChange)
+      window.removeEventListener(OLED_CHANGE_EVENT, handleOledChange)
+      window.removeEventListener(ACCENT_CHANGE_EVENT, handleAccentChange)
+    }
   }, [])
 
-  const colorScheme =
-    themePreference === 'auto' ? vkBridgeAppearance : themePreference
+  useEffect(() => {
+    let cancelled = false
+
+    const apply = async () => {
+      const nativeDark = await getSystemDark()
+      if (cancelled) return
+      if (nativeDark !== null) setSystemDarkOverride(nativeDark)
+
+      let systemColors: AccentColors | null = null
+      if (accent === 'system') {
+        systemColors = await getSystemAccent()
+      }
+      if (cancelled) return
+
+      const scheme = toColorScheme(themePreference)
+      setColorScheme(scheme)
+      syncAppearanceToDocument(themePreference, accent, oled, systemColors)
+      // Тёмный UI → светлые иконки статус-бара (darkIcons=false).
+      void setStatusBarIconStyle(scheme === 'light')
+    }
+
+    void apply()
+    const retryId =
+      accent === 'system' ? window.setTimeout(() => void apply(), 400) : 0
+
+    const schemeQuery = window.matchMedia('(prefers-color-scheme: dark)')
+    const onSchemeChange = () => {
+      if (themePreference === 'auto') void apply()
+    }
+    schemeQuery.addEventListener('change', onSchemeChange)
+
+    const onFocus = () => {
+      if (accent === 'system' || themePreference === 'auto') void apply()
+    }
+    window.addEventListener('focus', onFocus)
+
+    let unsubscribeNative = () => undefined as void
+    void subscribeSystemDark((dark) => {
+      setSystemDarkOverride(dark)
+      if (themePreference === 'auto') void apply()
+    }).then((unsubscribe) => {
+      if (cancelled) {
+        unsubscribe()
+        return
+      }
+      unsubscribeNative = unsubscribe
+    })
+
+    return () => {
+      cancelled = true
+      window.clearTimeout(retryId)
+      schemeQuery.removeEventListener('change', onSchemeChange)
+      window.removeEventListener('focus', onFocus)
+      unsubscribeNative()
+    }
+  }, [themePreference, accent, oled])
 
   return (
     <AdaptivityProvider>

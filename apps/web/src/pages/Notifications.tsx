@@ -8,7 +8,6 @@ import {
   Panel,
   Placeholder,
   PullToRefresh,
-  Spinner,
   Text,
   Title
 } from '@vkontakte/vkui'
@@ -22,6 +21,7 @@ import { VKUI_RED } from '../shared/config'
 import { useSnackbar } from '../shared/hooks'
 import {
   ErrorPlaceholder,
+  NotificationsSkeleton,
   PanelHeaderWithBack,
   SubtitleWithBorder
 } from '../shared/ui'
@@ -100,9 +100,10 @@ const Notifications: FC<Props> = ({ id }) => {
 
   if (isLoading && !notifications) {
     return (
-      <Div>
-        <Spinner />
-      </Div>
+      <Panel nav={id}>
+        <PanelHeaderWithBack title='Объявления' />
+        <NotificationsSkeleton />
+      </Panel>
     )
   }
 

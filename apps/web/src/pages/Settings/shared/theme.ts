@@ -1,5 +1,13 @@
 import {
+  ACCENT_CHANGE_EVENT,
+  ACCENT_STORAGE_KEY,
+  type AccentId,
+  getAccentPreference,
+  getOledPreference,
   getThemePreference,
+  OLED_CHANGE_EVENT,
+  OLED_STORAGE_KEY,
+  resolveHtmlBackground,
   THEME_CHANGE_EVENT,
   THEME_STORAGE_KEY,
   type ThemePreference
@@ -11,19 +19,18 @@ export const THEME_LABELS: Record<ThemePreference, string> = {
   dark: 'Тёмная'
 }
 
-const resolveIsDark = (preference: ThemePreference): boolean => {
-  if (preference === 'dark') return true
-  if (preference === 'light') return false
-  return window.matchMedia('(prefers-color-scheme: dark)').matches
+const syncThemeColorMeta = (preference: ThemePreference): void => {
+  const background = resolveHtmlBackground(preference)
+  document.documentElement.style.background = background
+  const themeColor = document.querySelector('meta[name="theme-color"]')
+  if (themeColor) {
+    themeColor.setAttribute('content', background)
+  }
 }
 
 export const setThemePreference = (preference: ThemePreference): void => {
   localStorage.setItem(THEME_STORAGE_KEY, preference)
-  // Держим html-фон в sync с color_background, иначе по бокам колонок
-  // остаётся «полоса» от раннего FOUC-стиля.
-  document.documentElement.style.background = resolveIsDark(preference)
-    ? '#0a0a0a'
-    : '#ffffff'
+  syncThemeColorMeta(preference)
   window.dispatchEvent(
     new CustomEvent<ThemePreference>(THEME_CHANGE_EVENT, {
       detail: preference
@@ -31,5 +38,20 @@ export const setThemePreference = (preference: ThemePreference): void => {
   )
 }
 
-export type { ThemePreference }
-export { getThemePreference }
+export const setOledPreference = (enabled: boolean): void => {
+  localStorage.setItem(OLED_STORAGE_KEY, enabled ? '1' : '0')
+  syncThemeColorMeta(getThemePreference())
+  window.dispatchEvent(
+    new CustomEvent<boolean>(OLED_CHANGE_EVENT, { detail: enabled })
+  )
+}
+
+export const setAccentPreference = (accent: AccentId): void => {
+  localStorage.setItem(ACCENT_STORAGE_KEY, accent)
+  window.dispatchEvent(
+    new CustomEvent<AccentId>(ACCENT_CHANGE_EVENT, { detail: accent })
+  )
+}
+
+export type { AccentId, ThemePreference }
+export { getAccentPreference, getOledPreference, getThemePreference }

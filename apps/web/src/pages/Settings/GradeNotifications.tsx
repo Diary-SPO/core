@@ -14,6 +14,7 @@ import {
   BACKGROUND_GRADE_INTERVALS,
   type BackgroundGradeInterval
 } from '../../shared/api/runtime/types.ts'
+import { useSnackbar } from '../../shared/hooks'
 
 const intervalLabels: Record<BackgroundGradeInterval, string> = {
   15: 'Каждые 15 минут',
@@ -23,11 +24,11 @@ const intervalLabels: Record<BackgroundGradeInterval, string> = {
 }
 
 interface GradeNotificationsProps {
-  /** Только тумблер без частоты - для быстрых действий на хабе */
   compact?: boolean
 }
 
 const GradeNotifications = ({ compact = false }: GradeNotificationsProps) => {
+  const [snackbar, showSnackbar] = useSnackbar()
   const [settings, setSettings] = useState(() =>
     backgroundGradeNotifications.getSettings()
   )
@@ -46,8 +47,11 @@ const GradeNotifications = ({ compact = false }: GradeNotificationsProps) => {
         })
       )
     } catch (error) {
-      console.error('Unable to change grade notification settings', error)
       setSettings(previousSettings)
+      showSnackbar({
+        title: enabled ? 'Не включилось' : 'Не выключилось',
+        subtitle: error instanceof Error ? error.message : 'Неизвестная ошибка'
+      })
     }
   }
 
@@ -68,10 +72,19 @@ const GradeNotifications = ({ compact = false }: GradeNotificationsProps) => {
         })
       )
     } catch (error) {
-      console.error('Unable to change grade check interval', error)
       setSettings(previousSettings)
+      showSnackbar({
+        title: 'Не удалось сменить частоту',
+        subtitle: error instanceof Error ? error.message : 'Неизвестная ошибка'
+      })
     }
   }
+
+  const selectValue = BACKGROUND_GRADE_INTERVALS.includes(
+    settings.intervalMinutes
+  )
+    ? settings.intervalMinutes
+    : 30
 
   const toggle = (
     <SimpleCell
@@ -89,7 +102,14 @@ const GradeNotifications = ({ compact = false }: GradeNotificationsProps) => {
     </SimpleCell>
   )
 
-  if (compact) return toggle
+  if (compact) {
+    return (
+      <>
+        {toggle}
+        {snackbar}
+      </>
+    )
+  }
 
   return (
     <Group header={<Header size='s'>Оценки</Header>}>
@@ -101,7 +121,7 @@ const GradeNotifications = ({ compact = false }: GradeNotificationsProps) => {
       >
         <NativeSelect
           disabled={!settings.enabled}
-          value={settings.intervalMinutes}
+          value={selectValue}
           onChange={updateInterval}
         >
           {BACKGROUND_GRADE_INTERVALS.map((interval) => (
@@ -111,6 +131,7 @@ const GradeNotifications = ({ compact = false }: GradeNotificationsProps) => {
           ))}
         </NativeSelect>
       </FormItem>
+      {snackbar}
     </Group>
   )
 }

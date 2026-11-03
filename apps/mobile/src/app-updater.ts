@@ -20,6 +20,7 @@ const OTA_BASE = 'https://diary-spo.github.io/mobile'
 const CHANNEL_KEY = 'otaChannel'
 const DISMISSED_KEY = 'otaDismissedVersion'
 const BADGE_KEY = 'otaBadge'
+const NATIVE_BUILD_KEY = 'otaNativeBuild'
 
 interface DiaryNetworkPlugin {
   isVpnActive(): Promise<{ active: boolean }>
@@ -121,9 +122,7 @@ const refreshBundleInfo = async () => {
   try {
     const current = await CapacitorUpdater.current()
     currentVersion = current?.bundle?.version || currentVersion
-  } catch {
-    // builtin
-  }
+  } catch {}
 
   try {
     const info = await App.getInfo()
@@ -160,10 +159,43 @@ const ensureReady = async () => {
   }
 }
 
+const ensureBuiltinAfterNativeUpgrade = async () => {
+  await refreshBundleInfo()
+  const build = String(nativeVersionCode || 0)
+  const stored = localStorage.getItem(NATIVE_BUILD_KEY)
+
+  if (stored === build) return
+
+  localStorage.setItem(NATIVE_BUILD_KEY, build)
+  setDismissedVersion(null)
+  setBadgeFlag(false)
+  downloadedVersion = null
+  available = null
+  kind = 'none'
+  progress = null
+
+  if (stored === null) {
+    emit()
+    return
+  }
+
+  try {
+    const current = await CapacitorUpdater.current()
+    const onOta = current?.bundle?.id && current.bundle.id !== 'builtin'
+    if (onOta) {
+      await CapacitorUpdater.reset()
+    }
+  } catch (error) {
+    console.warn('reset after native upgrade failed', error)
+  }
+
+  await refreshBundleInfo()
+  emit()
+}
+
 const fetchManifest = async (
   channel: AppUpdateChannel
 ): Promise<ManifestDto | null> => {
-  // CapacitorHttp — без CORS WebView; не через window.fetch.
   const response = await CapacitorHttp.request({
     method: 'GET',
     url: `${manifestUrl(channel)}?t=${Date.now()}`,
@@ -420,7 +452,6 @@ export const appUpdater: AppUpdater = {
       await CapacitorUpdater.reset()
       await CapacitorUpdater.reload()
     } catch (error) {
-      // reset без reload, если builtin уже активен
       console.warn('reset bundles', error)
     }
     downloadedVersion = null
@@ -500,10 +531,10 @@ export const appUpdater: AppUpdater = {
 
 export { APP_UPDATE_PROMPT_EVENT, APP_UPDATE_STATUS_EVENT }
 
-/** Старт: только подтвердить бандл. Сеть — позже, через guardian. */
 export const startAppUpdater = async () => {
   if (!Capacitor.isNativePlatform()) return
   await ensureReady()
+  await ensureBuiltinAfterNativeUpgrade()
   await refreshBundleInfo()
   emit()
 }

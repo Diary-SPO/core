@@ -5,6 +5,8 @@ import { createStore } from '../store'
 export interface LessonFocus {
   dateISO: string
   lessonIndex: number
+  subjectName?: string
+  openLessonModal?: boolean
   nonce: number
 }
 
@@ -20,9 +22,19 @@ export const useLessonFocus = () => {
 
   return {
     focus,
-    focusOn: (dateISO: string, lessonIndex: number) =>
+    focusOn: (
+      dateISO: string,
+      lessonIndex: number,
+      options?: { subjectName?: string; openLessonModal?: boolean }
+    ) =>
       focusStore.setState({
-        focus: { dateISO, lessonIndex, nonce: Date.now() }
+        focus: {
+          dateISO,
+          lessonIndex,
+          subjectName: options?.subjectName,
+          openLessonModal: options?.openLessonModal,
+          nonce: Date.now()
+        }
       }),
     clearFocus: () => focusStore.setState({ focus: null })
   }

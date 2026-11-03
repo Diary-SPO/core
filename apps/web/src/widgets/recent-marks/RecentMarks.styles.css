@@ -1,5 +1,26 @@
+.recentMarks {
+  overflow-x: auto;
+  overflow-y: hidden;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+
+.recentMarks::-webkit-scrollbar {
+  display: none;
+}
+
 .recentMarks__wrapper {
-  margin-left: 10px;
+  box-sizing: border-box;
   display: flex;
-  gap: 10px;
+  flex-wrap: nowrap;
+  align-items: flex-start;
+  gap: 14px;
+  width: max-content;
+  min-width: 100%;
+  padding: 4px 12px 10px;
+}
+
+/* Слева отступ, справа контент может уйти под край при скролле. */
+.diary-schedule-flush .recentMarks__wrapper {
+  padding-inline: 12px 0;
 }

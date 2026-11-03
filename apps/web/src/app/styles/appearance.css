@@ -1,0 +1,187 @@
+/* html > … — иначе токены VKUI из темы перебивают наши (одинаковая специфичность) */
+html :is(
+  .vkui--vkBase--light,
+  .vkui--vkBase--dark,
+  .vkui--vkIOS--light,
+  .vkui--vkIOS--dark,
+  .vkui--vkCom--light,
+  .vkui--vkCom--dark
+) {
+  --vkui--color_background_accent: var(--diary-accent, #2688eb);
+  --vkui--color_background_accent--hover: var(--diary-accent-hover, #2483e4);
+  --vkui--color_background_accent--active: var(--diary-accent-active, #237edd);
+  --vkui--color_background_accent_themed: var(--diary-accent, #2688eb);
+  --vkui--color_background_accent_themed--hover: var(
+    --diary-accent-hover,
+    #2483e4
+  );
+  --vkui--color_background_accent_themed--active: var(
+    --diary-accent-active,
+    #237edd
+  );
+  --vkui--color_background_accent_themed_alpha: color-mix(
+    in srgb,
+    var(--diary-accent, #2688eb) 20%,
+    transparent
+  );
+  --vkui--color_background_accent_themed_alpha--hover: color-mix(
+    in srgb,
+    var(--diary-accent, #2688eb) 24%,
+    transparent
+  );
+  --vkui--color_background_accent_themed_alpha--active: color-mix(
+    in srgb,
+    var(--diary-accent, #2688eb) 28%,
+    transparent
+  );
+  --vkui--color_background_accent_tint: color-mix(
+    in srgb,
+    var(--diary-accent, #2688eb) 72%,
+    white
+  );
+  --vkui--color_background_accent_alternative: var(--diary-accent, #2688eb);
+  --vkui--color_background_accent_alternative--hover: var(
+    --diary-accent-hover,
+    #2483e4
+  );
+  --vkui--color_background_accent_alternative--active: var(
+    --diary-accent-active,
+    #237edd
+  );
+  --vkui--color_text_accent: var(--diary-accent, #2688eb);
+  --vkui--color_text_accent--hover: var(--diary-accent-hover, #2483e4);
+  --vkui--color_text_accent--active: var(--diary-accent-active, #237edd);
+  --vkui--color_text_accent_themed: var(--diary-accent, #2688eb);
+  --vkui--color_icon_accent: var(--diary-accent, #2688eb);
+  --vkui--color_icon_accent--hover: var(--diary-accent-hover, #2483e4);
+  --vkui--color_icon_accent--active: var(--diary-accent-active, #237edd);
+  --vkui--color_icon_accent_themed: var(--diary-accent, #2688eb);
+  --vkui--color_stroke_accent: var(--diary-accent, #2688eb);
+  --vkui--color_stroke_accent--hover: var(--diary-accent-hover, #2483e4);
+  --vkui--color_stroke_accent--active: var(--diary-accent-active, #237edd);
+  /* accent_themed всегда цветной (не инверсия в dark) → текст/иконка на кнопке белые */
+  --vkui--color_text_contrast_themed: #ffffff;
+  --vkui--color_icon_contrast_themed: #ffffff;
+}
+
+html.diary-oled
+  :is(.vkui--vkBase--dark, .vkui--vkIOS--dark, .vkui--vkCom--dark),
+html.diary-oled:is(
+  .vkui--vkBase--dark,
+  .vkui--vkIOS--dark,
+  .vkui--vkCom--dark
+) {
+  --vkui--color_background: #000000;
+  --vkui--color_background_content: #000000;
+  --vkui--color_background_secondary: #0d0d0d;
+  --vkui--color_background_secondary_alpha: rgb(255 255 255 / 6%);
+  --vkui--color_background_tertiary: #141414;
+  --vkui--color_background_modal: #000000;
+  --vkui--color_background_modal_inverse: #ffffff;
+  --vkui--color_header_background: #000000;
+  --vkui--color_background_contrast_themed: #000000;
+  --vkui--color_background_contrast_secondary_alpha: rgb(255 255 255 / 8%);
+  --vkui--color_separator_primary: rgb(255 255 255 / 12%);
+  --vkui--color_separator_primary_alpha: rgb(255 255 255 / 12%);
+  --vkui--color_field_background: #0d0d0d;
+  --vkui--color_write_bar_input_background: #0d0d0d;
+  --vkui--color_search_field_background: #0d0d0d;
+  --vkui--color_tabbar_background: #000000;
+  --vkui--color_panel_header_icon: #e1e3e6;
+}
+
+/* Tabbar без акцента: выбранная вкладка нейтральная */
+html:not(.diary-accent-tabbar) .vkuiInternalTabbar,
+html:not(.diary-accent-tabbar) [class*='Tabbar'].host,
+html:not(.diary-accent-tabbar) .vkuiTabbar {
+  --vkui--color_text_accent_themed: var(--vkui--color_text_primary);
+  --vkui--color_icon_accent: var(--vkui--color_icon_primary);
+  --vkui--color_icon_accent_themed: var(--vkui--color_icon_primary);
+}
+
+.diary-home-controls {
+  color: var(--vkui--color_icon_medium);
+}
+
+/* appearance=neutral: без тоггла обычный текст. CSS-modules VKUI без .vkuiButton */
+html.diary-accent-home .diary-home-controls {
+  color: var(--diary-accent, #2688eb);
+}
+
+html.diary-accent-home .diary-home-controls button,
+html.diary-accent-home .diary-home-controls .diary-home-button {
+  --vkui--color_icon_primary: var(--diary-accent, #2688eb);
+  --vkui--color_icon_medium: var(--diary-accent, #2688eb);
+  --vkui--color_text_primary: var(--diary-accent, #2688eb);
+  --vkui--color_background_secondary: color-mix(
+    in srgb,
+    var(--diary-accent, #2688eb) 16%,
+    transparent
+  );
+  color: var(--diary-accent, #2688eb);
+}
+
+/* Сепараторы до края. Не трогаем --size_base_padding_horizontal:
+   0 ломает HorizontalCell gap. */
+html.diary-native .vkuiGroup__separator,
+html.diary-native [class*='Group__separator'],
+html.diary-native .vkuiSeparator--padded,
+html.diary-native [class*='Separator--padded'] {
+  padding-inline: 0 !important;
+  margin-inline: 0 !important;
+}
+
+@media (max-width: 767.9px) {
+  .vkuiGroup__separator,
+  [class*='Group__separator'],
+  .vkuiSeparator--padded,
+  [class*='Separator--padded'] {
+    padding-inline: 0 !important;
+    margin-inline: 0 !important;
+  }
+
+  .tableWrapper {
+    padding-inline: 0 !important;
+  }
+}
+
+.diary-schedule-flush {
+  padding-inline: 0 !important;
+  padding-block: 4px !important;
+}
+
+.diary-schedule-flush .vkuiInternalGroup {
+  --vkui_internal--Group_padding_inline: 0;
+  --vkui_internal--Group_padding_block: 4px;
+  padding-inline: 0 !important;
+  padding-block: 4px 0 !important;
+}
+
+.diary-schedule-flush .vkuiInternalCardGrid {
+  margin-block-start: 0 !important;
+  margin-block-end: 0 !important;
+  padding-block: 4px 8px !important;
+  padding-inline: var(--vkui--size_base_padding_horizontal--regular) !important;
+}
+
+.diary-schedule-flush .diary-week-nav {
+  margin-block: 0;
+}
+
+/* Лента оценок на всю ширину контейнера (web mobile = как native). */
+.diary-schedule-flush .recentMarks {
+  width: 100%;
+  margin-inline: 0;
+}
+
+/* Разделитель между оценками и неделей — без «зелёных» полей. */
+.diary-schedule-flush > [class*='separatorSibling'],
+.diary-schedule-flush > [class*='Group__separator'],
+.diary-schedule-flush > .vkuiGroup__separator {
+  padding-block: 4px !important;
+  block-size: 8px !important;
+}
+
+html.diary-native .tableWrapper {
+  padding-inline: 0 !important;
+}

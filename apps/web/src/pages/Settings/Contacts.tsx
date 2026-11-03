@@ -1,10 +1,21 @@
 import { Icon28Users } from '@vkontakte/icons'
 import { Avatar, Group, Header, Link, SimpleCell } from '@vkontakte/vkui'
+import appIcon from '../../assets/images/app-icons/default.webp'
 import { diaryAva, tgAva, vkAva } from '../../shared/config/images.ts'
 
 const Contacts = () => {
   return (
     <Group header={<Header size='m'>Контакты</Header>}>
+      <SimpleCell
+        before={
+          <Avatar size={48} fallbackIcon={<Icon28Users />} src={appIcon} />
+        }
+        subtitle='Сайт приложения'
+      >
+        <Link target='_blank' href='https://diary-spo.github.io/'>
+          diary-spo.github.io
+        </Link>
+      </SimpleCell>
       <SimpleCell
         before={<Avatar size={48} fallbackIcon={<Icon28Users />} src={vkAva} />}
         subtitle='Поддержка и обратная связь'

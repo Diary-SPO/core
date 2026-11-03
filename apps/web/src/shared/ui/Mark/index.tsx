@@ -27,13 +27,15 @@ export const Mark: FC<IMark> = ({
   size = 'l',
   bottom,
   color,
+  style: styleProp,
   ...props
 }) => {
   const style: CSSProperties = {
     padding: sizes[size],
     background: color ?? getBackgroundColor(mark),
     fontSize: fontSizes[size],
-    borderRadius: borders[size]
+    borderRadius: borders[size],
+    ...styleProp
   }
 
   const Bottom = bottom && <Footnote style={{ padding: 3 }}>{bottom}</Footnote>

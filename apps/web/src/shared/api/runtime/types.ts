@@ -44,12 +44,25 @@ export interface BackgroundGradeSettings {
   intervalMinutes: BackgroundGradeInterval
 }
 
+export interface ForgottenGradeMark {
+  day: string
+  mark: string
+  subjectName: string
+}
+
+export interface BackgroundGradeDebugRetestResult {
+  forgotten: ForgottenGradeMark | null
+  reason?: 'empty' | 'corrupt' | 'noSession'
+}
+
 export interface BackgroundGradeNotifications {
   readonly supported: boolean
   getSettings(): BackgroundGradeSettings
   setSettings(
     settings: BackgroundGradeSettings
   ): Promise<BackgroundGradeSettings>
+  clearSession(): Promise<void>
+  debugRetestNotification(): Promise<BackgroundGradeDebugRetestResult>
 }
 
 export interface ShareContentOptions {
@@ -86,6 +99,21 @@ export interface AppIconController {
 
 /** Версия приложения: в APK из Android, в вебе из env. */
 export type GetAppVersion = () => Promise<string>
+
+export interface SystemAccentColors {
+  base: string
+  hover: string
+  active: string
+}
+
+/** Системный акцент: на Android — Material You, в вебе — CSS AccentColor / null. */
+export type GetSystemAccent = () => Promise<SystemAccentColors | null>
+
+/** Тёмная ли системная тема (на Android — uiMode, не WebView media). */
+export type GetSystemDark = () => Promise<boolean | null>
+
+/** darkIcons=true — тёмные иконки статус-бара (светлый фон). */
+export type SetStatusBarIconStyle = (darkIcons: boolean) => Promise<void>
 
 export type AppUpdateChannel = 'stable' | 'beta'
 

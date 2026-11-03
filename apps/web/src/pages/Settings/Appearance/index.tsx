@@ -1,5 +1,9 @@
 import { appIcon } from '@runtime-api'
-import { Icon28PaletteOutline, Icon28ViewOutline } from '@vkontakte/icons'
+import {
+  Icon28MoonOutline,
+  Icon28PaletteOutline,
+  Icon28ViewOutline
+} from '@vkontakte/icons'
 import {
   FormItem,
   Group,
@@ -13,22 +17,37 @@ import { type ChangeEvent, type FC, useEffect, useState } from 'react'
 import { PanelHeaderWithBack } from '../../../shared'
 import type { AppIconOption } from '../../../shared/api/runtime/types.ts'
 import {
+  ACCENT_OPTIONS,
+  type AccentId,
+  getAccentOnHomeControls,
+  getAccentOnTabbar,
   getTabbarLabelsVisible,
+  setAccentOnHomeControls,
+  setAccentOnTabbar,
   setTabbarLabelsVisible
 } from '../../../shared/config'
 import { useSnackbar } from '../../../shared/hooks'
 import type { Props } from '../../types.ts'
 import {
+  getAccentPreference,
+  getOledPreference,
   getThemePreference,
+  setAccentPreference,
+  setOledPreference,
   setThemePreference,
   THEME_LABELS,
   type ThemePreference
 } from '../shared/theme'
+import AccentGrid from './AccentGrid'
 import AppIconGrid from './AppIconGrid'
 
 const AppearanceSettings: FC<Props> = ({ id }) => {
   const [theme, setTheme] = useState<ThemePreference>(getThemePreference)
+  const [oled, setOled] = useState(getOledPreference)
+  const [accent, setAccent] = useState<AccentId>(getAccentPreference)
   const [showLabels, setShowLabels] = useState(getTabbarLabelsVisible)
+  const [accentOnTabbar, setAccentOnTabbarState] = useState(getAccentOnTabbar)
+  const [accentOnHome, setAccentOnHomeState] = useState(getAccentOnHomeControls)
   const [iconSupported, setIconSupported] = useState(appIcon.supported)
   const [iconOptions, setIconOptions] = useState<AppIconOption[]>([])
   const [iconId, setIconId] = useState('default')
@@ -58,9 +77,29 @@ const AppearanceSettings: FC<Props> = ({ id }) => {
     setThemePreference(preference)
   }
 
+  const handleOledChange = (checked: boolean) => {
+    setOled(checked)
+    setOledPreference(checked)
+  }
+
+  const handleAccentChange = (next: AccentId) => {
+    setAccent(next)
+    setAccentPreference(next)
+  }
+
   const handleLabelsChange = (checked: boolean) => {
     setShowLabels(checked)
     setTabbarLabelsVisible(checked)
+  }
+
+  const handleAccentOnTabbarChange = (checked: boolean) => {
+    setAccentOnTabbarState(checked)
+    setAccentOnTabbar(checked)
+  }
+
+  const handleAccentOnHomeChange = (checked: boolean) => {
+    setAccentOnHomeState(checked)
+    setAccentOnHomeControls(checked)
   }
 
   const handleIconChange = async (next: string) => {
@@ -100,6 +139,31 @@ const AppearanceSettings: FC<Props> = ({ id }) => {
             ))}
           </NativeSelect>
         </FormItem>
+        <SimpleCell
+          before={<Icon28MoonOutline />}
+          after={
+            <Switch
+              checked={oled}
+              onChange={(event) =>
+                handleOledChange(event.currentTarget.checked)
+              }
+            />
+          }
+          subtitle='Чёрный фон в тёмной и автоматической теме'
+          multiline
+        >
+          OLED в тёмной теме
+        </SimpleCell>
+      </Group>
+
+      <Group header={<Header size='s'>Акцент</Header>}>
+        <FormItem top='Цвет кнопок и выделений'>
+          <AccentGrid
+            options={ACCENT_OPTIONS}
+            value={accent}
+            onChange={handleAccentChange}
+          />
+        </FormItem>
       </Group>
 
       <Group header={<Header size='s'>Навигация</Header>}>
@@ -117,6 +181,34 @@ const AppearanceSettings: FC<Props> = ({ id }) => {
           multiline
         >
           Подписи в нижней панели
+        </SimpleCell>
+        <SimpleCell
+          after={
+            <Switch
+              checked={accentOnTabbar}
+              onChange={(event) =>
+                handleAccentOnTabbarChange(event.currentTarget.checked)
+              }
+            />
+          }
+          subtitle='Выбранная вкладка в нижней панели красятся акцентом'
+          multiline
+        >
+          Акцент на нижней навигации
+        </SimpleCell>
+        <SimpleCell
+          after={
+            <Switch
+              checked={accentOnHome}
+              onChange={(event) =>
+                handleAccentOnHomeChange(event.currentTarget.checked)
+              }
+            />
+          }
+          subtitle='Стрелки недели и кнопка «Домой» на главной'
+          multiline
+        >
+          Акцент на стрелках и «Домой»
         </SimpleCell>
       </Group>
 
