@@ -135,6 +135,20 @@ html.diary-native .diary-schedule-flush {
   padding-inline: 0 !important;
 }
 
+/* Зазор над карточкой = боковой: убираем лишние margin Header/CardGrid. */
+html.diary-native .diary-schedule-flush [class*='Header'] [class*='after'] > *,
+html.diary-native .diary-schedule-flush .diary-home-controls {
+  margin-block-end: 0 !important;
+}
+
+html.diary-native .diary-schedule-flush [class*='CardGrid'] {
+  margin-block-start: 0 !important;
+  padding-block-start: var(
+    --vkui--size_base_padding_horizontal--regular
+  ) !important;
+  padding-inline: var(--vkui--size_base_padding_horizontal--regular) !important;
+}
+
 html.diary-native .tableWrapper {
   padding-inline: 0 !important;
 }
