@@ -1,0 +1,111 @@
+.diary-week-picker-modal {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding-block: 0 12px;
+}
+
+.diary-week-picker-modal__month {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 4px;
+}
+
+.diary-week-picker-modal__month-title {
+  flex: 1;
+  font-weight: 600;
+  font-size: 16px;
+  text-align: center;
+  text-transform: capitalize;
+}
+
+.diary-week-picker-modal__dow {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 2px;
+  padding-inline: 2px;
+  color: var(--vkui--color_text_secondary);
+  font-size: 11px;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+.diary-week-picker-modal__list {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  max-block-size: min(48vh, 340px);
+  overflow-y: auto;
+}
+
+.diary-week-picker-modal__week {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 10px 8px;
+  color: var(--vkui--color_text_primary);
+  text-align: start;
+  cursor: pointer;
+  background: var(--vkui--color_background_secondary);
+  border: 0;
+  border-radius: 12px;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.diary-week-picker-modal__week--selected {
+  background: color-mix(
+    in srgb,
+    var(--diary-accent, var(--vkui--color_background_accent)) 18%,
+    var(--vkui--color_background_secondary)
+  );
+  box-shadow: inset 0 0 0 1.5px
+    var(--diary-accent, var(--vkui--color_background_accent));
+}
+
+.diary-week-picker-modal__week-label {
+  padding-inline: 4px;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  color: var(--vkui--color_text_secondary);
+}
+
+.diary-week-picker-modal__week--selected .diary-week-picker-modal__week-label {
+  color: var(--diary-accent, var(--vkui--color_text_accent));
+}
+
+.diary-week-picker-modal__days {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 2px;
+}
+
+.diary-week-picker-modal__day {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-block-size: 28px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+}
+
+.diary-week-picker-modal__day--muted {
+  opacity: 0.35;
+}
+
+.diary-week-picker-modal__day--today {
+  color: var(--diary-accent, var(--vkui--color_text_accent));
+  font-weight: 700;
+}
+
+.diary-week-picker-modal__week--selected .diary-week-picker-modal__day {
+  background: color-mix(
+    in srgb,
+    var(--diary-accent, var(--vkui--color_background_accent)) 14%,
+    transparent
+  );
+}

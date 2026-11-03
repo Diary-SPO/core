@@ -4,15 +4,14 @@ import { useRouteNavigator } from '@vkontakte/vk-mini-apps-router'
 import { Div, Group, Header, PullToRefresh } from '@vkontakte/vkui'
 import { endOfWeek } from 'date-fns/endOfWeek'
 import { startOfWeek } from 'date-fns/startOfWeek'
-import { type FC, useEffect, useRef, useState } from 'react'
+import { type FC, useCallback, useEffect, useRef, useState } from 'react'
 
 import {
   dayAnchorId,
   ErrorPlaceholder,
   isNeedToUpdateCache,
   lessonAnchorId,
-  toISODate,
-  withSpinner
+  toISODate
 } from '../../shared'
 import { MODAL_PAGE_LESSON } from '../../shared/config'
 
@@ -23,11 +22,15 @@ import { useScheduleData } from './api'
 import { Layout } from './layout'
 import { getWeekString } from './lib'
 
-import ScheduleAsideButtons from './ui/ScheduleAsideButtons.tsx'
+import ScheduleAsideButtons, {
+  type WeekDirection,
+  type WeekNavApi
+} from './ui/ScheduleAsideButtons.tsx'
 import ScheduleGroup from './ui/ScheduleGroup'
-
-const RecentMarksWithSpinner = withSpinner(RecentMarks)
-const ScheduleGroupWithSpinner = withSpinner(ScheduleGroup)
+import {
+  RecentMarksSkeleton,
+  ScheduleGroupSkeleton
+} from './ui/ScheduleSkeletons'
 
 const Schedule: FC<Props> = ({ id }) => {
   /** Управление данными **/
@@ -225,16 +228,20 @@ const Schedule: FC<Props> = ({ id }) => {
       day.lessons?.some((lesson) => (lesson.gradebook?.tasks?.length ?? 0) > 0)
     )
 
-  const ScheduleGroupAside = (
-    <ScheduleAsideButtons
-      handleGetLesson={getActualUserLessons}
-      showSnackbar={showSnackbar}
-      endDate={endDate}
-      startDate={startDate}
-      setEndDate={setEndDate}
-      setStartDate={setStartDate}
-    />
-  )
+  const weekNavApiRef = useRef<WeekNavApi>({
+    changeWeek: () => undefined
+  })
+  const [slideDir, setSlideDir] = useState<WeekDirection | null>(null)
+  const [slideKey, setSlideKey] = useState(0)
+
+  const onWeekNavReady = useCallback((api: WeekNavApi) => {
+    weekNavApiRef.current = api
+  }, [])
+
+  const bumpSlide = (direction: WeekDirection) => {
+    setSlideDir(direction)
+    setSlideKey((key) => key + 1)
+  }
 
   const MarksHeader = (
     <Header size='s'>Оценки за неделю{isNoMarks ? ' отсутствуют' : ''}</Header>
@@ -244,33 +251,53 @@ const Schedule: FC<Props> = ({ id }) => {
     return <ErrorPlaceholder onClick={getLessons} />
   }
 
+  const slideClass =
+    slideDir === 'next'
+      ? 'diary-week-slide diary-week-slide--next'
+      : slideDir === 'prev'
+        ? 'diary-week-slide diary-week-slide--prev'
+        : 'diary-week-slide'
+
   return (
     <Layout id={id}>
       <PullToRefresh onRefresh={getLessons} isFetching={isLoading}>
         <Div className='diary-schedule-flush'>
           <Group header={MarksHeader}>
-            <RecentMarksWithSpinner
-              lessonsState={lessonsState}
-              shouldShowSpinner={isLoading}
-              shouldReverse
-            />
+            <div key={`marks-${slideKey}`} className={slideClass}>
+              {isLoading ? (
+                <RecentMarksSkeleton />
+              ) : (
+                <RecentMarks lessonsState={lessonsState} shouldReverse />
+              )}
+            </div>
           </Group>
           <Group
             header={
-              <Header
-                after={ScheduleGroupAside}
-                size='s'
-                // @TODO: ??
-                style={{ alignItems: 'center' }}
-              >
-                {weekString}
-              </Header>
+              <ScheduleAsideButtons
+                handleGetLesson={getActualUserLessons}
+                showSnackbar={showSnackbar}
+                endDate={endDate}
+                startDate={startDate}
+                setEndDate={setEndDate}
+                setStartDate={setStartDate}
+                weekString={weekString}
+                onWeekChange={bumpSlide}
+                onReady={onWeekNavReady}
+              />
             }
           >
-            <ScheduleGroupWithSpinner
-              shouldShowSpinner={isLoading}
-              lessonsState={lessonsState}
-            />
+            <div key={`schedule-${slideKey}`} className={slideClass}>
+              {isLoading ? (
+                <ScheduleGroupSkeleton />
+              ) : (
+                <ScheduleGroup
+                  lessonsState={lessonsState}
+                  onSwipeWeek={(direction) =>
+                    weekNavApiRef.current.changeWeek(direction)
+                  }
+                />
+              )}
+            </div>
           </Group>
         </Div>
         {snackbar}

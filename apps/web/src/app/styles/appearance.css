@@ -121,8 +121,8 @@ html.diary-accent-home .diary-home-controls .diary-home-button {
   color: var(--diary-accent, #2688eb);
 }
 
-/* Native: сепараторы до края. Не трогаем --size_base_padding_horizontal —
-   от него считается gap у HorizontalCell; 0 даёт отрицательный gap и наезд. */
+/* Сепараторы до края. Не трогаем --size_base_padding_horizontal:
+   0 ломает HorizontalCell gap. */
 html.diary-native .vkuiGroup__separator,
 html.diary-native [class*='Group__separator'],
 html.diary-native .vkuiSeparator--padded,
@@ -131,22 +131,55 @@ html.diary-native [class*='Separator--padded'] {
   margin-inline: 0 !important;
 }
 
-html.diary-native .diary-schedule-flush {
+@media (max-width: 767.9px) {
+  .vkuiGroup__separator,
+  [class*='Group__separator'],
+  .vkuiSeparator--padded,
+  [class*='Separator--padded'] {
+    padding-inline: 0 !important;
+    margin-inline: 0 !important;
+  }
+
+  .tableWrapper {
+    padding-inline: 0 !important;
+  }
+}
+
+.diary-schedule-flush {
   padding-inline: 0 !important;
+  padding-block: 4px !important;
 }
 
-/* Зазор над карточкой = боковой: убираем лишние margin Header/CardGrid. */
-html.diary-native .diary-schedule-flush [class*='Header'] [class*='after'] > *,
-html.diary-native .diary-schedule-flush .diary-home-controls {
-  margin-block-end: 0 !important;
+.diary-schedule-flush .vkuiInternalGroup {
+  --vkui_internal--Group_padding_inline: 0;
+  --vkui_internal--Group_padding_block: 4px;
+  padding-inline: 0 !important;
+  padding-block: 4px 0 !important;
 }
 
-html.diary-native .diary-schedule-flush [class*='CardGrid'] {
+.diary-schedule-flush .vkuiInternalCardGrid {
   margin-block-start: 0 !important;
-  padding-block-start: var(
-    --vkui--size_base_padding_horizontal--regular
-  ) !important;
+  margin-block-end: 0 !important;
+  padding-block: 4px 8px !important;
   padding-inline: var(--vkui--size_base_padding_horizontal--regular) !important;
+}
+
+.diary-schedule-flush .diary-week-nav {
+  margin-block: 0;
+}
+
+/* Лента оценок на всю ширину контейнера (web mobile = как native). */
+.diary-schedule-flush .recentMarks {
+  width: 100%;
+  margin-inline: 0;
+}
+
+/* Разделитель между оценками и неделей — без «зелёных» полей. */
+.diary-schedule-flush > [class*='separatorSibling'],
+.diary-schedule-flush > [class*='Group__separator'],
+.diary-schedule-flush > .vkuiGroup__separator {
+  padding-block: 4px !important;
+  block-size: 8px !important;
 }
 
 html.diary-native .tableWrapper {

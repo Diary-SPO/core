@@ -8,6 +8,7 @@ export const MODAL_PAGE_RECOMMEND_APP = 'recommend-app'
 export const MODAL_PAGE_LOGIN_DIAGNOSTICS = 'login-diagnostics'
 export const MODAL_PAGE_STORAGE_INSPECT = 'storage-inspect'
 export const MODAL_PAGE_APP_UPDATE = 'app-update'
+export const MODAL_PAGE_WEEK_PICKER = 'week-picker'
 
 export const RUSTORE_APP_URL =
   'https://www.rustore.ru/catalog/app/io.github.diaryspo'

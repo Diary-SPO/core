@@ -65,7 +65,7 @@ const Summary: FC<ISummary> = ({
   }
 
   return (
-    <>
+    <div className='summaryTab'>
       <Group header={<Header size='m'>Статистика</Header>}>
         <MiniInfoCell
           before={<Icon20EducationOutline className='icon' />}
@@ -161,7 +161,7 @@ const Summary: FC<ISummary> = ({
           </Div>
         </Group>
       )}
-    </>
+    </div>
   )
 }
 
