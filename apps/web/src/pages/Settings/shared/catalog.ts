@@ -112,15 +112,22 @@ export const SETTINGS_ITEMS: SettingsCatalogItem[] = [
   {
     id: 'theme',
     title: 'Тема приложения',
-    subtitle: 'Авто, светлая, тёмная или OLED',
-    keywords: ['тема', 'оформление', 'тёмная', 'светлая', 'авто', 'oled'],
+    subtitle: 'Авто, светлая или тёмная',
+    keywords: ['тема', 'оформление', 'тёмная', 'светлая', 'авто'],
+    path: PAGE_SETTINGS_APPEARANCE
+  },
+  {
+    id: 'oled',
+    title: 'OLED в тёмной теме',
+    subtitle: 'Чёрный фон для AMOLED',
+    keywords: ['oled', 'чёрный', 'amoled', 'тема'],
     path: PAGE_SETTINGS_APPEARANCE
   },
   {
     id: 'accent',
     title: 'Акцентный цвет',
-    subtitle: 'Цвет кнопок и выделений',
-    keywords: ['акцент', 'цвет', 'оформление', 'палитра'],
+    subtitle: 'Системный или свой цвет',
+    keywords: ['акцент', 'цвет', 'оформление', 'палитра', 'системный'],
     path: PAGE_SETTINGS_APPEARANCE
   },
   {

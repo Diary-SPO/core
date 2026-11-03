@@ -18,12 +18,18 @@
       try {
         var root = document.documentElement
         var savedTheme = localStorage.getItem('themePreference')
-        var isOled = savedTheme === 'oled'
+        var oledPref = localStorage.getItem('oledPreference') === '1'
+        if (savedTheme === 'oled') {
+          savedTheme = 'dark'
+          oledPref = true
+          localStorage.setItem('themePreference', 'dark')
+          localStorage.setItem('oledPreference', '1')
+        }
         var isDark =
-          isOled ||
           savedTheme === 'dark' ||
           (savedTheme !== 'light' &&
             window.matchMedia('(prefers-color-scheme: dark)').matches)
+        var isOled = oledPref && isDark
         root.style.background = isOled
           ? '#000000'
           : isDark
@@ -43,7 +49,38 @@
           teal: ['#18a3a8', '#169b9f', '#149297']
         }
         var savedAccent = localStorage.getItem('accentPreference')
-        var accent = accents[savedAccent] || accents.blue
+        var accent
+        if (savedAccent === 'system') {
+          var systemColor = '#2688eb'
+          try {
+            if (!CSS.supports || CSS.supports('color', 'AccentColor')) {
+              var probe = document.createElement('span')
+              probe.style.cssText =
+                'all:initial;position:fixed;left:-9999px;color:AccentColor'
+              root.appendChild(probe)
+              var value = getComputedStyle(probe).color
+              probe.remove()
+              var match = value && value.match(/rgba?\(\s*([\d.]+)\s*,\s*([\d.]+)\s*,\s*([\d.]+)/i)
+              if (match) {
+                var r = Number(match[1]) / 255
+                var g = Number(match[2]) / 255
+                var b = Number(match[3]) / 255
+                var lin = function (c) {
+                  return c <= 0.03928 ? c / 12.92 : Math.pow((c + 0.055) / 1.055, 2.4)
+                }
+                var lum = 0.2126 * lin(r) + 0.7152 * lin(g) + 0.0722 * lin(b)
+                if (lum > 0.08 && lum < 0.72) systemColor = value
+              }
+            }
+          } catch (err) {}
+          accent = [
+            systemColor,
+            'color-mix(in srgb, ' + systemColor + ' 92%, black)',
+            'color-mix(in srgb, ' + systemColor + ' 84%, black)'
+          ]
+        } else {
+          accent = accents[savedAccent] || accents.blue
+        }
         root.style.setProperty('--diary-accent', accent[0])
         root.style.setProperty('--diary-accent-hover', accent[1])
         root.style.setProperty('--diary-accent-active', accent[2])

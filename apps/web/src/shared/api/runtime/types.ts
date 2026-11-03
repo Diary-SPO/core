@@ -87,6 +87,15 @@ export interface AppIconController {
 /** Версия приложения: в APK из Android, в вебе из env. */
 export type GetAppVersion = () => Promise<string>
 
+export interface SystemAccentColors {
+  base: string
+  hover: string
+  active: string
+}
+
+/** Системный акцент: на Android — Material You, в вебе — CSS AccentColor / null. */
+export type GetSystemAccent = () => Promise<SystemAccentColors | null>
+
 export type AppUpdateChannel = 'stable' | 'beta'
 
 export type AppUpdateKind = 'none' | 'web' | 'native' | 'ready' | 'downloading'

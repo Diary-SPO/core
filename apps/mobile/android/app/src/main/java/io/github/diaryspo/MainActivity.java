@@ -12,6 +12,7 @@ public class MainActivity extends BridgeActivity {
         registerPlugin(DiaryNetworkPlugin.class);
         registerPlugin(DiaryCredentialsPlugin.class);
         registerPlugin(DiaryAppIconPlugin.class);
+        registerPlugin(DiaryAppearancePlugin.class);
         super.onCreate(savedInstanceState);
 
         getOnBackPressedDispatcher().addCallback(

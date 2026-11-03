@@ -26,9 +26,11 @@ import type {
   AppIconController,
   DiaryApi,
   GetAppVersion,
+  GetSystemAccent,
   RegionProbeResult,
   RegionSearchResult,
-  ShareContentOptions
+  ShareContentOptions,
+  SystemAccentColors
 } from '../../web/src/shared/api/runtime/types.ts'
 import { APP_VERSION } from '../../web/src/shared/config'
 import {
@@ -64,6 +66,28 @@ export const getAppVersion: GetAppVersion = async () => {
   } catch (error) {
     console.warn('Unable to read native app version', error)
     return APP_VERSION
+  }
+}
+
+interface DiaryAppearancePlugin {
+  getSystemAccent(): Promise<SystemAccentColors>
+}
+
+const diaryAppearance = registerPlugin<DiaryAppearancePlugin>('DiaryAppearance')
+
+export const getSystemAccent: GetSystemAccent = async () => {
+  if (!Capacitor.isNativePlatform()) return null
+  try {
+    const colors = await diaryAppearance.getSystemAccent()
+    if (!colors?.base) return null
+    return {
+      base: colors.base,
+      hover: colors.hover || colors.base,
+      active: colors.active || colors.base
+    }
+  } catch (error) {
+    console.warn('Unable to read system accent', error)
+    return null
   }
 }
 

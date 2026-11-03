@@ -1,5 +1,9 @@
 import { appIcon } from '@runtime-api'
-import { Icon28PaletteOutline, Icon28ViewOutline } from '@vkontakte/icons'
+import {
+  Icon28MoonOutline,
+  Icon28PaletteOutline,
+  Icon28ViewOutline
+} from '@vkontakte/icons'
 import {
   FormItem,
   Group,
@@ -22,8 +26,10 @@ import { useSnackbar } from '../../../shared/hooks'
 import type { Props } from '../../types.ts'
 import {
   getAccentPreference,
+  getOledPreference,
   getThemePreference,
   setAccentPreference,
+  setOledPreference,
   setThemePreference,
   THEME_LABELS,
   type ThemePreference
@@ -33,6 +39,7 @@ import AppIconGrid from './AppIconGrid'
 
 const AppearanceSettings: FC<Props> = ({ id }) => {
   const [theme, setTheme] = useState<ThemePreference>(getThemePreference)
+  const [oled, setOled] = useState(getOledPreference)
   const [accent, setAccent] = useState<AccentId>(getAccentPreference)
   const [showLabels, setShowLabels] = useState(getTabbarLabelsVisible)
   const [iconSupported, setIconSupported] = useState(appIcon.supported)
@@ -62,6 +69,11 @@ const AppearanceSettings: FC<Props> = ({ id }) => {
     const preference = event.currentTarget.value as ThemePreference
     setTheme(preference)
     setThemePreference(preference)
+  }
+
+  const handleOledChange = (checked: boolean) => {
+    setOled(checked)
+    setOledPreference(checked)
   }
 
   const handleAccentChange = (next: AccentId) => {
@@ -111,6 +123,21 @@ const AppearanceSettings: FC<Props> = ({ id }) => {
             ))}
           </NativeSelect>
         </FormItem>
+        <SimpleCell
+          before={<Icon28MoonOutline />}
+          after={
+            <Switch
+              checked={oled}
+              onChange={(event) =>
+                handleOledChange(event.currentTarget.checked)
+              }
+            />
+          }
+          subtitle='Чёрный фон в тёмной и автоматической теме'
+          multiline
+        >
+          OLED в тёмной теме
+        </SimpleCell>
       </Group>
 
       <Group header={<Header size='s'>Акцент</Header>}>

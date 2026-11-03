@@ -19,9 +19,8 @@
   min-width: 96px;
   padding: 10px 16px;
   border-radius: 999px;
-  /* Не accent_themed: в тёмной теме он белый, и белый текст пропадает. */
   color: #fff;
-  background: var(--vkui--color_background_accent, #2688eb);
+  background: var(--diary-accent, #2688eb);
   font-size: 18px;
   font-weight: 700;
   letter-spacing: 0.02em;

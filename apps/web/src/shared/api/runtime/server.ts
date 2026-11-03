@@ -10,6 +10,7 @@ import type {
   BackgroundGradeNotifications,
   DiaryApi,
   GetAppVersion,
+  GetSystemAccent,
   RegionSearchResult,
   ShareContentOptions
 } from './types.ts'
@@ -33,6 +34,8 @@ export const appIcon: AppIconController = {
 }
 
 export const getAppVersion: GetAppVersion = async () => APP_VERSION
+
+export const getSystemAccent: GetSystemAccent = async () => null
 
 const webUpdateStatus = (): AppUpdateStatus => ({
   supported: false,
