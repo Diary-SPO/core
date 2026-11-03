@@ -226,7 +226,7 @@ def generate_icon_assets(icon: dict[str, str]) -> None:
 
 
 def clear_per_icon_splash_assets() -> None:
-    """Один общий splash; отдельные splash_icon_* под иконки не нужны."""
+    """Общий splash.webp / splash_icon оставляем; splash_icon_* под варианты иконок — нет."""
     styles = ANDROID_RES / 'values' / 'app_icon_splash_styles.xml'
     styles.unlink(missing_ok=True)
     for folder in ANDROID_RES.glob('drawable*'):

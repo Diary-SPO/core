@@ -199,7 +199,7 @@ export const SETTINGS_ITEMS: SettingsCatalogItem[] = [
     id: 'contacts',
     title: 'Контакты',
     subtitle: 'Поддержка и сообщество',
-    keywords: ['контакты', 'поддержка', 'вк', 'телеграм'],
+    keywords: ['контакты', 'поддержка', 'вк', 'телеграм', 'сайт'],
     path: PAGE_SETTINGS_HELP
   },
   {
