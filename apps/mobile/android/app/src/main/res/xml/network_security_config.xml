@@ -2,9 +2,14 @@
 <network-security-config>
     <!-- Дневник возвращает redirect_uri со схемой http, ЕСИА редиректит
          WebView на http://<diary>/services/esia/login?code=... -->
+    <!-- НУЦ Минцифры нет в system store Android — без него регионы вроде
+         spo.admoblkaluga.ru падают с Trust anchor for certification path not found. -->
     <base-config cleartextTrafficPermitted="true">
         <trust-anchors>
             <certificates src="system" />
+            <certificates src="@raw/russian_trusted_root_ca" />
+            <certificates src="@raw/russian_trusted_sub_ca" />
+            <certificates src="@raw/russian_trusted_sub_ca_2024" />
         </trust-anchors>
     </base-config>
 </network-security-config>
