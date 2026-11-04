@@ -27,8 +27,8 @@ android {
         applicationId "io.github.diaryspo"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 8
-        versionName "4.4.0" + versionSuffix
+        versionCode 9
+        versionName "4.4.1" + versionSuffix
         buildConfigField "String", "APPMETRICA_API_KEY", groovy.json.JsonOutput.toJson(appMetricaApiKey)
         // Канал распространения: rustore | github | landing. Уходит в AppMetrica
         // событием install_source, чтобы источники установок различались.
