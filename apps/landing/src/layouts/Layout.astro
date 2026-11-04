@@ -26,7 +26,7 @@ const {
 } = Astro.props
 
 const canonical = canonicalUrl(path)
-const icon = publicUrl('icon.png')
+const icon = publicUrl('icon.webp')
 const shareImage = new URL(ogImage || icon, Astro.site).href
 const jsonLdBlocks = jsonLd ? (Array.isArray(jsonLd) ? jsonLd : [jsonLd]) : []
 ---
