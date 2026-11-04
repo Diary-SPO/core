@@ -36,11 +36,14 @@ public class DiaryRegionTlsInstrumentedTest {
         "https://poo.e-yakutia.ru/",
         "https://e-college.ryazan.gov.ru/",
         "https://spo.asurso.ru/",
+        "https://spo.admsakhalin.ru/",
         "https://poo.tomedu.ru/",
         "https://spo1.edu71.ru/",
         "https://spo.cit73.ru/",
         "https://poo.edu-74.ru/",
-        "https://spo.yanao.ru/"
+        "https://spo.cap.ru/",
+        "https://spo.yanao.ru/",
+        "https://poo.eduportal44.ru/"
     };
 
     @Test

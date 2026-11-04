@@ -121,6 +121,31 @@ export const REGIONS: DiaryRegion[] = [
     aliases: ['черкесск', 'карачаевск', 'cherkessk', 'cherkes', 'karachay']
   },
   {
+    id: 'kostroma',
+    name: 'Костромская область',
+    url: 'https://poo.eduportal44.ru',
+    code: '44',
+    cities: [
+      'Кострома',
+      'Буй',
+      'Шарья',
+      'Нерехта',
+      'Галич',
+      'Мантурово',
+      'Волгореченск'
+    ],
+    aliases: [
+      'кострома',
+      'буй',
+      'шарья',
+      'нерехта',
+      'галич',
+      'kostroma',
+      'buy',
+      'sharya'
+    ]
+  },
+  {
     id: 'krasnodar',
     name: 'Краснодарский край',
     url: 'https://spo.rso23.ru',
@@ -259,6 +284,32 @@ export const REGIONS: DiaryRegion[] = [
     aliases: ['самара', 'тольятти', 'сызрань', 'samara', 'tolyatti']
   },
   {
+    id: 'sakhalin',
+    name: 'Сахалинская область',
+    url: 'https://spo.admsakhalin.ru',
+    code: '65',
+    cities: [
+      'Южно-Сахалинск',
+      'Корсаков',
+      'Холмск',
+      'Оха',
+      'Поронайск',
+      'Долинск',
+      'Невельск',
+      'Александровск-Сахалинский'
+    ],
+    aliases: [
+      'сахалин',
+      'южно-сахалинск',
+      'холмск',
+      'корсаков',
+      'оха',
+      'sakhalin',
+      'yuzhno-sakhalinsk'
+    ],
+    note: 'Официальные инструкции также указывают netcity.admsakhalin.ru:11113 — тот же модуль ПОО'
+  },
+  {
     id: 'tomsk',
     name: 'Томская область',
     url: 'https://poo.tomedu.ru',
@@ -322,6 +373,29 @@ export const REGIONS: DiaryRegion[] = [
       'Южноуральск'
     ],
     aliases: ['челябинск', 'магнитогорск', 'chelyabinsk', 'magnitogorsk']
+  },
+  {
+    id: 'chuvashia',
+    name: 'Чувашская Республика',
+    url: 'https://spo.cap.ru',
+    code: '21',
+    cities: [
+      'Чебоксары',
+      'Новочебоксарск',
+      'Канаш',
+      'Алатырь',
+      'Шумерля',
+      'Цивильск'
+    ],
+    aliases: [
+      'чувашия',
+      'чебоксары',
+      'новочебоксарск',
+      'канаш',
+      'алатырь',
+      'chuvashia',
+      'cheboksary'
+    ]
   },
   {
     id: 'yamal',

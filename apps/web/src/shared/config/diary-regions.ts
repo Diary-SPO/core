@@ -1,15 +1,18 @@
 import altaiEmblem from '../../assets/images/regions/altai.webp'
 import buryatiaEmblem from '../../assets/images/regions/buryatia.webp'
 import chelyabinskEmblem from '../../assets/images/regions/chelyabinsk.webp'
+import chuvashiaEmblem from '../../assets/images/regions/chuvashia.webp'
 import ingushetiaEmblem from '../../assets/images/regions/ingushetia.webp'
 import kalugaEmblem from '../../assets/images/regions/kaluga.webp'
 import kamchatkaEmblem from '../../assets/images/regions/kamchatka.webp'
 import karachayEmblem from '../../assets/images/regions/karachay.webp'
 import komiEmblem from '../../assets/images/regions/komi.webp'
+import kostromaEmblem from '../../assets/images/regions/kostroma.webp'
 import krasnodarEmblem from '../../assets/images/regions/krasnodar.webp'
 import primorskyEmblem from '../../assets/images/regions/primorsky.webp'
 import ryazanEmblem from '../../assets/images/regions/ryazan.webp'
 import sakhaEmblem from '../../assets/images/regions/sakha.webp'
+import sakhalinEmblem from '../../assets/images/regions/sakhalin.webp'
 import samaraEmblem from '../../assets/images/regions/samara.webp'
 import tomskEmblem from '../../assets/images/regions/tomsk.webp'
 import tulaEmblem from '../../assets/images/regions/tula.webp'
@@ -82,6 +85,21 @@ export const DIARY_REGIONS: DiaryRegion[] = [
     aliases: ['черкесск', 'карачаевск', 'cherkessk', 'cherkes', 'karachay']
   },
   {
+    name: 'Костромская область',
+    url: 'https://poo.eduportal44.ru',
+    emblem: kostromaEmblem,
+    aliases: [
+      'кострома',
+      'буй',
+      'шарья',
+      'нерехта',
+      'галич',
+      'kostroma',
+      'buy',
+      'sharya'
+    ]
+  },
+  {
     name: 'Краснодарский край',
     url: 'https://spo.rso23.ru',
     emblem: krasnodarEmblem,
@@ -146,6 +164,20 @@ export const DIARY_REGIONS: DiaryRegion[] = [
     aliases: ['самара', 'тольятти', 'сызрань', 'samara', 'tolyatti']
   },
   {
+    name: 'Сахалинская область',
+    url: 'https://spo.admsakhalin.ru',
+    emblem: sakhalinEmblem,
+    aliases: [
+      'сахалин',
+      'южно-сахалинск',
+      'холмск',
+      'корсаков',
+      'оха',
+      'sakhalin',
+      'yuzhno-sakhalinsk'
+    ]
+  },
+  {
     name: 'Томская область',
     url: DEFAULT_DIARY_URL,
     emblem: tomskEmblem,
@@ -168,6 +200,20 @@ export const DIARY_REGIONS: DiaryRegion[] = [
     url: 'https://poo.edu-74.ru',
     emblem: chelyabinskEmblem,
     aliases: ['челябинск', 'магнитогорск', 'chelyabinsk', 'magnitogorsk']
+  },
+  {
+    name: 'Чувашская Республика',
+    url: 'https://spo.cap.ru',
+    emblem: chuvashiaEmblem,
+    aliases: [
+      'чувашия',
+      'чебоксары',
+      'новочебоксарск',
+      'канаш',
+      'алатырь',
+      'chuvashia',
+      'cheboksary'
+    ]
   },
   {
     name: 'Ямало-Ненецкий АО',
